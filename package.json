@@ -1,0 +1,28 @@
+{
+	"name": "orc-shared",
+	"version": "0.0.1",
+	"description": "Shared code for Orckestra applications",
+	"main": "dist/",
+	"scripts": {
+		"build": "orc-scripts build",
+		"test": "orc-scripts test",
+		"precommit": "lint-staged"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Orckestra/orc-shared.git"
+	},
+	"author": "Gert Sønderby <gert.sonderby@orckestra.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Orckestra/orc-shared/issues"
+	},
+	"homepage": "https://github.com/Orckestra/orc-shared#readme",
+	"devDependencies": {
+		"orc-scripts": "0.0.17"
+	},
+	"lint-staged": {
+		"*.{js,json,md}": ["prettier --write", "git add"],
+		"*.js": ["eslint"]
+	}
+}
