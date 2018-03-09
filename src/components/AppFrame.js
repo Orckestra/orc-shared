@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { injectGlobal } from "styled-components";
 import { withStateHandlers } from "recompose";
+import Icon from "./Icon";
 
 injectGlobal`
 	body {
@@ -26,6 +27,16 @@ const TopBar = styled.div`
 const LeftBar = styled.div`
 	height: calc(100% - 30px);
 	width: 280px;
+	color: #999999;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+`;
+
+const LeftIcon = styled(Icon)`
+	font-size: 30px;
+	padding: 10px;
+	${props => (props.open ? "" : "")};
 `;
 
 const Perspective = styled.div`
@@ -57,7 +68,9 @@ const AppFrame = ({ children, open, openMenu, closeMenu }) => (
 		<Perspective open={open} onClick={closeMenu}>
 			{children}
 		</Perspective>
-		<LeftBar open={open} onClick={openMenu} />
+		<LeftBar open={open}>
+			<LeftIcon open={open} id="menu" onClick={open ? closeMenu : openMenu} />
+		</LeftBar>
 	</Base>
 );
 
