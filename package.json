@@ -8,6 +8,7 @@
 		"test": "orc-scripts test",
 		"precommit": "lint-staged"
 	},
+	"files": ["dist"],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Orckestra/orc-shared.git"
@@ -19,7 +20,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.0.17"
+		"orc-scripts": "0.0.18"
 	},
 	"lint-staged": {
 		"*.{js,json,md}": ["prettier --write", "git add"],
