@@ -6,6 +6,7 @@ import Icon from "./Icon";
 const Wrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: space-around;
 `;
 
 const IconBlock = styled.div`
