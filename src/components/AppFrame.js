@@ -33,13 +33,21 @@ const LeftBar = styled.div`
 	justify-content: flex-start;
 `;
 
-const LeftIcon = styled(Icon)`
-	font-size: 30px;
+const SidebarMenuItem = styled.div`
 	padding: 10px;
+	margin-bottom: 35px;
+
+	transition: transform 0.3s ease-out;
+	${props => (props.open ? "transform: translateX(19px);" : "")};
+`;
+
+const MenuIcon = styled(Icon)`
+	font-size: 30px;
 	${props => (props.open ? "" : "")};
 `;
 
 const Perspective = styled.div`
+	overflow: auto;
 	background-color: white;
 	border-top-left-radius: 5px;
 	height: calc(100% - 30px);
@@ -69,7 +77,13 @@ const AppFrame = ({ children, open, openMenu, closeMenu }) => (
 			{children}
 		</Perspective>
 		<LeftBar open={open}>
-			<LeftIcon open={open} id="menu" onClick={open ? closeMenu : openMenu} />
+			<SidebarMenuItem open={open}>
+				<MenuIcon
+					open={open}
+					id={open ? "layers" : "menu"}
+					onClick={open ? closeMenu : openMenu}
+				/>
+			</SidebarMenuItem>
 		</LeftBar>
 	</Base>
 );
