@@ -1,3 +1,1 @@
-module.exports = {
-	actions: require("./actions"),
-};
+throw new Error("Import files directly from the dist/ dir of this package");
