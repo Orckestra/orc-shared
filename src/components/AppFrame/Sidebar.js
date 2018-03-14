@@ -14,18 +14,24 @@ const Sidebar = ({
 	open,
 	openMenu,
 	closeMenu,
+	itemHOC = x => x,
 	items = [],
 	navigate = () => {},
-}) => (
-	<LeftBar>
-		<MenuItem
-			menu
-			open={open}
-			icon={open ? "layers" : "menu"}
-			onClick={open ? closeMenu : openMenu}
-		/>
-		{items.map(item => <MenuItem key={item.icon} {...item} open={open} />)}
-	</LeftBar>
-);
+}) => {
+	const EnhancedMenuItem = itemHOC(MenuItem);
+	return (
+		<LeftBar>
+			<MenuItem
+				menu
+				open={open}
+				icon={open ? "layers" : "menu"}
+				onClick={open ? closeMenu : openMenu}
+			/>
+			{items.map(item => (
+				<EnhancedMenuItem key={item.icon} {...item} open={open} />
+			))}
+		</LeftBar>
+	);
+};
 
 export default Sidebar;

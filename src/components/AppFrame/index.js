@@ -40,14 +40,14 @@ const Perspective = styled.div`
 // Top bar containing username, user menu, help button
 // Area framed by bars slides sideways when left menu folds out
 // Left bar has fold-out button, entries for each perspective in the app
-const AppFrame = ({ children, open, openMenu, closeMenu, sidebarItems }) => (
+const AppFrame = ({ children, open, openMenu, closeMenu, sidebarConfig }) => (
 	<Base>
 		<TopBar onClick={closeMenu} />
 		<Sidebar
 			open={open}
 			openMenu={openMenu}
 			closeMenu={closeMenu}
-			items={sidebarItems}
+			{...sidebarConfig}
 		/>
 		<Perspective open={open} onClick={closeMenu}>
 			{children}

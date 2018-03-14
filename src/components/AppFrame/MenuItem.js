@@ -8,6 +8,7 @@ const MenuBlock = styled.a`
 	margin-bottom: 35px;
 	color: ${props => (props.active ? props.theme.appHighlightColor : "#999999")};
 	text-decoration: none;
+	cursor: pointer;
 
 	${props =>
 		props.open
