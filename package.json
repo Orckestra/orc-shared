@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Shared code for Orckestra applications",
 	"main": "dist/",
 	"scripts": {
@@ -9,7 +9,10 @@
 		"precommit": "lint-staged",
 		"prepare": "orc-scripts build"
 	},
-	"files": ["dist", "flow-typed"],
+	"files": [
+		"dist",
+		"flow-typed"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Orckestra/orc-shared.git"
@@ -28,7 +31,12 @@
 		"jest": "^22.4.2"
 	},
 	"lint-staged": {
-		"!(flow-typed/)*.{js,json,md}": ["prettier --write", "git add"],
-		"!(flow-typed/)*.js": ["eslint"]
+		"!(flow-typed/)*.{js,json,md}": [
+			"prettier --write",
+			"git add"
+		],
+		"!(flow-typed/)*.js": [
+			"eslint"
+		]
 	}
 }
