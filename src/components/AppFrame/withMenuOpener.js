@@ -1,6 +1,6 @@
-import { withStateHandlers } from "recompose";
+import { withStateHandlers, mapProps, compose } from "recompose";
 
-const withMenuOpener = withStateHandlers(
+const withMenuState = withStateHandlers(
 	({ initOpen = false }) => ({ open: initOpen }),
 	{
 		openMenu: () => () => ({ open: true }),
@@ -8,4 +8,12 @@ const withMenuOpener = withStateHandlers(
 	},
 );
 
-export default withMenuOpener;
+const withMenuProps = mapProps(
+	({ open, openMenu, closeMenu, ...otherProps }) => {
+		const props = Object.assign({}, otherProps);
+		props.sidebarMenu = { open, openMenu, closeMenu };
+		return props;
+	},
+);
+
+export default compose(withMenuState, withMenuProps);

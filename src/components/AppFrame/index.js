@@ -20,11 +20,11 @@ const Base = styled.div`
 	overflow-x: hidden;
 `;
 
-const TopBar = styled.div`
+const Topbar = styled.div`
 	height: 30px;
 `;
 
-const Perspective = styled.div`
+const ViewPort = styled.div`
 	overflow: auto;
 	background-color: white;
 	border-top-left-radius: 5px;
@@ -40,18 +40,13 @@ const Perspective = styled.div`
 // Top bar containing username, user menu, help button
 // Area framed by bars slides sideways when left menu folds out
 // Left bar has fold-out button, entries for each perspective in the app
-const AppFrame = ({ children, open, openMenu, closeMenu, sidebarConfig }) => (
+const AppFrame = ({ children, sidebarMenu, sidebarConfig }) => (
 	<Base>
-		<TopBar onClick={closeMenu} />
-		<Sidebar
-			open={open}
-			openMenu={openMenu}
-			closeMenu={closeMenu}
-			{...sidebarConfig}
-		/>
-		<Perspective open={open} onClick={closeMenu}>
+		<Topbar onClick={sidebarMenu.closeMenu} />
+		<Sidebar {...sidebarMenu} {...sidebarConfig} />
+		<ViewPort open={sidebarMenu.open} onClick={sidebarMenu.closeMenu}>
 			{children}
-		</Perspective>
+		</ViewPort>
 	</Base>
 );
 

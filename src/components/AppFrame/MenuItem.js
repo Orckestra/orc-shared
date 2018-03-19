@@ -50,15 +50,8 @@ const MenuLabel = styled.span`
 	opacity: ${props => (props.open ? 1 : 0)};
 `;
 
-const MenuItem = ({
-	open,
-	menu,
-	label = "",
-	icon = "cake",
-	href,
-	onClick = () => {},
-}) => (
-	<MenuBlock menu={menu} open={open} onClick={onClick} href={href}>
+const MenuItem = ({ open, label = "", icon = "cake", ...props }) => (
+	<MenuBlock open={open} {...props}>
 		<MenuIcon id={icon} />
 		<MenuLabel open={open}>{label}</MenuLabel>
 	</MenuBlock>
