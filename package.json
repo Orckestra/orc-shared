@@ -9,10 +9,7 @@
 		"precommit": "lint-staged",
 		"prepare": "orc-scripts build"
 	},
-	"files": [
-		"dist",
-		"flow-typed"
-	],
+	"files": ["dist", "flow-typed"],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Orckestra/orc-shared.git"
@@ -24,19 +21,14 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.0.26"
+		"orc-scripts": "0.0.28"
 	},
 	"peerDependencies": {
 		"flow-bin": "^0.67.1",
 		"jest": "^22.4.2"
 	},
 	"lint-staged": {
-		"!(flow-typed/)*.{js,json,md}": [
-			"prettier --write",
-			"git add"
-		],
-		"!(flow-typed/)*.js": [
-			"eslint"
-		]
+		"!(flow-typed/)*.{js,json,md}": ["prettier --write", "git add"],
+		"!(flow-typed/)*.js": ["eslint", "flow"]
 	}
 }
