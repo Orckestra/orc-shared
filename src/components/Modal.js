@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
 const ModalWrapper = transition.div.attrs({
@@ -14,8 +14,6 @@ const ModalWrapper = transition.div.attrs({
 	z-index: 9999;
 	transition: opacity 0.3s ease-out;
 	display: flex;
-	justify-content: center;
-	align-items: center;
 
 	&:enter {
 		opacity: 0.01;
@@ -38,21 +36,30 @@ const ModalBackground = styled.div`
 	width: 100%;
 `;
 
-const ModalDialog = styled.div`
+const darkDialogStyle = css`
 	background-color: #333;
-	border-radius: 5px;
-	padding: 10px;
-	min-width: 20%;
-	min-height: 10%;
-	color: white;
-	font-size: 36px;
-	z-index: 10000;
+	border-radius: 15px;
 `;
 
-const Modal = ({ show, toggle, children }) => (
+const dialogLook = {
+	default: css`
+		background-color: white;
+	`,
+	dark: darkDialogStyle,
+};
+
+// Add light dialog style for other dialogs, switching mechanism
+const ModalDialog = styled.div`
+	flex: 0 0 auto;
+	margin: auto;
+	z-index: 10000;
+	${props => dialogLook[props.look]};
+`;
+
+const Modal = ({ show, toggle, children, look = "default" }) => (
 	<ModalWrapper in={show}>
 		<ModalBackground onClick={toggle} />
-		<ModalDialog>{children}</ModalDialog>
+		<ModalDialog look={look}>{children}</ModalDialog>
 	</ModalWrapper>
 );
 

@@ -35,6 +35,7 @@ const getEnhancedMenuItem = (hoc, comp) => {
 const Sidebar = ({
 	applications,
 	applicationId,
+	applicationOrder,
 	open,
 	openMenu,
 	closeMenu,
@@ -48,6 +49,7 @@ const Sidebar = ({
 				open={open}
 				applications={applications}
 				applicationId={applicationId}
+				applicationOrder={applicationOrder}
 			/>
 			<MenuItem
 				menu
