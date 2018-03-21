@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { withStateHandlers } from "recompose";
-import Modal from "./Modal";
+import Modal from "../Modal";
 
 const HeaderIcon = styled.img`
 	height: 34px;
