@@ -1,7 +1,10 @@
+// @flow
 import React from "react";
+import type { Node, StatelessFunctionalComponent } from "react";
 import styled, { injectGlobal } from "styled-components";
 import withMenuOpener from "./withMenuOpener";
 import Sidebar from "./Sidebar";
+import type { SidebarConfigProps } from "./Sidebar";
 
 injectGlobal`
 	body {
@@ -38,9 +41,7 @@ const ViewPort = styled.div`
 `;
 
 // Top bar containing username, user menu, help button
-// Area framed by bars slides sideways when left menu folds out
-// Left bar has fold-out button, entries for each perspective in the app
-const AppFrame = ({ children, sidebarMenu, sidebarConfig }) => (
+const AppFrameStructure = ({ children, sidebarMenu, sidebarConfig }) => (
 	<Base>
 		<Topbar onClick={sidebarMenu.closeMenu} />
 		<Sidebar {...sidebarMenu} {...sidebarConfig} />
@@ -50,4 +51,13 @@ const AppFrame = ({ children, sidebarMenu, sidebarConfig }) => (
 	</Base>
 );
 
-export default withMenuOpener(AppFrame);
+export type AppFrameProps = {
+	children: Node,
+	sidebarConfig: SidebarConfigProps,
+};
+
+const AppFrame: StatelessFunctionalComponent<AppFrameProps> = withMenuOpener(
+	AppFrameStructure,
+);
+
+export default AppFrame;

@@ -1,14 +1,15 @@
-import React from "react";
+// @flow
+import React, { Fragment } from "react";
 import { withStateHandlers } from "recompose";
 import Header from "./Header";
 import ApplicationDialog from "./ApplicationDialog";
 
 const ApplicationSelector = props => {
 	return (
-		<React.Fragment>
+		<Fragment>
 			<Header {...props} />
 			<ApplicationDialog {...props} />
-		</React.Fragment>
+		</Fragment>
 	);
 };
 

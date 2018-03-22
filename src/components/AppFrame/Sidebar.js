@@ -1,7 +1,11 @@
+// @flow
 import React from "react";
+import type { ComponentType, StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import ApplicationSelector from "./ApplicationSelector";
 import MenuItem from "./MenuItem";
+import type { MenuItemProps } from "./MenuItem";
+import type { ApplicationListProps } from "./ApplicationSelector/types";
 
 const LeftBar = styled.div`
 	height: calc(100% - 30px);
@@ -12,13 +16,18 @@ const LeftBar = styled.div`
 	color: #999999;
 `;
 
-const memo = {
-	lastParams: null,
-	lastReturn: null,
-};
+type Comp = ComponentType<*>;
+type HOC = Comp => Comp;
+
+const memo: {
+	lastParams?: [HOC, Comp],
+	lastReturn?: Comp,
+} = {};
+
 // Memoized factory function to prevent wasting time recreating the same component
-const getEnhancedMenuItem = (hoc, comp) => {
+const getEnhancedMenuItem = (hoc: HOC, comp: Comp): Comp => {
 	if (
+		memo.lastReturn &&
 		memo.lastParams &&
 		memo.lastParams[0] === hoc &&
 		memo.lastParams[1] === comp
@@ -32,7 +41,20 @@ const getEnhancedMenuItem = (hoc, comp) => {
 	}
 };
 
-const Sidebar = ({
+type SidebarMenuProps = {
+	open: boolean,
+	openMenu: () => void,
+	closeMenu: () => void,
+};
+
+export type SidebarConfigProps = {
+	itemHOC: HOC,
+	items: Array<MenuItemProps>,
+} & ApplicationListProps;
+
+type SidebarProps = SidebarConfigProps & SidebarMenuProps;
+
+const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
 	applications,
 	applicationId,
 	applicationOrder,
@@ -41,7 +63,7 @@ const Sidebar = ({
 	closeMenu,
 	itemHOC = x => x,
 	items = [],
-}) => {
+}: SidebarProps) => {
 	const EnhancedMenuItem = getEnhancedMenuItem(itemHOC, MenuItem);
 	return (
 		<LeftBar>

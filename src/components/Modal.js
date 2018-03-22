@@ -1,4 +1,6 @@
+// @flow
 import React from "react";
+import type { Node, StatelessFunctionalComponent } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
@@ -48,7 +50,7 @@ const dialogLook = {
 	dark: darkDialogStyle,
 };
 
-// Add light dialog style for other dialogs, switching mechanism
+// TODO: Add light dialog style for other dialogs, switching mechanism
 const ModalDialog = styled.div`
 	flex: 0 0 auto;
 	margin: auto;
@@ -56,7 +58,19 @@ const ModalDialog = styled.div`
 	${props => dialogLook[props.look]};
 `;
 
-const Modal = ({ show, toggle, children, look = "default" }) => (
+export type ModalProps = {
+	show: boolean,
+	toggle: () => void,
+	children: Node,
+	look: string,
+};
+
+const Modal: StatelessFunctionalComponent<ModalProps> = ({
+	show,
+	toggle,
+	children,
+	look = "default",
+}: ModalProps): Node => (
 	<ModalWrapper in={show}>
 		<ModalBackground onClick={toggle} />
 		<ModalDialog look={look}>{children}</ModalDialog>

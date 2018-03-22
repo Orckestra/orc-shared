@@ -1,4 +1,6 @@
+// @flow
 import React from "react";
+import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import { withProps } from "recompose";
 import Icon from "./Icon";
@@ -17,7 +19,7 @@ const IconBlock = styled.div`
 	font-size: 24px;
 `;
 
-const SpriteSheet = ({ iconIds }) => (
+const SpriteSheetStructure = ({ iconIds }) => (
 	<Wrapper>
 		{iconIds.map(id => (
 			<IconBlock key={id}>
@@ -33,4 +35,8 @@ const withAllIconIds = withProps(() => ({
 		.map(elm => elm.id.replace(/^icon-/, "")),
 }));
 
-export default withAllIconIds(SpriteSheet);
+const SpriteSheet: StatelessFunctionalComponent<{}> = withAllIconIds(
+	SpriteSheetStructure,
+);
+
+export default SpriteSheet;

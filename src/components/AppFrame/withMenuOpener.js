@@ -1,3 +1,4 @@
+// @flow
 import { withStateHandlers, mapProps, compose } from "recompose";
 
 const withMenuState = withStateHandlers(

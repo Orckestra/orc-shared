@@ -1,6 +1,9 @@
+// @flow
 import React from "react";
+import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import Modal from "../../Modal";
+import type { ApplicationListProps } from "./types";
 
 const ApplicationList = styled.div`
 	display: flex;
@@ -53,13 +56,19 @@ const ApplicationIndicator = styled.div`
 	}
 `;
 
-const ApplicationDialog = ({
+export type ApplicationDialogProps = {
+	show: boolean,
+	toggle: () => void,
+} & ApplicationListProps;
+
+type ADType = StatelessFunctionalComponent<ApplicationDialogProps>; // Workaround for prettier putting line breaks where it shouldn't - Gert
+const ApplicationDialog: ADType = ({
 	show,
 	toggle,
 	applications,
 	applicationId,
 	applicationOrder,
-}) => (
+}: ApplicationDialogProps) => (
 	<Modal show={show} toggle={toggle} look="dark">
 		<ApplicationList>
 			{applicationOrder.map(appName => (

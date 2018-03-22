@@ -13,8 +13,8 @@ export const makeApiAction = (
 	method: string = "GET",
 	configuration: {
 		headers?: { [string]: string },
-		body?: {},
-		options?: {},
+		body?: { [string]: any },
+		options?: { [string]: string | boolean },
 		credentials?: string,
 		bailout?: any => boolean,
 	} = {},
