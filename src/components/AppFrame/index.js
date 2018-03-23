@@ -5,6 +5,8 @@ import styled, { injectGlobal } from "styled-components";
 import withMenuOpener from "./withMenuOpener";
 import Sidebar from "./Sidebar";
 import type { SidebarConfigProps } from "./Sidebar";
+import Breadcrumbs from "./Breadcrumbs";
+import type { PathProp } from "./Breadcrumbs";
 
 injectGlobal`
 	body {
@@ -24,7 +26,11 @@ const Base = styled.div`
 `;
 
 const Topbar = styled.div`
+	padding-left: 50px;
 	height: 30px;
+	color: #ccc;
+	display: flex;
+	justify-content: space-between;
 `;
 
 const ViewPort = styled.div`
@@ -41,9 +47,11 @@ const ViewPort = styled.div`
 `;
 
 // Top bar containing username, user menu, help button
-const AppFrameStructure = ({ children, sidebarMenu, sidebarConfig }) => (
+const AppFrameStructure = ({ children, sidebarMenu, sidebarConfig, path }) => (
 	<Base>
-		<Topbar onClick={sidebarMenu.closeMenu} />
+		<Topbar onClick={sidebarMenu.closeMenu}>
+			<Breadcrumbs path={path} />
+		</Topbar>
 		<Sidebar {...sidebarMenu} {...sidebarConfig} />
 		<ViewPort open={sidebarMenu.open} onClick={sidebarMenu.closeMenu}>
 			{children}
@@ -54,7 +62,7 @@ const AppFrameStructure = ({ children, sidebarMenu, sidebarConfig }) => (
 export type AppFrameProps = {
 	children: Node,
 	sidebarConfig: SidebarConfigProps,
-};
+} & PathProp;
 
 const AppFrame: StatelessFunctionalComponent<AppFrameProps> = withMenuOpener(
 	AppFrameStructure,
