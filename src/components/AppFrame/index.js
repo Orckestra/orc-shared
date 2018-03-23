@@ -1,12 +1,13 @@
 // @flow
 import React from "react";
 import type { Node, StatelessFunctionalComponent } from "react";
-import styled, { injectGlobal } from "styled-components";
+import styled, { injectGlobal, css } from "styled-components";
 import withMenuOpener from "./withMenuOpener";
 import Sidebar from "./Sidebar";
 import type { SidebarConfigProps } from "./Sidebar";
 import Breadcrumbs from "./Breadcrumbs";
 import type { PathProp } from "./Breadcrumbs";
+import DropMenu from "../DropMenu";
 
 injectGlobal`
 	body {
@@ -43,14 +44,27 @@ const ViewPort = styled.div`
 	bottom: 0;
 	right: 0;
 	transition: transform 0.3s ease-out;
-	${props => (props.open ? "transform: translateX(230px);" : "")};
+	${props =>
+		props.open
+			? css`
+					transform: translateX(230px);
+			  `
+			: ""};
 `;
 
 // Top bar containing username, user menu, help button
-const AppFrameStructure = ({ children, sidebarMenu, sidebarConfig, path }) => (
+const AppFrameStructure = ({
+	children,
+	sidebarMenu,
+	sidebarConfig,
+	topbarConfig,
+}) => (
 	<Base>
 		<Topbar onClick={sidebarMenu.closeMenu}>
-			<Breadcrumbs path={path} />
+			<Breadcrumbs path={topbarConfig.path} />
+			<div>
+				<DropMenu {...topbarConfig} />
+			</div>
 		</Topbar>
 		<Sidebar {...sidebarMenu} {...sidebarConfig} />
 		<ViewPort open={sidebarMenu.open} onClick={sidebarMenu.closeMenu}>
