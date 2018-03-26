@@ -40,8 +40,8 @@ const Breadcrumbs: StatelessFunctionalComponent<PathProp> = ({
 	let combinedPath = "";
 	return (
 		<CrumbWrapper>
-			{path.map(step => (
-				<Crumb>
+			{path.map((step, index) => (
+				<Crumb key={index}>
 					<CrumbLink href={(combinedPath += "/" + step.href)}>
 						{step.label}
 					</CrumbLink>

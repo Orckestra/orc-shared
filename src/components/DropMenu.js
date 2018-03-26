@@ -90,9 +90,16 @@ const DropMenuIcon = styled(Icon)`
 	font-size: 17px;
 `;
 
-type DropMenuProps = {
-	open?: boolean,
-	toggle?: () => void,
+const DropMenuBackground = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 19998;
+`;
+
+export type DropMenuProps = {
 	menuLabel: string,
 	menuItems: Array<{
 		label: string,
@@ -101,12 +108,17 @@ type DropMenuProps = {
 	}>,
 };
 
+type MenuOpenerProps = {
+	open?: boolean,
+	toggle?: () => void,
+};
+
 const DropMenuStructure = ({
 	open,
 	toggle,
 	menuLabel,
 	menuItems,
-}: DropMenuProps): Node => (
+}: DropMenuProps & MenuOpenerProps): Node => (
 	<DropMenuWrapper onClick={toggle}>
 		<DropMenuHeader>
 			{menuLabel}
@@ -115,9 +127,10 @@ const DropMenuStructure = ({
 				open={open}
 			/>
 		</DropMenuHeader>
+		{open ? <DropMenuBackground /> : null}
 		<DropMenuDrawer in={open}>
 			{menuItems.map(item => (
-				<DropMenuItem onClick={item.handler}>
+				<DropMenuItem key={item.label + item.icon} onClick={item.handler}>
 					<DropMenuIcon id={item.icon} />
 					<span>{item.label}</span>
 				</DropMenuItem>
