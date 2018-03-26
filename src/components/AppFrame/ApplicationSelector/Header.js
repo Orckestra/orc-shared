@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import type { StatelessFunctionalComponent } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import type { ApplicationItemProps } from "./types";
 
 const HeaderIcon = styled.img`
@@ -23,14 +23,6 @@ const HeaderLabel = styled.span`
 const HeaderWrapper = styled.div`
 	padding: 0 6px;
 	margin: 10px 0 50px;
-
-	${props =>
-		props.open
-			? css`
-					transform: translateX(19px);
-			  `
-			: ""};
-	transition: transform 0.3s ease-out;
 `;
 
 export type HeaderProps = {
@@ -51,7 +43,7 @@ const Header: StatelessFunctionalComponent<TogglingHeaderProps> = ({
 	applications,
 	applicationId,
 }: TogglingHeaderProps) => (
-	<HeaderWrapper open={open} onClick={toggle}>
+	<HeaderWrapper onClick={toggle}>
 		<HeaderIcon src={applications[applicationId].src} />
 		<HeaderLabel open={open}>{applications[applicationId].label}</HeaderLabel>
 	</HeaderWrapper>

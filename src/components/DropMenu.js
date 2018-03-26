@@ -9,14 +9,6 @@ import Icon from "./Icon";
 const DropMenuWrapper = styled.div``;
 
 const DropMenuHeader = styled.div`
-	box-sizing: border-box;
-	font-family: Roboto Condensed, sans-serif;
-	font-size: 12px;
-	text-transform: uppercase;
-	height: 30px;
-	min-width: 180px;
-	padding-top: 9px;
-	padding-right: 32px;
 	cursor: pointer;
 `;
 
@@ -106,6 +98,7 @@ export type DropMenuProps = {
 		icon: string,
 		handler: () => void,
 	}>,
+	className?: string,
 };
 
 type MenuOpenerProps = {
@@ -118,9 +111,10 @@ const DropMenuStructure = ({
 	toggle,
 	menuLabel,
 	menuItems,
+	className = "",
 }: DropMenuProps & MenuOpenerProps): Node => (
 	<DropMenuWrapper onClick={toggle}>
-		<DropMenuHeader>
+		<DropMenuHeader className={className}>
 			{menuLabel}
 			<DropMenuIndicator
 				id={open ? "chevron-up" : "chevron-down"}

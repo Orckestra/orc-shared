@@ -14,6 +14,11 @@ const LeftBar = styled.div`
 	flex-direction: column;
 	justify-content: flex-start;
 	color: #999999;
+
+	& > * {
+		transition: transform 0.3s ease-out;
+		transform: translateX(${props => (props.open ? 19 : 0)}px);
+	}
 `;
 
 type Comp = ComponentType<*>;
@@ -66,7 +71,7 @@ const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
 }: SidebarProps) => {
 	const EnhancedMenuItem = getEnhancedMenuItem(itemHOC, MenuItem);
 	return (
-		<LeftBar>
+		<LeftBar open={open}>
 			<ApplicationSelector
 				open={open}
 				applications={applications}

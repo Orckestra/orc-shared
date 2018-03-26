@@ -3,11 +3,10 @@ import React from "react";
 import type { Node, StatelessFunctionalComponent } from "react";
 import styled, { injectGlobal, css } from "styled-components";
 import withMenuOpener from "./withMenuOpener";
+import Topbar from "./Topbar";
+import type { TopbarConfigProps } from "./Topbar";
 import Sidebar from "./Sidebar";
 import type { SidebarConfigProps } from "./Sidebar";
-import Breadcrumbs from "./Breadcrumbs";
-import type { PathProp } from "./Breadcrumbs";
-import DropMenu from "../DropMenu";
 
 injectGlobal`
 	body {
@@ -24,14 +23,6 @@ const Base = styled.div`
 	background-color: #333;
 	height: 100%;
 	overflow-x: hidden;
-`;
-
-const Topbar = styled.div`
-	padding-left: 50px;
-	height: 30px;
-	color: #ccc;
-	display: flex;
-	justify-content: space-between;
 `;
 
 const ViewPort = styled.div`
@@ -60,12 +51,7 @@ const AppFrameStructure = ({
 	topbarConfig,
 }) => (
 	<Base>
-		<Topbar onClick={sidebarMenu.closeMenu}>
-			<Breadcrumbs path={topbarConfig.path} />
-			<div>
-				<DropMenu {...topbarConfig} />
-			</div>
-		</Topbar>
+		<Topbar onClick={sidebarMenu.closeMenu} {...topbarConfig} />
 		<Sidebar {...sidebarMenu} {...sidebarConfig} />
 		<ViewPort open={sidebarMenu.open} onClick={sidebarMenu.closeMenu}>
 			{children}
@@ -76,7 +62,8 @@ const AppFrameStructure = ({
 export type AppFrameProps = {
 	children: Node,
 	sidebarConfig: SidebarConfigProps,
-} & PathProp;
+	topbarConfig: TopbarConfigProps,
+};
 
 const AppFrame: StatelessFunctionalComponent<AppFrameProps> = withMenuOpener(
 	AppFrameStructure,

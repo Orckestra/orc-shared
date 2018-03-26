@@ -13,13 +13,6 @@ const MenuBlock = styled.a`
 	cursor: pointer;
 
 	${props =>
-		props.open
-			? css`
-					transform: translateX(19px);
-			  `
-			: ""};
-	transition: transform 0.3s ease-out;
-	${props =>
 		props.menu
 			? ""
 			: css`
@@ -66,7 +59,7 @@ const MenuItem: StatelessFunctionalComponent<MenuItemProps> = ({
 	icon = "cake",
 	...props
 }: MenuItemProps) => (
-	<MenuBlock open={open} {...props}>
+	<MenuBlock {...props}>
 		<MenuIcon id={icon} />
 		<MenuLabel open={open}>{label}</MenuLabel>
 	</MenuBlock>
