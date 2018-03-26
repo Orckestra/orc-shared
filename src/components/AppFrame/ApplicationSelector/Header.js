@@ -35,19 +35,22 @@ const HeaderWrapper = styled.div`
 
 export type HeaderProps = {
 	open: boolean,
-	toggle: () => void,
 	applications: {
 		[string]: ApplicationItemProps,
 	},
 	applicationId: string,
 };
 
-const Header: StatelessFunctionalComponent<HeaderProps> = ({
+type TogglingHeaderProps = HeaderProps & {
+	toggle?: () => void,
+};
+
+const Header: StatelessFunctionalComponent<TogglingHeaderProps> = ({
 	open,
 	toggle,
 	applications,
 	applicationId,
-}: HeaderProps) => (
+}: TogglingHeaderProps) => (
 	<HeaderWrapper open={open} onClick={toggle}>
 		<HeaderIcon src={applications[applicationId].src} />
 		<HeaderLabel open={open}>{applications[applicationId].label}</HeaderLabel>

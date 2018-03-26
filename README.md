@@ -30,11 +30,29 @@ Creates an array of three action types, based on `name`. The action types will b
 
 Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with breadcrumb trail, user menu and help popup.
 
+### DropMenu
+
+`menuLabel`: The menu anchor label text.
+
+`menuItems`: A list of objects with `label` and `handler` properties. The former is the text to show, the latter the function to call on clicking the item.
+
+A simple menu component that will show a list of items when clicked.
+
 ### Icon
 
 `id`: ID of the icon to display.
 
 Shows a single SVG icon, according to the icon id given. Requires `content/icons.svg` (or another, similarly structured SVG sprite sheet) to have been inserted in the DOM. Size is controlled by setting the CSS font-size.
+
+### Modal
+
+`look`: The appearance of the dialog box. One of `'default'` or `'dark'`.
+
+`anchor`: A React Node (i.e. legal JSX output) to be rendered as the anchor element. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
+
+`content`: A React Node (i.e. legal JSX output) to be rendered as the dialog contents. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
+
+Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
 
 ### SpriteSheet
 

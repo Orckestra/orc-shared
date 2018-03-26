@@ -1,23 +1,24 @@
 // @flow
-import React, { Fragment } from "react";
-import { withStateHandlers } from "recompose";
+import React from "react";
+import type { StatelessFunctionalComponent } from "react";
 import Header from "./Header";
+import type { HeaderProps } from "./Header";
 import ApplicationDialog from "./ApplicationDialog";
+import type { ApplicationListProps } from "./types";
+import Modal from "../../Modal";
 
-const ApplicationSelector = props => {
+type AppSelectorProps = HeaderProps & ApplicationListProps;
+
+const ApplicationSelector: StatelessFunctionalComponent<AppSelectorProps> = (
+	props: AppSelectorProps,
+) => {
 	return (
-		<Fragment>
-			<Header {...props} />
-			<ApplicationDialog {...props} />
-		</Fragment>
+		<Modal
+			anchor={<Header {...props} />}
+			content={<ApplicationDialog {...props} />}
+			look="dark"
+		/>
 	);
 };
 
-const withShowToggle = withStateHandlers(
-	({ init = false }) => ({ show: init }),
-	{
-		toggle: ({ show }) => () => ({ show: !show }),
-	},
-);
-
-export default withShowToggle(ApplicationSelector);
+export default ApplicationSelector;

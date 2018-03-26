@@ -1,7 +1,8 @@
 // @flow
-import React from "react";
+import React, { Fragment, Children, cloneElement } from "react";
 import type { Node, StatelessFunctionalComponent } from "react";
 import styled, { css } from "styled-components";
+import { withStateHandlers } from "recompose";
 import transition from "styled-transition-group";
 
 const ModalWrapper = transition.div.attrs({
@@ -59,22 +60,44 @@ const ModalDialog = styled.div`
 `;
 
 export type ModalProps = {
-	show: boolean,
-	toggle: () => void,
-	children: Node,
+	anchor: Node,
+	content: Node,
 	look: string,
 };
 
-const Modal: StatelessFunctionalComponent<ModalProps> = ({
+type ModalStructureProps = {
+	show: boolean,
+	toggle: () => void,
+} & ModalProps;
+
+const addPropsToChildren = (children, props) =>
+	Children.map(children, child => cloneElement(child, props));
+
+const ModalStructure: StatelessFunctionalComponent<ModalStructureProps> = ({
 	show,
 	toggle,
-	children,
+	anchor,
+	content,
 	look = "default",
-}: ModalProps): Node => (
-	<ModalWrapper in={show}>
-		<ModalBackground onClick={toggle} />
-		<ModalDialog look={look}>{children}</ModalDialog>
-	</ModalWrapper>
+}: ModalStructureProps): Node => (
+	<Fragment>
+		{addPropsToChildren(anchor, { toggle })}
+		<ModalWrapper in={show}>
+			<ModalBackground onClick={toggle} />
+			<ModalDialog look={look}>
+				{addPropsToChildren(content, { toggle })}
+			</ModalDialog>
+		</ModalWrapper>
+	</Fragment>
 );
+
+const withShowToggle = withStateHandlers(
+	({ init = false }) => ({ show: init }),
+	{
+		toggle: ({ show }) => () => ({ show: !show }),
+	},
+);
+
+const Modal = withShowToggle(ModalStructure);
 
 export default Modal;
