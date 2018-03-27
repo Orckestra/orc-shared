@@ -24,6 +24,8 @@ Creates an array of three action types, based on `name`. The action types will b
 
 ### AppFrame
 
+`topbarConfig`: An object containing the needed information to configure an app frame.
+
 `sidebarConfig`: An object containing the needed information to configure an app frame.
 
 `children`: Children of the component will be rendered into the view port.
@@ -36,7 +38,7 @@ Intended as the outermost visual component of an application, and handles the si
 
 `menuItems`: A list of objects with `label` and `handler` properties. The former is the text to show, the latter the function to call on clicking the item.
 
-A simple menu component that will show a list of items when clicked.
+A simple menu component that will show a list of items when clicked. Assigning it a class will apply it to the menu anchor, allowing it to be styled with Styled Components.
 
 ### Icon
 
