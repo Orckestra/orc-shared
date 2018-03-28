@@ -24,10 +24,7 @@ DropMenuIndicator.defaultProps = {
 	},
 };
 
-const DropMenuDrawer = transition.ul.attrs({
-	unmountOnExit: true,
-	timeout: 100,
-})`
+const DropMenuDrawer = transition.ul`
 	position: absolute;
 	color: #333;
 	background-color: white;
@@ -40,7 +37,7 @@ const DropMenuDrawer = transition.ul.attrs({
 	font-family: Open Sans, sans-serif;
 	font-size: 12px;
 
-	transition: opacity 0.1s ease-out;
+	transition: opacity ${props => props.timeout}ms ease-out;
 
 	&:enter {
 		opacity: 0.01;
@@ -55,6 +52,10 @@ const DropMenuDrawer = transition.ul.attrs({
 		opacity: 0.01;
 	}
 `;
+DropMenuDrawer.defaultProps = {
+	unmountOnExit: true,
+	timeout: 100,
+};
 
 const DropMenuItem = styled.li`
 	box-sizing: border-box;

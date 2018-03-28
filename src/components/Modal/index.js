@@ -26,16 +26,18 @@ const ModalStructure: StatelessFunctionalComponent<ModalStructureProps> = ({
 	anchor,
 	content,
 	look = "default",
-}: ModalStructureProps): Node => (
+}) => (
 	<Fragment>
 		{addPropsToChildren(anchor, { toggle })}
-		<Wrapper in={show}>
+		<Wrapper in={show} timeout={3000}>
 			<Background onClick={toggle} />
 			<Dialog look={look}>{addPropsToChildren(content, { toggle })}</Dialog>
 		</Wrapper>
 	</Fragment>
 );
 
-const Modal = withShowToggle(ModalStructure);
+const Modal: StatelessFunctionalComponent<ModalProps> = withShowToggle(
+	ModalStructure,
+);
 
 export default Modal;

@@ -80,7 +80,7 @@ const ApplicationDialog: ADType = ({
 							: () => {}
 					}
 				>
-					<ApplicationLogo src={"/" + applications[appName].src} />
+					<ApplicationLogo src={applications[appName].src} />
 				</ApplicationLink>
 				<ApplicationLabel>{applications[appName].label}</ApplicationLabel>
 				{appName === applicationId ? <ApplicationIndicator /> : null}
