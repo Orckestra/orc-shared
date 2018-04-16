@@ -1,15 +1,13 @@
 // @flow
 
 export type ApplicationItemProps = {
+	id: string,
 	src: string,
 	label: string,
 	href: string,
 };
 
 export type ApplicationListProps = {
-	applications: {
-		[string]: ApplicationItemProps,
-	},
+	applications: Array<ApplicationItemProps>,
 	applicationId: string,
-	applicationOrder: string[],
 };

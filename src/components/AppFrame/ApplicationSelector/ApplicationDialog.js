@@ -67,12 +67,12 @@ const ApplicationDialog: ADType = ({
 	applicationOrder,
 }) => (
 	<ApplicationList>
-		{applicationOrder.map(appName => (
-			<ApplicationBlock key={appName}>
+		{applications.map(app => (
+			<ApplicationBlock key={app.id}>
 				<ApplicationLink
-					href={applications[appName].href}
+					href={app.href}
 					onClick={
-						appName === applicationId
+						app.id === applicationId
 							? event => {
 									event.preventDefault();
 									toggle();
@@ -80,10 +80,10 @@ const ApplicationDialog: ADType = ({
 							: () => {}
 					}
 				>
-					<ApplicationLogo src={applications[appName].src} />
+					<ApplicationLogo src={app.src} />
 				</ApplicationLink>
-				<ApplicationLabel>{applications[appName].label}</ApplicationLabel>
-				{appName === applicationId ? <ApplicationIndicator /> : null}
+				<ApplicationLabel>{app.label}</ApplicationLabel>
+				{app.id === applicationId ? <ApplicationIndicator /> : null}
 			</ApplicationBlock>
 		))}
 	</ApplicationList>

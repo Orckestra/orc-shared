@@ -42,7 +42,6 @@ type SidebarProps = SidebarConfigProps & SidebarMenuProps;
 const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
 	applications,
 	applicationId,
-	applicationOrder,
 	open,
 	openMenu,
 	closeMenu,
@@ -56,7 +55,6 @@ const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
 				open={open}
 				applications={applications}
 				applicationId={applicationId}
-				applicationOrder={applicationOrder}
 			/>
 			<MenuItem
 				menu
