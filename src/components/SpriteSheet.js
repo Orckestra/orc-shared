@@ -5,13 +5,13 @@ import styled from "styled-components";
 import { withProps } from "recompose";
 import Icon from "./Icon";
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
 `;
 
-const IconBlock = styled.div`
+export const IconBlock = styled.div`
 	flex: 0 0 30%;
 	border: 1px solid #999;
 	margin: 5px;
