@@ -8,10 +8,9 @@ import type { ApplicationListProps } from "./types";
 import Modal from "../../Modal";
 
 type AppSelectorProps = HeaderProps & ApplicationListProps;
+type AppSelectorComp = StatelessFunctionalComponent<AppSelectorProps>;
 
-const ApplicationSelector: StatelessFunctionalComponent<AppSelectorProps> = (
-	props: AppSelectorProps,
-) => {
+const ApplicationSelector: AppSelectorComp = props => {
 	return (
 		<Modal
 			anchor={<Header {...props} />}

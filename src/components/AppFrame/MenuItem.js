@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import type { Node, StatelessFunctionalComponent } from "react";
+import type { StatelessFunctionalComponent } from "react";
 import styled, { css } from "styled-components";
 import Icon from "../Icon";
 
@@ -50,7 +50,7 @@ export type MenuItemProps = {
 	label?: string,
 	icon?: string,
 	href?: string,
-	onClick?: (event: SyntheticMouseEvent<Node>) => boolean | void,
+	onClick?: (event: SyntheticMouseEvent<*>) => boolean | void,
 };
 
 const MenuItem: StatelessFunctionalComponent<MenuItemProps> = ({
@@ -58,7 +58,7 @@ const MenuItem: StatelessFunctionalComponent<MenuItemProps> = ({
 	label = "",
 	icon = "cake",
 	...props
-}: MenuItemProps) => (
+}) => (
 	<MenuBlock {...props}>
 		<MenuIcon id={icon} />
 		<MenuLabel open={open}>{label}</MenuLabel>

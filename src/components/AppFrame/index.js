@@ -7,6 +7,7 @@ import Topbar from "./Topbar";
 import type { TopbarConfigProps } from "./Topbar";
 import Sidebar from "./Sidebar";
 import type { SidebarConfigProps } from "./Sidebar";
+import type { BaseHOC } from "./getEnhancedComponent";
 
 injectGlobal`
 	body {
@@ -49,10 +50,15 @@ const AppFrameStructure = ({
 	sidebarMenu,
 	sidebarConfig,
 	topbarConfig,
+	linkHOC,
 }) => (
 	<Base>
-		<Topbar onClick={sidebarMenu.closeMenu} {...topbarConfig} />
-		<Sidebar {...sidebarMenu} {...sidebarConfig} />
+		<Topbar
+			linkHOC={linkHOC}
+			onClick={sidebarMenu.closeMenu}
+			{...topbarConfig}
+		/>
+		<Sidebar linkHOC={linkHOC} {...sidebarMenu} {...sidebarConfig} />
 		<ViewPort open={sidebarMenu.open} onClick={sidebarMenu.closeMenu}>
 			{children}
 		</ViewPort>
@@ -63,6 +69,7 @@ export type AppFrameProps = {
 	children: Node,
 	sidebarConfig: SidebarConfigProps,
 	topbarConfig: TopbarConfigProps,
+	linkHOC: BaseHOC,
 };
 
 const AppFrame: StatelessFunctionalComponent<AppFrameProps> = withMenuOpener(

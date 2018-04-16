@@ -42,7 +42,7 @@ const Header: StatelessFunctionalComponent<TogglingHeaderProps> = ({
 	toggle,
 	applications,
 	applicationId,
-}: TogglingHeaderProps) => (
+}) => (
 	<HeaderWrapper onClick={toggle}>
 		<HeaderIcon src={applications[applicationId].src} />
 		<HeaderLabel open={open}>{applications[applicationId].label}</HeaderLabel>

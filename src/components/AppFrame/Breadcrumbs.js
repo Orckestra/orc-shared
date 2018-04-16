@@ -2,6 +2,8 @@
 import React from "react";
 import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
+import getEnhancedComponent from "./getEnhancedComponent";
+import type { BaseHOC } from "./getEnhancedComponent";
 
 const CrumbWrapper = styled.ul`
 	display: flex;
@@ -32,19 +34,24 @@ const CrumbLink = styled.a`
 	text-decoration: none;
 `;
 
+const getEnhancedCrumbLink = getEnhancedComponent();
+
 export type PathProp = { path: Array<{ label: string, href: string }> };
 
-const Breadcrumbs: StatelessFunctionalComponent<PathProp> = ({
+type BreadcrumbProps = PathProp & {
+	linkHOC: BaseHOC,
+};
+
+const Breadcrumbs: StatelessFunctionalComponent<BreadcrumbProps> = ({
 	path,
-}: PathProp) => {
-	let combinedPath = "";
+	linkHOC,
+}) => {
+	const EnhancedCrumbLink = getEnhancedCrumbLink(linkHOC, CrumbLink);
 	return (
 		<CrumbWrapper>
 			{path.map((step, index) => (
 				<Crumb key={index}>
-					<CrumbLink href={(combinedPath += "/" + step.href)}>
-						{step.label}
-					</CrumbLink>
+					<EnhancedCrumbLink href={step.href}>{step.label}</EnhancedCrumbLink>
 				</Crumb>
 			))}
 		</CrumbWrapper>

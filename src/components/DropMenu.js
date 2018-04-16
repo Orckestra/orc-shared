@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import type { Node, StatelessFunctionalComponent } from "react";
+import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
 import { withStateHandlers } from "recompose";
@@ -107,13 +107,15 @@ type MenuOpenerProps = {
 	toggle?: () => void,
 };
 
-const DropMenuStructure = ({
+type DMSComp = StatelessFunctionalComponent<DropMenuProps & MenuOpenerProps>;
+
+const DropMenuStructure: DMSComp = ({
 	open,
 	toggle,
 	menuLabel,
 	menuItems,
 	className = "",
-}: DropMenuProps & MenuOpenerProps): Node => (
+}) => (
 	<DropMenuWrapper onClick={toggle}>
 		<DropMenuHeader className={className}>
 			{menuLabel}

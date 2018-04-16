@@ -19,7 +19,9 @@ const IconBlock = styled.div`
 	font-size: 24px;
 `;
 
-const SpriteSheetStructure = ({ iconIds }) => (
+const SpriteSheetStructure: StatelessFunctionalComponent<{
+	iconIds: Array<string>,
+}> = ({ iconIds }) => (
 	<Wrapper>
 		{iconIds.map(id => (
 			<IconBlock key={id}>

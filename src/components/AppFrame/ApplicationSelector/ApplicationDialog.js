@@ -65,7 +65,7 @@ const ApplicationDialog: ADType = ({
 	applications,
 	applicationId,
 	applicationOrder,
-}: ApplicationDialogProps) => (
+}) => (
 	<ApplicationList>
 		{applicationOrder.map(appName => (
 			<ApplicationBlock key={appName}>
