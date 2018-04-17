@@ -47,6 +47,7 @@ const MenuLabel = styled.span`
 
 export type MenuItemProps = {
 	open?: boolean,
+	active?: boolean,
 	label?: string,
 	icon?: string,
 	href?: string,

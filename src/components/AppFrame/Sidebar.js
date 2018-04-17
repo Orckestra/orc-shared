@@ -34,7 +34,7 @@ type SidebarMenuProps = {
 };
 
 export type SidebarConfigProps = {
-	items: Array<MenuItemProps>,
+	pages: Array<MenuItemProps>,
 } & ApplicationListProps;
 
 type SidebarProps = SidebarConfigProps & SidebarMenuProps;
@@ -46,7 +46,7 @@ const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
 	openMenu,
 	closeMenu,
 	linkHOC = x => x,
-	items = [],
+	pages = [],
 }) => {
 	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, MenuItem);
 	return (
@@ -62,7 +62,7 @@ const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
 				icon={open ? "layers" : "menu"}
 				onClick={open ? closeMenu : openMenu}
 			/>
-			{items.map(item => (
+			{pages.map(item => (
 				<EnhancedMenuItem key={item.icon} {...item} open={open} />
 			))}
 		</LeftBar>
