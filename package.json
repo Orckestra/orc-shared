@@ -5,9 +5,10 @@
 	"main": "dist/",
 	"scripts": {
 		"build": "orc-scripts build --no-flow",
+		"watch": "orc-scripts build --no-flow --watch",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
-		"precommit": "flow status && lint-staged",
+		"precommit": "lint-staged",
 		"prepare": "npm run build"
 	},
 	"files": ["dist", "flow-typed"],
@@ -22,7 +23,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.2.1"
+		"orc-scripts": "0.2.2"
 	},
 	"peerDependencies": {
 		"flow-bin": "^0.70.0"

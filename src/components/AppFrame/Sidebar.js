@@ -52,9 +52,11 @@ const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
 	return (
 		<LeftBar open={open}>
 			<ApplicationSelector
-				open={open}
-				applications={applications}
-				applicationId={applicationId}
+				{...{
+					open,
+					applications,
+					applicationId,
+				}}
 			/>
 			<MenuItem
 				menu

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Breadcrumbs from "./Breadcrumbs";
 import type { PathProp } from "./Breadcrumbs";
 import DropMenu from "../DropMenu";
-import type { DropMenuProps } from "../DropMenu";
+import type { DropMenuProps } from "../DropMenu/DropMenu";
 import type { BaseHOC } from "./getEnhancedComponent";
 
 const Wrapper = styled.div`
@@ -41,7 +41,7 @@ const Topbar: StatelessFunctionalComponent<TopbarConfigProps> = ({
 }) => {
 	return (
 		<Wrapper onClick={onClick}>
-			<Breadcrumbs linkHOC={linkHOC} path={path} />
+			<Breadcrumbs {...{ linkHOC, path }} />
 			<Menu {...config} />
 		</Wrapper>
 	);
