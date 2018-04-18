@@ -1,8 +1,10 @@
 [ignore]
 <PROJECT_ROOT>/dist/.*
-<PROJECT_ROOT>/node_modules/config-chain/test/broken.json
+<PROJECT_ROOT>/node_modules/.*test.*
 
 [include]
+./node_modules/orc-scripts/flow-typed
+./flow-typed
 
 [libs]
 

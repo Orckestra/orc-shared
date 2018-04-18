@@ -1,4 +1,3 @@
-// @flow
 import sinon from "sinon";
 import { makeActionTypes, makeApiAction } from "./makeApiAction";
 import { RSAA } from "redux-api-middleware";

@@ -6,6 +6,7 @@
 	"scripts": {
 		"build": "orc-scripts build --no-flow",
 		"test": "orc-scripts test",
+		"coverage": "orc-scripts test --coverage",
 		"precommit": "flow status && lint-staged",
 		"prepare": "npm run build"
 	},
@@ -21,11 +22,10 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.1.1"
+		"orc-scripts": "0.2.1"
 	},
 	"peerDependencies": {
-		"flow-bin": "^0.67.1",
-		"jest": "^22.4.2"
+		"flow-bin": "^0.70.0"
 	},
 	"lint-staged": {
 		"!(flow-typed/)*.{js,json,md}": ["prettier --write", "git add"],
