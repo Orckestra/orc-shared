@@ -1,8 +1,5 @@
-// @flow
 import React from "react";
-import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
-import type { ApplicationListProps } from "./types";
 
 const ApplicationList = styled.div`
 	display: flex;
@@ -55,12 +52,8 @@ const ApplicationIndicator = styled.div`
 	}
 `;
 
-export type ApplicationDialogProps = {
-	toggle?: () => void,
-} & ApplicationListProps;
-
-type ADType = StatelessFunctionalComponent<ApplicationDialogProps>; // Workaround for prettier putting line breaks where it shouldn't - Gert
-const ApplicationDialog: ADType = ({
+// Workaround for prettier putting line breaks where it shouldn't - Gert
+const ApplicationDialog = ({
 	toggle = () => {},
 	applications,
 	applicationId,

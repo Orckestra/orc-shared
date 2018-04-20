@@ -1,9 +1,6 @@
-// @flow
 import React from "react";
-import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import getEnhancedComponent from "./getEnhancedComponent";
-import type { BaseHOC } from "./getEnhancedComponent";
 
 const CrumbWrapper = styled.ul`
 	display: flex;
@@ -36,16 +33,7 @@ const CrumbLink = styled.a`
 
 const getEnhancedCrumbLink = getEnhancedComponent();
 
-export type PathProp = { path: Array<{ label: string, href: string }> };
-
-type BreadcrumbProps = PathProp & {
-	linkHOC: BaseHOC,
-};
-
-const Breadcrumbs: StatelessFunctionalComponent<BreadcrumbProps> = ({
-	path,
-	linkHOC,
-}) => {
+const Breadcrumbs = ({ path, linkHOC }) => {
 	const EnhancedCrumbLink = getEnhancedCrumbLink(linkHOC, CrumbLink);
 	return (
 		<CrumbWrapper>

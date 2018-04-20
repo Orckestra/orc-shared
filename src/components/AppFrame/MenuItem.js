@@ -1,6 +1,4 @@
-// @flow
 import React from "react";
-import type { StatelessFunctionalComponent } from "react";
 import styled, { css } from "styled-components";
 import Icon from "../Icon";
 
@@ -45,21 +43,7 @@ const MenuLabel = styled.span`
 	opacity: ${props => (props.open ? 1 : 0)};
 `;
 
-export type MenuItemProps = {
-	open?: boolean,
-	active?: boolean,
-	label?: string,
-	icon?: string,
-	href?: string,
-	onClick?: (event: SyntheticMouseEvent<*>) => boolean | void,
-};
-
-const MenuItem: StatelessFunctionalComponent<MenuItemProps> = ({
-	open = false,
-	label = "",
-	icon = "cake",
-	...props
-}) => (
+const MenuItem = ({ open = false, label = "", icon = "cake", ...props }) => (
 	<MenuBlock {...props}>
 		<MenuIcon id={icon} />
 		<MenuLabel open={open}>{label}</MenuLabel>

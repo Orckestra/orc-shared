@@ -4,14 +4,14 @@
 	"description": "Shared code for Orckestra applications",
 	"main": "dist/",
 	"scripts": {
-		"build": "orc-scripts build --no-flow",
-		"watch": "orc-scripts build --no-flow --watch",
+		"build": "orc-scripts build",
+		"watch": "orc-scripts build --watch",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
 		"precommit": "lint-staged",
 		"prepare": "npm run build"
 	},
-	"files": ["dist", "flow-typed"],
+	"files": ["dist"],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Orckestra/orc-shared.git"
@@ -23,13 +23,10 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.2.3"
-	},
-	"peerDependencies": {
-		"flow-bin": "^0.70.0"
+		"orc-scripts": "0.3.0"
 	},
 	"lint-staged": {
-		"!(flow-typed/)*.{js,json,md}": ["prettier --write", "git add"],
-		"!(flow-typed/)*.js": ["eslint"]
+		"*.{js,json,md}": ["prettier --write", "git add"],
+		"*.js": ["eslint"]
 	}
 }

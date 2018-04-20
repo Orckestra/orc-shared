@@ -1,4 +1,3 @@
-// @flow
 import transition from "styled-transition-group";
 
 const Wrapper = transition.div`

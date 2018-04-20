@@ -1,4 +1,3 @@
-// @flow
 import { withStateHandlers } from "recompose";
 
 const withShowToggle = withStateHandlers(

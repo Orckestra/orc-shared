@@ -1,20 +1,7 @@
-// @flow
-import type { ComponentType } from "react";
-
-type Comp = ComponentType<*>;
-export type HOC<InProps, OutProps> = (
-	ComponentType<InProps>,
-) => ComponentType<OutProps>;
-export type BaseHOC = HOC<*, *>;
-type Memo = {
-	lastParams?: [BaseHOC, Comp],
-	lastReturn?: Comp,
-};
-
 // Memoized factory function to prevent wasting time recreating the same component
 const getEnhancedComponent = () => {
-	const memo: Memo = {};
-	return (hoc: BaseHOC, comp: Comp): Comp => {
+	const memo = {};
+	return (hoc, comp) => {
 		if (
 			memo.lastReturn &&
 			memo.lastParams &&

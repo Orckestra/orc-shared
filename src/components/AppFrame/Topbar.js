@@ -1,12 +1,7 @@
-// @flow
 import React from "react";
-import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import Breadcrumbs from "./Breadcrumbs";
-import type { PathProp } from "./Breadcrumbs";
 import DropMenu from "../DropMenu";
-import type { DropMenuProps } from "../DropMenu/DropMenu";
-import type { BaseHOC } from "./getEnhancedComponent";
 
 const Wrapper = styled.div`
 	padding-left: 50px;
@@ -27,18 +22,7 @@ const Menu = styled(DropMenu)`
 	padding-right: 32px;
 `;
 
-export type TopbarConfigProps = PathProp &
-	DropMenuProps & {
-		onClick: () => void,
-		linkHOC: BaseHOC,
-	};
-
-const Topbar: StatelessFunctionalComponent<TopbarConfigProps> = ({
-	onClick,
-	path,
-	linkHOC,
-	...config
-}) => {
+const Topbar = ({ onClick, path, linkHOC, ...config }) => {
 	return (
 		<Wrapper onClick={onClick}>
 			<Breadcrumbs {...{ linkHOC, path }} />

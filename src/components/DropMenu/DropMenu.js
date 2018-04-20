@@ -1,6 +1,4 @@
-// @flow
 import React from "react";
-import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import Anchor from "./Anchor";
 import Menu from "./Menu";
@@ -16,30 +14,7 @@ export const Background = styled.div`
 	z-index: 19998;
 `;
 
-export type DropMenuProps = {
-	menuLabel: string,
-	menuItems: Array<{
-		label: string,
-		icon: string,
-		handler: () => void,
-	}>,
-	className?: string,
-};
-
-type MenuOpenerProps = {
-	open?: boolean,
-	toggle?: () => void,
-};
-
-export type ExpandedMenuProps = DropMenuProps & MenuOpenerProps;
-
-const DropMenu: StatelessFunctionalComponent<ExpandedMenuProps> = ({
-	open,
-	toggle,
-	menuLabel,
-	menuItems,
-	className = "",
-}) => (
+const DropMenu = ({ open, toggle, menuLabel, menuItems, className = "" }) => (
 	<Wrapper onClick={toggle}>
 		<Anchor {...{ menuLabel, className, open }} />
 		{open ? <Background /> : null}

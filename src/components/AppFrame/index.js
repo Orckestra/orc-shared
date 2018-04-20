@@ -1,13 +1,8 @@
-// @flow
 import React from "react";
-import type { Node, StatelessFunctionalComponent } from "react";
 import styled, { injectGlobal, css } from "styled-components";
 import withMenuOpener from "./withMenuOpener";
 import Topbar from "./Topbar";
-import type { TopbarConfigProps } from "./Topbar";
 import Sidebar from "./Sidebar";
-import type { SidebarConfigProps } from "./Sidebar";
-import type { BaseHOC } from "./getEnhancedComponent";
 
 injectGlobal`
 	body {
@@ -65,15 +60,6 @@ const AppFrameStructure = ({
 	</Base>
 );
 
-export type AppFrameProps = {
-	children: Node,
-	sidebarConfig: SidebarConfigProps,
-	topbarConfig: TopbarConfigProps,
-	linkHOC: BaseHOC,
-};
-
-const AppFrame: StatelessFunctionalComponent<AppFrameProps> = withMenuOpener(
-	AppFrameStructure,
-);
+const AppFrame = withMenuOpener(AppFrameStructure);
 
 export default AppFrame;

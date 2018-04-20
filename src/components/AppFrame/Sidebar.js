@@ -1,13 +1,8 @@
-// @flow
 import React from "react";
-import type { StatelessFunctionalComponent } from "react";
 import styled from "styled-components";
 import ApplicationSelector from "./ApplicationSelector";
 import MenuItem from "./MenuItem";
-import type { MenuItemProps } from "./MenuItem";
-import type { ApplicationListProps } from "./ApplicationSelector/types";
 import getEnhancedComponent from "./getEnhancedComponent";
-import type { BaseHOC } from "./getEnhancedComponent";
 
 const LeftBar = styled.div`
 	height: calc(100% - 30px);
@@ -26,20 +21,7 @@ const LeftBar = styled.div`
 // Memoized factory function to prevent wasting time recreating the same component
 const getEnhancedMenuItem = getEnhancedComponent();
 
-type SidebarMenuProps = {
-	open: boolean,
-	openMenu: () => void,
-	closeMenu: () => void,
-	linkHOC: BaseHOC,
-};
-
-export type SidebarConfigProps = {
-	pages: Array<MenuItemProps>,
-} & ApplicationListProps;
-
-type SidebarProps = SidebarConfigProps & SidebarMenuProps;
-
-const Sidebar: StatelessFunctionalComponent<SidebarProps> = ({
+const Sidebar = ({
 	applications,
 	applicationId,
 	open,
