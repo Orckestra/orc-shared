@@ -5,9 +5,9 @@ import styled from "styled-components";
 import Anchor from "./Anchor";
 import Menu from "./Menu";
 
-const Wrapper = styled.div``;
+export const Wrapper = styled.div``;
 
-const Background = styled.div`
+export const Background = styled.div`
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -33,7 +33,7 @@ type MenuOpenerProps = {
 
 export type ExpandedMenuProps = DropMenuProps & MenuOpenerProps;
 
-const DropMenu: StatelessFunctionalComponent<MenuProps> = ({
+const DropMenu: StatelessFunctionalComponent<ExpandedMenuProps> = ({
 	open,
 	toggle,
 	menuLabel,

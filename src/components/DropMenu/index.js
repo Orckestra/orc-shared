@@ -1,4 +1,3 @@
-// @flow
 import DropMenu from "./DropMenu";
 import withOpener from "./withOpener";
 

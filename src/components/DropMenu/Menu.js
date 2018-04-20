@@ -3,7 +3,7 @@ import styled from "styled-components";
 import transition from "styled-transition-group";
 import Icon from "../Icon";
 
-const Drawer = transition.ul`
+export const Drawer = transition.ul`
 	position: absolute;
 	color: #333;
 	background-color: white;
@@ -36,7 +36,7 @@ Drawer.defaultProps = {
 	timeout: 100,
 };
 
-const Item = styled.li`
+export const Item = styled.li`
 	box-sizing: border-box;
 	height: 30px;
 	min-width: 178px;
@@ -57,7 +57,7 @@ Item.defaultProps = {
 	},
 };
 
-const ItemIcon = styled(Icon)`
+export const ItemIcon = styled(Icon)`
 	padding-right: 11px;
 	font-size: 17px;
 `;

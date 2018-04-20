@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Icon from "../Icon";
 
-const Header = styled.div`
+export const Header = styled.div`
 	cursor: pointer;
 	color: ${props => (props.open ? props.theme.appHighlightColor : "#ccc")};
 
@@ -10,8 +10,14 @@ const Header = styled.div`
 		color: ${props => props.theme.appHighlightColor};
 	}
 `;
+Header.defaultProps = {
+	// A default value for when no theme is provided.
+	theme: {
+		appHighlightColor: "#ffffff",
+	},
+};
 
-const Indicator = styled(Icon)`
+export const Indicator = styled(Icon)`
 	font-size: 10px;
 	padding: 0 11px;
 	color: ${props => (props.open ? "#ccc" : props.theme.appHighlightColor)};
