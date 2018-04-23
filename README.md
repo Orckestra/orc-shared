@@ -60,6 +60,12 @@ Shows a modal dialog box, which will close if clicked outside. Children of the c
 
 Displays all available icons along with the ids to access them.
 
+## HOCs
+
+### `withToggle(propname)(Component)`
+
+Sets up a boolean property on the component, toggled with the `toggle` function property.
+
 ## License
 
 Copyright &copy; 2018 Orckestra Inc.

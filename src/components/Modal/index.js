@@ -2,7 +2,7 @@ import React, { Fragment, Children, cloneElement } from "react";
 import Wrapper from "./Wrapper";
 import Background from "./Background";
 import Dialog from "./Dialog";
-import withShowToggle from "./withShowToggle";
+import withToggle from "../../hocs/withToggle";
 
 const addPropsToChildren = (children, props) =>
 	Children.map(children, child => cloneElement(child, props));
@@ -17,4 +17,4 @@ export const Modal = ({ show, toggle, anchor, content, look = "default" }) => (
 	</Fragment>
 );
 
-export default withShowToggle(Modal);
+export default withToggle("show")(Modal);

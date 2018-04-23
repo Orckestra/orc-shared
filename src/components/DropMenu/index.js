@@ -1,4 +1,4 @@
 import DropMenu from "./DropMenu";
-import withOpener from "./withOpener";
+import withToggle from "../../hocs/withToggle";
 
-export default withOpener(DropMenu);
+export default withToggle("open")(DropMenu);
