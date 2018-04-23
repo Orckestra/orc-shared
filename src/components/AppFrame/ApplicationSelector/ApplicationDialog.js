@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const ApplicationList = styled.div`
+export const List = styled.div`
 	display: flex;
 	min-height: 10vh;
 	width: 60vw;
@@ -10,7 +10,7 @@ const ApplicationList = styled.div`
 	flex-wrap: wrap;
 `;
 
-const ApplicationBlock = styled.div`
+export const Block = styled.div`
 	flex: 0 0 140px;
 	text-align: center;
 	height: 115px;
@@ -18,18 +18,18 @@ const ApplicationBlock = styled.div`
 	flex-flow: column nowrap;
 	align-items: center;
 `;
-const ApplicationLink = styled.a``;
+export const Link = styled.a``;
 
-const ApplicationLogo = styled.img`
+export const Logo = styled.img`
 	border-radius: 50%;
 
-	${ApplicationLink}:hover > & {
+	${Link}:hover > & {
 		box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.65);
 	}
 `;
 
-const ApplicationLabel = styled.span`
-	${ApplicationLink}:hover ~ & {
+export const Label = styled.span`
+	${Link}:hover ~ & {
 		visibility: visible;
 	}
 	visibility: hidden;
@@ -41,28 +41,27 @@ const ApplicationLabel = styled.span`
 	color: rgba(255, 255, 255, 0.65);
 `;
 
-const ApplicationIndicator = styled.div`
+export const Indicator = styled.div`
 	background-color: white;
 	border-radius: 50%;
 	height: 8px;
 	width: 8px;
 	margin-top: -17px;
-	${ApplicationLink}:hover ~ & {
+	${Link}:hover ~ & {
 		visibility: hidden;
 	}
 `;
 
-// Workaround for prettier putting line breaks where it shouldn't - Gert
 const ApplicationDialog = ({
-	toggle = () => {},
+	toggle,
 	applications,
 	applicationId,
 	applicationOrder,
 }) => (
-	<ApplicationList>
+	<List>
 		{applications.map(app => (
-			<ApplicationBlock key={app.id}>
-				<ApplicationLink
+			<Block key={app.id}>
+				<Link
 					href={app.href}
 					onClick={
 						app.id === applicationId
@@ -70,16 +69,17 @@ const ApplicationDialog = ({
 									event.preventDefault();
 									toggle();
 							  }
-							: () => {}
+							: /* istanbul ignore next */
+							  () => {}
 					}
 				>
-					<ApplicationLogo src={app.src} />
-				</ApplicationLink>
-				<ApplicationLabel>{app.label}</ApplicationLabel>
-				{app.id === applicationId ? <ApplicationIndicator /> : null}
-			</ApplicationBlock>
+					<Logo src={app.src} />
+				</Link>
+				<Label>{app.label}</Label>
+				{app.id === applicationId ? <Indicator /> : null}
+			</Block>
 		))}
-	</ApplicationList>
+	</List>
 );
 
 export default ApplicationDialog;

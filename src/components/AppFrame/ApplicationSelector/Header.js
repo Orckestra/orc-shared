@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const HeaderIcon = styled.img`
+export const Icon = styled.img`
 	height: 34px;
 	width: 34px;
 	vertical-align: middle;
 `;
 
-const HeaderLabel = styled.span`
+export const Label = styled.span`
 	font-family: Roboto Condensed, sans-serif;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -17,16 +17,16 @@ const HeaderLabel = styled.span`
 	transition: opacity 0.3s ease-out;
 `;
 
-const HeaderWrapper = styled.div`
+export const Wrapper = styled.div`
 	padding: 0 6px;
 	margin: 10px 0 50px;
 `;
 
 const Header = ({ open, toggle, application }) => (
-	<HeaderWrapper onClick={toggle}>
-		<HeaderIcon src={application.src} />
-		<HeaderLabel open={open}>{application.label}</HeaderLabel>
-	</HeaderWrapper>
+	<Wrapper onClick={toggle}>
+		<Icon src={application.src} />
+		<Label open={open}>{application.label}</Label>
+	</Wrapper>
 );
 
 export default Header;
