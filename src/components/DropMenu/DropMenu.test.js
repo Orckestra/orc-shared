@@ -38,7 +38,7 @@ describe("DropMenu", () => {
 		));
 
 	describe("with state handling", () => {
-		it("handles open state", () =>
+		it("adds toggleable open flag", () =>
 			expect(
 				<FullMenu
 					menuLabel="TestLabel"

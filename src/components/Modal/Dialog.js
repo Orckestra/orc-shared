@@ -19,5 +19,6 @@ const Dialog = styled.div`
 	z-index: 10000;
 	${props => dialogLook[props.look]};
 `;
+Dialog.defaultProps = { look: "default" };
 
 export default Dialog;
