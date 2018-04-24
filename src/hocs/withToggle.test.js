@@ -1,8 +1,10 @@
 import React from "react";
 import withToggle from "./withToggle";
 
-const TestComp = ({ toggle, toggledOn }) => (
-	<div onClick={toggle}>{toggledOn ? 1 : 0}</div>
+const TestComp = ({ toggle, toggledOn, reset }) => (
+	<div onClick={toggle} onKeyDown={reset}>
+		{toggledOn ? 1 : 0}
+	</div>
 );
 
 describe("withToggle", () => {
@@ -32,5 +34,26 @@ describe("withToggle", () => {
 				"to render as",
 				<TestComp toggledOn={true} />,
 			),
+		));
+
+	it("can be reset by calling that function", () =>
+		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
+			TestComp,
+		]).then(Comp =>
+			expect(
+				<Comp toggledOnInit={true} />,
+				"to render as",
+				<TestComp toggledOn={true} />,
+			)
+				.and("when deeply rendered")
+				.then(element =>
+					expect(
+						element,
+						"to contain",
+						<div onClick={expect.it("to be a function")}>1</div>,
+					)
+						.and("with event keyDown", "to contain", <div>0</div>)
+						.and("with event keyDown", "to contain", <div>0</div>),
+				),
 		));
 });

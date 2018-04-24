@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Icon from "../Icon";
 
-const MenuBlock = styled.a`
+export const Block = styled.a`
 	display: block;
 	padding: 0 10px;
 	margin-bottom: 35px;
@@ -20,19 +20,19 @@ const MenuBlock = styled.a`
 			  `};
 `;
 
-MenuBlock.defaultProps = {
+Block.defaultProps = {
 	// A default value for when no theme is provided.
 	theme: {
 		appHighlightColor: "#ffffff",
 	},
 };
 
-const MenuIcon = styled(Icon)`
+export const MenuIcon = styled(Icon)`
 	font-size: 24px;
 	vertical-align: middle;
 `;
 
-const MenuLabel = styled.span`
+export const Label = styled.span`
 	font-family: Roboto Condensed, sans-serif;
 	font-size: 13px;
 	vertical-align: middle;
@@ -43,11 +43,11 @@ const MenuLabel = styled.span`
 	opacity: ${props => (props.open ? 1 : 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon = "cake", ...props }) => (
-	<MenuBlock {...props}>
+const MenuItem = ({ open = false, label = "", icon, ...props }) => (
+	<Block {...props}>
 		<MenuIcon id={icon} />
-		<MenuLabel open={open}>{label}</MenuLabel>
-	</MenuBlock>
+		<Label open={open}>{label}</Label>
+	</Block>
 );
 
 export default MenuItem;

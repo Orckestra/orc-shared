@@ -4,7 +4,7 @@ import ApplicationSelector from "./ApplicationSelector";
 import MenuItem from "./MenuItem";
 import getEnhancedComponent from "./getEnhancedComponent";
 
-const LeftBar = styled.div`
+export const Bar = styled.div`
 	height: calc(100% - 30px);
 	width: 280px;
 	display: flex;
@@ -25,14 +25,13 @@ const Sidebar = ({
 	applications,
 	applicationId,
 	open,
-	openMenu,
-	closeMenu,
+	toggle,
 	linkHOC = x => x,
 	pages = [],
 }) => {
 	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, MenuItem);
 	return (
-		<LeftBar open={open}>
+		<Bar open={open}>
 			<ApplicationSelector
 				{...{
 					open,
@@ -44,12 +43,12 @@ const Sidebar = ({
 				menu
 				open={open}
 				icon={open ? "layers" : "menu"}
-				onClick={open ? closeMenu : openMenu}
+				onClick={toggle}
 			/>
 			{pages.map(item => (
 				<EnhancedMenuItem key={item.icon} {...item} open={open} />
 			))}
-		</LeftBar>
+		</Bar>
 	);
 };
 

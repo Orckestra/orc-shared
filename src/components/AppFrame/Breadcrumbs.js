@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import getEnhancedComponent from "./getEnhancedComponent";
 
-const CrumbWrapper = styled.ul`
+export const CrumbWrapper = styled.ul`
 	display: flex;
 	list-style-type: none;
 	margin: 0;
@@ -13,7 +13,7 @@ const CrumbWrapper = styled.ul`
 	font-size: 13px;
 `;
 
-const Crumb = styled.li`
+export const Crumb = styled.li`
 	&:before {
 		content: "/";
 		padding-right: 0.3em;
@@ -26,7 +26,7 @@ const Crumb = styled.li`
 	}
 `;
 
-const CrumbLink = styled.a`
+export const CrumbLink = styled.a`
 	color: #ccc;
 	text-decoration: none;
 `;

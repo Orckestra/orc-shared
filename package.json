@@ -23,7 +23,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.3.0"
+		"orc-scripts": "0.3.1"
 	},
 	"lint-staged": {
 		"*.{js,json,md}": ["prettier --write", "git add"],

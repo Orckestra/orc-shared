@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
-import withMenuOpener from "./withMenuOpener";
+import withToggle from "../../hocs/withToggle";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 
@@ -15,13 +15,13 @@ injectGlobal`
 	}
 `;
 
-const Base = styled.div`
+export const Base = styled.div`
 	background-color: #333;
 	height: 100%;
 	overflow-x: hidden;
 `;
 
-const ViewPort = styled.div`
+export const ViewPort = styled.div`
 	overflow: auto;
 	background-color: white;
 	border-top-left-radius: 5px;
@@ -40,26 +40,22 @@ const ViewPort = styled.div`
 `;
 
 // Top bar containing username, user menu, help button
-const AppFrameStructure = ({
+export const AppFrame = ({
 	children,
-	sidebarMenu,
+	open,
+	toggle,
+	reset,
 	sidebarConfig,
 	topbarConfig,
 	linkHOC,
 }) => (
 	<Base>
-		<Topbar
-			linkHOC={linkHOC}
-			onClick={sidebarMenu.closeMenu}
-			{...topbarConfig}
-		/>
-		<Sidebar linkHOC={linkHOC} {...sidebarMenu} {...sidebarConfig} />
-		<ViewPort open={sidebarMenu.open} onClick={sidebarMenu.closeMenu}>
+		<Topbar linkHOC={linkHOC} onClick={reset} {...topbarConfig} />
+		<Sidebar linkHOC={linkHOC} open={open} toggle={toggle} {...sidebarConfig} />
+		<ViewPort open={open} onClick={reset}>
 			{children}
 		</ViewPort>
 	</Base>
 );
 
-const AppFrame = withMenuOpener(AppFrameStructure);
-
-export default AppFrame;
+export default withToggle("open")(AppFrame);

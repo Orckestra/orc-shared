@@ -7,7 +7,7 @@ import withToggle from "../../hocs/withToggle";
 const addPropsToChildren = (children, props) =>
 	Children.map(children, child => cloneElement(child, props));
 
-export const Modal = ({ show, toggle, anchor, content, look = "default" }) => (
+export const Modal = ({ show, toggle, anchor, content, look }) => (
 	<Fragment>
 		{addPropsToChildren(anchor, { toggle })}
 		<Wrapper in={show} timeout={1000}>

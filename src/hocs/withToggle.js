@@ -7,6 +7,7 @@ const withToggle = propName =>
 		}),
 		{
 			toggle: state => () => ({ [propName]: !state[propName] }),
+			reset: () => () => ({ [propName]: false }),
 		},
 	);
 
