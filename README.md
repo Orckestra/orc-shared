@@ -2,6 +2,18 @@
 
 A collection of useful, generally applicable pieces of code, used to build Orckestra applications.
 
+## Top-level
+
+Top level shared code is used to set up the standard infrastructure of Orckestra apps.
+
+### `buildState(routes, reducers)`
+
+Constructs a state store with support for dev tools (as browser extension), routing, API access and Immutable state.
+
+`routes`: A routing object as used by `redux-little-router`.
+
+`reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state.
+
 ## Actions
 
 ### `makeApiAction(name, endpoint, method, options)`
