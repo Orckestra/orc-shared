@@ -14,6 +14,12 @@ Constructs a state store with support for dev tools (as browser extension), rout
 
 `reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state.
 
+### `addLocales(...locales)`
+
+Loads in locale data for `react-intl` for the given top-level locales.
+
+`locales`: A list of locale names, specifying only the language portion (i.e. 'en' rather than 'en-US').
+
 ## Actions
 
 ### `makeApiAction(name, endpoint, method, options)`
