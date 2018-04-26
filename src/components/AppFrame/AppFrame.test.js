@@ -78,6 +78,17 @@ describe("AppFrame", () => {
 	});
 
 	describe("global styles", () => {
+		it("ensures required styling on html element to make IE11 happy", () =>
+			// render any component from AppFrame.js to ensure jsdom has styles injected
+			expect(<Base />, "when deeply rendered").then(() =>
+				expect(
+					"html",
+					"as a selector to have style rules",
+					"to match",
+					/html\s*\{\s*height: 100%;\s*\}/,
+				),
+			));
+
 		it("ensures required body styling", () =>
 			// render any component from AppFrame.js to ensure jsdom has styles injected
 			expect(<Base />, "when deeply rendered").then(() =>
@@ -85,7 +96,7 @@ describe("AppFrame", () => {
 					"body",
 					"as a selector to have style rules",
 					"to match",
-					/body\s*\{\s*margin: 0;\s*overflow: hidden;\s*\}/,
+					/body\s*\{\s*height: 100%;\s*margin: 0;\s*overflow: hidden;\s*\}/,
 				),
 			));
 
