@@ -3,7 +3,7 @@ import buildStore from "./buildStore";
 import Immutable from "immutable";
 
 describe("buildStore", () => {
-	let mockRoutes, mockReducers;
+	let mockRoutes, mockReducers, mockLocales;
 	beforeEach(() => {
 		mockRoutes = {
 			"/": { title: "test" },
@@ -17,13 +17,14 @@ describe("buildStore", () => {
 				}
 			},
 		};
+		mockLocales = ["en-US", "fr"];
 	});
 
 	it("builds a store when given routes and reducers, with hot module replacement of reducers", () =>
 		expect(
 			buildStore,
 			"when called with",
-			[mockRoutes, mockReducers],
+			[mockRoutes, mockReducers, mockLocales],
 			"to satisfy",
 			{
 				subscribe: expect.it("to be a function"),
@@ -35,7 +36,7 @@ describe("buildStore", () => {
 	describe("functionality", () => {
 		let store;
 		beforeEach(() => {
-			store = buildStore(mockRoutes, mockReducers);
+			store = buildStore(mockRoutes, mockReducers, mockLocales);
 		});
 
 		describe("getState", () => {
@@ -54,6 +55,10 @@ describe("buildStore", () => {
 							query: {},
 							routes: { "/": { title: "test" } },
 							queue: [],
+						},
+						locale: {
+							locale: "en-US",
+							supportedLocales: ["en-US", "fr"],
 						},
 						test: false,
 					}),
