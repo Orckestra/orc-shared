@@ -8,7 +8,7 @@ import localeFactory from "./reducers/localeFactory";
 
 export let buildReducer;
 
-const buildStore = (routes, reducers, supportedLocales) => {
+const buildStore = (routes, reducers) => {
 	const composeEnhancers =
 		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -20,6 +20,7 @@ const buildStore = (routes, reducers, supportedLocales) => {
 		routes,
 	});
 
+	const supportedLocales = SUPPORTED_LOCALES || ["en"];
 	// Set supported languages
 	const supportedLanguageTags = supportedLocales // Only the initial language tag
 		.map(locale => locale.replace(/-\w+/g, ""))
