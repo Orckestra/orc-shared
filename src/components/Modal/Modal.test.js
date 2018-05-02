@@ -25,7 +25,7 @@ describe("Modal", () => {
 			"to render as",
 			<Fragment>
 				<TestComp1 toggle={toggle} />
-				<Wrapper timeout={1000}>
+				<Wrapper timeout={300}>
 					<Background onClick={toggle} />
 					<Dialog look="dark">
 						<TestComp2 toggle={toggle} />

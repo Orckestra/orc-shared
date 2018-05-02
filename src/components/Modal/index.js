@@ -10,7 +10,7 @@ const addPropsToChildren = (children, props) =>
 export const Modal = ({ show, toggle, anchor, content, look }) => (
 	<Fragment>
 		{addPropsToChildren(anchor, { toggle })}
-		<Wrapper in={show} timeout={1000}>
+		<Wrapper in={show} timeout={300}>
 			<Background onClick={toggle} />
 			<Dialog look={look}>{addPropsToChildren(content, { toggle })}</Dialog>
 		</Wrapper>
