@@ -114,6 +114,14 @@ Usually not used directly, as it is included in state stores created with `build
 
 Extracts and returns the currently set locale from the state. Expects a `buildState` store, or one using `localeFactory` to create its `locale` reducer.
 
+### `breadcrumbs`
+
+Creates a data set suitable for populating the `<AppFrame>` breadcrumb trail based on currently matched routing. It will add a crumb to the trail for each matched route with a `title` field. If this field is a `react-intl` message descriptor it will be translated, and any values in it will be inserted.
+
+If the route match has no field of the same name as the value to be inserted, the URL parameter from the route match will be inserted - i.e. if your path is `/root/item1/edit` and the route matched is `/root/:item/edit`, then a translation message of `'Item {item}'` will have the value `'item1'` inserted.
+
+If, however, the route has a field of the same name containing an array of strings, this will be treated as a path into the state object. As a result, the selector will find the referenced value in the state, and insert that into the translation. This behavior is nested, as well, so these state paths can include e.g. references to route parameters or other state elements. For example, if, in your state, you have a 'data' reducer which contains an index of items, as well as the path and route mentioned above, and the matched route object contains an `item` field with value `['data', ['router', 'params'. 'item'], 'label']`, then, first, the inner array is handled, getting the matched parameter value, whereupon the value found in the `item1` field of the state's `data` is returned. In short, your title contains the label, rather than the ID, of the matched item.
+
 ## License
 
 Copyright &copy; 2018 Orckestra Inc.
