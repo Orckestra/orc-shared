@@ -22,8 +22,8 @@ export const Wrapper = styled.div`
 	margin: 10px 0 50px;
 `;
 
-const Header = ({ open, toggle, application }) => (
-	<Wrapper onClick={toggle}>
+const Header = ({ open, toggle, application = {}, ...props }) => (
+	<Wrapper onClick={toggle} {...props}>
 		<Icon src={application.src} />
 		<Label open={open}>{application.label}</Label>
 	</Wrapper>

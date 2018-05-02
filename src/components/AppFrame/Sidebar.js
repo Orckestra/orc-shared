@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ApplicationSelector from "./ApplicationSelector";
 import MenuItem from "./MenuItem";
 import getEnhancedComponent from "./getEnhancedComponent";
@@ -11,11 +11,18 @@ export const Bar = styled.div`
 	flex-direction: column;
 	justify-content: flex-start;
 	color: #999999;
+`;
 
-	& > * {
-		transition: transform 0.3s ease-out;
-		transform: translateX(${props => (props.open ? 19 : 0)}px);
-	}
+const childStyle = css`
+	transition: transform 0.3s ease-out;
+	transform: translateX(${props => (props.open ? 19 : 0)}px);
+`;
+
+export const SidebarAppSelector = styled(ApplicationSelector)`
+	${childStyle};
+`;
+export const SidebarMenuItem = styled(MenuItem)`
+	${childStyle};
 `;
 
 // Memoized factory function to prevent wasting time recreating the same component
@@ -29,17 +36,17 @@ const Sidebar = ({
 	linkHOC = x => x,
 	pages = [],
 }) => {
-	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, MenuItem);
+	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, SidebarMenuItem);
 	return (
 		<Bar open={open}>
-			<ApplicationSelector
+			<SidebarAppSelector
 				{...{
 					open,
 					applications,
 					applicationId,
 				}}
 			/>
-			<MenuItem
+			<SidebarMenuItem
 				menu
 				open={open}
 				icon={open ? "layers" : "menu"}

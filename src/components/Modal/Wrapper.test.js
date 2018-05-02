@@ -7,6 +7,6 @@ describe("Wrapper", () => {
 			<Wrapper in timeout={500} />,
 			"to render style rules",
 			"to contain",
-			"transition: opacity 500ms ease-out !important;",
+			"transition: opacity 500ms ease-out;",
 		));
 });

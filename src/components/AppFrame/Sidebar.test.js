@@ -1,7 +1,6 @@
 import React from "react";
-import Sidebar, { Bar } from "./Sidebar";
-import ApplicationSelector from "./ApplicationSelector";
-import MenuItem from "./MenuItem";
+import Sidebar, * as childComponents from "./Sidebar";
+const { Bar, SidebarAppSelector, SidebarMenuItem } = childComponents;
 
 describe("Sidebar", () => {
 	let applications, pages;
@@ -36,12 +35,12 @@ describe("Sidebar", () => {
 			/>,
 			"to render as",
 			<Bar>
-				<ApplicationSelector
+				<SidebarAppSelector
 					applications={applications}
 					applicationId="current"
 				/>
-				<MenuItem menu icon="menu" />
-				<MenuItem icon="cars" label="First page" href="/first" />
+				<SidebarMenuItem menu icon="menu" />
+				<SidebarMenuItem icon="cars" label="First page" href="/first" />
 			</Bar>,
 		));
 
@@ -50,9 +49,9 @@ describe("Sidebar", () => {
 			<Sidebar open pages={pages} />,
 			"to render as",
 			<Bar>
-				<ApplicationSelector open />
-				<MenuItem menu open icon="layers" />
-				<MenuItem open icon="cars" label="First page" href="/first" />
+				<SidebarAppSelector open />
+				<SidebarMenuItem menu open icon="layers" />
+				<SidebarMenuItem open icon="cars" label="First page" href="/first" />
 			</Bar>,
 		));
 
@@ -61,26 +60,37 @@ describe("Sidebar", () => {
 			<Sidebar />,
 			"to render as",
 			<Bar>
-				<ApplicationSelector />
-				<MenuItem menu icon="menu" />
+				<SidebarAppSelector />
+				<SidebarMenuItem menu icon="menu" />
 			</Bar>,
 		));
 
-	describe("Bar", () => {
-		it("shifts contents outward when open", () =>
-			expect(
-				<Bar open />,
-				"to render style rules",
-				"to match",
-				/> \* \{[^}]*transform: translateX\(19px\);[^}]*\}/,
-			));
+	["SidebarAppSelector", "SidebarMenuItem"].forEach(compName => {
+		const Component = childComponents[compName];
+		describe(compName, () => {
+			it("will transition movement", () =>
+				expect(
+					<Component />,
+					"to render style rules",
+					"to contain",
+					"transition: transform 0.3s ease-out;",
+				));
 
-		it("does not shift contents outward when closed", () =>
-			expect(
-				<Bar />,
-				"to render style rules",
-				"to match",
-				/> \* \{[^}]*transform: translateX\(0px\);[^}]*\}/,
-			));
+			it("shifts outward when open", () =>
+				expect(
+					<Component open />,
+					"to render style rules",
+					"to contain",
+					"transform: translateX(19px);",
+				));
+
+			it("does not shift outward when closed", () =>
+				expect(
+					<Component />,
+					"to render style rules",
+					"to contain",
+					"transform: translateX(0px);",
+				));
+		});
 	});
 });

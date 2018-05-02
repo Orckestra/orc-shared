@@ -8,7 +8,7 @@ const Wrapper = transition.div`
 	left: 0;
 	bottom: 0;
 	right: 0;
-	transition: opacity ${props => props.timeout}ms ease-out !important;
+	transition: opacity ${props => props.timeout}ms ease-out;
 
 	&:enter {
 		opacity: 0.01;
