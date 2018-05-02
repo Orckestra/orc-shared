@@ -12,9 +12,9 @@ Constructs a state store with support for dev tools (as browser extension), rout
 
 `routes`: A routing object as used by `redux-little-router`.
 
-`reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state.
+`reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state. Should not contain the keys `locale` or `router`, as these are in use for internationalization and routing, respectively.
 
-`supportedLocales`: An array of IANA language tags, designating which locales are to be supported. The first tag in the list will be the initially selected locale.
+`supportedLocales`: An array of IETF language tags, designating which locales are to be supported. The first tag in the list will be the initially selected locale.
 
 ### `addLocales(...locales)`
 
@@ -26,7 +26,7 @@ Loads in locale data for `react-intl` for the given top-level locales. Usually n
 
 ### `makeApiAction(name, endpoint, method, options)`
 
-Returns a valid RSAA from the argumnents given, with sensible defaults. Name and endpoint parameters are required.
+Returns a valid RSAA from the arguments given, with sensible defaults. Name and endpoint parameters are required.
 
 `name`: The base name of the action types that will be used to signal beginning and conclusion of the request. Actions used will be generated with `makeActionTypes(name)`.
 
@@ -44,7 +44,7 @@ Creates an array of three action types, based on `name`. The action types will b
 
 Generates an action that will cause the locale to be switched to the given tag. See also `localeFactory` under reducers.
 
-`locale`: An IANA locale tag, e.g. 'en', 'fr-CA'.
+`locale`: An IETF language tag, e.g. 'en', 'fr-CA'.
 
 ## Components
 
@@ -104,9 +104,9 @@ Provides a click event handler to the component, which will attempt to change th
 
 ### `localeFactory(supportedLocales)`
 
-Usually not used directly, as it is included in state stores created with `buildstate`. This factory creates a locale reducer from a list of supported locales. This reducer will initially set the selected locale to the first supported locale, and accepts actions to set it to any other.
+Usually not used directly, as it is included in state stores created with `buildstate`. This factory creates a locale reducer from a list of supported locales. This reducer will initially set the selected locale to the first supported locale, and accepts actions to set it to any other. Actions to set unsupported locales will be ignored.
 
-`supportedLocales`: An array of IANA language tags, designating which locales are to be supported.
+`supportedLocales`: An array of IETF language tags, designating which locales are to be supported.
 
 ## Selectors
 
@@ -120,7 +120,7 @@ Creates a data set suitable for populating the `<AppFrame>` breadcrumb trail bas
 
 If the route match has no field of the same name as the value to be inserted, the URL parameter from the route match will be inserted - i.e. if your path is `/root/item1/edit` and the route matched is `/root/:item/edit`, then a translation message of `'Item {item}'` will have the value `'item1'` inserted.
 
-If, however, the route has a field of the same name containing an array of strings, this will be treated as a path into the state object. As a result, the selector will find the referenced value in the state, and insert that into the translation. This behavior is nested, as well, so these state paths can include e.g. references to route parameters or other state elements. For example, if, in your state, you have a 'data' reducer which contains an index of items, as well as the path and route mentioned above, and the matched route object contains an `item` field with value `['data', ['router', 'params'. 'item'], 'label']`, then, first, the inner array is handled, getting the matched parameter value, whereupon the value found in the `item1` field of the state's `data` is returned. In short, your title contains the label, rather than the ID, of the matched item.
+If, however, the route has a field of the same name containing an array of strings, this will be treated as a path into the state object. As a result, the selector will find the referenced value in the state, and insert that into the translation. This behavior is nested, as well, so these state paths can include e.g. references to route parameters or other state elements. For example, if, in your state, you have a 'data' reducer which contains an index of items, as well as the path and route mentioned above, and the matched route object contains an `item` field with value `['data', ['router', 'params', 'item'], 'label']`, then, first, the inner array is handled, getting the matched parameter value, whereupon the value found in the `item1` field of the state's `data` is returned. In short, your title contains the label, rather than the ID, of the matched item.
 
 ## License
 
