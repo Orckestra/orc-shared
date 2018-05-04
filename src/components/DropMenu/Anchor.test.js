@@ -2,15 +2,21 @@ import React from "react";
 import Anchor, { Header, Indicator } from "./Anchor";
 
 describe("Anchor", () => {
-	it("renders a closed menu anchor", () =>
+	it("renders a closed menu anchor", () => {
+		const onClick = () => {};
 		expect(
-			<Anchor menuLabel="A Label" className="propagateThis" />,
+			<Anchor
+				onClick={onClick}
+				menuLabel="A Label"
+				className="propagateThis"
+			/>,
 			"to render as",
-			<Header className="propagateThis">
+			<Header onClick={onClick} className="propagateThis">
 				A Label
 				<Indicator id="chevron-down" />
 			</Header>,
-		));
+		);
+	});
 
 	it("renders an open menu anchor", () =>
 		expect(

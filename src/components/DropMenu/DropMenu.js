@@ -15,10 +15,9 @@ export const Background = styled.div`
 `;
 
 const DropMenu = ({ open, toggle, menuLabel, menuItems, className = "" }) => (
-	<Wrapper onClick={toggle}>
-		<Anchor {...{ menuLabel, className, open }} />
-		{open ? <Background /> : null}
-		<Menu {...{ open, menuItems }} />
+	<Wrapper>
+		<Anchor onClick={toggle} {...{ menuLabel, className, open }} />
+		<Menu {...{ open, menuItems, toggle }} />
 	</Wrapper>
 );
 

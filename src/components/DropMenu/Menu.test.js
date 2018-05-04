@@ -1,5 +1,6 @@
 import React from "react";
-import Menu, { Drawer, Item, ItemIcon } from "./Menu";
+import sinon from "sinon";
+import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 
 describe("Menu", () => {
 	it("renders a closed menu", () =>
@@ -17,19 +18,45 @@ describe("Menu", () => {
 					{ label: "First", icon: "one", handler: () => {} },
 					{ label: "Second", icon: "two", handler: () => {} },
 				]}
+				toggle={() => {}}
 			/>,
 			"to render as",
 			<Drawer in>
-				<Item>
-					<ItemIcon id="one" />
-					<span>First</span>
-				</Item>
-				<Item>
-					<ItemIcon id="two" />
-					<span>Second</span>
-				</Item>
+				<List>
+					<Item>
+						<ItemIcon id="one" />
+						<span>First</span>
+					</Item>
+					<Item>
+						<ItemIcon id="two" />
+						<span>Second</span>
+					</Item>
+				</List>
 			</Drawer>,
 		));
+
+	it("closes on click outside, or click on item", () => {
+		const toggle = sinon.spy().named("toggle");
+		const handler = sinon.spy().named("handler");
+		return expect(
+			<Menu
+				open
+				menuItems={[{ label: "Foo", icon: "one", handler }]}
+				toggle={toggle}
+			/>,
+			"to render as",
+			<Drawer in>
+				<List onClickOutside={toggle} />
+			</Drawer>,
+		)
+			.and("with event click", "on", <Item />)
+			.then(() =>
+				Promise.all([
+					expect(toggle, "was called"),
+					expect(handler, "was called"),
+				]),
+			);
+	});
 
 	describe("Drawer", () => {
 		it("sets transition time according to its timeout", () =>

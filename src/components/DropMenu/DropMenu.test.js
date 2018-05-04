@@ -1,6 +1,6 @@
 import React from "react";
 import sinon from "sinon";
-import DropMenu, { Wrapper, Background } from "./DropMenu";
+import DropMenu, { Wrapper } from "./DropMenu";
 import Anchor from "./Anchor";
 import Menu from "./Menu";
 import FullMenu from "./index";
@@ -20,20 +20,19 @@ describe("DropMenu", () => {
 				className="test-class"
 			/>,
 			"to exactly render as",
-			<Wrapper onClick={toggle}>
-				<Anchor menuLabel="TestLabel" className="test-class" />
-				<Menu menuItems={[]} />
+			<Wrapper>
+				<Anchor onClick={toggle} menuLabel="TestLabel" className="test-class" />
+				<Menu menuItems={[]} toggle={toggle} />
 			</Wrapper>,
 		));
 
-	it("flags anchor and menu, and renders a background when open", () =>
+	it("flags anchor and menu when open", () =>
 		expect(
 			<DropMenu open toggle={toggle} menuLabel="TestLabel" menuItems={[]} />,
 			"to exactly render as",
-			<Wrapper onClick={toggle}>
-				<Anchor open menuLabel="TestLabel" className="" />
-				<Background />
-				<Menu open menuItems={[]} />
+			<Wrapper>
+				<Anchor onClick={toggle} open menuLabel="TestLabel" className="" />
+				<Menu open menuItems={[]} toggle={toggle} />
 			</Wrapper>,
 		));
 

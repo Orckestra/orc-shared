@@ -2,19 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
 import Icon from "../Icon";
+import withClickOutside from "../../hocs/withClickOutside";
 
-export const Drawer = transition.ul`
+export const Drawer = transition.div`
 	position: absolute;
-	color: #333;
-	background-color: white;
-	border: 1px solid #999999;
-	border-radius: 5px;
 	z-index: 19999;
-	list-style-type: none;
-	padding: 5px 0;
 	margin: 4px 0 0;
-	font-family: Open Sans, sans-serif;
-	font-size: 12px;
 
 	transition: opacity ${props => props.timeout}ms ease-out;
 
@@ -35,6 +28,18 @@ Drawer.defaultProps = {
 	unmountOnExit: true,
 	timeout: 100,
 };
+
+export const List = withClickOutside(styled.ul`
+	color: #333;
+	background-color: white;
+	border: 1px solid #999999;
+	border-radius: 5px;
+	list-style-type: none;
+	padding: 5px 0;
+	margin: 0;
+	font-family: Open Sans, sans-serif;
+	font-size: 12px;
+`);
 
 export const Item = styled.li`
 	box-sizing: border-box;
@@ -62,14 +67,22 @@ export const ItemIcon = styled(Icon)`
 	font-size: 17px;
 `;
 
-const Menu = ({ open, menuItems }) => (
+const Menu = ({ open, menuItems, toggle }) => (
 	<Drawer in={open}>
-		{menuItems.map(item => (
-			<Item key={item.label + item.icon} onClick={item.handler}>
-				<ItemIcon id={item.icon} />
-				<span>{item.label}</span>
-			</Item>
-		))}
+		<List onClickOutside={toggle}>
+			{menuItems.map(item => (
+				<Item
+					key={item.label + item.icon}
+					onClick={event => {
+						toggle();
+						item.handler(event);
+					}}
+				>
+					<ItemIcon id={item.icon} />
+					<span>{item.label}</span>
+				</Item>
+			))}
+		</List>
 	</Drawer>
 );
 

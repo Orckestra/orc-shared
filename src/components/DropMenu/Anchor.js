@@ -29,8 +29,8 @@ Indicator.defaultProps = {
 	},
 };
 
-const Anchor = ({ className, menuLabel, open }) => (
-	<Header {...{ className, open }}>
+const Anchor = ({ onClick, className, menuLabel, open }) => (
+	<Header {...{ onClick, className, open }}>
 		{menuLabel}
 		<Indicator id={open ? "chevron-up" : "chevron-down"} open={open} />
 	</Header>
