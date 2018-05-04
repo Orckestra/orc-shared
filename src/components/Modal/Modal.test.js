@@ -3,9 +3,6 @@ import FullModal, { Modal } from "./index";
 import Wrapper from "./Wrapper";
 import Background from "./Background";
 import Dialog from "./Dialog";
-import withClickOutside from "../../hocs/withClickOutside";
-
-const ActiveDialog = withClickOutside(Dialog);
 
 const TestComp1 = () => <div />;
 const TestComp2 = () => <div />;
@@ -30,9 +27,9 @@ describe("Modal", () => {
 				<TestComp1 toggle={toggle} />
 				<Wrapper timeout={300}>
 					<Background />
-					<ActiveDialog look="dark" onClickOutside={toggle}>
+					<Dialog look="dark" onClickOutside={toggle}>
 						<TestComp2 toggle={toggle} />
-					</ActiveDialog>
+					</Dialog>
 				</Wrapper>
 			</Fragment>,
 		));

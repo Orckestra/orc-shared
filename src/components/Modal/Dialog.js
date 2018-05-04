@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import withClickOutside from "../../hocs/withClickOutside";
 
 const darkDialogStyle = css`
 	background-color: #333;
@@ -13,7 +14,7 @@ const dialogLook = {
 };
 
 // TODO: Add light dialog style for other dialogs, switching mechanism
-const Dialog = styled.div`
+export const Dialog = styled.div`
 	flex: 0 0 auto;
 	margin: auto;
 	z-index: 10000;
@@ -21,4 +22,4 @@ const Dialog = styled.div`
 `;
 Dialog.defaultProps = { look: "default" };
 
-export default Dialog;
+export default withClickOutside(Dialog);

@@ -1,5 +1,5 @@
 import React from "react";
-import Dialog from "./Dialog";
+import { Dialog } from "./Dialog";
 
 describe("Dialog", () => {
 	it("renders a dialog with a default look", () =>
