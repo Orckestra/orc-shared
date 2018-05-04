@@ -92,13 +92,17 @@ Displays all available icons along with the ids to access them.
 
 ## HOCs
 
-### `withToggle(propname)(Component)`
+### `withClickOutside(Component)`
 
-Sets up a boolean property on the component, toggled with the `toggle` function property.
+Adds support for a `onClickOutside` prop to the component. This prop should be a function, and is used as an event handler for clicks outside the elements rendered by the component. Useful for e.g. closing dropdowns, intercepting clicks outside a modal dialog, etc. Clicks outside are handled during the capture phase, on `window.document`. This permits stopping event propagation at this point, before any DOM elements are allowed to respond to it.
 
 ### `withLocaleSwitch(Component)`
 
 Provides a click event handler to the component, which will attempt to change the locale to the one given in its `locale` prop.
+
+### `withToggle(propname)(Component)`
+
+Sets up a boolean property on the component, toggled with the `toggle` function property.
 
 ## Reducers
 
