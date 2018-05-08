@@ -86,6 +86,14 @@ Shows a single SVG icon, according to the icon id given. Requires `content/icons
 
 Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
 
+### Sidepanel
+
+`timeout`: The time taken for the sliding animation, in milliseconds. Default 1000.
+
+`width`: The width of the panel. Controls both element size and animation. Default 200px.
+
+Renders a side panel which will slide into view from the left side of the screen. Can and should be styled with `styled-components`.
+
 ### SpriteSheet
 
 Displays all available icons along with the ids to access them.

@@ -8,7 +8,7 @@ injectGlobal`
 	html {
 		height: 100%;
 	}
-	
+
 	body {
 		height: 100%;
 		margin: 0;
@@ -27,7 +27,8 @@ export const Base = styled.div`
 `;
 
 export const ViewPort = styled.div`
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 	background-color: white;
 	border-top-left-radius: 5px;
 	height: calc(100% - 30px);
