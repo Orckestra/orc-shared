@@ -3,8 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { createSelector } from "reselect";
 import UrlPattern from "url-pattern";
 import Immutable from "immutable";
-
-const routerData = state => state.get("router");
+import { routeSelector, resultSelector, paramSelector } from "./route";
 
 const unwrapImmutable = x => (Immutable.isImmutable(x) ? x.toJS() : x);
 
@@ -47,18 +46,6 @@ const pathMatchAsCrumb = (result, params, state) => {
 	}
 	return crumb;
 };
-
-const routeSelector = createSelector(routerData, router => router.get("route"));
-
-const resultSelector = createSelector(
-	routerData,
-	router => router.get("result") || Immutable.Map(),
-);
-
-const paramSelector = createSelector(
-	routerData,
-	router => router.get("params") || Immutable.Map(),
-);
 
 export const breadcrumbs = createSelector(
 	resultSelector,
