@@ -1,4 +1,4 @@
-import { getThemeProp } from "utils";
+import { getThemeProp } from "../../utils";
 
 // Functions to easily get the tree settings from theme, or sensible defaults
 export const branchIndent = getThemeProp(["treeSettings", "branchIndent"], 14);

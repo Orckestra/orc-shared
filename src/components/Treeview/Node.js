@@ -2,7 +2,7 @@ import React from "react";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
 import { Indicator, NonIndicator, Label } from "./Label";
-import { safeGet } from "utils";
+import { safeGet } from "../../utils";
 
 export const TreeContext = React.createContext();
 

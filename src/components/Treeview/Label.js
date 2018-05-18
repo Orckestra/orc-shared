@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Icon from "../Icon";
-import { getThemeProp, ifFlag } from "utils";
+import { getThemeProp, ifFlag } from "../../utils";
 import { branchHeight } from "./settings";
 
 export const Indicator = styled(Icon).attrs({
