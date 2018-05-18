@@ -74,10 +74,6 @@ Generates an action that will cause the locale to be switched to the given tag. 
 
 Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with breadcrumb trail, user menu and help popup.
 
-### I18n
-
-Pre-connected internationalization-provider. Use this as a wrapper component for your app, inside your redux provider, and outside any internationalized content. Uses `react-intl`, and expects a state store created with `buildState`, above, or at least one including a `locale` reducer created by `reducers/localeFactory`. Needs no further properties.
-
 ### DropMenu
 
 `menuLabel`: The menu anchor label text.
@@ -85,6 +81,10 @@ Pre-connected internationalization-provider. Use this as a wrapper component for
 `menuItems`: A list of objects with `label` and `handler` properties. The former is the text to show, the latter the function to call on clicking the item.
 
 A simple menu component that will show a list of items when clicked. Assigning it a class will apply it to the menu anchor, allowing it to be styled with Styled Components.
+
+### I18n
+
+Pre-connected internationalization-provider. Use this as a wrapper component for your app, inside your redux provider, and outside any internationalized content. Uses `react-intl`, and expects a state store created with `buildState`, above, or at least one including a `locale` reducer created by `reducers/localeFactory`. Needs no further properties.
 
 ### Icon
 
@@ -113,6 +113,22 @@ Renders a side panel which will slide into view from the left side of the screen
 ### SpriteSheet
 
 Displays all available icons along with the ids to access them.
+
+### Treeview
+
+`Content`: A React component. This will render the leaf nodes of the tree. Default: a null component.
+
+`getNode`: A function which takes a node id, and returns a data object for the node containing at least the node id, and the ids of any children. If no object is returned, the node will not be rendered. Default: Returns null.
+
+`rootId`: An id identifying the root node of the tree.
+
+`nodeState`: An object containing ids of open nodes.
+
+`updateNodeState`: A function to update the `nodeState` with, takes the modified `nodeState`. Default: No-op.
+
+`openAll`: If truthy all nodes are rendered as open, regardless of `nodeState`.
+
+Renders a tree view, with opening and closing nodes. The data for a given node, as well as any extra props given to the Treeview, will be passed on to any rendered `Content` elements as props. This means that an onClick handler on `Treeview` will be given to all its `Content` elements, for instance.
 
 ## HOCs
 
