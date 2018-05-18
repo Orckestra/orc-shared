@@ -22,6 +22,22 @@ Loads in locale data for `react-intl` for the given top-level locales. Usually n
 
 `locales`: A list of locale names, specifying only the language portion (i.e. 'en' rather than 'en-US').
 
+### utils
+
+The `utils.js` file contains a number of useful utility functions, some for use with styled components, some more generally applicable.
+
+`safeGet(obj, path1, path2, ...)`: Fetches the value found in the object at the end of all path steps given, or undefined if a step fails. Ex. `safeGet({ foo: {bar: 'hat'}}, "foo", "bar")` returns `"hat"`.
+
+`getThemeProp(path, defaultValue)` will return a prop function (suitable for use in a styled-components template string) that finds the value indicated by `path` (an array of strings), or returns `defaultValue` if that fails. Both `defaultValue` and elements of `path` may be prop functions themselves.
+
+`ifFlag(flag, thenVal, elseVal)` returns a prop function that checks if a prop of name `flag` is true, and returns `thenVal` if it is, `elseVal` if it is not. Both of the value parameters may be prop functions.
+
+`unwrapImmutable(maybeImmutable)` takes a value, and if it is immutable (as in Immutable.JS), returns the JS value of it, otherwise it returns the value itself.
+
+`logPass(x)` takes any value, logs it to console and returns it. This is useful for inserting log calls in blockless arrow functions.
+
+`normalizeForSearch(searchStr)` lowercases the search string and strips accents from it to ease comparisons between strings. Note: on IE11, accent stripping does not work.
+
 ## Actions
 
 ### `makeApiAction(name, endpoint, method, options)`
