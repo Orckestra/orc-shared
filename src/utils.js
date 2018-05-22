@@ -22,6 +22,11 @@ export const getThemeProp = (path, defaultValue, func = x => x) => props =>
 export const ifFlag = (name, thenVal, elseVal = "") => props =>
 	props[name] ? feedPropFunc(props)(thenVal) : feedPropFunc(props)(elseVal);
 
+/* Creates a prop function that checks a field against a list of cases,
+ 	 and gives back a found case, or a default */
+export const switchEnum = (enumField, cases) => props =>
+	cases[props[enumField]] || cases["default"];
+
 /* Immutable values are unwrapped to JS objects/arrays.
    Non-immutable values are returned unchanged. */
 export const unwrapImmutable = maybe =>

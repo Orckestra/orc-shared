@@ -3,6 +3,7 @@ import {
 	safeGet,
 	getThemeProp,
 	ifFlag,
+	switchEnum,
 	unwrapImmutable,
 	normalizeForSearch,
 } from "utils";
@@ -199,6 +200,33 @@ describe("ifFlag", () => {
 			"to equal",
 			"this is it",
 		));
+});
+
+describe("switchEnum", () => {
+	let cases;
+	beforeEach(() => {
+		cases = { one: "One 111", two: "Two 222" };
+	});
+
+	it("yields a property function which checks a field against a list of cases", () =>
+		expect(switchEnum, "when called with", ["enum", cases]).then(func =>
+			expect(func, "when called with", [{ enum: "one" }], "to equal", "One 111")
+				.and("when called with", [{ enum: "two" }], "to equal", "Two 222")
+				.and("when called with", [{ enum: "three" }], "to be undefined"),
+		));
+
+	it("yields a default if one is set", () => {
+		cases.default = "A default";
+		return expect(
+			switchEnum,
+			"when called with",
+			["enum", cases],
+			"when called with",
+			[{ enum: "three" }],
+			"to equal",
+			"A default",
+		);
+	});
 });
 
 describe("unwrapImmutable", () => {
