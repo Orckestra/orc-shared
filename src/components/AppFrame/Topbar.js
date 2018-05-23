@@ -16,7 +16,7 @@ export const Menu = styled(DropMenu)`
 	font-family: Roboto Condensed, sans-serif;
 	font-size: 12px;
 	text-transform: uppercase;
-	height: 40px;
+	height: 30px;
 	min-width: 180px;
 	padding-top: 9px;
 	padding-right: 32px;

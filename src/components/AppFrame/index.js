@@ -31,7 +31,7 @@ export const ViewPort = styled.div`
 	overflow-y: auto;
 	background-color: white;
 	border-top-left-radius: 5px;
-	height: calc(100% - 40px);
+	height: calc(100% - 30px);
 	width: calc(100% - 50px);
 	position: absolute;
 	bottom: 0;
@@ -51,30 +51,13 @@ export const AppFrame = ({
 	open,
 	toggle,
 	reset,
-	applications,
-	applicationId,
-	pages,
-	path,
-	menuLabel,
-	menuItems,
+	sidebarConfig,
+	topbarConfig,
 	linkHOC,
 }) => (
 	<Base>
-		<Topbar
-			linkHOC={linkHOC}
-			onClick={reset}
-			path={path}
-			menuLabel={menuLabel}
-			menuItems={menuItems}
-		/>
-		<Sidebar
-			linkHOC={linkHOC}
-			open={open}
-			toggle={toggle}
-			applications={applications}
-			applicationId={applicationId}
-			pages={pages}
-		/>
+		<Topbar linkHOC={linkHOC} onClick={reset} {...topbarConfig} />
+		<Sidebar linkHOC={linkHOC} open={open} toggle={toggle} {...sidebarConfig} />
 		<ViewPort open={open} onClick={reset}>
 			{children}
 		</ViewPort>
