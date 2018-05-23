@@ -7,18 +7,15 @@ describe("AppFrame", () => {
 	let props, toggle, reset;
 	beforeEach(() => {
 		props = {
-			sidebarConfig: {
-				applications: [{ src: "/", label: "This", id: "current" }],
-				applicationId: "current",
-				pages: [],
-			},
-			topbarConfig: {
-				path: [],
-				menuLabel: "TestLabel",
-				menuItems: [],
-			},
+			applications: [{ src: "/", label: "This", id: "current" }],
+			applicationId: "current",
+			pages: [],
+			path: [],
+			menuLabel: "TestLabel",
+			menuItems: [],
 			linkHOC: x => x,
 		};
+
 		toggle = () => {};
 		reset = () => {};
 	});
@@ -28,8 +25,18 @@ describe("AppFrame", () => {
 			<AppFrame {...props} {...{ toggle, reset }} />,
 			"to render as",
 			<Base>
-				<Topbar linkHOC={props.linkHOC} {...props.topbarConfig} />
-				<Sidebar linkHOC={props.linkHOC} {...props.sidebarConfig} />
+				<Topbar
+					linkHOC={props.linkHOC}
+					path={props.path}
+					menuLabel={props.menuLabel}
+					menuItems={props.menuItems}
+				/>
+				<Sidebar
+					linkHOC={props.linkHOC}
+					applications={props.applications}
+					applicationId={props.applicationId}
+					pages={props.pages}
+				/>
 				<ViewPort />
 			</Base>,
 		));
