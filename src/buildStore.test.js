@@ -51,7 +51,7 @@ describe("buildStore", () => {
 					"to satisfy",
 					Immutable.fromJS({
 						router: {
-							pathname: "blank",
+							pathname: "/",
 							search: "",
 							hash: "",
 							key: undefined,
