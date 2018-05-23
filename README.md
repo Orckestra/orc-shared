@@ -1,5 +1,7 @@
 # Shared code for Orckestra applications
 
+[![Build Status](https://travis-ci.org/Orckestra/orc-shared.svg?branch=master)](https://travis-ci.org/Orckestra/orc-shared)
+
 A collection of useful, generally applicable pieces of code, used to build Orckestra applications.
 
 ## Top-level
