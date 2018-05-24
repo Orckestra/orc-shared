@@ -60,11 +60,11 @@ const ApplicationDialog = ({
 }) => (
 	<List>
 		{applications.map(app => (
-			<Block key={app.id}>
+			<Block key={app.name}>
 				<Link
-					href={app.href}
+					href={app.url}
 					onClick={
-						app.id === applicationId
+						app.name === applicationId
 							? event => {
 									event.preventDefault();
 									toggle();
@@ -73,10 +73,10 @@ const ApplicationDialog = ({
 							  () => {}
 					}
 				>
-					<Logo src={app.src} />
+					<Logo src={app.iconUri} />
 				</Link>
-				<Label>{app.label}</Label>
-				{app.id === applicationId ? <Indicator /> : null}
+				<Label>{app.displayName}</Label>
+				{app.name === applicationId ? <Indicator /> : null}
 			</Block>
 		))}
 	</List>

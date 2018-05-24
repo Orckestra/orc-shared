@@ -28,7 +28,7 @@ describe("MenuItem", () => {
 			"to render as",
 			<Block>
 				<MenuIcon id="cake" />
-				<Label open />
+				<Label show />
 			</Block>,
 		));
 
@@ -69,7 +69,7 @@ describe("MenuItem", () => {
 	describe("Label", () => {
 		it("sets full opacity if open", () =>
 			expect(
-				<Label open />,
+				<Label show />,
 				"to render style rules",
 				"to contain",
 				"opacity: 1;",

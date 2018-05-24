@@ -1,52 +1,27 @@
 import React from "react";
-import styled, { css } from "styled-components";
-import ApplicationSelector from "./ApplicationSelector";
+import styled from "styled-components";
 import MenuItem from "./MenuItem";
 import getEnhancedComponent from "./getEnhancedComponent";
 
 export const Bar = styled.div`
-	height: calc(100% - 30px);
-	width: 280px;
+	box-sizing: border-box;
+	margin-top: 60px;
+	height: calc(100% - 40px);
+	width: 200px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	color: #999999;
 `;
 
-const childStyle = css`
-	transition: transform 0.3s ease-out;
-	transform: translateX(${props => (props.open ? 19 : 0)}px);
-`;
-
-export const SidebarAppSelector = styled(ApplicationSelector)`
-	${childStyle};
-`;
-export const SidebarMenuItem = styled(MenuItem)`
-	${childStyle};
-`;
-
 // Memoized factory function to prevent wasting time recreating the same component
 const getEnhancedMenuItem = getEnhancedComponent();
 
-const Sidebar = ({
-	applications,
-	applicationId,
-	open,
-	toggle,
-	linkHOC = x => x,
-	pages = [],
-}) => {
-	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, SidebarMenuItem);
+const Sidebar = ({ open, toggle, linkHOC = x => x, pages = [] }) => {
+	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, MenuItem);
 	return (
 		<Bar open={open}>
-			<SidebarAppSelector
-				{...{
-					open,
-					applications,
-					applicationId,
-				}}
-			/>
-			<SidebarMenuItem
+			<MenuItem
 				menu
 				open={open}
 				icon={open ? "layers" : "menu"}

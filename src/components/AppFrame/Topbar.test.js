@@ -1,10 +1,22 @@
 import React from "react";
-import Topbar, { Wrapper, Menu } from "./Topbar";
-import Breadcrumbs from "./Breadcrumbs";
+import ApplicationSelector from "./ApplicationSelector";
+import Topbar, { Wrapper, AppBox, CurrentApp, Menu } from "./Topbar";
 
 describe("Topbar", () => {
-	let props, linkHOC, path, clicker, menuItems;
+	let applications, props, linkHOC, path, clicker, menuItems;
 	beforeEach(() => {
+		applications = [
+			{
+				name: "current",
+				displayName: "Test label",
+				iconUri: "/test/url",
+			},
+			{
+				name: "other",
+				displayName: "Test again",
+				iconUri: "/test/elsewhere",
+			},
+		];
 		linkHOC = x => x;
 		path = [{ crumb: 1 }, { crumb: 2 }, { crumb: 3 }];
 		clicker = () => {};
@@ -15,6 +27,8 @@ describe("Topbar", () => {
 			linkHOC,
 			menuLabel: "TestLabel",
 			menuItems,
+			applications,
+			applicationId: "current",
 		};
 	});
 	it("renders a top bar of an app", () =>
@@ -22,7 +36,15 @@ describe("Topbar", () => {
 			<Topbar {...props} />,
 			"to render as",
 			<Wrapper onClick={clicker}>
-				<Breadcrumbs linkHOC={linkHOC} path={path} />
+				<AppBox>
+					<ApplicationSelector
+						{...{
+							applications,
+							applicationId: "current",
+						}}
+					/>
+					<CurrentApp displayName="Test label" iconUri="/test/url" />
+				</AppBox>
 				<Menu menuLabel="TestLabel" menuItems={menuItems} />
 			</Wrapper>,
 		));

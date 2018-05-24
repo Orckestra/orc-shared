@@ -10,7 +10,6 @@ describe("AppFrame", () => {
 			applications: [{ src: "/", label: "This", id: "current" }],
 			applicationId: "current",
 			pages: [],
-			path: [],
 			menuLabel: "TestLabel",
 			menuItems: [],
 			linkHOC: x => x,
@@ -27,16 +26,12 @@ describe("AppFrame", () => {
 			<Base>
 				<Topbar
 					linkHOC={props.linkHOC}
-					path={props.path}
+					applications={props.applications}
+					applicationId={props.applicationId}
 					menuLabel={props.menuLabel}
 					menuItems={props.menuItems}
 				/>
-				<Sidebar
-					linkHOC={props.linkHOC}
-					applications={props.applications}
-					applicationId={props.applicationId}
-					pages={props.pages}
-				/>
+				<Sidebar linkHOC={props.linkHOC} pages={props.pages} />
 				<ViewPort />
 			</Base>,
 		));
@@ -66,7 +61,7 @@ describe("AppFrame", () => {
 				<ViewPort open />,
 				"to render style rules",
 				"to contain",
-				"transform: translateX(230px);",
+				"transform: translateX(150px);",
 			));
 	});
 

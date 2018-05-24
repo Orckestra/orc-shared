@@ -40,7 +40,7 @@ export const ViewPort = styled.div`
 	${props =>
 		props.open
 			? css`
-					transform: translateX(230px);
+					transform: translateX(150px);
 			  `
 			: ""};
 `;
@@ -54,7 +54,6 @@ export const AppFrame = ({
 	applications,
 	applicationId,
 	pages,
-	path,
 	menuLabel,
 	menuItems,
 	linkHOC,
@@ -63,18 +62,12 @@ export const AppFrame = ({
 		<Topbar
 			linkHOC={linkHOC}
 			onClick={reset}
-			path={path}
+			applications={applications}
+			applicationId={applicationId}
 			menuLabel={menuLabel}
 			menuItems={menuItems}
 		/>
-		<Sidebar
-			linkHOC={linkHOC}
-			open={open}
-			toggle={toggle}
-			applications={applications}
-			applicationId={applicationId}
-			pages={pages}
-		/>
+		<Sidebar linkHOC={linkHOC} open={open} toggle={toggle} pages={pages} />
 		<ViewPort open={open} onClick={reset}>
 			{children}
 		</ViewPort>

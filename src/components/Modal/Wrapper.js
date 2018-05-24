@@ -1,6 +1,10 @@
+import React from "react";
+import ReactDOM from "react-dom";
 import transition from "styled-transition-group";
 
-const Wrapper = transition.div`
+const getModalRoot = () => document.getElementById("modal");
+
+export const Wrapper = transition.div`
 	z-index: 9999;
 	display: flex;
 	position: absolute;
@@ -25,4 +29,5 @@ const Wrapper = transition.div`
 `;
 Wrapper.defaultProps = { timeout: 300, unmountOnExit: true };
 
-export default Wrapper;
+export default props =>
+	ReactDOM.createPortal(<Wrapper {...props} />, getModalRoot());

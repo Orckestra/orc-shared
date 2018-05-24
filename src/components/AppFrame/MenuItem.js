@@ -40,13 +40,13 @@ export const Label = styled.span`
 	padding-left: 21px;
 
 	transition: opacity 0.3s ease-out;
-	opacity: ${props => (props.open ? 1 : 0)};
+	opacity: ${props => (props.show ? 1 : 0)};
 `;
 
 const MenuItem = ({ open = false, label = "", icon, ...props }) => (
 	<Block {...props}>
 		<MenuIcon id={icon} />
-		<Label open={open}>{label}</Label>
+		<Label show={open}>{label}</Label>
 	</Block>
 );
 

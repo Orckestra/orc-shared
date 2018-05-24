@@ -6,3 +6,4 @@ cache:
     - "node_modules"
 env:
   - BUILD_REACT=true
+script: "npm run coverage"

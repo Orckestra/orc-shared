@@ -1,5 +1,5 @@
 import React from "react";
-import Wrapper from "./Wrapper";
+import { Wrapper } from "./Wrapper";
 
 describe("Wrapper", () => {
 	it("sets transition time according to its timeout", () =>

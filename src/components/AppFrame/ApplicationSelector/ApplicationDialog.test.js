@@ -15,16 +15,16 @@ describe("ApplicationDialog", () => {
 		toggle = sinon.spy().named("toggle");
 		applications = [
 			{
-				id: "ChosenId",
-				src: "/url/to/img1.png",
-				href: "/test/url",
-				label: "Current App",
+				name: "ChosenId",
+				iconUri: "/url/to/img1.png",
+				url: "/test/url",
+				displayName: "Current App",
 			},
 			{
-				id: "OtherId",
-				src: "/url/to/img2.png",
-				href: "/test/some/other/url",
-				label: "Other App",
+				name: "OtherId",
+				iconUri: "/url/to/img2.png",
+				url: "/test/some/other/url",
+				displayName: "Other App",
 			},
 		];
 		mockEvent = {
