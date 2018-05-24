@@ -57,3 +57,23 @@ if ("".normalize) {
 	// IE11 does not support string#normalize(). V. sad for IE users.
 	normalizeForSearch = str => str.toLowerCase();
 }
+
+/* Flattens nested arrays */
+export const flatten = array =>
+	array.reduce(
+		(flatArray, item) =>
+			Array.isArray(item)
+				? flatArray.concat(flatten(item))
+				: flatArray.concat([item]),
+		[],
+	);
+
+/* Replaces a locale string structure with the string for the given locale. */
+export const setTranslation = (locale, obj, ...field) => {
+	if (!obj.getIn(flatten([field]))) return obj;
+	const value =
+		obj.getIn(flatten([field, locale])) ||
+		obj.getIn(flatten([field])).first() ||
+		"";
+	return obj.setIn(flatten([field]), value);
+};

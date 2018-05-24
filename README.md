@@ -40,6 +40,10 @@ The `utils.js` file contains a number of useful utility functions, some for use 
 
 `normalizeForSearch(searchStr)` lowercases the search string and strips accents from it to ease comparisons between strings. Note: on IE11, accent stripping does not work.
 
+`flatten(array)` will flatten nested arrays, resulting in a single-level array. Order of elements is maintained.
+
+`setTranslation(locale, object, path1, path2, ...)` will look in `object` at the path location (see `safeGet` above), and if found will replace a translation message structure (ex.: `{ 'en-US': 'A hat', 'fr-FR': 'Un chapeau' }`) with the string indicated by `locale`. If no match is found, the first given message string will be used as a default.
+
 ## Actions
 
 ### `makeApiAction(name, endpoint, method, options)`

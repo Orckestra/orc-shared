@@ -1,6 +1,6 @@
 import { IntlProvider } from "react-intl";
 import { connect } from "react-redux";
-import { currentLocale } from "selectors/locale";
+import { currentLocale } from "../selectors/locale";
 
 const mapStateToProps = state => ({
 	locale: currentLocale(state),

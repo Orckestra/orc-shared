@@ -1,5 +1,25 @@
 import Immutable from "immutable";
-import { currentLocale } from "./locale";
+import { currentLocale, defaultLocale } from "./locale";
+
+describe("default locale selector", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: {
+				locale: "fr",
+				supportedLocales: ["en", "fr"],
+			},
+		});
+	});
+
+	it("gets the first supported locale", () =>
+		expect(defaultLocale, "when called with", [state], "to equal", "en"));
+
+	it("returns 'en' if no supported locales", () => {
+		state = state.deleteIn(["locale", "supportedLocales"]);
+		return expect(defaultLocale, "when called with", [state], "to equal", "en");
+	});
+});
 
 describe("locale selector", () => {
 	let state;
