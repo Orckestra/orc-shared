@@ -7,3 +7,4 @@ cache:
 env:
   - BUILD_REACT=true
 script: "npm run coverage"
+after_success: "npm run coveralls"
