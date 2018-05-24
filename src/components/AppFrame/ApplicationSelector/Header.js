@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
 	height: 100%;
 	display: flex;
 	justify-content: center;
+	border-radius: 4px;
 
 	&:hover {
 		background-color: rgba(255, 255, 255, 0.3);

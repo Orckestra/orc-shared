@@ -5,7 +5,7 @@ import getEnhancedComponent from "./getEnhancedComponent";
 
 export const Bar = styled.div`
 	box-sizing: border-box;
-	margin-top: 60px;
+	padding-top: 60px;
 	height: calc(100% - 40px);
 	width: 200px;
 	display: flex;
