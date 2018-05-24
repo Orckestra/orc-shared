@@ -53,7 +53,7 @@ export const CurrentApp = ({ displayName, iconUri }) => (
 );
 CurrentApp.displayName = "CurrentApp";
 
-const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
+const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
 
 const Topbar = ({ applications, applicationId, onClick, ...config }) => (
 	<Wrapper onClick={onClick}>

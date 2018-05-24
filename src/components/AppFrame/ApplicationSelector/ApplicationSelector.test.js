@@ -8,16 +8,16 @@ describe("ApplicationSelector", () => {
 	let props, applications, thisApp;
 	beforeEach(() => {
 		thisApp = {
-			id: "current",
-			label: "Test label",
-			src: "/test/url",
+			name: "current",
+			displayName: "Test label",
+			iconUri: "/test/url",
 		};
 		applications = [
 			thisApp,
 			{
-				id: "other",
-				label: "Test again",
-				src: "/test/elsewhere",
+				name: "other",
+				displayName: "Test again",
+				iconUri: "/test/elsewhere",
 			},
 		];
 		props = {
@@ -42,4 +42,16 @@ describe("ApplicationSelector", () => {
 				}
 			/>,
 		));
+
+	it("handles a missing app list", () => {
+		delete props.applications;
+		return expect(
+			<ApplicationSelector {...props} />,
+			"to render as",
+			<Modal
+				anchor={<Header open />}
+				content={<ApplicationDialog open applicationId={props.applicationId} />}
+			/>,
+		);
+	});
 });

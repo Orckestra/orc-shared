@@ -1,6 +1,13 @@
 import React from "react";
 import ApplicationSelector from "./ApplicationSelector";
-import Topbar, { Wrapper, AppBox, CurrentApp, Menu } from "./Topbar";
+import Topbar, {
+	Wrapper,
+	AppBox,
+	CurrentApp,
+	AppLabel,
+	AppLogo,
+	Menu,
+} from "./Topbar";
 
 describe("Topbar", () => {
 	let applications, props, linkHOC, path, clicker, menuItems;
@@ -31,6 +38,7 @@ describe("Topbar", () => {
 			applicationId: "current",
 		};
 	});
+
 	it("renders a top bar of an app", () =>
 		expect(
 			<Topbar {...props} />,
@@ -47,5 +55,41 @@ describe("Topbar", () => {
 				</AppBox>
 				<Menu menuLabel="TestLabel" menuItems={menuItems} />
 			</Wrapper>,
+		));
+
+	it("doesn't break if no current app", () =>
+		expect(
+			<Topbar {...props} applicationId="wrong" />,
+			"to render as",
+			<Wrapper onClick={clicker}>
+				<AppBox>
+					<CurrentApp />
+				</AppBox>
+				<Menu menuLabel="TestLabel" menuItems={menuItems} />
+			</Wrapper>,
+		));
+
+	it("doesn't break if no apps at all", () =>
+		expect(
+			<Topbar {...props} applications={undefined} />,
+			"to render as",
+			<Wrapper onClick={clicker}>
+				<AppBox>
+					<CurrentApp />
+				</AppBox>
+				<Menu menuLabel="TestLabel" menuItems={menuItems} />
+			</Wrapper>,
+		));
+});
+
+describe("CurrentApp", () => {
+	it("renders the app logo and name", () =>
+		expect(
+			<CurrentApp displayName="Test label" iconUri="/test/url" />,
+			"to render as",
+			<AppLabel>
+				<AppLogo src="/test/url" />
+				Test label
+			</AppLabel>,
 		));
 });
