@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
+	overflow-y: auto;
 `;
 
 export const IconBlock = styled.div`
@@ -27,10 +28,12 @@ const SpriteSheetStructure = ({ iconIds }) => (
 	</Wrapper>
 );
 
+const arrify = thing => [].slice.call(thing);
+
 const withAllIconIds = withProps(() => ({
-	iconIds: [].slice
-		.call(document.querySelectorAll('symbol[id^="icon-"]'))
-		.map(elm => elm.id.replace(/^icon-/, "")),
+	iconIds: arrify(document.querySelectorAll('symbol[id^="icon-"]')).map(elm =>
+		elm.id.replace(/^icon-/, ""),
+	),
 }));
 
 const SpriteSheet = withAllIconIds(SpriteSheetStructure);
