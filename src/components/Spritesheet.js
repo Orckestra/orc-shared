@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
 	flex-wrap: wrap;
 	justify-content: space-around;
 	overflow-y: auto;
+	height: 100%;
 `;
 
 export const IconBlock = styled.div`
