@@ -80,6 +80,12 @@ Generates an action that will cause the locale to be switched to the given tag. 
 
 Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with breadcrumb trail, user menu and help popup.
 
+### DevPages
+
+`children`: Children of the component will be rendered on routes not starting with `/dev`.
+
+Inserts a set of developer pages to be found under `/dev/<page>`. In production, this should be replaced with a passthrough component that directly renders its child.
+
 ### DropMenu
 
 `menuLabel`: The menu anchor label text.
