@@ -1,16 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { withPropsOnChange } from "recompose";
 import { FormattedMessage } from "react-intl";
 import { getThemeProp, ifFlag } from "../utils";
-
-// If no id set, sets a unique-ish id on the component.
-let idCounter = 0;
-const setDomId = () => "switch" + idCounter++;
-const withId = withPropsOnChange(
-	() => false, // Never update id once mounted
-	({ id }) => ({ id: id || setDomId() }),
-);
+import withId from "../hocs/withId";
 
 const switchSpeed = 200;
 export const Wrapper = styled.label`
@@ -137,4 +129,4 @@ export const Switch = ({
 	</Wrapper>
 );
 
-export default withId(Switch);
+export default withId("switch")(Switch);
