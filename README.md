@@ -46,7 +46,13 @@ The `utils.js` file contains a number of useful utility functions, some for use 
 
 ## Actions
 
-### `makeApiAction(name, endpoint, method, options)`
+### Locale: `changeLocale(locale)`
+
+Generates an action that will cause the locale to be switched to the given tag. See also `localeFactory` under reducers.
+
+`locale`: An IETF language tag, e.g. 'en', 'fr-CA'.
+
+### API actions: `makeApiAction(name, endpoint, method, options)`
 
 Returns a valid RSAA from the arguments given, with sensible defaults. Name and endpoint parameters are required.
 
@@ -62,12 +68,6 @@ Returns a valid RSAA from the arguments given, with sensible defaults. Name and 
 
 Creates an array of three action types, based on `name`. The action types will be `<name>_REQUEST`, dispatched at the start of the request, `<name>_SUCCESS`, dispatched at successful conclusion of the request, and `<name>_FAILURE`, which is dispatched in case of error.
 
-### `changeLocale(locale)`
-
-Generates an action that will cause the locale to be switched to the given tag. See also `localeFactory` under reducers.
-
-`locale`: An IETF language tag, e.g. 'en', 'fr-CA'.
-
 ## Components
 
 ### AppFrame
@@ -79,6 +79,10 @@ Generates an action that will cause the locale to be switched to the given tag. 
 `children`: Children of the component will be rendered into the view port.
 
 Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with breadcrumb trail, user menu and help popup.
+
+### Checkbox
+
+Shows a pretty checkbox. The same props are accepted as for `<input type="checked" />` elements. Use `value` for whether the checkbox is checked or not, rather than `checked`. If no `id` is passed, one will be generated and used.
 
 ### DevPages
 
@@ -126,6 +130,18 @@ Renders a side panel which will slide into view from the left side of the screen
 
 Displays all available icons along with the ids to access them.
 
+### Switch
+
+`onCaption`: A message descriptor (as used by `react-intl`) to be shown when the switch is on.
+
+`offCaption`: A message descriptor (as used by `react-intl`) to be shown when the switch is off.
+
+`onColor`: A string containing a CSS color value. The switch will show this color when on.
+
+`offColor`: A string containing a CSS color value. The switch will show this color when off.
+
+Displays a horizontal toggle switch. This is a wrapper around a `<input type="checkbox" />`, so any props that work with that will also work here. Use `value` to set the value, not `checked`. If no `id` is passed, one will be generated and used.
+
 ### Treeview
 
 `Content`: A React component. This will render the leaf nodes of the tree. Default: a null component.
@@ -148,6 +164,10 @@ Renders a tree view, with opening and closing nodes. The data for a given node, 
 
 Adds support for a `onClickOutside` prop to the component. This prop should be a function, and is used as an event handler for clicks outside the elements rendered by the component. Useful for e.g. closing dropdowns, intercepting clicks outside a modal dialog, etc. Clicks outside are handled during the capture phase, on `window.document`. This permits stopping event propagation at this point, before any DOM elements are allowed to respond to it.
 
+### `withId(name)(Component)`
+
+If no `id` prop is passed to the resulting component, this HOC will generate a pseudo-unique id for the wrapped component to use. Generated ids will be of the shape `"<name><count>"` where `name` is the passed name parameter, and `count` is a counter for that name. Counters are memoized, so subsequent calls to `withId` using the same name will access the same counter.
+
 ### `withLocaleSwitch(Component)`
 
 Provides a click event handler to the component, which will attempt to change the locale to the one given in its `locale` prop.
@@ -166,17 +186,29 @@ Usually not used directly, as it is included in state stores created with `build
 
 ## Selectors
 
-### `currentLocale`
-
-Extracts and returns the currently set locale from the state. Expects a `buildState` store, or one using `localeFactory` to create its `locale` reducer.
+These selectors expect a `buildState` store, or one using `localeFactory` to create its `locale` reducer.
 
 ### `breadcrumbs`
 
-Creates a data set suitable for populating the `<AppFrame>` breadcrumb trail based on currently matched routing. It will add a crumb to the trail for each matched route with a `title` field. If this field is a `react-intl` message descriptor it will be translated, and any values in it will be inserted.
+Creates a data set suitable for populating a breadcrumb trail based on currently matched routing. It will add a crumb to the trail for each matched route with a `title` field. If this field is a `react-intl` message descriptor it will be translated, and any values in it will be inserted.
 
 If the route match has no field of the same name as the value to be inserted, the URL parameter from the route match will be inserted - i.e. if your path is `/root/item1/edit` and the route matched is `/root/:item/edit`, then a translation message of `'Item {item}'` will have the value `'item1'` inserted.
 
 If, however, the route has a field of the same name containing an array of strings, this will be treated as a path into the state object. As a result, the selector will find the referenced value in the state, and insert that into the translation. This behavior is nested, as well, so these state paths can include e.g. references to route parameters or other state elements. For example, if, in your state, you have a 'data' reducer which contains an index of items, as well as the path and route mentioned above, and the matched route object contains an `item` field with value `['data', ['router', 'params', 'item'], 'label']`, then, first, the inner array is handled, getting the matched parameter value, whereupon the value found in the `item1` field of the state's `data` is returned. In short, your title contains the label, rather than the ID, of the matched item.
+
+### Locale
+
+`currentLocale`: Extracts and returns the currently set locale from the state.
+
+`defaultLocale`: Finds and returns the default locale for the application. This is the first entry in the supported locales list, or if no such list is given, falls back to `'en'`.
+
+### Route
+
+`paramSelector`: Returns the matched parameters of the current route.
+
+`routeSelector`: Returns the matched route string.
+
+`resultSelector`: Returns the matched result object, which includes the parent routes of the currently matched route back to the root, as described in the application's route object.
 
 ## License
 
