@@ -23,12 +23,11 @@ injectGlobal`
 export const Base = styled.div`
 	background-color: #333;
 	height: 100%;
-	overflow-x: hidden;
+	overflow: hidden;
 `;
 
 export const ViewPort = styled.div`
-	overflow-x: hidden;
-	overflow-y: auto;
+	overflow: hidden;
 	background-color: white;
 	border-top-left-radius: 5px;
 	height: calc(100% - 40px);
