@@ -4,12 +4,16 @@ import { getThemeProp, ifFlag } from "../utils";
 import { tint } from "polished";
 import withId from "../hocs/withId";
 
-export const Wrapper = styled.label``;
+export const Wrapper = styled.label`
+	padding: 10px 15px;
+	margin: -10px -15px;
+`;
 
 export const ContainedInput = styled.input.attrs({ type: "checkbox" })`
 	position: absolute;
 	opacity: 0;
 	z-index: 10;
+	margin: 0;
 `;
 
 export const Cover = styled.label`
