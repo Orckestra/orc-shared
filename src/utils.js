@@ -37,7 +37,7 @@ export const unwrapImmutable = maybe =>
 export const logPass =
 	/* istanbul ignore next */
 	x => {
-		console.log(x);
+		console.log(unwrapImmutable(x));
 		return x;
 	};
 
