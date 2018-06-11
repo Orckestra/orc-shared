@@ -14,7 +14,7 @@ Constructs a state store with support for dev tools (as browser extension), rout
 
 `routes`: A routing object as used by `redux-little-router`.
 
-`reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state. Should not contain the keys `locale` or `router`, as these are in use for internationalization and routing, respectively.
+`reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state. Should not contain the keys `view`, `locale` or `router`, as these are in use for view state, internationalization and routing, respectively.
 
 `supportedLocales`: An array of IETF language tags, designating which locales are to be supported. The first tag in the list will be the initially selected locale.
 
@@ -69,6 +69,10 @@ Returns a valid RSAA from the arguments given, with sensible defaults. Name and 
 #### `makeActionTypes(name)`
 
 Creates an array of three action types, based on `name`. The action types will be `<name>_REQUEST`, dispatched at the start of the request, `<name>_SUCCESS`, dispatched at successful conclusion of the request, and `<name>_FAILURE`, which is dispatched in case of error.
+
+### View state
+
+Provides actions for setting partial or complete view state for named components (see also `reducers/view` and `hocs/withViewState` below).
 
 ## Components
 
@@ -192,6 +196,10 @@ Provides a click event handler to the component, which will attempt to change th
 
 Sets up a boolean property on the component, toggled with the `toggle` function property.
 
+### `withViewState(Component)`
+
+Sets the component up with a view state according to the `name` property provided. This includes all keys found in the `view` segment of the state, provided as props, and an `updateViewState(key, value)` function, which sets the appropriate key in the component's view state.
+
 ## Reducers
 
 ### `localeFactory(supportedLocales)`
@@ -199,6 +207,10 @@ Sets up a boolean property on the component, toggled with the `toggle` function 
 Usually not used directly, as it is included in state stores created with `buildstate`. This factory creates a locale reducer from a list of supported locales. This reducer will initially set the selected locale to the first supported locale, and accepts actions to set it to any other. Actions to set unsupported locales will be ignored.
 
 `supportedLocales`: An array of IETF language tags, designating which locales are to be supported.
+
+### `view`
+
+A simple reducer that keeps track of view state objects for named components.
 
 ## Selectors
 
