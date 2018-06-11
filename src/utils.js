@@ -78,34 +78,21 @@ export const setTranslation = (locale, obj, ...field) => {
 	return obj.setIn(flatten([field]), value);
 };
 
-// Copied from Underscore.js
+// Derived from Underscore.js
 // Copyright (c) 2009-2018 Jeremy Ashkenas et al.
 // MIT licensed
-// TODO: Write tests for this!
-/* istanbul ignore next */
 export function debounce(func, wait, immediate) {
-	/* istanbul ignore next */
-	var timeout;
-	/* istanbul ignore next */
+	let timeout;
 	return function() {
-		/* istanbul ignore next */
-		var context = this,
-			/* istanbul ignore next */
+		const context = this,
 			args = arguments;
-		/* istanbul ignore next */
-		var later = function() {
-			/* istanbul ignore next */
+		const later = () => {
 			timeout = null;
-			/* istanbul ignore next */
 			if (!immediate) func.apply(context, args);
 		};
-		/* istanbul ignore next */
-		var callNow = immediate && !timeout;
-		/* istanbul ignore next */
+		const callNow = immediate && !timeout;
 		clearTimeout(timeout);
-		/* istanbul ignore next */
 		timeout = setTimeout(later, wait);
-		/* istanbul ignore next */
 		if (callNow) func.apply(context, args);
 	};
 }
