@@ -120,6 +120,20 @@ Shows a single SVG icon, according to the icon id given. Requires `content/icons
 
 Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
 
+### ScrollLoader
+
+`loadTrigger`: A length in pixels of how far from the bottom of the list the loader function should be tirggered.
+
+`length`: The number of elements currently being shown.
+
+`latestPage`: The latest page number that has been loaded. Pages are 1-indexed, not 0-indexed!
+
+`pageLength`: The number of elements loaded in a page.
+
+`scrollLoader`: The function to call when scrolling to the end of the list.
+
+Intended for lists and grids of elements, this component will wrap its children in a scrollable block, and call a function whenever the user scrolls near its bottom. The end effect is that new elements are loaded in on scroll as long as new elements can be had.
+
 ### Sidepanel
 
 `timeout`: The time taken for the sliding animation, in milliseconds. Default 1000.
