@@ -9,55 +9,67 @@ const toggleInArray = (nameList, name) => {
 	}
 };
 
+const enhanceSelectColumn = (selection, updateViewState, def) => {
+	return {
+		fieldName: "selection",
+		...def,
+		onChange: eventOrSelection => {
+			if (Array.isArray(eventOrSelection)) {
+				updateViewState("selection", eventOrSelection);
+			} else {
+				updateViewState(
+					"selection",
+					toggleInArray(selection, eventOrSelection.target.dataset.rowId),
+				);
+				eventOrSelection.stopPropagation();
+			}
+		},
+	};
+};
+
+const enhanceSortableColumn = (sorting, updateViewState, def) => {
+	const isSortColumn =
+		sorting.column &&
+		def.fieldName &&
+		sorting.column.toString() === def.fieldName.toString();
+	const isAscending = isSortColumn && sorting.direction === "asc";
+	const newDef = {
+		...def,
+		sort: () => {
+			updateViewState("sorting", {
+				column: def.fieldName,
+				direction: isAscending ? "desc" : "asc",
+			});
+			def.sort(isAscending, def.fieldName, def.type);
+		},
+	};
+	if (isSortColumn) {
+		newDef.sortDirection = sorting.direction;
+	}
+	return newDef;
+};
+
+const enhanceColumnDef = ({ sorting, selection, updateViewState }) => def => {
+	if (def.type === "select") {
+		return enhanceSelectColumn(selection, updateViewState, def);
+	}
+	if (def.sort) {
+		return enhanceSortableColumn(sorting, updateViewState, def);
+	}
+	return def;
+};
+
 const withLinkHooks = mapProps(
 	({
+		columnDefs,
 		updateViewState,
 		selection = [],
-		columnDefs,
 		sorting = {},
 		...otherProps
 	}) => {
-		const enhancedColumnDefs = columnDefs.map(def => {
-			if (def.type === "select") {
-				return {
-					fieldName: "selection",
-					...def,
-					onChange: eventOrSelection => {
-						if (Array.isArray(eventOrSelection)) {
-							updateViewState("selection", eventOrSelection);
-						} else {
-							updateViewState(
-								"selection",
-								toggleInArray(selection, eventOrSelection.target.dataset.rowId),
-							);
-							eventOrSelection.stopPropagation();
-						}
-					},
-				};
-			}
-			if (def.sort) {
-				const isSortColumn =
-					sorting.column &&
-					def.fieldName &&
-					sorting.column.toString() === def.fieldName.toString();
-				const isAscending = isSortColumn && sorting.direction === "asc";
-				const newDef = {
-					...def,
-					sort: () => {
-						updateViewState("sorting", {
-							column: def.fieldName,
-							direction: isAscending ? "desc" : "asc",
-						});
-						def.sort(isAscending, def.fieldName, def.type);
-					},
-				};
-				if (isSortColumn) {
-					newDef.sortDirection = sorting.direction;
-				}
-				return newDef;
-			}
-			return def;
-		});
+		const enhancedColumnDefs = columnDefs.map(
+			enhanceColumnDef({ sorting, selection, updateViewState }),
+		);
 
 		return {
 			columnDefs: enhancedColumnDefs,
