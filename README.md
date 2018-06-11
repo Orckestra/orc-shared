@@ -124,6 +124,18 @@ Shows a single SVG icon, according to the icon id given. Requires `content/icons
 
 Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
 
+### List
+
+`columnDefs`: An array of objects, each describing one column in the table.
+
+`rows`: An array of data objects, each corresponding to one row in the table. Shopuld contain the fields defined in `columnDefs`, and importantly, the `keyField` (q.v.).
+
+`rowOnClick`: A click handler for rows.
+
+`keyField`: A key name (or key path) pointing to a member on each row that is uniquely identifying. This value will be used to reference the row in selections, the `rowOnClick` handler, etc.
+
+Configurable list component. Shows a table of information, according to the given configuration. Can be combined with `ScrollLoader` for infinite scrolling capability.
+
 ### ScrollLoader
 
 `loadTrigger`: A length in pixels of how far from the bottom of the list the loader function should be tirggered.
