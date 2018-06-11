@@ -6,13 +6,18 @@ import DataCell from "./DataCell";
 // Clicks on these elements will not be handled by the row onClick
 const formTags = ["INPUT", "SELECT", "LABEL"];
 
-export const withRowClick = withHandlers({
-	onClick: ({ onClick, rowId }) => event => {
-		if (formTags.indexOf(event.target.tagName) === -1) {
-			event.rowId = rowId;
-			onClick(event);
-		}
-	},
+export const withRowClick = withHandlers(({ onClick }) => {
+	if (!onClick) return {};
+	return {
+		onClick: ({ onClick, rowId }) => event => {
+			if (formTags.indexOf(event.target.tagName) === -1) {
+				if (!event.target.dataset["rowId"]) {
+					event.target.dataset["rowId"] = rowId;
+				}
+				onClick(event);
+			}
+		},
+	};
 });
 
 export const TableRow = styled.tr`

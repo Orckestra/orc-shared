@@ -43,8 +43,17 @@ describe("withRowClick", () => {
 		domElm = document.createElement("div");
 	});
 
+	it("only exists if an onClick handler is given from above", () =>
+		expect(withRowClick, "when called with", [TestComp]).then(EnhComp =>
+			expect(
+				<EnhComp rowId="ident" />,
+				"to render with all attributes as",
+				<TestComp rowId="ident" />,
+			),
+		));
+
 	it(
-		"wraps onClick to add rowId to event object, " +
+		"wraps onClick to add rowId to event target, " +
 			"but not if target is form element",
 		() =>
 			expect(withRowClick, "when called with", [TestComp]).then(EnhComp =>
@@ -72,11 +81,17 @@ describe("withRowClick", () => {
 								{
 									target: document.createElement("label"),
 								},
+							])
+							.and("called with", [
+								{
+									target: domElm,
+								},
 							])}
 					/>,
 				).then(() =>
 					expect(rowOnClick, "to have calls satisfying", [
-						{ args: [{ target: domElm, rowId: "ident" }] },
+						{ args: [{ target: { dataset: { rowId: "ident" } } }] },
+						{ args: [{ target: { dataset: { rowId: "ident" } } }] },
 					]),
 				),
 			),
