@@ -5,6 +5,8 @@ const getViewState = (state, name) => {
 	const stateData = state.getIn(["view", name]);
 	if (stateData && stateData.toJS) {
 		return stateData.toJS();
+	} else {
+		return {};
 	}
 };
 
