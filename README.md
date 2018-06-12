@@ -130,7 +130,7 @@ Shows a modal dialog box, which will close if clicked outside. Children of the c
 
 `rows`: An array of data objects, each corresponding to one row in the table. Shopuld contain the fields defined in `columnDefs`, and importantly, the `keyField` (q.v.).
 
-`rowOnClick`: A click handler for rows.
+`rowOnClick`: A click handler for rows. The target element of the event will have `data-row-id` set, which can be accessed via `event.target.dataset["rowId"]`, and which contains the row ID of the row that was clicked (see also `keyField`). This handler is not fired when the click was on a form element (i.e. `<input>`, `<select>`, `<label>`).
 
 `keyField`: A key name (or key path) pointing to a member on each row that is uniquely identifying. This value will be used to reference the row in selections, the `rowOnClick` handler, etc.
 

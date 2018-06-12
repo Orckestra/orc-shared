@@ -78,7 +78,7 @@ StatefulList.propTypes = {
 	rows: pt.arrayOf(pt.object),
 	rowOnClick: pt.func, // Click handler for row.
 	// Fires when row is clicked, excluding select or switch columns
-	// Event object param will have a 'rowId' key which identifies the clicked row.
+	// Event target will have a 'rowId' data value which identifies the clicked row.
 	keyField: pt.arrayOf(pt.string), // Path to identifying data field on each row.
 };
 
