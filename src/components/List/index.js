@@ -8,6 +8,7 @@ import withListState from "./withListState";
 
 export const Table = styled.table`
 	border-collapse: collapse;
+	table-layout: fixed;
 	width: 100%;
 	font-size: 13px;
 `;
@@ -18,13 +19,32 @@ export const List = ({
 	rowOnClick,
 	selection = [],
 	keyField = ["id"],
+	virtual = false,
+	scrollTop = 0,
+	height = 300, // Arbitrary, set this prop according to scroll viewport size
+	scrollBuffer = 10,
 }) => {
 	if (columnDefs.length === 0) return null;
 	const rowIds = [],
-		rowElements = [];
+		rowElements = [],
+		rowHeight = 51;
+	let virtualFilter = () => true;
+	let heightAbove = 0,
+		heightBelow = 0;
+	if (virtual) {
+		const correctedScrollTop = scrollTop - 41; // Subtract header height
+		const firstIn = Math.floor(correctedScrollTop / rowHeight);
+		const firstShow = Math.max(firstIn - scrollBuffer, 0);
+		const lastIn = Math.ceil((correctedScrollTop + height) / rowHeight);
+		const lastShow = Math.min(lastIn + scrollBuffer, rows.length);
+		virtualFilter = index => index >= firstShow && index < lastShow;
+		heightAbove = firstShow * rowHeight;
+		heightBelow = (rows.length - lastShow) * rowHeight;
+	}
 	rows.forEach((row, index) => {
 		const id = safeGet(row, ...keyField);
 		rowIds.push(id);
+		if (!virtualFilter(index)) return;
 		rowElements.push(
 			<Row
 				columnDefs={columnDefs}
@@ -45,7 +65,11 @@ export const List = ({
 					allSelected={rows.length === selection.length && rows.length !== 0}
 				/>
 			</thead>
-			<tbody>{rowElements}</tbody>
+			<tbody>
+				{virtual && heightAbove ? <tr style={{ height: heightAbove }} /> : null}
+				{rowElements}
+				{virtual && heightBelow ? <tr style={{ height: heightBelow }} /> : null}
+			</tbody>
 		</Table>
 	);
 };

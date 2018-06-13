@@ -59,6 +59,13 @@ export const TableHeader = styled.th`
 			width: 40px;
 		`,
 	)};
+
+	${ifFlag(
+		"width",
+		css`
+			width: ${props => props.width}%;
+		`,
+	)};
 `;
 
 export const HeadBox = styled.div`
@@ -71,7 +78,11 @@ export const HeadBox = styled.div`
 `;
 
 const HeadCell = ({ columnDef, rowIds = [], allSelected }) => (
-	<TableHeader onClick={columnDef.sort} select={columnDef.type === "select"}>
+	<TableHeader
+		onClick={columnDef.sort}
+		select={columnDef.type === "select"}
+		width={columnDef.width}
+	>
 		<HeadBox>
 			{columnDef.type === "select" ? (
 				<Checkbox
