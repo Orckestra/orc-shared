@@ -16,11 +16,12 @@ describe("HeadCell", () => {
 		const columnDef = {
 			fieldName: "a",
 			label: { id: "test.label", defaultMessage: "Test column" },
+			width: 42,
 		};
 		return expect(
 			<HeadCell columnDef={columnDef} />,
 			"to render as",
-			<TableHeader>
+			<TableHeader width={42}>
 				<HeadBox>
 					<FormattedMessage id="test.label" defaultMessage="Test column" />
 				</HeadBox>
@@ -130,6 +131,27 @@ describe("HeadCell", () => {
 			</TableHeader>,
 		);
 	});
+});
+
+// Switch components as <tr> warns when outside a table.
+const SwitchedTableHeader = TableHeader.withComponent("div");
+
+describe("TableHeader", () => {
+	it("sets a width if selection column", () =>
+		expect(
+			<SwitchedTableHeader select />,
+			"to render style rules",
+			"to contain",
+			"width: 40px;",
+		));
+
+	it("sets a width if told to", () =>
+		expect(
+			<SwitchedTableHeader width={55} />,
+			"to render style rules",
+			"to contain",
+			"width: 55%;",
+		));
 });
 
 describe("SortMark", () => {

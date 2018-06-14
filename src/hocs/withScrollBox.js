@@ -12,7 +12,7 @@ export const Scrollbox = styled.div`
 
 const withScrollBox = WrappedComp => ({ onScroll, ...otherProps }) => (
 	<Measure bounds>
-		{({ measureRef, contentRect = {} }) => (
+		{({ measureRef, contentRect }) => (
 			<Scrollbox onScroll={onScroll} innerRef={measureRef}>
 				<WrappedComp
 					{...otherProps}

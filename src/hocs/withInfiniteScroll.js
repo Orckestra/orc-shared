@@ -12,7 +12,7 @@ export const withInfiniteScroll = withStateHandlers(
 			{ scrollTop },
 			{
 				onScroll = () => {},
-				scrollLoader = () => {},
+				scrollLoader,
 				loadTrigger = 200,
 				length = 0,
 				latestPage = 1,

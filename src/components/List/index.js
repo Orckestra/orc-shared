@@ -76,6 +76,7 @@ export const List = ({
 	);
 };
 
+/* istanbul ignore next */
 const checkInfiniteScroll = branch(
 	({ scrollLoader }) => !!scrollLoader,
 	withInfiniteScroll,
