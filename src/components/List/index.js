@@ -1,7 +1,9 @@
 import React from "react";
 import pt from "prop-types";
 import styled from "styled-components";
+import { compose, branch } from "recompose";
 import { safeGet } from "../../utils";
+import withInfiniteScroll from "../../hocs/withInfiniteScroll";
 import Row from "./Row";
 import HeadRow from "./HeadRow";
 import withListState from "./withListState";
@@ -74,7 +76,15 @@ export const List = ({
 	);
 };
 
-const StatefulList = withListState(List);
+const checkInfiniteScroll = branch(
+	({ scrollLoader }) => !!scrollLoader,
+	withInfiniteScroll,
+);
+
+const StatefulList = compose(
+	checkInfiniteScroll,
+	withListState,
+)(List);
 StatefulList.propTypes = {
 	columnDefs: pt.arrayOf(
 		pt.oneOfType([
@@ -104,6 +114,15 @@ StatefulList.propTypes = {
 	// Fires when row is clicked, excluding select or switch columns
 	// Event target will have a 'rowId' data value which identifies the clicked row.
 	keyField: pt.arrayOf(pt.string), // Path to identifying data field on each row.
+
+	// Infinite/virtual scroll
+	// If scrollLoader is present, below props will control the scrolling
+	scrollLoader: pt.func, // Loader function. Called with page number to be loaded.
+	onScroll: pt.func, // Optional scroll event handler
+	loadTrigger: pt.number, // How many pixels from the bottom should the load be triggered. Default: 200
+	length: pt.number, // How many elements are loaded, should equal rows.length
+	latestPage: pt.number, // The latest page number loaded
+	pageLength: pt.number, // The length of a page, in row items. Default: 20.
 };
 
 export default StatefulList;

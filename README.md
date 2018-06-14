@@ -134,21 +134,9 @@ Shows a modal dialog box, which will close if clicked outside. Children of the c
 
 `keyField`: A key name (or key path) pointing to a member on each row that is uniquely identifying. This value will be used to reference the row in selections, the `rowOnClick` handler, etc.
 
-Configurable list component. Shows a table of information, according to the given configuration. Can be combined with `ScrollLoader` for infinite scrolling capability.
+`scrollLoader`: A function that, given a page number, loads in more items for the list.
 
-### ScrollLoader
-
-`loadTrigger`: A length in pixels of how far from the bottom of the list the loader function should be tirggered.
-
-`length`: The number of elements currently being shown.
-
-`latestPage`: The latest page number that has been loaded. Pages are 1-indexed, not 0-indexed!
-
-`pageLength`: The number of elements loaded in a page.
-
-`scrollLoader`: The function to call when scrolling to the end of the list.
-
-Intended for lists and grids of elements, this component will wrap its children in a scrollable block, and call a function whenever the user scrolls near its bottom. The end effect is that new elements are loaded in on scroll as long as new elements can be had.
+Configurable list component. Shows a table of information, according to the given configuration. If the `scrollLoader` prop is present, the list will be rendered with virtual scrolling, and the loader function will be called everytime the user scrolls close to the botton of the list. Props for controlling infinite scroll can be found in documentation of the `withInfiniteScroll` HOC, which is used to add this functionality.
 
 ### Sidepanel
 
@@ -200,9 +188,23 @@ Adds support for a `onClickOutside` prop to the component. This prop should be a
 
 If no `id` prop is passed to the resulting component, this HOC will generate a pseudo-unique id for the wrapped component to use. Generated ids will be of the shape `"<name><count>"` where `name` is the passed name parameter, and `count` is a counter for that name. Counters are memoized, so subsequent calls to `withId` using the same name will access the same counter.
 
+### `withInfiniteScroll(Component)`
+
+The wrapped component (some form of list which must have consistently vertically sized items) is furnished with the needed functionality to handle infinite scrolling, i.e. a loader function (passed as a prop named `scrollLoader`) is called anytime the user scrolls beyond a certain distance (set via the `loadTrigger` prop, in pixels) of the end of the wrapped component.
+
+Any `onScroll` handler on the resulting component will still be called as per normal.
+
+The resulting component should be given props containing information about the list's current state: `length` should be a count of items currently loaded, `latestPage` should be the page number of the latest page loaded, and `pageLength` can be set if pages contain a different number of items than the default 20.
+
+A `virtual` flag prop will be set on the wrapped component, to signal that it may want to render itself virtually for performance reasons.
+
 ### `withLocaleSwitch(Component)`
 
 Provides a click event handler to the component, which will attempt to change the locale to the one given in its `locale` prop.
+
+### `withScrollBox(Component)`
+
+The given component will be wrapped in a scrollable `<div>`, and is passed a `height` prop containing the height in pixels of that element as currently rendered, updated on resize.
 
 ### `withToggle(propname)(Component)`
 

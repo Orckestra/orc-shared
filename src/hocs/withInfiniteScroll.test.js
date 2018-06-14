@@ -1,7 +1,7 @@
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import sinon from "sinon";
-import ScrollLoader, { ScrollTracker, Scrollbox } from "./ScrollLoader";
+import { withInfiniteScroll } from "./withInfiniteScroll";
 
 const getFakeEvent = scrollTop => {
 	const elm = {
@@ -14,36 +14,30 @@ const getFakeEvent = scrollTop => {
 
 const TestComp = () => <div />;
 
-describe("ScrollLoader", () => {
-	it("renders a scroll box with an onScroll handler", () =>
-		expect(
-			<ScrollLoader>
-				<TestComp id="child" />
-			</ScrollLoader>,
-			"to render as",
-			<ScrollTracker onScroll={expect.it("to be a function")} scrollTop={0}>
-				<TestComp id="child" />
-			</ScrollTracker>,
+describe("withInfiniteScroll", () => {
+	it("enhances a component to have an onScroll handler and a scrollTop prop", () =>
+		expect(withInfiniteScroll, "when called with", [TestComp]).then(EnhComp =>
+			expect(
+				<EnhComp />,
+				"to render as",
+				<TestComp
+					onScroll={expect.it("to be a function")}
+					scrollTop={0}
+					virtual
+				/>,
+			),
 		));
 
 	describe("scroll prop updates", () => {
-		beforeEach(() => {});
+		let ScrollComp;
+		beforeEach(() => {
+			ScrollComp = withInfiniteScroll(TestComp);
+		});
 
 		it("updates the scrollTop prop on children", () =>
-			expect(
-				<ScrollLoader>
-					<TestComp id="child" />
-				</ScrollLoader>,
-				"when deeply rendered",
-			)
+			expect(<ScrollComp />, "when rendered")
 				.then(render =>
-					expect(
-						render,
-						"to have rendered",
-						<Scrollbox>
-							<TestComp id="child" scrollTop={0} />
-						</Scrollbox>,
-					),
+					expect(render, "to have rendered", <TestComp scrollTop={0} />),
 				)
 				.then(render =>
 					expect(
@@ -51,21 +45,20 @@ describe("ScrollLoader", () => {
 						"with event scroll",
 						getFakeEvent(100),
 						"to have rendered",
-						<Scrollbox>
-							<TestComp id="child" scrollTop={100} />
-						</Scrollbox>,
+						<TestComp scrollTop={100} />,
 					),
 				));
 	});
 
 	describe("onScroll", () => {
-		let onScroll, loader, oldOnScroll;
+		let ScrollComp, onScroll, loader, oldOnScroll;
 		beforeEach(() => {
 			loader = sinon.spy().named("loader");
 			oldOnScroll = sinon.spy().named("oldOnScroll");
+			ScrollComp = withInfiniteScroll(TestComp);
 			const renderer = new ShallowRenderer();
 			renderer.render(
-				<ScrollLoader
+				<ScrollComp
 					onScroll={oldOnScroll}
 					length={10}
 					latestPage={1}
@@ -90,7 +83,7 @@ describe("ScrollLoader", () => {
 		it("calls the loader if scrolled far enough", () => {
 			const fakeEvent = getFakeEvent(350);
 			return expect(onScroll, "called with", [fakeEvent])
-				.then(() => expect(loader, "to have calls satisfying", [{ args: [1] }]))
+				.then(() => expect(loader, "to have calls satisfying", [{ args: [2] }]))
 				.then(() =>
 					expect(oldOnScroll, "to have calls satisfying", [
 						{ args: [fakeEvent] },
@@ -100,7 +93,7 @@ describe("ScrollLoader", () => {
 
 		it("does not call the loader if the latest page is not loaded", () =>
 			expect(
-				<ScrollLoader
+				<ScrollComp
 					length={10}
 					latestPage={2}
 					pageLength={10}
@@ -108,25 +101,21 @@ describe("ScrollLoader", () => {
 				/>,
 				"when rendered",
 				"queried for",
-				<ScrollTracker />,
+				<TestComp />,
 				"to have rendered",
-				<ScrollTracker
-					onScroll={expect.it("called with", [getFakeEvent(350)])}
-				/>,
+				<TestComp onScroll={expect.it("called with", [getFakeEvent(350)])} />,
 			).then(() => expect(loader, "was not called")));
 
 		it("does not call the loader if a partial page is loaded", () =>
 			expect(
-				<ScrollLoader
+				<ScrollComp
 					length={10}
 					latestPage={2}
 					pageLength={7}
 					scrollLoader={loader}
 				/>,
 				"to render as",
-				<ScrollTracker
-					onScroll={expect.it("called with", [getFakeEvent(350)])}
-				/>,
+				<TestComp onScroll={expect.it("called with", [getFakeEvent(350)])} />,
 			).then(() => expect(loader, "was not called")));
 	});
 });
