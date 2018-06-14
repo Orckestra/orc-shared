@@ -56,7 +56,7 @@ export const TableHeader = styled.th`
 	${ifFlag(
 		"select",
 		css`
-			width: 40px;
+			width: 56px;
 		`,
 	)};
 

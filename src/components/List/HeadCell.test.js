@@ -142,7 +142,7 @@ describe("TableHeader", () => {
 			<SwitchedTableHeader select />,
 			"to render style rules",
 			"to contain",
-			"width: 40px;",
+			"width: 56px;",
 		));
 
 	it("sets a width if told to", () =>

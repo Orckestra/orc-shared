@@ -43,6 +43,9 @@ const renderByType = (value, def, rowId, selected) => {
 export const TableData = styled.td`
 	height: 20px;
 	padding: 15px 20px;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
 `;
 
 const DataCell = ({ columnDef, row, rowId, selected }) => (
