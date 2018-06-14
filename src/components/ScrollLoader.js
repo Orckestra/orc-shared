@@ -1,6 +1,7 @@
 import React, { Children, cloneElement } from "react";
 import styled from "styled-components";
 import { withStateHandlers } from "recompose";
+import { withContentRect } from "react-measure";
 import { debounce } from "../utils";
 
 const addPropsToChildren = (children, props) =>
@@ -13,16 +14,19 @@ export const Scrollbox = styled.div`
 	overflow-y: auto;
 `;
 
-export const ScrollTracker = ({ onScroll, scrollTop, children }) => (
-	<Scrollbox onScroll={onScroll}>
-		{addPropsToChildren(children, { scrollTop })}
-	</Scrollbox>
+export const ScrollTracker = withContentRect("bounds")(
+	({ measureRef, onScroll, scrollTop, height, children }) => (
+		<Scrollbox onScroll={onScroll} innerRef={measureRef}>
+			{addPropsToChildren(children, { scrollTop, height })}
+		</Scrollbox>
+	),
 );
 ScrollTracker.displayName = "ScrollTracker";
 
 const withScrollLoad = withStateHandlers(
-	({ initialScrollTop = 0 }) => ({
+	({ initialScrollTop = 0, initialHeight = 300 }) => ({
 		scrollTop: initialScrollTop,
+		height: initialHeight,
 	}),
 	{
 		onScroll: (
@@ -55,6 +59,8 @@ const withScrollLoad = withStateHandlers(
 			onScroll(event);
 			return { scrollTop: event.target.scrollTop };
 		},
+		onResize: ({ height }) =>
+			debounce(({ bounds }) => ({ height: bounds.height }), 100),
 	},
 );
 
