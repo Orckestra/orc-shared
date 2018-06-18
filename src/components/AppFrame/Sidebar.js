@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { compose, mapProps } from "recompose";
+import withNavigationLink from "../../hocs/withNavigationLink";
+import { getCurrentScope } from "../../selectors/route";
 import MenuItem from "./MenuItem";
-import getEnhancedComponent from "./getEnhancedComponent";
 
 export const Bar = styled.div`
 	box-sizing: border-box;
@@ -14,11 +17,17 @@ export const Bar = styled.div`
 	color: #999999;
 `;
 
-// Memoized factory function to prevent wasting time recreating the same component
-const getEnhancedMenuItem = getEnhancedComponent();
+export const EnhancedMenuItem = compose(
+	connect(state => ({ scope: getCurrentScope(state) })),
+	mapProps(({ scope, id, ...remainder }) => ({
+		href: `/${scope}/${id}`,
+		id,
+		...remainder,
+	})),
+	withNavigationLink,
+)(MenuItem);
 
-const Sidebar = ({ open, toggle, linkHOC = x => x, modules = [] }) => {
-	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, MenuItem);
+const Sidebar = ({ open, toggle, modules = [] }) => {
 	return (
 		<Bar open={open}>
 			<MenuItem
@@ -28,7 +37,7 @@ const Sidebar = ({ open, toggle, linkHOC = x => x, modules = [] }) => {
 				onClick={toggle}
 			/>
 			{modules.map(item => (
-				<EnhancedMenuItem key={item.icon} {...item} open={open} />
+				<EnhancedMenuItem key={item.id} {...item} open={open} />
 			))}
 		</Bar>
 	);

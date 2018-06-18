@@ -16,3 +16,16 @@ export const paramSelector = createSelector(
 	routerData,
 	router => router.get("params") || Immutable.Map(),
 );
+
+// Not a selector, as previous calls can change the result.
+let lastScope;
+export const resetLastScope = () => {
+	lastScope = undefined;
+};
+export const getCurrentScope = state => {
+	const params = paramSelector(state);
+	if (params.get("scope")) {
+		lastScope = params.get("scope");
+	}
+	return lastScope || "Global";
+};

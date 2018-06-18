@@ -53,7 +53,6 @@ export const Scope = ({
 	currentScope,
 	getScope,
 	show = false,
-	openAll,
 	nodeState,
 	filter,
 	updateViewState,
@@ -75,7 +74,6 @@ export const Scope = ({
 			show={show}
 			reset={reset}
 			getScope={getScope}
-			openAll={openAll}
 			nodeState={nodeState}
 			updateNodeState={updateNodeState}
 			filter={filter}
@@ -87,14 +85,14 @@ export const Scope = ({
 );
 Scope.displayName = "Scope";
 
-const withScopeRoute = WrapComp => props => (
+const withScopeRoute = WrapScope => props => (
 	<RenderFragment forRoute="/:scope">
-		<WrapComp {...props} />
+		<WrapScope name="scopeSelector" {...props} />
 	</RenderFragment>
 );
 
 export default compose(
-	withViewState,
 	withScopeRoute,
+	withViewState,
 	withSelectorHandlers,
 )(Scope);

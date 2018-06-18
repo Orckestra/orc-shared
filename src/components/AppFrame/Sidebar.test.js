@@ -1,5 +1,6 @@
 import React from "react";
-import Sidebar, { Bar } from "./Sidebar";
+import Immutable from "immutable";
+import Sidebar, { Bar, EnhancedMenuItem } from "./Sidebar";
 import MenuItem from "./MenuItem";
 
 describe("Sidebar", () => {
@@ -7,9 +8,9 @@ describe("Sidebar", () => {
 	beforeEach(() => {
 		modules = [
 			{
+				id: "first",
 				icon: "cars",
 				label: "First page",
-				href: "/first",
 			},
 		];
 	});
@@ -20,7 +21,7 @@ describe("Sidebar", () => {
 			"to render as",
 			<Bar>
 				<MenuItem menu icon="menu" />
-				<MenuItem icon="cars" label="First page" href="/first" />
+				<EnhancedMenuItem icon="cars" id="first" label="First page" />
 			</Bar>,
 		));
 
@@ -30,7 +31,7 @@ describe("Sidebar", () => {
 			"to render as",
 			<Bar>
 				<MenuItem menu open icon="layers" />
-				<MenuItem open icon="cars" label="First page" href="/first" />
+				<EnhancedMenuItem open icon="cars" id="first" label="First page" />
 			</Bar>,
 		));
 
@@ -41,5 +42,28 @@ describe("Sidebar", () => {
 			<Bar>
 				<MenuItem menu icon="menu" />
 			</Bar>,
+		));
+});
+
+describe("EnhancedMenuItem", () => {
+	let store;
+	beforeEach(() => {
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () =>
+				Immutable.fromJS({
+					router: {
+						params: {},
+					},
+				}),
+		};
+	});
+
+	it("renders a MenuItem with href and onClick", () =>
+		expect(
+			<EnhancedMenuItem id="route" store={store} />,
+			"to deeply render as",
+			<MenuItem href="/Global/route" onClick={expect.it("to be a function")} />,
 		));
 });

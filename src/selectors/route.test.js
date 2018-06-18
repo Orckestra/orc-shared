@@ -1,5 +1,11 @@
 import Immutable from "immutable";
-import { routeSelector, resultSelector, paramSelector } from "./route";
+import {
+	routeSelector,
+	resultSelector,
+	paramSelector,
+	getCurrentScope,
+	resetLastScope,
+} from "./route";
 
 describe("route selector", () => {
 	let state;
@@ -105,6 +111,48 @@ describe("param selector", () => {
 			[state],
 			"to equal",
 			Immutable.Map(),
+		);
+	});
+});
+
+describe("getCurrentScope", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			router: {
+				params: {
+					scope: "thing",
+				},
+			},
+		});
+	});
+	afterEach(() => {
+		resetLastScope();
+	});
+
+	it("gets the current scope, if one is set", () =>
+		expect(getCurrentScope, "when called with", [state], "to be", "thing"));
+
+	it("gets the last scope, if no scope set and previous scope is known", () => {
+		getCurrentScope(state);
+		state = state.deleteIn(["router", "params", "scope"]);
+		return expect(
+			getCurrentScope,
+			"when called with",
+			[state],
+			"to be",
+			"thing",
+		);
+	});
+
+	it("gets the default scope, if no scope set and no previous known", () => {
+		state = state.deleteIn(["router", "params", "scope"]);
+		return expect(
+			getCurrentScope,
+			"when called with",
+			[state],
+			"to be",
+			"Global",
 		);
 	});
 });

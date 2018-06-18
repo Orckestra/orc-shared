@@ -1,7 +1,12 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
 import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
-import { compose, mapProps, setDisplayName } from "recompose";
+import {
+	compose,
+	mapProps,
+	withPropsOnChange,
+	setDisplayName,
+} from "recompose";
 import withToggle from "../../hocs/withToggle";
 import Scope from "../Scope";
 import Topbar from "./Topbar";
@@ -47,14 +52,12 @@ export const ViewPort = styled.div`
 			: ""};
 `;
 
-const withEnhancedScope = mapProps(({ scopeHOC, ...remainder }) => ({
+const withEnhancedScope = withPropsOnChange(["scopeHOC"], ({ scopeHOC }) => ({
 	ConnectedScope: setDisplayName("ConnectedScope")(scopeHOC(Scope)),
-	...remainder,
 }));
 
 // Top bar containing username, user menu, help button
 export const AppFrame = ({
-	children,
 	open,
 	toggle,
 	reset,
@@ -81,7 +84,7 @@ export const AppFrame = ({
 				{modules.map(module => {
 					const ModulePage = module.component;
 					return (
-						<RenderFragment key={module.id} forRoute={module.route}>
+						<RenderFragment key={module.id} forRoute={"/" + module.id}>
 							<ModulePage />
 						</RenderFragment>
 					);

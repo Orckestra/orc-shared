@@ -78,13 +78,27 @@ Provides actions for setting partial or complete view state for named components
 
 ### AppFrame
 
-`topbarConfig`: An object containing the needed information to configure an app frame.
+`applications`: A list of applications to be made available in the application selector. An application is defined as an object containing `url`, `name`, `iconUri` and `displayName` values.
 
-`sidebarConfig`: An object containing the needed information to configure an app frame.
+`applicationId`: The `name` of the current application as given in `applications`.
 
-`children`: Children of the component will be rendered into the view port.
+`modules`: A list of modules provided by this application, given as objects containing an `id` (used to generate its URL), a `component` to render, and an `icon` and a `label` (`react-intl` message descriptor) to show in the sidebar menu.
 
-Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with breadcrumb trail, user menu and help popup.
+`menuLabel`: The label for the topbar menu. Typically the logged-in user's email.
+
+`menuItems`: A list of items in the topbar menu, given as objects containing `label` (`react-intl` message descriptor), `handler`function for selecting the item, and an `icon` id to show.
+
+`scopeHOC`: A higher-order component that furnishes the scope selector with properties. See `Scope` component for the props this should provide.
+
+Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with user menu and help popup. Modules will be rendered as links in the sidebar, and as routes to components in the viewport.
+
+### Button
+
+`primary`: If this flag is set, the button will be highlighted as a primary button.
+
+`active`: If this flag is set, the button will be shown as currently active. Implies a toggle function.
+
+A styled `<button>`, set up to look consistent across the UI. Use this as a drop-in replacement for `<button>` elements.
 
 ### Checkbox
 
@@ -114,15 +128,9 @@ Pre-connected internationalization-provider. Use this as a wrapper component for
 
 Shows a single SVG icon, according to the icon id given. Requires `content/icons.svg` (or another, similarly structured SVG sprite sheet) to have been inserted in the DOM. Size is controlled by setting the CSS font-size.
 
-### Modal
+### Input
 
-`look`: The appearance of the dialog box. One of `'default'` or `'dark'`.
-
-`anchor`: A React Node (i.e. legal JSX output) to be rendered as the anchor element. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
-
-`content`: A React Node (i.e. legal JSX output) to be rendered as the dialog contents. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
-
-Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
+A styled input field to be used in place of `<input>`. Takes the same props as this element and should be used as a replacement of it. Avoid using this for checkboxes, instead use the `Checkbox` component.
 
 ### List
 
@@ -137,6 +145,26 @@ Shows a modal dialog box, which will close if clicked outside. Children of the c
 `scrollLoader`: A function that, given a page number, loads in more items for the list.
 
 Configurable list component. Shows a table of information, according to the given configuration. If the `scrollLoader` prop is present, the list will be rendered with virtual scrolling, and the loader function will be called everytime the user scrolls close to the botton of the list. Props for controlling infinite scroll can be found in documentation of the `withInfiniteScroll` HOC, which is used to add this functionality.
+
+### Modal
+
+`look`: The appearance of the dialog box. One of `'default'` or `'dark'`.
+
+`anchor`: A React Node (i.e. legal JSX output) to be rendered as the anchor element. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
+
+`content`: A React Node (i.e. legal JSX output) to be rendered as the dialog contents. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
+
+Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
+
+### Scope
+
+`currentScope`: The currenlty selected scope, as stored in state.
+
+`getScope`: A function that will get a single scope by name
+
+`filterPlaceholder`: A message descriptor to be used as the placeholder in the filter input.
+
+A component that shows a scope bar with slide-out scope selector. Uses Redux view state to control scope selector panel visibility, scope filtering, and the scope tree state.
 
 ### Sidepanel
 
@@ -198,9 +226,17 @@ The resulting component should be given props containing information about the l
 
 A `virtual` flag prop will be set on the wrapped component, to signal that it may want to render itself virtually for performance reasons.
 
+### `withInitialLoad(loaderName, test)(Component)`
+
+When the wrapped component is mounted, the loader func in the prop named by `loaderName` is called. A `test` function may be included, which takes the props given and should return a boolean - if false, the loader is not called.
+
 ### `withLocaleSwitch(Component)`
 
 Provides a click event handler to the component, which will attempt to change the locale to the one given in its `locale` prop.
+
+## `withNavigationLink(Component)`
+
+Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via Redux and `redux-little-router`.
 
 ### `withScrollBox(Component)`
 
@@ -251,6 +287,8 @@ If, however, the route has a field of the same name containing an array of strin
 `routeSelector`: Returns the matched route string.
 
 `resultSelector`: Returns the matched result object, which includes the parent routes of the currently matched route back to the root, as described in the application's route object.
+
+`getCurrentScope`: Not an actual selector, as this function will return either the current `scope` route parameter, the last set `scope` parameter, or the default scope name (`"Global"`) if no scope has ever been set.
 
 ## License
 

@@ -28,7 +28,6 @@ describe("Scope", () => {
 				getScope={getScope}
 				show={true}
 				reset={reset}
-				openAll={false}
 				nodeState={nodeState}
 				filter=""
 				updateViewState={updateViewState}
@@ -51,7 +50,6 @@ describe("Scope", () => {
 						.it("to be a function")
 						.and("when called with", [mockEvent])}
 					getScope={getScope}
-					openAll={false}
 					nodeState={nodeState}
 					updateNodeState={updateNodeState}
 					filter=""

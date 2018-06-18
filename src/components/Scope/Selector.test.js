@@ -11,7 +11,6 @@ describe("Selector", () => {
 			reset: () => {},
 			intl: { formatMessage: msg => msg.defaultMessage },
 			getScope: () => {},
-			openAll: false,
 			nodeState: {},
 			updateNodeState: () => {},
 			filter: "",
