@@ -1,7 +1,27 @@
 import React from "react";
+import ReactDOM from "react-dom";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
+import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import Scope from "../Scope";
 import FullAppFrame, { Base, ViewPort, AppFrame } from "./index";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
+
+class ClassAppFrame extends React.Component {
+	render() {
+		const { store, ...props } = this.props;
+		return (
+			<Provider store={store}>
+				<FullAppFrame {...props} />
+			</Provider>
+		);
+	}
+}
+
+const TestComp1 = () => <div />;
+const TestComp2 = () => <div />;
+const TestComp3 = () => <div />;
 
 describe("AppFrame", () => {
 	let props, toggle, reset;
@@ -9,18 +29,24 @@ describe("AppFrame", () => {
 		props = {
 			applications: [{ src: "/", label: "This", id: "current" }],
 			applicationId: "current",
-			pages: [],
+			modules: [],
 			menuLabel: "TestLabel",
 			menuItems: [],
 			linkHOC: x => x,
+			ConnectedScope: Scope,
 		};
 
 		toggle = () => {};
 		reset = () => {};
 	});
 
-	it("renders a viewport, top bar and sidebar", () =>
-		expect(
+	it("renders a viewport, top bar and sidebar", () => {
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		return expect(
 			<AppFrame {...props} {...{ toggle, reset }} />,
 			"to render as",
 			<Base>
@@ -31,10 +57,21 @@ describe("AppFrame", () => {
 					menuLabel={props.menuLabel}
 					menuItems={props.menuItems}
 				/>
-				<Sidebar linkHOC={props.linkHOC} pages={props.pages} />
-				<ViewPort />
+				<Sidebar linkHOC={props.linkHOC} modules={props.modules} />
+				<ViewPort>
+					<RenderFragment key="test1" forRoute="/test1">
+						<TestComp1 />
+					</RenderFragment>
+					<RenderFragment key="test2" forRoute="/test2">
+						<TestComp2 />
+					</RenderFragment>
+					<RenderFragment key="test3" forRoute="/test3">
+						<TestComp3 />
+					</RenderFragment>
+				</ViewPort>
 			</Base>,
-		));
+		);
+	});
 
 	it("propagates open flag, toggle and reset functions", () =>
 		expect(
@@ -47,36 +84,52 @@ describe("AppFrame", () => {
 			</Base>,
 		));
 
-	describe("ViewPort", () => {
-		it("does not translate when closed", () =>
-			expect(
-				<ViewPort />,
-				"to render style rules",
-				"not to contain",
-				"translateX",
-			));
-
-		it("translates to the side when open", () =>
-			expect(
-				<ViewPort open />,
-				"to render style rules",
-				"to contain",
-				"transform: translateX(150px);",
-			));
-	});
-
 	describe("with state handling", () => {
-		it("adds toggleable and resettable open flag", () =>
-			expect(
-				<FullAppFrame {...props} />,
-				"to render as",
+		let store, outerProps, appRoot, modalRoot;
+		beforeEach(() => {
+			store = {
+				subscribe: () => {},
+				dispatch: () => {},
+				getState: () =>
+					Immutable.fromJS({
+						router: {
+							params: { scope: "foo" },
+						},
+					}),
+			};
+			const { ConnectedScope, ...remainder } = props;
+			outerProps = { store, scopeHOC: x => x, ...remainder };
+			appRoot = document.createElement("div");
+			appRoot.id = "app";
+			document.body.appendChild(appRoot);
+			modalRoot = document.createElement("div");
+			modalRoot.id = "modal";
+			document.body.appendChild(modalRoot);
+		});
+		afterEach(() => {
+			try {
+				ReactDOM.unmountComponentAtNode(appRoot);
+			} catch (_) {}
+			document.body.removeChild(appRoot);
+			document.body.removeChild(modalRoot);
+		});
+
+		it("adds toggleable and resettable open flag", () => {
+			const render = ReactDOM.render(
+				<ClassAppFrame {...outerProps} />,
+				appRoot,
+			);
+			return expect(
+				render,
+				"to have rendered",
 				<AppFrame
 					{...props}
 					open={false}
 					toggle={expect.it("to be a function")}
 					reset={expect.it("to be a function")}
 				/>,
-			));
+			);
+		});
 	});
 
 	describe("global styles", () => {
@@ -113,4 +166,22 @@ describe("AppFrame", () => {
 				),
 			));
 	});
+});
+
+describe("ViewPort", () => {
+	it("does not translate when closed", () =>
+		expect(
+			<ViewPort />,
+			"to render style rules",
+			"not to contain",
+			"translateX",
+		));
+
+	it("translates to the side when open", () =>
+		expect(
+			<ViewPort open />,
+			"to render style rules",
+			"to contain",
+			"transform: translateX(150px);",
+		));
 });

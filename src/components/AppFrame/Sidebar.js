@@ -17,7 +17,7 @@ export const Bar = styled.div`
 // Memoized factory function to prevent wasting time recreating the same component
 const getEnhancedMenuItem = getEnhancedComponent();
 
-const Sidebar = ({ open, toggle, linkHOC = x => x, pages = [] }) => {
+const Sidebar = ({ open, toggle, linkHOC = x => x, modules = [] }) => {
 	const EnhancedMenuItem = getEnhancedMenuItem(linkHOC, MenuItem);
 	return (
 		<Bar open={open}>
@@ -27,7 +27,7 @@ const Sidebar = ({ open, toggle, linkHOC = x => x, pages = [] }) => {
 				icon={open ? "layers" : "menu"}
 				onClick={toggle}
 			/>
-			{pages.map(item => (
+			{modules.map(item => (
 				<EnhancedMenuItem key={item.icon} {...item} open={open} />
 			))}
 		</Bar>

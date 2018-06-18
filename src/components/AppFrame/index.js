@@ -1,6 +1,9 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
+import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import { compose, mapProps, setDisplayName } from "recompose";
 import withToggle from "../../hocs/withToggle";
+import Scope from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 
@@ -44,6 +47,11 @@ export const ViewPort = styled.div`
 			: ""};
 `;
 
+const withEnhancedScope = mapProps(({ scopeHOC, ...remainder }) => ({
+	ConnectedScope: setDisplayName("ConnectedScope")(scopeHOC(Scope)),
+	...remainder,
+}));
+
 // Top bar containing username, user menu, help button
 export const AppFrame = ({
 	children,
@@ -52,10 +60,11 @@ export const AppFrame = ({
 	reset,
 	applications,
 	applicationId,
-	pages,
+	modules,
 	menuLabel,
 	menuItems,
 	linkHOC,
+	ConnectedScope,
 }) => (
 	<Base>
 		<Topbar
@@ -66,11 +75,24 @@ export const AppFrame = ({
 			menuLabel={menuLabel}
 			menuItems={menuItems}
 		/>
-		<Sidebar linkHOC={linkHOC} open={open} toggle={toggle} pages={pages} />
+		<Sidebar linkHOC={linkHOC} open={open} toggle={toggle} modules={modules} />
 		<ViewPort open={open} onClick={reset}>
-			{children}
+			<ConnectedScope>
+				{modules.map(module => {
+					const ModulePage = module.component;
+					return (
+						<RenderFragment key={module.id} forRoute={module.route}>
+							<ModulePage />
+						</RenderFragment>
+					);
+				})}
+			</ConnectedScope>
 		</ViewPort>
 	</Base>
 );
+AppFrame.displayName = "AppFrame";
 
-export default withToggle("open")(AppFrame);
+export default compose(
+	withEnhancedScope,
+	withToggle("open"),
+)(AppFrame);

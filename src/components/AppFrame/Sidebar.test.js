@@ -3,9 +3,9 @@ import Sidebar, { Bar } from "./Sidebar";
 import MenuItem from "./MenuItem";
 
 describe("Sidebar", () => {
-	let pages;
+	let modules;
 	beforeEach(() => {
-		pages = [
+		modules = [
 			{
 				icon: "cars",
 				label: "First page",
@@ -16,7 +16,7 @@ describe("Sidebar", () => {
 
 	it("renders a sidebar with app selector and page menu", () =>
 		expect(
-			<Sidebar pages={pages} />,
+			<Sidebar modules={modules} />,
 			"to render as",
 			<Bar>
 				<MenuItem menu icon="menu" />
@@ -26,7 +26,7 @@ describe("Sidebar", () => {
 
 	it("renders an open sidebar", () =>
 		expect(
-			<Sidebar open pages={pages} />,
+			<Sidebar open modules={modules} />,
 			"to render as",
 			<Bar>
 				<MenuItem menu open icon="layers" />
