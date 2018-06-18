@@ -1,12 +1,7 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
 import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
-import {
-	compose,
-	mapProps,
-	withPropsOnChange,
-	setDisplayName,
-} from "recompose";
+import { compose, withPropsOnChange, setDisplayName } from "recompose";
 import withToggle from "../../hocs/withToggle";
 import Scope from "../Scope";
 import Topbar from "./Topbar";

@@ -150,9 +150,9 @@ Configurable list component. Shows a table of information, according to the give
 
 `look`: The appearance of the dialog box. One of `'default'` or `'dark'`.
 
-`anchor`: A React Node (i.e. legal JSX output) to be rendered as the anchor element. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
+`anchor`: A React render function to be rendered as the anchor element. This should take a `toggle` function as parameter, which when invoked will toggle visibility of the dialog.
 
-`content`: A React Node (i.e. legal JSX output) to be rendered as the dialog contents. This will have a `toggle` function prop set on it by Modal, which when invoked will toggle visibility of the dialog.
+`content`: A React render function to be rendered as the dialog contents. This should take a `toggle` function as parameter, which when invoked will toggle visibility of the dialog.
 
 Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
 

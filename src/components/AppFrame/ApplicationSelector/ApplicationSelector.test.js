@@ -1,5 +1,5 @@
 import React from "react";
-import ApplicationSelector from "./index";
+import ApplicationSelector, { getAnchor, getDialog } from "./index";
 import Header from "./Header";
 import ApplicationDialog from "./ApplicationDialog";
 import Modal from "../../Modal";
@@ -32,14 +32,8 @@ describe("ApplicationSelector", () => {
 			<ApplicationSelector {...props} />,
 			"to render as",
 			<Modal
-				anchor={<Header open application={thisApp} />}
-				content={
-					<ApplicationDialog
-						open
-						applications={applications}
-						applicationId={props.applicationId}
-					/>
-				}
+				anchor={expect.it("to be a function")}
+				content={expect.it("to be a function")}
 			/>,
 		));
 
@@ -49,9 +43,50 @@ describe("ApplicationSelector", () => {
 			<ApplicationSelector {...props} />,
 			"to render as",
 			<Modal
-				anchor={<Header open />}
-				content={<ApplicationDialog open applicationId={props.applicationId} />}
+				anchor={expect.it("to be a function")}
+				content={expect.it("to be a function")}
 			/>,
 		);
+	});
+
+	describe("getAnchor", () => {
+		let toggle;
+		beforeEach(() => {
+			toggle = () => {};
+		});
+
+		it("takes props and returns a header render function", () =>
+			expect(
+				getAnchor,
+				"when called with",
+				["foo", props],
+				"when called with",
+				[toggle],
+				"to equal",
+				<Header className="foo" open application={thisApp} toggle={toggle} />,
+			));
+	});
+
+	describe("getDialog", () => {
+		let toggle;
+		beforeEach(() => {
+			toggle = () => {};
+		});
+
+		it("takes props and returns a header render function", () =>
+			expect(
+				getDialog,
+				"when called with",
+				[props],
+				"when called with",
+				[toggle],
+				"to equal",
+				<ApplicationDialog
+					open
+					applications={applications}
+					applicationId={props.applicationId}
+					toggle={toggle}
+				/>,
+			));
 	});
 });

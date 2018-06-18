@@ -18,8 +18,8 @@ describe("Modal", () => {
 			<Modal
 				show={true}
 				toggle={toggle}
-				anchor={<TestComp1 />}
-				content={<TestComp2 />}
+				anchor={toggle => <TestComp1 toggle={toggle} />}
+				content={toggle => <TestComp2 toggle={toggle} />}
 				look="dark"
 			/>,
 			"to render as",
@@ -38,16 +38,16 @@ describe("Modal", () => {
 		it("adds toggleable show flag", () =>
 			expect(
 				<FullModal
-					anchor={<TestComp1 />}
-					content={<TestComp2 />}
+					anchor={toggle => <TestComp1 toggle={toggle} />}
+					content={toggle => <TestComp2 toggle={toggle} />}
 					look="dark"
 				/>,
 				"to render as",
 				<Modal
 					show={false}
 					toggle={expect.it("to be a function")}
-					anchor={<TestComp1 />}
-					content={<TestComp2 />}
+					anchor={expect.it("to be a function")}
+					content={expect.it("to be a function")}
 					look="dark"
 				/>,
 			));
