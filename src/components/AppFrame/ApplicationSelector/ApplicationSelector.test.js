@@ -37,18 +37,6 @@ describe("ApplicationSelector", () => {
 			/>,
 		));
 
-	it("handles a missing app list", () => {
-		delete props.applications;
-		return expect(
-			<ApplicationSelector {...props} />,
-			"to render as",
-			<Modal
-				anchor={expect.it("to be a function")}
-				content={expect.it("to be a function")}
-			/>,
-		);
-	});
-
 	describe("getAnchor", () => {
 		let toggle;
 		beforeEach(() => {
@@ -65,6 +53,19 @@ describe("ApplicationSelector", () => {
 				"to equal",
 				<Header className="foo" open application={thisApp} toggle={toggle} />,
 			));
+
+		it("handles a missing app list", () => {
+			delete props.applications;
+			return expect(
+				getAnchor,
+				"when called with",
+				["foo", props],
+				"when called with",
+				[toggle],
+				"to equal",
+				<Header className="foo" open toggle={toggle} />,
+			);
+		});
 	});
 
 	describe("getDialog", () => {
