@@ -234,7 +234,7 @@ When the wrapped component is mounted, the loader func in the prop named by `loa
 
 Provides a click event handler to the component, which will attempt to change the locale to the one given in its `locale` prop.
 
-## `withNavigationLink(Component)`
+### `withNavigationLink(Component)`
 
 Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via Redux and `redux-little-router`.
 
