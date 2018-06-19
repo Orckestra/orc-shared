@@ -53,7 +53,6 @@ const withEnhancedScope = withPropsOnChange(["scopeHOC"], ({ scopeHOC }) => ({
 	ConnectedScope: setDisplayName("ConnectedScope")(scopeHOC(Scope)),
 }));
 
-// Top bar containing username, user menu, help button
 export const AppFrame = ({
 	open,
 	toggle,
