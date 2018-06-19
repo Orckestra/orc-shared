@@ -1,0 +1,66 @@
+import React from "react";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
+import { toClass } from "recompose";
+import DevPages from "./DevPages";
+import I18n from "./I18n";
+import Provision from "./Provision";
+
+const fakeStore = {
+	subscribe: listener => () => {},
+	dispatch: action => action,
+	getState: () => Immutable.Map(),
+	replaceReducer: () => {},
+};
+
+const fakeTheme = { value: "styles" };
+
+const TestComp = toClass(() => <div />);
+
+describe("Provision", () => {
+	it("renders", () =>
+		expect(
+			<Provision store={fakeStore} theme={fakeTheme}>
+				<TestComp />
+			</Provision>,
+			"to render as",
+			<Provider store={fakeStore}>
+				<ThemeProvider theme={expect.it("to be", fakeTheme)}>
+					<DevPages>
+						<I18n>
+							<TestComp />
+						</I18n>
+					</DevPages>
+				</ThemeProvider>
+			</Provider>,
+		));
+
+	it("handles getting no theme", () =>
+		expect(
+			<Provision store={fakeStore}>
+				<TestComp />
+			</Provision>,
+			"to render as",
+			<Provider store={fakeStore}>
+				<ThemeProvider theme={{}}>
+					<DevPages>
+						<I18n>
+							<TestComp />
+						</I18n>
+					</DevPages>
+				</ThemeProvider>
+			</Provider>,
+		));
+
+	it("fails if no children given", () =>
+		expect(
+			() =>
+				expect(
+					<Provision store={fakeStore} theme={fakeTheme} />,
+					"when rendered",
+				),
+			"to throw",
+			"React.Children.only expected to receive a single React element child.",
+		));
+});

@@ -156,9 +156,17 @@ Configurable list component. Shows a table of information, according to the give
 
 Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
 
+### Provision
+
+`store`: The redux store of the application.
+
+`theme`: The theme object to be used in the app.
+
+Sets up the various providers and wrappers needed for an application. Should have one child element, in most cases a redux-connected `<AppFrame>`.
+
 ### Scope
 
-`currentScope`: The currenlty selected scope, as stored in state.
+`currentScope`: The currently selected scope, as stored in state.
 
 `getScope`: A function that will get a single scope by name
 
