@@ -38,6 +38,8 @@ export const ViewPort = styled.div`
 	position: absolute;
 	bottom: 0;
 	right: 0;
+	display: flex;
+	flex-direction: column;
 	transition: transform 0.3s ease-out;
 	${props =>
 		props.open

@@ -1,6 +1,6 @@
 import React from "react";
 import sinon from "sinon";
-import { Scope, ScopeBar, Bar, AlignedButton, Viewport } from "./index";
+import { Scope, ScopeBar, Bar, AlignedButton } from "./index";
 import Selector from "./Selector";
 
 describe("Scope", () => {
@@ -56,9 +56,7 @@ describe("Scope", () => {
 					updateFilter={updateFilter}
 					filterPlaceholder={{ defaultMessage: "Type a scope name" }}
 				/>
-				<Viewport>
-					<div id="child" />
-				</Viewport>
+				<div id="child" />
 			</React.Fragment>,
 		));
 
@@ -71,9 +69,7 @@ describe("Scope", () => {
 			<React.Fragment>
 				<ScopeBar name="ScopeName" />
 				<Selector show={false} />
-				<Viewport>
-					<div id="child" />
-				</Viewport>
+				<div id="child" />
 			</React.Fragment>,
 		));
 });

@@ -1,6 +1,5 @@
-import { compose, withStateHandlers } from "recompose";
+import { withStateHandlers } from "recompose";
 import { debounce } from "../utils";
-import withScrollBox from "./withScrollBox";
 
 export const withInfiniteScroll = withStateHandlers(
 	({ initialScrollTop = 0 }) => ({
@@ -41,7 +40,4 @@ export const withInfiniteScroll = withStateHandlers(
 	},
 );
 
-export default compose(
-	withInfiniteScroll,
-	withScrollBox,
-);
+export default withInfiniteScroll;

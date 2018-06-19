@@ -3,6 +3,7 @@ import pt from "prop-types";
 import styled from "styled-components";
 import { compose, branch } from "recompose";
 import { safeGet } from "../../utils";
+import withScrollBox from "../../hocs/withScrollBox";
 import withInfiniteScroll from "../../hocs/withInfiniteScroll";
 import Row from "./Row";
 import HeadRow from "./HeadRow";
@@ -84,6 +85,7 @@ const checkInfiniteScroll = branch(
 
 const StatefulList = compose(
 	checkInfiniteScroll,
+	withScrollBox,
 	withListState,
 )(List);
 StatefulList.propTypes = {

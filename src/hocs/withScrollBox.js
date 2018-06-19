@@ -4,8 +4,7 @@ import { safeGet } from "../utils";
 import Measure from "react-measure";
 
 export const Scrollbox = styled.div`
-	height: 100%;
-	width: 100%;
+	flex: 0 1 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
 `;

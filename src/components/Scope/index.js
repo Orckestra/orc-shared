@@ -7,7 +7,7 @@ import Button from "../Button";
 import Selector from "./Selector";
 
 export const Bar = styled.div`
-	height: 49px;
+	flex: 0 0 49px;
 	border-bottom: 1px solid #ccc;
 	background-color: #efefef;
 	display: flex;
@@ -31,12 +31,6 @@ export const ScopeBar = ({ show, name, updateViewState }) => (
 	</Bar>
 );
 ScopeBar.displayName = "ScopeBar";
-
-export const Viewport = styled.div`
-	height: calc(100% - 50px);
-	overflow-x: hidden;
-	overflow-y: auto;
-`;
 
 export const withSelectorHandlers = withHandlers({
 	reset: /* istanbul ignore next */ ({ updateViewState }) => event => {
@@ -80,7 +74,7 @@ export const Scope = ({
 			updateFilter={updateFilter}
 			filterPlaceholder={filterPlaceholder}
 		/>
-		<Viewport>{children}</Viewport>
+		{children}
 	</React.Fragment>
 );
 Scope.displayName = "Scope";
