@@ -5,12 +5,14 @@
 	"main": "dist/",
 	"scripts": {
 		"build": "orc-scripts build",
+		"build:clean": "npm run clean & npm run build",
+		"clean": "rm -r dist & mkdir dist",
 		"watch": "orc-scripts build --watch",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
 		"coveralls": "cat coverage/lcov.info | coveralls",
 		"precommit": "lint-staged",
-		"prepare": "npm run build"
+		"prepare": "npm run build:clean"
 	},
 	"files": [
 		"dist"
