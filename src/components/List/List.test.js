@@ -1,5 +1,11 @@
 import React from "react";
-import { List, Table } from "./index";
+import {
+	List,
+	Table,
+	Placeholder,
+	PlaceholderCell,
+	PlaceholderBox,
+} from "./index";
 import Row from "./Row";
 import HeadRow from "./HeadRow";
 
@@ -19,6 +25,26 @@ describe("List", () => {
 
 	it("renders a table", () =>
 		expect(<List columnDefs={[{}]} />, "to render as", <Table />));
+
+	it("renders just a header", () =>
+		expect(
+			<List columnDefs={[{}, {}, {}]} />,
+			"when rendered",
+			"to contain with all children",
+			<tbody />,
+		));
+
+	it("renders a placeholder if one given and no rows", () =>
+		expect(
+			<List height={121} columnDefs={[{}, {}, {}]} placeholder={<div />} />,
+			"when rendered",
+			"to contain with all children",
+			<tbody>
+				<Placeholder width={3} height={80}>
+					<div />
+				</Placeholder>
+			</tbody>,
+		));
 
 	it("renders a row for each row data object", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
@@ -269,4 +295,23 @@ describe("List", () => {
 				</tbody>,
 			));
 	});
+});
+
+describe("Placeholder", () => {
+	it("renders wrappers to center the placeholder in the table", () =>
+		expect(
+			<Placeholder width={4} height={450}>
+				<div id="child" />
+			</Placeholder>,
+			"to exactly render as",
+			<tr>
+				<td colSpan={4} style={{ padding: 0 }}>
+					<PlaceholderCell cssHeight={450}>
+						<PlaceholderBox>
+							<div id="child" />
+						</PlaceholderBox>
+					</PlaceholderCell>
+				</td>
+			</tr>,
+		));
 });

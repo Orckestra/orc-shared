@@ -9,6 +9,27 @@ import Row from "./Row";
 import HeadRow from "./HeadRow";
 import withListState from "./withListState";
 
+export const PlaceholderCell = styled.div`
+	height: ${/* istanbul ignore next*/ props => props.cssHeight || 100}px;
+	display: flex;
+	justify-content: center;
+`;
+
+export const PlaceholderBox = styled.div`
+	margin: auto;
+`;
+
+export const Placeholder = ({ width, height, children }) => (
+	<tr>
+		<td colSpan={width} style={{ padding: 0 }}>
+			<PlaceholderCell cssHeight={height}>
+				<PlaceholderBox>{children}</PlaceholderBox>
+			</PlaceholderCell>
+		</td>
+	</tr>
+);
+Placeholder.displayName = "Placeholder";
+
 export const Table = styled.table`
 	border-collapse: collapse;
 	table-layout: fixed;
@@ -20,6 +41,7 @@ export const List = ({
 	columnDefs = [],
 	rows = [],
 	rowOnClick,
+	placeholder,
 	selection = [],
 	keyField = ["id"],
 	virtual = false,
@@ -30,12 +52,13 @@ export const List = ({
 	if (columnDefs.length === 0) return null;
 	const rowIds = [],
 		rowElements = [],
+		headerHeight = 41,
 		rowHeight = 51;
 	let virtualFilter = () => true;
 	let heightAbove = 0,
 		heightBelow = 0;
 	if (virtual) {
-		const correctedScrollTop = scrollTop - 41; // Subtract header height
+		const correctedScrollTop = scrollTop - headerHeight; // Subtract header height
 		const firstIn = Math.floor(correctedScrollTop / rowHeight);
 		const firstShow = Math.max(firstIn - scrollBuffer, 0);
 		const lastIn = Math.ceil((correctedScrollTop + height) / rowHeight);
@@ -59,6 +82,25 @@ export const List = ({
 			/>,
 		);
 	});
+	if (virtual && heightAbove) {
+		rowElements.unshift(
+			<tr key="virtualAbove" style={{ height: heightAbove }} />,
+		);
+	}
+	if (virtual && heightBelow) {
+		rowElements.push(<tr key="virtualBelow" style={{ height: heightBelow }} />);
+	}
+	if (rowElements.length === 0 && placeholder) {
+		rowElements.push(
+			<Placeholder
+				key="placeholder"
+				width={columnDefs.length}
+				height={height - headerHeight}
+			>
+				{placeholder}
+			</Placeholder>,
+		);
+	}
 	return (
 		<Table>
 			<thead>
@@ -68,11 +110,7 @@ export const List = ({
 					allSelected={rows.length === selection.length && rows.length !== 0}
 				/>
 			</thead>
-			<tbody>
-				{virtual && heightAbove ? <tr style={{ height: heightAbove }} /> : null}
-				{rowElements}
-				{virtual && heightBelow ? <tr style={{ height: heightBelow }} /> : null}
-			</tbody>
+			<tbody>{rowElements}</tbody>
 		</Table>
 	);
 };
@@ -114,6 +152,7 @@ StatefulList.propTypes = {
 	),
 	rows: pt.arrayOf(pt.object),
 	rowOnClick: pt.func, // Click handler for row.
+	placeholder: pt.node, // A React element to render as placeholder.
 	// Fires when row is clicked, excluding select or switch columns
 	// Event target will have a 'rowId' data value which identifies the clicked row.
 	keyField: pt.arrayOf(pt.string), // Path to identifying data field on each row.
