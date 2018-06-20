@@ -17,13 +17,13 @@ export const withInfiniteScroll = withStateHandlers(
 				latestPage = 1,
 				pageLength = 20,
 			},
-		) => event => {
-			debounce(
-				e => {
+		) => {
+			const scrollCheck = debounce(
+				event => {
 					if (
 						// Are we scrolled far enough?
-						e.target.scrollHeight -
-							(e.target.scrollTop + e.target.offsetHeight) <
+						event.target.scrollHeight -
+							(event.target.scrollTop + event.target.offsetHeight) <
 							loadTrigger &&
 						// Are we already loading?
 						length === latestPage * pageLength
@@ -33,9 +33,12 @@ export const withInfiniteScroll = withStateHandlers(
 				},
 				200,
 				true,
-			)(event);
-			onScroll(event);
-			return { scrollTop: event.target.scrollTop };
+			);
+			return event => {
+				scrollCheck(event);
+				onScroll(event);
+				return { scrollTop: event.target.scrollTop };
+			};
 		},
 	},
 );
