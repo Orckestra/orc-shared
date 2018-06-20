@@ -52,7 +52,6 @@ const Button = styled.button`
 	user-select: none;
 	height: 30px;
 	border: 1px solid ${borderColor("#ccc")};
-	box-shadow: 0 1px 1px #ccc;
 	outline: none;
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	text-transform: uppercase;

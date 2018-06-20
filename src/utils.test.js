@@ -413,6 +413,31 @@ describe("debounce", () => {
 				.then(() => expect(handler, "was called")),
 		));
 
+	it("calls only with latest arguments if multiple calls made", () =>
+		expect(debounce, "called with", [handler, 10]).then(debouncedHandler =>
+			expect(debouncedHandler, "called with", 1)
+				.then(() => expect(handler, "was not called"))
+				.then(() => {
+					clock.tick(1);
+					debouncedHandler(2);
+				})
+				.then(() => expect(handler, "was not called"))
+				.then(() => {
+					clock.tick(1);
+					debouncedHandler(3);
+				})
+				.then(() => expect(handler, "was not called"))
+				.then(() => {
+					clock.tick(1);
+					debouncedHandler(4);
+				})
+				.then(() => expect(handler, "was not called"))
+				.then(() => clock.tick(20))
+				.then(() =>
+					expect(handler, "to have calls satisfying", [{ args: [4] }]),
+				),
+		));
+
 	it("only calls handler once during repeated calls immediate flag given", () =>
 		expect(debounce, "called with", [handler, 10, true]).then(
 			debouncedHandler =>
