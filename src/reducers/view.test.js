@@ -27,11 +27,13 @@ describe("View state reducer", () => {
 		});
 		const action = setStateField("test", "stuff", "new value");
 		const newState = viewReducer(oldState, action);
-		return expect(newState, "not to be", oldState).and(
-			"to have value at",
-			"test",
-			Immutable.fromJS({ stuff: "new value", things: "old value" }),
-		);
+		return expect(newState, "not to be", oldState)
+			.and(
+				"to have value at",
+				"test",
+				Immutable.fromJS({ stuff: "new value", things: "old value" }),
+			)
+			.and("to have value at", "other", "don't touch");
 	});
 
 	it("creates missing states", () => {
