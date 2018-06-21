@@ -64,6 +64,7 @@ describe("buildStore", () => {
 							locale: "en-US",
 							supportedLocales: ["en-US", "fr"],
 						},
+						requests: {},
 						view: {},
 						test: false,
 					}),

@@ -31,6 +31,10 @@ Usually not used directly, as it is included in state stores created with `build
 
 A simple reducer that keeps track of view state objects for named components. Used to support the [`withViewState`](hocs.md#withviewstatecomponent) higher-order component (q.v.).
 
+## `request`
+
+This reducer interacts with `redux-api-middleware`, in that it tracks ongoing requests. If an action ending in `"_REQUEST"` is dispatched, it will set a flag named for the action type. So, for example, `GET_SCOPES_REQUEST` will see `'GET_SCOPES'` set in the request state. A following action of that name ending in `'_SUCCESS'` or `'_FAILURE'` will then unset the flag again. This can be used to indicate a loading state to users.
+
 # Selectors
 
 These selectors expect a `buildState` store, or one using `localeFactory` to create its `locale` reducer.

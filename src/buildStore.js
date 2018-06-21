@@ -6,6 +6,7 @@ import { combineReducers } from "redux-immutable";
 import addLocales from "./addLocales";
 import localeFactory from "./reducers/localeFactory";
 import viewReducer from "./reducers/view";
+import requestReducer from "./reducers/request";
 
 export let buildReducer;
 
@@ -34,6 +35,7 @@ const buildStore = (routes, reducers) => {
 			...reducers,
 			locale: localeReducer,
 			router: routeReducer,
+			requests: requestReducer,
 			view: viewReducer,
 		});
 	const rootReducer = buildReducer(reducers);
