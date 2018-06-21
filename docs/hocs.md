@@ -32,6 +32,10 @@ Provides a click event handler to the component, which will attempt to change th
 
 Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via Redux and `redux-little-router`.
 
+## `withRequestActivity(request)(Component)`
+
+If the `request` named is currently in progress (i.e. we are between a `<request>_REQUEST` action and a `<request>_SUCCESS` or `<request>_FAILURE` action being dispatched), the wrapped component will have an `active` prop set to true. This allows the component to indicate loading status to the user.
+
 ## `withScrollBox(Component)`
 
 The given component will be wrapped in a scrollable `<div>`, and is passed a `height` prop containing the height in pixels of that element as currently rendered, updated on resize.
