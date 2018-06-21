@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { getThemeProp, ifFlag } from "../../utils";
 import Icon from "../Icon";
 
 export const Header = styled.div`
@@ -17,7 +18,13 @@ Header.defaultProps = {
 	},
 };
 
-export const Indicator = styled(Icon)`
+export const Indicator = styled(Icon).attrs({
+	id: ifFlag(
+		"open",
+		getThemeProp(["indicatorIcons", "up"], "chevron-up"),
+		getThemeProp(["indicatorIcons", "down"], "chevron-down"),
+	),
+})`
 	font-size: 10px;
 	padding: 0 11px;
 	color: ${props => (props.open ? "#ccc" : props.theme.appHighlightColor)};
@@ -32,7 +39,7 @@ Indicator.defaultProps = {
 const Anchor = ({ onClick, className, menuLabel, open }) => (
 	<Header {...{ onClick, className, open }}>
 		{menuLabel}
-		<Indicator id={open ? "chevron-up" : "chevron-down"} open={open} />
+		<Indicator open={open} />
 	</Header>
 );
 

@@ -13,7 +13,7 @@ describe("Anchor", () => {
 			"to render as",
 			<Header onClick={onClick} className="propagateThis">
 				A Label
-				<Indicator id="chevron-down" />
+				<Indicator />
 			</Header>,
 		);
 	});
@@ -24,7 +24,7 @@ describe("Anchor", () => {
 			"to render as",
 			<Header open className="propagateThis">
 				A Label
-				<Indicator open id="chevron-up" />
+				<Indicator open />
 			</Header>,
 		));
 

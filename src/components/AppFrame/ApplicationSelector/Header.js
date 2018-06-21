@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import Icon from "../../Icon";
+import { getThemeProp } from "../../../utils";
 
-export const MenuIcon = styled(Icon).attrs({ id: "placeholder" })`
+export const MenuIcon = styled(Icon).attrs({
+	id: getThemeProp(["menuIcon"], "placeholder"),
+})`
 	font-size: 24px;
 	margin: auto;
 `;
