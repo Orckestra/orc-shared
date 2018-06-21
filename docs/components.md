@@ -57,7 +57,7 @@ A styled input field to be used in place of `<input>`. Takes the same props as t
 - `rows`: An array of data objects, each corresponding to one row in the table. Should contain the fields defined in `columnDefs`, and importantly, the `keyField` (q.v.).
 - `rowOnClick`: A click handler for rows. The target element of the event will have `data-row-id` set, which can be accessed via `event.target.dataset["rowId"]`, and which contains the row ID of the row that was clicked (see also `keyField`). This handler is not fired when the click was on a form element (i.e. `<input>`, `<select>`, `<label>`).
 - `keyField`: A key name (or key path) pointing to a member on each row that is uniquely identifying. This value will be used to reference the row in selections, the `rowOnClick` handler, etc.
-- `placeholder`: If a React node is included as this prop, the list, when empty, will display this instead where list elements would be.
+- `placeholder`: If a React node is included as this prop, the list, when empty, will display this instead, centered in the area where list elements would be.
 - `scrollLoader`: A function that, given a page number, loads in more items for the list.
 
 Configurable list component. Shows a table of information, according to the given configuration. If the `scrollLoader` prop is present, the list will be rendered with virtual scrolling, and the loader function will be called everytime the user scrolls close to the botton of the list. Props for controlling infinite scroll can be found in documentation of the `withInfiniteScroll` HOC, which is used to add this functionality.
