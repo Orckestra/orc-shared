@@ -68,7 +68,16 @@ Configurable list component. Shows a table of information, according to the give
 - `anchor`: A React render function to be rendered as the anchor element. This should take a `toggle` function as parameter, which when invoked will toggle visibility of the dialog.
 - `content`: A React render function to be rendered as the dialog contents. This should take a `toggle` function as parameter, which when invoked will toggle visibility of the dialog.
 
-Shows a modal dialog box, which will close if clicked outside. Children of the component tag will be rendered inside the dialog box.
+Shows a modal dialog box, which will close if clicked outside.
+
+## Placeholder
+
+- `icon`: The `id` of an icon to be shown.
+- `title`: A string or message descriptor to be rendered as large text.
+- `subtitle`: A string or message descriptor to be shown below the title, slightly smaller.
+- `animate`: A flag, if set the icon will rotate.
+
+Shows an element suitable for being used as a placeholder or load spinner in e.g. lists without content.
 
 ## Provision
 
