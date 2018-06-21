@@ -114,6 +114,12 @@ Displays all available icons along with the ids to access them.
 
 Displays a horizontal toggle switch. This is a wrapper around a `<input type="checkbox" />`, so any props that work with that will also work here. Use `value` to set the value, not `checked`. If no `id` is passed, one will be generated and used.
 
+## Toolbar
+
+- `tools`: Array of objects denoting the tools to be shown.
+
+Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `separator` and `spacer`. The former two will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id, or a `text`. In turn, `group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a cohesive group of controls. Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar. For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
+
 ## Treeview
 
 - `Content`: A React component. This will render the leaf nodes of the tree. Default: a null component.
