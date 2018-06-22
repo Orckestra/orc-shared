@@ -32,7 +32,7 @@ export const Base = styled.div`
 export const ViewPort = styled.div`
 	overflow: hidden;
 	background-color: white;
-	border-top-left-radius: 5px;
+	border-top-left-radius: 10px;
 	height: calc(100% - 40px);
 	width: calc(100% - 50px);
 	position: absolute;
