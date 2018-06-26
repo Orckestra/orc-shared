@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import { apiMiddleware } from "redux-api-middleware";
 import Immutable from "immutable";
 import { immutableRouterForBrowser } from "redux-little-router/lib/immutable";
+import { initializeCurrentLocation } from "redux-little-router";
 import { combineReducers } from "redux-immutable";
 import addLocales from "./addLocales";
 import localeFactory from "./reducers/localeFactory";
@@ -48,6 +49,11 @@ const buildStore = (routes, reducers) => {
 		initialState,
 		composeEnhancers(routeEnhancer, applyMiddleware(...middleware)),
 	);
+
+	const initialLocation = store.getState().get("router");
+	if (initialLocation) {
+		store.dispatch(initializeCurrentLocation(initialLocation.toJS()));
+	}
 
 	return store;
 };
