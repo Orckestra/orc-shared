@@ -57,6 +57,26 @@ describe("withNavigationLink", () => {
 				]),
 			));
 
+	it("sets onClick handler (inert) on self href", () =>
+		expect(withNavigationLink, "when called with", [TestComp])
+			.then(Comp =>
+				expect(
+					<Comp store={fakeStore} href="/" />,
+					"to render as",
+					<TestComp
+						onClick={expect
+							.it("to be a function")
+							.and("when called with", [mockEvent])}
+					/>,
+				),
+			)
+			.then(() =>
+				Promise.all([
+					expect(mockEvent.preventDefault, "was called"),
+					expect(fakeStore.dispatch, "was not called"),
+				]),
+			));
+
 	it("does not set onClick handler on remote hrefs", () =>
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(

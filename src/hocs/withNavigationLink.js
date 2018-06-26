@@ -1,9 +1,13 @@
 import { connect } from "react-redux";
 import { push } from "redux-little-router";
 
-const isLocalHref = href => {
+const analyzeHref = href => {
+	if (!href) return {};
 	const url = new URL(href, window.location);
-	return href && url.origin === window.location.origin;
+	return {
+		local: url.origin === window.location.origin,
+		self: window.location.href === url.href,
+	};
 };
 
 const isActiveHref = href => {
@@ -21,11 +25,16 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	const props = {};
-	if (isLocalHref(ownProps.href)) {
-		props.onClick = event => {
-			event.preventDefault();
-			dispatch(push(ownProps.href));
-		};
+	const traits = analyzeHref(ownProps.href);
+	if (traits.local) {
+		props.onClick = traits.self
+			? event => {
+					event.preventDefault();
+			  }
+			: event => {
+					event.preventDefault();
+					dispatch(push(ownProps.href));
+			  };
 	}
 	return props;
 };

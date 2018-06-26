@@ -30,7 +30,7 @@ Provides a click event handler to the component, which will attempt to change th
 
 ## `withNavigationLink(Component)`
 
-Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via Redux and `redux-little-router`.
+Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via Redux and `redux-little-router`. If the path points to the current one, no navigation takes place.
 
 ## `withRequestActivity(request)(Component)`
 
