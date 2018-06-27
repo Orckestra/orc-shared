@@ -57,7 +57,7 @@ describe("withNavigationLink", () => {
 				]),
 			));
 
-	it("sets onClick handler (inert) on self href", () =>
+	it("does not navigate on self href", () =>
 		expect(withNavigationLink, "when called with", [TestComp])
 			.then(Comp =>
 				expect(
@@ -77,17 +77,43 @@ describe("withNavigationLink", () => {
 				]),
 			));
 
-	it("does not set onClick handler on remote hrefs", () =>
-		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
-			expect(
-				<Comp store={fakeStore} href="http://google.com/" />,
-				"to exactly render as",
-				<TestComp
-					store={fakeStore}
-					active={false}
-					href="http://google.com/"
-					storeSubscription={{}}
-				/>,
-			),
-		));
+	it("does navigate to remote hrefs", () =>
+		expect(withNavigationLink, "when called with", [TestComp])
+			.then(Comp =>
+				expect(
+					<Comp store={fakeStore} href="http://google.com/" />,
+					"to render as",
+					<TestComp
+						onClick={expect
+							.it("to be a function")
+							.and("when called with", [mockEvent])}
+					/>,
+				),
+			)
+			.then(() =>
+				Promise.all([
+					expect(mockEvent.preventDefault, "was not called"),
+					expect(fakeStore.dispatch, "was not called"),
+				]),
+			));
+
+	it("no href does not navigate", () =>
+		expect(withNavigationLink, "when called with", [TestComp])
+			.then(Comp =>
+				expect(
+					<Comp store={fakeStore} />,
+					"to render as",
+					<TestComp
+						onClick={expect
+							.it("to be a function")
+							.and("when called with", [mockEvent])}
+					/>,
+				),
+			)
+			.then(() =>
+				Promise.all([
+					expect(mockEvent.preventDefault, "was called"),
+					expect(fakeStore.dispatch, "was not called"),
+				]),
+			));
 });

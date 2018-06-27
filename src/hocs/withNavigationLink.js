@@ -2,8 +2,7 @@ import { connect } from "react-redux";
 import { push } from "redux-little-router";
 
 const analyzeHref = href => {
-	if (!href) return {};
-	const url = new URL(href, window.location);
+	const url = new URL(href || "", window.location);
 	return {
 		local: url.origin === window.location.origin,
 		self: window.location.href === url.href,
@@ -25,17 +24,15 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	const props = {};
-	const traits = analyzeHref(ownProps.href);
-	if (traits.local) {
-		props.onClick = traits.self
-			? event => {
-					event.preventDefault();
-			  }
-			: event => {
-					event.preventDefault();
-					dispatch(push(ownProps.href));
-			  };
-	}
+	props.onClick = event => {
+		const traits = analyzeHref(ownProps.href);
+		if (traits.local) {
+			event.preventDefault();
+			if (!traits.self) {
+				dispatch(push(ownProps.href));
+			}
+		}
+	};
 	return props;
 };
 

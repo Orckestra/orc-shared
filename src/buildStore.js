@@ -51,6 +51,7 @@ const buildStore = (routes, reducers) => {
 	);
 
 	const initialLocation = store.getState().get("router");
+	/* istanbul ignore else */
 	if (initialLocation) {
 		store.dispatch(initializeCurrentLocation(initialLocation.toJS()));
 	}
