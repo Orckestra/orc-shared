@@ -53,6 +53,14 @@ These selectors expect a `buildState` store, or one using `localeFactory` to cre
 
 `defaultLocale`: Finds and returns the default locale for the application. This is the first entry in the supported locales list, or if no such list is given, falls back to `'en'`.
 
+## Navigation
+
+`selectTabGetter`: Creates a function that will get tabs by their path. Returns undefined on unknown path.
+
+`selectCurrentModuleName`: Searches up through the current route result for a module name. If none can be found, returns empty string.
+
+`selectMappedCurrentModuleList`: Gets the list of tab objects for the currently selected module.
+
 ## Route
 
 `paramSelector`: Returns the matched parameters of the current route.
