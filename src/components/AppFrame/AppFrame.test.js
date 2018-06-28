@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
 import Scope from "../Scope";
 import FullAppFrame, { Base, ViewPort, AppFrame } from "./index";
 import Topbar from "./Topbar";
@@ -46,6 +45,11 @@ describe("AppFrame", () => {
 			{ id: "test2", component: TestComp2, route: "/test2" },
 			{ id: "test3", component: TestComp3, route: "/test3" },
 		];
+		props.children = [
+			<TestComp1 key="1" />,
+			<TestComp2 key="2" />,
+			<TestComp3 key="3" />,
+		];
 		return expect(
 			<AppFrame {...props} {...{ toggle, reset }} />,
 			"to render as",
@@ -59,15 +63,11 @@ describe("AppFrame", () => {
 				/>
 				<Sidebar linkHOC={props.linkHOC} modules={props.modules} />
 				<ViewPort>
-					<RenderFragment key="test1" forRoute="/test1">
-						<TestComp1 />
-					</RenderFragment>
-					<RenderFragment key="test2" forRoute="/test2">
-						<TestComp2 />
-					</RenderFragment>
-					<RenderFragment key="test3" forRoute="/test3">
-						<TestComp3 />
-					</RenderFragment>
+					<Scope>
+						<TestComp1 key="1" />
+						<TestComp2 key="2" />
+						<TestComp3 key="3" />
+					</Scope>
 				</ViewPort>
 			</Base>,
 		);

@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
 import { compose, withPropsOnChange, setDisplayName } from "recompose";
 import withToggle from "../../hocs/withToggle";
 import Scope from "../Scope";
@@ -64,6 +63,7 @@ export const AppFrame = ({
 	menuItems,
 	linkHOC,
 	ConnectedScope,
+	children,
 }) => (
 	<Base>
 		<Topbar
@@ -76,16 +76,7 @@ export const AppFrame = ({
 		/>
 		<Sidebar linkHOC={linkHOC} open={open} toggle={toggle} modules={modules} />
 		<ViewPort open={open} onClick={reset}>
-			<ConnectedScope>
-				{modules.map(module => {
-					const ModulePage = module.component;
-					return (
-						<RenderFragment key={module.id} forRoute={"/" + module.id}>
-							<ModulePage />
-						</RenderFragment>
-					);
-				})}
-			</ConnectedScope>
+			<ConnectedScope>{children}</ConnectedScope>
 		</ViewPort>
 	</Base>
 );
