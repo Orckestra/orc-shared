@@ -1,3 +1,4 @@
+import React from "react";
 import Immutable from "immutable";
 import sinon from "sinon";
 import {
@@ -10,6 +11,8 @@ import {
 	flatten,
 	setTranslation,
 	debounce,
+	stripKey,
+	modulesToRoutes,
 } from "utils";
 
 describe("safeGet", () => {
@@ -488,4 +491,84 @@ describe("debounce", () => {
 						]),
 					),
 		));
+});
+
+describe("stripKey", () => {
+	it("returns a copied object with the named key removed", () => {
+		const obj = { foo: 1, bar: 2, moo: 3 };
+		return expect(stripKey, "called with", ["bar", obj]).then(copy =>
+			expect(copy, "not to be", obj)
+				.and("not to have key", "bar")
+				.and("to satisfy", { foo: 1, moo: 3 }),
+		);
+	});
+});
+
+describe("modulesToRoutes", () => {
+	let modules, Mod1, Mod2, Mod3, Page1, Page2, Page3;
+	beforeEach(() => {
+		Mod1 = () => <div />;
+		Mod2 = () => <div />;
+		Mod3 = () => <div />;
+		Page1 = () => <div />;
+		Page2 = () => <div />;
+		Page3 = () => <div />;
+		modules = {
+			users: {
+				label: "Module 1",
+				icon: "user",
+				component: Mod1,
+				pages: {
+					"/:page1": {
+						component: Page1,
+						title: "Page 1",
+					},
+					"/:page2": {
+						component: Page2,
+						title: "Page 2",
+					},
+				},
+			},
+			photos: {
+				label: "Module 2",
+				icon: "image",
+				component: Mod2,
+				pages: {
+					"/:page3": {
+						component: Page3,
+						title: "Page 3",
+					},
+				},
+			},
+			demos: {
+				label: "Module 3",
+				icon: "cloud",
+				component: Mod3,
+			},
+		};
+	});
+
+	it("converts a module table to a route table", () =>
+		expect(modulesToRoutes, "called with", [modules], "to satisfy", {
+			"/:scope": {
+				"/users": {
+					module: "users",
+					"/:page1": {
+						title: "Page 1",
+					},
+					"/:page2": {
+						title: "Page 2",
+					},
+				},
+				"/photos": {
+					module: "photos",
+					"/:page3": {
+						title: "Page 3",
+					},
+				},
+				"/demos": {
+					module: "demos",
+				},
+			},
+		}));
 });

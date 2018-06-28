@@ -96,3 +96,32 @@ export function debounce(func, wait, immediate) {
 		if (callNow) func.apply(context, args);
 	};
 }
+
+/* Returns a copy of an object with a single named key stripped out */
+export const stripKey = (key, { [key]: _, ...newObj }) => newObj;
+
+/* Converts a modules object to a route object that supports it */
+const getPageRoutes = module =>
+	Object.entries(safeGet(module, "pages") || {}).reduce(
+		(routes, [route, page]) => {
+			const remainder = stripKey("component", page);
+			return {
+				[route]: remainder,
+				...routes,
+			};
+		},
+		{},
+	);
+
+export const modulesToRoutes = modules => ({
+	"/:scope": Object.entries(modules).reduce(
+		(moduleRoutes, [name, module]) => ({
+			["/" + name]: {
+				module: name,
+				...getPageRoutes(module),
+			},
+			...moduleRoutes,
+		}),
+		{},
+	),
+});
