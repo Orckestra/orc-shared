@@ -73,7 +73,7 @@ export const CloseIcon = styled(Icon).attrs({
 	}
 `;
 
-const formatIfDescriptor = message =>
+const formatIfDescriptor = (message = "") =>
 	message.id ? <FormattedMessage {...message} /> : message;
 
 export const Tab = ({ href, label, icon, module, active, close }) => {

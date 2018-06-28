@@ -67,11 +67,11 @@ describe("Tab", () => {
 	it("renders an active page tab", () => {
 		const close = () => {};
 		return expect(
-			<Tab active label="A page" href="/Foo/modu/page" close={close} />,
+			<Tab active href="/Foo/modu/page" close={close} />,
 			"to render as",
 			<PageTab active>
 				<TabLink href="/Foo/modu/page">
-					<TabText>A page</TabText>
+					<TabText />
 					<CloseIcon onClick={close} />
 				</TabLink>
 			</PageTab>,
