@@ -8,6 +8,7 @@ import addLocales from "./addLocales";
 import localeFactory from "./reducers/localeFactory";
 import viewReducer from "./reducers/view";
 import requestReducer from "./reducers/request";
+import navigationReducer from "./reducers/navigation";
 
 export let buildReducer;
 
@@ -35,6 +36,7 @@ const buildStore = (routes, reducers) => {
 		combineReducers({
 			...reducers,
 			locale: localeReducer,
+			navigation: navigationReducer,
 			router: routeReducer,
 			requests: requestReducer,
 			view: viewReducer,

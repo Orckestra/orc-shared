@@ -64,6 +64,10 @@ describe("buildStore", () => {
 							locale: "en-US",
 							supportedLocales: ["en-US", "fr"],
 						},
+						navigation: {
+							tabIndex: {},
+							moduleTabs: {},
+						},
 						requests: {},
 						view: {},
 						test: false,

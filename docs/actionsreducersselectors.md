@@ -39,6 +39,10 @@ A simple reducer that keeps track of view state objects for named components. Us
 
 This reducer interacts with `redux-api-middleware`, in that it tracks ongoing requests. If an action ending in `"_REQUEST"` is dispatched, it will set a flag named for the action type. So, for example, `GET_SCOPES_REQUEST` will see `'GET_SCOPES'` set in the request state. A following action of that name ending in `'_SUCCESS'` or `'_FAILURE'` will then unset the flag again. This can be used to indicate a loading state to users.
 
+## `navigation`
+
+Takes care of storing tabs when a new page is navigated to (when a `redux-little-router` `LOCATION_CHANGED` action is dispatched), and handles calls for the removal of a tab as well.
+
 # Selectors
 
 These selectors expect a `buildState` store, or one using `localeFactory` to create its `locale` reducer.
