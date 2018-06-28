@@ -15,6 +15,10 @@
 
 `makeActionTypes(name)`: Creates an array of three action types, based on `name`. The action types will be `<name>_REQUEST`, dispatched at the start of the request, `<name>_SUCCESS`, dispatched at successful conclusion of the request, and `<name>_FAILURE`, which is dispatched in case of error.
 
+## Navigation
+
+While routing is mostly handled by routing actions, the app's navigation infrastructure requires handling of module and page tabs. `removeTab(module, path)` permits closing page tabs.
+
 ## View state
 
 Provides actions for setting partial or complete view state for named components (see also `reducers/view`, below, and [`hocs/withViewState`](hocs.md#withviewstatecomponent), which use them).
