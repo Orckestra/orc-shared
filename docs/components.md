@@ -76,6 +76,12 @@ Shows a tab list for a module, showing tabs for pages that are navigated to.
 
 Shows a modal dialog box, which will close if clicked outside.
 
+## Modules
+
+- `modules`: An object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages` under the module, defined by component and title.
+
+Intended to convert a module table into a page rendering system, it sets up a `Navigation` bar (q.v.) and a set of routing `Fragments` (from `redux-little-router`) that renders the components associated with different routes. Typically used by feeding it the application's module table via HOC and placing it as the child of the `AppFrame`.
+
 ## Placeholder
 
 - `icon`: The `id` of an icon to be shown.
