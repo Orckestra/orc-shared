@@ -18,11 +18,11 @@ describe("Modules", () => {
 				icon: "user",
 				mode: "segments",
 				pages: {
-					"/:page1": {
+					"/page1": {
 						component: Page1,
 						title: "Page 1",
 					},
-					"/:page2": {
+					"/page2": {
 						component: Page2,
 						title: "Page 2",
 					},
@@ -92,11 +92,11 @@ describe("Module", () => {
 				pages: {
 					"/page1": {
 						component: Page1,
-						title: "Page 1",
+						label: "Page 1",
 					},
 					"/page2": {
 						component: Page2,
-						title: "Page 2",
+						label: "Page 2",
 					},
 				},
 			},
