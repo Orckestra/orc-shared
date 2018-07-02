@@ -505,9 +505,8 @@ describe("stripKey", () => {
 });
 
 describe("modulesToRoutes", () => {
-	let modules, Mod1, Mod2, Mod3, Page1, Page2, Page3;
+	let modules, Mod2, Mod3, Page1, Page2, Page3;
 	beforeEach(() => {
-		Mod1 = () => <div />;
 		Mod2 = () => <div />;
 		Mod3 = () => <div />;
 		Page1 = () => <div />;
@@ -517,7 +516,7 @@ describe("modulesToRoutes", () => {
 			users: {
 				label: "Module 1",
 				icon: "user",
-				component: Mod1,
+				mode: "segments",
 				pages: {
 					"/:page1": {
 						component: Page1,
@@ -553,6 +552,7 @@ describe("modulesToRoutes", () => {
 			"/:scope": {
 				"/users": {
 					module: "users",
+					segments: true,
 					"/:page1": {
 						title: "Page 1",
 					},

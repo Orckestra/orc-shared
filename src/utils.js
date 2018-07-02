@@ -118,6 +118,7 @@ export const modulesToRoutes = modules => ({
 		(moduleRoutes, [name, module]) => ({
 			["/" + name]: {
 				module: name,
+				segments: module.mode === "segments",
 				...getPageRoutes(module),
 			},
 			...moduleRoutes,
