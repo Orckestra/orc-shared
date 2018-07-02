@@ -98,6 +98,12 @@ Shows an element suitable for being used as a placeholder or load spinner in e.g
 
 Sets up the various providers and wrappers needed for an application. Should have one child element, in most cases a redux-connected `<AppFrame>`.
 
+## Redirector
+
+- `href`: The path to redirect to.
+
+This component will cause the immediate dispatch of a `replace` action to the given `href` when it is mounted.
+
 ## Scope
 
 - `currentScope`: The currently selected scope, as stored in state.
