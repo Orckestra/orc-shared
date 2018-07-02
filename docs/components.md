@@ -117,7 +117,7 @@ A component that shows a scope bar with slide-out scope selector. Uses Redux vie
 - `pages`: An object containing objects, indexed by partial routes (i.e. `'/list'` rather than `'/MyScope/users/list'`), and containing a `title` and a `component`.
 - `root`: The root path under which the segments should be rendered.
 
-Renders a list of pages as a left sidebar page selector and right-side remainder showing the page.
+Renders a list of pages as a left sidebar page selector and right-side remainder showing the page. It will automatically redirect to the first page if it shows its root path.
 
 ## Sidepanel
 

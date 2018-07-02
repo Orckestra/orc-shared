@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
 import withNavigationLink from "../hocs/withNavigationLink";
 import { TabBar } from "./Navigation/Bar";
+import Redirector from "./Redirector";
 import Text from "./Text";
 import { ifFlag } from "../utils";
 
@@ -60,6 +61,9 @@ const Segments = ({ pages, root }) => (
 				<Page />
 			</RenderFragment>
 		))}
+		<RenderFragment forRoute="/">
+			<Redirector href={root + Object.keys(pages)[0]} />
+		</RenderFragment>
 	</Wrapper>
 );
 

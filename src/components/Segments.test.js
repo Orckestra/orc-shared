@@ -1,6 +1,7 @@
 import React from "react";
 import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
 import Text from "./Text";
+import Redirector from "./Redirector";
 import Segments, { Wrapper, SegmentList, Segment } from "./Segments";
 
 describe("Segments", () => {
@@ -37,6 +38,9 @@ describe("Segments", () => {
 				</RenderFragment>
 				<RenderFragment forRoute="/page2">
 					<Page2 />
+				</RenderFragment>
+				<RenderFragment forRoute="/">
+					<Redirector href="/foo/heh/page1" />
 				</RenderFragment>
 			</Wrapper>,
 		));
