@@ -47,24 +47,56 @@ export const Segment = withNavigationLink(styled.a`
 	)};
 `);
 
-const Segments = ({ pages, root }) => (
-	<Wrapper>
-		<SegmentList>
-			{Object.entries(pages).map(([route, page]) => (
-				<Segment key={route} href={root + route}>
-					<Text message={page.label} />
-				</Segment>
-			))}
-		</SegmentList>
-		{Object.entries(pages).map(([route, { component: Page }]) => (
+const segmentListConditions = root => ({ pathname }) =>
+	!!pathname.replace(root, "").match(/^(?:\/[^/]*)?$/);
+const subpageConditions = root => ({ pathname }) =>
+	!pathname.replace(root, "").match(/^(?:\/[^/]*)?$/);
+
+const Segments = ({ pages, root }) => {
+	const subpages = [];
+	const links = [];
+	const segments = [];
+	Object.entries(pages).forEach(([route, page]) => {
+		links.push(
+			<Segment key={route} href={root + route}>
+				<Text message={page.label} />
+			</Segment>,
+		);
+		const Page = page.component;
+		segments.push(
 			<RenderFragment key={route} forRoute={route}>
 				<Page />
+			</RenderFragment>,
+		);
+		subpages.push(
+			...Object.entries(page)
+				.filter(([key]) => key.startsWith("/"))
+				.map(([innerRoute, { title, component: SubPage }]) => (
+					<RenderFragment
+						key={route + innerRoute}
+						forRoute={route + innerRoute}
+					>
+						<SubPage />
+					</RenderFragment>
+				)),
+		);
+	});
+	return (
+		<React.Fragment>
+			<RenderFragment withConditions={segmentListConditions(root)}>
+				<Wrapper>
+					<SegmentList>{links}</SegmentList>
+					{segments}
+					<RenderFragment forRoute="/">
+						<Redirector href={root + Object.keys(pages)[0]} />
+					</RenderFragment>
+				</Wrapper>
 			</RenderFragment>
-		))}
-		<RenderFragment forRoute="/">
-			<Redirector href={root + Object.keys(pages)[0]} />
-		</RenderFragment>
-	</Wrapper>
-);
+			<RenderFragment withConditions={subpageConditions(root)}>
+				<React.Fragment>{subpages}</React.Fragment>
+			</RenderFragment>
+		</React.Fragment>
+	);
+};
 
 export default Segments;
