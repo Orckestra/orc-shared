@@ -1,31 +1,54 @@
 import React from "react";
+import { connect } from "react-redux";
 import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import { getCurrentScope } from "../selectors/route";
 import Navigation from "./Navigation";
+import Segments from "./Segments";
 
-const Modules = ({ modules }) => (
+export const Module = ({
+	name,
+	pages = {},
+	component: MainPage,
+	mode,
+	root,
+}) => {
+	if (mode === "segments") {
+		return <Segments pages={pages} root={root} />;
+	}
+	return (
+		<React.Fragment>
+			{Object.entries(pages).map(([route, page]) => {
+				const { component: Page } = page;
+				return (
+					<RenderFragment key={route} forRoute={route}>
+						<Page />
+					</RenderFragment>
+				);
+			})}
+			<RenderFragment forRoute="/">
+				<MainPage />
+			</RenderFragment>
+		</React.Fragment>
+	);
+};
+
+export const Modules = ({ modules, scope }) => (
 	<React.Fragment>
 		<Navigation modules={modules} />
-		{Object.keys(modules).map(name => {
-			const { pages = {}, component: MainPage } = modules[name];
+		{Object.entries(modules).map(([name, { pages, component, mode }]) => {
 			return (
 				<RenderFragment key={name} forRoute={"/" + name}>
-					<React.Fragment>
-						{Object.keys(pages).map(route => {
-							const { component: Page } = pages[route];
-							return (
-								<RenderFragment key={route} forRoute={route}>
-									<Page />
-								</RenderFragment>
-							);
-						})}
-						<RenderFragment forRoute="/">
-							<MainPage />
-						</RenderFragment>
-					</React.Fragment>
+					<Module
+						{...{ name, pages, component, mode }}
+						root={"/" + scope + "/" + name}
+					/>
 				</RenderFragment>
 			);
 		})}
 	</React.Fragment>
 );
 
-export default Modules;
+/* istanbul ignore next */
+export default connect(
+	/* istanbul ignore next */ state => ({ scope: getCurrentScope(state) }),
+)(Modules);
