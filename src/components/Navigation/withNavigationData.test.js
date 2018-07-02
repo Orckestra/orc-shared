@@ -34,6 +34,9 @@ describe("withNavigation", () => {
 				moduleTabs: {
 					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
 				},
+				segmentHrefs: {
+					"/TestScope/test": "/TestScope/test/page1",
+				},
 			},
 		});
 		store = {
@@ -80,6 +83,57 @@ describe("withNavigation", () => {
 				/>,
 			),
 		));
+
+	describe("with segments", () => {
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				router: {
+					params: {
+						scope: "TestScope",
+					},
+					result: {
+						module: "test",
+						segments: true,
+					},
+				},
+				navigation: {
+					tabIndex: {},
+					moduleTabs: {},
+					segmentHrefs: {
+						"/TestScope/test": "/TestScope/test/page1",
+					},
+				},
+			});
+			modules = {
+				test: {
+					icon: "thing",
+					label: "Thing",
+					component: TestComp1,
+					mode: "segments",
+				},
+			};
+		});
+
+		it("makes sure segment hrefs are correct", () =>
+			expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp store={store} modules={modules} />,
+					"to render as",
+					<TestComp
+						pages={[
+							{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test/page1",
+								active: true,
+							},
+						]}
+						moduleName="test"
+						moduleHref="/TestScope/test/page1"
+					/>,
+				),
+			));
+	});
 
 	it("provides a curryable close handler", () => {
 		const fakeEvent = {

@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
 import { FormattedMessage } from "react-intl";
+import Text from "./Text";
 import Icon from "./Icon";
 import { ifFlag } from "../utils";
 
@@ -34,17 +35,18 @@ export const PlaceholderSubtitle = styled.div`
 	font-size: 1.3em;
 `;
 
-const formatIfDescriptor = message =>
-	message.id ? <FormattedMessage {...message} /> : message;
-
 const Placeholder = ({ icon, title, subtitle, animate }) => (
 	<PlaceholderBox>
 		{icon ? <PlaceholderIcon id={icon} animate={animate} /> : null}
 		{title ? (
-			<PlaceholderTitle>{formatIfDescriptor(title)}</PlaceholderTitle>
+			<PlaceholderTitle>
+				<Text message={title} />
+			</PlaceholderTitle>
 		) : null}
 		{subtitle ? (
-			<PlaceholderSubtitle>{formatIfDescriptor(subtitle)}</PlaceholderSubtitle>
+			<PlaceholderSubtitle>
+				<Text message={subtitle} />
+			</PlaceholderSubtitle>
 		) : null}
 	</PlaceholderBox>
 );

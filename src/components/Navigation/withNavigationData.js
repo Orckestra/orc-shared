@@ -14,10 +14,13 @@ const withNavigationData = connect(
 		const moduleName = selectCurrentModuleName(state);
 		const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
 		const moduleHref = "/" + getCurrentScope(state) + "/" + moduleName;
+		const mappedHref =
+			moduleData.mode === "segments" &&
+			state.getIn(["navigation", "segmentHrefs", moduleHref]);
 		const module = {
 			icon: moduleData.icon,
 			label: moduleData.label,
-			href: moduleHref,
+			href: mappedHref || moduleHref,
 		};
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state));
 		return {
@@ -26,7 +29,7 @@ const withNavigationData = connect(
 				active: page.href === currentHref,
 			})),
 			moduleName,
-			moduleHref,
+			moduleHref: mappedHref || moduleHref,
 		};
 	},
 	dispatch => ({

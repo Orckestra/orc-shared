@@ -1,10 +1,12 @@
 import Immutable from "immutable";
 import { LOCATION_CHANGED } from "redux-little-router";
 import { REMOVE_TAB } from "../actions/navigation";
+import { safeGet } from "../utils";
 
 const initialState = Immutable.fromJS({
 	tabIndex: {},
 	moduleTabs: {},
+	segmentHrefs: {},
 });
 
 const getModuleName = result =>
@@ -13,6 +15,13 @@ const getModuleName = result =>
 const navigationReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOCATION_CHANGED:
+			if (safeGet(action, "payload", "result", "parent", "segments")) {
+				const parentPath = action.payload.pathname.replace(/\/[^/]*$/, "");
+				return state.setIn(
+					["segmentHrefs", parentPath],
+					action.payload.pathname,
+				);
+			}
 			return state.withMutations(s => {
 				if (!(action.payload.result && action.payload.result.title)) return;
 				const title = action.payload.result.title;

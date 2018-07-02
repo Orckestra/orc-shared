@@ -1,6 +1,6 @@
 import React from "react";
 import sinon from "sinon";
-import { FormattedMessage } from "react-intl";
+import Text from "../Text";
 import FullTab, {
 	Tab,
 	PageTab,
@@ -19,7 +19,9 @@ describe("Tab", () => {
 			<ModuleTab>
 				<TabLink href="/Foo/modu">
 					<ModuleIcon id="test" />
-					<TabText>A module</TabText>
+					<TabText>
+						<Text message="A module" />
+					</TabText>
 				</TabLink>
 			</ModuleTab>,
 		));
@@ -38,7 +40,7 @@ describe("Tab", () => {
 				<TabLink href="/Foo/modu">
 					<ModuleIcon id="test" />
 					<TabText>
-						<FormattedMessage id="test.module" defaultMessage="A module" />
+						<Text message={{ id: "test.module", defaultMessage: "A module" }} />
 					</TabText>
 				</TabLink>
 			</ModuleTab>,
@@ -56,7 +58,7 @@ describe("Tab", () => {
 			<PageTab>
 				<TabLink href="/Foo/modu/page">
 					<TabText>
-						<FormattedMessage id="test.page" defaultMessage="A page" />
+						<Text message={{ id: "test.page", defaultMessage: "A page" }} />
 					</TabText>
 					<CloseIcon onClick={close} />
 				</TabLink>

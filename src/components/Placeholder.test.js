@@ -1,5 +1,5 @@
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import Text from "./Text";
 import Placeholder, {
 	PlaceholderBox,
 	PlaceholderIcon,
@@ -14,8 +14,12 @@ describe("Placeholder", () => {
 			"to exactly render as",
 			<PlaceholderBox>
 				<PlaceholderIcon id="testIcon" />
-				<PlaceholderTitle>A title</PlaceholderTitle>
-				<PlaceholderSubtitle>A subtitle</PlaceholderSubtitle>
+				<PlaceholderTitle>
+					<Text message="A title" />
+				</PlaceholderTitle>
+				<PlaceholderSubtitle>
+					<Text message="A subtitle" />
+				</PlaceholderSubtitle>
 			</PlaceholderBox>,
 		));
 
@@ -40,10 +44,12 @@ describe("Placeholder", () => {
 			"to exactly render as",
 			<PlaceholderBox>
 				<PlaceholderTitle>
-					<FormattedMessage id="test.title" defaultMessage="A title" />
+					<Text message={{ id: "test.title", defaultMessage: "A title" }} />
 				</PlaceholderTitle>
 				<PlaceholderSubtitle>
-					<FormattedMessage id="test.subtitle" defaultMessage="A subtitle" />
+					<Text
+						message={{ id: "test.subtitle", defaultMessage: "A subtitle" }}
+					/>
 				</PlaceholderSubtitle>
 			</PlaceholderBox>,
 		));

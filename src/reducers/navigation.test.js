@@ -8,6 +8,7 @@ describe("Navigation reducer", () => {
 		expect(reducer, "to be a reducer with initial state", {
 			tabIndex: {},
 			moduleTabs: {},
+			segmentHrefs: {},
 		}));
 
 	describe("LOCATION_CHANGED", () => {
@@ -162,6 +163,33 @@ describe("Navigation reducer", () => {
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "to be", oldState);
+		});
+
+		it("updates segment href map if navigating to a segment page", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: { "/test/old": {} },
+				moduleTabs: { thing: ["/test/new"] },
+				segmentHrefs: {},
+			});
+			const action = {
+				type: LOCATION_CHANGED,
+				payload: {
+					pathname: "/test/new",
+					result: {
+						label: "Test page",
+						parent: { module: "thing", segments: true },
+					},
+				},
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to satisfy",
+				Immutable.fromJS({
+					tabIndex: { "/test/old": {} },
+					moduleTabs: { thing: ["/test/new"] },
+					segmentHrefs: { "/test": "/test/new" },
+				}),
+			);
 		});
 	});
 

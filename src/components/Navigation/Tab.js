@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { withHandlers } from "recompose";
-import { FormattedMessage } from "react-intl";
 import { getThemeProp, ifFlag } from "../../utils";
 import withNavigationLink from "../../hocs/withNavigationLink";
+import Text from "../Text";
 import Icon from "../Icon";
 
 export const PageTab = styled.div`
@@ -73,16 +73,15 @@ export const CloseIcon = styled(Icon).attrs({
 	}
 `;
 
-const formatIfDescriptor = (message = "") =>
-	message.id ? <FormattedMessage {...message} /> : message;
-
 export const Tab = ({ href, label, icon, module, active, close }) => {
 	const ThisTab = module ? ModuleTab : PageTab;
 	return (
 		<ThisTab active={active}>
 			<TabLink href={href}>
 				{module ? <ModuleIcon id={icon} /> : null}
-				<TabText>{formatIfDescriptor(label)}</TabText>
+				<TabText>
+					<Text message={label} />
+				</TabText>
 				{module ? null : <CloseIcon onClick={close} />}
 			</TabLink>
 		</ThisTab>

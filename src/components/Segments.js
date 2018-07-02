@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
 import withNavigationLink from "../hocs/withNavigationLink";
 import { TabBar } from "./Navigation/Bar";
+import Text from "./Text";
 import { ifFlag } from "../utils";
 
 export const Wrapper = styled.div`
@@ -50,7 +51,7 @@ const Segments = ({ pages, root }) => (
 		<SegmentList>
 			{Object.entries(pages).map(([route, page]) => (
 				<Segment key={route} href={root + route}>
-					{page.title.defaultMessage || page.title}
+					<Text message={page.label} />
 				</Segment>
 			))}
 		</SegmentList>
