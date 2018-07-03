@@ -126,3 +126,15 @@ export const modulesToRoutes = modules => ({
 		{},
 	),
 });
+
+/* Memoizes a function, i.e. stores pairs of arguments and results */
+export const memoize = func => {
+	const cache = {};
+	return (...args) => {
+		var key = JSON.stringify(args);
+		if (!cache[key]) {
+			cache[key] = func(...args);
+		}
+		return cache[key];
+	};
+};
