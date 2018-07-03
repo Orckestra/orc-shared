@@ -7,7 +7,7 @@ import withInitialLoad from "../hocs/withInitialLoad";
 const withRedirectFunc = connect(
 	() => ({}),
 	(dispatch, { href }) => ({
-		redirect: () => dispatch(replace(href)),
+		redirect: () => setTimeout(() => dispatch(replace(href)), 0),
 	}),
 );
 
