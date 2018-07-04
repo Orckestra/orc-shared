@@ -26,6 +26,7 @@ describe("Toolbar", () => {
 		toolList = [
 			{
 				type: "input",
+				subType: "search",
 				key: 0,
 				onChange: () => {},
 				value: "search",
@@ -86,7 +87,11 @@ describe("Toolbar", () => {
 			<Toolbar tools={toolList} />,
 			"to exactly render as",
 			<Bar>
-				<ToolInput onChange={toolList[0].onChange} value="search" />
+				<ToolInput
+					type="search"
+					onChange={toolList[0].onChange}
+					value="search"
+				/>
 				<ToolButton onClick={toolList[1].onClick} label={{ icon: "funnel" }} />
 				<ToolSpacer />
 				<Group

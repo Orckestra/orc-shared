@@ -33,6 +33,9 @@ const background = ifFlag(
 		css`
 			background-image: none;
 			background-color: #f7f7f7;
+			&:active {
+				background-color: #f7f7f7;
+			}
 		`,
 	),
 );

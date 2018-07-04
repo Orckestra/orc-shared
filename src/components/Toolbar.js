@@ -77,9 +77,9 @@ export const Spacer = styled.div`
 export const toolComponents = {};
 
 // Turns a tool definition into a rendered React element
-const renderToolComponent = ({ type, ...props }) => {
+const renderToolComponent = ({ type, subType, ...props }) => {
 	const Comp = toolComponents[type];
-	return <Comp {...props} />;
+	return <Comp type={subType} {...props} />;
 };
 
 // Fill in the tool types

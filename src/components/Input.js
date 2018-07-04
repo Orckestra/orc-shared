@@ -1,6 +1,8 @@
 import styled from "styled-components";
+import { getThemeProp } from "../utils";
 
 const Input = styled.input`
+	font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
 	box-sizing: border-box;
 	flex: 0 0 auto;
 	height: 30px;
@@ -9,7 +11,6 @@ const Input = styled.input`
 	border-radius: 5px;
 
 	&:focus {
-		outline: 0;
 		border-color: #4fa1f0;
 		box-shadow: 0 0 4px #4fa1f0;
 		outline: none;

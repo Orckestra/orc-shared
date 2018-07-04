@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
-import { FormattedMessage } from "react-intl";
 import Text from "./Text";
 import Icon from "./Icon";
 import { ifFlag } from "../utils";
