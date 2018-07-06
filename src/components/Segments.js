@@ -5,7 +5,7 @@ import withNavigationLink from "../hocs/withNavigationLink";
 import { TabBar } from "./Navigation/Bar";
 import Redirector from "./Redirector";
 import Text from "./Text";
-import { ifFlag, memoize } from "../utils";
+import { ifFlag, memoize, logPass } from "../utils";
 
 export const Wrapper = styled.div`
 	display: flex;
@@ -47,11 +47,11 @@ export const Segment = withNavigationLink(styled.a`
 	)};
 `);
 
-const subpageConditions = memoize(root => {
+export const subpageConditions = memoize(root => {
 	return ({ pathname }) => !pathname.replace(root, "").match(/^(?:\/[^/]*)?$/);
 });
 
-const segmentListConditions = memoize(root => {
+export const segmentListConditions = memoize(root => {
 	const subPage = subpageConditions(root);
 	return location => !subPage(location);
 });

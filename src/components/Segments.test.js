@@ -1,8 +1,16 @@
 import React from "react";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
 import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
 import Text from "./Text";
 import Redirector from "./Redirector";
-import Segments, { Wrapper, SegmentList, Segment } from "./Segments";
+import Segments, {
+	Wrapper,
+	SegmentList,
+	Segment,
+	subpageConditions,
+	segmentListConditions,
+} from "./Segments";
 
 describe("Segments", () => {
 	let pages, Page1, Page2, SubPage1;
@@ -27,16 +35,16 @@ describe("Segments", () => {
 	});
 	it("renders a segment list", () =>
 		expect(
-			<Segments pages={pages} root="/foo/heh" />,
+			<Segments pages={pages} root="/Root/test" />,
 			"to render as",
 			<React.Fragment>
 				<RenderFragment withConditions={expect.it("to be a function")}>
 					<Wrapper>
 						<SegmentList>
-							<Segment href="/foo/heh/page1">
+							<Segment href="/Root/test/page1">
 								<Text message="Page 1" />
 							</Segment>
-							<Segment href="/foo/heh/page2">
+							<Segment href="/Root/test/page2">
 								<Text
 									message={{ id: "test.page2", defaultMessage: "Page 2" }}
 								/>
@@ -49,7 +57,7 @@ describe("Segments", () => {
 							<Page2 />
 						</RenderFragment>
 						<RenderFragment forRoute="/">
-							<Redirector href="/foo/heh/page1" />
+							<Redirector href="/Root/test/page1" />
 						</RenderFragment>
 					</Wrapper>
 				</RenderFragment>
@@ -59,5 +67,109 @@ describe("Segments", () => {
 					</RenderFragment>
 				</RenderFragment>
 			</React.Fragment>,
+		));
+
+	it("renders segment page if path is to root", () => {
+		pages["/page2"].label = "Page 2";
+		const store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () =>
+				Immutable.fromJS({
+					router: {
+						pathname: "/Root/test",
+					},
+				}),
+		};
+		return expect(
+			<Provider store={store}>
+				<Segments pages={pages} root="/Root/test" />
+			</Provider>,
+			"when deeply rendered",
+		).then(render =>
+			expect(render, "to contain", <Wrapper />).and(
+				"not to contain",
+				<RenderFragment forRoute="/page1/:sub1" />,
+			),
+		);
+	});
+
+	it("renders segment page if path is to page directly under root", () => {
+		pages["/page2"].label = "Page 2";
+		const store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () =>
+				Immutable.fromJS({
+					router: {
+						pathname: "/Root/test/page1",
+					},
+				}),
+		};
+		return expect(
+			<Provider store={store}>
+				<Segments pages={pages} root="/Root/test" />
+			</Provider>,
+			"when deeply rendered",
+		).then(render =>
+			expect(render, "to contain", <Wrapper />).and(
+				"not to contain",
+				<RenderFragment forRoute="/page1/:sub1" />,
+			),
+		);
+	});
+
+	it("renders only the subpage if path is to page further down", () => {
+		pages["/page2"].label = "Page 2";
+		const store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () =>
+				Immutable.fromJS({
+					router: {
+						pathname: "/Root/test/page1/sub",
+					},
+				}),
+		};
+		return expect(
+			<Provider store={store}>
+				<Segments pages={pages} root="/Root/test" />
+			</Provider>,
+			"when deeply rendered",
+		).then(render =>
+			expect(render, "not to contain", <Wrapper />).and(
+				"to contain",
+				<RenderFragment forRoute="/page1/:sub1" />,
+			),
+		);
+	});
+});
+
+describe("routing condition checkers", () => {
+	let root, pagePath, segPath;
+	beforeEach(() => {
+		root = "/Root/test";
+		segPath = root + "/segment";
+		pagePath = segPath + "/path";
+	});
+
+	it("checks if path is zero or one step from given root", () =>
+		Promise.all([
+			expect(subpageConditions, "called with", [root]),
+			expect(segmentListConditions, "called with", [root]),
+		]).then(([subpage, segments]) =>
+			Promise.all([
+				expect(segments, "called with", [{ pathname: root }], "to be true"),
+				expect(subpage, "called with", [{ pathname: root }], "to be false"),
+				expect(segments, "called with", [{ pathname: segPath }], "to be true"),
+				expect(subpage, "called with", [{ pathname: segPath }], "to be false"),
+				expect(
+					segments,
+					"called with",
+					[{ pathname: pagePath }],
+					"to be false",
+				),
+				expect(subpage, "called with", [{ pathname: pagePath }], "to be true"),
+			]),
 		));
 });
