@@ -119,6 +119,15 @@ A component that shows a scope bar with slide-out scope selector. Uses Redux vie
 
 Renders a list of pages as a left sidebar page selector and right-side remainder showing the page. It will automatically redirect to the first page if it shows its root path.
 
+## Selector
+
+- `options`: A list of objects containing a `label` and `value` field, used to populate the options list.
+- `placeholder`: A placeholder text to show if no option is selected.
+- `value`: The value of the currently selected option.
+- `update`: A function which updates the `value` (in application state, typically).
+
+A styled replacement for the standard `<select>` element, widely known for its resistance to styling. Renders a dropdown selector with a list of options, selectable by mouse or keyboard.
+
 ## Sidepanel
 
 - `timeout`: The time taken for the sliding animation, in milliseconds. Default 1000.
