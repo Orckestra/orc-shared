@@ -5,7 +5,7 @@ import withNavigationLink from "../hocs/withNavigationLink";
 import { TabBar } from "./Navigation/Bar";
 import Redirector from "./Redirector";
 import Text from "./Text";
-import { ifFlag, memoize, logPass } from "../utils";
+import { ifFlag, memoize } from "../utils";
 
 export const Wrapper = styled.div`
 	display: flex;
@@ -47,14 +47,9 @@ export const Segment = withNavigationLink(styled.a`
 	)};
 `);
 
-export const subpageConditions = memoize(root => {
-	return ({ pathname }) => !pathname.replace(root, "").match(/^(?:\/[^/]*)?$/);
-});
-
-export const segmentListConditions = memoize(root => {
-	const subPage = subpageConditions(root);
-	return location => !subPage(location);
-});
+export const segmentListConditions = memoize(root => ({ pathname }) =>
+	!!pathname.replace(root, "").match(/^(?:\/[^/]*)?$/),
+);
 
 const Segments = ({ pages, root }) => {
 	const subpages = [];
@@ -87,6 +82,7 @@ const Segments = ({ pages, root }) => {
 	});
 	return (
 		<React.Fragment>
+			{subpages}
 			<RenderFragment withConditions={segmentListConditions(root)}>
 				<Wrapper>
 					<SegmentList>{links}</SegmentList>
@@ -95,9 +91,6 @@ const Segments = ({ pages, root }) => {
 						<Redirector href={root + Object.keys(pages)[0]} />
 					</RenderFragment>
 				</Wrapper>
-			</RenderFragment>
-			<RenderFragment withConditions={subpageConditions(root)}>
-				<React.Fragment>{subpages}</React.Fragment>
 			</RenderFragment>
 		</React.Fragment>
 	);

@@ -8,7 +8,6 @@ import Segments, {
 	Wrapper,
 	SegmentList,
 	Segment,
-	subpageConditions,
 	segmentListConditions,
 } from "./Segments";
 
@@ -33,11 +32,15 @@ describe("Segments", () => {
 			},
 		};
 	});
+
 	it("renders a segment list", () =>
 		expect(
 			<Segments pages={pages} root="/Root/test" />,
 			"to render as",
 			<React.Fragment>
+				<RenderFragment forRoute="/page1/:sub1">
+					<SubPage1 />
+				</RenderFragment>
 				<RenderFragment withConditions={expect.it("to be a function")}>
 					<Wrapper>
 						<SegmentList>
@@ -61,11 +64,6 @@ describe("Segments", () => {
 						</RenderFragment>
 					</Wrapper>
 				</RenderFragment>
-				<RenderFragment withConditions={expect.it("to be a function")}>
-					<RenderFragment forRoute="/page1/:sub1">
-						<SubPage1 />
-					</RenderFragment>
-				</RenderFragment>
 			</React.Fragment>,
 		));
 
@@ -86,11 +84,8 @@ describe("Segments", () => {
 				<Segments pages={pages} root="/Root/test" />
 			</Provider>,
 			"when deeply rendered",
-		).then(render =>
-			expect(render, "to contain", <Wrapper />).and(
-				"not to contain",
-				<RenderFragment forRoute="/page1/:sub1" />,
-			),
+			"to contain",
+			<Wrapper />,
 		);
 	});
 
@@ -111,15 +106,12 @@ describe("Segments", () => {
 				<Segments pages={pages} root="/Root/test" />
 			</Provider>,
 			"when deeply rendered",
-		).then(render =>
-			expect(render, "to contain", <Wrapper />).and(
-				"not to contain",
-				<RenderFragment forRoute="/page1/:sub1" />,
-			),
+			"to contain",
+			<Wrapper />,
 		);
 	});
 
-	it("renders only the subpage if path is to page further down", () => {
+	it("does not render segment selector if path is to page further down", () => {
 		pages["/page2"].label = "Page 2";
 		const store = {
 			subscribe: () => {},
@@ -136,16 +128,13 @@ describe("Segments", () => {
 				<Segments pages={pages} root="/Root/test" />
 			</Provider>,
 			"when deeply rendered",
-		).then(render =>
-			expect(render, "not to contain", <Wrapper />).and(
-				"to contain",
-				<RenderFragment forRoute="/page1/:sub1" />,
-			),
+			"not to contain",
+			<Wrapper />,
 		);
 	});
 });
 
-describe("routing condition checkers", () => {
+describe("routing condition checker", () => {
 	let root, pagePath, segPath;
 	beforeEach(() => {
 		root = "/Root/test";
@@ -154,22 +143,9 @@ describe("routing condition checkers", () => {
 	});
 
 	it("checks if path is zero or one step from given root", () =>
-		Promise.all([
-			expect(subpageConditions, "called with", [root]),
-			expect(segmentListConditions, "called with", [root]),
-		]).then(([subpage, segments]) =>
-			Promise.all([
-				expect(segments, "called with", [{ pathname: root }], "to be true"),
-				expect(subpage, "called with", [{ pathname: root }], "to be false"),
-				expect(segments, "called with", [{ pathname: segPath }], "to be true"),
-				expect(subpage, "called with", [{ pathname: segPath }], "to be false"),
-				expect(
-					segments,
-					"called with",
-					[{ pathname: pagePath }],
-					"to be false",
-				),
-				expect(subpage, "called with", [{ pathname: pagePath }], "to be true"),
-			]),
+		expect(segmentListConditions, "called with", [root]).then(segments =>
+			expect(segments, "called with", [{ pathname: root }], "to be true")
+				.and("called with", [{ pathname: segPath }], "to be true")
+				.and("called with", [{ pathname: pagePath }], "to be false"),
 		));
 });
