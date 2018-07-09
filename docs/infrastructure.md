@@ -37,3 +37,7 @@ The `utils.js` file contains a number of useful utility functions, some for use 
 `setTranslation(locale, object, path1, path2, ...)` will look in `object` at the path location (see `safeGet` above), and if found will replace a translation message structure (ex.: `{ 'en-US': 'A hat', 'fr-FR': 'Un chapeau' }`) with the string indicated by `locale`. If no match is found, the first given message string will be used as a default.
 
 `debounce(func, wait, immediate)` handles many rapid calls in succession by waiting until calls have ceased for `wait` milliseconds before calling `func`. If `immediate` is true, it will call `func` immediately, and then debounce further calls as per the above.
+
+`modulesToRoutes(modules)` converts a module tree to a route table that will support the given module structure.
+
+`memoize(func)` wraps `func` such that if it is called again with the same arguments, the result from the first call with those arguments is returned. This is useful for example for tying handler functions to properties in React components. However, a memoized function must be pure - i.e. it returns the same result given the same arguments, with no side effects - as it will only be executed once for a given set of arguments.
