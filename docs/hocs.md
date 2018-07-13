@@ -38,7 +38,7 @@ If the `request` named is currently in progress (i.e. we are between a `<request
 
 ## `withScrollBox(Component)`
 
-The given component will be wrapped in a scrollable `<div>`, and is passed a `height` prop containing the height in pixels of that element as currently rendered, updated on resize.
+The given component will be wrapped in a scrollable `<div>`, and is passed a `height` and a `width` prop containing the size in pixels of that element as currently rendered, updated on resize.
 
 ## `withToggle(propname)(Component)`
 

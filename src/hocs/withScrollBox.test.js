@@ -15,6 +15,7 @@ describe("withScrollBox", () => {
 					<TestComp
 						other="prop"
 						height={expect.it("to be undefined") /* jsdom can't do sizes*/}
+						width={expect.it("to be undefined") /* jsdom can't do sizes*/}
 					>
 						This is inside the box
 					</TestComp>

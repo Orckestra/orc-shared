@@ -16,6 +16,7 @@ const withScrollBox = WrappedComp => ({ onScroll, ...otherProps }) => (
 				<WrappedComp
 					{...otherProps}
 					height={safeGet(contentRect, "bounds", "height")}
+					width={safeGet(contentRect, "bounds", "width")}
 				/>
 			</Scrollbox>
 		)}
