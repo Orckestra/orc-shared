@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { FormattedMessage } from "react-intl";
+import Text from "./Text";
 import { getThemeProp, ifFlag } from "../utils";
 import withId from "../hocs/withId";
 
@@ -12,6 +12,7 @@ export const Wrapper = styled.label`
 	width: 5em;
 	border-radius: 0.6em;
 	display: flex;
+	cursor: pointer;
 	${ifFlag(
 		"value",
 		css`
@@ -54,6 +55,11 @@ export const Wrapper = styled.label`
 				transform: translateX(1.9em);
 			`,
 		)};
+	}
+
+	&:focus-within,
+	&:hover {
+		box-shadow: 0 0 4px #4fa1f0;
 	}
 `;
 
@@ -118,12 +124,12 @@ export const Switch = ({
 		<ContainedCheckbox id={id} {...checkboxProps} checked={value} />
 		{onCaption ? (
 			<OnCaption value={value}>
-				<FormattedMessage {...onCaption} />
+				<Text message={onCaption} />
 			</OnCaption>
 		) : null}
 		{offCaption ? (
 			<OffCaption value={value}>
-				<FormattedMessage {...offCaption} />
+				<Text message={offCaption} />
 			</OffCaption>
 		) : null}
 	</Wrapper>

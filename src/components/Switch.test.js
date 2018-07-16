@@ -1,5 +1,5 @@
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import Text from "./Text";
 import FullSwitch, {
 	Switch,
 	Wrapper,
@@ -38,10 +38,10 @@ describe("Switch", () => {
 			<Wrapper>
 				<ContainedCheckbox />
 				<OnCaption>
-					<FormattedMessage id="foo" defaultMessage="Foo!" />
+					<Text message={{ id: "foo", defaultMessage: "Foo!" }} />
 				</OnCaption>
 				<OffCaption>
-					<FormattedMessage id="foo" defaultMessage="Foo!" />
+					<Text message={{ id: "foo", defaultMessage: "Foo!" }} />
 				</OffCaption>
 			</Wrapper>,
 		));

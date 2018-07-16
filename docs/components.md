@@ -141,8 +141,8 @@ Displays all available icons along with the ids to access them.
 
 ## Switch
 
-- `onCaption`: A message descriptor (as used by `react-intl`) to be shown when the switch is on.
-- `offCaption`: A message descriptor (as used by `react-intl`) to be shown when the switch is off.
+- `onCaption`: A string or message descriptor (as used by `react-intl`) to be shown when the switch is on.
+- `offCaption`: A string or message descriptor (as used by `react-intl`) to be shown when the switch is off.
 - `onColor`: A string containing a CSS color value. The switch will show this color when on.
 - `offColor`: A string containing a CSS color value. The switch will show this color when off.
 
