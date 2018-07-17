@@ -30,11 +30,13 @@ describe("Indicator", () => {
 		beforeEach(() => {
 			theme = {
 				appHighlightColor: "red",
-				indicatorIcons: {
-					up: "arrow-up",
-					down: "arrow-down",
-					right: "arrow-right",
-					left: "arrow-left",
+				icons: {
+					indicators: {
+						up: "arrow-up",
+						down: "arrow-down",
+						right: "arrow-right",
+						left: "arrow-left",
+					},
 				},
 			};
 		});

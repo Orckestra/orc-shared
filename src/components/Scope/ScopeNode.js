@@ -5,7 +5,7 @@ import withScopeSelect from "./withScopeSelect";
 import { getThemeProp, switchEnum } from "../../utils";
 
 export const ScopeIcon = styled(Icon).attrs({
-	id: getThemeProp(["scopeTypeIcons", props => props.type], "cross"),
+	id: getThemeProp(["icons", "scopeTypes", props => props.type], "cross"),
 })`
 	font-size: 20px;
 	vertical-align: middle;

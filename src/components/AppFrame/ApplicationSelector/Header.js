@@ -4,7 +4,7 @@ import Icon from "../../Icon";
 import { getThemeProp } from "../../../utils";
 
 export const MenuIcon = styled(Icon).attrs({
-	id: getThemeProp(["menuIcon"], "placeholder"),
+	id: getThemeProp(["icons", "menu"], "placeholder"),
 })`
 	font-size: 24px;
 	margin: auto;

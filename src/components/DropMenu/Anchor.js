@@ -21,8 +21,8 @@ Header.defaultProps = {
 export const Indicator = styled(Icon).attrs({
 	id: ifFlag(
 		"open",
-		getThemeProp(["indicatorIcons", "up"], "chevron-up"),
-		getThemeProp(["indicatorIcons", "down"], "chevron-down"),
+		getThemeProp(["icons", "indicators", "up"], "chevron-up"),
+		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
 	),
 })`
 	font-size: 10px;

@@ -6,8 +6,8 @@ import { branchHeight } from "./settings";
 export const Indicator = styled(Icon).attrs({
 	id: ifFlag(
 		"open",
-		getThemeProp(["indicatorIcons", "down"], "chevron-down"),
-		getThemeProp(["indicatorIcons", "right"], "chevron-right"),
+		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
+		getThemeProp(["icons", "indicators", "right"], "chevron-right"),
 	),
 })`
 	font-size: 10px;
