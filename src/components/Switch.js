@@ -63,31 +63,10 @@ export const Wrapper = styled.label`
 	}
 `;
 
-export const OnCaption = styled.span`
+export const Caption = styled.span`
 	position: absolute;
 	left: 1.4em;
-	right: 0.5em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	text-align: center;
-	font-size: 0.8em;
-	${ifFlag(
-		"value",
-		css`
-			opacity: 1;
-			transition: opacity ${0.7 * switchSpeed}ms ${0.3 * switchSpeed}ms ease-in;
-		`,
-		css`
-			opacity: 0;
-			transition: opacity ${0.7 * switchSpeed}ms ease-in;
-		`,
-	)};
-`;
-export const OffCaption = styled.span`
-	position: absolute;
 	right: 1.4em;
-	left: 0.5em;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -96,12 +75,12 @@ export const OffCaption = styled.span`
 	${ifFlag(
 		"value",
 		css`
-			opacity: 0;
-			transition: opacity ${0.7 * switchSpeed}ms ease-in;
-		`,
-		css`
 			opacity: 1;
 			transition: opacity ${0.7 * switchSpeed}ms ${0.3 * switchSpeed}ms ease-in;
+		`,
+		css`
+			opacity: 0;
+			transition: opacity ${0.7 * switchSpeed}ms ease-in;
 		`,
 	)};
 `;
@@ -123,14 +102,14 @@ export const Switch = ({
 	<Wrapper htmlFor={id} value={value} onColor={onColor} offColor={offColor}>
 		<ContainedCheckbox id={id} {...checkboxProps} checked={value} />
 		{onCaption ? (
-			<OnCaption value={value}>
+			<Caption value={value}>
 				<Text message={onCaption} />
-			</OnCaption>
+			</Caption>
 		) : null}
 		{offCaption ? (
-			<OffCaption value={value}>
+			<Caption value={!value}>
 				<Text message={offCaption} />
-			</OffCaption>
+			</Caption>
 		) : null}
 	</Wrapper>
 );

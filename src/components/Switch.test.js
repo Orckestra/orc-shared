@@ -4,8 +4,7 @@ import FullSwitch, {
 	Switch,
 	Wrapper,
 	ContainedCheckbox,
-	OnCaption,
-	OffCaption,
+	Caption,
 } from "./Switch";
 
 describe("Switch", () => {
@@ -37,12 +36,12 @@ describe("Switch", () => {
 			"to render as",
 			<Wrapper>
 				<ContainedCheckbox />
-				<OnCaption>
+				<Caption>
 					<Text message={{ id: "foo", defaultMessage: "Foo!" }} />
-				</OnCaption>
-				<OffCaption>
+				</Caption>
+				<Caption>
 					<Text message={{ id: "foo", defaultMessage: "Foo!" }} />
-				</OffCaption>
+				</Caption>
 			</Wrapper>,
 		));
 
