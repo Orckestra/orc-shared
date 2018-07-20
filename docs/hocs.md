@@ -46,4 +46,4 @@ Sets up a boolean property on the component, toggled with the `toggle` function 
 
 ## `withViewState(Component)`
 
-Sets the component up with a view state according to the `name` property provided. This includes all keys found in the `view` segment of the state, provided as props, and an `updateViewState(key, value)` function, which sets the appropriate key in the component's view state.
+Sets the component up with a view state according to the `name` property provided. This includes all keys found in the `view` segment of the state, provided as an object in the `viewState` prop, and an `updateViewState(key, value)` function, which sets the appropriate key in the component's view state.

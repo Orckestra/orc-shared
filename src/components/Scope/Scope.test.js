@@ -26,13 +26,15 @@ describe("Scope", () => {
 			<Scope
 				currentScope={{ name: "ScopeName" }}
 				getScope={getScope}
-				show={true}
 				reset={reset}
-				nodeState={nodeState}
-				filter=""
 				updateViewState={updateViewState}
 				updateNodeState={updateNodeState}
 				updateFilter={updateFilter}
+				viewState={{
+					nodeState: nodeState,
+					show: true,
+					filter: "",
+				}}
 				filterPlaceholder={{ defaultMessage: "Type a scope name" }}
 			>
 				<div id="child" />

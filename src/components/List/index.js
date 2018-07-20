@@ -68,7 +68,7 @@ export const List = ({
 		heightBelow = (rows.length - lastShow) * rowHeight;
 	}
 	rows.forEach((row, index) => {
-		const id = safeGet(row, ...keyField);
+		const id = safeGet(row, ...keyField) + ""; // Ensure rowId is string
 		rowIds.push(id);
 		if (!virtualFilter(index)) return;
 		rowElements.push(

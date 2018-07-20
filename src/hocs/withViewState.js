@@ -4,9 +4,11 @@ import { setStateField } from "../actions/view";
 const getViewState = (state, name) => {
 	const stateData = state.getIn(["view", name]);
 	if (stateData && stateData.toJS) {
-		return stateData.toJS();
+		return {
+			viewState: stateData.toJS(),
+		};
 	} else {
-		return {};
+		return { viewState: {} };
 	}
 };
 

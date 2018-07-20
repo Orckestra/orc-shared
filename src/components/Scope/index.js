@@ -46,37 +46,38 @@ export const withSelectorHandlers = withHandlers({
 export const Scope = ({
 	currentScope,
 	getScope,
-	show = false,
-	nodeState,
-	filter,
 	updateViewState,
 	reset,
 	updateNodeState,
 	updateFilter,
 	children,
 	filterPlaceholder,
-}) => (
-	<React.Fragment>
-		<ScopeBar
-			{...{
-				name: currentScope.name,
-				show,
-				updateViewState,
-			}}
-		/>
-		<Selector
-			show={show}
-			reset={reset}
-			getScope={getScope}
-			nodeState={nodeState}
-			updateNodeState={updateNodeState}
-			filter={filter}
-			updateFilter={updateFilter}
-			filterPlaceholder={filterPlaceholder}
-		/>
-		{children}
-	</React.Fragment>
-);
+	viewState = {},
+}) => {
+	const { show = false, nodeState, filter } = viewState;
+	return (
+		<React.Fragment>
+			<ScopeBar
+				{...{
+					name: currentScope.name,
+					show,
+					updateViewState,
+				}}
+			/>
+			<Selector
+				show={show}
+				reset={reset}
+				getScope={getScope}
+				nodeState={nodeState}
+				updateNodeState={updateNodeState}
+				filter={filter}
+				updateFilter={updateFilter}
+				filterPlaceholder={filterPlaceholder}
+			/>
+			{children}
+		</React.Fragment>
+	);
+};
 Scope.displayName = "Scope";
 
 const withScopeRoute = WrapScope => props => (

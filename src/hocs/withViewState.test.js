@@ -13,6 +13,7 @@ describe("withViewState", () => {
 			view: {
 				foo: "not right",
 				test: { viewState: "good value" },
+				nameTest: { name: "Alfred" },
 				bar: false,
 			},
 		});
@@ -28,7 +29,7 @@ describe("withViewState", () => {
 			expect(
 				<Comp name="test" store={store} />,
 				"to render as",
-				<TestComp name="test" viewState="good value" />,
+				<TestComp viewState={{ viewState: "good value" }} />,
 			),
 		));
 
@@ -37,7 +38,7 @@ describe("withViewState", () => {
 			expect(
 				<Comp name="noState" store={store} />,
 				"to render as",
-				<TestComp name="noState" />,
+				<TestComp name="noState" viewState={{}} />,
 			),
 		));
 

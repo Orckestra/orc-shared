@@ -36,8 +36,8 @@ describe("withListState", () => {
 		expect(withListState, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<EnhComp name="test" {...{ store, columnDefs }} />,
-				"when deeply rendered",
-				"to contain",
+				"renders elements",
+				"to render as",
 				<TestComp
 					columnDefs={expect.it("to exhaustively satisfy", [
 						{
@@ -63,8 +63,8 @@ describe("withListState", () => {
 				.then(EnhComp =>
 					expect(
 						<EnhComp name="test" {...{ store, columnDefs }} />,
-						"when deeply rendered",
-						"to contain",
+						"renders elements",
+						"to render as",
 						<TestComp
 							selection={["selectedRow"]}
 							columnDefs={[
@@ -131,8 +131,8 @@ describe("withListState", () => {
 			return expect(withListState, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp name="test" {...{ store, columnDefs }} />,
-					"when deeply rendered",
-					"to contain",
+					"renders elements",
+					"to render as",
 					<TestComp selection={[]} />,
 				),
 			);
