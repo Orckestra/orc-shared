@@ -22,6 +22,11 @@ const background = ifFlag(
 				${getThemeProp(["appHighlightColor"], "#333")}
 			);
 			color: #fff;
+			&:enabled:active {
+				background-image: none;
+				background-color: #fff;
+				color: ${getThemeProp(["appHighlightColor"], "#333")};
+			}
 		`,
 	),
 	ifFlag(
@@ -33,7 +38,7 @@ const background = ifFlag(
 		css`
 			background-image: none;
 			background-color: #f7f7f7;
-			&:active {
+			&:enabled:active {
 				background-color: #efefef;
 			}
 		`,
@@ -61,12 +66,17 @@ const Button = styled.button`
 	min-width: 50px;
 	${background};
 
-	&:active,
-	&:focus,
-	&:hover {
+	&:enabled:active,
+	&:enabled:focus,
+	&:enabled:hover {
 		border-color: ${borderColor("#4fa1f0")};
 		box-shadow: 0 0 4px #4fa1f0;
 		outline: none;
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: default;
 	}
 `;
 

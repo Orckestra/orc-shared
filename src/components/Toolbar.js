@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import Input from "./Input";
 import Icon from "./Icon";
+import Text from "./Text";
 
 export const Bar = styled.div`
 	flex: 0 0 64px;
@@ -89,7 +90,11 @@ toolComponents.input.displayName = "ToolInput";
 toolComponents.button = ({ label, ...props }) => (
 	<ToolbarButton {...props}>
 		{label.icon ? <ToolbarButtonIcon id={label.icon} /> : null}
-		{label.text ? <ToolbarButtonText>{label.text}</ToolbarButtonText> : null}
+		{label.text ? (
+			<ToolbarButtonText>
+				<Text message={label.text} />
+			</ToolbarButtonText>
+		) : null}
 	</ToolbarButton>
 );
 toolComponents.button.displayName = "ToolButton";

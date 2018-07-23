@@ -1,4 +1,5 @@
 import React from "react";
+import Text from "./Text";
 import {
 	Bar,
 	ToolGroup,
@@ -168,7 +169,9 @@ describe("toolComponents.button", () => {
 			<ToolButton onClick={console.log} label={{ text: "A label" }} />,
 			"to exactly render as",
 			<ToolbarButton onClick={console.log}>
-				<ToolbarButtonText>A label</ToolbarButtonText>
+				<ToolbarButtonText>
+					<Text message="A label" />
+				</ToolbarButtonText>
 			</ToolbarButton>,
 		));
 
@@ -181,7 +184,9 @@ describe("toolComponents.button", () => {
 			"to exactly render as",
 			<ToolbarButton things={{ stuff: "nonsense" }}>
 				<ToolbarButtonIcon id="test" />
-				<ToolbarButtonText>A label</ToolbarButtonText>
+				<ToolbarButtonText>
+					<Text message="A label" />
+				</ToolbarButtonText>
 			</ToolbarButton>,
 		));
 });

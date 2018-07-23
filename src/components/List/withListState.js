@@ -60,7 +60,7 @@ const enhanceColumnDef = ({ sorting, selection, updateViewState }) => def => {
 };
 
 const withLinkHooks = mapProps(
-	({ columnDefs, updateViewState, viewState = {}, ...otherProps }) => {
+	({ columnDefs, updateViewState, viewState, ...otherProps }) => {
 		const { selection = [], sorting = {} } = viewState;
 		const enhancedColumnDefs = columnDefs.map(
 			enhanceColumnDef({ sorting, selection, updateViewState }),

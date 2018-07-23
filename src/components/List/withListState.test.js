@@ -20,9 +20,7 @@ describe("withListState", () => {
 	let store, state, columnDefs;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			view: {
-				test: {},
-			},
+			view: {},
 		});
 		store = {
 			subscribe: () => {},
