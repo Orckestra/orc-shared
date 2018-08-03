@@ -1,6 +1,6 @@
 import Immutable from "immutable";
 import reducerFactory from "./localeFactory";
-import { changeLocale } from "../actions/locale";
+import { changeLocale, GET_CULTURES_SUCCESS } from "../actions/locale";
 
 describe("locale reducer factory", () => {
 	it("creates a well-behaved reducer", () =>
@@ -12,6 +12,8 @@ describe("locale reducer factory", () => {
 			{
 				locale: "en-US",
 				supportedLocales: ["en-US", "fr"],
+				cultures: {},
+				defaultCulture: "en-US",
 			},
 		));
 
@@ -25,6 +27,8 @@ describe("locale reducer factory", () => {
 			const oldState = Immutable.Map({
 				locale: "en-US",
 				supportedLocales: ["en-US", "fr"],
+				cultures: {},
+				defaultCulture: "en-US",
 			});
 			const action = changeLocale("fr");
 			const newState = reducer(oldState, action);
@@ -37,11 +41,57 @@ describe("locale reducer factory", () => {
 			const oldState = Immutable.Map({
 				locale: "en-US",
 				supportedLocales: ["en-US", "fr"],
+				cultures: {},
+				defaultCulture: "en-US",
 			});
 			const action = changeLocale("da");
 			const newState = reducer(oldState, action);
 			return expect(newState, "to be", oldState).and("to satisfy", {
 				locale: "en-US",
+			});
+		});
+
+		it("adds cultures fetched from API", () => {
+			const oldState = Immutable.Map({
+				locale: "en-US",
+				supportedLocales: ["en-US", "fr"],
+				cultures: {},
+				defaultCulture: "en-US",
+			});
+			const action = {
+				type: GET_CULTURES_SUCCESS,
+				payload: [
+					{
+						cultureIso: "en-US",
+						cultureName: "English - United States",
+						sortOrder: 0,
+						isDefault: false,
+					},
+					{
+						cultureIso: "fr-FR",
+						cultureName: "French - France",
+						sortOrder: 0,
+						isDefault: true,
+					},
+				],
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and("to satisfy", {
+				cultures: {
+					"en-US": {
+						cultureIso: "en-US",
+						cultureName: "English - United States",
+						sortOrder: 0,
+						isDefault: false,
+					},
+					"fr-FR": {
+						cultureIso: "fr-FR",
+						cultureName: "French - France",
+						sortOrder: 0,
+						isDefault: true,
+					},
+				},
+				defaultCulture: "fr-FR",
 			});
 		});
 	});

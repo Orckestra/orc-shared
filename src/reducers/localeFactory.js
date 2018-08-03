@@ -1,10 +1,12 @@
 import Immutable from "immutable";
-import { CHANGE_LOCALE } from "../actions/locale";
+import { CHANGE_LOCALE, GET_CULTURES_SUCCESS } from "../actions/locale";
 
 const localeFactory = supportedLocales => {
 	const initialState = Immutable.fromJS({
 		locale: supportedLocales[0],
 		supportedLocales,
+		cultures: {},
+		defaultCulture: supportedLocales[0],
 	});
 
 	const locale = (state = initialState, action) => {
@@ -15,6 +17,15 @@ const localeFactory = supportedLocales => {
 				} else {
 					return state;
 				}
+			case GET_CULTURES_SUCCESS:
+				return state.withMutations(s => {
+					action.payload.forEach(culture => {
+						s.setIn(["cultures", culture.cultureIso], culture);
+						if (culture.isDefault) {
+							s.set("defaultCulture", culture.cultureIso);
+						}
+					});
+				});
 			default:
 				return state;
 		}
