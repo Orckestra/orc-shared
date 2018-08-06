@@ -4,6 +4,8 @@
 
 `changeLocale(locale)`: Generates an action that will cause the locale to be switched to the given tag. See also `localeFactory` under reducers. `locale` should be an IETF language tag, e.g. 'en', 'fr-CA'.
 
+`GET_CULTURES_<flag>`: For use with an API action that retrieves culture data from an API.
+
 ## API actions
 
 `makeApiAction(name, endpoint, method, options)`: Returns a valid RSAA from the arguments given, with sensible defaults. Name and endpoint parameters are required.
@@ -29,7 +31,7 @@ Provides actions for setting partial or complete view state for named components
 
 - `supportedLocales`: An array of IETF language tags, designating which locales are to be supported.
 
-Usually not used directly, as it is included in state stores created with `buildState`. This factory creates a locale reducer from a list of supported locales. This reducer will initially set the selected locale to the first supported locale, and accepts actions to set it to any other. Actions to set unsupported locales will be ignored.
+Usually not used directly, as it is included in state stores created with `buildState`. This factory creates a locale reducer from a list of supported locales. This reducer will initially set the selected locale to the first supported locale, and accepts actions to set it to any other. Actions to set unsupported locales will be ignored. This reducer will also store culture (i.e. customer-facing locale) info, and expects to get this data as an array of objects, each containing a `cultureIso` field with the IETF tag of the culture.
 
 ## `view`
 
@@ -45,13 +47,21 @@ Takes care of storing tabs when a new page is navigated to (when a `redux-little
 
 # Selectors
 
-These selectors expect a `buildState` store, or one using `localeFactory` to create its `locale` reducer.
+These selectors expect a `buildState` store.
 
 ## Locale
 
 `currentLocale`: Extracts and returns the currently set locale from the state.
 
 `defaultLocale`: Finds and returns the default locale for the application. This is the first entry in the supported locales list, or if no such list is given, falls back to `'en'`.
+
+`cultures`: Pulls the index of supported cultures.
+
+`cultureList`: Gives a simple list of the IETF tags of supported cultures.
+
+`defaultCulture`: Extracts the default culture IETF tag.
+
+`orderedCultureList`: Returns a list of all supported cultures, but ensures that the default culture is the first element. All others retain their order.
 
 ## Navigation
 
