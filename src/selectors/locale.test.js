@@ -112,6 +112,12 @@ describe("supported cultures list selector", () => {
 						sortOrder: 0,
 						isDefault: true,
 					},
+					"fr-CA": {
+						cultureIso: "fr-CA",
+						cultureName: "French - Canada",
+						sortOrder: 0,
+						isDefault: false,
+					},
 				},
 			},
 		});
@@ -123,7 +129,7 @@ describe("supported cultures list selector", () => {
 			"called with",
 			[state],
 			"to equal",
-			Immutable.Seq(["en-US", "fr-FR"]),
+			Immutable.Seq(["en-US", "fr-FR", "fr-CA"]),
 		));
 });
 
@@ -153,11 +159,23 @@ describe("orderedCultureList", () => {
 						sortOrder: 0,
 						isDefault: false,
 					},
+					"en-CA": {
+						cultureIso: "en-CA",
+						cultureName: "English - Canada",
+						sortOrder: 0,
+						isDefault: false,
+					},
 					"fr-FR": {
 						cultureIso: "fr-FR",
 						cultureName: "French - France",
 						sortOrder: 0,
 						isDefault: true,
+					},
+					"fr-CA": {
+						cultureIso: "fr-CA",
+						cultureName: "French - Canada",
+						sortOrder: 0,
+						isDefault: false,
 					},
 				},
 				defaultCulture: "fr-FR",
@@ -171,6 +189,6 @@ describe("orderedCultureList", () => {
 			"called with",
 			[state],
 			"to equal",
-			Immutable.Seq(["fr-FR", "en-US"]),
+			Immutable.Seq(["fr-FR", "en-US", "en-CA", "fr-CA"]),
 		));
 });

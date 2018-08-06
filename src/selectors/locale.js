@@ -1,4 +1,3 @@
-import Immutable from "immutable";
 import { createSelector } from "reselect";
 
 const localeData = state => state.get("locale");
@@ -18,9 +17,8 @@ export const cultures = createSelector(localeData, locale =>
 	locale.get("cultures"),
 );
 
-export const cultureList = createSelector(
-	cultures,
-	(cultures = Immutable.Map()) => cultures.keySeq(),
+export const cultureList = createSelector(cultures, cultures =>
+	cultures.keySeq(),
 );
 
 export const defaultCulture = createSelector(localeData, locale =>
@@ -30,9 +28,9 @@ export const defaultCulture = createSelector(localeData, locale =>
 export const orderedCultureList = createSelector(
 	cultureList,
 	defaultCulture,
-	(cultures = Immutable.Seq(), defaultCulture = "en") =>
+	(cultures, defaultCulture) =>
 		cultures.sort((a, b) => {
-			if (a === defaultCulture) return -1;
+			/*istanbul ignore if */ if (a === defaultCulture) return -1;
 			if (b === defaultCulture) return 1;
 			return 0;
 		}),
