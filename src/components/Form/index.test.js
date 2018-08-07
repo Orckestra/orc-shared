@@ -6,6 +6,7 @@ import {
 	fieldHeight,
 	calculateFormHeight,
 	withCultureCount,
+	addNamesToFields,
 	FormPage,
 } from "./index";
 
@@ -396,5 +397,43 @@ describe("withCultureCount", () => {
 				"to render as",
 				<TestComp cultureCount={3} />,
 			),
+		));
+});
+
+describe("addNamesToFields", () => {
+	it("adds a hexadecimal string as a name where names are missing", () =>
+		expect(
+			addNamesToFields,
+			"called with",
+			[
+				[
+					{ type: "Thing" },
+					{ type: "NamedThing", name: "named", rowField: { type: "Thing" } },
+					{
+						type: "HasFields",
+						fields: [{ type: "Thing" }, { type: "NamedThing", name: "named" }],
+					},
+				],
+			],
+			"to satisfy",
+			[
+				{ type: "Thing", name: expect.it("to match", /[0-9a-f]{6}/) },
+				{
+					type: "NamedThing",
+					name: "named",
+					rowField: {
+						type: "Thing",
+						name: expect.it("to match", /[0-9a-f]{6}/),
+					},
+				},
+				{
+					type: "HasFields",
+					name: expect.it("to match", /[0-9a-f]{6}/),
+					fields: [
+						{ type: "Thing", name: expect.it("to match", /[0-9a-f]{6}/) },
+						{ type: "NamedThing", name: "named" },
+					],
+				},
+			],
 		));
 });

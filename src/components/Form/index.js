@@ -110,6 +110,27 @@ export const withCultureCount = connect(
 	() => ({}),
 );
 
+const randomName = () =>
+	Math.floor(Math.random() * 16777215)
+		.toString(16)
+		.padStart(6, "0");
+
+export const addNamesToFields = memoize(fields =>
+	fields.map(field => {
+		const outField = {
+			name: randomName(),
+			...field,
+		};
+		if (field.fields) {
+			outField.fields = addNamesToFields(field.fields);
+		}
+		if (field.rowField) {
+			outField.rowField = addNamesToFields([field.rowField])[0];
+		}
+		return outField;
+	}),
+);
+
 export const FormPage = ({
 	getUpdater,
 	fields,
@@ -124,7 +145,7 @@ export const FormPage = ({
 	>
 		<FieldElements
 			getUpdater={getUpdater}
-			fields={fields}
+			fields={addNamesToFields(fields)}
 			values={values}
 			wide={wide}
 		/>
