@@ -23,9 +23,7 @@ describe("InputField", () => {
 		expect(
 			<InputField label="A bad field" otherProp />,
 			"to render as",
-			<Field label="A bad field">
-				<Null value="" otherProp />
-			</Field>,
+			<p>Cannot render unknown type "undefined"</p>,
 		));
 
 	it("renders a TextInput input as a form field", () =>

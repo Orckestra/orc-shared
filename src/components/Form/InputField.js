@@ -2,13 +2,18 @@ import React from "react";
 import inputs from "./Inputs";
 import Field from "./Field";
 
-export const Null = /* istanbul ignore next */ () => {
-	console.log("Unknown type in InputField, look for Null component");
-	return null;
-};
-
-const InputField = ({ type, label, labelOnly, value = "", ...props }) => {
-	const Input = inputs[type] || Null;
+const InputField = ({
+	type = "undefined",
+	label,
+	labelOnly,
+	value = "",
+	...props
+}) => {
+	const Input = inputs[type];
+	if (!Input) {
+		console.error(`Unknown type "${type}", cannot render field`);
+		return <p>Cannot render unknown type "{type}"</p>;
+	}
 	return (
 		<Field
 			label={label}
