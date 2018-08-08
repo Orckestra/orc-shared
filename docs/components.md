@@ -37,6 +37,15 @@ Inserts a set of developer pages to be found under `/dev/<page>`. In production,
 
 A simple menu component that will show a list of items when clicked. Assigning it a class will apply it to the menu anchor, allowing it to be styled with Styled Components.
 
+## Form
+
+- `getUpdater`: Should be a function that takes a field name as parameter, and returns a function that updates the named value with the new value given as its parameter.
+- `fields`: An array of field definition objects (see below).
+- `values`: A data object containing the values to be shown in the form, typically passed in from application state.
+- `wide`: A flag that determines if the form should be rendered as fixed-width vertically wrapping columns or a single full width column.
+
+A rather intricate component that creates forms. To do this, it receives a field definition, which it then uses to render in a form that fits the information it is given as values. For more details on field definitions and how they relate to values, please refer to the [detailed documentation.](forms.md)
+
 ## I18n
 
 Redux-connected internationalization-provider. Use this as a wrapper component for your app, inside your redux provider, and outside any internationalized content. Uses `react-intl`, and expects a state store created with `buildState`, above, or at least one including a `locale` reducer created by `reducers/localeFactory`. Needs no further properties. Used by [`<Provision>`](#provision) - if that component is in use, this one is already present.
