@@ -83,9 +83,10 @@ describe("Bar", () => {
 					moduleName="modu"
 					moduleHref="/Foo/modu"
 				/>,
-				"to render as",
-				<Bar pages={[]} close={expect.it("called")} />,
+				"when rendered",
+				"has elements",
 			)
+				.then(elements => expect(elements.props.close, "called"))
 				.then(() =>
 					expect(close, "to have calls satisfying", [
 						{ args: ["modu", "/Foo/modu"] },

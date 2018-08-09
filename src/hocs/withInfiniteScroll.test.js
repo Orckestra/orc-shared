@@ -100,11 +100,12 @@ describe("withInfiniteScroll", () => {
 					scrollLoader={loader}
 				/>,
 				"when rendered",
-				"queried for",
-				<TestComp />,
-				"to have rendered",
-				<TestComp onScroll={expect.it("called with", [getFakeEvent(350)])} />,
-			).then(() => expect(loader, "was not called")));
+				"has elements",
+			)
+				.then(elements =>
+					expect(elements.props.onScroll, "called with", [getFakeEvent(350)]),
+				)
+				.then(() => expect(loader, "was not called")));
 
 		it("does not call the loader if a partial page is loaded", () =>
 			expect(
@@ -114,8 +115,12 @@ describe("withInfiniteScroll", () => {
 					pageLength={7}
 					scrollLoader={loader}
 				/>,
-				"to render as",
-				<TestComp onScroll={expect.it("called with", [getFakeEvent(350)])} />,
-			).then(() => expect(loader, "was not called")));
+				"when rendered",
+				"has elements",
+			)
+				.then(elements =>
+					expect(elements.props.onScroll, "called with", [getFakeEvent(350)]),
+				)
+				.then(() => expect(loader, "was not called")));
 	});
 });

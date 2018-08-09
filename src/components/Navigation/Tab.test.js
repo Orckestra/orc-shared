@@ -85,9 +85,10 @@ describe("Tab", () => {
 		const close = sinon.spy(() => innerClose).named("close");
 		return expect(
 			<FullTab label="A page" href="/Foo/modu/page" close={close} />,
-			"to render as",
-			<Tab label="A page" href="/Foo/modu/page" close={expect.it("called")} />,
+			"when rendered",
+			"has elements",
 		)
+			.then(elements => expect(elements.props.close, "called"))
 			.then(() =>
 				expect(close, "to have calls satisfying", [
 					{ args: ["/Foo/modu/page"] },

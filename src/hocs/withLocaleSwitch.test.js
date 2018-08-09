@@ -19,12 +19,16 @@ describe("withLocaleSwitch", () => {
 		expect(withLocaleSwitch, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Comp locale="en" store={store} />,
-				"to render as",
-				<TestComp onClick={expect.it("when called with", ["en"])} />,
-			).then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [changeLocale("en")] },
-				]),
-			),
+				"when rendered",
+				"has elements",
+			)
+				.then(elements =>
+					expect(elements.props.onClick, "when called with", ["en"]),
+				)
+				.then(() =>
+					expect(store.dispatch, "to have calls satisfying", [
+						{ args: [changeLocale("en")] },
+					]),
+				),
 		));
 });

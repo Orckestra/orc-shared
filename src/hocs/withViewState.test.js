@@ -46,17 +46,19 @@ describe("withViewState", () => {
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Comp name="test" store={store} />,
-				"to render as",
-				<TestComp
-					updateViewState={expect.it("when called with", [
+				"when rendered",
+				"has elements",
+			)
+				.then(elements =>
+					expect(elements.props.updateViewState, "when called with", [
 						"aField",
 						"new value",
-					])}
-				/>,
-			).then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [setStateField("test", "aField", "new value")] },
-				]),
-			),
+					]),
+				)
+				.then(() =>
+					expect(store.dispatch, "to have calls satisfying", [
+						{ args: [setStateField("test", "aField", "new value")] },
+					]),
+				),
 		));
 });
