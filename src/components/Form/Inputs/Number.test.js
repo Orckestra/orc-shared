@@ -41,14 +41,11 @@ describe("NumberInput", () => {
 });
 
 describe("roundToStep", () => {
-	it("rounds a number to the nearest step", () =>
-		expect(
-			roundToStep,
-			"when called with",
-			[103.271, 0.25],
-			"to equal",
-			103.25,
-		));
+	it("rounds a number up to the nearest step", () =>
+		expect(roundToStep, "when called with", [103.271, 0.1], "to equal", 103.3));
+
+	it("rounds a number down to the nearest step", () =>
+		expect(roundToStep, "when called with", [103.231, 0.1], "to equal", 103.2));
 
 	it("works for steps > 1", () =>
 		expect(roundToStep, "when called with", [12343, 10], "to equal", 12340));
@@ -71,53 +68,82 @@ describe("withNumberHandlers", () => {
 		update = sinon.spy().named("update");
 	});
 
-	describe("without step attribute", () => {
+	describe("with no control prop", () => {
 		it("onChange handler enforces numbers", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
-				expect(
-					<EnhComp update={update} />,
-					"to render as",
-					<TestComp
-						onChange={expect
-							.it("called with", [{ target: { value: "foo" } }])
+				expect(<EnhComp update={update} />, "when rendered", "has elements")
+					.then(elements =>
+						expect(elements.props.onChange, "called with", [
+							{ target: { value: "foo" } },
+						])
 							.and("called with", [{ target: { value: 0 } }])
 							.and("called with", [{ target: { value: 12.29 } }])
-							.and("called with", [{ target: { value: 0.13 } }])}
-					/>,
-				).then(() =>
-					expect(update, "to have calls satisfying", [
-						{ args: [""] },
-						{ args: [0] },
-						{ args: [12.29] },
-						{ args: [0.13] },
-					]),
-				),
+							.and("called with", [{ target: { value: 0.13 } }]),
+					)
+					.then(() =>
+						expect(update, "to have calls satisfying", [
+							{ args: [""] },
+							{ args: [0] },
+							{ args: [12.29] },
+							{ args: [0.13] },
+						]),
+					),
 			));
 
 		it("increment handler raises value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} value={3.545444} />,
-					"to render as",
-					<TestComp increment={expect.it("called")} />,
-				).then(() =>
-					expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
-				),
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
+					),
+			));
+
+		it("increments from zero", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp update={update} value={0} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [1] }]),
+					),
 			));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} value={3.545444} />,
-					"to render as",
-					<TestComp decrement={expect.it("called")} />,
-				).then(() =>
-					expect(update, "to have calls satisfying", [{ args: [2.545444] }]),
-				),
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [2.545444] }]),
+					),
+			));
+
+		it("decrements from zero", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp update={update} value={0} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [-1] }]),
+					),
 			));
 	});
 
-	describe("with step attribute", () => {
+	describe("with step prop", () => {
 		it("onChange handler enforces numbers rounded to nearest step", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
@@ -144,22 +170,316 @@ describe("withNumberHandlers", () => {
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} step={0.1} value={3.5} />,
-					"to render as",
-					<TestComp increment={expect.it("called")} />,
-				).then(() =>
-					expect(update, "to have calls satisfying", [{ args: [3.6] }]),
-				),
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3.6] }]),
+					),
+			));
+
+		it("increments from zero", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp update={update} step={0.1} value={0} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [0.1] }]),
+					),
 			));
 
 		it("decrement handler lowers value by step size", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} step={0.1} value={3.5} />,
-					"to render as",
-					<TestComp decrement={expect.it("called")} />,
-				).then(() =>
-					expect(update, "to have calls satisfying", [{ args: [3.4] }]),
-				),
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3.4] }]),
+					),
+			));
+
+		it("decrements from zero", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp update={update} step={0.1} value={0} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [-0.1] }]),
+					),
+			));
+	});
+
+	describe("with min prop", () => {
+		it("onChange handler enforces numbers", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp min={3} update={update} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements =>
+						expect(elements.props.onChange, "called with", [
+							{ target: { value: "foo" } },
+						])
+							.and("called with", [{ target: { value: 0 } }])
+							.and("called with", [{ target: { value: 12.29 } }])
+							.and("called with", [{ target: { value: 0.13 } }]),
+					)
+					.then(() =>
+						expect(update, "to have calls satisfying", [
+							{ args: [""] },
+							{ args: [3] },
+							{ args: [12.29] },
+							{ args: [3] },
+						]),
+					),
+			));
+
+		it("increment handler raises value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp min={3} update={update} value={3.545444} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
+					),
+			));
+
+		it("decrement handler lowers value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp min={3} update={update} value={4.545444} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3.545444] }]),
+					),
+			));
+
+		it("respects minimum", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp min={3} update={update} value={3.545444} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3] }]),
+					),
+			));
+	});
+
+	describe("with min and step prop", () => {
+		it("onChange handler enforces numbers rounded to nearest step", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} min={3} update={update} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements =>
+						expect(elements.props.onChange, "called with", [
+							{ target: { value: "foo" } },
+						])
+							.and("called with", [{ target: { value: 0 } }])
+							.and("called with", [{ target: { value: 12.29 } }])
+							.and("called with", [{ target: { value: 0.13 } }]),
+					)
+					.then(() =>
+						expect(update, "to have calls satisfying", [
+							{ args: [""] },
+							{ args: [3] },
+							{ args: [12.3] },
+							{ args: [3] },
+						]),
+					),
+			));
+
+		it("increment handler raises value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} min={3} update={update} value={3.545444} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3.6] }]),
+					),
+			));
+
+		it("decrement handler lowers value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} min={3} update={update} value={3.555444} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3.5] }]),
+					),
+			));
+
+		it("respects minimum", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} min={3} update={update} value={3.045444} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3] }]),
+					),
+			));
+	});
+
+	describe("with max prop", () => {
+		it("onChange handler enforces numbers", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp max={3} update={update} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements =>
+						expect(elements.props.onChange, "called with", [
+							{ target: { value: "foo" } },
+						])
+							.and("called with", [{ target: { value: 0 } }])
+							.and("called with", [{ target: { value: 12.29 } }])
+							.and("called with", [{ target: { value: 0.13 } }]),
+					)
+					.then(() =>
+						expect(update, "to have calls satisfying", [
+							{ args: [""] },
+							{ args: [0] },
+							{ args: [3] },
+							{ args: [0.13] },
+						]),
+					),
+			));
+
+		it("increment handler raises value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp max={3} update={update} value={1.545344} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [2.545344] }]),
+					),
+			));
+
+		it("respects maximum", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp max={3} update={update} value={2.5458} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3] }]),
+					),
+			));
+
+		it("decrement handler lowers value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp max={3} update={update} value={2.545} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [1.545] }]),
+					),
+			));
+	});
+
+	describe("with max and step prop", () => {
+		it("onChange handler enforces numbers rounded to nearest step", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} max={3} update={update} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements =>
+						expect(elements.props.onChange, "called with", [
+							{ target: { value: "foo" } },
+						])
+							.and("called with", [{ target: { value: 0 } }])
+							.and("called with", [{ target: { value: 12.29 } }])
+							.and("called with", [{ target: { value: 0.13 } }]),
+					)
+					.then(() =>
+						expect(update, "to have calls satisfying", [
+							{ args: [""] },
+							{ args: [0] },
+							{ args: [3] },
+							{ args: [0.1] },
+						]),
+					),
+			));
+
+		it("increment handler raises value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} max={3} update={update} value={1.545} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [1.6] }]),
+					),
+			));
+
+		it("respects maximum", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} max={3} update={update} value={2.9999} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.increment, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3] }]),
+					),
+			));
+
+		it("decrement handler lowers value by 1", () =>
+			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
+				expect(
+					<EnhComp step={0.1} max={3} update={update} value={3.555444} />,
+					"when rendered",
+					"has elements",
+				)
+					.then(elements => expect(elements.props.decrement, "called"))
+					.then(() =>
+						expect(update, "to have calls satisfying", [{ args: [3.5] }]),
+					),
 			));
 	});
 });
