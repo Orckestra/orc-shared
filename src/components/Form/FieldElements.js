@@ -62,6 +62,7 @@ const FieldElements = ({
 					return (
 						<InputField
 							key={name}
+							name={name}
 							type={type}
 							update={getUpdater(name)}
 							value={values[name]}

@@ -28,10 +28,14 @@ export const Label = styled.label`
 	)};
 `;
 
-const Field = ({ label, center, labelOnly, children }) => (
+const Field = ({ id, label, center, labelOnly, children }) => (
 	<FieldBox>
 		{label !== undefined ? (
-			<Label labelOnly={labelOnly} center={center}>
+			<Label
+				htmlFor={labelOnly ? undefined : id}
+				labelOnly={labelOnly}
+				center={center}
+			>
 				<Text message={label} />
 			</Label>
 		) : null}

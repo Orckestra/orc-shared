@@ -5,12 +5,12 @@ import Field, { FieldBox, Label } from "./Field";
 describe("Field", () => {
 	it("renders a field with a label", () =>
 		expect(
-			<Field label="A test">
+			<Field id="field" label="A test">
 				<div id="child" />
 			</Field>,
 			"to exactly render as",
 			<FieldBox>
-				<Label>
+				<Label htmlFor="field">
 					<Text message="A test" />
 				</Label>
 				<div id="child" />
@@ -19,7 +19,7 @@ describe("Field", () => {
 
 	it("renders a field with no label", () =>
 		expect(
-			<Field>
+			<Field id="field">
 				<div id="child" />
 			</Field>,
 			"to exactly render as",
@@ -30,7 +30,7 @@ describe("Field", () => {
 
 	it("renders only its label when flagged", () =>
 		expect(
-			<Field label="A test" labelOnly>
+			<Field id="field" label="A test" labelOnly>
 				<div id="child" />
 			</Field>,
 			"to exactly render as",
@@ -43,12 +43,12 @@ describe("Field", () => {
 
 	it("renders a field with a centered label", () =>
 		expect(
-			<Field label="A test" center>
+			<Field id="field" label="A test" center>
 				<div id="child" />
 			</Field>,
 			"to exactly render as",
 			<FieldBox>
-				<Label center>
+				<Label htmlFor="field" center>
 					<Text message="A test" />
 				</Label>
 				<div id="child" />

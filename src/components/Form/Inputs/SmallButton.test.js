@@ -1,5 +1,6 @@
 import React from "react";
-import SmallButton, { RoundButton, ButtonIcon } from "./SmallButton";
+import Text from "../../Text";
+import { SmallButton, RoundButton, ButtonIcon, Tooltip } from "./SmallButton";
 
 describe("SmallButton", () => {
 	let update;
@@ -9,10 +10,18 @@ describe("SmallButton", () => {
 
 	it("renders a small button showing an icon", () =>
 		expect(
-			<SmallButton update={update} icon="test-icon" otherProp />,
+			<SmallButton
+				update={update}
+				icon="test-icon"
+				altText="Alternative"
+				otherProp
+			/>,
 			"to render as",
-			<RoundButton primary otherProp onClick={update}>
+			<RoundButton otherProp onClick={update}>
 				<ButtonIcon id="test-icon" />
+				<Tooltip>
+					<Text message="Alternative" />
+				</Tooltip>
 			</RoundButton>,
 		));
 });

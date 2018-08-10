@@ -64,6 +64,7 @@ describe("FieldElements", () => {
 				<React.Fragment>
 					<InputField
 						key="thing"
+						name="thing"
 						type="Something"
 						update={expect.it("when called", "to equal", "thing")}
 						value="foo"

@@ -165,6 +165,7 @@ describe("FieldList", () => {
 								{
 									type: "SmallButton",
 									name: REMOVE_ROW,
+									primary: true,
 									icon: "cross",
 								},
 							],
@@ -230,6 +231,7 @@ describe("FieldList", () => {
 									{
 										type: "SmallButton",
 										name: REMOVE_ROW,
+										primary: true,
 										icon: "cross",
 									},
 								],
@@ -252,6 +254,7 @@ describe("FieldList", () => {
 									{
 										type: "SmallButton",
 										name: REMOVE_ROW,
+										primary: true,
 										icon: "cross",
 									},
 								],
@@ -274,6 +277,7 @@ describe("FieldList", () => {
 									{
 										type: "SmallButton",
 										name: REMOVE_ROW,
+										primary: true,
 										icon: "cross",
 									},
 								],

@@ -43,7 +43,7 @@ export const ListControlButton = styled(Button).attrs({ primary: true })`
 	min-width: 100px;
 `;
 
-const decorateField = field => {
+const decorateField = (field, remove = "[remove]") => {
 	if (field.type === "Combination") {
 		// Add the closer to the tail end of the combo
 		/* istanbul ignore next */
@@ -54,7 +54,9 @@ const decorateField = field => {
 			{
 				type: "SmallButton",
 				name: REMOVE_ROW,
+				primary: true,
 				icon: "cross",
+				altText: remove,
 			},
 		]);
 		return {
@@ -74,7 +76,9 @@ const decorateField = field => {
 			{
 				type: "SmallButton",
 				name: REMOVE_ROW,
+				primary: true,
 				icon: "cross",
+				altText: remove,
 			},
 		],
 	};
@@ -90,7 +94,9 @@ export const FieldList = ({
 	wide,
 	...props
 }) => {
-	const renderField = rowCount ? rowField : decorateField(rowField);
+	const renderField = rowCount
+		? rowField
+		: decorateField(rowField, props.remove);
 	return (
 		<List>
 			<FieldElements fields={[renderField]} labelOnly />

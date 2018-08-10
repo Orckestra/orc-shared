@@ -3,6 +3,7 @@ import inputs from "./Inputs";
 import Field from "./Field";
 
 const InputField = ({
+	name,
 	type = "undefined",
 	label,
 	labelOnly,
@@ -16,11 +17,12 @@ const InputField = ({
 	}
 	return (
 		<Field
+			id={name}
 			label={label}
 			labelOnly={labelOnly}
 			center={type === "SwitchInput" || type === "CheckboxInput"}
 		>
-			<Input {...props} value={value} />
+			<Input {...props} id={name} value={value} />
 		</Field>
 	);
 };

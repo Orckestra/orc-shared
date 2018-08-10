@@ -16,14 +16,15 @@ describe("InputField", () => {
 			const Input = inputs[type];
 			return expect(
 				<InputField
+					name="fieldName"
 					type={type}
 					label={`A ${type} field`}
 					value="thing"
 					otherProp
 				/>,
 				"to render as",
-				<Field label={`A ${type} field`}>
-					<Input value="thing" otherProp />
+				<Field id="fieldName" label={`A ${type} field`}>
+					<Input id="fieldName" value="thing" otherProp />
 				</Field>,
 			);
 		});
