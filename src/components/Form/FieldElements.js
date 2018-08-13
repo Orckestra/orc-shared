@@ -12,6 +12,7 @@ const FieldElements = ({
 	getUpdater = () => {},
 	values = {},
 	wide,
+	...elementProps
 }) => (
 	<React.Fragment>
 		{fields.map(({ type, name, ...props }) => {
@@ -24,6 +25,8 @@ const FieldElements = ({
 								getUpdater={getUpdater}
 								values={values}
 								wide={wide}
+								{...elementProps}
+								{...props}
 							/>
 						</Fieldset>
 					);
@@ -41,6 +44,8 @@ const FieldElements = ({
 								values={values}
 								labelOnly={labelOnly}
 								wide={wide}
+								{...elementProps}
+								{...props}
 							/>
 						</Combination>
 					);
@@ -54,6 +59,7 @@ const FieldElements = ({
 							getUpdater={getUpdater}
 							rowCount={props.rowCount}
 							wide={wide}
+							{...elementProps}
 							{...props}
 						/>
 					);
@@ -67,6 +73,7 @@ const FieldElements = ({
 							update={getUpdater(name)}
 							value={values[name]}
 							labelOnly={labelOnly}
+							{...elementProps}
 							{...props}
 						/>
 					);

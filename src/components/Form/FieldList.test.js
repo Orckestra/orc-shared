@@ -72,14 +72,17 @@ describe("FieldList", () => {
 				/>
 				<FieldElements
 					fields={[{ type: "TextInput", name: "data" }]}
+					listIndex={0}
 					values={{ id: 4, data: "foo", stat: true }}
 				/>
 				<FieldElements
 					fields={[{ type: "TextInput", name: "data" }]}
+					listIndex={1}
 					values={{ id: 5, data: "bar", stat: false }}
 				/>
 				<FieldElements
 					fields={[{ type: "TextInput", name: "data" }]}
+					listIndex={2}
 					values={{
 						id: expect.it("to be a number").and("to be greater than", 5),
 						stat: true,
@@ -355,4 +358,11 @@ describe("FieldList", () => {
 				]),
 			);
 	});
+
+	it("will not render inside another list", () =>
+		expect(
+			<FieldList listIndex={0} />,
+			"to deeply render as",
+			<span>Cannot render list inside list</span>,
+		));
 });

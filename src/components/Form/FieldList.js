@@ -92,8 +92,12 @@ export const FieldList = ({
 	listUpdater,
 	rowCount,
 	wide,
+	listIndex,
 	...props
 }) => {
+	if (listIndex !== undefined) {
+		return <span>Cannot render list inside list</span>;
+	}
 	const renderField = rowCount
 		? rowField
 		: decorateField(rowField, props.remove);
@@ -104,6 +108,7 @@ export const FieldList = ({
 				<FieldElements
 					key={row.id}
 					fields={[stripLabelFromTree(renderField)]}
+					listIndex={index}
 					getUpdater={listUpdater(index)}
 					values={{
 						...row,
