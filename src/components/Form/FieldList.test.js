@@ -340,6 +340,7 @@ describe("FieldList", () => {
 			"when rendered",
 			"queried for",
 			<SmallButton />,
+			"renders elements", // render through withId (SmallButton)
 			"with event",
 			"click",
 			"on",

@@ -12,21 +12,23 @@ describe("InputField", () => {
 		));
 
 	Object.keys(inputs).forEach(type => {
-		it("renders a " + type + " input as a form field", () => {
-			const Input = inputs[type];
-			return expect(
-				<InputField
-					name="fieldName"
-					type={type}
-					label={`A ${type} field`}
-					value="thing"
-					otherProp
-				/>,
-				"to render as",
-				<Field id="fieldName" label={`A ${type} field`}>
-					<Input id="fieldName" value="thing" otherProp />
-				</Field>,
-			);
+		describe("input type " + type, () => {
+			it("renders a " + type + " input as a form field", () => {
+				const Input = inputs[type];
+				return expect(
+					<InputField
+						name="fieldName"
+						type={type}
+						label={`A ${type} field`}
+						value="thing"
+						otherProp
+					/>,
+					"to render as",
+					<Field id="fieldName" label={`A ${type} field`}>
+						<Input id="fieldName" value="thing" otherProp />
+					</Field>,
+				);
+			});
 		});
 	});
 });
