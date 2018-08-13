@@ -46,6 +46,10 @@ A simple menu component that will show a list of items when clicked. Assigning i
 
 A rather intricate component that creates forms. To do this, it receives a field definition, which it then uses to render in a form that fits the information it is given as values. For more details on field definitions and how they relate to values, please refer to the [detailed documentation.](forms.md)
 
+## Head
+
+Sets the DOM header, and wrapper element attributes, according to the current application state.
+
 ## I18n
 
 Redux-connected internationalization-provider. Use this as a wrapper component for your app, inside your redux provider, and outside any internationalized content. Uses `react-intl`, and expects a state store created with `buildState`, above, or at least one including a `locale` reducer created by `reducers/localeFactory`. Needs no further properties. Used by [`<Provision>`](#provision) - if that component is in use, this one is already present.

@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { toClass } from "recompose";
 import DevPages from "./DevPages";
+import Head from "./Head";
 import I18n from "./I18n";
 import Provision from "./Provision";
 
@@ -26,13 +27,16 @@ describe("Provision", () => {
 			</Provision>,
 			"to render as",
 			<Provider store={fakeStore}>
-				<ThemeProvider theme={expect.it("to be", fakeTheme)}>
-					<DevPages>
-						<I18n>
-							<TestComp />
-						</I18n>
-					</DevPages>
-				</ThemeProvider>
+				<React.Fragment>
+					<Head />
+					<ThemeProvider theme={expect.it("to be", fakeTheme)}>
+						<DevPages>
+							<I18n>
+								<TestComp />
+							</I18n>
+						</DevPages>
+					</ThemeProvider>
+				</React.Fragment>
 			</Provider>,
 		));
 
@@ -43,13 +47,16 @@ describe("Provision", () => {
 			</Provision>,
 			"to render as",
 			<Provider store={fakeStore}>
-				<ThemeProvider theme={{}}>
-					<DevPages>
-						<I18n>
-							<TestComp />
-						</I18n>
-					</DevPages>
-				</ThemeProvider>
+				<React.Fragment>
+					<Head />
+					<ThemeProvider theme={{}}>
+						<DevPages>
+							<I18n>
+								<TestComp />
+							</I18n>
+						</DevPages>
+					</ThemeProvider>
+				</React.Fragment>
 			</Provider>,
 		));
 

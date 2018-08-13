@@ -73,7 +73,7 @@ const ApplicationDialog = ({
 							  () => {}
 					}
 				>
-					<Logo src={app.iconUri} />
+					<Logo src={app.iconUri} alt={app.displayName} />
 				</Link>
 				<Label>{app.displayName}</Label>
 				{app.name === applicationId ? <Indicator /> : null}
