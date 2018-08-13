@@ -23,4 +23,14 @@ describe("SmallButton", () => {
 				<Tooltip message="Alternative" />
 			</RoundButton>,
 		));
+
+	it("adds an ugly default alt text if none given, shaming the dev", () =>
+		expect(
+			<SmallButton id="testId" icon="test-icon" />,
+			"to render as",
+			<RoundButton id="testId">
+				<ButtonIcon id="test-icon" />
+				<Tooltip message="[altText]" />
+			</RoundButton>,
+		));
 });
