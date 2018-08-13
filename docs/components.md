@@ -163,6 +163,14 @@ Displays a horizontal toggle switch. This is a wrapper around a `<input type="ch
 
 Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `separator` and `spacer`. The former two will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id, or a `text`. In turn, `group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a cohesive group of controls. Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar. For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
 
+## Tooltip
+
+- `message`: The text to be shown, may be a plain string or a message descriptor.
+
+When hovering over the parent element of the tooltip, it will be shown on screen after a 1.5 second delay. It will be positioned to the right of the element. The parent element must be positioned (i.e. must have a `position` style property), or the tooltip will appear in an undefined location.
+
+The tooltip is hidden by moving it outside of view. This is by design, as it allows screen readers to access the text, enabling use by visually impaired users.
+
 ## Treeview
 
 - `Content`: A React component. This will render the leaf nodes of the tree. Default: a null component.
