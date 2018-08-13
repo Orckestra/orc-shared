@@ -23,12 +23,13 @@ export const SmallButton = ({
 	id,
 	icon,
 	update,
+	"aria-labelledby": aria, // Not meaningful for buttons
 	altText = "[altText]", // If you do not provide alt-text, you will be hainted unto death.
 	...props
 }) => (
 	<RoundButton id={id} {...props} onClick={update}>
 		<ButtonIcon id={icon} />
-		<Tooltip htmlFor={id} message={altText} />
+		<Tooltip message={altText} />
 	</RoundButton>
 );
 SmallButton.displayName = "SmallButton";

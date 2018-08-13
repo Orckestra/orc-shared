@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { getThemeProp } from "../utils";
 import Text from "./Text";
 
-const TooltipBubble = styled.label`
-	display: block;
+const TooltipBubble = styled.div`
 	position: absolute;
 	top: 50%;
 	right: -10px;

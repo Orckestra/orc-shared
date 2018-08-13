@@ -20,7 +20,7 @@ describe("SmallButton", () => {
 			"to render as",
 			<RoundButton id="testId" otherProp onClick={update}>
 				<ButtonIcon id="test-icon" />
-				<Tooltip htmlFor="testId" message="Alternative" />
+				<Tooltip message="Alternative" />
 			</RoundButton>,
 		));
 });

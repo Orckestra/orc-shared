@@ -10,7 +10,7 @@ describe("Field", () => {
 			</Field>,
 			"to exactly render as",
 			<FieldBox>
-				<Label htmlFor="field">
+				<Label htmlFor="field" id="field_label">
 					<Text message="A test" />
 				</Label>
 				<div id="child" />
@@ -35,7 +35,7 @@ describe("Field", () => {
 			</Field>,
 			"to exactly render as",
 			<FieldBox>
-				<Label labelOnly>
+				<Label labelOnly id="field_label">
 					<Text message="A test" />
 				</Label>
 			</FieldBox>,
@@ -48,7 +48,7 @@ describe("Field", () => {
 			</Field>,
 			"to exactly render as",
 			<FieldBox>
-				<Label htmlFor="field" center>
+				<Label htmlFor="field" center id="field_label">
 					<Text message="A test" />
 				</Label>
 				<div id="child" />

@@ -34,6 +34,7 @@ const Field = ({ id, label, center, labelOnly, children }) => (
 			<Label
 				htmlFor={labelOnly ? undefined : id}
 				labelOnly={labelOnly}
+				id={id + "_label"}
 				center={center}
 			>
 				<Text message={label} />

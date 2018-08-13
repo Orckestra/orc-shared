@@ -13,9 +13,13 @@ describe("InputField", () => {
 
 	Object.keys(inputs).forEach(type => {
 		describe("input type " + type, () => {
-			it("renders a " + type + " input as a form field", () => {
-				const Input = inputs[type];
-				return expect(
+			let Input;
+			beforeEach(() => {
+				Input = inputs[type];
+			});
+
+			it("renders a " + type + " input as a form field", () =>
+				expect(
 					<InputField
 						name="fieldName"
 						type={type}
@@ -27,8 +31,24 @@ describe("InputField", () => {
 					<Field id="fieldName" label={`A ${type} field`}>
 						<Input id="fieldName" value="thing" otherProp />
 					</Field>,
-				);
-			});
+				),
+			);
+
+			it("modifies the field name if inside a list", () =>
+				expect(
+					<InputField
+						name="fieldName"
+						listIndex={12}
+						type={type}
+						label={`A ${type} field`}
+						value="thing"
+						otherProp
+					/>,
+					"to render as",
+					<Field id="fieldName[12]" label={`A ${type} field`}>
+						<Input id="fieldName[12]" value="thing" otherProp />
+					</Field>,
+				));
 		});
 	});
 });
