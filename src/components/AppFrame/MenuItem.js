@@ -37,7 +37,7 @@ export const Label = styled.span`
 	font-size: 13px;
 	vertical-align: middle;
 	text-transform: uppercase;
-	padding-left: 21px;
+	padding-left: 10px;
 
 	transition: opacity 0.3s ease-out;
 	opacity: ${props => (props.show ? 1 : 0)};
