@@ -6,6 +6,7 @@ describe("Text", () => {
 	it("renders a simple message", () =>
 		expect(
 			<Text message="Test message" />,
+			"renders elements",
 			"to render as",
 			<span>Test message</span>,
 		));
@@ -13,6 +14,7 @@ describe("Text", () => {
 	it("renders a translated message", () =>
 		expect(
 			<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />,
+			"renders elements",
 			"to render as",
 			<FormattedMessage id="test.msg" defaultMessage="Test message" />,
 		));

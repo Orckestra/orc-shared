@@ -51,6 +51,7 @@ describe("Navigation", () => {
 	it("renders a navigation tab bar with state-based props", () =>
 		expect(
 			<Navigation store={store} modules={modules} />,
+			"renders elements",
 			"to render as",
 			<Bar
 				pages={[
