@@ -42,8 +42,8 @@ export const ToolbarButton = styled(Button)`
 `;
 
 export const ToolbarButtonIcon = styled(Icon)`
-	font-size: 20px;
-	margin: -2px -2px;
+	font-size: 15px;
+	margin: -3px -2px;
 `;
 
 export const ToolbarButtonText = styled.span`
