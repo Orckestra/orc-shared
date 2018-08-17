@@ -7,16 +7,21 @@ import Checkbox from "../Checkbox";
 
 const arrify = thing => (Array.isArray(thing) ? thing : [thing]);
 
-const renderByType = (value, def, rowId, selected) => {
+const renderByType = (value, def, rowId, selected, row) => {
 	switch (def.type) {
-		case "currency":
+		case "currency": {
+			let currency = def.currency;
+			if (Array.isArray(currency)) {
+				currency = safeGet(row, ...currency);
+			}
 			return (
 				<FormattedNumber
 					style="currency" // eslint-disable-line react/style-prop-object
-					currency={def.currency}
+					currency={currency}
 					value={value}
 				/>
 			);
+		}
 		case "date":
 			return <FormattedDate value={value} />;
 		case "datetime":
@@ -55,6 +60,7 @@ const DataCell = ({ columnDef, row, rowId, selected }) => (
 			columnDef,
 			rowId,
 			selected,
+			row,
 		)}
 	</TableData>
 );

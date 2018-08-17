@@ -48,6 +48,23 @@ describe("DataCell", () => {
 		);
 	});
 
+	it("renders a cell with type currency and row-based currency code", () => {
+		const columnDef = {
+			fieldName: "test",
+			type: "currency",
+			currency: ["currency"],
+		};
+		const row = { test: 1200, extraneous: "Don't show", currency: "EUR" };
+		return expect(
+			<DataCell columnDef={columnDef} row={row} />,
+			"to render as",
+			<TableData>
+				{/* eslint-disable-next-line react/style-prop-object */}
+				<FormattedNumber style="currency" currency="EUR" value={1200} />
+			</TableData>,
+		);
+	});
+
 	it("renders a cell with type date", () => {
 		const columnDef = { fieldName: "test", type: "date" };
 		const row = {
