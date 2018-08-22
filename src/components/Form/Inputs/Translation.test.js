@@ -1,6 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import Immutable from "immutable";
+import { IntlProvider } from "react-intl";
 import Text from "../../Text";
 import TranslationInput, {
 	TranslationWrapper,
@@ -53,11 +54,13 @@ describe("TranslationInput", () => {
 
 	it("renders fields for all languages when button is clicked", () =>
 		expect(
-			<TranslationInput
-				name="test"
-				store={store}
-				value={{ "fr-CA": "Des mots" }}
-			/>,
+			<IntlProvider locale="en">
+				<TranslationInput
+					name="test"
+					store={store}
+					value={{ "fr-CA": "Des mots" }}
+				/>
+			</IntlProvider>,
 			"when deeply rendered",
 			"with event click",
 			"on",
