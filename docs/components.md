@@ -75,6 +75,8 @@ A styled input field to be used in place of `<input>`. Takes the same props as t
 
 Configurable list component. Shows a table of information, according to the given configuration. If the `scrollLoader` prop is present, the list will be rendered with virtual scrolling, and the loader function will be called everytime the user scrolls close to the botton of the list. Props for controlling infinite scroll can be found in documentation of the `withInfiniteScroll` HOC, which is used to add this functionality.
 
+See also the more [detailed documentation for this component](lists.md).
+
 ## Navigation
 
 - `modules`: An object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages` under the module.
