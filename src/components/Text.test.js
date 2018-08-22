@@ -18,4 +18,20 @@ describe("Text", () => {
 			"to render as",
 			<FormattedMessage id="test.msg" defaultMessage="Test message" />,
 		));
+
+	it("renders an error", () =>
+		expect(
+			<Text message="Test message" error={{ message: "This failed" }} />,
+			"renders elements",
+			"to render as",
+			<span
+				style={{
+					color: "red",
+					backgroundColor: "white",
+					fontWeight: "bold",
+				}}
+			>
+				Errored: This failed
+			</span>,
+		));
 });
