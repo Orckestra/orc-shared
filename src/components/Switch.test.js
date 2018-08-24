@@ -31,16 +31,16 @@ describe("Switch", () => {
 			<Switch
 				value={true}
 				onCaption={{ id: "foo", defaultMessage: "Foo!" }}
-				offCaption={{ id: "foo", defaultMessage: "Foo!" }}
+				offCaption={{ id: "bar", defaultMessage: "Bar!" }}
 			/>,
 			"to render as",
 			<Wrapper>
 				<ContainedCheckbox />
-				<Caption>
+				<Caption value={true}>
 					<Text message={{ id: "foo", defaultMessage: "Foo!" }} />
 				</Caption>
-				<Caption>
-					<Text message={{ id: "foo", defaultMessage: "Foo!" }} />
+				<Caption value={false}>
+					<Text message={{ id: "bar", defaultMessage: "Bar!" }} />
 				</Caption>
 			</Wrapper>,
 		));

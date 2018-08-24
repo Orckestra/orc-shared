@@ -1,7 +1,7 @@
 import React from "react";
 import pt from "prop-types";
 import styled from "styled-components";
-import { compose, branch } from "recompose";
+import { compose, branch, setDisplayName } from "recompose";
 import { safeGet } from "../../utils";
 import withScrollBox from "../../hocs/withScrollBox";
 import withInfiniteScroll from "../../hocs/withInfiniteScroll";
@@ -122,6 +122,7 @@ const checkInfiniteScroll = branch(
 );
 
 const StatefulList = compose(
+	setDisplayName("List"),
 	checkInfiniteScroll,
 	withScrollBox,
 	withListState,
@@ -144,7 +145,8 @@ StatefulList.propTypes = {
 				// to be sorted according to this column.
 				type: pt.oneOf(["number", "currency", "date", "datetime", "switch"]), // default shows raw value
 				// Switch type shows a switch, and takes a boolean value and an onChange handler that takes a row id.
-				currency: pt.string, // string, three-letter ISO 4217 currency code, only used for type 'currency'
+				currency: pt.oneOfType([pt.string, pt.arrayOf(pt.string)]),
+				// only used for type 'currency', string or path to string value containing three-letter ISO 4217 currency code,
 				switch: pt.object, // object, contains properties for the switch component, only used for type 'switch'
 				defaultValue: pt.any, // default value of correct type
 			}),
