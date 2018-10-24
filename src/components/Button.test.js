@@ -36,7 +36,7 @@ describe("Button", () => {
 				<Button primary />,
 				"to render style rules",
 				"to contain",
-				"background-image: linear-gradient(",
+				"background-image: linear-gradient( #3d3d3d,#333 )",
 			));
 
 		it("sets an active background-color", () =>

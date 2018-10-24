@@ -17,7 +17,7 @@ const background = ifFlag(
 		css`
 			background-image: linear-gradient(
 				${getThemeProp(["appHighlightColor"], "#333", color =>
-					tint(0.95, color),
+					tint(0.05, color),
 				)},
 				${getThemeProp(["appHighlightColor"], "#333")}
 			);

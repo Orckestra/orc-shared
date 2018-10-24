@@ -27,7 +27,7 @@ export const Cover = styled.label`
 	${ContainedInput}:active + &,
 	${ContainedInput}:focus + & {
 		box-shadow: 0px 0px 1px 0px
-			${getThemeProp(["appHighlightColor"], "#777", color => tint(0.95, color))};
+			${getThemeProp(["appHighlightColor"], "#777", color => tint(0.05, color))};
 		border-color: ${getThemeProp(["appHighlightColor"], "#777")};
 	}
 
@@ -35,7 +35,7 @@ export const Cover = styled.label`
 		"value",
 		css`
 			background-color: ${getThemeProp(["appHighlightColor"], "#777", color =>
-				tint(0.95, color),
+				tint(0.05, color),
 			)};
 			&::after {
 				content: "✔";
