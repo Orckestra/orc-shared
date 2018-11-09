@@ -122,6 +122,7 @@ describe("Module", () => {
 	it("renders a main page", () =>
 		expect(
 			<Module name="demos" component={Mod3} />,
+			"renders elements",
 			"to render as",
 			<React.Fragment>
 				<RenderFragment forRoute="/">
@@ -133,6 +134,7 @@ describe("Module", () => {
 	it("renders subpages", () =>
 		expect(
 			<Module name="photos" pages={modules.photos.pages} component={Mod2} />,
+			"renders elements",
 			"to render as",
 			<React.Fragment>
 				<RenderFragment key="/:page3" forRoute="/:page3">
@@ -152,6 +154,7 @@ describe("Module", () => {
 				mode="segments"
 				root="/foo/bar"
 			/>,
+			"renders elements",
 			"to render as",
 			<Segments pages={modules.users.pages} root="/foo/bar" />,
 		));

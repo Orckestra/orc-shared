@@ -1,4 +1,3 @@
-import "orc-scripts/polyfill"; // IE11 compatibility
 import React from "react";
 import sinon from "sinon";
 import withNavigationLink from "./withNavigationLink";
