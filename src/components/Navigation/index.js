@@ -1,4 +1,4 @@
-import { setDisplayName, compose } from "recompose";
+import { compose } from "recompose";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import Bar from "./Bar";
 import withNavigationData from "./withNavigationData";

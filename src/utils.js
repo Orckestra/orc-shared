@@ -104,7 +104,10 @@ export const stripKey = (key, { [key]: _, ...newObj }) => newObj;
 const getPageRoutes = module =>
 	Object.entries(safeGet(module, "pages") || {}).reduce(
 		(routes, [route, page]) => {
-			const remainder = stripKey("component", page);
+			const remainder = {
+				...stripKey("pages", stripKey("component", page)),
+				...getPageRoutes(page),
+			};
 			return {
 				[route]: remainder,
 				...routes,

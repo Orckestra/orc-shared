@@ -506,13 +506,14 @@ describe("stripKey", () => {
 });
 
 describe("modulesToRoutes", () => {
-	let modules, Mod2, Mod3, Page1, Page2, Page3;
+	let modules, Mod2, Mod3, Page1, Page2, Page3, SubPage1;
 	beforeEach(() => {
 		Mod2 = () => <div />;
 		Mod3 = () => <div />;
 		Page1 = () => <div />;
 		Page2 = () => <div />;
 		Page3 = () => <div />;
+		SubPage1 = () => <div />;
 		modules = {
 			users: {
 				label: "Module 1",
@@ -521,11 +522,17 @@ describe("modulesToRoutes", () => {
 				pages: {
 					"/:page1": {
 						component: Page1,
-						title: "Page 1",
+						label: "Page 1",
 					},
 					"/:page2": {
 						component: Page2,
-						title: "Page 2",
+						label: "Page 2",
+						pages: {
+							"/sub1": {
+								label: "Sub-page 1",
+								component: SubPage1,
+							},
+						},
 					},
 				},
 			},
@@ -536,7 +543,7 @@ describe("modulesToRoutes", () => {
 				pages: {
 					"/:page3": {
 						component: Page3,
-						title: "Page 3",
+						label: "Page 3",
 					},
 				},
 			},
@@ -555,16 +562,19 @@ describe("modulesToRoutes", () => {
 					module: "users",
 					segments: true,
 					"/:page1": {
-						title: "Page 1",
+						label: "Page 1",
 					},
 					"/:page2": {
-						title: "Page 2",
+						label: "Page 2",
+						"/sub1": {
+							label: "Sub-page 1",
+						},
 					},
 				},
 				"/photos": {
 					module: "photos",
 					"/:page3": {
-						title: "Page 3",
+						label: "Page 3",
 					},
 				},
 				"/demos": {
