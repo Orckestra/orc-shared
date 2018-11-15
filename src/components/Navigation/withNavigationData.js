@@ -20,7 +20,7 @@ const withNavigationData = connect(
 		const module = {
 			icon: moduleData.icon,
 			label: moduleData.label,
-			href: mappedHref || moduleHref,
+			href: mappedHref,
 		};
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state));
 		return {
@@ -33,7 +33,7 @@ const withNavigationData = connect(
 				};
 			}),
 			moduleName,
-			moduleHref: mappedHref || moduleHref,
+			moduleHref: mappedHref,
 		};
 	},
 	dispatch => ({
