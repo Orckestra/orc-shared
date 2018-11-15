@@ -32,6 +32,7 @@ describe("Navigation", () => {
 				moduleTabs: {
 					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
 				},
+				segmentHrefs: {},
 			},
 		});
 		store = {

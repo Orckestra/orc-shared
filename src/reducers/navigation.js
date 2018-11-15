@@ -15,23 +15,29 @@ const getModuleName = result =>
 const navigationReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOCATION_CHANGED:
-			if (safeGet(action, "payload", "result", "parent", "segments")) {
-				const parentPath = action.payload.pathname.replace(/\/[^/]*$/, "");
-				return state.setIn(
-					["segmentHrefs", parentPath],
-					action.payload.pathname,
-				);
-			}
 			return state.withMutations(s => {
-				if (!(action.payload.result && action.payload.result.title)) return;
-				const title = action.payload.result.title;
-				if (action.payload.result.title.id) {
+				if (!action.payload.result) return;
+				let parentPath;
+				if (safeGet(action.payload.result, "parent", "mode") === "segments") {
+					parentPath = action.payload.pathname.replace(/\/[^/]*$/, "");
+					s.setIn(["segmentHrefs", parentPath], action.payload.pathname);
+				}
+				let title, path;
+				if (safeGet(action.payload.result, "parent", "mode") === "segments") {
+					title = safeGet(action.payload.result, "parent", "title");
+					path = parentPath;
+				} else {
+					title = action.payload.result.title;
+					path = action.payload.pathname;
+				}
+				if (!title) return;
+				if (title.id) {
 					title.values = action.payload.params;
 				}
 				s.setIn(
-					["tabIndex", action.payload.pathname],
+					["tabIndex", path],
 					Immutable.fromJS({
-						href: action.payload.pathname,
+						href: path,
 						label: title,
 					}),
 				);
@@ -39,11 +45,8 @@ const navigationReducer = (state = initialState, action) => {
 				if (moduleName) {
 					const moduleList =
 						s.getIn(["moduleTabs", moduleName]) || Immutable.List();
-					if (!moduleList.includes(action.payload.pathname)) {
-						s.setIn(
-							["moduleTabs", moduleName],
-							moduleList.push(action.payload.pathname),
-						);
+					if (!moduleList.includes(path)) {
+						s.setIn(["moduleTabs", moduleName], moduleList.push(path));
 					}
 				}
 			});

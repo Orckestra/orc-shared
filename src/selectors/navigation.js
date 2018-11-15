@@ -4,16 +4,19 @@ import { resultSelector } from "./route";
 
 const getNavigationState = state => state.get("navigation");
 
-const selectTabs = createSelector(getNavigationState, nav =>
-	nav.get("tabIndex"),
+const selectTabs = createSelector(
+	getNavigationState,
+	nav => nav.get("tabIndex"),
 );
 
-export const selectTabGetter = createSelector(selectTabs, tabs => path =>
-	tabs.get(path),
+export const selectTabGetter = createSelector(
+	selectTabs,
+	tabs => path => tabs.get(path),
 );
 
-const selectModuleLists = createSelector(getNavigationState, nav =>
-	nav.get("moduleTabs"),
+const selectModuleLists = createSelector(
+	getNavigationState,
+	nav => nav.get("moduleTabs"),
 );
 
 const getModuleName = result =>
@@ -34,4 +37,14 @@ export const selectMappedCurrentModuleList = createSelector(
 	selectCurrentModuleList,
 	selectTabGetter,
 	(list, getTab) => list.map(getTab),
+);
+
+const segmentHrefMap = createSelector(
+	getNavigationState,
+	state => state.get("segmentHrefs"),
+);
+
+export const selectSegmentHrefMapper = createSelector(
+	segmentHrefMap,
+	map => href => map.get(href) || href,
 );

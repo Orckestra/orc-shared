@@ -34,9 +34,7 @@ describe("withNavigation", () => {
 				moduleTabs: {
 					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
 				},
-				segmentHrefs: {
-					"/TestScope/test": "/TestScope/test/page1",
-				},
+				segmentHrefs: {},
 			},
 		});
 		store = {
@@ -97,10 +95,16 @@ describe("withNavigation", () => {
 					},
 				},
 				navigation: {
-					tabIndex: {},
-					moduleTabs: {},
+					moduleTabs: { test: ["/TestScope/test/page2"] },
+					tabIndex: {
+						"/TestScope/test/page2": {
+							label: "Page 2",
+							href: "/TestScope/test/page2",
+						},
+					},
 					segmentHrefs: {
 						"/TestScope/test": "/TestScope/test/page1",
+						"/TestScope/test/page2": "/TestScope/test/page2/sub",
 					},
 				},
 			});
@@ -126,6 +130,11 @@ describe("withNavigation", () => {
 								label: "Thing",
 								href: "/TestScope/test/page1",
 								active: true,
+							},
+							{
+								label: "Page 2",
+								href: "/TestScope/test/page2/sub",
+								active: false,
 							},
 						]}
 						moduleName="test"

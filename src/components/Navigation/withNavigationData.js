@@ -6,17 +6,17 @@ import { removeTab } from "../../actions/navigation";
 import {
 	selectCurrentModuleName,
 	selectMappedCurrentModuleList,
+	selectSegmentHrefMapper,
 } from "../../selectors/navigation";
 
 const withNavigationData = connect(
 	(state, { modules }) => {
+		const hrefMapper = selectSegmentHrefMapper(state);
 		const currentHref = window.location.pathname;
 		const moduleName = selectCurrentModuleName(state);
 		const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
 		const moduleHref = "/" + getCurrentScope(state) + "/" + moduleName;
-		const mappedHref =
-			moduleData.mode === "segments" &&
-			state.getIn(["navigation", "segmentHrefs", moduleHref]);
+		const mappedHref = hrefMapper(moduleHref);
 		const module = {
 			icon: moduleData.icon,
 			label: moduleData.label,
@@ -24,10 +24,14 @@ const withNavigationData = connect(
 		};
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state));
 		return {
-			pages: [module, ...pages].map(page => ({
-				...page,
-				active: page.href === currentHref,
-			})),
+			pages: [module, ...pages].map(page => {
+				const href = hrefMapper(page.href);
+				return {
+					...page,
+					href,
+					active: href === currentHref,
+				};
+			}),
 			moduleName,
 			moduleHref: mappedHref || moduleHref,
 		};

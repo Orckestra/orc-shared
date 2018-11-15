@@ -42,6 +42,22 @@ describe("Navigation reducer", () => {
 			);
 		});
 
+		it("handles no-result actions", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: { "/test/old": {} },
+				moduleTabs: {},
+			});
+			const action = {
+				type: LOCATION_CHANGED,
+				payload: {
+					pathname: "/test/new",
+					route: "/test/:page",
+				},
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "to be", oldState);
+		});
+
 		it("saves params for pages with message descriptor titles", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "/test/old": {} },
@@ -177,7 +193,7 @@ describe("Navigation reducer", () => {
 					pathname: "/test/new",
 					result: {
 						label: "Test page",
-						parent: { module: "thing", segments: true },
+						parent: { module: "thing", mode: "segments" },
 					},
 				},
 			};
@@ -188,6 +204,40 @@ describe("Navigation reducer", () => {
 					tabIndex: { "/test/old": {} },
 					moduleTabs: { thing: ["/test/new"] },
 					segmentHrefs: { "/test": "/test/new" },
+				}),
+			);
+		});
+
+		it("uses parent's title and href on segment pages", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: {},
+				moduleTabs: {},
+				segmentHrefs: {},
+			});
+			const action = {
+				type: LOCATION_CHANGED,
+				payload: {
+					pathname: "/thing/test/new",
+					result: {
+						label: "New",
+						title: "Wrong",
+						parent: {
+							mode: "segments",
+							title: "Correct",
+							parent: {
+								module: "thing",
+							},
+						},
+					},
+				},
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to satisfy",
+				Immutable.fromJS({
+					tabIndex: { "/thing/test": { label: "Correct" } },
+					moduleTabs: { thing: ["/thing/test"] },
+					segmentHrefs: { "/thing/test": "/thing/test/new" },
 				}),
 			);
 		});

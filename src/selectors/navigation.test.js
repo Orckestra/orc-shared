@@ -3,6 +3,7 @@ import {
 	selectTabGetter,
 	selectCurrentModuleName,
 	selectMappedCurrentModuleList,
+	selectSegmentHrefMapper,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -105,5 +106,57 @@ describe("selectMappedCurrentModuleList", () => {
 			"to equal",
 			Immutable.fromJS([]),
 		);
+	});
+});
+
+describe("selectSegmentHrefMapper", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			router: { result: { module: "thing" } },
+			navigation: {
+				tabIndex: {
+					"/path/to/tab1": { tab: 1 },
+					"/path/to/tab2": { tab: 2 },
+				},
+				moduleTabs: { thing: ["/path/to/tab1"] },
+				segmentHrefs: {
+					"/path/to/tab1": "/path/to/tab1/subpage",
+				},
+			},
+		});
+	});
+
+	it("returns a function", () =>
+		expect(
+			selectSegmentHrefMapper,
+			"when called with",
+			[state],
+			"to be a function",
+		));
+
+	describe("returned function", () => {
+		let mapper;
+		beforeEach(() => {
+			mapper = selectSegmentHrefMapper(state);
+		});
+
+		it("maps segment hrefs", () =>
+			expect(
+				mapper,
+				"when called with",
+				["/path/to/tab1"],
+				"to equal",
+				"/path/to/tab1/subpage",
+			));
+
+		it("passes unmapped hrefs", () =>
+			expect(
+				mapper,
+				"when called with",
+				["/path/to/tab2"],
+				"to equal",
+				"/path/to/tab2",
+			));
 	});
 });
