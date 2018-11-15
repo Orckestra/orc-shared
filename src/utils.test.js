@@ -355,6 +355,15 @@ describe("setTranslation", () => {
 				hat: { name: "" },
 			}),
 		));
+
+	it("returns if no object passed", () =>
+		expect(
+			setTranslation,
+			"when called with",
+			["de", undefined, ["hat", "name"]],
+			"to equal",
+			undefined,
+		));
 });
 
 describe("debounce", () => {
