@@ -71,6 +71,8 @@ These selectors expect a `buildState` store.
 
 `selectMappedCurrentModuleList`: Gets the list of tab objects for the currently selected module.
 
+`selectSegmentHrefMapper`: Returns a mapper function that, when given a href will return either the href the input is mapped to, or the input itself. This is useful for ensuring path equality, that links point to the right places, etc.
+
 ## Route
 
 `paramSelector`: Returns the matched parameters of the current route.
