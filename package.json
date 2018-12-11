@@ -28,7 +28,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.4.0"
+		"orc-scripts": "0.4.1"
 	},
 	"lint-staged": {
 		"*.{js,json,md}": [
