@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import Bar from "./Bar";
@@ -51,9 +52,10 @@ describe("Navigation", () => {
 
 	it("renders a navigation tab bar with state-based props", () =>
 		expect(
-			<Navigation store={store} modules={modules} />,
-			"renders elements",
-			"to render as",
+			<Provider store={store}>
+				<Navigation modules={modules} />
+			</Provider>,
+			"to deeply render as",
 			<Bar
 				pages={[
 					{

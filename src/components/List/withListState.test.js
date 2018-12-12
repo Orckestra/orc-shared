@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import ReactTestUtils from "react-dom/test-utils";
 import sinon from "sinon";
@@ -33,9 +34,10 @@ describe("withListState", () => {
 	it("does not change column definitions without cause", () =>
 		expect(withListState, "called with", [TestComp]).then(EnhComp =>
 			expect(
-				<EnhComp name="test" {...{ store, columnDefs }} />,
-				"renders elements",
-				"to render as",
+				<Provider store={store}>
+					<EnhComp name="test" columnDefs={columnDefs} />
+				</Provider>,
+				"to deeply render as",
 				<TestComp
 					columnDefs={expect.it("to exhaustively satisfy", [
 						{
@@ -60,9 +62,10 @@ describe("withListState", () => {
 			expect(withListState, "called with", [TestComp])
 				.then(EnhComp =>
 					expect(
-						<EnhComp name="test" {...{ store, columnDefs }} />,
-						"renders elements",
-						"to render as",
+						<Provider store={store}>
+							<EnhComp name="test" columnDefs={columnDefs} />
+						</Provider>,
+						"to deeply render as",
 						<TestComp
 							selection={["selectedRow"]}
 							columnDefs={[
@@ -128,9 +131,10 @@ describe("withListState", () => {
 			state = state.deleteIn(["view", "test", "selection"]);
 			return expect(withListState, "called with", [TestComp]).then(EnhComp =>
 				expect(
-					<EnhComp name="test" {...{ store, columnDefs }} />,
-					"renders elements",
-					"to render as",
+					<Provider store={store}>
+						<EnhComp name="test" columnDefs={columnDefs} />
+					</Provider>,
+					"to deeply render as",
 					<TestComp selection={[]} />,
 				),
 			);
@@ -163,7 +167,9 @@ describe("withListState", () => {
 			expect(withListState, "called with", [TestComp])
 				.then(EnhComp =>
 					expect(
-						<EnhComp name="test" {...{ store, columnDefs }} />,
+						<Provider store={store}>
+							<EnhComp name="test" columnDefs={columnDefs} />
+						</Provider>,
 						"when deeply rendered",
 						"queried for",
 						<TestComp />,
@@ -220,7 +226,9 @@ describe("withListState", () => {
 			expect(withListState, "called with", [TestComp])
 				.then(EnhComp =>
 					expect(
-						<EnhComp name="test" {...{ store, columnDefs }} />,
+						<Provider store={store}>
+							<EnhComp name="test" columnDefs={columnDefs} />
+						</Provider>,
 						"when deeply rendered",
 						"queried for",
 						<TestComp selection={[]} />,

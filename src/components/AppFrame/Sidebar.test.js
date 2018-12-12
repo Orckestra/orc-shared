@@ -1,5 +1,6 @@
 import React from "react";
 import Immutable from "immutable";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import Sidebar, { Bar, EnhancedMenuItem, MenuToggle } from "./Sidebar";
 import MenuItem from "./MenuItem";
@@ -63,7 +64,9 @@ describe("EnhancedMenuItem", () => {
 
 	it("renders a MenuItem with href and onClick", () =>
 		expect(
-			<EnhancedMenuItem id="route" store={store} />,
+			<Provider store={store}>
+				<EnhancedMenuItem id="route" />
+			</Provider>,
 			"to deeply render as",
 			<MenuItem href="/Global/route" onClick={expect.it("to be a function")} />,
 		));

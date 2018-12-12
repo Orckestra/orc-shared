@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import { replace } from "redux-little-router";
 import Redirector from "./Redirector";
@@ -19,7 +20,9 @@ describe("Redirector", () => {
 
 	it("dispatches a replace action immediately upon mount", () =>
 		expect(
-			<Redirector store={store} href="/path/to/redirect" />,
+			<Provider store={store}>
+				<Redirector href="/path/to/redirect" />
+			</Provider>,
 			"when deeply rendered",
 		)
 			.then(() => {

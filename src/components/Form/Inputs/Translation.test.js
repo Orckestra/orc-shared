@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
@@ -33,16 +34,16 @@ describe("TranslationInput", () => {
 
 	it("renders a field for the default culture, and a button to show others", () =>
 		expect(
-			<TranslationInput
-				name="test"
-				store={store}
-				value={{}}
-				moreLabel="Show more things"
-			/>,
-			"renders elements",
-			"renders elements",
-			"renders elements",
-			"to render with all children as",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<TranslationInput
+						name="test"
+						value={{}}
+						moreLabel="Show more things"
+					/>
+				</IntlProvider>
+			</Provider>,
+			"to deeply render as",
 			<TranslationWrapper>
 				<TranslationField lang="en-CA" />
 				<ShowButton onClick={expect.it("to be a function")}>
@@ -54,13 +55,11 @@ describe("TranslationInput", () => {
 
 	it("renders fields for all languages when button is clicked", () =>
 		expect(
-			<IntlProvider locale="en">
-				<TranslationInput
-					name="test"
-					store={store}
-					value={{ "fr-CA": "Des mots" }}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} />
+				</IntlProvider>
+			</Provider>,
 			"when deeply rendered",
 			"with event click",
 			"on",
@@ -75,21 +74,24 @@ describe("TranslationInput", () => {
 
 	it("lets you update a single language", () =>
 		expect(
-			<TranslationInput
-				name="test"
-				store={store}
-				value={{ "fr-CA": "Des mots" }}
-				update={update}
-				moreLabel="Show more things"
-			/>,
-			"renders elements",
-			"renders elements",
-			"renders elements",
+			<Provider store={store}>
+				<IntlProvider locale="en-CA">
+					<TranslationInput
+						name="test"
+						value={{ "fr-CA": "Des mots" }}
+						update={update}
+						moreLabel="Show more things"
+					/>
+				</IntlProvider>
+			</Provider>,
+			"when deeply rendered",
+			"queried for",
+			<TranslationField lang="en-CA" />,
 			"with event",
 			"change",
 			{ target: { value: "New" } },
 			"on",
-			<TranslationField lang="en-CA" />,
+			<input />,
 		).then(() =>
 			expect(update, "to have calls satisfying", [
 				{
@@ -106,13 +108,14 @@ describe("TranslationInput", () => {
 	it("handles no cultures being loaded gracefully", () => {
 		state = state.setIn(["locale", "cultures"], Immutable.Map());
 		return expect(
-			<TranslationInput
-				name="test"
-				store={store}
-				value={{ "fr-CA": "Des mots" }}
-				update={update}
-				moreLabel="Show more things"
-			/>,
+			<Provider store={store}>
+				<TranslationInput
+					name="test"
+					value={{ "fr-CA": "Des mots" }}
+					update={update}
+					moreLabel="Show more things"
+				/>
+			</Provider>,
 			"when deeply rendered",
 			"to be ok",
 		);

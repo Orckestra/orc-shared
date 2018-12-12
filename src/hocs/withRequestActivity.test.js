@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import withRequestActivity from "./withRequestActivity";
 
@@ -27,7 +28,13 @@ describe("withRequestActivity", () => {
 			"when called with",
 			[TestComp],
 		).then(EnhComp =>
-			expect(<EnhComp store={store} />, "to render as", <TestComp active />),
+			expect(
+				<Provider store={store}>
+					<EnhComp />
+				</Provider>,
+				"to deeply render as",
+				<TestComp active />,
+			),
 		));
 
 	it("does not set active flag if the named request is not in progress", () =>
@@ -39,8 +46,10 @@ describe("withRequestActivity", () => {
 			[TestComp],
 		).then(EnhComp =>
 			expect(
-				<EnhComp store={store} />,
-				"to render as",
+				<Provider store={store}>
+					<EnhComp />
+				</Provider>,
+				"to deeply render as",
 				<TestComp active={false} />,
 			),
 		));

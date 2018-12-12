@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { push } from "redux-little-router";
@@ -55,8 +56,10 @@ describe("withNavigation", () => {
 	it("provides state information about navigation", () =>
 		expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
-				<EnhComp store={store} modules={modules} />,
-				"to render as",
+				<Provider store={store}>
+					<EnhComp modules={modules} />
+				</Provider>,
+				"to deeply render as",
 				<TestComp
 					pages={[
 						{
@@ -121,8 +124,10 @@ describe("withNavigation", () => {
 		it("makes sure segment hrefs are correct", () =>
 			expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 				expect(
-					<EnhComp store={store} modules={modules} />,
-					"to render as",
+					<Provider store={store}>
+						<EnhComp modules={modules} />
+					</Provider>,
+					"to deeply render as",
 					<TestComp
 						pages={[
 							{
@@ -151,8 +156,10 @@ describe("withNavigation", () => {
 		};
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
-				<EnhComp store={store} modules={modules} />,
-				"to render as",
+				<Provider store={store}>
+					<EnhComp modules={modules} />
+				</Provider>,
+				"to deeply render as",
 				<TestComp
 					close={expect.it(
 						"called with",
@@ -189,8 +196,10 @@ describe("withNavigation", () => {
 		};
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
-				<EnhComp store={store} modules={modules} />,
-				"to render as",
+				<Provider store={store}>
+					<EnhComp modules={modules} />
+				</Provider>,
+				"to deeply render as",
 				<TestComp
 					close={expect.it(
 						"called with",

@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import withNavigationLink from "./withNavigationLink";
 
@@ -19,8 +20,10 @@ describe("withNavigationLink", () => {
 	it("sets an active flag if the current path matches the href", () =>
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
-				<Comp store={fakeStore} href="/" />,
-				"to render as",
+				<Provider store={fakeStore}>
+					<Comp href="/" />
+				</Provider>,
+				"to deeply render as",
 				<TestComp active />,
 			),
 		));
@@ -28,8 +31,10 @@ describe("withNavigationLink", () => {
 	it("omits active flag if the current path does not match the href", () =>
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
-				<Comp store={fakeStore} href="/foo" />,
-				"to render as",
+				<Provider store={fakeStore}>
+					<Comp href="/foo" />
+				</Provider>,
+				"to deeply render as",
 				<TestComp active={false} />,
 			),
 		));
@@ -38,8 +43,10 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp])
 			.then(Comp =>
 				expect(
-					<Comp store={fakeStore} href="/foo" />,
-					"to render as",
+					<Provider store={fakeStore}>
+						<Comp href="/foo" />
+					</Provider>,
+					"to deeply render as",
 					<TestComp
 						onClick={expect
 							.it("to be a function")
@@ -60,8 +67,10 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp])
 			.then(Comp =>
 				expect(
-					<Comp store={fakeStore} href="/" />,
-					"to render as",
+					<Provider store={fakeStore}>
+						<Comp href="/" />
+					</Provider>,
+					"to deeply render as",
 					<TestComp
 						onClick={expect
 							.it("to be a function")
@@ -80,8 +89,10 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp])
 			.then(Comp =>
 				expect(
-					<Comp store={fakeStore} href="http://google.com/" />,
-					"to render as",
+					<Provider store={fakeStore}>
+						<Comp href="http://google.com/" />
+					</Provider>,
+					"to deeply render as",
 					<TestComp
 						onClick={expect
 							.it("to be a function")
@@ -100,8 +111,10 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp])
 			.then(Comp =>
 				expect(
-					<Comp store={fakeStore} />,
-					"to render as",
+					<Provider store={fakeStore}>
+						<Comp />
+					</Provider>,
+					"to deeply render as",
 					<TestComp
 						onClick={expect
 							.it("to be a function")

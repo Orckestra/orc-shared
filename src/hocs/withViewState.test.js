@@ -1,10 +1,11 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import withViewState from "./withViewState";
 import { setStateField } from "../actions/view";
 
-const TestComp = props => <input {...props} />;
+const TestComp = () => <input />;
 
 describe("withViewState", () => {
 	let store, state;
@@ -27,8 +28,10 @@ describe("withViewState", () => {
 	it("adds a value prop to an element based on its name prop", () =>
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>
 			expect(
-				<Comp name="test" store={store} />,
-				"to render as",
+				<Provider store={store}>
+					<Comp name="test" />
+				</Provider>,
+				"to deeply render as",
 				<TestComp viewState={{ viewState: "good value" }} />,
 			),
 		));
@@ -36,8 +39,10 @@ describe("withViewState", () => {
 	it("handles nonexistent state", () =>
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>
 			expect(
-				<Comp name="noState" store={store} />,
-				"to render as",
+				<Provider store={store}>
+					<Comp name="noState" />
+				</Provider>,
+				"to deeply render as",
 				<TestComp name="noState" viewState={{}} />,
 			),
 		));
@@ -45,20 +50,21 @@ describe("withViewState", () => {
 	it("adds function that updates the state", () =>
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>
 			expect(
-				<Comp name="test" store={store} />,
-				"when rendered",
-				"has elements",
-			)
-				.then(elements =>
-					expect(elements.props.updateViewState, "when called with", [
+				<Provider store={store}>
+					<Comp name="test" />
+				</Provider>,
+				"when deeply rendered",
+				"queried for",
+				<TestComp
+					updateViewState={expect.it("when called with", [
 						"aField",
 						"new value",
-					]),
-				)
-				.then(() =>
-					expect(store.dispatch, "to have calls satisfying", [
-						{ args: [setStateField("test", "aField", "new value")] },
-					]),
-				),
+					])}
+				/>,
+			).then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
+					{ args: [setStateField("test", "aField", "new value")] },
+				]),
+			),
 		));
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import withScopeSelect from "./withScopeSelect";
@@ -25,7 +26,9 @@ describe("withScopeSelect", () => {
 	it("it provides a click handler to the enhanced component", () =>
 		expect(withScopeSelect, "when called with", [TestComp]).then(Comp =>
 			expect(
-				<Comp id="Feep" closeSelector={closer} store={store} />,
+				<Provider store={store}>
+					<Comp id="Feep" closeSelector={closer} />
+				</Provider>,
 				"when deeply rendered",
 				"with event",
 				"click",

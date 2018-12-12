@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
 import I18n from "./I18n";
@@ -25,10 +26,12 @@ describe("I18n", () => {
 
 	it("renders a react-intl IntlProvider with locale data provided", () =>
 		expect(
-			<I18n store={store}>
-				<div />
-			</I18n>,
-			"to render as",
+			<Provider store={store}>
+				<I18n>
+					<div />
+				</I18n>
+			</Provider>,
+			"to deeply render as",
 			<IntlProvider key="en" locale="en" messages={{ WORD: "Word" }}>
 				<div />
 			</IntlProvider>,

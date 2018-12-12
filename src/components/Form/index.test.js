@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Immutable from "immutable";
 import Form from "./Form";
 import FieldElements from "./FieldElements";
@@ -393,8 +394,10 @@ describe("withCultureCount", () => {
 	it("provides a count of the available cultures", () =>
 		expect(withCultureCount, "called with", [TestComp]).then(EnhComp =>
 			expect(
-				<EnhComp store={store} />,
-				"to render as",
+				<Provider store={store}>
+					<EnhComp />
+				</Provider>,
+				"to deeply render as",
 				<TestComp cultureCount={3} />,
 			),
 		));
