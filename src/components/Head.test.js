@@ -40,7 +40,9 @@ describe("Head", () => {
 				<Helmet>{/* <html lang="fr-CA" /> */}</Helmet>,
 			)
 				// Wait 1 ms for Helmet to propagate changes
-				.then(() => new Promise(resolve => setTimeout(resolve, 1)))
+				.then(
+					() => new Promise(resolve => window.requestAnimationFrame(resolve)),
+				)
 				.then(() => expect(document.documentElement.lang, "to be", "fr-CA"))
 		);
 	});
