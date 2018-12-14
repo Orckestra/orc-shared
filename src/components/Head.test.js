@@ -33,17 +33,12 @@ describe("Head", () => {
 			</Provider>,
 			node,
 		);
-		return (
-			expect(
-				render,
-				"to have rendered",
-				<Helmet>{/* <html lang="fr-CA" /> */}</Helmet>,
-			)
-				// Wait 1 ms for Helmet to propagate changes
-				.then(
-					() => new Promise(resolve => window.requestAnimationFrame(resolve)),
-				)
-				.then(() => expect(document.documentElement.lang, "to be", "fr-CA"))
-		);
+		return expect(
+			render,
+			"to have rendered",
+			<Helmet>{/* <html lang="fr-CA" /> */}</Helmet>,
+		)
+			.then(() => new Promise(resolve => window.requestAnimationFrame(resolve)))
+			.then(() => expect(document.documentElement.lang, "to be", "fr-CA"));
 	});
 });
