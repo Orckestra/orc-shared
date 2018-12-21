@@ -26,8 +26,15 @@ const withNavigationData = connect(
 		return {
 			pages: [module, ...pages].map(page => {
 				const href = hrefMapper(page.href);
+				let label = page.label;
+				if (label && label.id) {
+					const dataObject =
+						page.dataPath && unwrapImmutable(state.getIn(page.dataPath));
+					label.values = { ...dataObject, ...label.values };
+				}
 				return {
 					...page,
+					label,
 					href,
 					active: href === currentHref,
 				};

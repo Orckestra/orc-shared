@@ -93,6 +93,119 @@ describe("Navigation reducer", () => {
 			);
 		});
 
+		it("saves a state path to a data object for pages indicating one", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: { "/test/old": {} },
+				moduleTabs: {},
+			});
+			const action = {
+				type: LOCATION_CHANGED,
+				payload: {
+					route: "/test/:page",
+					params: { page: "256aaf" },
+					pathname: "/test/256aaf",
+					result: {
+						title: {
+							id: "test.navigation.testpage",
+							defaultMessage: "Test {someDataField}",
+						},
+						dataPath: ["foo", "256aaf"],
+						parent: { module: "thing" },
+					},
+				},
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to have value at",
+				["tabIndex", "/test/256aaf"],
+				Immutable.fromJS({
+					href: "/test/256aaf",
+					dataPath: ["foo", "256aaf"],
+					label: {
+						id: "test.navigation.testpage",
+						defaultMessage: "Test {someDataField}",
+						values: { page: "256aaf" },
+					},
+				}),
+			);
+		});
+
+		it("adds an object id to the data object path if given", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: { "/test/old": {} },
+				moduleTabs: {},
+			});
+			const action = {
+				type: LOCATION_CHANGED,
+				payload: {
+					route: "/test/:page",
+					params: { page: "256aaf" },
+					pathname: "/test/256aaf",
+					result: {
+						title: {
+							id: "test.navigation.testpage",
+							defaultMessage: "Test {someDataField}",
+						},
+						dataPath: ["foo"],
+						dataIdParam: "page",
+						parent: { module: "thing" },
+					},
+				},
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to have value at",
+				["tabIndex", "/test/256aaf"],
+				Immutable.fromJS({
+					href: "/test/256aaf",
+					dataPath: ["foo", "256aaf"],
+					label: {
+						id: "test.navigation.testpage",
+						defaultMessage: "Test {someDataField}",
+						values: { page: "256aaf" },
+					},
+				}),
+			);
+		});
+
+		it("does not add the data object id if already present", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: { "/test/old": {} },
+				moduleTabs: {},
+			});
+			const action = {
+				type: LOCATION_CHANGED,
+				payload: {
+					route: "/test/:page",
+					params: { page: "256aaf" },
+					pathname: "/test/256aaf",
+					result: {
+						title: {
+							id: "test.navigation.testpage",
+							defaultMessage: "Test {someDataField}",
+						},
+						dataPath: ["foo", "256aaf"],
+						dataIdParam: "page",
+						parent: { module: "thing" },
+					},
+				},
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to have value at",
+				["tabIndex", "/test/256aaf"],
+				Immutable.fromJS({
+					href: "/test/256aaf",
+					dataPath: ["foo", "256aaf"],
+					label: {
+						id: "test.navigation.testpage",
+						defaultMessage: "Test {someDataField}",
+						values: { page: "256aaf" },
+					},
+				}),
+			);
+		});
+
 		it("creates a list of open tabs per module", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "/test/old": {} },

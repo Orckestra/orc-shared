@@ -16,11 +16,13 @@ describe("withNavigation", () => {
 			router: {
 				params: {
 					scope: "TestScope",
+					current: "foo",
 				},
 				result: {
 					module: "test",
 				},
 			},
+			objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
 			navigation: {
 				tabIndex: {
 					"/TestScope/test/page1": {
@@ -28,7 +30,8 @@ describe("withNavigation", () => {
 						href: "/TestScope/test/page1",
 					},
 					"/TestScope/test/page2": {
-						label: "Page 2",
+						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
+						dataPath: ["objs", "test", "foo"],
 						href: "/TestScope/test/page2",
 					},
 				},
@@ -74,7 +77,13 @@ describe("withNavigation", () => {
 							active: true,
 						},
 						{
-							label: "Page 2",
+							label: {
+								id: "page2",
+								defaultMessage: "Page 2 {someField}",
+								values: {
+									someField: "11",
+								},
+							},
 							href: "/TestScope/test/page2",
 							active: false,
 						},

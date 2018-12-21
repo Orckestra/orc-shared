@@ -22,13 +22,17 @@ const navigationReducer = (state = initialState, action) => {
 					parentPath = action.payload.pathname.replace(/\/[^/]*$/, "");
 					s.setIn(["segmentHrefs", parentPath], action.payload.pathname);
 				}
-				let title, path;
+				let title, path, dataPath, dataId;
 				if (safeGet(action.payload.result, "parent", "mode") === "segments") {
 					title = safeGet(action.payload.result, "parent", "title");
 					path = parentPath;
+					dataPath = safeGet(action.payload.result, "parent", "dataPath");
+					dataId = safeGet(action.payload.result, "parent", "dataIdParam");
 				} else {
 					title = action.payload.result.title;
 					path = action.payload.pathname;
+					dataPath = action.payload.result.dataPath;
+					dataId = action.payload.result.dataIdParam;
 				}
 				if (!title) return;
 				if (title.id) {
@@ -41,6 +45,15 @@ const navigationReducer = (state = initialState, action) => {
 						label: title,
 					}),
 				);
+				if (dataPath) {
+					if (dataId) {
+						const objectId = safeGet(action.payload, "params", dataId);
+						if (!dataPath.find(item => item === objectId)) {
+							dataPath.push(objectId);
+						}
+					}
+					s.setIn(["tabIndex", path, "dataPath"], Immutable.fromJS(dataPath));
+				}
 				const moduleName = getModuleName(action.payload.result);
 				if (moduleName) {
 					const moduleList =
