@@ -1,7 +1,7 @@
 import Immutable from "immutable";
-import { LOCATION_CHANGED } from "redux-little-router";
 import { removeTab } from "../actions/navigation";
 import reducer from "./navigation";
+import { LOCATION_CHANGED } from "connected-react-router";
 
 describe("Navigation reducer", () => {
 	it("behaves as a reducer should", () =>

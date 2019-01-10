@@ -40,7 +40,12 @@ describe("withScopeSelect", () => {
 				expect([store.dispatch, closer], "to have calls satisfying", [
 					{
 						spy: store.dispatch,
-						args: [{ type: "ROUTER_PUSH", payload: { pathname: "/Feep/Bar" } }],
+						args: [
+							{
+								type: "@@router/CALL_HISTORY_METHOD",
+								payload: { method: "push", args: ["/Feep/Bar"] },
+							},
+						],
 					},
 					{
 						spy: closer,

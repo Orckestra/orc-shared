@@ -1,8 +1,10 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router/immutable";
 import { ThemeProvider } from "styled-components";
 import { toClass } from "recompose";
+import { history } from "../buildStore";
 import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
@@ -27,16 +29,18 @@ describe("Provision", () => {
 			</Provision>,
 			"to render as",
 			<Provider store={fakeStore}>
-				<React.Fragment>
-					<Head />
-					<ThemeProvider theme={expect.it("to be", fakeTheme)}>
-						<DevPages>
-							<I18n>
-								<TestComp />
-							</I18n>
-						</DevPages>
-					</ThemeProvider>
-				</React.Fragment>
+				<ConnectedRouter history={history}>
+					<React.Fragment>
+						<Head />
+						<ThemeProvider theme={expect.it("to be", fakeTheme)}>
+							<DevPages>
+								<I18n>
+									<TestComp />
+								</I18n>
+							</DevPages>
+						</ThemeProvider>
+					</React.Fragment>
+				</ConnectedRouter>
 			</Provider>,
 		));
 
@@ -47,16 +51,18 @@ describe("Provision", () => {
 			</Provision>,
 			"to render as",
 			<Provider store={fakeStore}>
-				<React.Fragment>
-					<Head />
-					<ThemeProvider theme={{}}>
-						<DevPages>
-							<I18n>
-								<TestComp />
-							</I18n>
-						</DevPages>
-					</ThemeProvider>
-				</React.Fragment>
+				<ConnectedRouter history={history}>
+					<React.Fragment>
+						<Head />
+						<ThemeProvider theme={{}}>
+							<DevPages>
+								<I18n>
+									<TestComp />
+								</I18n>
+							</DevPages>
+						</ThemeProvider>
+					</React.Fragment>
+				</ConnectedRouter>
 			</Provider>,
 		));
 

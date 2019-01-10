@@ -43,7 +43,7 @@ This reducer interacts with `redux-api-middleware`, in that it tracks ongoing re
 
 ## `navigation`
 
-Takes care of storing tabs when a new page is navigated to (when a `redux-little-router` `LOCATION_CHANGED` action is dispatched), and handles calls for the removal of a tab as well.
+Takes care of storing tabs when a new page is navigated to (when a `connected-react-router` `LOCATION_CHANGED` action is dispatched), and handles calls for the removal of a tab as well.
 
 # Selectors
 

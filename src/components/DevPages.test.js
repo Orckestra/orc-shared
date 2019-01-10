@@ -1,38 +1,23 @@
 import React from "react";
-import Immutable from "immutable";
-import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import Spritesheet from "./Spritesheet";
 import DevPages from "./DevPages";
 
 const TestComp = () => <div />;
 
 describe("DevPages", () => {
-	let store, state;
-	beforeEach(() => {
-		store = {
-			subscribe: () => {},
-			dispatch: () => {},
-			getState: () => Immutable.fromJS(state),
-		};
-		state = {
-			router: {
-				pathname: null,
-			},
-		};
-	});
-
 	describe("route '/outside'", () => {
 		beforeEach(() => {
-			state.router.pathname = "/outside";
+			jsdom.reconfigure({ url: "http://localhost/outside" });
 		});
 
 		it("shows child", () =>
 			expect(
-				<Provider store={store}>
+				<BrowserRouter>
 					<DevPages>
 						<TestComp />
 					</DevPages>
-				</Provider>,
+				</BrowserRouter>,
 				"when deeply rendered",
 			).then(render =>
 				expect(render, "to contain", <TestComp />).and(
@@ -44,16 +29,16 @@ describe("DevPages", () => {
 
 	describe("route '/dev/sprites'", () => {
 		beforeEach(() => {
-			state.router.pathname = "/dev/sprites";
+			jsdom.reconfigure({ url: "http://localhost/dev/sprites" });
 		});
 
 		it("shows a sprite sheet", () =>
 			expect(
-				<Provider store={store}>
+				<BrowserRouter>
 					<DevPages>
 						<TestComp />
 					</DevPages>
-				</Provider>,
+				</BrowserRouter>,
 				"when deeply rendered",
 			).then(render =>
 				expect(render, "not to contain", <TestComp />).and(

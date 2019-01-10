@@ -5,7 +5,7 @@ import withNavigationLink from "./withNavigationLink";
 
 const TestComp = props => <a {...props}>Anchor</a>;
 
-describe("withNavigationLink", () => {
+describe.only("withNavigationLink", () => {
 	let fakeStore, mockEvent;
 	beforeEach(() => {
 		fakeStore = {
@@ -58,7 +58,14 @@ describe("withNavigationLink", () => {
 				Promise.all([
 					expect(mockEvent.preventDefault, "was called"),
 					expect(fakeStore.dispatch, "to have calls satisfying", [
-						{ args: [{ type: "ROUTER_PUSH", payload: { pathname: "/foo" } }] },
+						{
+							args: [
+								{
+									type: "@@router/CALL_HISTORY_METHOD",
+									payload: { method: "push", args: ["/foo"] },
+								},
+							],
+						},
 					]),
 				]),
 			));

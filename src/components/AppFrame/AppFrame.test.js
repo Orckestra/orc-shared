@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import Scope from "../Scope";
 import FullAppFrame, { Base, ViewPort, AppFrame } from "./index";
 import Topbar from "./Topbar";
@@ -12,7 +13,9 @@ class ClassAppFrame extends React.Component {
 		const { store, ...props } = this.props;
 		return (
 			<Provider store={store}>
-				<FullAppFrame {...props} />
+				<BrowserRouter>
+					<FullAppFrame {...props} />
+				</BrowserRouter>
 			</Provider>
 		);
 	}

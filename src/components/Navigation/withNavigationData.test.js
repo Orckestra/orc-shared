@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { push } from "redux-little-router";
+import { push } from "connected-react-router";
 import { REMOVE_TAB } from "../../actions/navigation";
 import withNavigationData from "./withNavigationData";
 

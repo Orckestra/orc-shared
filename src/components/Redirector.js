@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-import { replace } from "redux-little-router";
+import { replace } from "connected-react-router";
 import withInitialLoad from "../hocs/withInitialLoad";
 
 const withRedirectFunc = connect(

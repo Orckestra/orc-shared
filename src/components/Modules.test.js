@@ -1,5 +1,6 @@
 import React from "react";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import { shallow } from "enzyme";
+import { Route, Switch } from "react-router-dom";
 import Navigation from "./Navigation";
 import Segments from "./Segments";
 import { Modules, Module } from "./Modules";
@@ -47,33 +48,65 @@ describe("Modules", () => {
 		};
 	});
 
-	it("renders a module table as a routing system with navigation tabs", () =>
+	it("renders a module table as a routing system with navigation tabs", () => {
+		const wrapper = shallow(<Modules modules={modules} scope="TestScope" />);
+		expect(wrapper.contains(<Navigation modules={modules} />), "to be true");
+
+		const userRoute = wrapper.find(Switch).childAt(0);
+		expect(userRoute.key(), "to be", "users");
+		expect(userRoute.props(), "to satisfy", {
+			path: "/TestScope/users",
+			render: expect.it("to be a function"),
+		});
 		expect(
-			<Modules modules={modules} scope="TestScope" />,
-			"to render as",
-			<React.Fragment>
-				<Navigation modules={modules} />
-				<RenderFragment key="users" forRoute="/users">
+			userRoute
+				.renderProp("render")()
+				.contains(
 					<Module
 						name="users"
 						pages={modules.users.pages}
 						mode="segments"
 						root="/TestScope/users"
-					/>
-				</RenderFragment>
-				<RenderFragment key="photos" forRoute="/photos">
+					/>,
+				),
+			"to be true",
+		);
+
+		const photoRoute = wrapper.find(Switch).childAt(1);
+		expect(photoRoute.key(), "to be", "photos");
+		expect(photoRoute.props(), "to satisfy", {
+			path: "/TestScope/photos",
+			render: expect.it("to be a function"),
+		});
+		expect(
+			photoRoute
+				.renderProp("render")()
+				.contains(
 					<Module
 						name="photos"
 						pages={modules.photos.pages}
 						component={Mod2}
 						root="/TestScope/photos"
-					/>
-				</RenderFragment>
-				<RenderFragment key="demos" forRoute="/demos">
-					<Module name="demos" component={Mod3} root="/TestScope/demos" />
-				</RenderFragment>
-			</React.Fragment>,
-		));
+					/>,
+				),
+			"to be true",
+		);
+
+		const demoRoute = wrapper.find(Switch).childAt(2);
+		expect(demoRoute.key(), "to be", "demos");
+		expect(demoRoute.props(), "to satisfy", {
+			path: "/TestScope/demos",
+			render: expect.it("to be a function"),
+		});
+		expect(
+			demoRoute
+				.renderProp("render")()
+				.contains(
+					<Module name="demos" component={Mod3} root="/TestScope/demos" />,
+				),
+			"to be true",
+		);
+	});
 });
 
 describe("Module", () => {
@@ -162,14 +195,12 @@ describe("Module", () => {
 
 	it("renders a main page", () =>
 		expect(
-			<Module {...modules.demos} />,
+			<Module {...modules.demos} root="/foo/bar" />,
 			"renders elements",
 			"to render as",
-			<React.Fragment>
-				<RenderFragment forRoute="/">
-					<Mod2 />
-				</RenderFragment>
-			</React.Fragment>,
+			<Switch>
+				<Route path="/foo/bar/" component={Mod2} />
+			</Switch>,
 		));
 
 	it("renders segment mode", () =>
@@ -180,26 +211,38 @@ describe("Module", () => {
 			<Segments pages={modules.users.pages} root="/foo/bar" />,
 		));
 
-	it("renders subpages", () =>
+	it("renders subpages", () => {
 		expect(
 			<Module {...modules.photos} root="/foo/bar" />,
 			"renders elements",
 			"to render as",
-			<React.Fragment>
-				<RenderFragment key="/:page3" forRoute="/:page3">
-					<Page3 />
-				</RenderFragment>
-				<RenderFragment key="/page4" forRoute="/page4">
-					<Segments
-						pages={modules.photos.pages["/page4"].pages}
-						root="/foo/bar/page4"
-					/>
-				</RenderFragment>
-				<RenderFragment forRoute="/">
-					<Mod1 />
-				</RenderFragment>
-			</React.Fragment>,
-		));
+			<Switch>
+				<Route key="/:page3" path="/foo/bar/:page3" component={Page3} />
+				<Route
+					key="/page4"
+					path="/foo/bar/page4"
+					render={expect.it("to be a function")}
+				/>
+				<Route exact path="/foo/bar/" component={Mod1} />
+			</Switch>,
+		);
+
+		const segmentRender = shallow(
+			<Module {...modules.photos} root="/foo/bar" />,
+		)
+			.dive()
+			.childAt(1)
+			.renderProp("render")();
+		expect(
+			segmentRender.contains(
+				<Segments
+					pages={modules.photos.pages["/page4"].pages}
+					root="/foo/bar/page4"
+				/>,
+			),
+			"to be true",
+		);
+	});
 
 	it("renders error messages", () =>
 		expect(
@@ -222,14 +265,9 @@ describe("Module", () => {
 			<Module {...modules.subpagefail} root="/foo/bar" />,
 			"renders elements",
 			"to render as",
-			<React.Fragment>
-				<span>
-					Page missing under module subpagefail did not have a renderable
-					component
-				</span>
-				<RenderFragment forRoute="/">
-					<Mod3 />
-				</RenderFragment>
-			</React.Fragment>,
+			<span>
+				Page missing under module subpagefail did not have a renderable
+				component
+			</span>,
 		));
 });

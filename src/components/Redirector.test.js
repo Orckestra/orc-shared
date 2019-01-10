@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { replace } from "redux-little-router";
+import { replace } from "connected-react-router";
 import Redirector from "./Redirector";
 
 describe("Redirector", () => {

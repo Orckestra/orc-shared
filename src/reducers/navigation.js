@@ -1,7 +1,7 @@
 import Immutable from "immutable";
-import { LOCATION_CHANGED } from "redux-little-router";
 import { REMOVE_TAB } from "../actions/navigation";
 import { safeGet } from "../utils";
+import { LOCATION_CHANGED } from "connected-react-router";
 
 const initialState = Immutable.fromJS({
 	tabIndex: {},

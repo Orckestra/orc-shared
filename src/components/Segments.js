@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import { Route, Switch } from "react-router-dom";
 import withNavigationLink from "../hocs/withNavigationLink";
 import { TabBar } from "./Navigation/Bar";
 import Redirector from "./Redirector";
@@ -62,37 +62,40 @@ const Segments = ({ pages, root }) => {
 			</Segment>,
 		);
 		const Page = page.component;
-		segments.push(
-			<RenderFragment key={route} forRoute={route}>
-				<Page />
-			</RenderFragment>,
-		);
+		segments.push(<Route key={route} path={root + route} component={Page} />);
 		subpages.push(
 			...Object.entries(page)
 				.filter(([key]) => key.startsWith("/"))
 				.map(([innerRoute, { title, component: SubPage }]) => (
-					<RenderFragment
+					<Route
 						key={route + innerRoute}
-						forRoute={route + innerRoute}
-					>
-						<SubPage />
-					</RenderFragment>
+						path={root + route + innerRoute}
+						component={SubPage}
+					/>
 				)),
 		);
 	});
 	return (
-		<React.Fragment>
+		<Switch>
 			{subpages}
-			<RenderFragment withConditions={segmentListConditions(root)}>
-				<Wrapper>
-					<SegmentList>{links}</SegmentList>
-					{segments}
-					<RenderFragment forRoute="/">
-						<Redirector href={root + Object.keys(pages)[0]} />
-					</RenderFragment>
-				</Wrapper>
-			</RenderFragment>
-		</React.Fragment>
+			<Route
+				render={() => (
+					<Wrapper>
+						<SegmentList>{links}</SegmentList>
+						<Switch>
+							{segments}
+							<Route
+								exact
+								path={root + "/"}
+								render={() => (
+									<Redirector href={root + Object.keys(pages)[0]} />
+								)}
+							/>
+						</Switch>
+					</Wrapper>
+				)}
+			/>
+		</Switch>
 	);
 };
 

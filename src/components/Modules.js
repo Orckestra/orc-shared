@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import { Route, Switch } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { getCurrentScope } from "../selectors/route";
 import Navigation from "./Navigation";
@@ -21,35 +21,36 @@ export const Module = withErrorBoundary("Module")(
 		if (!MainPage) {
 			return <span>Module {name} needs a renderable component</span>;
 		}
+		let innerError = null;
+		const routes = Object.entries(pages).map(([route, page]) => {
+			if (page.mode === "segments") {
+				return (
+					<Route
+						key={route}
+						path={root + route}
+						render={() => <Segments pages={page.pages} root={root + route} />}
+					/>
+				);
+			}
+			const { component: Page } = page;
+			if (!Page) {
+				innerError = (
+					<span>
+						Page {page.name} under module {name} did not have a renderable
+						component
+					</span>
+				);
+				return null;
+			}
+			return <Route key={route} path={root + route} component={Page} />;
+		});
 		return (
-			<React.Fragment>
-				{Object.entries(pages).map(([route, page]) => {
-					if (page.mode === "segments") {
-						return (
-							<RenderFragment key={route} forRoute={route}>
-								<Segments pages={page.pages} root={root + route} />
-							</RenderFragment>
-						);
-					}
-					const { component: Page } = page;
-					if (!Page) {
-						return (
-							<span>
-								Page {page.name} under module {name} did not have a renderable
-								component
-							</span>
-						);
-					}
-					return (
-						<RenderFragment key={route} forRoute={route}>
-							<Page />
-						</RenderFragment>
-					);
-				})}
-				<RenderFragment forRoute="/">
-					<MainPage />
-				</RenderFragment>
-			</React.Fragment>
+			innerError || (
+				<Switch>
+					{routes}
+					<Route exact path={root + "/"} component={MainPage} />
+				</Switch>
+			)
 		);
 	},
 );
@@ -57,16 +58,22 @@ export const Module = withErrorBoundary("Module")(
 export const Modules = ({ modules, scope }) => (
 	<React.Fragment>
 		<Navigation modules={modules} />
-		{Object.entries(modules).map(([name, { pages, component, mode }]) => {
-			return (
-				<RenderFragment key={name} forRoute={"/" + name}>
-					<Module
-						{...{ name, pages, component, mode }}
-						root={"/" + scope + "/" + name}
+		<Switch>
+			{Object.entries(modules).map(([name, { pages, component, mode }]) => {
+				return (
+					<Route
+						key={name}
+						path={"/" + scope + "/" + name}
+						render={() => (
+							<Module
+								{...{ name, pages, component, mode }}
+								root={"/" + scope + "/" + name}
+							/>
+						)}
 					/>
-				</RenderFragment>
-			);
-		})}
+				);
+			})}
+		</Switch>
 	</React.Fragment>
 );
 

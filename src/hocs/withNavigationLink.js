@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { push } from "redux-little-router";
+import { push } from "connected-react-router";
 
 const analyzeHref = href => {
 	const url = new URL(href || "", window.location);

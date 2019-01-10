@@ -4,9 +4,7 @@ This code can be used to set up the standard infrastructure of Orckestra apps.
 
 ## `buildState`
 
-- `routes`: A routing object as used by `redux-little-router`.
-- `reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state. Should not contain the keys `view`, `locale` or `router`, as these are in use for view state, internationalization and routing, respectively.
-- `supportedLocales`: An array of IETF language tags, designating which locales are to be supported. The first tag in the list will be the initially selected locale.
+- `reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state. Should not contain the keys `locale`, `navigation`, `router`, `requests`, or `view`, as these are in use for internationalization, navigation info, routing, request tracking and view data, respectively.
 
 Constructs a state store with support for dev tools (as browser extension), routing, localization, API access and Immutable state.
 

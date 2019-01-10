@@ -1,9 +1,10 @@
 import React from "react";
 import Immutable from "immutable";
+import { shallow } from "enzyme";
 import { Provider } from "react-redux";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
-import Text from "./Text";
+import { StaticRouter, Route, Switch } from "react-router-dom";
 import Redirector from "./Redirector";
+import Text from "./Text";
 import Segments, {
 	Wrapper,
 	SegmentList,
@@ -33,39 +34,55 @@ describe("Segments", () => {
 		};
 	});
 
-	it("renders a segment list", () =>
+	it("renders a segment list", () => {
+		const segments = shallow(<Segments pages={pages} root="/Root/test" />);
 		expect(
-			<Segments pages={pages} root="/Root/test" />,
-			"to render as",
-			<React.Fragment>
-				<RenderFragment forRoute="/page1/:sub1">
-					<SubPage1 />
-				</RenderFragment>
-				<RenderFragment withConditions={expect.it("to be a function")}>
-					<Wrapper>
-						<SegmentList>
-							<Segment href="/Root/test/page1">
-								<Text message="Page 1" />
-							</Segment>
-							<Segment href="/Root/test/page2">
-								<Text
-									message={{ id: "test.page2", defaultMessage: "Page 2" }}
-								/>
-							</Segment>
-						</SegmentList>
-						<RenderFragment forRoute="/page1">
-							<Page1 />
-						</RenderFragment>
-						<RenderFragment forRoute="/page2">
-							<Page2 />
-						</RenderFragment>
-						<RenderFragment forRoute="/">
-							<Redirector href="/Root/test/page1" />
-						</RenderFragment>
-					</Wrapper>
-				</RenderFragment>
-			</React.Fragment>,
-		));
+			segments
+				.childAt(0)
+				.matchesElement(
+					<Route path="/Root/test/page1/:sub1" component={SubPage1} />,
+				),
+			"to be true",
+		);
+		expect(segments.childAt(1).matchesElement(<Route />), "to be true");
+
+		const segmentList = segments.childAt(1).renderProp("render")();
+		expect(
+			segmentList.childAt(0).contains(
+				<SegmentList>
+					<Segment href="/Root/test/page1">
+						<Text message="Page 1" />
+					</Segment>
+					<Segment href="/Root/test/page2">
+						<Text message={{ id: "test.page2", defaultMessage: "Page 2" }} />
+					</Segment>
+				</SegmentList>,
+			),
+			"to be true",
+		);
+		expect(segmentList.childAt(1).is(Switch), "to be true");
+		const segmentRoutes = segmentList.childAt(1);
+		expect(segmentRoutes.childAt(0).props(), "to satisfy", {
+			path: "/Root/test/page1",
+			component: Page1,
+		});
+		expect(segmentRoutes.childAt(1).props(), "to satisfy", {
+			path: "/Root/test/page2",
+			component: Page2,
+		});
+		expect(segmentRoutes.childAt(2).props(), "to satisfy", {
+			exact: true,
+			path: "/Root/test/",
+			render: expect.it("to be a function"),
+		});
+		expect(
+			segmentRoutes
+				.childAt(2)
+				.renderProp("render")()
+				.contains(<Redirector href="/Root/test/page1" />),
+			"to be true",
+		);
+	});
 
 	it("renders segment page if path is to root", () => {
 		pages["/page2"].label = "Page 2";
@@ -81,7 +98,9 @@ describe("Segments", () => {
 		};
 		return expect(
 			<Provider store={store}>
-				<Segments pages={pages} root="/Root/test" />
+				<StaticRouter location="/Root/test">
+					<Segments pages={pages} root="/Root/test" />
+				</StaticRouter>
 			</Provider>,
 			"when deeply rendered",
 			"to contain",
@@ -103,7 +122,9 @@ describe("Segments", () => {
 		};
 		return expect(
 			<Provider store={store}>
-				<Segments pages={pages} root="/Root/test" />
+				<StaticRouter location="/Root/test/page1">
+					<Segments pages={pages} root="/Root/test" />
+				</StaticRouter>
 			</Provider>,
 			"when deeply rendered",
 			"to contain",
@@ -125,7 +146,9 @@ describe("Segments", () => {
 		};
 		return expect(
 			<Provider store={store}>
-				<Segments pages={pages} root="/Root/test" />
+				<StaticRouter location="/Root/test/page1/sub">
+					<Segments pages={pages} root="/Root/test" />
+				</StaticRouter>
 			</Provider>,
 			"when deeply rendered",
 			"not to contain",

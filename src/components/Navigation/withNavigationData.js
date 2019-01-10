@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { push } from "redux-little-router";
+import { push } from "connected-react-router";
 import { unwrapImmutable } from "../../utils";
 import { getCurrentScope } from "../../selectors/route";
 import { removeTab } from "../../actions/navigation";
