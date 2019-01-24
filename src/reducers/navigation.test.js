@@ -1,17 +1,44 @@
 import Immutable from "immutable";
-import { removeTab } from "../actions/navigation";
+import { setRoute, removeTab } from "../actions/navigation";
 import reducer from "./navigation";
 import { LOCATION_CHANGED } from "connected-react-router";
 
 describe("Navigation reducer", () => {
 	it("behaves as a reducer should", () =>
 		expect(reducer, "to be a reducer with initial state", {
+			route: {},
 			tabIndex: {},
 			moduleTabs: {},
 			segmentHrefs: {},
 		}));
 
-	describe("LOCATION_CHANGED", () => {
+	describe("SET_ROUTE", () => {
+		it("saves the current matched route", () => {
+			const oldState = Immutable.fromJS({
+				route: {
+					location: {},
+					match: {},
+				},
+			});
+			const action = setRoute(
+				{
+					hash: "",
+					pathname: "/Value/test",
+					search: "",
+				},
+				{
+					isExact: true,
+					params: { var: "Value" },
+					path: "/:var/test",
+					url: "/Value/test",
+				},
+			);
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState);
+		});
+	});
+
+	describe.skip("LOCATION_CHANGED", () => {
 		it("saves pages navigated to", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "/test/old": {} },

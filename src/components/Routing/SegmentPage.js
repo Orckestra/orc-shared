@@ -60,7 +60,14 @@ const SegmentPage = ({ path, segments }) => (
 				<Route
 					key={path}
 					path={path + segpath}
-					render={() => <Segment path={path + segpath} config={config} />}
+					render={({ location, match }) => (
+						<Segment
+							path={path + segpath}
+							location={location}
+							match={match}
+							config={config}
+						/>
+					)}
 				/>
 			))}
 			<Redirect exact path={path} to={path + Object.keys(segments)[0]} />
