@@ -3,7 +3,7 @@ import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import { compose, mapProps } from "recompose";
 import { getThemeProp } from "../../utils";
-import { getCurrentScope } from "../../selectors/route";
+import { getCurrentScope } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
 
 export const Bar = styled.div`

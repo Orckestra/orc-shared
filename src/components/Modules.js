@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { selectLocation, getCurrentScope } from "../selectors/route";
+import { selectLocation } from "../selectors/route";
+import { getCurrentScope } from "../selectors/navigation";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 

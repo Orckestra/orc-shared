@@ -56,8 +56,12 @@ describe("EnhancedMenuItem", () => {
 			dispatch: () => {},
 			getState: () =>
 				Immutable.fromJS({
-					router: {
-						params: {},
+					navigation: {
+						route: {
+							match: {
+								params: { scope: "Global" },
+							},
+						},
 					},
 				}),
 		};

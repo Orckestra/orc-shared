@@ -10,10 +10,15 @@ describe("withScopeSelect", () => {
 	let state, store, closer;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: {
-				route: "/:scope/Bar",
-				params: { scope: "Foo" },
+			navigation: {
+				route: {
+					match: {
+						path: "/:scope/Bar",
+						params: { scope: "Foo" },
+					},
+				},
 			},
+			router: {},
 		});
 		store = {
 			subscribe: () => {},

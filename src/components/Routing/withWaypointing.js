@@ -1,17 +1,14 @@
 // HOC that sets the currently matched route of a component in state, including params
 import { compose } from "recompose";
 import { connect } from "react-redux";
-import { selectLocation } from "../../selectors/route";
+import { selectPathname } from "../../selectors/route";
 import { setRoute } from "../../actions/navigation";
 import withInitialLoad from "../../hocs/withInitialLoad";
-import { safeGet } from "../../utils";
 
 const withWaypointing = compose(
 	connect(
 		(state, { location }) => ({
-			routeIsAligned:
-				(selectLocation(state) || { get: () => null }).get("pathname") ===
-				safeGet(location, "pathname"),
+			routeIsAligned: selectPathname(state) === window.location.pathname,
 		}),
 		(dispatch, { location, match }) => ({
 			setRoute: () => dispatch(setRoute(location, match)),

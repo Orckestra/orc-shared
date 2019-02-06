@@ -184,31 +184,4 @@ describe("Module", () => {
 			"to render as",
 			<FullPage path="/foo/bar" config={modules.demos} />,
 		));
-
-	it.skip("renders error messages", () =>
-		expect(
-			<Module {...modules.demos} error={{ message: "Mock error" }} />,
-			"renders elements",
-			"to render as",
-			<span>Module demos errored: Mock error</span>,
-		));
-
-	it.skip("renders an error if no component to render", () =>
-		expect(
-			<Module {...modules.fail} />,
-			"renders elements",
-			"to render as",
-			<span>Module fail needs a renderable component</span>,
-		));
-
-	it.skip("renders errors for missing components in segment pages", () =>
-		expect(
-			<Module {...modules.subpagefail} root="/foo/bar" />,
-			"renders elements",
-			"to render as",
-			<span>
-				Page missing under module subpagefail did not have a renderable
-				component
-			</span>,
-		));
 });

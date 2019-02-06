@@ -20,6 +20,7 @@ describe("withWaypointing", () => {
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
+		jsdom.reconfigure({ url: "http://localhost/foo/bar" });
 	});
 
 	it("wraps a component to tell its route info to Redux on mount", () =>
@@ -47,8 +48,9 @@ describe("withWaypointing", () => {
 				]),
 			));
 
-	it("does not fire action if pathname is already the same", () =>
-		expect(withWaypointing, "called with", [Test])
+	it("does not fire action if pathname is already the same", () => {
+		jsdom.reconfigure({ url: "http://localhost/feep/meep" });
+		return expect(withWaypointing, "called with", [Test])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
@@ -59,5 +61,6 @@ describe("withWaypointing", () => {
 					<Test />,
 				),
 			)
-			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
+			.then(() => expect(store.dispatch, "to have calls satisfying", []));
+	});
 });

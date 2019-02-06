@@ -22,7 +22,7 @@ export const selectRouteParams = createSelector(
 	match => match.get("params") || Immutable.Map(),
 );
 
-const selectRoutePath = createSelector(
+export const selectRoutePath = createSelector(
 	selectMatch,
 	match => match.get("path") || "",
 );
