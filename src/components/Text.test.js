@@ -34,4 +34,20 @@ describe("Text", () => {
 				Errored: This failed
 			</span>,
 		));
+
+	it("renders an error if no message given", () =>
+		expect(
+			<Text />,
+			"renders elements",
+			"to render as",
+			<span
+				style={{
+					color: "red",
+					backgroundColor: "white",
+					fontWeight: "bold",
+				}}
+			>
+				Errored: No message provided
+			</span>,
+		));
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
 import MenuItem, { Block, MenuIcon, Label } from "./MenuItem";
 
 describe("MenuItem", () => {
@@ -35,7 +36,9 @@ describe("MenuItem", () => {
 	describe("Block", () => {
 		it("sets text color to highlight if active", () =>
 			expect(
-				<Block active />,
+				<MemoryRouter>
+					<Block to="" active />
+				</MemoryRouter>,
 				"to render style rules",
 				"to contain",
 				"color: #ffffff;",
@@ -43,7 +46,9 @@ describe("MenuItem", () => {
 
 		it("sets text color to grey if not active", () =>
 			expect(
-				<Block />,
+				<MemoryRouter>
+					<Block to="" />
+				</MemoryRouter>,
 				"to render style rules",
 				"to contain",
 				"color: #999999;",
@@ -51,7 +56,9 @@ describe("MenuItem", () => {
 
 		it("adds a hover rule if menu flag is unset", () =>
 			expect(
-				<Block />,
+				<MemoryRouter>
+					<Block to="" />
+				</MemoryRouter>,
 				"to render style rules",
 				"to match",
 				/:hover\s*\{[^}]*\bcolor: #ffffff;[^}]*\}/,
@@ -59,7 +66,9 @@ describe("MenuItem", () => {
 
 		it("does not add a hover rule if menu flag is set", () =>
 			expect(
-				<Block menu />,
+				<MemoryRouter>
+					<Block to="" menu />
+				</MemoryRouter>,
 				"to render style rules",
 				"not to match",
 				/:hover\s*\{[^}]*\bcolor: #ffffff;[^}]*\}/,

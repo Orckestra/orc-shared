@@ -8,37 +8,35 @@ import withNavigationData from "./withNavigationData";
 
 const TestComp = () => <div />;
 const TestComp1 = () => <div />;
+const TestComp2 = () => <div />;
+const TestComp3 = () => <div />;
+const TestComp4 = () => <div />;
 
 describe("withNavigation", () => {
 	let state, store, modules;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: {
-				params: {
-					scope: "TestScope",
-					current: "foo",
-				},
-				result: {
-					module: "test",
-				},
-			},
 			objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
 			navigation: {
 				tabIndex: {
 					"/TestScope/test/page1": {
-						label: "Page 1",
 						href: "/TestScope/test/page1",
 					},
 					"/TestScope/test/page2": {
-						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
-						dataPath: ["objs", "test", "foo"],
 						href: "/TestScope/test/page2",
 					},
 				},
 				moduleTabs: {
 					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
 				},
-				segmentHrefs: {},
+				mappedHrefs: {},
+				route: {
+					match: {
+						url: "/TestScope/test/page1",
+						path: "/:scope/test/page1",
+						params: { scope: "TestScope" },
+					},
+				},
 			},
 		});
 		store = {
@@ -51,6 +49,17 @@ describe("withNavigation", () => {
 				icon: "thing",
 				label: "Thing",
 				component: TestComp1,
+				pages: {
+					"/page1": {
+						label: "Page 1",
+						component: TestComp2,
+					},
+					"/page2": {
+						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
+						dataPath: ["objs", "test", "foo"],
+						component: TestComp3,
+					},
+				},
 			},
 		};
 		jsdom.reconfigure({ url: "http://localhost/TestScope/test/page1" });
@@ -98,9 +107,6 @@ describe("withNavigation", () => {
 		beforeEach(() => {
 			state = Immutable.fromJS({
 				router: {
-					params: {
-						scope: "TestScope",
-					},
 					result: {
 						module: "test",
 						segments: true,
@@ -110,13 +116,19 @@ describe("withNavigation", () => {
 					moduleTabs: { test: ["/TestScope/test/page2"] },
 					tabIndex: {
 						"/TestScope/test/page2": {
-							label: "Page 2",
 							href: "/TestScope/test/page2",
 						},
 					},
-					segmentHrefs: {
+					mappedHrefs: {
 						"/TestScope/test": "/TestScope/test/page1",
 						"/TestScope/test/page2": "/TestScope/test/page2/sub",
+					},
+					route: {
+						match: {
+							url: "/TestScope/test/page1",
+							path: "/:scope/test/page1",
+							params: { scope: "TestScope" },
+						},
 					},
 				},
 			});
@@ -125,7 +137,21 @@ describe("withNavigation", () => {
 					icon: "thing",
 					label: "Thing",
 					component: TestComp1,
-					mode: "segments",
+					segments: {
+						"/page1": {
+							label: "Page 1",
+							component: TestComp2,
+						},
+						"/page2": {
+							label: "Page 2",
+							component: TestComp3,
+							subpages: {
+								"/sub": {
+									component: TestComp4,
+								},
+							},
+						},
+					},
 				},
 			};
 		});

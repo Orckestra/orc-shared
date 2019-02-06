@@ -1,27 +1,44 @@
 import Immutable from "immutable";
-import { SET_ROUTE, REMOVE_TAB } from "../actions/navigation";
-import { safeGet } from "../utils";
 import { LOCATION_CHANGED } from "connected-react-router";
+import { SET_ROUTE, MAP_HREF, REMOVE_TAB } from "../actions/navigation";
+import { safeGet } from "../utils";
 
 const initialState = Immutable.fromJS({
 	route: {},
 	tabIndex: {},
 	moduleTabs: {},
-	segmentHrefs: {},
+	mappedHrefs: {},
 });
-
-const getModuleName = result =>
-	result && (result.module || getModuleName(result.parent));
 
 const navigationReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_ROUTE:
 			return state.withMutations(s => {
 				s.set("route", Immutable.fromJS(action.payload));
+				const { location, match } = action.payload;
+				const href = location.pathname;
+				s.setIn(
+					["tabIndex", location.pathname],
+					Immutable.fromJS({
+						href,
+						path: match.path,
+						params: match.params,
+					}),
+				);
+				const moduleName = match.path.replace(/\/:scope\/(\w+)\/.*/, "$1");
+				const moduleList =
+					s.getIn(["moduleTabs", moduleName]) || Immutable.List();
+				if (!moduleList.includes(href)) {
+					s.setIn(["moduleTabs", moduleName], moduleList.push(href));
+				}
 			});
+		case MAP_HREF:
+			return state.setIn(
+				["mappedHrefs", action.payload.from],
+				action.payload.to,
+			);
 		// case LOCATION_CHANGED:
-		// 	return state.withMutations(s => {
-		// 		if (!action.payload.result) return;
+		// return state.withMutations(s => {
 		// 		let parentPath;
 		// 		if (safeGet(action.payload.result, "parent", "mode") === "segments") {
 		// 			parentPath = action.payload.pathname.replace(/\/[^/]*$/, "");
@@ -30,7 +47,7 @@ const navigationReducer = (state = initialState, action) => {
 		// 		let title, path, dataPath, dataId;
 		// 		if (safeGet(action.payload.result, "parent", "mode") === "segments") {
 		// 			title = safeGet(action.payload.result, "parent", "title");
-		// 			path = parentPath;Feldspar_cetiosaurus
+		// 			path = parentPath;
 		// 			dataPath = safeGet(action.payload.result, "parent", "dataPath");
 		// 			dataId = safeGet(action.payload.result, "parent", "dataIdParam");
 		// 		} else {
@@ -67,7 +84,7 @@ const navigationReducer = (state = initialState, action) => {
 		// 				s.setIn(["moduleTabs", moduleName], moduleList.push(path));
 		// 			}
 		// 		}
-		// 	});
+		// });
 		case REMOVE_TAB:
 			return state.withMutations(s => {
 				const list =

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { getCurrentScope } from "../selectors/route";
+import { selectLocation, getCurrentScope } from "../selectors/route";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 
@@ -29,5 +29,8 @@ export const Modules = ({ modules, scope }) => (
 
 /* istanbul ignore next */
 export default connect(
-	/* istanbul ignore next */ state => ({ scope: getCurrentScope(state) }),
+	/* istanbul ignore next */ state => ({
+		scope: getCurrentScope(state),
+		location: selectLocation(state),
+	}),
 )(Modules);

@@ -1,8 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { Link } from "react-router-dom";
 import Icon from "../Icon";
 
-export const Block = styled.a`
+export const Block = styled(Link)`
 	display: block;
 	padding: 0 10px;
 	margin-bottom: 35px;
@@ -43,8 +44,8 @@ export const Label = styled.span`
 	opacity: ${props => (props.show ? 1 : 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, ...props }) => (
-	<Block {...props}>
+const MenuItem = ({ open = false, label = "", icon, href = "", ...props }) => (
+	<Block to={href} {...props}>
 		<MenuIcon id={icon} />
 		<Label show={open}>{label}</Label>
 	</Block>

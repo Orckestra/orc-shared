@@ -50,7 +50,7 @@ const SegmentPage = ({ path, segments }) => (
 	<Wrapper>
 		<List>
 			{Object.entries(segments).map(([segpath, config]) => (
-				<Item key={path} to={path + segpath}>
+				<Item key={segpath} to={path + segpath}>
 					<Text message={config.label} />
 				</Item>
 			))}
@@ -58,7 +58,7 @@ const SegmentPage = ({ path, segments }) => (
 		<Switch>
 			{Object.entries(segments).map(([segpath, config]) => (
 				<Route
-					key={path}
+					key={segpath}
 					path={path + segpath}
 					render={({ location, match }) => (
 						<Segment

@@ -1,4 +1,5 @@
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
@@ -62,13 +63,15 @@ describe("EnhancedMenuItem", () => {
 		};
 	});
 
-	it("renders a MenuItem with href and onClick", () =>
+	it("renders a MenuItem with href", () =>
 		expect(
 			<Provider store={store}>
-				<EnhancedMenuItem id="route" />
+				<MemoryRouter>
+					<EnhancedMenuItem id="route" />
+				</MemoryRouter>
 			</Provider>,
 			"to deeply render as",
-			<MenuItem href="/Global/route" onClick={expect.it("to be a function")} />,
+			<MenuItem href="/Global/route" />,
 		));
 });
 
@@ -82,7 +85,9 @@ describe("MenuToggle", () => {
 		it("renders a MenuItem with specific settings", () =>
 			expect(
 				<ThemeProvider theme={{ foo: "bar" }}>
-					<MenuToggle toggle={toggle} />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
 				<MenuItem menu icon="menu" onClick={toggle} />,
@@ -91,7 +96,9 @@ describe("MenuToggle", () => {
 		it("renders as open", () =>
 			expect(
 				<ThemeProvider theme={{ foo: "bar" }}>
-					<MenuToggle toggle={toggle} open />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} open />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
 				<MenuItem menu open icon="layers" onClick={toggle} />,
@@ -112,7 +119,9 @@ describe("MenuToggle", () => {
 		it("renders a MenuItem with specific settings", () =>
 			expect(
 				<ThemeProvider theme={theme}>
-					<MenuToggle toggle={toggle} />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
 				<MenuItem menu icon="closed" onClick={toggle} />,
@@ -121,7 +130,9 @@ describe("MenuToggle", () => {
 		it("renders as open", () =>
 			expect(
 				<ThemeProvider theme={theme}>
-					<MenuToggle toggle={toggle} open />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} open />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
 				<MenuItem menu open icon="open" onClick={toggle} />,

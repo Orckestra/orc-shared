@@ -3,8 +3,11 @@ import { Switch, Route } from "react-router";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Page from "./Page";
+import withWaypointing from "./withWaypointing";
 
-const TestView = () => <div />;
+const View = () => <div />;
+const ShownView = withWaypointing(View);
+
 const Sub1 = () => <div />;
 const Sub2 = () => <div />;
 
@@ -18,7 +21,7 @@ describe("Page", () => {
 		// view / fullpage
 		expect(
 			<Page
-				component={TestView}
+				component={View}
 				path="/nabble"
 				pages={{
 					"/foo": { component: Sub1 },
@@ -27,7 +30,15 @@ describe("Page", () => {
 			/>,
 			"to render as",
 			<Switch>
-				<Route exact path="/nabble" component={TestView} />
+				<Route
+					exact
+					path="/nabble"
+					component={expect.it(
+						"as a React component",
+						"to equal",
+						<ShownView />,
+					)}
+				/>
 				<Route
 					path="/nabble/foo"
 					render={expect.it(
@@ -51,7 +62,7 @@ describe("Page", () => {
 		// view / subpage
 		expect(
 			<Page
-				component={TestView}
+				component={View}
 				path="/nabble"
 				subpages={{
 					"/foo": { component: Sub1 },
@@ -60,7 +71,15 @@ describe("Page", () => {
 			/>,
 			"to render as",
 			<Switch>
-				<Route exact path="/nabble" component={TestView} />
+				<Route
+					exact
+					path="/nabble"
+					component={expect.it(
+						"as a React component",
+						"to equal",
+						<ShownView />,
+					)}
+				/>
 				<Route
 					path="/nabble/foo"
 					render={expect.it(

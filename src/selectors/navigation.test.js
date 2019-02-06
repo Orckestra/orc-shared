@@ -4,6 +4,10 @@ import {
 	selectCurrentModuleName,
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
+	selectRouteParams,
+	getCurrentScope,
+	resetLastScope,
+	selectRouteHref,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -43,7 +47,11 @@ describe("selectCurrentModuleName", () => {
 		expect(
 			selectCurrentModuleName,
 			"called with",
-			[Immutable.fromJS({ router: { result: { module: "thing" } } })],
+			[
+				Immutable.fromJS({
+					navigation: { route: { match: { path: "/:scope/thing" } } },
+				}),
+			],
 			"to be",
 			"thing",
 		));
@@ -54,7 +62,9 @@ describe("selectCurrentModuleName", () => {
 			"called with",
 			[
 				Immutable.fromJS({
-					router: { result: { parent: { parent: { module: "thing" } } } },
+					navigation: {
+						route: { match: { path: "/:scope/thing/further/pages" } },
+					},
 				}),
 			],
 			"to be",
@@ -65,7 +75,11 @@ describe("selectCurrentModuleName", () => {
 		expect(
 			selectCurrentModuleName,
 			"called with",
-			[Immutable.fromJS({ router: { result: {} } })],
+			[
+				Immutable.fromJS({
+					navigation: { route: { match: { path: "/dev/foo" } } },
+				}),
+			],
 			"to be",
 			"",
 		));
@@ -75,8 +89,8 @@ describe("selectMappedCurrentModuleList", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: { result: { module: "thing" } },
 			navigation: {
+				route: { match: { path: "/:scope/thing" } },
 				tabIndex: {
 					"/path/to/tab1": { tab: 1 },
 					"/path/to/tab2": { tab: 2 },
@@ -98,7 +112,10 @@ describe("selectMappedCurrentModuleList", () => {
 		));
 
 	it("returns an empty list if there is no list in state", () => {
-		state = state.setIn(["router", "result", "module"], "other");
+		state = state.setIn(
+			["navigation", "route", "match", "path"],
+			"/:scope/other",
+		);
 		return expect(
 			selectMappedCurrentModuleList,
 			"called with",
@@ -113,14 +130,14 @@ describe("selectSegmentHrefMapper", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: { result: { module: "thing" } },
 			navigation: {
+				route: { match: { path: "/:scope/thing" } },
 				tabIndex: {
 					"/path/to/tab1": { tab: 1 },
 					"/path/to/tab2": { tab: 2 },
 				},
 				moduleTabs: { thing: ["/path/to/tab1"] },
-				segmentHrefs: {
+				mappedHrefs: {
 					"/path/to/tab1": "/path/to/tab1/subpage",
 				},
 			},
@@ -159,4 +176,80 @@ describe("selectSegmentHrefMapper", () => {
 				"/path/to/tab2",
 			));
 	});
+});
+
+describe("selectRouteParams", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: { location: {}, match: { params: { foo: "true", bar: 12 } } },
+			},
+		});
+	});
+
+	it("selects the currently matched route's parameters.", () =>
+		expect(
+			selectRouteParams,
+			"when called with",
+			[state],
+			"to equal",
+			Immutable.fromJS({ foo: "true", bar: 12 }),
+		));
+});
+
+describe("getCurrentScope", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: { location: {}, match: { params: { scope: "thing" } } },
+			},
+		});
+	});
+	afterEach(() => {
+		resetLastScope();
+	});
+
+	it("gets the current scope, if one is set", () =>
+		expect(getCurrentScope, "when called with", [state], "to be", "thing"));
+
+	it("gets the last scope, if no scope set and previous scope is known", () => {
+		getCurrentScope(state);
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(
+			getCurrentScope,
+			"when called with",
+			[state],
+			"to be",
+			"thing",
+		);
+	});
+
+	it("gets the default scope, if no scope set and no previous known", () => {
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(
+			getCurrentScope,
+			"when called with",
+			[state],
+			"to be",
+			"Global",
+		);
+	});
+});
+
+describe("selectRouteHref", () => {
+	expect(
+		selectRouteHref,
+		"when called with",
+		[
+			Immutable.fromJS({
+				navigation: {
+					route: { match: { url: "/TestScope/thing/further/pages" } },
+				},
+			}),
+		],
+		"to equal",
+		"/TestScope/thing/further/pages",
+	);
 });

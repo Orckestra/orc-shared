@@ -17,7 +17,7 @@ describe("Tab", () => {
 			<Tab module icon="test" label="A module" href="/Foo/modu" />,
 			"to render as",
 			<ModuleTab>
-				<TabLink href="/Foo/modu">
+				<TabLink to="/Foo/modu">
 					<ModuleIcon id="test" />
 					<TabText>
 						<Text message="A module" />
@@ -37,7 +37,7 @@ describe("Tab", () => {
 			/>,
 			"to render as",
 			<ModuleTab active>
-				<TabLink href="/Foo/modu">
+				<TabLink to="/Foo/modu">
 					<ModuleIcon id="test" />
 					<TabText>
 						<Text message={{ id: "test.module", defaultMessage: "A module" }} />
@@ -56,7 +56,7 @@ describe("Tab", () => {
 			/>,
 			"to render as",
 			<PageTab>
-				<TabLink href="/Foo/modu/page">
+				<TabLink to="/Foo/modu/page">
 					<TabText>
 						<Text message={{ id: "test.page", defaultMessage: "A page" }} />
 					</TabText>
@@ -72,7 +72,7 @@ describe("Tab", () => {
 			<Tab active href="/Foo/modu/page" close={close} />,
 			"to render as",
 			<PageTab active>
-				<TabLink href="/Foo/modu/page">
+				<TabLink to="/Foo/modu/page">
 					<TabText />
 					<CloseIcon onClick={close} />
 				</TabLink>

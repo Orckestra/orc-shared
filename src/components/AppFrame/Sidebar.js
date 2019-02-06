@@ -3,7 +3,6 @@ import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import { compose, mapProps } from "recompose";
 import { getThemeProp } from "../../utils";
-import withNavigationLink from "../../hocs/withNavigationLink";
 import { getCurrentScope } from "../../selectors/route";
 import MenuItem from "./MenuItem";
 
@@ -36,7 +35,6 @@ export const EnhancedMenuItem = compose(
 		id,
 		...remainder,
 	})),
-	withNavigationLink,
 )(MenuItem);
 
 const Sidebar = ({ open, toggle, modules = [] }) => {

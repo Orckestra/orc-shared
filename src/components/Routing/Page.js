@@ -4,11 +4,11 @@ import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import withWaypointing from "./withWaypointing";
 
-const Page = ({ component, path, pages = {}, subpages = {} }) => {
-	const View = withWaypointing(component);
+const Page = ({ component: View, path, pages = {}, subpages = {} }) => {
+	const WrappedView = withWaypointing(View);
 	return (
 		<Switch>
-			<Route exact path={path} component={View} />
+			<Route exact path={path} component={WrappedView} />
 			{Object.entries(subpages).map(([subpath, config]) => (
 				<Route
 					key={subpath}

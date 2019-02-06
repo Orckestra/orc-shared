@@ -3,8 +3,9 @@ import Immutable from "immutable";
 
 const routerData = state => state.get("router");
 
-export const routeSelector = createSelector(routerData, router =>
-	router.get("route"),
+export const routeSelector = createSelector(
+	routerData,
+	router => router.get("route"),
 );
 
 export const resultSelector = createSelector(
@@ -15,6 +16,11 @@ export const resultSelector = createSelector(
 export const paramSelector = createSelector(
 	routerData,
 	router => router.get("params") || Immutable.Map(),
+);
+
+export const selectLocation = createSelector(
+	routerData,
+	router => router.get("location"),
 );
 
 // Not a selector, as previous calls can change the result.

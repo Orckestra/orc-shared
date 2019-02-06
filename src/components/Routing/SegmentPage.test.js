@@ -59,7 +59,8 @@ describe("SegmentPage", () => {
 					<Route
 						path="/foo/meep/one"
 						render={expect.it(
-							"when called",
+							"when called with",
+							[{}, {}],
 							"to satisfy",
 							<Segment
 								path="/foo/meep/one"
@@ -70,7 +71,8 @@ describe("SegmentPage", () => {
 					<Route
 						path="/foo/meep/two"
 						render={expect.it(
-							"when called",
+							"when called with",
+							[{}, {}],
 							"to satisfy",
 							<Segment
 								path="/foo/meep/two"

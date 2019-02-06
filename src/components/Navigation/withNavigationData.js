@@ -1,37 +1,73 @@
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { unwrapImmutable } from "../../utils";
-import { getCurrentScope } from "../../selectors/route";
 import { removeTab } from "../../actions/navigation";
 import {
+	selectRouteHref,
+	selectRouteParams,
 	selectCurrentModuleName,
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
+	getCurrentScope,
 } from "../../selectors/navigation";
+
+const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
+	let page = pages[pathStep];
+	if (!page) {
+		const paramPath =
+			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || ""; // Only one should exist
+		if (pathStep === "/" + params[paramPath.replace("/:", "")]) {
+			page = pages[paramPath];
+		}
+	}
+	if (restPath.length === 0) {
+		return page;
+	} else {
+		getPageWithSplitPath(restPath, params, {
+			...page.pages,
+			...page.segments,
+			...page.subpages,
+		});
+	}
+};
+
+const getPageData = (path, params, module) => {
+	if (!path) return module;
+	const pathSteps = path.split(/(?=\/)/);
+	return getPageWithSplitPath(pathSteps, params, {
+		...module.pages,
+		...module.segments,
+		...module.subpages,
+	});
+};
 
 const withNavigationData = connect(
 	(state, { modules }) => {
+		const params = unwrapImmutable(selectRouteParams(state));
 		const hrefMapper = selectSegmentHrefMapper(state);
-		const currentHref = window.location.pathname;
+		const currentHref = selectRouteHref(state);
 		const moduleName = selectCurrentModuleName(state);
 		const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
 		const moduleHref = "/" + getCurrentScope(state) + "/" + moduleName;
-		const mappedHref = hrefMapper(moduleHref);
 		const module = {
 			icon: moduleData.icon,
 			label: moduleData.label,
-			href: mappedHref,
+			href: moduleHref,
 		};
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state));
 		return {
 			pages: [module, ...pages].map(page => {
-				const href = hrefMapper(page.href);
-				let label = page.label;
+				const pageData =
+					getPageData(page.href.replace(moduleHref, ""), params, moduleData) ||
+					{};
+				let label = pageData.label;
 				if (label && label.id) {
 					const dataObject =
-						page.dataPath && unwrapImmutable(state.getIn(page.dataPath));
+						pageData.dataPath &&
+						unwrapImmutable(state.getIn(pageData.dataPath));
 					label.values = { ...dataObject, ...label.values };
 				}
+				const href = hrefMapper(page.href);
 				return {
 					...page,
 					label,
@@ -40,7 +76,7 @@ const withNavigationData = connect(
 				};
 			}),
 			moduleName,
-			moduleHref: mappedHref,
+			moduleHref: hrefMapper(moduleHref),
 		};
 	},
 	dispatch => ({
