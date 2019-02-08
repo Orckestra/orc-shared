@@ -1,8 +1,9 @@
 import React from "react";
 import Immutable from "immutable";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import sinon from "sinon";
 import withWaypointing from "./withWaypointing";
-import { Provider } from "react-redux";
 
 const Test = () => <div />;
 
@@ -28,7 +29,9 @@ describe("withWaypointing", () => {
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
-						<EnhancedView location={{ pathname: "/foo/bar" }} match={{}} />
+						<BrowserRouter>
+							<EnhancedView location={{ pathname: "/foo/bar" }} match={{}} />
+						</BrowserRouter>
 					</Provider>,
 					"when deeply rendered",
 					"to have rendered",
@@ -54,7 +57,9 @@ describe("withWaypointing", () => {
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
-						<EnhancedView location={{ pathname: "/feep/meep" }} match={{}} />
+						<BrowserRouter>
+							<EnhancedView location={{ pathname: "/feep/meep" }} match={{}} />
+						</BrowserRouter>
 					</Provider>,
 					"when deeply rendered",
 					"to have rendered",

@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { replace } from "connected-react-router";
 import Redirector from "./Redirector";
@@ -21,7 +22,9 @@ describe("Redirector", () => {
 	it("dispatches a replace action immediately upon mount", () =>
 		expect(
 			<Provider store={store}>
-				<Redirector href="/path/to/redirect" />
+				<MemoryRouter>
+					<Redirector href="/path/to/redirect" />
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 		)

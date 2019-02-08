@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
+import routingConnector from "./routingConnector";
 
 const withRequestActivity = requestName =>
-	connect(state => ({
+	routingConnector(state => ({
 		active: !!state.getIn(["requests", requestName]),
 	}));
 

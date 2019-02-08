@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
@@ -35,13 +36,15 @@ describe("TranslationInput", () => {
 	it("renders a field for the default culture, and a button to show others", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<TranslationInput
-						name="test"
-						value={{}}
-						moreLabel="Show more things"
-					/>
-				</IntlProvider>
+				<MemoryRouter>
+					<IntlProvider locale="en">
+						<TranslationInput
+							name="test"
+							value={{}}
+							moreLabel="Show more things"
+						/>
+					</IntlProvider>
+				</MemoryRouter>
 			</Provider>,
 			"to deeply render as",
 			<TranslationWrapper>
@@ -56,9 +59,11 @@ describe("TranslationInput", () => {
 	it("renders fields for all languages when button is clicked", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} />
-				</IntlProvider>
+				<MemoryRouter>
+					<IntlProvider locale="en">
+						<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} />
+					</IntlProvider>
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 			"with event click",
@@ -75,14 +80,16 @@ describe("TranslationInput", () => {
 	it("lets you update a single language", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en-CA">
-					<TranslationInput
-						name="test"
-						value={{ "fr-CA": "Des mots" }}
-						update={update}
-						moreLabel="Show more things"
-					/>
-				</IntlProvider>
+				<MemoryRouter>
+					<IntlProvider locale="en-CA">
+						<TranslationInput
+							name="test"
+							value={{ "fr-CA": "Des mots" }}
+							update={update}
+							moreLabel="Show more things"
+						/>
+					</IntlProvider>
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 			"queried for",
@@ -109,12 +116,14 @@ describe("TranslationInput", () => {
 		state = state.setIn(["locale", "cultures"], Immutable.Map());
 		return expect(
 			<Provider store={store}>
-				<TranslationInput
-					name="test"
-					value={{ "fr-CA": "Des mots" }}
-					update={update}
-					moreLabel="Show more things"
-				/>
+				<MemoryRouter>
+					<TranslationInput
+						name="test"
+						value={{ "fr-CA": "Des mots" }}
+						update={update}
+						moreLabel="Show more things"
+					/>
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 			"to be ok",

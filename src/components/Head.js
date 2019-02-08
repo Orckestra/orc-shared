@@ -1,6 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
 import Helmet from "react-helmet";
+import routingConnector from "../hocs/routingConnector";
 import { currentLocale } from "../selectors/locale";
 
 const Head = ({ locale }) => (
@@ -9,7 +9,7 @@ const Head = ({ locale }) => (
 	</Helmet>
 );
 
-const withLocale = connect(state => ({
+const withLocale = routingConnector(state => ({
 	locale: currentLocale(state),
 }));
 

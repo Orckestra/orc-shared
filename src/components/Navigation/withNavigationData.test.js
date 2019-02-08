@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { push } from "connected-react-router";
@@ -69,7 +70,9 @@ describe("withNavigation", () => {
 		expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp modules={modules} />
+					<MemoryRouter>
+						<EnhComp modules={modules} />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -160,7 +163,9 @@ describe("withNavigation", () => {
 			expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<Provider store={store}>
-						<EnhComp modules={modules} />
+						<MemoryRouter>
+							<EnhComp modules={modules} />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -192,7 +197,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp modules={modules} />
+					<MemoryRouter>
+						<EnhComp modules={modules} />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -232,7 +239,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp modules={modules} />
+					<MemoryRouter>
+						<EnhComp modules={modules} />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp

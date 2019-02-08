@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { withTheme } from "styled-components";
-import { connect } from "react-redux";
 import { compose, mapProps } from "recompose";
+import routingConnector from "../../hocs/routingConnector";
 import { getThemeProp } from "../../utils";
 import { getCurrentScope } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
@@ -29,7 +29,7 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 ));
 
 export const EnhancedMenuItem = compose(
-	connect(state => ({ scope: getCurrentScope(state) })),
+	routingConnector(state => ({ scope: getCurrentScope(state) })),
 	mapProps(({ scope, id, ...remainder }) => ({
 		href: `/${scope}/${id}`,
 		id,

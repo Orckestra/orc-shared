@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import withScopeSelect from "./withScopeSelect";
@@ -32,7 +33,9 @@ describe("withScopeSelect", () => {
 		expect(withScopeSelect, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={store}>
-					<Comp id="Feep" closeSelector={closer} />
+					<MemoryRouter>
+						<Comp id="Feep" closeSelector={closer} />
+					</MemoryRouter>
 				</Provider>,
 				"when deeply rendered",
 				"with event",

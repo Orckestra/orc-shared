@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
+import routingConnector from "./routingConnector";
 import { changeLocale } from "../actions/locale";
 
-const withLocaleSwitch = connect(
+const withLocaleSwitch = routingConnector(
 	() => ({}),
 	(dispatch, ownProps) => ({
 		onClick: () => dispatch(changeLocale(ownProps.locale)),

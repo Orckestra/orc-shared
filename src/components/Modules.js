@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
+import routingConnector from "../hocs/routingConnector";
 import { Route, Switch } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { selectLocation } from "../selectors/route";
@@ -29,7 +29,7 @@ export const Modules = ({ modules, scope }) => (
 );
 
 /* istanbul ignore next */
-export default connect(
+export default routingConnector(
 	/* istanbul ignore next */ state => ({
 		scope: getCurrentScope(state),
 		location: selectLocation(state),

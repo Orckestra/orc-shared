@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import ReactTestUtils from "react-dom/test-utils";
 import sinon from "sinon";
@@ -35,7 +36,9 @@ describe("withListState", () => {
 		expect(withListState, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp name="test" columnDefs={columnDefs} />
+					<MemoryRouter>
+						<EnhComp name="test" columnDefs={columnDefs} />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -63,7 +66,9 @@ describe("withListState", () => {
 				.then(EnhComp =>
 					expect(
 						<Provider store={store}>
-							<EnhComp name="test" columnDefs={columnDefs} />
+							<MemoryRouter>
+								<EnhComp name="test" columnDefs={columnDefs} />
+							</MemoryRouter>
 						</Provider>,
 						"to deeply render as",
 						<TestComp
@@ -132,7 +137,9 @@ describe("withListState", () => {
 			return expect(withListState, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<Provider store={store}>
-						<EnhComp name="test" columnDefs={columnDefs} />
+						<MemoryRouter>
+							<EnhComp name="test" columnDefs={columnDefs} />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp selection={[]} />,
@@ -168,7 +175,9 @@ describe("withListState", () => {
 				.then(EnhComp =>
 					expect(
 						<Provider store={store}>
-							<EnhComp name="test" columnDefs={columnDefs} />
+							<MemoryRouter>
+								<EnhComp name="test" columnDefs={columnDefs} />
+							</MemoryRouter>
 						</Provider>,
 						"when deeply rendered",
 						"queried for",
@@ -227,7 +236,9 @@ describe("withListState", () => {
 				.then(EnhComp =>
 					expect(
 						<Provider store={store}>
-							<EnhComp name="test" columnDefs={columnDefs} />
+							<MemoryRouter>
+								<EnhComp name="test" columnDefs={columnDefs} />
+							</MemoryRouter>
 						</Provider>,
 						"when deeply rendered",
 						"queried for",

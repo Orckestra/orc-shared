@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { unwrapImmutable } from "../../utils";
 import { removeTab } from "../../actions/navigation";
+import routingConnector from "../../hocs/routingConnector";
 import {
 	selectRouteHref,
 	selectRouteParams,
@@ -41,7 +41,7 @@ const getPageData = (path, params, module) => {
 	});
 };
 
-const withNavigationData = connect(
+const withNavigationData = routingConnector(
 	(state, { modules }) => {
 		const params = unwrapImmutable(selectRouteParams(state));
 		const hrefMapper = selectSegmentHrefMapper(state);

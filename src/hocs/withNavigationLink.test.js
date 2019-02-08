@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import withNavigationLink from "./withNavigationLink";
 
@@ -21,7 +22,9 @@ describe.only("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
-					<Comp href="/" />
+					<MemoryRouter>
+						<Comp href="/" />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp active />,
@@ -32,7 +35,9 @@ describe.only("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
-					<Comp href="/foo" />
+					<MemoryRouter>
+						<Comp href="/foo" />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp active={false} />,
@@ -44,7 +49,9 @@ describe.only("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp href="/foo" />
+						<MemoryRouter>
+							<Comp href="/foo" />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -75,7 +82,9 @@ describe.only("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp href="/" />
+						<MemoryRouter>
+							<Comp href="/" />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -97,7 +106,9 @@ describe.only("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp href="http://google.com/" />
+						<MemoryRouter>
+							<Comp href="http://google.com/" />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -119,7 +130,9 @@ describe.only("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp />
+						<MemoryRouter>
+							<Comp />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp

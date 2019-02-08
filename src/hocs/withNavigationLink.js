@@ -1,5 +1,5 @@
-import { connect } from "react-redux";
 import { push } from "connected-react-router";
+import routingConnector from "./routingConnector";
 
 const analyzeHref = href => {
 	const url = new URL(href || "", window.location);
@@ -36,7 +36,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return props;
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-);
+export default routingConnector(mapStateToProps, mapDispatchToProps);
