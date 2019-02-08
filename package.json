@@ -5,8 +5,8 @@
 	"main": "dist/",
 	"scripts": {
 		"build": "orc-scripts build",
-		"build:clean": "npm run clean & npm run build",
-		"clean": "rm -r dist & mkdir dist",
+		"build:clean": "npm run clean && npm run build",
+		"clean": "rimraf dist && make-dir dist",
 		"watch": "orc-scripts build --watch --verbose",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
