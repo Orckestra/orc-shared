@@ -15,15 +15,16 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	let page = pages[pathStep];
 	if (!page) {
 		const paramPath =
-			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || ""; // Only one should exist
+			// Only one should exist
+			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || "";
 		if (pathStep === "/" + params[paramPath.replace("/:", "")]) {
 			page = pages[paramPath];
 		}
 	}
-	if (restPath.length === 0) {
+	if (restPath.length === 0 || !page) {
 		return page;
 	} else {
-		getPageWithSplitPath(restPath, params, {
+		return getPageWithSplitPath(restPath, params, {
 			...page.pages,
 			...page.segments,
 			...page.subpages,
@@ -31,7 +32,7 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	}
 };
 
-const getPageData = (path, params, module) => {
+export const getPageData = (path, params, module) => {
 	if (!path) return module;
 	const pathSteps = path.split(/(?=\/)/);
 	return getPageWithSplitPath(pathSteps, params, {
@@ -57,9 +58,11 @@ const withNavigationData = routingConnector(
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state));
 		return {
 			pages: [module, ...pages].map(page => {
-				const pageData =
-					getPageData(page.href.replace(moduleHref, ""), params, moduleData) ||
-					{};
+				const pageData = getPageData(
+					page.href.replace(moduleHref, ""),
+					params,
+					moduleData,
+				) || { label: "[Not found]" };
 				let label = pageData.label;
 				if (label && label.id) {
 					const dataObject =

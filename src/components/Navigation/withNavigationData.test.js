@@ -5,13 +5,16 @@ import Immutable from "immutable";
 import sinon from "sinon";
 import { push } from "connected-react-router";
 import { REMOVE_TAB } from "../../actions/navigation";
-import withNavigationData from "./withNavigationData";
+import withNavigationData, { getPageData } from "./withNavigationData";
 
 const TestComp = () => <div />;
 const TestComp1 = () => <div />;
 const TestComp2 = () => <div />;
 const TestComp3 = () => <div />;
 const TestComp4 = () => <div />;
+const TestComp5 = () => <div />;
+const TestComp6 = () => <div />;
+const TestComp7 = () => <div />;
 
 describe("withNavigation", () => {
 	let state, store, modules;
@@ -26,9 +29,16 @@ describe("withNavigation", () => {
 					"/TestScope/test/page2": {
 						href: "/TestScope/test/page2",
 					},
+					"/TestScope/test/notexist": {
+						href: "/TestScope/test/notexist",
+					},
 				},
 				moduleTabs: {
-					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
+					test: [
+						"/TestScope/test/page1",
+						"/TestScope/test/page2",
+						"/TestScope/test/notexist",
+					],
 				},
 				mappedHrefs: {},
 				route: {
@@ -97,6 +107,11 @@ describe("withNavigation", () => {
 								},
 							},
 							href: "/TestScope/test/page2",
+							active: false,
+						},
+						{
+							href: "/TestScope/test/notexist",
+							label: "[Not found]",
 							active: false,
 						},
 					]}
@@ -275,4 +290,99 @@ describe("withNavigation", () => {
 			),
 		);
 	});
+});
+
+describe("getPageData", () => {
+	let module;
+	beforeEach(() => {
+		module = {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {
+				"/:var": {
+					label: "Page 1",
+					component: TestComp2,
+				},
+				"/page2": {
+					label: { id: "page2", defaultMessage: "Page 2 {someField}" },
+					dataPath: ["objs", "test", "foo"],
+					component: TestComp3,
+					subpages: {
+						"/sub1": {
+							component: TestComp7,
+						},
+					},
+				},
+				"/page3": {
+					label: "Page 3",
+					segments: {
+						"/seg1": {
+							label: "Segment 1",
+							component: TestComp4,
+						},
+						"/seg2": {
+							label: "Segment 2",
+							component: TestComp5,
+						},
+						"/seg3": {
+							label: "Segment 3",
+							component: TestComp6,
+						},
+					},
+				},
+			},
+		};
+	});
+
+	it("extracts the module page data for an empty path", () =>
+		expect(getPageData, "when called with", ["", {}, module], "to satisfy", {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {},
+		}));
+
+	it("extracts the data for a nested segment page", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/page3/seg2", {}, module],
+			"to satisfy",
+			{
+				label: "Segment 2",
+				component: TestComp5,
+			},
+		));
+
+	it("extracts the data for a nested subpage", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/page2/sub1", {}, module],
+			"to satisfy",
+			{
+				component: TestComp7,
+			},
+		));
+
+	it("handles variable path steps", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/thing", { var: "thing" }, module],
+			"to satisfy",
+			{
+				label: "Page 1",
+				component: TestComp2,
+			},
+		));
+
+	it("handles missing page data", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/page2/notHere", {}, module],
+			"to be undefined",
+		));
 });

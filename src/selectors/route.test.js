@@ -19,4 +19,13 @@ describe("location selector", () => {
 			"to equal",
 			Immutable.fromJS({ pathname: "/Scope/named/things/" }),
 		));
+
+	it("handles missing information", () =>
+		expect(
+			selectLocation,
+			"when called with",
+			[state.deleteIn(["router", "location"])],
+			"to equal",
+			Immutable.Map(),
+		));
 });

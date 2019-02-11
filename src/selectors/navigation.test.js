@@ -8,6 +8,7 @@ import {
 	getCurrentScope,
 	resetLastScope,
 	selectRouteHref,
+	selectRoutePath,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -178,26 +179,6 @@ describe("selectSegmentHrefMapper", () => {
 	});
 });
 
-describe("selectRouteParams", () => {
-	let state;
-	beforeEach(() => {
-		state = Immutable.fromJS({
-			navigation: {
-				route: { location: {}, match: { params: { foo: "true", bar: 12 } } },
-			},
-		});
-	});
-
-	it("selects the currently matched route's parameters.", () =>
-		expect(
-			selectRouteParams,
-			"when called with",
-			[state],
-			"to equal",
-			Immutable.fromJS({ foo: "true", bar: 12 }),
-		));
-});
-
 describe("getCurrentScope", () => {
 	let state;
 	beforeEach(() => {
@@ -238,18 +219,84 @@ describe("getCurrentScope", () => {
 	});
 });
 
-describe("selectRouteHref", () => {
-	expect(
-		selectRouteHref,
-		"when called with",
-		[
-			Immutable.fromJS({
-				navigation: {
-					route: { match: { url: "/TestScope/thing/further/pages" } },
+describe("route selectors", () => {
+	let state, noMatchState, noParamState, noHrefState, noPathState;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: {
+					location: {},
+					match: {
+						params: { foo: "true", bar: 12 },
+						path: "/:scope/thing/further/pages",
+						url: "/TestScope/thing/further/pages",
+					},
 				},
-			}),
-		],
-		"to equal",
-		"/TestScope/thing/further/pages",
-	);
+			},
+		});
+		noMatchState = state.deleteIn(["navigation", "route", "match"]);
+		noParamState = state.deleteIn(["navigation", "route", "match", "params"]);
+		noHrefState = state.deleteIn(["navigation", "route", "match", "url"]);
+		noPathState = state.deleteIn(["navigation", "route", "match", "path"]);
+	});
+
+	describe("selectRouteParams", () => {
+		it("selects the currently matched route's parameters.", () =>
+			expect(
+				selectRouteParams,
+				"when called with",
+				[state],
+				"to equal",
+				Immutable.fromJS({ foo: "true", bar: 12 }),
+			));
+
+		it("handles missing data", () =>
+			expect(
+				selectRouteParams,
+				"when called with",
+				[noMatchState],
+				"to equal",
+				Immutable.Map(),
+			).and("when called with", [noParamState], "to equal", Immutable.Map()));
+	});
+
+	describe("selectRouteHref", () => {
+		it("selects the currently matched route's href.", () =>
+			expect(
+				selectRouteHref,
+				"when called with",
+				[state],
+				"to equal",
+				"/TestScope/thing/further/pages",
+			));
+
+		it("handles missing data", () =>
+			expect(
+				selectRouteHref,
+				"when called with",
+				[noMatchState],
+				"to equal",
+				"",
+			).and("when called with", [noHrefState], "to equal", ""));
+	});
+
+	describe("selectRoutePath", () => {
+		it("selects the currently matched route's path.", () =>
+			expect(
+				selectRoutePath,
+				"when called with",
+				[state],
+				"to equal",
+				"/:scope/thing/further/pages",
+			));
+
+		it("handles missing data", () =>
+			expect(
+				selectRoutePath,
+				"when called with",
+				[noMatchState],
+				"to equal",
+				"",
+			).and("when called with", [noPathState], "to equal", ""));
+	});
 });
