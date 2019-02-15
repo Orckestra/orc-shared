@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Switch, Route, Redirect, Link } from "react-router-dom";
+import UrlPattern from "url-pattern";
 import { ifFlag } from "../../utils";
 import Text from "../Text";
 import { TabBar } from "../Navigation/Bar";
@@ -23,7 +24,9 @@ export const List = styled.div`
 	flex-direction: column;
 `;
 
-export const Item = styled(Link)`
+const FilteredLink = ({ active, ...props }) => <Link {...props} />;
+
+export const Item = styled(FilteredLink)`
 	display: block;
 	white-space: nowrap;
 	min-width: max-content;
@@ -46,33 +49,41 @@ export const Item = styled(Link)`
 	)};
 `;
 
-const SegmentPage = ({ path, segments }) => (
-	<Wrapper>
-		<List>
-			{Object.entries(segments).map(([segpath, config]) => (
-				<Item key={segpath} to={path + segpath}>
-					<Text message={config.label} />
-				</Item>
-			))}
-		</List>
-		<Switch>
-			{Object.entries(segments).map(([segpath, config]) => (
-				<Route
-					key={segpath}
-					path={path + segpath}
-					render={({ location, match }) => (
-						<Segment
-							path={path + segpath}
-							location={location}
-							match={match}
-							config={config}
-						/>
-					)}
-				/>
-			))}
-			<Redirect exact path={path} to={path + Object.keys(segments)[0]} />
-		</Switch>
-	</Wrapper>
-);
+const SegmentPage = ({ path, segments, location, match }) => {
+	const pattern = new UrlPattern(path);
+	const baseHref = pattern.stringify(match.params);
+	return (
+		<Wrapper>
+			<List>
+				{Object.entries(segments).map(([segpath, config]) => (
+					<Item
+						key={segpath}
+						to={baseHref + segpath}
+						active={location.pathname === baseHref + segpath}
+					>
+						<Text message={config.label} />
+					</Item>
+				))}
+			</List>
+			<Switch>
+				{Object.entries(segments).map(([segpath, config]) => (
+					<Route
+						key={segpath}
+						path={path + segpath}
+						render={({ location, match }) => (
+							<Segment
+								path={path + segpath}
+								location={location}
+								match={match}
+								config={config}
+							/>
+						)}
+					/>
+				))}
+				<Redirect exact path={path} to={baseHref + Object.keys(segments)[0]} />
+			</Switch>
+		</Wrapper>
+	);
+};
 
 export default SegmentPage;

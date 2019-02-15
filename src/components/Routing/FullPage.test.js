@@ -14,12 +14,16 @@ describe("Fullpage", () => {
 			<FullPage
 				path="/meep/snap"
 				config={{ component: View1, pages: { "/stuff": { component: View2 } } }}
+				location={{ location: true }}
+				match={{ match: true }}
 			/>,
 			"to render as",
 			<Page
 				path="/meep/snap"
 				component={View1}
 				pages={{ "/stuff": { component: View2 } }}
+				location={{ location: true }}
+				match={{ match: true }}
 			/>,
 		));
 
@@ -32,12 +36,16 @@ describe("Fullpage", () => {
 					component: View1,
 					segments: { "/stuff": { component: View2 } },
 				}}
+				location={{ location: true }}
+				match={{ match: true }}
 			/>,
 			"to render as",
 			<SegmentPage
 				path="/meep/snap"
 				component={View1}
 				segments={{ "/stuff": { component: View2 } }}
+				location={{ location: true }}
+				match={{ match: true }}
 			/>,
 		));
 });

@@ -6,10 +6,24 @@ const FullPage = ({ path, config, location, match }) => {
 	const { component, pages = {}, segments } = config;
 	if (segments) {
 		return (
-			<SegmentPage path={path} component={component} segments={segments} />
+			<SegmentPage
+				path={path}
+				component={component}
+				segments={segments}
+				location={location}
+				match={match}
+			/>
 		);
 	}
-	return <Page path={path} component={component} pages={pages} />;
+	return (
+		<Page
+			path={path}
+			component={component}
+			pages={pages}
+			location={location}
+			match={match}
+		/>
+	);
 };
 
 export default FullPage;

@@ -16,13 +16,15 @@ describe("SegmentPage", () => {
 	it("shows a list of links to segments", () =>
 		expect(
 			<SegmentPage
-				path="/foo/meep"
+				path="/:scope/meep"
 				segments={{
 					"/one": { label: "Text" },
 					"/two": {
 						label: { id: "message.translate", defaultMessage: "Translated" },
 					},
 				}}
+				match={{ params: { scope: "foo" } }}
+				location={{ pathname: "/foo/meep/two" }}
 			/>,
 			"to render as",
 			<Wrapper>
@@ -30,7 +32,7 @@ describe("SegmentPage", () => {
 					<Item to="/foo/meep/one">
 						<Text message="Text" />
 					</Item>
-					<Item to="/foo/meep/two">
+					<Item to="/foo/meep/two" active>
 						<Text
 							message={{
 								id: "message.translate",
@@ -46,36 +48,38 @@ describe("SegmentPage", () => {
 	it("shows the matched segment view", () =>
 		expect(
 			<SegmentPage
-				path="/foo/meep"
+				path="/:scope/meep"
 				segments={{
 					"/one": { label: "foo", component: View1 },
 					"/two": { label: "bar", component: View2 },
 				}}
+				match={{ params: { scope: "foo" } }}
+				location={{ pathname: "/foo/meep/two" }}
 			/>,
 			"to render as",
 			<Wrapper>
 				<List />
 				<Switch>
 					<Route
-						path="/foo/meep/one"
+						path="/:scope/meep/one"
 						render={expect.it(
 							"when called with",
-							[{}, {}],
+							[{}, { params: { scope: "foo" } }],
 							"to satisfy",
 							<Segment
-								path="/foo/meep/one"
+								path="/:scope/meep/one"
 								config={{ label: "foo", component: View1 }}
 							/>,
 						)}
 					/>
 					<Route
-						path="/foo/meep/two"
+						path="/:scope/meep/two"
 						render={expect.it(
 							"when called with",
-							[{}, {}],
+							[{}, { params: { scope: "foo" } }],
 							"to satisfy",
 							<Segment
-								path="/foo/meep/two"
+								path="/:scope/meep/two"
 								config={{ label: "bar", component: View2 }}
 							/>,
 						)}
@@ -87,18 +91,20 @@ describe("SegmentPage", () => {
 	it("has a catching redirect when no segment path is matched", () =>
 		expect(
 			<SegmentPage
-				path="/foo/meep"
+				path="/:scope/meep"
 				segments={{
 					"/one": {},
 					"/two": {},
 				}}
+				match={{ params: { scope: "foo" } }}
+				location={{ pathname: "/foo/meep/two" }}
 			/>,
 			"to render as",
 			<Wrapper>
 				<Switch>
 					<Route />
 					<Route />
-					<Redirect exact path="/foo/meep" to="/foo/meep/one" />
+					<Redirect exact path="/:scope/meep" to="/foo/meep/one" />
 				</Switch>
 			</Wrapper>,
 		));
