@@ -20,7 +20,14 @@ const Page = ({ component: View, path, pages = {}, subpages = {} }) => {
 				<Route
 					key={subpath}
 					path={path + subpath}
-					render={() => <FullPage path={path + subpath} config={config} />}
+					render={({ location, match }) => (
+						<FullPage
+							path={path + subpath}
+							location={location}
+							match={match}
+							config={config}
+						/>
+					)}
 				/>
 			))}
 		</Switch>

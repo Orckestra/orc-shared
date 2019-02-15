@@ -7,9 +7,13 @@ import { getCurrentScope } from "../selectors/navigation";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 
-export const Module = withErrorBoundary("Module")(({ config, path, error }) => {
-	return <FullPage path={path} config={config} />;
-});
+export const Module = withErrorBoundary("Module")(
+	({ config, path, error, location, match }) => {
+		return (
+			<FullPage path={path} config={config} location={location} match={match} />
+		);
+	},
+);
 
 export const Modules = ({ modules, scope }) => (
 	<React.Fragment>
@@ -20,7 +24,14 @@ export const Modules = ({ modules, scope }) => (
 					<Route
 						key={name}
 						path={"/:scope/" + name}
-						render={() => <Module config={module} path={"/:scope/" + name} />}
+						render={({ location, match }) => (
+							<Module
+								config={module}
+								location={location}
+								match={match}
+								path={"/:scope/" + name}
+							/>
+						)}
 					/>
 				);
 			})}

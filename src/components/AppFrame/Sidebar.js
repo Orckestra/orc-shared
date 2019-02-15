@@ -19,7 +19,7 @@ export const Bar = styled.div`
 
 export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 	<MenuItem
-		menu
+		menuToggle
 		open={open}
 		icon={(open
 			? getThemeProp(["icons", "sidebarOpen"], "layers")

@@ -11,5 +11,5 @@ export const selectLocation = createSelector(
 
 export const selectPathname = createSelector(
 	selectLocation,
-	location => unwrapImmutable(location).pathname,
+	location => unwrapImmutable(location).pathname || "",
 );

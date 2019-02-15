@@ -1,12 +1,13 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { Switch } from "react-router-dom";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 import { Modules, Module } from "./Modules";
 
 describe("Modules", () => {
-	let modules, Mod2, Mod3, Page1, Page2, Page3;
+	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
 	beforeEach(() => {
 		Mod2 = () => <div />;
 		Mod3 = () => <div />;
@@ -17,8 +18,7 @@ describe("Modules", () => {
 			users: {
 				label: "Module 1",
 				icon: "user",
-				mode: "segments",
-				pages: {
+				segments: {
 					"/page1": {
 						component: Page1,
 						title: "Page 1",
@@ -46,49 +46,89 @@ describe("Modules", () => {
 				component: Mod3,
 			},
 		};
+		state = Immutable.fromJS({
+			navigation: {
+				tabIndex: {},
+				moduleTabs: {},
+				mappedHrefs: {},
+				route: {},
+			},
+			router: {
+				location: {},
+			},
+		});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 	});
 
-	it("renders a module table as a routing system with navigation tabs", () => {
-		const wrapper = shallow(<Modules modules={modules} scope="TestScope" />);
-		expect(wrapper.contains(<Navigation modules={modules} />), "to be true");
-
-		const userRoute = wrapper.find(Switch).childAt(0);
-		expect(userRoute.key(), "to be", "users");
-		expect(userRoute.props(), "to satisfy", {
-			path: "/:scope/users",
-			render: expect.it("to be a function"),
-		});
-		expect(
-			userRoute
-				.renderProp("render")()
-				.contains(<Module config={modules.users} path="/:scope/users" />),
-			"to be true",
+	it("renders a module table with navigation tabs", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/demos" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Navigation modules={modules} />,
 		);
+	});
 
-		const photoRoute = wrapper.find(Switch).childAt(1);
-		expect(photoRoute.key(), "to be", "photos");
-		expect(photoRoute.props(), "to satisfy", {
-			path: "/:scope/photos",
-			render: expect.it("to be a function"),
-		});
-		expect(
-			photoRoute
-				.renderProp("render")()
-				.contains(<Module config={modules.photos} path="/:scope/photos" />),
-			"to be true",
+	it("renders a module table as a routing system (user route)", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/users" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Switch>
+				<Route>
+					<Module config={modules.users} path="/:scope/users" />
+				</Route>
+			</Switch>,
 		);
+	});
 
-		const demoRoute = wrapper.find(Switch).childAt(2);
-		expect(demoRoute.key(), "to be", "demos");
-		expect(demoRoute.props(), "to satisfy", {
-			path: "/:scope/demos",
-			render: expect.it("to be a function"),
-		});
-		expect(
-			demoRoute
-				.renderProp("render")()
-				.contains(<Module config={modules.demos} path="/:scope/demos" />),
-			"to be true",
+	it("renders a module table as a routing system (photo route)", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/photos" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Switch>
+				<Route>
+					<Module config={modules.photos} path="/:scope/photos" />
+				</Route>
+			</Switch>,
+		);
+	});
+
+	it("renders a module table as a routing system (demo route)", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/demos" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Switch>
+				<Route>
+					<Module config={modules.demos} path="/:scope/demos" />
+				</Route>
+			</Switch>,
 		);
 	});
 });

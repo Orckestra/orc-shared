@@ -42,7 +42,8 @@ describe("Page", () => {
 				<Route
 					path="/nabble/foo"
 					render={expect.it(
-						"when called",
+						"when called with",
+						[{ location: {}, match: {} }],
 						"to satisfy",
 						<FullPage path="/nabble/foo" config={{ component: Sub1 }} />,
 					)}
@@ -50,7 +51,8 @@ describe("Page", () => {
 				<Route
 					path="/nabble/bar"
 					render={expect.it(
-						"when called",
+						"when called with",
+						[{ location: {}, match: {} }],
 						"to satisfy",
 						<FullPage path="/nabble/bar" config={{ component: Sub2 }} />,
 					)}

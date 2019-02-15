@@ -3,7 +3,16 @@ import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 import Icon from "../Icon";
 
-export const Block = styled(Link)`
+const FilteredLink = ({
+	menuToggle,
+	staticContext,
+	dispatch,
+	active,
+	component,
+	...props
+}) => <Link {...props} />;
+
+export const Block = styled(FilteredLink)`
 	display: block;
 	padding: 0 10px;
 	margin-bottom: 35px;
@@ -12,7 +21,7 @@ export const Block = styled(Link)`
 	cursor: pointer;
 
 	${props =>
-		props.menu
+		props.menuToggle
 			? ""
 			: css`
 					&:hover {

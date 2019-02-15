@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { push } from "connected-react-router";
@@ -80,9 +80,9 @@ describe("withNavigation", () => {
 		expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<MemoryRouter>
+					<BrowserRouter>
 						<EnhComp modules={modules} />
-					</MemoryRouter>
+					</BrowserRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -178,9 +178,9 @@ describe("withNavigation", () => {
 			expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<Provider store={store}>
-						<MemoryRouter>
+						<BrowserRouter>
 							<EnhComp modules={modules} />
-						</MemoryRouter>
+						</BrowserRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -212,9 +212,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<MemoryRouter>
+					<BrowserRouter>
 						<EnhComp modules={modules} />
-					</MemoryRouter>
+					</BrowserRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -254,9 +254,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<MemoryRouter>
+					<BrowserRouter>
 						<EnhComp modules={modules} />
-					</MemoryRouter>
+					</BrowserRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp

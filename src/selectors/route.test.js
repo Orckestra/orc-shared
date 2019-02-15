@@ -1,7 +1,7 @@
 import Immutable from "immutable";
-import { selectLocation } from "./route";
+import { selectLocation, selectPathname } from "./route";
 
-describe("location selector", () => {
+describe("selectLocation", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -27,5 +27,34 @@ describe("location selector", () => {
 			[state.deleteIn(["router", "location"])],
 			"to equal",
 			Immutable.Map(),
+		));
+});
+
+describe("selectPathname", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			router: {
+				location: { pathname: "/Scope/named/things/" },
+			},
+		});
+	});
+
+	it("gets the current matched route", () =>
+		expect(
+			selectPathname,
+			"when called with",
+			[state],
+			"to equal",
+			"/Scope/named/things/",
+		));
+
+	it("handles missing information", () =>
+		expect(
+			selectPathname,
+			"when called with",
+			[state.deleteIn(["router", "location"])],
+			"to equal",
+			"",
 		));
 });

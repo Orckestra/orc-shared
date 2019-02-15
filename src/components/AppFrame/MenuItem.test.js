@@ -64,10 +64,10 @@ describe("MenuItem", () => {
 				/:hover\s*\{[^}]*\bcolor: #ffffff;[^}]*\}/,
 			));
 
-		it("does not add a hover rule if menu flag is set", () =>
+		it("does not add a hover rule if menuToggle flag is set", () =>
 			expect(
 				<MemoryRouter>
-					<Block to="" menu />
+					<Block to="" menuToggle />
 				</MemoryRouter>,
 				"to render style rules",
 				"not to match",

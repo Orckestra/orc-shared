@@ -11,9 +11,11 @@ describe("withWaypointing", () => {
 	let state, store;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: { location: { pathname: "/feep/meep" } },
 			navigation: {
-				route: { location: { pathname: "/feep/meep" }, match: {} },
+				route: {
+					location: { pathname: "/feep/meep" },
+					match: { url: "/feep/meep" },
+				},
 			},
 		});
 		store = {
@@ -30,11 +32,10 @@ describe("withWaypointing", () => {
 				expect(
 					<Provider store={store}>
 						<BrowserRouter>
-							<EnhancedView location={{ pathname: "/foo/bar" }} match={{}} />
+							<EnhancedView />
 						</BrowserRouter>
 					</Provider>,
-					"when deeply rendered",
-					"to have rendered",
+					"to deeply render as",
 					<Test />,
 				),
 			)
@@ -44,7 +45,10 @@ describe("withWaypointing", () => {
 						args: [
 							{
 								type: "SET_ROUTE",
-								payload: { location: { pathname: "/foo/bar" }, match: {} },
+								payload: {
+									location: { pathname: "/foo/bar", search: "", hash: "" },
+									match: { path: "/", url: "/", params: {}, isExact: false },
+								},
 							},
 						],
 					},
@@ -58,7 +62,7 @@ describe("withWaypointing", () => {
 				expect(
 					<Provider store={store}>
 						<BrowserRouter>
-							<EnhancedView location={{ pathname: "/feep/meep" }} match={{}} />
+							<EnhancedView />
 						</BrowserRouter>
 					</Provider>,
 					"when deeply rendered",

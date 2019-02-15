@@ -3,12 +3,8 @@ import { unwrapImmutable } from "../../utils";
 import { removeTab } from "../../actions/navigation";
 import routingConnector from "../../hocs/routingConnector";
 import {
-	selectRouteHref,
-	selectRouteParams,
-	selectCurrentModuleName,
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
-	getCurrentScope,
 } from "../../selectors/navigation";
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
@@ -43,13 +39,12 @@ export const getPageData = (path, params, module) => {
 };
 
 const withNavigationData = routingConnector(
-	(state, { modules }) => {
-		const params = unwrapImmutable(selectRouteParams(state));
+	(state, { modules, match }) => {
+		const params = match.params;
+		const currentHref = window.location.pathname;
 		const hrefMapper = selectSegmentHrefMapper(state);
-		const currentHref = selectRouteHref(state);
-		const moduleName = selectCurrentModuleName(state);
+		const [moduleHref, moduleName] = currentHref.match(/^\/[^/]+\/([^/]+)/);
 		const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
-		const moduleHref = "/" + getCurrentScope(state) + "/" + moduleName;
 		const module = {
 			icon: moduleData.icon,
 			label: moduleData.label,

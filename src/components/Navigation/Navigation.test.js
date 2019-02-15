@@ -1,5 +1,5 @@
 import React from "react";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
@@ -62,14 +62,15 @@ describe("Navigation", () => {
 				},
 			},
 		};
+		jsdom.reconfigure({ url: "http://localhost/TestScope/test" });
 	});
 
 	it("renders a navigation tab bar with state-based props", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
+				<BrowserRouter>
 					<Navigation modules={modules} />
-				</MemoryRouter>
+				</BrowserRouter>
 			</Provider>,
 			"to deeply render as",
 			<Bar

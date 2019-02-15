@@ -94,7 +94,7 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu icon="menu" onClick={toggle} />,
+				<MenuItem menuToggle icon="menu" onClick={toggle} />,
 			));
 
 		it("renders as open", () =>
@@ -105,7 +105,7 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu open icon="layers" onClick={toggle} />,
+				<MenuItem menuToggle open icon="layers" onClick={toggle} />,
 			));
 	});
 
@@ -128,7 +128,7 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu icon="closed" onClick={toggle} />,
+				<MenuItem menuToggle icon="closed" onClick={toggle} />,
 			));
 
 		it("renders as open", () =>
@@ -139,7 +139,7 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu open icon="open" onClick={toggle} />,
+				<MenuItem menuToggle open icon="open" onClick={toggle} />,
 			));
 	});
 });

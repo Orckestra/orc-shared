@@ -2,7 +2,7 @@ import React from "react";
 import Page from "./Page";
 import SegmentPage from "./SegmentPage";
 
-const FullPage = ({ path, config }) => {
+const FullPage = ({ path, config, location, match }) => {
 	const { component, pages = {}, segments } = config;
 	if (segments) {
 		return (
