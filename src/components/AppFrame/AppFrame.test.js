@@ -34,6 +34,7 @@ describe("AppFrame", () => {
 			modules: [],
 			menuLabel: "TestLabel",
 			menuItems: [],
+			location: { pathname: "/Foo/bar" },
 			linkHOC: x => x,
 			ConnectedScope: Scope,
 		};
@@ -64,7 +65,11 @@ describe("AppFrame", () => {
 					menuLabel={props.menuLabel}
 					menuItems={props.menuItems}
 				/>
-				<Sidebar linkHOC={props.linkHOC} modules={props.modules} />
+				<Sidebar
+					linkHOC={props.linkHOC}
+					modules={props.modules}
+					path="/Foo/bar"
+				/>
 				<ViewPort>
 					<Scope>
 						<TestComp1 key="1" />

@@ -30,19 +30,20 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 
 export const EnhancedMenuItem = compose(
 	routingConnector(state => ({ scope: getCurrentScope(state) })),
-	mapProps(({ scope, id, ...remainder }) => ({
+	mapProps(({ path, scope, id, ...remainder }) => ({
 		href: `/${scope}/${id}`,
+		active: path.startsWith(`/${scope}/${id}`),
 		id,
 		...remainder,
 	})),
 )(MenuItem);
 
-const Sidebar = ({ open, toggle, modules = [] }) => {
+const Sidebar = ({ open, toggle, modules = [], path = "" }) => {
 	return (
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
 			{modules.map(item => (
-				<EnhancedMenuItem key={item.id} {...item} open={open} />
+				<EnhancedMenuItem key={item.id} {...item} open={open} path={path} />
 			))}
 		</Bar>
 	);

@@ -15,26 +15,55 @@ describe("Sidebar", () => {
 				icon: "cars",
 				label: "First page",
 			},
+			{
+				id: "second",
+				icon: "person",
+				label: "Second page",
+			},
 		];
 	});
 
 	it("renders a sidebar with app selector and page menu", () =>
 		expect(
-			<Sidebar modules={modules} />,
+			<Sidebar modules={modules} path="/Global/second" />,
 			"to render as",
 			<Bar>
 				<MenuToggle />
-				<EnhancedMenuItem icon="cars" id="first" label="First page" />
+				<EnhancedMenuItem
+					icon="cars"
+					id="first"
+					label="First page"
+					path="/Global/second"
+				/>
+				<EnhancedMenuItem
+					icon="person"
+					id="second"
+					label="Second page"
+					path="/Global/second"
+				/>
 			</Bar>,
 		));
 
 	it("renders an open sidebar", () =>
 		expect(
-			<Sidebar open modules={modules} />,
+			<Sidebar open modules={modules} path="/Global/second" />,
 			"to render as",
 			<Bar>
 				<MenuToggle open />
-				<EnhancedMenuItem open icon="cars" id="first" label="First page" />
+				<EnhancedMenuItem
+					open
+					icon="cars"
+					id="first"
+					label="First page"
+					path="/Global/second"
+				/>
+				<EnhancedMenuItem
+					open
+					icon="person"
+					id="second"
+					label="Second page"
+					path="/Global/second"
+				/>
 			</Bar>,
 		));
 
@@ -71,11 +100,22 @@ describe("EnhancedMenuItem", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<EnhancedMenuItem id="route" />
+					<EnhancedMenuItem id="route" path="/Global/somewhere" />
 				</MemoryRouter>
 			</Provider>,
 			"to deeply render as",
 			<MenuItem href="/Global/route" />,
+		));
+
+	it("sets the active flag if path matches href", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<EnhancedMenuItem id="route" path="/Global/route/subpath" />
+				</MemoryRouter>
+			</Provider>,
+			"to deeply render as",
+			<MenuItem active href="/Global/route" />,
 		));
 });
 
