@@ -25,9 +25,13 @@ describe("withNavigation", () => {
 				tabIndex: {
 					"/TestScope/test/page1": {
 						href: "/TestScope/test/page1",
+						path: "/:scope/test/page1",
+						params: { scope: "TestScope" },
 					},
 					"/TestScope/test/foo": {
 						href: "/TestScope/test/foo",
+						path: "/:scope/test/:page2",
+						params: { scope: "TestScope", page2: "foo" },
 					},
 					"/TestScope/test/notexist": {
 						href: "/TestScope/test/notexist",
@@ -45,7 +49,7 @@ describe("withNavigation", () => {
 					match: {
 						url: "/TestScope/test/page1",
 						path: "/:scope/test/page1",
-						params: { scope: "TestScope", page2: "foo" },
+						params: { scope: "Global", page2: "bar" },
 					},
 				},
 			},
