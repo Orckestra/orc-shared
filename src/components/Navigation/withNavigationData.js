@@ -7,7 +7,7 @@ import {
 	selectSegmentHrefMapper,
 } from "../../selectors/navigation";
 
-const getPageWithSplitPath = ([pathStep, ...restPath], params = {}, pages) => {
+const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	let page = pages[pathStep];
 	if (!page) {
 		const paramPath =
@@ -52,15 +52,19 @@ const withNavigationData = routingConnector(
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state));
 		return {
 			pages: [module, ...pages].map(page => {
+				const params = page.params || {};
+				const pageBaseHref = params.scope
+					? `/${params.scope}/${moduleName}`
+					: moduleHref;
 				const pageData = getPageData(
-					page.href.replace(moduleHref, ""),
-					page.params,
+					page.href.replace(pageBaseHref, ""),
+					params,
 					moduleData,
 				) || { label: "[Not found]" };
 				let label = pageData.label;
 				const dataPath = pageData.dataPath && [...pageData.dataPath];
 				if (dataPath && pageData.dataIdParam) {
-					dataPath.push(page.params[pageData.dataIdParam]);
+					dataPath.push(params[pageData.dataIdParam]);
 				}
 				if (label && label.id) {
 					const dataObject = dataPath && unwrapImmutable(state.getIn(dataPath));

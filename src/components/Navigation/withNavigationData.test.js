@@ -28,10 +28,10 @@ describe("withNavigation", () => {
 						path: "/:scope/test/page1",
 						params: { scope: "TestScope" },
 					},
-					"/TestScope/test/foo": {
-						href: "/TestScope/test/foo",
+					"/OtherScope/test/foo": {
+						href: "/OtherScope/test/foo",
 						path: "/:scope/test/:page2",
-						params: { scope: "TestScope", page2: "foo" },
+						params: { scope: "OtherScope", page2: "foo" },
 					},
 					"/TestScope/test/notexist": {
 						href: "/TestScope/test/notexist",
@@ -40,7 +40,7 @@ describe("withNavigation", () => {
 				moduleTabs: {
 					test: [
 						"/TestScope/test/page1",
-						"/TestScope/test/foo",
+						"/OtherScope/test/foo",
 						"/TestScope/test/notexist",
 					],
 				},
@@ -111,7 +111,7 @@ describe("withNavigation", () => {
 									someField: "11",
 								},
 							},
-							href: "/TestScope/test/foo",
+							href: "/OtherScope/test/foo",
 							active: false,
 						},
 						{
