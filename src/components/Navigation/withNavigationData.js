@@ -5,6 +5,7 @@ import routingConnector from "../../hocs/routingConnector";
 import {
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
+	selectRouteParams,
 } from "../../selectors/navigation";
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
@@ -13,7 +14,7 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 		const paramPath =
 			// Only one should exist
 			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || "";
-		if (pathStep === "/" + params[paramPath.replace("/:", "")]) {
+		if (pathStep === "/" + params[paramPath.replace(/^\/:/, "")]) {
 			page = pages[paramPath];
 		}
 	}
@@ -40,7 +41,7 @@ export const getPageData = (path, params, module) => {
 
 const withNavigationData = routingConnector(
 	(state, { modules, match }) => {
-		const params = match.params;
+		const params = unwrapImmutable(selectRouteParams(state));
 		const currentHref = window.location.pathname;
 		const hrefMapper = selectSegmentHrefMapper(state);
 		const [moduleHref, moduleName] = currentHref.match(/^\/[^/]+\/([^/]+)/);
@@ -59,10 +60,12 @@ const withNavigationData = routingConnector(
 					moduleData,
 				) || { label: "[Not found]" };
 				let label = pageData.label;
+				const dataPath = pageData.dataPath && [...pageData.dataPath];
+				if (dataPath && pageData.dataIdParam) {
+					dataPath.push(params[pageData.dataIdParam]);
+				}
 				if (label && label.id) {
-					const dataObject =
-						pageData.dataPath &&
-						unwrapImmutable(state.getIn(pageData.dataPath));
+					const dataObject = dataPath && unwrapImmutable(state.getIn(dataPath));
 					label.values = { ...dataObject, ...label.values };
 				}
 				const href = hrefMapper(page.href);

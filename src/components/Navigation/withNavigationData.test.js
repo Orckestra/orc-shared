@@ -26,8 +26,8 @@ describe("withNavigation", () => {
 					"/TestScope/test/page1": {
 						href: "/TestScope/test/page1",
 					},
-					"/TestScope/test/page2": {
-						href: "/TestScope/test/page2",
+					"/TestScope/test/foo": {
+						href: "/TestScope/test/foo",
 					},
 					"/TestScope/test/notexist": {
 						href: "/TestScope/test/notexist",
@@ -36,7 +36,7 @@ describe("withNavigation", () => {
 				moduleTabs: {
 					test: [
 						"/TestScope/test/page1",
-						"/TestScope/test/page2",
+						"/TestScope/test/foo",
 						"/TestScope/test/notexist",
 					],
 				},
@@ -45,7 +45,7 @@ describe("withNavigation", () => {
 					match: {
 						url: "/TestScope/test/page1",
 						path: "/:scope/test/page1",
-						params: { scope: "TestScope" },
+						params: { scope: "TestScope", page2: "foo" },
 					},
 				},
 			},
@@ -65,9 +65,10 @@ describe("withNavigation", () => {
 						label: "Page 1",
 						component: TestComp2,
 					},
-					"/page2": {
+					"/:page2": {
 						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
-						dataPath: ["objs", "test", "foo"],
+						dataPath: ["objs", "test"],
+						dataIdParam: "page2",
 						component: TestComp3,
 					},
 				},
@@ -106,7 +107,7 @@ describe("withNavigation", () => {
 									someField: "11",
 								},
 							},
-							href: "/TestScope/test/page2",
+							href: "/TestScope/test/foo",
 							active: false,
 						},
 						{
