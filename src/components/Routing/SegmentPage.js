@@ -76,6 +76,7 @@ const SegmentPage = ({ path, segments, location, match }) => {
 								location={location}
 								match={match}
 								config={config}
+								root={baseHref}
 							/>
 						)}
 					/>

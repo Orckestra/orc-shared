@@ -18,7 +18,7 @@ const navigationReducer = (state = initialState, action) => {
 				const { location, match } = action.payload;
 				const href = location.pathname;
 				s.setIn(
-					["tabIndex", location.pathname],
+					["tabIndex", href],
 					Immutable.fromJS({
 						href,
 						path: match.path,

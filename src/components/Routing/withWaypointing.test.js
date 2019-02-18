@@ -3,6 +3,7 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import sinon from "sinon";
+import { setRoute, mapHref } from "../../actions/navigation";
 import withWaypointing from "./withWaypointing";
 
 const Test = () => <div />;
@@ -43,13 +44,10 @@ describe("withWaypointing", () => {
 				expect(store.dispatch, "to have calls satisfying", [
 					{
 						args: [
-							{
-								type: "SET_ROUTE",
-								payload: {
-									location: { pathname: "/foo/bar", search: "", hash: "" },
-									match: { path: "/", url: "/", params: {}, isExact: false },
-								},
-							},
+							setRoute(
+								{ pathname: "/foo/bar", search: "", hash: "" },
+								{ path: "/", url: "/", params: {}, isExact: false },
+							),
 						],
 					},
 				]),
@@ -72,4 +70,33 @@ describe("withWaypointing", () => {
 			)
 			.then(() => expect(store.dispatch, "to have calls satisfying", []));
 	});
+
+	it("maps the href to a root if so directed", () =>
+		expect(withWaypointing, "called with", [Test])
+			.then(EnhancedView =>
+				expect(
+					<Provider store={store}>
+						<BrowserRouter>
+							<EnhancedView mapFrom="/foo" />
+						</BrowserRouter>
+					</Provider>,
+					"to deeply render as",
+					<Test />,
+				),
+			)
+			.then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [mapHref("/foo", "/foo/bar")],
+					},
+					{
+						args: [
+							setRoute(
+								{ pathname: "/foo", search: "", hash: "" },
+								{ path: "/", url: "/", params: {}, isExact: false },
+							),
+						],
+					},
+				]),
+			));
 });

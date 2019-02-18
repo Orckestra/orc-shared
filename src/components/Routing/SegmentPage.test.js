@@ -69,6 +69,7 @@ describe("SegmentPage", () => {
 							<Segment
 								path="/:scope/meep/one"
 								config={{ label: "foo", component: View1 }}
+								root="/foo/meep"
 							/>,
 						)}
 					/>
@@ -81,6 +82,7 @@ describe("SegmentPage", () => {
 							<Segment
 								path="/:scope/meep/two"
 								config={{ label: "bar", component: View2 }}
+								root="/foo/meep"
 							/>,
 						)}
 					/>
