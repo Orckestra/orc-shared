@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 
 const Text = ({ message, error }) =>
-	!error ? (
+	!error && message ? (
 		message.id ? (
 			<FormattedMessage {...message} />
 		) : (
@@ -17,7 +17,7 @@ const Text = ({ message, error }) =>
 				fontWeight: "bold",
 			}}
 		>
-			Errored: {error.message}
+			Errored: {message ? error.message : "No message provided"}
 		</span>
 	);
 

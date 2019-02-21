@@ -1,5 +1,5 @@
 import { IntlProvider } from "react-intl";
-import { connect } from "react-redux";
+import routingConnector from "../hocs/routingConnector";
 import { currentLocale } from "../selectors/locale";
 
 const mapStateToProps = state => ({
@@ -8,6 +8,6 @@ const mapStateToProps = state => ({
 	messages: require("translations/" + currentLocale(state) + ".json"),
 });
 
-const withLanguageData = connect(mapStateToProps);
+const withLanguageData = routingConnector(mapStateToProps);
 
 export default withLanguageData(IntlProvider);

@@ -1,158 +1,60 @@
 import Immutable from "immutable";
-import {
-	routeSelector,
-	resultSelector,
-	paramSelector,
-	getCurrentScope,
-	resetLastScope,
-} from "./route";
+import { selectLocation, selectPathname } from "./route";
 
-describe("route selector", () => {
+describe("selectLocation", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			router: {
-				route: "/:stuff/named/things/:withParams",
+				location: { pathname: "/Scope/named/things/" },
 			},
 		});
 	});
 
 	it("gets the current matched route", () =>
 		expect(
-			routeSelector,
+			selectLocation,
 			"when called with",
 			[state],
 			"to equal",
-			"/:stuff/named/things/:withParams",
+			Immutable.fromJS({ pathname: "/Scope/named/things/" }),
 		));
-});
 
-describe("result selector", () => {
-	let state;
-	beforeEach(() => {
-		state = Immutable.fromJS({
-			router: {
-				result: {
-					parent: {
-						route: "/:stuff/named/things",
-						parent: {
-							route: "/:stuff/named",
-							parent: {
-								route: "/:stuff",
-							},
-						},
-					},
-				},
-			},
-		});
-	});
-
-	it("gets the result object for the route match", () =>
+	it("handles missing information", () =>
 		expect(
-			resultSelector,
+			selectLocation,
 			"when called with",
-			[state],
-			"to equal",
-			Immutable.fromJS({
-				parent: {
-					route: "/:stuff/named/things",
-					parent: {
-						route: "/:stuff/named",
-						parent: {
-							route: "/:stuff",
-						},
-					},
-				},
-			}),
-		));
-
-	it("gets an empty object if no result", () => {
-		state = state.deleteIn(["router", "result"]);
-		return expect(
-			resultSelector,
-			"when called with",
-			[state],
+			[state.deleteIn(["router", "location"])],
 			"to equal",
 			Immutable.Map(),
-		);
-	});
+		));
 });
 
-describe("param selector", () => {
+describe("selectPathname", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			router: {
-				params: {
-					foo: "bar",
-					feep: "meep",
-				},
+				location: { pathname: "/Scope/named/things/" },
 			},
 		});
 	});
 
-	it("gets the current match parameters", () =>
+	it("gets the current matched route", () =>
 		expect(
-			paramSelector,
+			selectPathname,
 			"when called with",
 			[state],
 			"to equal",
-			Immutable.fromJS({
-				foo: "bar",
-				feep: "meep",
-			}),
+			"/Scope/named/things/",
 		));
 
-	it("gets empty object if no parameters", () => {
-		state = state.deleteIn(["router", "params"]);
-		return expect(
-			paramSelector,
+	it("handles missing information", () =>
+		expect(
+			selectPathname,
 			"when called with",
-			[state],
+			[state.deleteIn(["router", "location"])],
 			"to equal",
-			Immutable.Map(),
-		);
-	});
-});
-
-describe("getCurrentScope", () => {
-	let state;
-	beforeEach(() => {
-		state = Immutable.fromJS({
-			router: {
-				params: {
-					scope: "thing",
-				},
-			},
-		});
-	});
-	afterEach(() => {
-		resetLastScope();
-	});
-
-	it("gets the current scope, if one is set", () =>
-		expect(getCurrentScope, "when called with", [state], "to be", "thing"));
-
-	it("gets the last scope, if no scope set and previous scope is known", () => {
-		getCurrentScope(state);
-		state = state.deleteIn(["router", "params", "scope"]);
-		return expect(
-			getCurrentScope,
-			"when called with",
-			[state],
-			"to be",
-			"thing",
-		);
-	});
-
-	it("gets the default scope, if no scope set and no previous known", () => {
-		state = state.deleteIn(["router", "params", "scope"]);
-		return expect(
-			getCurrentScope,
-			"when called with",
-			[state],
-			"to be",
-			"Global",
-		);
-	});
+			"",
+		));
 });

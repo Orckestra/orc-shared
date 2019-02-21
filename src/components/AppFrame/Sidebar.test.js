@@ -1,4 +1,5 @@
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
@@ -14,26 +15,55 @@ describe("Sidebar", () => {
 				icon: "cars",
 				label: "First page",
 			},
+			{
+				id: "second",
+				icon: "person",
+				label: "Second page",
+			},
 		];
 	});
 
 	it("renders a sidebar with app selector and page menu", () =>
 		expect(
-			<Sidebar modules={modules} />,
+			<Sidebar modules={modules} path="/Global/second" />,
 			"to render as",
 			<Bar>
 				<MenuToggle />
-				<EnhancedMenuItem icon="cars" id="first" label="First page" />
+				<EnhancedMenuItem
+					icon="cars"
+					id="first"
+					label="First page"
+					path="/Global/second"
+				/>
+				<EnhancedMenuItem
+					icon="person"
+					id="second"
+					label="Second page"
+					path="/Global/second"
+				/>
 			</Bar>,
 		));
 
 	it("renders an open sidebar", () =>
 		expect(
-			<Sidebar open modules={modules} />,
+			<Sidebar open modules={modules} path="/Global/second" />,
 			"to render as",
 			<Bar>
 				<MenuToggle open />
-				<EnhancedMenuItem open icon="cars" id="first" label="First page" />
+				<EnhancedMenuItem
+					open
+					icon="cars"
+					id="first"
+					label="First page"
+					path="/Global/second"
+				/>
+				<EnhancedMenuItem
+					open
+					icon="person"
+					id="second"
+					label="Second page"
+					path="/Global/second"
+				/>
 			</Bar>,
 		));
 
@@ -55,20 +85,37 @@ describe("EnhancedMenuItem", () => {
 			dispatch: () => {},
 			getState: () =>
 				Immutable.fromJS({
-					router: {
-						params: {},
+					navigation: {
+						route: {
+							match: {
+								params: { scope: "Global" },
+							},
+						},
 					},
 				}),
 		};
 	});
 
-	it("renders a MenuItem with href and onClick", () =>
+	it("renders a MenuItem with href", () =>
 		expect(
 			<Provider store={store}>
-				<EnhancedMenuItem id="route" />
+				<MemoryRouter>
+					<EnhancedMenuItem id="route" path="/Global/somewhere" />
+				</MemoryRouter>
 			</Provider>,
 			"to deeply render as",
-			<MenuItem href="/Global/route" onClick={expect.it("to be a function")} />,
+			<MenuItem href="/Global/route" />,
+		));
+
+	it("sets the active flag if path matches href", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<EnhancedMenuItem id="route" path="/Global/route/subpath" />
+				</MemoryRouter>
+			</Provider>,
+			"to deeply render as",
+			<MenuItem active href="/Global/route" />,
 		));
 });
 
@@ -82,19 +129,32 @@ describe("MenuToggle", () => {
 		it("renders a MenuItem with specific settings", () =>
 			expect(
 				<ThemeProvider theme={{ foo: "bar" }}>
-					<MenuToggle toggle={toggle} />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu icon="menu" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					icon="menu"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 
 		it("renders as open", () =>
 			expect(
 				<ThemeProvider theme={{ foo: "bar" }}>
-					<MenuToggle toggle={toggle} open />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} open />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu open icon="layers" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					open
+					icon="layers"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 	});
 
@@ -112,19 +172,32 @@ describe("MenuToggle", () => {
 		it("renders a MenuItem with specific settings", () =>
 			expect(
 				<ThemeProvider theme={theme}>
-					<MenuToggle toggle={toggle} />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu icon="closed" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					icon="closed"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 
 		it("renders as open", () =>
 			expect(
 				<ThemeProvider theme={theme}>
-					<MenuToggle toggle={toggle} open />
+					<MemoryRouter>
+						<MenuToggle toggle={toggle} open />
+					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menu open icon="open" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					open
+					icon="open"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 	});
 });

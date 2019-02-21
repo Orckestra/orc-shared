@@ -1,11 +1,13 @@
 import React from "react";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Navigation from "./Navigation";
-import Segments from "./Segments";
+import FullPage from "./Routing/FullPage";
 import { Modules, Module } from "./Modules";
 
 describe("Modules", () => {
-	let modules, Mod2, Mod3, Page1, Page2, Page3;
+	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
 	beforeEach(() => {
 		Mod2 = () => <div />;
 		Mod3 = () => <div />;
@@ -16,8 +18,7 @@ describe("Modules", () => {
 			users: {
 				label: "Module 1",
 				icon: "user",
-				mode: "segments",
-				pages: {
+				segments: {
 					"/page1": {
 						component: Page1,
 						title: "Page 1",
@@ -45,35 +46,91 @@ describe("Modules", () => {
 				component: Mod3,
 			},
 		};
+		state = Immutable.fromJS({
+			navigation: {
+				tabIndex: {},
+				moduleTabs: {},
+				mappedHrefs: {},
+				route: {},
+			},
+			router: {
+				location: {},
+			},
+		});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 	});
 
-	it("renders a module table as a routing system with navigation tabs", () =>
-		expect(
-			<Modules modules={modules} scope="TestScope" />,
-			"to render as",
-			<React.Fragment>
-				<Navigation modules={modules} />
-				<RenderFragment key="users" forRoute="/users">
-					<Module
-						name="users"
-						pages={modules.users.pages}
-						mode="segments"
-						root="/TestScope/users"
-					/>
-				</RenderFragment>
-				<RenderFragment key="photos" forRoute="/photos">
-					<Module
-						name="photos"
-						pages={modules.photos.pages}
-						component={Mod2}
-						root="/TestScope/photos"
-					/>
-				</RenderFragment>
-				<RenderFragment key="demos" forRoute="/demos">
-					<Module name="demos" component={Mod3} root="/TestScope/demos" />
-				</RenderFragment>
-			</React.Fragment>,
-		));
+	it("renders a module table with navigation tabs", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/demos" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Navigation modules={modules} />,
+		);
+	});
+
+	it("renders a module table as a routing system (user route)", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/users" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Switch>
+				<Route>
+					<Module config={modules.users} path="/:scope/users" />
+				</Route>
+			</Switch>,
+		);
+	});
+
+	it("renders a module table as a routing system (photo route)", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/photos" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Switch>
+				<Route>
+					<Module config={modules.photos} path="/:scope/photos" />
+				</Route>
+			</Switch>,
+		);
+	});
+
+	it("renders a module table as a routing system (demo route)", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/demos" });
+		return expect(
+			<Provider store={store}>
+				<BrowserRouter>
+					<Modules modules={modules} scope="TestScope" />
+				</BrowserRouter>
+			</Provider>,
+			"when deeply rendered",
+			"to contain",
+			<Switch>
+				<Route>
+					<Module config={modules.demos} path="/:scope/demos" />
+				</Route>
+			</Switch>,
+		);
+	});
 });
 
 describe("Module", () => {
@@ -162,74 +219,9 @@ describe("Module", () => {
 
 	it("renders a main page", () =>
 		expect(
-			<Module {...modules.demos} />,
+			<Module config={modules.demos} path="/foo/bar" />,
 			"renders elements",
 			"to render as",
-			<React.Fragment>
-				<RenderFragment forRoute="/">
-					<Mod2 />
-				</RenderFragment>
-			</React.Fragment>,
-		));
-
-	it("renders segment mode", () =>
-		expect(
-			<Module {...modules.users} root="/foo/bar" />,
-			"renders elements",
-			"to render as",
-			<Segments pages={modules.users.pages} root="/foo/bar" />,
-		));
-
-	it("renders subpages", () =>
-		expect(
-			<Module {...modules.photos} root="/foo/bar" />,
-			"renders elements",
-			"to render as",
-			<React.Fragment>
-				<RenderFragment key="/:page3" forRoute="/:page3">
-					<Page3 />
-				</RenderFragment>
-				<RenderFragment key="/page4" forRoute="/page4">
-					<Segments
-						pages={modules.photos.pages["/page4"].pages}
-						root="/foo/bar/page4"
-					/>
-				</RenderFragment>
-				<RenderFragment forRoute="/">
-					<Mod1 />
-				</RenderFragment>
-			</React.Fragment>,
-		));
-
-	it("renders error messages", () =>
-		expect(
-			<Module {...modules.demos} error={{ message: "Mock error" }} />,
-			"renders elements",
-			"to render as",
-			<span>Module demos errored: Mock error</span>,
-		));
-
-	it("renders an error if no component to render", () =>
-		expect(
-			<Module {...modules.fail} />,
-			"renders elements",
-			"to render as",
-			<span>Module fail needs a renderable component</span>,
-		));
-
-	it("renders errors for missing components in segment pages", () =>
-		expect(
-			<Module {...modules.subpagefail} root="/foo/bar" />,
-			"renders elements",
-			"to render as",
-			<React.Fragment>
-				<span>
-					Page missing under module subpagefail did not have a renderable
-					component
-				</span>
-				<RenderFragment forRoute="/">
-					<Mod3 />
-				</RenderFragment>
-			</React.Fragment>,
+			<FullPage path="/foo/bar" config={modules.demos} />,
 		));
 });

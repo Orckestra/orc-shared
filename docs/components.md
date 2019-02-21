@@ -6,7 +6,7 @@
 
 - `applications`: A list of applications to be made available in the application selector. An application is defined as an object containing `url`, `name`, `iconUri` and `displayName` values.
 - `applicationId`: The `name` of the current application as given in `applications`.
-- `modules`: A list of modules provided by this application, given as objects containing an `id` (used to generate its URL), a `component` to render, and an `icon` and a `label` (`react-intl` message descriptor) to show in the sidebar menu.
+- `modules`: A list of modules provided by this application, given as objects containing an `id` (used to generate its URL), a `component` to render, and an `icon` and a `label` (`react-intl` message descriptor) to show in the sidebar menu. See [documentation](moduleFile.md).
 - `menuLabel`: The label for the topbar menu. Typically the logged-in user's email.
 - `menuItems`: A list of items in the topbar menu, given as objects containing `label` (`react-intl` message descriptor), `handler`function for selecting the item, and an `icon` id to show.
 - `scopeHOC`: A higher-order component that furnishes the scope selector with properties. See `Scope` component for the props this should provide.
@@ -79,7 +79,7 @@ See also the more [detailed documentation for this component](lists.md).
 
 ## Navigation
 
-- `modules`: An object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages` under the module.
+- `modules`: A map object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages`, `segments` and `subpages` under the module. See [documentation](moduleFile.md).
 
 Shows a tab list for a module, showing tabs for pages that are navigated to.
 
@@ -93,9 +93,9 @@ Shows a modal dialog box, which will close if clicked outside.
 
 ## Modules
 
-- `modules`: An object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages` under the module, defined by component and title.
+- `modules`: An object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages` under the module, defined by component and title. See [documentation](moduleFile.md).
 
-Intended to convert a module table into a page rendering system, it sets up a `Navigation` bar (q.v.) and a set of routing `Fragments` (from `redux-little-router`) that renders the components associated with different routes. Typically used by feeding it the application's module table and placing it as the child of the `AppFrame`.
+Intended to convert a module table into a page rendering system, it sets up a `Navigation` bar (q.v.) and a set of `Route` elements (from `react-router`, via the Routing components in this library) that render the components associated with different routes. Typically used by feeding it the application's module table and placing it as the child of the `AppFrame`.
 
 ## Placeholder
 
@@ -113,11 +113,9 @@ Shows an element suitable for being used as a placeholder or load spinner in e.g
 
 Sets up the various providers and wrappers needed for an application. Should have one child element, in most cases a redux-connected `<AppFrame>`.
 
-## Redirector
+## Routing Components
 
-- `href`: The path to redirect to.
-
-This component will cause the immediate dispatch of a `replace` action to the given `href` when it is mounted.
+These components are used to route and display components according to URL paths. They are primarily internal, and should not be used directly. Instead, see [Modules](#modules).
 
 ## Scope
 
@@ -126,13 +124,6 @@ This component will cause the immediate dispatch of a `replace` action to the gi
 - `filterPlaceholder`: A message descriptor to be used as the placeholder in the filter input.
 
 A component that shows a scope bar with slide-out scope selector. Uses Redux view state to control scope selector panel visibility, scope filtering, and the scope tree state.
-
-## Segments
-
-- `pages`: An object containing objects, indexed by partial routes (i.e. `'/list'` rather than `'/MyScope/users/list'`), and containing a `title` and a `component`.
-- `root`: The root path under which the segments should be rendered.
-
-Renders a list of pages as a left sidebar page selector and right-side remainder showing the page. It will automatically redirect to the first page if it shows its root path.
 
 ## Selector
 

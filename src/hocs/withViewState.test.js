@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import withViewState from "./withViewState";
@@ -29,7 +30,9 @@ describe("withViewState", () => {
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={store}>
-					<Comp name="test" />
+					<MemoryRouter>
+						<Comp name="test" />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp viewState={{ viewState: "good value" }} />,
@@ -40,7 +43,9 @@ describe("withViewState", () => {
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={store}>
-					<Comp name="noState" />
+					<MemoryRouter>
+						<Comp name="noState" />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp name="noState" viewState={{}} />,
@@ -51,7 +56,9 @@ describe("withViewState", () => {
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={store}>
-					<Comp name="test" />
+					<MemoryRouter>
+						<Comp name="test" />
+					</MemoryRouter>
 				</Provider>,
 				"when deeply rendered",
 				"queried for",

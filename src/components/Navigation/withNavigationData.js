@@ -1,51 +1,91 @@
-import { connect } from "react-redux";
-import { push } from "redux-little-router";
+import { push } from "connected-react-router";
 import { unwrapImmutable } from "../../utils";
-import { getCurrentScope } from "../../selectors/route";
 import { removeTab } from "../../actions/navigation";
+import routingConnector from "../../hocs/routingConnector";
 import {
-	selectCurrentModuleName,
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
 } from "../../selectors/navigation";
 
-const withNavigationData = connect(
-	(state, { modules }) => {
-		const hrefMapper = selectSegmentHrefMapper(state);
+const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
+	let page = pages[pathStep];
+	if (!page) {
+		const paramPath =
+			// Only one should exist
+			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || "";
+		if (pathStep === "/" + params[paramPath.replace(/^\/:/, "")]) {
+			page = pages[paramPath];
+		}
+	}
+	if (restPath.length === 0 || !page) {
+		return page;
+	} else {
+		return getPageWithSplitPath(restPath, params, {
+			...page.pages,
+			...page.segments,
+			...page.subpages,
+		});
+	}
+};
+
+export const getPageData = (path, params, module) => {
+	if (!path) return module;
+	const pathSteps = path.split(/(?=\/)/);
+	return getPageWithSplitPath(pathSteps, params, {
+		...module.pages,
+		...module.segments,
+		...module.subpages,
+	});
+};
+
+const withNavigationData = routingConnector(
+	(state, { modules, match }) => {
 		const currentHref = window.location.pathname;
-		const moduleName = selectCurrentModuleName(state);
+		const hrefMapper = selectSegmentHrefMapper(state);
+		const [moduleHref, moduleName] = currentHref.match(/^\/[^/]+\/([^/]+)/);
 		const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
-		const moduleHref = "/" + getCurrentScope(state) + "/" + moduleName;
-		const mappedHref = hrefMapper(moduleHref);
 		const module = {
 			icon: moduleData.icon,
 			label: moduleData.label,
-			href: mappedHref,
+			href: moduleHref,
 		};
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state));
 		return {
 			pages: [module, ...pages].map(page => {
-				const href = hrefMapper(page.href);
-				let label = page.label;
+				const params = page.params || {};
+				const pageBaseHref = params.scope
+					? `/${params.scope}/${moduleName}`
+					: moduleHref;
+				const pageData = getPageData(
+					page.href.replace(pageBaseHref, ""),
+					params,
+					moduleData,
+				) || { label: "[Not found]" };
+				let label = pageData.label;
+				const dataPath = pageData.dataPath && [...pageData.dataPath];
+				if (dataPath && pageData.dataIdParam) {
+					dataPath.push(params[pageData.dataIdParam]);
+				}
 				if (label && label.id) {
-					const dataObject =
-						page.dataPath && unwrapImmutable(state.getIn(page.dataPath));
+					const dataObject = dataPath && unwrapImmutable(state.getIn(dataPath));
 					label.values = { ...dataObject, ...label.values };
 				}
+				const href = hrefMapper(page.href);
 				return {
 					...page,
 					label,
 					href,
+					mappedFrom: page.href,
 					active: href === currentHref,
 				};
 			}),
 			moduleName,
-			moduleHref: mappedHref,
+			moduleHref: hrefMapper(moduleHref),
 		};
 	},
 	dispatch => ({
-		close: (module, moduleHref) => path => event => {
-			dispatch(removeTab(module, path));
+		close: (module, moduleHref) => (path, mapped) => event => {
+			dispatch(removeTab(module, mapped));
 			if (window.location.pathname === path) {
 				dispatch(push(moduleHref));
 			}

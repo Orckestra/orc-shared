@@ -1,11 +1,12 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import withNavigationLink from "./withNavigationLink";
 
 const TestComp = props => <a {...props}>Anchor</a>;
 
-describe("withNavigationLink", () => {
+describe.only("withNavigationLink", () => {
 	let fakeStore, mockEvent;
 	beforeEach(() => {
 		fakeStore = {
@@ -21,7 +22,9 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
-					<Comp href="/" />
+					<MemoryRouter>
+						<Comp href="/" />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp active />,
@@ -32,7 +35,9 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
-					<Comp href="/foo" />
+					<MemoryRouter>
+						<Comp href="/foo" />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp active={false} />,
@@ -44,7 +49,9 @@ describe("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp href="/foo" />
+						<MemoryRouter>
+							<Comp href="/foo" />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -58,7 +65,14 @@ describe("withNavigationLink", () => {
 				Promise.all([
 					expect(mockEvent.preventDefault, "was called"),
 					expect(fakeStore.dispatch, "to have calls satisfying", [
-						{ args: [{ type: "ROUTER_PUSH", payload: { pathname: "/foo" } }] },
+						{
+							args: [
+								{
+									type: "@@router/CALL_HISTORY_METHOD",
+									payload: { method: "push", args: ["/foo"] },
+								},
+							],
+						},
 					]),
 				]),
 			));
@@ -68,7 +82,9 @@ describe("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp href="/" />
+						<MemoryRouter>
+							<Comp href="/" />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -90,7 +106,9 @@ describe("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp href="http://google.com/" />
+						<MemoryRouter>
+							<Comp href="http://google.com/" />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -112,7 +130,9 @@ describe("withNavigationLink", () => {
 			.then(Comp =>
 				expect(
 					<Provider store={fakeStore}>
-						<Comp />
+						<MemoryRouter>
+							<Comp />
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp

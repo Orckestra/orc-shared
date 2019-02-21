@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { compose, withHandlers } from "recompose";
-import { connect } from "react-redux";
 import { getThemeProp, unwrapImmutable } from "../../../utils";
+import routingConnector from "../../../hocs/routingConnector";
 import Icon from "../../Icon";
 import Text from "../../Text";
 import { orderedCultureList } from "../../../selectors/locale";
@@ -10,7 +10,7 @@ import withToggle from "../../../hocs/withToggle";
 import { FormInput } from "./Text";
 import { ButtonWrapper } from "./FieldButtons";
 
-const withCultureList = connect(
+const withCultureList = routingConnector(
 	state => ({
 		cultures: unwrapImmutable(orderedCultureList(state)),
 	}),
@@ -82,16 +82,15 @@ export const TranslationInput = ({
 }) => {
 	return (
 		<TranslationWrapper>
-			{cultures.map(
-				(lang, index) =>
-					!index || showAll ? (
-						<TranslationField
-							key={lang}
-							lang={lang}
-							message={value[lang]}
-							onChange={handlers(lang)}
-						/>
-					) : null,
+			{cultures.map((lang, index) =>
+				!index || showAll ? (
+					<TranslationField
+						key={lang}
+						lang={lang}
+						message={value[lang]}
+						onChange={handlers(lang)}
+					/>
+				) : null,
 			)}
 			{!showAll && cultures.length > 1 ? (
 				<ShowButton onClick={toggle}>

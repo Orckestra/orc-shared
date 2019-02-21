@@ -1,8 +1,49 @@
 import { createSelector } from "reselect";
 import Immutable from "immutable";
-import { resultSelector } from "./route";
 
 const getNavigationState = state => state.get("navigation");
+
+const selectRoute = createSelector(
+	getNavigationState,
+	nav => nav.get("route"),
+);
+
+// const selectLocation = createSelector(
+// 	selectRoute,
+// 	route => route.get("location") || Immutable.Map(),
+// );
+const selectMatch = createSelector(
+	selectRoute,
+	route => route.get("match") || Immutable.Map(),
+);
+
+export const selectRouteParams = createSelector(
+	selectMatch,
+	match => match.get("params") || Immutable.Map(),
+);
+
+export const selectRoutePath = createSelector(
+	selectMatch,
+	match => match.get("path") || "",
+);
+
+export const selectRouteHref = createSelector(
+	selectMatch,
+	match => match.get("url") || "",
+);
+
+// Not a selector, as previous calls can change the result.
+let lastScope;
+export const resetLastScope = () => {
+	lastScope = undefined;
+};
+export const getCurrentScope = state => {
+	const params = selectRouteParams(state);
+	if (params.get("scope")) {
+		lastScope = params.get("scope");
+	}
+	return lastScope || "Global";
+};
 
 const selectTabs = createSelector(
 	getNavigationState,
@@ -19,12 +60,12 @@ const selectModuleLists = createSelector(
 	nav => nav.get("moduleTabs"),
 );
 
-const getModuleName = result =>
-	(result && (result.get("module") || getModuleName(result.get("parent")))) ||
-	"";
 export const selectCurrentModuleName = createSelector(
-	resultSelector,
-	getModuleName,
+	selectRoutePath,
+	path =>
+		/^\/:scope\//.test(path)
+			? path.replace(/^\/:scope\/([^/]+)(\/.*)?$/, "$1")
+			: "",
 );
 
 const selectCurrentModuleList = createSelector(
@@ -41,7 +82,7 @@ export const selectMappedCurrentModuleList = createSelector(
 
 const segmentHrefMap = createSelector(
 	getNavigationState,
-	state => state.get("segmentHrefs"),
+	state => state.get("mappedHrefs"),
 );
 
 export const selectSegmentHrefMapper = createSelector(

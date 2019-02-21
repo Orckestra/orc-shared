@@ -1,8 +1,18 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { Link } from "react-router-dom";
 import Icon from "../Icon";
 
-export const Block = styled.a`
+const FilteredLink = ({
+	menuToggle,
+	staticContext,
+	dispatch,
+	active,
+	component,
+	...props
+}) => <Link {...props} />;
+
+export const Block = styled(FilteredLink)`
 	display: block;
 	padding: 0 10px;
 	margin-bottom: 35px;
@@ -11,7 +21,7 @@ export const Block = styled.a`
 	cursor: pointer;
 
 	${props =>
-		props.menu
+		props.menuToggle
 			? ""
 			: css`
 					&:hover {
@@ -43,11 +53,17 @@ export const Label = styled.span`
 	opacity: ${props => (props.show ? 1 : 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, ...props }) => (
-	<Block {...props}>
-		<MenuIcon id={icon} />
-		<Label show={open}>{label}</Label>
-	</Block>
-);
+const MenuItem = ({ open = false, label = "", icon, href, ...props }) => {
+	let ItemWrapper = Block;
+	if (props.menuToggle) {
+		ItemWrapper = Block.withComponent("a");
+	}
+	return (
+		<ItemWrapper to={href} {...props}>
+			<MenuIcon id={icon} />
+			<Label show={open}>{label}</Label>
+		</ItemWrapper>
+	);
+};
 
 export default MenuItem;

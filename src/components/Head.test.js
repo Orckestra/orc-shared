@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import Helmet from "react-helmet";
 import Head from "./Head";
@@ -29,7 +30,9 @@ describe("Head", () => {
 	it("renders a Helmet setting the language on the <html> element", () => {
 		const render = ReactDOM.render(
 			<Provider store={store}>
-				<Head />
+				<MemoryRouter>
+					<Head />
+				</MemoryRouter>
 			</Provider>,
 			node,
 		);

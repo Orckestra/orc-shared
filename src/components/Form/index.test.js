@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import Form from "./Form";
 import FieldElements from "./FieldElements";
@@ -395,7 +396,9 @@ describe("withCultureCount", () => {
 		expect(withCultureCount, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp />
+					<MemoryRouter>
+						<EnhComp />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp cultureCount={3} />,

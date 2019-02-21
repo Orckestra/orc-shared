@@ -1,6 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
 import { memoize } from "../../utils";
+import routingConnector from "../../hocs/routingConnector";
 import withScrollBox from "../../hocs/withScrollBox";
 import { cultureList } from "../../selectors/locale";
 import Form from "./Form";
@@ -105,7 +105,7 @@ export const calculateFormHeight = memoize(
 	},
 );
 
-export const withCultureCount = connect(
+export const withCultureCount = routingConnector(
 	state => ({ cultureCount: cultureList(state).size }),
 	() => ({}),
 );

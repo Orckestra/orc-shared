@@ -1,10 +1,9 @@
 import React from "react";
 import styled, { withTheme } from "styled-components";
-import { connect } from "react-redux";
 import { compose, mapProps } from "recompose";
+import routingConnector from "../../hocs/routingConnector";
 import { getThemeProp } from "../../utils";
-import withNavigationLink from "../../hocs/withNavigationLink";
-import { getCurrentScope } from "../../selectors/route";
+import { getCurrentScope } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
 
 export const Bar = styled.div`
@@ -20,7 +19,7 @@ export const Bar = styled.div`
 
 export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 	<MenuItem
-		menu
+		menuToggle
 		open={open}
 		icon={(open
 			? getThemeProp(["icons", "sidebarOpen"], "layers")
@@ -30,21 +29,21 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 ));
 
 export const EnhancedMenuItem = compose(
-	connect(state => ({ scope: getCurrentScope(state) })),
-	mapProps(({ scope, id, ...remainder }) => ({
+	routingConnector(state => ({ scope: getCurrentScope(state) })),
+	mapProps(({ path, scope, id, ...remainder }) => ({
 		href: `/${scope}/${id}`,
+		active: path.startsWith(`/${scope}/${id}`),
 		id,
 		...remainder,
 	})),
-	withNavigationLink,
 )(MenuItem);
 
-const Sidebar = ({ open, toggle, modules = [] }) => {
+const Sidebar = ({ open, toggle, modules = [], path = "" }) => {
 	return (
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
 			{modules.map(item => (
-				<EnhancedMenuItem key={item.id} {...item} open={open} />
+				<EnhancedMenuItem key={item.id} {...item} open={open} path={path} />
 			))}
 		</Bar>
 	);

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import Scope from "../Scope";
 import FullAppFrame, { Base, ViewPort, AppFrame } from "./index";
 import Topbar from "./Topbar";
@@ -12,7 +13,9 @@ class ClassAppFrame extends React.Component {
 		const { store, ...props } = this.props;
 		return (
 			<Provider store={store}>
-				<FullAppFrame {...props} />
+				<BrowserRouter>
+					<FullAppFrame {...props} />
+				</BrowserRouter>
 			</Provider>
 		);
 	}
@@ -31,6 +34,7 @@ describe("AppFrame", () => {
 			modules: [],
 			menuLabel: "TestLabel",
 			menuItems: [],
+			location: { pathname: "/Foo/bar" },
 			linkHOC: x => x,
 			ConnectedScope: Scope,
 		};
@@ -61,7 +65,11 @@ describe("AppFrame", () => {
 					menuLabel={props.menuLabel}
 					menuItems={props.menuItems}
 				/>
-				<Sidebar linkHOC={props.linkHOC} modules={props.modules} />
+				<Sidebar
+					linkHOC={props.linkHOC}
+					modules={props.modules}
+					path="/Foo/bar"
+				/>
 				<ViewPort>
 					<Scope>
 						<TestComp1 key="1" />

@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import withScopeSelect from "./withScopeSelect";
@@ -10,10 +11,15 @@ describe("withScopeSelect", () => {
 	let state, store, closer;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: {
-				route: "/:scope/Bar",
-				params: { scope: "Foo" },
+			navigation: {
+				route: {
+					match: {
+						path: "/:scope/Bar",
+						params: { scope: "Foo" },
+					},
+				},
 			},
+			router: {},
 		});
 		store = {
 			subscribe: () => {},
@@ -27,7 +33,9 @@ describe("withScopeSelect", () => {
 		expect(withScopeSelect, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={store}>
-					<Comp id="Feep" closeSelector={closer} />
+					<MemoryRouter>
+						<Comp id="Feep" closeSelector={closer} />
+					</MemoryRouter>
 				</Provider>,
 				"when deeply rendered",
 				"with event",
@@ -40,7 +48,12 @@ describe("withScopeSelect", () => {
 				expect([store.dispatch, closer], "to have calls satisfying", [
 					{
 						spy: store.dispatch,
-						args: [{ type: "ROUTER_PUSH", payload: { pathname: "/Feep/Bar" } }],
+						args: [
+							{
+								type: "@@router/CALL_HISTORY_METHOD",
+								payload: { method: "push", args: ["/Feep/Bar"] },
+							},
+						],
 					},
 					{
 						spy: closer,

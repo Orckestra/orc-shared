@@ -19,7 +19,7 @@
 
 ## Navigation
 
-While routing is mostly handled by routing actions, the app's navigation infrastructure requires handling of module and page tabs. `removeTab(module, path)` permits closing page tabs.
+The app's navigation infrastructure requires handling of module and page tabs, typically in response to navigation. `setRoute(location, match)` is called by the routing components when rendering a view, putting information in the state about the currently matched view and location. `mapHref(from, to)` sets a href mapping up to allow tabs to directly navigate to their selected segment. `removeTab(module, path)` permits closing page tabs.
 
 ## View state
 
@@ -43,7 +43,7 @@ This reducer interacts with `redux-api-middleware`, in that it tracks ongoing re
 
 ## `navigation`
 
-Takes care of storing tabs when a new page is navigated to (when a `redux-little-router` `LOCATION_CHANGED` action is dispatched), and handles calls for the removal of a tab as well.
+Takes care of storing tabs and mappings when a new view is navigated to, and handles calls for the removal of tabs as well.
 
 # Selectors
 
@@ -65,6 +65,14 @@ These selectors expect a `buildState` store.
 
 ## Navigation
 
+`selectRouteParams`: Gets the most recently matched route parameters, as set in the store.
+
+`selectRoutePath`: Gets the most recently matched route path (with no parameter substitution, example: `"/:scope/orders/:orderId/info"`), as set in the store.
+
+`selectRouteHref`: Gets the most recently matched URL pathname (example: `"/Global/orders/0d216f37-d0d1-4b20-b47a-17b210b0e547/info"`), as set in the store.
+
+`getCurrentScope`: Not an actual selector, as this function will return either the current `scope` route parameter, the last set `scope` parameter, or the default scope name (`"Global"`) if no scope has ever been set.
+
 `selectTabGetter`: Creates a function that will get tabs by their path. Returns undefined on unknown path.
 
 `selectCurrentModuleName`: Searches up through the current route result for a module name. If none can be found, returns empty string.
@@ -75,10 +83,6 @@ These selectors expect a `buildState` store.
 
 ## Route
 
-`paramSelector`: Returns the matched parameters of the current route.
+`selectLocation`: Get the location data stored in the state.
 
-`routeSelector`: Returns the matched route string.
-
-`resultSelector`: Returns the matched result object, which includes the parent routes of the currently matched route back to the root, as described in the application's route object.
-
-`getCurrentScope`: Not an actual selector, as this function will return either the current `scope` route parameter, the last set `scope` parameter, or the default scope name (`"Global"`) if no scope has ever been set.
+`selectPathname`: Get the pathname from the location data.

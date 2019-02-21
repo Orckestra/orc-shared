@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { compose, withHandlers } from "recompose";
-import { ImmutableFragment as RenderFragment } from "redux-little-router/lib/immutable";
+import { Route, Switch } from "react-router-dom";
 import withViewState from "../../hocs/withViewState";
 import Button from "../Button";
 import Selector from "./Selector";
@@ -81,9 +81,12 @@ export const Scope = ({
 Scope.displayName = "Scope";
 
 const withScopeRoute = WrapScope => props => (
-	<RenderFragment forRoute="/:scope">
-		<WrapScope name="scopeSelector" {...props} />
-	</RenderFragment>
+	<Switch>
+		<Route
+			path="/:scope"
+			render={() => <WrapScope name="scopeSelector" {...props} />}
+		/>
+	</Switch>
 );
 
 export default compose(

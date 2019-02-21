@@ -7,7 +7,7 @@
 		"build": "orc-scripts build",
 		"build:clean": "npm run clean & npm run build",
 		"clean": "rm -r dist & mkdir dist",
-		"watch": "orc-scripts build --watch",
+		"watch": "orc-scripts build --watch --verbose",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
 		"coveralls": "cat coverage/lcov.info | coveralls",
@@ -27,7 +27,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.4.1"
+		"orc-scripts": "0.5.0"
 	},
 	"lint-staged": {
 		"*.{js,json,md}": [
@@ -42,5 +42,6 @@
 		"hooks": {
 			"pre-commit": "lint-staged"
 		}
-	}
+	},
+	"dependencies": {}
 }

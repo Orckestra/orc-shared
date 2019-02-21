@@ -1,5 +1,5 @@
-import { connect } from "react-redux";
 import { setStateField } from "../actions/view";
+import routingConnector from "./routingConnector";
 
 const getViewState = (state, name) => {
 	const stateData = state.getIn(["view", name]);
@@ -19,9 +19,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 		dispatch(setStateField(ownProps.name, fieldName, value)),
 });
 
-const withValue = connect(
-	mapStateToProps,
-	mapDispatchToProps,
-);
+const withValue = routingConnector(mapStateToProps, mapDispatchToProps);
 
 export default withValue;

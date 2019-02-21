@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import withLocaleSwitch from "./withLocaleSwitch";
 import { changeLocale } from "../actions/locale";
@@ -20,7 +21,9 @@ describe("withLocaleSwitch", () => {
 		expect(withLocaleSwitch, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={store}>
-					<Comp locale="en" />
+					<MemoryRouter>
+						<Comp locale="en" />
+					</MemoryRouter>
 				</Provider>,
 				"when deeply rendered",
 				"with event",

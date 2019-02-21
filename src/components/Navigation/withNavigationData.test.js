@@ -1,44 +1,57 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { push } from "redux-little-router";
+import { push } from "connected-react-router";
 import { REMOVE_TAB } from "../../actions/navigation";
-import withNavigationData from "./withNavigationData";
+import withNavigationData, { getPageData } from "./withNavigationData";
 
 const TestComp = () => <div />;
 const TestComp1 = () => <div />;
+const TestComp2 = () => <div />;
+const TestComp3 = () => <div />;
+const TestComp4 = () => <div />;
+const TestComp5 = () => <div />;
+const TestComp6 = () => <div />;
+const TestComp7 = () => <div />;
 
 describe("withNavigation", () => {
 	let state, store, modules;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: {
-				params: {
-					scope: "TestScope",
-					current: "foo",
-				},
-				result: {
-					module: "test",
-				},
-			},
 			objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
 			navigation: {
 				tabIndex: {
 					"/TestScope/test/page1": {
-						label: "Page 1",
 						href: "/TestScope/test/page1",
+						path: "/:scope/test/page1",
+						params: { scope: "TestScope" },
 					},
-					"/TestScope/test/page2": {
-						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
-						dataPath: ["objs", "test", "foo"],
-						href: "/TestScope/test/page2",
+					"/OtherScope/test/foo": {
+						href: "/OtherScope/test/foo",
+						path: "/:scope/test/:page2",
+						params: { scope: "OtherScope", page2: "foo" },
+					},
+					"/TestScope/test/notexist": {
+						href: "/TestScope/test/notexist",
 					},
 				},
 				moduleTabs: {
-					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
+					test: [
+						"/TestScope/test/page1",
+						"/OtherScope/test/foo",
+						"/TestScope/test/notexist",
+					],
 				},
-				segmentHrefs: {},
+				mappedHrefs: {},
+				route: {
+					match: {
+						url: "/TestScope/test/page1",
+						path: "/:scope/test/page1",
+						params: { scope: "Global", page2: "bar" },
+					},
+				},
 			},
 		});
 		store = {
@@ -51,6 +64,18 @@ describe("withNavigation", () => {
 				icon: "thing",
 				label: "Thing",
 				component: TestComp1,
+				pages: {
+					"/page1": {
+						label: "Page 1",
+						component: TestComp2,
+					},
+					"/:page2": {
+						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
+						dataPath: ["objs", "test"],
+						dataIdParam: "page2",
+						component: TestComp3,
+					},
+				},
 			},
 		};
 		jsdom.reconfigure({ url: "http://localhost/TestScope/test/page1" });
@@ -60,7 +85,9 @@ describe("withNavigation", () => {
 		expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp modules={modules} />
+					<BrowserRouter>
+						<EnhComp modules={modules} />
+					</BrowserRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -69,11 +96,13 @@ describe("withNavigation", () => {
 							icon: "thing",
 							label: "Thing",
 							href: "/TestScope/test",
+							mappedFrom: "/TestScope/test",
 							active: false,
 						},
 						{
 							label: "Page 1",
 							href: "/TestScope/test/page1",
+							mappedFrom: "/TestScope/test/page1",
 							active: true,
 						},
 						{
@@ -84,7 +113,14 @@ describe("withNavigation", () => {
 									someField: "11",
 								},
 							},
-							href: "/TestScope/test/page2",
+							href: "/OtherScope/test/foo",
+							mappedFrom: "/OtherScope/test/foo",
+							active: false,
+						},
+						{
+							href: "/TestScope/test/notexist",
+							mappedFrom: "/TestScope/test/notexist",
+							label: "[Not found]",
 							active: false,
 						},
 					]}
@@ -98,9 +134,6 @@ describe("withNavigation", () => {
 		beforeEach(() => {
 			state = Immutable.fromJS({
 				router: {
-					params: {
-						scope: "TestScope",
-					},
 					result: {
 						module: "test",
 						segments: true,
@@ -110,13 +143,19 @@ describe("withNavigation", () => {
 					moduleTabs: { test: ["/TestScope/test/page2"] },
 					tabIndex: {
 						"/TestScope/test/page2": {
-							label: "Page 2",
 							href: "/TestScope/test/page2",
 						},
 					},
-					segmentHrefs: {
+					mappedHrefs: {
 						"/TestScope/test": "/TestScope/test/page1",
 						"/TestScope/test/page2": "/TestScope/test/page2/sub",
+					},
+					route: {
+						match: {
+							url: "/TestScope/test/page1",
+							path: "/:scope/test/page1",
+							params: { scope: "TestScope" },
+						},
 					},
 				},
 			});
@@ -125,7 +164,21 @@ describe("withNavigation", () => {
 					icon: "thing",
 					label: "Thing",
 					component: TestComp1,
-					mode: "segments",
+					segments: {
+						"/page1": {
+							label: "Page 1",
+							component: TestComp2,
+						},
+						"/page2": {
+							label: "Page 2",
+							component: TestComp3,
+							subpages: {
+								"/sub": {
+									component: TestComp4,
+								},
+							},
+						},
+					},
 				},
 			};
 		});
@@ -134,7 +187,9 @@ describe("withNavigation", () => {
 			expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<Provider store={store}>
-						<EnhComp modules={modules} />
+						<BrowserRouter>
+							<EnhComp modules={modules} />
+						</BrowserRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -143,11 +198,13 @@ describe("withNavigation", () => {
 								icon: "thing",
 								label: "Thing",
 								href: "/TestScope/test/page1",
+								mappedFrom: "/TestScope/test",
 								active: true,
 							},
 							{
 								label: "Page 2",
 								href: "/TestScope/test/page2/sub",
+								mappedFrom: "/TestScope/test/page2",
 								active: false,
 							},
 						]}
@@ -166,7 +223,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp modules={modules} />
+					<BrowserRouter>
+						<EnhComp modules={modules} />
+					</BrowserRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -174,7 +233,7 @@ describe("withNavigation", () => {
 						"called with",
 						["test", "/TestScope/test"],
 						"called with",
-						["/TestScope/test/page2"],
+						["/TestScope/test/page2/info", "/TestScope/test/page2"],
 						"called with",
 						[fakeEvent],
 					)}
@@ -199,6 +258,7 @@ describe("withNavigation", () => {
 	});
 
 	it("navigates to module page if closing current tab", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/test/page2/info" });
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
 			preventDefault: sinon.spy().named("preventDefault"),
@@ -206,7 +266,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp modules={modules} />
+					<BrowserRouter>
+						<EnhComp modules={modules} />
+					</BrowserRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -214,7 +276,7 @@ describe("withNavigation", () => {
 						"called with",
 						["test", "/TestScope/test"],
 						"called with",
-						["/TestScope/test/page1"],
+						["/TestScope/test/page2/info", "/TestScope/test/page2"],
 						"called with",
 						[fakeEvent],
 					)}
@@ -226,7 +288,7 @@ describe("withNavigation", () => {
 							args: [
 								{
 									type: REMOVE_TAB,
-									payload: { module: "test", path: "/TestScope/test/page1" },
+									payload: { module: "test", path: "/TestScope/test/page2" },
 								},
 							],
 						},
@@ -240,4 +302,99 @@ describe("withNavigation", () => {
 			),
 		);
 	});
+});
+
+describe("getPageData", () => {
+	let module;
+	beforeEach(() => {
+		module = {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {
+				"/:var": {
+					label: "Page 1",
+					component: TestComp2,
+				},
+				"/page2": {
+					label: { id: "page2", defaultMessage: "Page 2 {someField}" },
+					dataPath: ["objs", "test", "foo"],
+					component: TestComp3,
+					subpages: {
+						"/sub1": {
+							component: TestComp7,
+						},
+					},
+				},
+				"/page3": {
+					label: "Page 3",
+					segments: {
+						"/seg1": {
+							label: "Segment 1",
+							component: TestComp4,
+						},
+						"/seg2": {
+							label: "Segment 2",
+							component: TestComp5,
+						},
+						"/seg3": {
+							label: "Segment 3",
+							component: TestComp6,
+						},
+					},
+				},
+			},
+		};
+	});
+
+	it("extracts the module page data for an empty path", () =>
+		expect(getPageData, "when called with", ["", {}, module], "to satisfy", {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {},
+		}));
+
+	it("extracts the data for a nested segment page", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/page3/seg2", {}, module],
+			"to satisfy",
+			{
+				label: "Segment 2",
+				component: TestComp5,
+			},
+		));
+
+	it("extracts the data for a nested subpage", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/page2/sub1", {}, module],
+			"to satisfy",
+			{
+				component: TestComp7,
+			},
+		));
+
+	it("handles variable path steps", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/thing", { var: "thing" }, module],
+			"to satisfy",
+			{
+				label: "Page 1",
+				component: TestComp2,
+			},
+		));
+
+	it("handles missing page data", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/page2/notHere", {}, module],
+			"to be undefined",
+		));
 });

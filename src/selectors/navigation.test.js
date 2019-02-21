@@ -4,6 +4,11 @@ import {
 	selectCurrentModuleName,
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
+	selectRouteParams,
+	getCurrentScope,
+	resetLastScope,
+	selectRouteHref,
+	selectRoutePath,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -43,7 +48,11 @@ describe("selectCurrentModuleName", () => {
 		expect(
 			selectCurrentModuleName,
 			"called with",
-			[Immutable.fromJS({ router: { result: { module: "thing" } } })],
+			[
+				Immutable.fromJS({
+					navigation: { route: { match: { path: "/:scope/thing" } } },
+				}),
+			],
 			"to be",
 			"thing",
 		));
@@ -54,7 +63,9 @@ describe("selectCurrentModuleName", () => {
 			"called with",
 			[
 				Immutable.fromJS({
-					router: { result: { parent: { parent: { module: "thing" } } } },
+					navigation: {
+						route: { match: { path: "/:scope/thing/further/pages" } },
+					},
 				}),
 			],
 			"to be",
@@ -65,7 +76,11 @@ describe("selectCurrentModuleName", () => {
 		expect(
 			selectCurrentModuleName,
 			"called with",
-			[Immutable.fromJS({ router: { result: {} } })],
+			[
+				Immutable.fromJS({
+					navigation: { route: { match: { path: "/dev/foo" } } },
+				}),
+			],
 			"to be",
 			"",
 		));
@@ -75,8 +90,8 @@ describe("selectMappedCurrentModuleList", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: { result: { module: "thing" } },
 			navigation: {
+				route: { match: { path: "/:scope/thing" } },
 				tabIndex: {
 					"/path/to/tab1": { tab: 1 },
 					"/path/to/tab2": { tab: 2 },
@@ -98,7 +113,10 @@ describe("selectMappedCurrentModuleList", () => {
 		));
 
 	it("returns an empty list if there is no list in state", () => {
-		state = state.setIn(["router", "result", "module"], "other");
+		state = state.setIn(
+			["navigation", "route", "match", "path"],
+			"/:scope/other",
+		);
 		return expect(
 			selectMappedCurrentModuleList,
 			"called with",
@@ -113,14 +131,14 @@ describe("selectSegmentHrefMapper", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			router: { result: { module: "thing" } },
 			navigation: {
+				route: { match: { path: "/:scope/thing" } },
 				tabIndex: {
 					"/path/to/tab1": { tab: 1 },
 					"/path/to/tab2": { tab: 2 },
 				},
 				moduleTabs: { thing: ["/path/to/tab1"] },
-				segmentHrefs: {
+				mappedHrefs: {
 					"/path/to/tab1": "/path/to/tab1/subpage",
 				},
 			},
@@ -158,5 +176,127 @@ describe("selectSegmentHrefMapper", () => {
 				"to equal",
 				"/path/to/tab2",
 			));
+	});
+});
+
+describe("getCurrentScope", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: { location: {}, match: { params: { scope: "thing" } } },
+			},
+		});
+	});
+	afterEach(() => {
+		resetLastScope();
+	});
+
+	it("gets the current scope, if one is set", () =>
+		expect(getCurrentScope, "when called with", [state], "to be", "thing"));
+
+	it("gets the last scope, if no scope set and previous scope is known", () => {
+		getCurrentScope(state);
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(
+			getCurrentScope,
+			"when called with",
+			[state],
+			"to be",
+			"thing",
+		);
+	});
+
+	it("gets the default scope, if no scope set and no previous known", () => {
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(
+			getCurrentScope,
+			"when called with",
+			[state],
+			"to be",
+			"Global",
+		);
+	});
+});
+
+describe("route selectors", () => {
+	let state, noMatchState, noParamState, noHrefState, noPathState;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: {
+					location: {},
+					match: {
+						params: { foo: "true", bar: 12 },
+						path: "/:scope/thing/further/pages",
+						url: "/TestScope/thing/further/pages",
+					},
+				},
+			},
+		});
+		noMatchState = state.deleteIn(["navigation", "route", "match"]);
+		noParamState = state.deleteIn(["navigation", "route", "match", "params"]);
+		noHrefState = state.deleteIn(["navigation", "route", "match", "url"]);
+		noPathState = state.deleteIn(["navigation", "route", "match", "path"]);
+	});
+
+	describe("selectRouteParams", () => {
+		it("selects the currently matched route's parameters.", () =>
+			expect(
+				selectRouteParams,
+				"when called with",
+				[state],
+				"to equal",
+				Immutable.fromJS({ foo: "true", bar: 12 }),
+			));
+
+		it("handles missing data", () =>
+			expect(
+				selectRouteParams,
+				"when called with",
+				[noMatchState],
+				"to equal",
+				Immutable.Map(),
+			).and("when called with", [noParamState], "to equal", Immutable.Map()));
+	});
+
+	describe("selectRouteHref", () => {
+		it("selects the currently matched route's href.", () =>
+			expect(
+				selectRouteHref,
+				"when called with",
+				[state],
+				"to equal",
+				"/TestScope/thing/further/pages",
+			));
+
+		it("handles missing data", () =>
+			expect(
+				selectRouteHref,
+				"when called with",
+				[noMatchState],
+				"to equal",
+				"",
+			).and("when called with", [noHrefState], "to equal", ""));
+	});
+
+	describe("selectRoutePath", () => {
+		it("selects the currently matched route's path.", () =>
+			expect(
+				selectRoutePath,
+				"when called with",
+				[state],
+				"to equal",
+				"/:scope/thing/further/pages",
+			));
+
+		it("handles missing data", () =>
+			expect(
+				selectRoutePath,
+				"when called with",
+				[noMatchState],
+				"to equal",
+				"",
+			).and("when called with", [noPathState], "to equal", ""));
 	});
 });

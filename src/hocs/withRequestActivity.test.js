@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import withRequestActivity from "./withRequestActivity";
 
@@ -30,7 +31,9 @@ describe("withRequestActivity", () => {
 		).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp />
+					<MemoryRouter>
+						<EnhComp />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp active />,
@@ -47,7 +50,9 @@ describe("withRequestActivity", () => {
 		).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<EnhComp />
+					<MemoryRouter>
+						<EnhComp />
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp active={false} />,

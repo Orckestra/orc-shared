@@ -2,6 +2,10 @@
 
 Higher order components are useful for providing state to components while keeping from adding render content.
 
+## `routingConector(mapStateToProps, mapDispatchToProps)`
+
+A combination of the redux store connector with the `react-router` router, enabling routing information to be accessed. Is also used when navigation does not cause a view change as expected. Drop in replacement for `react-redux`'s `connect()` HOC.
+
 ## `withClickOutside(Component)`
 
 Adds support for a `onClickOutside` prop to the component. This prop should be a function, and is used as an event handler for clicks outside the elements rendered by the component. Useful for e.g. closing dropdowns, intercepting clicks outside a modal dialog, etc. Clicks outside are handled during the capture phase, on `window.document`. This permits stopping event propagation at this point, before any DOM elements are allowed to respond to it.
@@ -30,7 +34,7 @@ Provides a click event handler to the component, which will attempt to change th
 
 ## `withNavigationLink(Component)`
 
-Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via Redux and `redux-little-router`. If the path points to the current one, no navigation takes place.
+Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via `connected-react-router`. If the path points to the current one, no navigation takes place.
 
 ## `withRequestActivity(request)(Component)`
 

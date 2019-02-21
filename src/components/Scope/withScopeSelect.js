@@ -1,13 +1,13 @@
-import { connect } from "react-redux";
+import routingConnector from "../../hocs/routingConnector";
 import { compose, withHandlers } from "recompose";
 import UrlPattern from "url-pattern";
-import { routeSelector, paramSelector } from "../../selectors/route";
+import { selectRoutePath, selectRouteParams } from "../../selectors/navigation";
 import withNavigationLink from "../../hocs/withNavigationLink";
 import { unwrapImmutable } from "../../utils";
 
-const withHref = connect((state, { id }) => {
-	const pattern = new UrlPattern(routeSelector(state));
-	const params = unwrapImmutable(paramSelector(state));
+const withHref = routingConnector((state, { id }) => {
+	const pattern = new UrlPattern(selectRoutePath(state));
+	const params = unwrapImmutable(selectRouteParams(state));
 	params.scope = id;
 	return {
 		href: pattern.stringify(params),

@@ -62,6 +62,7 @@ export const AppFrame = ({
 	menuLabel,
 	menuItems,
 	linkHOC,
+	location,
 	ConnectedScope,
 	children,
 }) => (
@@ -74,7 +75,13 @@ export const AppFrame = ({
 			menuLabel={menuLabel}
 			menuItems={menuItems}
 		/>
-		<Sidebar linkHOC={linkHOC} open={open} toggle={toggle} modules={modules} />
+		<Sidebar
+			linkHOC={linkHOC}
+			open={open}
+			toggle={toggle}
+			modules={modules}
+			path={location.pathname}
+		/>
 		<ViewPort open={open} onClick={reset}>
 			<ConnectedScope>{children}</ConnectedScope>
 		</ViewPort>

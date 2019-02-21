@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { withHandlers } from "recompose";
 import { getThemeProp, ifFlag } from "../../utils";
-import withNavigationLink from "../../hocs/withNavigationLink";
+import { Link } from "react-router-dom";
 import Text from "../Text";
 import Icon from "../Icon";
 
@@ -34,7 +34,7 @@ export const ModuleTab = styled(PageTab)`
 	margin-left: 0px;
 `;
 
-export const TabLink = withNavigationLink(styled.a`
+export const TabLink = styled(Link)`
 	flex: 0 1 100%;
 	overflow: hidden;
 	color: inherit;
@@ -42,7 +42,7 @@ export const TabLink = withNavigationLink(styled.a`
 	display: flex;
 	justify-content: center;
 	padding: 11px 15px;
-`);
+`;
 
 export const ModuleIcon = styled(Icon)`
 	flex: 0 0 auto;
@@ -77,7 +77,7 @@ export const Tab = ({ href, label, icon, module, active, close }) => {
 	const ThisTab = module ? ModuleTab : PageTab;
 	return (
 		<ThisTab active={active}>
-			<TabLink href={href}>
+			<TabLink to={href}>
 				{module ? <ModuleIcon id={icon} /> : null}
 				<TabText>
 					<Text message={label} />
@@ -89,5 +89,5 @@ export const Tab = ({ href, label, icon, module, active, close }) => {
 };
 
 export default withHandlers({
-	close: ({ close, href }) => close(href),
+	close: ({ close, href, mappedFrom }) => close(href, mappedFrom),
 })(Tab);

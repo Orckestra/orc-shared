@@ -3,14 +3,11 @@ import buildStore from "./buildStore";
 import Immutable from "immutable";
 
 describe("buildStore", () => {
-	let mockRoutes, mockReducers;
+	let mockReducers;
 	beforeEach(() => {
-		mockRoutes = {
-			"/": { title: "test" },
-		};
 		mockReducers = {
 			test: (state = false, action) => {
-				if (action.type === "TOGGLE") {
+				if (action.type === "TEST_TOGGLE") {
 					return !state;
 				} else {
 					return state;
@@ -23,24 +20,18 @@ describe("buildStore", () => {
 		delete process.env.SUPPORTED_LOCALES;
 	});
 
-	it("builds a store when given routes and reducers, with hot module replacement of reducers", () =>
-		expect(
-			buildStore,
-			"when called with",
-			[mockRoutes, mockReducers],
-			"to satisfy",
-			{
-				subscribe: expect.it("to be a function"),
-				dispatch: expect.it("to be a function"),
-				getState: expect.it("to be a function"),
-			},
-		));
+	it("builds a redux store", () =>
+		expect(buildStore, "when called with", [mockReducers], "to satisfy", {
+			subscribe: expect.it("to be a function"),
+			dispatch: expect.it("to be a function"),
+			getState: expect.it("to be a function"),
+		}));
 
 	describe("functionality", () => {
 		let store;
 		beforeEach(() => {
 			global.SUPPORTED_LOCALES = ["en-US", "fr"];
-			store = buildStore(mockRoutes, mockReducers);
+			store = buildStore(mockReducers);
 		});
 
 		describe("getState", () => {
@@ -51,14 +42,13 @@ describe("buildStore", () => {
 					"to satisfy",
 					Immutable.fromJS({
 						router: {
-							pathname: "/",
-							search: "",
-							hash: "",
-							key: undefined,
-							state: undefined,
-							query: {},
-							routes: { "/": { title: "test" } },
-							queue: [],
+							location: {
+								pathname: "/",
+								search: "",
+								hash: "",
+								state: undefined,
+							},
+							action: "POP",
 						},
 						locale: {
 							locale: "en-US",
@@ -77,9 +67,9 @@ describe("buildStore", () => {
 
 		describe("dispatch", () => {
 			it("updates state when called with an action", () =>
-				expect(store.dispatch, "when called with", [{ type: "TOGGLE" }]).then(
-					() => expect(store.getState(), "to satisfy", { test: true }),
-				));
+				expect(store.dispatch, "when called with", [
+					{ type: "TEST_TOGGLE" },
+				]).then(() => expect(store.getState(), "to satisfy", { test: true })));
 		});
 
 		describe("subscribe", () => {
@@ -89,7 +79,7 @@ describe("buildStore", () => {
 			});
 			it("sets a callback for state updates", () =>
 				expect(store.subscribe, "when called with", [handler])
-					.then(() => store.dispatch({ type: "TOGGLE" }))
+					.then(() => store.dispatch({ type: "TEST_TOGGLE" }))
 					.then(() => expect(handler, "was called")));
 		});
 	});

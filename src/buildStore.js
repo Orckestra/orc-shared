@@ -1,8 +1,11 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { apiMiddleware } from "redux-api-middleware";
 import Immutable from "immutable";
-import { immutableRouterForBrowser } from "redux-little-router/lib/immutable";
-import { initializeCurrentLocation } from "redux-little-router";
+import { apiMiddleware } from "redux-api-middleware";
+import {
+	routerMiddleware,
+	connectRouter,
+} from "connected-react-router/immutable";
+import { createBrowserHistory } from "history";
 import { combineReducers } from "redux-immutable";
 import addLocales from "./addLocales";
 import localeFactory from "./reducers/localeFactory";
@@ -10,20 +13,17 @@ import viewReducer from "./reducers/view";
 import requestReducer from "./reducers/request";
 import navigationReducer from "./reducers/navigation";
 
+export const history = createBrowserHistory();
 export let buildReducer;
 
-const buildStore = (routes, reducers) => {
-	const composeEnhancers =
-		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const enhancer = composeEnhancers(
+	applyMiddleware(routerMiddleware(history), apiMiddleware),
+);
 
-	const {
-		reducer: routeReducer,
-		middleware: routeMiddleware,
-		enhancer: routeEnhancer,
-	} = immutableRouterForBrowser({
-		routes,
-	});
+const initialState = Immutable.Map();
 
+const buildStore = reducers => {
 	const supportedLocales = SUPPORTED_LOCALES || ["en"];
 	// Set supported languages
 	const supportedLanguageTags = supportedLocales // Only the initial language tag
@@ -37,28 +37,13 @@ const buildStore = (routes, reducers) => {
 			...reducers,
 			locale: localeReducer,
 			navigation: navigationReducer,
-			router: routeReducer,
+			router: connectRouter(history),
 			requests: requestReducer,
 			view: viewReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 
-	const middleware = [routeMiddleware, apiMiddleware];
-
-	const initialState = Immutable.Map();
-	const store = createStore(
-		rootReducer,
-		initialState,
-		composeEnhancers(routeEnhancer, applyMiddleware(...middleware)),
-	);
-
-	const initialLocation = store.getState().get("router");
-	/* istanbul ignore else */
-	if (initialLocation) {
-		store.dispatch(initializeCurrentLocation(initialLocation.toJS()));
-	}
-
-	return store;
+	return createStore(rootReducer, initialState, enhancer);
 };
 
 export default buildStore;
