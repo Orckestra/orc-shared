@@ -1,7 +1,5 @@
 import Immutable from "immutable";
-import { LOCATION_CHANGED } from "connected-react-router";
 import { SET_ROUTE, MAP_HREF, REMOVE_TAB } from "../actions/navigation";
-import { safeGet } from "../utils";
 
 const initialState = Immutable.fromJS({
 	route: {},

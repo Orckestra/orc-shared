@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Spritesheet from "./Spritesheet";
 
-/* Reset to a simple passthrough component for production */
+/* TODO: Reset to a simple passthrough component for production */
 const DevPages = ({ children }) => (
 	<Switch>
 		<Route path="/dev/sprites" component={Spritesheet} />
