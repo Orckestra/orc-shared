@@ -75,6 +75,7 @@ const withNavigationData = routingConnector(
 					...page,
 					label,
 					href,
+					mappedFrom: page.href,
 					active: href === currentHref,
 				};
 			}),
@@ -83,8 +84,8 @@ const withNavigationData = routingConnector(
 		};
 	},
 	dispatch => ({
-		close: (module, moduleHref) => path => event => {
-			dispatch(removeTab(module, path));
+		close: (module, moduleHref) => (path, mapped) => event => {
+			dispatch(removeTab(module, mapped));
 			if (window.location.pathname === path) {
 				dispatch(push(moduleHref));
 			}

@@ -96,11 +96,13 @@ describe("withNavigation", () => {
 							icon: "thing",
 							label: "Thing",
 							href: "/TestScope/test",
+							mappedFrom: "/TestScope/test",
 							active: false,
 						},
 						{
 							label: "Page 1",
 							href: "/TestScope/test/page1",
+							mappedFrom: "/TestScope/test/page1",
 							active: true,
 						},
 						{
@@ -112,10 +114,12 @@ describe("withNavigation", () => {
 								},
 							},
 							href: "/OtherScope/test/foo",
+							mappedFrom: "/OtherScope/test/foo",
 							active: false,
 						},
 						{
 							href: "/TestScope/test/notexist",
+							mappedFrom: "/TestScope/test/notexist",
 							label: "[Not found]",
 							active: false,
 						},
@@ -194,11 +198,13 @@ describe("withNavigation", () => {
 								icon: "thing",
 								label: "Thing",
 								href: "/TestScope/test/page1",
+								mappedFrom: "/TestScope/test",
 								active: true,
 							},
 							{
 								label: "Page 2",
 								href: "/TestScope/test/page2/sub",
+								mappedFrom: "/TestScope/test/page2",
 								active: false,
 							},
 						]}
@@ -227,7 +233,7 @@ describe("withNavigation", () => {
 						"called with",
 						["test", "/TestScope/test"],
 						"called with",
-						["/TestScope/test/page2"],
+						["/TestScope/test/page2/info", "/TestScope/test/page2"],
 						"called with",
 						[fakeEvent],
 					)}
@@ -252,6 +258,7 @@ describe("withNavigation", () => {
 	});
 
 	it("navigates to module page if closing current tab", () => {
+		jsdom.reconfigure({ url: "http://localhost/TestScope/test/page2/info" });
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
 			preventDefault: sinon.spy().named("preventDefault"),
@@ -269,7 +276,7 @@ describe("withNavigation", () => {
 						"called with",
 						["test", "/TestScope/test"],
 						"called with",
-						["/TestScope/test/page1"],
+						["/TestScope/test/page2/info", "/TestScope/test/page2"],
 						"called with",
 						[fakeEvent],
 					)}
@@ -281,7 +288,7 @@ describe("withNavigation", () => {
 							args: [
 								{
 									type: REMOVE_TAB,
-									payload: { module: "test", path: "/TestScope/test/page1" },
+									payload: { module: "test", path: "/TestScope/test/page2" },
 								},
 							],
 						},

@@ -167,60 +167,6 @@ describe("Navigation reducer", () => {
 		});
 	});
 
-	describe.skip("LOCATION_CHANGED", () => {
-		it("does not add a tab if there is no title", () => {
-			const oldState = Immutable.fromJS({
-				tabIndex: { "/test/old": {} },
-				moduleTabs: { thing: ["/test/new"] },
-			});
-			const action = {
-				type: LOCATION_CHANGED,
-				payload: {
-					pathname: "/test/new",
-					result: {
-						parent: { module: "thing" },
-					},
-				},
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "to be", oldState);
-		});
-
-		it("uses parent's title and href on segment pages", () => {
-			const oldState = Immutable.fromJS({
-				tabIndex: {},
-				moduleTabs: {},
-				mappedHrefs: {},
-			});
-			const action = {
-				type: LOCATION_CHANGED,
-				payload: {
-					pathname: "/thing/test/new",
-					result: {
-						label: "New",
-						title: "Wrong",
-						parent: {
-							mode: "segments",
-							title: "Correct",
-							parent: {
-								module: "thing",
-							},
-						},
-					},
-				},
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to satisfy",
-				Immutable.fromJS({
-					tabIndex: { "/thing/test": { label: "Correct" } },
-					moduleTabs: { thing: ["/thing/test"] },
-					mappedHrefs: { "/thing/test": "/thing/test/new" },
-				}),
-			);
-		});
-	});
-
 	describe("REMOVE_TAB", () => {
 		it("can remove open tabs", () => {
 			const oldState = Immutable.fromJS({
@@ -255,6 +201,16 @@ describe("Navigation reducer", () => {
 						}),
 					),
 				);
+		});
+
+		it("does nothing if the tab to remove is not found", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: { "/test/old": {}, "/test/new": {} },
+				moduleTabs: { thing: ["/test/new", "/test/old"] },
+			});
+			const action = removeTab("thing", "/test/fail");
+			const newState = reducer(oldState, action);
+			return expect(newState, "to be", oldState);
 		});
 	});
 });

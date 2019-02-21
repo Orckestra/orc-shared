@@ -89,5 +89,5 @@ export const Tab = ({ href, label, icon, module, active, close }) => {
 };
 
 export default withHandlers({
-	close: ({ close, href }) => close(href),
+	close: ({ close, href, mappedFrom }) => close(href, mappedFrom),
 })(Tab);

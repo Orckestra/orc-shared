@@ -37,63 +37,14 @@ const navigationReducer = (state = initialState, action) => {
 				["mappedHrefs", action.payload.from],
 				action.payload.to,
 			);
-		// case LOCATION_CHANGED:
-		// return state.withMutations(s => {
-		// 		let parentPath;
-		// 		if (safeGet(action.payload.result, "parent", "mode") === "segments") {
-		// 			parentPath = action.payload.pathname.replace(/\/[^/]*$/, "");
-		// 			s.setIn(["segmentHrefs", parentPath], action.payload.pathname);
-		// 		}
-		// 		let title, path, dataPath, dataId;
-		// 		if (safeGet(action.payload.result, "parent", "mode") === "segments") {
-		// 			title = safeGet(action.payload.result, "parent", "title");
-		// 			path = parentPath;
-		// 			dataPath = safeGet(action.payload.result, "parent", "dataPath");
-		// 			dataId = safeGet(action.payload.result, "parent", "dataIdParam");
-		// 		} else {
-		// 			title = action.payload.result.title;
-		// 			path = action.payload.pathname;
-		// 			dataPath = action.payload.result.dataPath;
-		// 			dataId = action.payload.result.dataIdParam;
-		// 		}
-		// 		if (!title) return;
-		// 		if (title.id) {
-		// 			title.values = action.payload.params;
-		// 		}
-		// 		s.setIn(
-		// 			["tabIndex", path],
-		// 			Immutable.fromJS({
-		// 				href: path,
-		// 				label: title,
-		// 			}),
-		// 		);
-		// 		if (dataPath) {
-		// 			if (dataId) {
-		// 				const objectId = safeGet(action.payload, "params", dataId);
-		// 				if (!dataPath.find(item => item === objectId)) {
-		// 					dataPath.push(objectId);
-		// 				}
-		// 			}
-		// 			s.setIn(["tabIndex", path, "dataPath"], Immutable.fromJS(dataPath));
-		// 		}
-		// 		const moduleName = getModuleName(action.payload.result);
-		// 		if (moduleName) {
-		// 			const moduleList =
-		// 				s.getIn(["moduleTabs", moduleName]) || Immutable.List();
-		// 			if (!moduleList.includes(path)) {
-		// 				s.setIn(["moduleTabs", moduleName], moduleList.push(path));
-		// 			}
-		// 		}
-		// });
 		case REMOVE_TAB:
 			return state.withMutations(s => {
 				const list =
 					s.getIn(["moduleTabs", action.payload.module]) || Immutable.List();
-				s.deleteIn([
-					"moduleTabs",
-					action.payload.module,
-					list.indexOf(action.payload.path),
-				]);
+				const index = list.indexOf(action.payload.path);
+				if (index !== -1) {
+					s.deleteIn(["moduleTabs", action.payload.module, index]);
+				}
 				s.deleteIn(["tabIndex", action.payload.path]);
 			});
 		default:

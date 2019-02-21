@@ -13,22 +13,27 @@ describe("Bar", () => {
 						icon: "test",
 						label: "A module",
 						href: "/Foo/modu",
+						mappedFrom: "/Foo/modu",
 					},
 					{
 						href: "/Foo/modu/1",
+						mappedFrom: "/Foo/modu/1",
 						label: "Page 1",
 					},
 					{
 						href: "/Foo/modu/2",
+						mappedFrom: "/Foo/modu/2",
 						label: "Page 2",
 						active: true,
 					},
 					{
 						href: "/Foo/modu/3",
+						mappedFrom: "/Foo/modu/3",
 						label: "Page 3",
 					},
 					{
 						href: "/Foo/modu/4",
+						mappedFrom: "/Foo/modu/4",
 						label: "Page 4",
 					},
 				]}
@@ -41,17 +46,20 @@ describe("Bar", () => {
 					module
 					icon="test"
 					href="/Foo/modu"
+					mappedFrom="/Foo/modu"
 					label="A module"
 				/>
 				<Tab
 					key="/Foo/modu/1"
 					href="/Foo/modu/1"
+					mappedFrom="/Foo/modu/1"
 					label="Page 1"
 					close={close}
 				/>
 				<Tab
 					key="/Foo/modu/2"
 					href="/Foo/modu/2"
+					mappedFrom="/Foo/modu/2"
 					label="Page 2"
 					close={close}
 					active
@@ -59,12 +67,14 @@ describe("Bar", () => {
 				<Tab
 					key="/Foo/modu/3"
 					href="/Foo/modu/3"
+					mappedFrom="/Foo/modu/3"
 					label="Page 3"
 					close={close}
 				/>
 				<Tab
 					key="/Foo/modu/4"
 					href="/Foo/modu/4"
+					mappedFrom="/Foo/modu/4"
 					label="Page 4"
 					close={close}
 				/>
