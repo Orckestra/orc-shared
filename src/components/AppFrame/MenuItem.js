@@ -53,11 +53,17 @@ export const Label = styled.span`
 	opacity: ${props => (props.show ? 1 : 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, href = "", ...props }) => (
-	<Block to={href} {...props}>
-		<MenuIcon id={icon} />
-		<Label show={open}>{label}</Label>
-	</Block>
-);
+const MenuItem = ({ open = false, label = "", icon, href, ...props }) => {
+	let ItemWrapper = Block;
+	if (props.menuToggle) {
+		ItemWrapper = Block.withComponent("a");
+	}
+	return (
+		<ItemWrapper to={href} {...props}>
+			<MenuIcon id={icon} />
+			<Label show={open}>{label}</Label>
+		</ItemWrapper>
+	);
+};
 
 export default MenuItem;

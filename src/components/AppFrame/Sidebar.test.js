@@ -134,7 +134,11 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menuToggle icon="menu" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					icon="menu"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 
 		it("renders as open", () =>
@@ -145,7 +149,12 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menuToggle open icon="layers" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					open
+					icon="layers"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 	});
 
@@ -168,7 +177,11 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menuToggle icon="closed" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					icon="closed"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 
 		it("renders as open", () =>
@@ -179,7 +192,12 @@ describe("MenuToggle", () => {
 					</MemoryRouter>
 				</ThemeProvider>,
 				"to deeply render as",
-				<MenuItem menuToggle open icon="open" onClick={toggle} />,
+				<MenuItem
+					menuToggle
+					open
+					icon="open"
+					onClick={expect.it("to be a function")}
+				/>,
 			));
 	});
 });
