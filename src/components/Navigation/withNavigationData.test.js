@@ -140,8 +140,11 @@ describe("withNavigation", () => {
 					},
 				},
 				navigation: {
-					moduleTabs: { test: ["/TestScope/test/page2"] },
+					moduleTabs: { test: ["/TestScope/test", "/TestScope/test/page2"] },
 					tabIndex: {
+						"/TestScope/test": {
+							href: "/TestScope/test",
+						},
 						"/TestScope/test/page2": {
 							href: "/TestScope/test/page2",
 						},

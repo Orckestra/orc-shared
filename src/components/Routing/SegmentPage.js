@@ -5,6 +5,7 @@ import UrlPattern from "url-pattern";
 import { ifFlag } from "../../utils";
 import Text from "../Text";
 import { TabBar } from "../Navigation/Bar";
+import FullPage from "./FullPage";
 import Segment from "./Segment";
 
 export const Wrapper = styled.div`
@@ -52,38 +53,74 @@ export const Item = styled(FilteredLink)`
 const SegmentPage = ({ path, segments, location, match }) => {
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
-	return (
-		<Wrapper>
-			<List>
-				{Object.entries(segments).map(([segpath, config]) => (
-					<Item
-						key={segpath}
-						to={baseHref + segpath}
-						active={location.pathname === baseHref + segpath}
-					>
-						<Text message={config.label} />
-					</Item>
-				))}
-			</List>
-			<Switch>
-				{Object.entries(segments).map(([segpath, config]) => (
-					<Route
-						key={segpath}
+	const pages = [];
+	const segmentElements = Object.entries(segments).map(([segpath, config]) => {
+		if (config.pages) {
+			pages.push(
+				...Object.entries(config.pages).map(([subpath, pageConfig]) => {
+					const pagePath = segpath + subpath;
+					return (
+						<Route
+							key={pagePath}
+							path={path + pagePath}
+							render={({ location, match }) => (
+								<FullPage
+									path={path + pagePath}
+									location={location}
+									match={match}
+									config={pageConfig}
+								/>
+							)}
+						/>
+					);
+				}),
+			);
+		}
+		return (
+			<Route
+				key={segpath}
+				path={path + segpath}
+				render={({ location, match }) => (
+					<Segment
 						path={path + segpath}
-						render={({ location, match }) => (
-							<Segment
-								path={path + segpath}
-								location={location}
-								match={match}
-								config={config}
-								root={baseHref}
-							/>
-						)}
+						location={location}
+						match={match}
+						config={config}
+						root={baseHref}
 					/>
-				))}
-				<Redirect exact path={path} to={baseHref + Object.keys(segments)[0]} />
-			</Switch>
-		</Wrapper>
+				)}
+			/>
+		);
+	});
+	return (
+		<Switch>
+			{pages}
+			<Route
+				render={() => (
+					<Wrapper>
+						<List>
+							{Object.entries(segments).map(([segpath, config]) => (
+								<Item
+									key={segpath}
+									to={baseHref + segpath}
+									active={location.pathname === baseHref + segpath}
+								>
+									<Text message={config.label} />
+								</Item>
+							))}
+						</List>
+						<Switch>
+							{segmentElements}
+							<Redirect
+								exact
+								path={path}
+								to={baseHref + Object.keys(segments)[0]}
+							/>
+						</Switch>
+					</Wrapper>
+				)}
+			/>
+		</Switch>
 	);
 };
 

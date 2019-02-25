@@ -12,6 +12,7 @@ const withWaypointing = compose(
 		}),
 		(dispatch, { location, match, mapFrom }) => ({
 			setRoute: () => {
+				if (!match.isExact) return;
 				if (mapFrom) {
 					dispatch(mapHref(mapFrom, window.location.pathname));
 					dispatch(setRoute({ ...location, pathname: mapFrom }, match));

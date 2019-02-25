@@ -1,7 +1,6 @@
 import Immutable from "immutable";
 import { setRoute, removeTab, mapHref } from "../actions/navigation";
 import reducer from "./navigation";
-import { LOCATION_CHANGED } from "connected-react-router";
 
 describe("Navigation reducer", () => {
 	it("behaves as a reducer should", () =>

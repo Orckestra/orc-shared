@@ -1,6 +1,6 @@
 import { lifecycle } from "recompose";
 
-const withInitialLoad = (loader, test = () => true) =>
+const withInitialLoad = (loader, test = () => false) =>
 	lifecycle({
 		componentDidMount() {
 			if (test(this.props)) {

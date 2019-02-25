@@ -1,7 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import sinon from "sinon";
 import { setRoute, mapHref } from "../../actions/navigation";
 import withWaypointing from "./withWaypointing";
@@ -14,8 +14,13 @@ describe("withWaypointing", () => {
 		state = Immutable.fromJS({
 			navigation: {
 				route: {
-					location: { pathname: "/feep/meep" },
-					match: { url: "/feep/meep" },
+					location: { pathname: "/feep/meep", search: "", hash: "" },
+					match: {
+						path: "/feep/meep",
+						url: "/feep/meep",
+						params: {},
+						isExact: true,
+					},
 				},
 			},
 		});
@@ -33,7 +38,7 @@ describe("withWaypointing", () => {
 				expect(
 					<Provider store={store}>
 						<BrowserRouter>
-							<EnhancedView />
+							<Route path="/foo/bar" component={EnhancedView} />
 						</BrowserRouter>
 					</Provider>,
 					"to deeply render as",
@@ -46,7 +51,12 @@ describe("withWaypointing", () => {
 						args: [
 							setRoute(
 								{ pathname: "/foo/bar", search: "", hash: "" },
-								{ path: "/", url: "/", params: {}, isExact: false },
+								{
+									path: "/foo/bar",
+									url: "/foo/bar",
+									params: {},
+									isExact: true,
+								},
 							),
 						],
 					},
@@ -60,7 +70,25 @@ describe("withWaypointing", () => {
 				expect(
 					<Provider store={store}>
 						<BrowserRouter>
-							<EnhancedView />
+							<Route path="/feep/meep" component={EnhancedView} />
+						</BrowserRouter>
+					</Provider>,
+					"when deeply rendered",
+					"to have rendered",
+					<Test />,
+				),
+			)
+			.then(() => expect(store.dispatch, "to have calls satisfying", []));
+	});
+
+	it("does not fire action if route match is not exact", () => {
+		jsdom.reconfigure({ url: "http://localhost/feep/meep/mef" });
+		return expect(withWaypointing, "called with", [Test])
+			.then(EnhancedView =>
+				expect(
+					<Provider store={store}>
+						<BrowserRouter>
+							<Route path="/feep/meep" component={EnhancedView} />
 						</BrowserRouter>
 					</Provider>,
 					"when deeply rendered",
@@ -77,7 +105,10 @@ describe("withWaypointing", () => {
 				expect(
 					<Provider store={store}>
 						<BrowserRouter>
-							<EnhancedView mapFrom="/foo" />
+							<Route
+								path="/foo/bar"
+								render={props => <EnhancedView {...props} mapFrom="/foo" />}
+							/>
 						</BrowserRouter>
 					</Provider>,
 					"to deeply render as",
@@ -93,7 +124,12 @@ describe("withWaypointing", () => {
 						args: [
 							setRoute(
 								{ pathname: "/foo", search: "", hash: "" },
-								{ path: "/", url: "/", params: {}, isExact: false },
+								{
+									path: "/foo/bar",
+									url: "/foo/bar",
+									params: {},
+									isExact: true,
+								},
 							),
 						],
 					},
