@@ -1,8 +1,7 @@
 import React from "react";
 import routingConnector from "../hocs/routingConnector";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { selectLocation } from "../selectors/route";
 import { getCurrentScope } from "../selectors/navigation";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
@@ -35,6 +34,7 @@ export const Modules = ({ modules, scope }) => (
 					/>
 				);
 			})}
+			<Redirect to={`/${scope}/${Object.keys(modules)[0]}`} />
 		</Switch>
 	</React.Fragment>
 );
@@ -43,6 +43,5 @@ export const Modules = ({ modules, scope }) => (
 export default routingConnector(
 	/* istanbul ignore next */ state => ({
 		scope: getCurrentScope(state),
-		location: selectLocation(state),
 	}),
 )(Modules);

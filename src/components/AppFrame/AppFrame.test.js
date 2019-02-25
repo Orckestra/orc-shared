@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Immutable from "immutable";
+import I18n from "../I18n";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import Scope from "../Scope";
@@ -14,7 +15,9 @@ class ClassAppFrame extends React.Component {
 		return (
 			<Provider store={store}>
 				<BrowserRouter>
-					<FullAppFrame {...props} />
+					<I18n>
+						<FullAppFrame {...props} />
+					</I18n>
 				</BrowserRouter>
 			</Provider>
 		);
@@ -24,6 +27,12 @@ class ClassAppFrame extends React.Component {
 const TestComp1 = () => <div />;
 const TestComp2 = () => <div />;
 const TestComp3 = () => <div />;
+
+const scopeHOC = Scope => props => (
+	<Scope currentScope={{ name: "foo" }} {...props} />
+);
+
+const ConnectedScope = scopeHOC(Scope);
 
 describe("AppFrame", () => {
 	let props, toggle, reset;
@@ -36,7 +45,7 @@ describe("AppFrame", () => {
 			menuItems: [],
 			location: { pathname: "/Foo/bar" },
 			linkHOC: x => x,
-			ConnectedScope: Scope,
+			ConnectedScope,
 		};
 
 		toggle = () => {};
@@ -93,20 +102,31 @@ describe("AppFrame", () => {
 		));
 
 	describe("with state handling", () => {
-		let store, outerProps, appRoot, modalRoot;
+		let store, outerProps, innerProps, appRoot, modalRoot;
 		beforeEach(() => {
 			store = {
 				subscribe: () => {},
 				dispatch: () => {},
 				getState: () =>
 					Immutable.fromJS({
-						router: {
-							params: { scope: "foo" },
+						navigation: {
+							route: {
+								match: {
+									url: "/foo/test",
+									path: "/:scope/test",
+									params: { scope: "foo" },
+								},
+							},
 						},
+						locale: {
+							suportedLocales: [],
+						},
+						view: { scopeSelector: { filter: "Foo" } },
 					}),
 			};
 			const { ConnectedScope, ...remainder } = props;
-			outerProps = { store, scopeHOC: x => x, ...remainder };
+			innerProps = remainder;
+			outerProps = { store, scopeHOC, ...remainder };
 			appRoot = document.createElement("div");
 			appRoot.id = "app";
 			document.body.appendChild(appRoot);
@@ -131,7 +151,7 @@ describe("AppFrame", () => {
 				render,
 				"to have rendered",
 				<AppFrame
-					{...props}
+					{...innerProps}
 					open={false}
 					toggle={expect.it("to be a function")}
 					reset={expect.it("to be a function")}
