@@ -69,8 +69,10 @@ const withNavigationData = routingConnector(
 					dataPath.push(params[pageData.dataIdParam]);
 				}
 				if (label && label.id) {
-					const dataObject = dataPath && unwrapImmutable(state.getIn(dataPath));
-					label.values = { ...dataObject, ...label.values };
+					if (dataPath) {
+						let dataObject = dataPath && unwrapImmutable(state.getIn(dataPath));
+						label.values = { ...dataObject, ...label.values };
+					}
 				}
 				const href = hrefMapper(page.href);
 				return {
