@@ -13,7 +13,9 @@ import viewReducer from "./reducers/view";
 import requestReducer from "./reducers/request";
 import navigationReducer from "./reducers/navigation";
 
-export const history = createBrowserHistory();
+const basename = window.BASE_PATH || "";
+
+export const history = createBrowserHistory({ basename });
 export let buildReducer;
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
