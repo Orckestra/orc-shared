@@ -8,13 +8,13 @@ import withInitialLoad from "../../hocs/withInitialLoad";
 const withWaypointing = compose(
 	routingConnector(
 		(state, { location }) => ({
-			routeIsAligned: selectRouteHref(state) === window.location.pathname,
+			routeIsAligned: selectRouteHref(state) === location.pathname,
 		}),
 		(dispatch, { location, match, mapFrom }) => ({
 			setRoute: () => {
 				if (!match.isExact) return;
 				if (mapFrom) {
-					dispatch(mapHref(mapFrom, window.location.pathname));
+					dispatch(mapHref(mapFrom, location.pathname));
 					dispatch(setRoute({ ...location, pathname: mapFrom }, match));
 				} else {
 					dispatch(setRoute(location, match));

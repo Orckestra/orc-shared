@@ -39,8 +39,8 @@ export const getPageData = (path, params, module) => {
 };
 
 const withNavigationData = routingConnector(
-	(state, { modules, match }) => {
-		const currentHref = window.location.pathname;
+	(state, { modules, match, location }) => {
+		const currentHref = location.pathname;
 		const hrefMapper = selectSegmentHrefMapper(state);
 		const [moduleHref, moduleName] = currentHref.match(/^\/[^/]+\/([^/]+)/);
 		const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
@@ -87,10 +87,10 @@ const withNavigationData = routingConnector(
 			moduleHref: hrefMapper(moduleHref),
 		};
 	},
-	dispatch => ({
+	(dispatch, { location }) => ({
 		close: (module, moduleHref) => (path, mapped) => event => {
 			dispatch(removeTab(module, mapped));
-			if (window.location.pathname === path) {
+			if (location.pathname === path) {
 				dispatch(push(moduleHref));
 			}
 			event.stopPropagation();

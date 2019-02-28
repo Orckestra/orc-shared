@@ -173,7 +173,7 @@ describe("withNavigation", () => {
 							component: TestComp2,
 						},
 						"/page2": {
-							label: "Page 2",
+							label: { id: "page2", defaultMessage: "Page 2" },
 							component: TestComp3,
 							subpages: {
 								"/sub": {
@@ -205,7 +205,7 @@ describe("withNavigation", () => {
 								active: true,
 							},
 							{
-								label: "Page 2",
+								label: { id: "page2", defaultMessage: "Page 2" },
 								href: "/TestScope/test/page2/sub",
 								mappedFrom: "/TestScope/test/page2",
 								active: false,

@@ -9,7 +9,7 @@ const analyzeHref = href => {
 	};
 };
 
-const isActiveHref = href => {
+const isActiveHref = (href, location) => {
 	const url = new URL(href, window.location);
 	return (
 		href &&
