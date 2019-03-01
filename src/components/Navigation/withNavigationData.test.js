@@ -130,6 +130,29 @@ describe("withNavigation", () => {
 			),
 		));
 
+	it("handles incomplete paths", () => {
+		jsdom.reconfigure({ url: "http://localhost/" });
+		state.setIn(
+			["navigation", "route", "match"],
+			Immutable.fromJS({
+				url: "/",
+				path: "/",
+				params: {},
+			}),
+		);
+		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
+			expect(
+				<Provider store={store}>
+					<BrowserRouter>
+						<EnhComp modules={modules} />
+					</BrowserRouter>
+				</Provider>,
+				"to deeply render as",
+				<TestComp />,
+			),
+		);
+	});
+
 	describe("with segments", () => {
 		beforeEach(() => {
 			state = Immutable.fromJS({

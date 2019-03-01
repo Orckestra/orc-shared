@@ -42,7 +42,8 @@ const withNavigationData = routingConnector(
 	(state, { modules, match, location }) => {
 		const currentHref = location.pathname;
 		const hrefMapper = selectSegmentHrefMapper(state);
-		const [moduleHref, moduleName] = currentHref.match(/^\/[^/]+\/([^/]+)/);
+		const [moduleHref = "", moduleName = ""] =
+			currentHref.match(/^\/[^/]+\/([^/]+)/) || [];
 		const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
 		const module = {
 			icon: moduleData.icon,
