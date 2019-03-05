@@ -3,7 +3,7 @@ import Page from "./Page";
 import SegmentPage from "./SegmentPage";
 
 const FullPage = ({ path, config, location, match }) => {
-	const { component, pages = {}, segments } = config;
+	const { component, pages = {}, segments, subpages } = config;
 	if (segments) {
 		return (
 			<SegmentPage
@@ -20,6 +20,7 @@ const FullPage = ({ path, config, location, match }) => {
 			path={path}
 			component={component}
 			pages={pages}
+			subpages={subpages}
 			location={location}
 			match={match}
 		/>

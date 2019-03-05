@@ -12,13 +12,7 @@ const Sub1 = () => <div />;
 const Sub2 = () => <div />;
 
 describe("Page", () => {
-	// < Opens tab when navigated to, takes up full view >
-
-	// Renders itself only if path is matched exactly
-	// Renders descendent pages
 	it("sets out Routes to render its view and descendant pages", () =>
-		// view
-		// view / fullpage
 		expect(
 			<Page
 				component={View}
@@ -29,35 +23,37 @@ describe("Page", () => {
 				}}
 			/>,
 			"to render as",
-			<Switch>
-				<Route
-					exact
-					path="/nabble"
-					component={expect.it(
-						"as a React component",
-						"to equal",
-						<ShownView />,
-					)}
-				/>
-				<Route
-					path="/nabble/foo"
-					render={expect.it(
-						"when called with",
-						[{ location: {}, match: {} }],
-						"to satisfy",
-						<FullPage path="/nabble/foo" config={{ component: Sub1 }} />,
-					)}
-				/>
-				<Route
-					path="/nabble/bar"
-					render={expect.it(
-						"when called with",
-						[{ location: {}, match: {} }],
-						"to satisfy",
-						<FullPage path="/nabble/bar" config={{ component: Sub2 }} />,
-					)}
-				/>
-			</Switch>,
+			<React.Fragment>
+				<Switch>
+					<Route
+						path="/nabble/foo"
+						render={expect.it(
+							"when called with",
+							[{ location: {}, match: {} }],
+							"to satisfy",
+							<FullPage path="/nabble/foo" config={{ component: Sub1 }} />,
+						)}
+					/>
+					<Route
+						path="/nabble/bar"
+						render={expect.it(
+							"when called with",
+							[{ location: {}, match: {} }],
+							"to satisfy",
+							<FullPage path="/nabble/bar" config={{ component: Sub2 }} />,
+						)}
+					/>
+					<Route
+						path="/nabble"
+						render={expect.it(
+							"when called with",
+							[{ location: {}, match: { url: "/nabble" } }],
+							"to satisfy",
+							<ShownView mapFrom="/nabble" />,
+						)}
+					/>
+				</Switch>
+			</React.Fragment>,
 		));
 
 	it("sets out Routes to render its view and subpages", () =>
@@ -72,32 +68,38 @@ describe("Page", () => {
 				}}
 			/>,
 			"to render as",
-			<Switch>
-				<Route
-					exact
-					path="/nabble"
-					component={expect.it(
-						"as a React component",
-						"to equal",
-						<ShownView />,
-					)}
-				/>
-				<Route
-					path="/nabble/foo"
-					render={expect.it(
-						"when called",
-						"to satisfy",
-						<SubPage path="/nabble/foo" config={{ component: Sub1 }} />,
-					)}
-				/>
-				<Route
-					path="/nabble/bar"
-					render={expect.it(
-						"when called",
-						"to satisfy",
-						<SubPage path="/nabble/bar" config={{ component: Sub2 }} />,
-					)}
-				/>
-			</Switch>,
+			<React.Fragment>
+				<Switch>
+					<Route
+						path="/nabble"
+						render={expect.it(
+							"when called with",
+							[{ location: {}, match: { url: "/nabble" } }],
+							"to satisfy",
+							<ShownView mapFrom="/nabble" />,
+						)}
+					/>
+				</Switch>
+				<Switch>
+					<Route
+						path="/nabble/foo"
+						render={expect.it(
+							"when called with",
+							[{ location: {}, match: {} }],
+							"to satisfy",
+							<SubPage root="/nabble" config={{ component: Sub1 }} />,
+						)}
+					/>
+					<Route
+						path="/nabble/bar"
+						render={expect.it(
+							"when called with",
+							[{ location: {}, match: {} }],
+							"to satisfy",
+							<SubPage root="/nabble" config={{ component: Sub2 }} />,
+						)}
+					/>
+				</Switch>
+			</React.Fragment>,
 		));
 });

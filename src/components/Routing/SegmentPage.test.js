@@ -1,6 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
 import { Switch, MemoryRouter, Route, Redirect } from "react-router";
 import Text from "../Text";
 import I18n from "../I18n";
@@ -9,6 +10,7 @@ import SegmentPage, { Wrapper, Item, List } from "./SegmentPage";
 const View1 = () => <div />;
 const View2 = () => <div />;
 const View3 = () => <div />;
+const View4 = () => <div />;
 
 describe("SegmentPage", () => {
 	let state, store, segments;
@@ -36,7 +38,15 @@ describe("SegmentPage", () => {
 			dispatch: () => {},
 		};
 		segments = {
-			"/one": { label: "Text", component: View1 },
+			"/one": {
+				label: "Text",
+				component: View1,
+				subpages: {
+					"/sub": {
+						component: View4,
+					},
+				},
+			},
 			"/two": {
 				label: {
 					id: "message.translate",
@@ -57,14 +67,16 @@ describe("SegmentPage", () => {
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/foo/meep/two"]}>
-					<I18n>
-						<SegmentPage
-							path="/:scope/meep"
-							segments={segments}
-							match={{ params: { scope: "foo" } }}
-							location={{ pathname: "/foo/meep/two" }}
-						/>
-					</I18n>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<SegmentPage
+								path="/:scope/meep"
+								segments={segments}
+								match={{ params: { scope: "foo" } }}
+								location={{ pathname: "/foo/meep/two" }}
+							/>
+						</I18n>
+					</ThemeProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
@@ -94,14 +106,16 @@ describe("SegmentPage", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/foo/meep/two"]}>
-					<I18n>
-						<SegmentPage
-							path="/:scope/meep"
-							segments={segments}
-							match={{ params: { scope: "foo" } }}
-							location={{ pathname: "/foo/meep/two" }}
-						/>
-					</I18n>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<SegmentPage
+								path="/:scope/meep"
+								segments={segments}
+								match={{ params: { scope: "foo" } }}
+								location={{ pathname: "/foo/meep/two" }}
+							/>
+						</I18n>
+					</ThemeProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
@@ -118,16 +132,54 @@ describe("SegmentPage", () => {
 			</Wrapper>,
 		));
 
+	it("shows a subpage under the matched segment", () => {
+		state.setIn(
+			["navigation", "route"],
+			Immutable.fromJS({
+				location: { pathname: "/foo/meep/one/sub", search: "", hash: "" },
+				match: {
+					path: "/:scope/meep/one/sub",
+					url: "/foo/meep/one/sub",
+					params: { scope: "foo" },
+					isExact: true,
+				},
+			}),
+		);
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/foo/meep/one/sub"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<SegmentPage
+								path="/:scope/meep"
+								segments={segments}
+								match={{ params: { scope: "foo" } }}
+								location={{ pathname: "/foo/meep/one/sub" }}
+							/>
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when deeply rendered",
+			"queried for",
+			<Wrapper />,
+		).then(render =>
+			expect(render, "to contain", <View1 />).and("to contain", <View4 />),
+		);
+	});
+
 	it("shows the relevant page under a segment if it is matched", () =>
 		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/foo/meep/two/sub"]}>
-					<SegmentPage
-						path="/:scope/meep"
-						segments={segments}
-						match={{ params: { scope: "foo" } }}
-						location={{ pathname: "/foo/meep/two" }}
-					/>
+					<ThemeProvider theme={{}}>
+						<SegmentPage
+							path="/:scope/meep"
+							segments={segments}
+							match={{ params: { scope: "foo" } }}
+							location={{ pathname: "/foo/meep/two" }}
+						/>
+					</ThemeProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",

@@ -1,5 +1,9 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
+import UrlPattern from "url-pattern";
+import { getThemeProp } from "../../utils";
+import Toolbar from "../Toolbar";
+import withWaypointing from "./withWaypointing";
 
 export const Backdrop = styled.div`
 	position: absolute;
@@ -13,6 +17,8 @@ export const Backdrop = styled.div`
 
 export const Dialog = styled.div`
 	position: absolute;
+	display: flex;
+	flex-direction: column;
 	top: 92px;
 	bottom: 0;
 	left: 136px;
@@ -22,16 +28,42 @@ export const Dialog = styled.div`
 	box-shadow: -3px 0 4px 0 rgba(0,0,0,0.25);}
 `;
 
-const SubPage = ({ config }) => {
+export const SubPage = ({ config, theme, match, location, history, root }) => {
 	const { component: View, ...props } = config;
+	const pattern = new UrlPattern(root);
+	const baseHref = pattern.stringify(match.params);
+	const WrappedView = withWaypointing(View);
 	return (
 		<React.Fragment>
-			<Backdrop />
+			<Backdrop onClick={() => history.push(baseHref)} />
 			<Dialog>
-				<View {...props} />
+				<Toolbar
+					tools={[
+						{
+							type: "button",
+							key: "subPage_goBack",
+							label: {
+								icon: getThemeProp(["icons", "backArrow"], "back")({
+									theme,
+								}),
+							},
+							onClick: () => history.push(baseHref),
+						},
+						{ type: "separator", key: "subpage_sep_nav" },
+					]}
+				/>
+				<WrappedView
+					match={match}
+					location={location}
+					mapFrom={baseHref}
+					{...props}
+				/>
 			</Dialog>
 		</React.Fragment>
 	);
 };
+SubPage.defaultProps = {
+	theme: { icons: { backArrow: "arrow-left" } },
+};
 
-export default SubPage;
+export default withTheme(SubPage);

@@ -1,19 +1,36 @@
 import React from "react";
-import SubPage, { Backdrop, Dialog } from "./SubPage";
+import Toolbar from "../Toolbar";
+import { SubPage, Backdrop, Dialog } from "./SubPage";
+import withWaypointing from "./withWaypointing";
 
 const InnerView = () => <div />;
+const WrappedView = withWaypointing(InnerView);
 
 describe("SubPage", () => {
-	// < Shows as modal dialog over a page, does not open tab >
 	it("shows overtop its parent", () =>
-		// Subpage renders in an overlay, parent page renders underneath
 		expect(
-			<SubPage config={{ component: InnerView, set: true }} path="/foo/bar" />,
+			<SubPage
+				config={{ component: InnerView, set: true }}
+				root="/foo"
+				path="/foo/bar"
+				match={{ params: {} }}
+			/>,
 			"to render as",
 			<React.Fragment>
 				<Backdrop />
 				<Dialog>
-					<InnerView set={true} />
+					<Toolbar
+						tools={[
+							{
+								type: "button",
+								key: "subPage_goBack",
+								label: { icon: "arrow-left" },
+								onClick: expect.it("to be a function"),
+							},
+							{ type: "separator", key: "subpage_sep_nav" },
+						]}
+					/>
+					<WrappedView set={true} />
 				</Dialog>
 			</React.Fragment>,
 		));
