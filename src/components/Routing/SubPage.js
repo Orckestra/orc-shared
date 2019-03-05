@@ -1,7 +1,10 @@
 import React from "react";
 import styled, { withTheme } from "styled-components";
+import { connect } from "react-redux";
+import { compose } from "recompose";
 import UrlPattern from "url-pattern";
 import { getThemeProp } from "../../utils";
+import routingConnector from "../../hocs/routingConnector";
 import Toolbar from "../Toolbar";
 import withWaypointing from "./withWaypointing";
 
@@ -28,7 +31,15 @@ export const Dialog = styled.div`
 	box-shadow: -3px 0 4px 0 rgba(0,0,0,0.25);}
 `;
 
-export const SubPage = ({ config, theme, match, location, history, root }) => {
+export const SubPage = ({
+	config,
+	tools = [],
+	theme,
+	match,
+	location,
+	history,
+	root,
+}) => {
 	const { component: View, ...props } = config;
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
@@ -50,6 +61,7 @@ export const SubPage = ({ config, theme, match, location, history, root }) => {
 							onClick: () => history.push(baseHref),
 						},
 						{ type: "separator", key: "subpage_sep_nav" },
+						...tools,
 					]}
 				/>
 				<WrappedView
@@ -66,4 +78,27 @@ SubPage.defaultProps = {
 	theme: { icons: { backArrow: "arrow-left" } },
 };
 
-export default withTheme(SubPage);
+const mapToolFuncs = (dispatch, { config }) => {
+	if (typeof config.toolFuncSelector !== "function") return {};
+	return {
+		funcs: config.toolFuncSelector(dispatch),
+	};
+};
+
+const mapToolbar = (state, { config, funcs }) => {
+	if (typeof config.toolStateSelector !== "function") return {};
+	return {
+		tools: config.toolStateSelector(state, funcs),
+	};
+};
+
+export const withToolbar = compose(
+	routingConnector(() => ({}), mapToolFuncs),
+	connect(
+		mapToolbar,
+		() => ({}),
+	),
+	withTheme,
+);
+
+export default withToolbar(SubPage);

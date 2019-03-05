@@ -66,11 +66,11 @@ Under a module or other view you may have segments, pages, and/or subpages. Each
 }
 ```
 
-Segment views are presented to the user as a list on the left side of the page, with the currently active view shown on the right - to this end it must have a label and component both. A view with segments under it may omit having its own component configured, and may not have subpages as this clashes with segment rendering.
+Segment views are presented to the user as a list on the left side of the page, with the currently active view shown on the right - to this end it must have a label and component both. A view with segments under it may omit having its own component configured, and may not have pages or subpages directly under it as this clashes with segment rendering. Pages and subpages under the segments themselves are permitted.
 
 Page views must have their own component to show, and a label. They can have subpages, as well. A page view will open a tab showing its label, allowing easy navigation to it.
 
-Subpages are very limited, in that they do not have labels, and cannot have pages, segments of subpages beneath them. They open as an overlay to their parent view, showing its component.
+Subpages do not have labels, and cannot have pages, segments of subpages beneath them. They open as an overlay to their parent view, showing its component. They may also have a `toolStateSelector`, a selector function in their configuration, which returns a Toolbar tool configuration that will be shown together with the button to close the subpage itself (see [the Toolbar test file](../src/components/Toolbar.test.js) for what that configuration should look like). If a `toolFuncSelector` function is added, this will be called with the redux store's `dispatch` function, and the results passed to `toolStateSelector` as its second parameter.
 
 ## Labels, data paths and ID parameters
 

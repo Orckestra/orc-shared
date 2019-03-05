@@ -64,6 +64,7 @@ const Button = styled.button`
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	text-transform: uppercase;
 	min-width: 50px;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 	${background};
 
 	&:enabled:active,
@@ -73,7 +74,6 @@ const Button = styled.button`
 		box-shadow: 0 0 4px #4fa1f0;
 		outline: none;
 	}
-
 	&:disabled {
 		opacity: 0.6;
 		cursor: default;
