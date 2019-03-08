@@ -1,7 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 import sinon from "sinon";
 import { setRoute, mapHref } from "../../actions/navigation";
 import withWaypointing from "./withWaypointing";
@@ -29,7 +29,6 @@ describe("withWaypointing", () => {
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
-		jsdom.reconfigure({ url: "http://localhost/foo/bar" });
 	});
 
 	it("wraps a component to tell its route info to Redux on mount", () =>
@@ -37,9 +36,9 @@ describe("withWaypointing", () => {
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
-						<BrowserRouter>
+						<MemoryRouter initialEntries={["/foo/bar"]}>
 							<Route path="/foo/bar" component={EnhancedView} />
-						</BrowserRouter>
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<Test />,
@@ -63,53 +62,49 @@ describe("withWaypointing", () => {
 				]),
 			));
 
-	it("does not fire action if pathname is already the same", () => {
-		jsdom.reconfigure({ url: "http://localhost/feep/meep" });
-		return expect(withWaypointing, "called with", [Test])
+	it("does not fire action if pathname is already the same", () =>
+		expect(withWaypointing, "called with", [Test])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
-						<BrowserRouter>
+						<MemoryRouter initialEntries={["/feep/meep"]}>
 							<Route path="/feep/meep" component={EnhancedView} />
-						</BrowserRouter>
+						</MemoryRouter>
 					</Provider>,
 					"when deeply rendered",
 					"to have rendered",
 					<Test />,
 				),
 			)
-			.then(() => expect(store.dispatch, "to have calls satisfying", []));
-	});
+			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
 
-	it("does not fire action if route match is not exact", () => {
-		jsdom.reconfigure({ url: "http://localhost/feep/meep/mef" });
-		return expect(withWaypointing, "called with", [Test])
+	it("does not fire action if route match is not exact", () =>
+		expect(withWaypointing, "called with", [Test])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
-						<BrowserRouter>
+						<MemoryRouter initialEntries={["/feep/meep/mef"]}>
 							<Route path="/feep/meep" component={EnhancedView} />
-						</BrowserRouter>
+						</MemoryRouter>
 					</Provider>,
 					"when deeply rendered",
 					"to have rendered",
 					<Test />,
 				),
 			)
-			.then(() => expect(store.dispatch, "to have calls satisfying", []));
-	});
+			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
 
 	it("maps the href to a root if so directed", () =>
 		expect(withWaypointing, "called with", [Test])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
-						<BrowserRouter>
+						<MemoryRouter initialEntries={["/foo/bar"]}>
 							<Route
 								path="/foo/bar"
 								render={props => <EnhancedView {...props} mapFrom="/foo" />}
 							/>
-						</BrowserRouter>
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<Test />,

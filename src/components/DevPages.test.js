@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import Spritesheet from "./Spritesheet";
 import DevPages from "./DevPages";
 
@@ -7,17 +7,13 @@ const TestComp = () => <div />;
 
 describe("DevPages", () => {
 	describe("route '/outside'", () => {
-		beforeEach(() => {
-			jsdom.reconfigure({ url: "http://localhost/outside" });
-		});
-
 		it("shows child", () =>
 			expect(
-				<BrowserRouter>
+				<MemoryRouter initialEntries={["/outside"]}>
 					<DevPages>
 						<TestComp />
 					</DevPages>
-				</BrowserRouter>,
+				</MemoryRouter>,
 				"when deeply rendered",
 			).then(render =>
 				expect(render, "to contain", <TestComp />).and(
@@ -28,17 +24,13 @@ describe("DevPages", () => {
 	});
 
 	describe("route '/dev/sprites'", () => {
-		beforeEach(() => {
-			jsdom.reconfigure({ url: "http://localhost/dev/sprites" });
-		});
-
 		it("shows a sprite sheet", () =>
 			expect(
-				<BrowserRouter>
+				<MemoryRouter initialEntries={["/dev/sprites"]}>
 					<DevPages>
 						<TestComp />
 					</DevPages>
-				</BrowserRouter>,
+				</MemoryRouter>,
 				"when deeply rendered",
 			).then(render =>
 				expect(render, "not to contain", <TestComp />).and(

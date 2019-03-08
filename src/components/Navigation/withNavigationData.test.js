@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { push } from "connected-react-router";
@@ -78,16 +78,15 @@ describe("withNavigation", () => {
 				},
 			},
 		};
-		jsdom.reconfigure({ url: "http://localhost/TestScope/test/page1" });
 	});
 
 	it("provides state information about navigation", () =>
 		expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<BrowserRouter>
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
 						<EnhComp modules={modules} />
-					</BrowserRouter>
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -131,7 +130,6 @@ describe("withNavigation", () => {
 		));
 
 	it("handles incomplete paths", () => {
-		jsdom.reconfigure({ url: "http://localhost/" });
 		state.setIn(
 			["navigation", "route", "match"],
 			Immutable.fromJS({
@@ -143,9 +141,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<BrowserRouter>
+					<MemoryRouter initialEntries={["/"]}>
 						<EnhComp modules={modules} />
-					</BrowserRouter>
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp />,
@@ -213,9 +211,9 @@ describe("withNavigation", () => {
 			expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<Provider store={store}>
-						<BrowserRouter>
+						<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
 							<EnhComp modules={modules} />
-						</BrowserRouter>
+						</MemoryRouter>
 					</Provider>,
 					"to deeply render as",
 					<TestComp
@@ -249,9 +247,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<BrowserRouter>
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
 						<EnhComp modules={modules} />
-					</BrowserRouter>
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp
@@ -284,7 +282,6 @@ describe("withNavigation", () => {
 	});
 
 	it("navigates to module page if closing current tab", () => {
-		jsdom.reconfigure({ url: "http://localhost/TestScope/test/page2/info" });
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
 			preventDefault: sinon.spy().named("preventDefault"),
@@ -292,9 +289,9 @@ describe("withNavigation", () => {
 		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
-					<BrowserRouter>
+					<MemoryRouter initialEntries={["/TestScope/test/page2/info"]}>
 						<EnhComp modules={modules} />
-					</BrowserRouter>
+					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
 				<TestComp

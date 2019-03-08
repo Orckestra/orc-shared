@@ -1,7 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Switch, Route, MemoryRouter } from "react-router-dom";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 import { Modules, Module } from "./Modules";
@@ -64,27 +64,24 @@ describe("Modules", () => {
 		};
 	});
 
-	it("renders a module table with navigation tabs", () => {
-		jsdom.reconfigure({ url: "http://localhost/TestScope/demos" });
-		return expect(
+	it("renders a module table with navigation tabs", () =>
+		expect(
 			<Provider store={store}>
-				<BrowserRouter>
+				<MemoryRouter initialEntries={["/TestScope/demos"]}>
 					<Modules modules={modules} scope="TestScope" />
-				</BrowserRouter>
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 			"to contain",
 			<Navigation modules={modules} />,
-		);
-	});
+		));
 
-	it("renders a module table as a routing system (user route)", () => {
-		jsdom.reconfigure({ url: "http://localhost/TestScope/users" });
-		return expect(
+	it("renders a module table as a routing system (user route)", () =>
+		expect(
 			<Provider store={store}>
-				<BrowserRouter>
+				<MemoryRouter initialEntries={["/TestScope/users"]}>
 					<Modules modules={modules} scope="TestScope" />
-				</BrowserRouter>
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 			"to contain",
@@ -93,16 +90,14 @@ describe("Modules", () => {
 					<Module config={modules.users} path="/:scope/users" />
 				</Route>
 			</Switch>,
-		);
-	});
+		));
 
-	it("renders a module table as a routing system (photo route)", () => {
-		jsdom.reconfigure({ url: "http://localhost/TestScope/photos" });
-		return expect(
+	it("renders a module table as a routing system (photo route)", () =>
+		expect(
 			<Provider store={store}>
-				<BrowserRouter>
+				<MemoryRouter initialEntries={["/TestScope/photos"]}>
 					<Modules modules={modules} scope="TestScope" />
-				</BrowserRouter>
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 			"to contain",
@@ -111,16 +106,14 @@ describe("Modules", () => {
 					<Module config={modules.photos} path="/:scope/photos" />
 				</Route>
 			</Switch>,
-		);
-	});
+		));
 
-	it("renders a module table as a routing system (demo route)", () => {
-		jsdom.reconfigure({ url: "http://localhost/TestScope/demos" });
-		return expect(
+	it("renders a module table as a routing system (demo route)", () =>
+		expect(
 			<Provider store={store}>
-				<BrowserRouter>
+				<MemoryRouter initialEntries={["/TestScope/demos"]}>
 					<Modules modules={modules} scope="TestScope" />
-				</BrowserRouter>
+				</MemoryRouter>
 			</Provider>,
 			"when deeply rendered",
 			"to contain",
@@ -129,8 +122,7 @@ describe("Modules", () => {
 					<Module config={modules.demos} path="/:scope/demos" />
 				</Route>
 			</Switch>,
-		);
-	});
+		));
 });
 
 describe("Module", () => {
