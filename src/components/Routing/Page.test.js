@@ -49,7 +49,11 @@ describe("Page", () => {
 							"when called with",
 							[{ location: {}, match: { url: "/nabble" } }],
 							"to satisfy",
-							<ShownView mapFrom="/nabble" />,
+							<ShownView
+								mapFrom="/nabble"
+								location={{}}
+								match={{ url: "/nabble" }}
+							/>,
 						)}
 					/>
 				</Switch>

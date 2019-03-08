@@ -14,13 +14,21 @@ const Page = ({ component: View, path, pages = {}, subpages = {} }) => {
 						key={subpath}
 						path={path + subpath}
 						render={route => (
-							<FullPage path={path + subpath} config={config} {...route} />
+							<FullPage
+								key={subpath}
+								path={path + subpath}
+								config={config}
+								{...route}
+							/>
 						)}
 					/>
 				))}
 				<Route
+					key="/"
 					path={path}
-					render={route => <WrappedView {...route} mapFrom={route.match.url} />}
+					render={route => (
+						<WrappedView key="/" {...route} mapFrom={route.match.url} />
+					)}
 				/>
 			</Switch>
 			<Switch>

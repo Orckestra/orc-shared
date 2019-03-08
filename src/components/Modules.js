@@ -23,13 +23,8 @@ export const Modules = ({ modules, scope }) => (
 					<Route
 						key={name}
 						path={"/:scope/" + name}
-						render={({ location, match }) => (
-							<Module
-								config={module}
-								location={location}
-								match={match}
-								path={"/:scope/" + name}
-							/>
+						render={route => (
+							<Module config={module} path={"/:scope/" + name} {...route} />
 						)}
 					/>
 				);
