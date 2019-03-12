@@ -53,7 +53,7 @@ export const ModuleIcon = styled(Icon)`
 
 export const TabText = styled.span`
 	flex: 0 9999999 100%;
-	max-width: 150px;
+	max-width: 350px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

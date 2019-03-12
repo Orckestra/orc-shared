@@ -16,9 +16,9 @@ describe("withWaypointing", () => {
 				route: {
 					location: { pathname: "/feep/meep", search: "", hash: "" },
 					match: {
-						path: "/feep/meep",
+						path: "/feep/:some",
 						url: "/feep/meep",
-						params: {},
+						params: { some: "meep" },
 						isExact: true,
 					},
 				},
@@ -68,7 +68,7 @@ describe("withWaypointing", () => {
 				expect(
 					<Provider store={store}>
 						<MemoryRouter initialEntries={["/feep/meep"]}>
-							<Route path="/feep/meep" component={EnhancedView} />
+							<Route path="/feep/:some" component={EnhancedView} />
 						</MemoryRouter>
 					</Provider>,
 					"when deeply rendered",
@@ -77,6 +77,38 @@ describe("withWaypointing", () => {
 				),
 			)
 			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
+
+	it("does fire action if path parameters different", () =>
+		expect(withWaypointing, "called with", [Test])
+			.then(EnhancedView =>
+				expect(
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/feep/moof"]}>
+							<Route path="/feep/:some" component={EnhancedView} />
+						</MemoryRouter>
+					</Provider>,
+					"when deeply rendered",
+					"to have rendered",
+					<Test />,
+				),
+			)
+			.then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							setRoute(
+								{ pathname: "/feep/moof", search: "", hash: "" },
+								{
+									path: "/feep/:some",
+									url: "/feep/moof",
+									params: { some: "moof" },
+									isExact: true,
+								},
+							),
+						],
+					},
+				]),
+			));
 
 	it("does not fire action if route match is not exact", () =>
 		expect(withWaypointing, "called with", [Test])

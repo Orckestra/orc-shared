@@ -23,7 +23,10 @@ const navigationReducer = (state = initialState, action) => {
 						params: match.params,
 					}),
 				);
-				const moduleName = match.path.replace(/\/:scope\/(\w+)\/.*/, "$1");
+				const moduleName = match.path.replace(
+					/^\/:scope\/(\w+)(?:\/.*)?$/,
+					"$1",
+				);
 				const moduleList =
 					s.getIn(["moduleTabs", moduleName]) || Immutable.List();
 				if (!moduleList.includes(href)) {

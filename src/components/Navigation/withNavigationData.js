@@ -70,6 +70,7 @@ const withNavigationData = routingConnector(
 					dataPath.push(params[pageData.dataIdParam]);
 				}
 				if (label && label.id) {
+					label = { ...label };
 					if (dataPath) {
 						let dataObject = dataPath && unwrapImmutable(state.getIn(dataPath));
 						label.values = { ...dataObject, ...label.values };

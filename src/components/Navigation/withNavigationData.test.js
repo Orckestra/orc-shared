@@ -33,6 +33,11 @@ describe("withNavigation", () => {
 						path: "/:scope/test/:page2",
 						params: { scope: "OtherScope", page2: "foo" },
 					},
+					"/OtherScope/test/bar": {
+						href: "/OtherScope/test/bar",
+						path: "/:scope/test/:page2",
+						params: { scope: "OtherScope", page2: "bar" },
+					},
 					"/TestScope/test/notexist": {
 						href: "/TestScope/test/notexist",
 					},
@@ -41,6 +46,7 @@ describe("withNavigation", () => {
 					test: [
 						"/TestScope/test/page1",
 						"/OtherScope/test/foo",
+						"/OtherScope/test/bar",
 						"/TestScope/test/notexist",
 					],
 				},
@@ -117,6 +123,18 @@ describe("withNavigation", () => {
 							active: false,
 						},
 						{
+							label: {
+								id: "page2",
+								defaultMessage: "Page 2 {someField}",
+								values: {
+									someField: "22",
+								},
+							},
+							href: "/OtherScope/test/bar",
+							mappedFrom: "/OtherScope/test/bar",
+							active: false,
+						},
+						{
 							href: "/TestScope/test/notexist",
 							mappedFrom: "/TestScope/test/notexist",
 							label: "[Not found]",
@@ -165,9 +183,11 @@ describe("withNavigation", () => {
 					tabIndex: {
 						"/TestScope/test": {
 							href: "/TestScope/test",
+							params: { scope: "TestScope" },
 						},
 						"/TestScope/test/page2": {
 							href: "/TestScope/test/page2",
+							params: { scope: "TestScope" },
 						},
 					},
 					mappedHrefs: {

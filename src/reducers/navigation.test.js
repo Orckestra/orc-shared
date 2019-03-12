@@ -74,21 +74,21 @@ describe("Navigation reducer", () => {
 			const action = setRoute(
 				{
 					hash: "",
-					pathname: "/Value/test/page",
+					pathname: "/Value/test",
 					search: "",
 				},
 				{
 					isExact: true,
 					params: { scope: "Value" },
-					path: "/:scope/test/page",
-					url: "/Value/test/page",
+					path: "/:scope/test",
+					url: "/Value/test",
 				},
 			);
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
 				"to have value at",
 				["moduleTabs", "test"],
-				Immutable.fromJS(["/Value/test/page"]),
+				Immutable.fromJS(["/Value/test"]),
 			);
 		});
 
