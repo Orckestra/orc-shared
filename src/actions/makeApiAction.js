@@ -6,18 +6,25 @@ export const makeActionTypes = name => [
 	`${name}_FAILURE`,
 ];
 
+const addMeta = meta => type => ({ type, meta });
+
 export const makeApiAction = (
 	name,
 	endpoint,
 	method = "GET",
 	configuration = {},
 ) => {
+	const { meta, ...remainder } = configuration;
+	let types = makeActionTypes(name);
+	if (meta) {
+		types = types.map(addMeta(meta));
+	}
 	return {
 		[RSAA]: {
-			types: makeActionTypes(name),
+			types,
 			endpoint,
 			method,
-			...configuration,
+			...remainder,
 		},
 	};
 };

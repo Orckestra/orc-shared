@@ -96,4 +96,23 @@ describe("makeApiActions", () => {
 			},
 		).then(() => expect(bailout, "was not called"));
 	});
+
+	it("handles action metadata", () =>
+		expect(
+			makeApiAction,
+			"when called with",
+			["TEST_ACTION", "/mock/endpoint", "GET", { meta: { test: true } }],
+			"to equal",
+			{
+				[RSAA]: {
+					types: [
+						{ type: "TEST_ACTION_REQUEST", meta: { test: true } },
+						{ type: "TEST_ACTION_SUCCESS", meta: { test: true } },
+						{ type: "TEST_ACTION_FAILURE", meta: { test: true } },
+					],
+					endpoint: "/mock/endpoint",
+					method: "GET",
+				},
+			},
+		));
 });
