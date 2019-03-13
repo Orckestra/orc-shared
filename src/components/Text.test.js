@@ -11,6 +11,14 @@ describe("Text", () => {
 			<span>Test message</span>,
 		));
 
+	it("renders an empty string", () =>
+		expect(
+			<Text message="" />,
+			"renders elements",
+			"to exactly render as",
+			<span>{""}</span>,
+		));
+
 	it("renders a translated message", () =>
 		expect(
 			<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />,
