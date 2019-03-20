@@ -1,14 +1,17 @@
 import React from "react";
+import { injectIntl } from "react-intl";
 import inputs from "./Inputs";
 import Field from "./Field";
 
-const InputField = ({
+export const InputField = ({
+	intl,
 	name,
 	type = "undefined",
 	label,
 	labelOnly,
 	value = "",
 	listIndex,
+	placeholder,
 	...props
 }) => {
 	const Input = inputs[type];
@@ -32,9 +35,14 @@ const InputField = ({
 				id={fieldName}
 				aria-labelledby={listIndex !== undefined ? name + "_label" : undefined}
 				value={value}
+				placeholder={
+					typeof placeholder == "object"
+						? intl.formatMessage(placeholder)
+						: undefined
+				}
 			/>
 		</Field>
 	);
 };
 
-export default InputField;
+export default injectIntl(InputField);

@@ -1,5 +1,6 @@
 import React from "react";
 import sinon from "sinon";
+import { IntlProvider } from "react-intl";
 import Text from "../Text";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
@@ -96,29 +97,27 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<FieldList
-				name="testlistedit"
-				rowField={{ type: "TextInput", name: "data" }}
-				getUpdater={getUpdater}
-				rowCount={3}
-				staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-				values={{
-					testlistedit: [
-						{ id: 4, data: "foo" },
-						{ id: 5, data: "bar" },
-						{ id: 6, data: "feep" },
-					],
-				}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
+			<IntlProvider locale="en">
+				<FieldList
+					name="testlistedit"
+					rowField={{ type: "TextInput", name: "data" }}
+					getUpdater={getUpdater}
+					rowCount={3}
+					staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
+					values={{
+						testlistedit: [
+							{ id: 4, data: "foo" },
+							{ id: 5, data: "bar" },
+							{ id: 6, data: "feep" },
+						],
+					}}
+				/>
+			</IntlProvider>,
+			"when deeply rendered",
 			"queried for",
 			<FieldElements values={{ id: 5 }} />,
-			"when rendered",
 			"queried for",
 			<InputField type="TextInput" />,
-			"when rendered",
 			"queried for",
 			<TextInput />,
 			"with event",
@@ -321,29 +320,23 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<FieldList
-				name="testlistrowdel"
-				rowField={{ type: "TextInput", name: "data" }}
-				getUpdater={getUpdater}
-				values={{
-					testlistrowdel: [{ id: 8, data: "bar" }, { id: 9, data: "foo" }],
-				}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
+			<IntlProvider locale="en">
+				<FieldList
+					name="testlistrowdel"
+					rowField={{ type: "TextInput", name: "data" }}
+					getUpdater={getUpdater}
+					values={{
+						testlistrowdel: [{ id: 8, data: "bar" }, { id: 9, data: "foo" }],
+					}}
+				/>
+			</IntlProvider>,
+			"when deeply rendered",
 			"queried for",
 			<FieldElements values={{ id: 9 }} />,
-			"when rendered",
-			"queried for",
-			<FieldElements values={{ id: 9 }} />,
-			"when rendered",
 			"queried for",
 			<InputField type="SmallButton" />,
-			"when rendered",
 			"queried for",
 			<SmallButton />,
-			"renders elements", // render through withId (SmallButton)
 			"with event",
 			"click",
 			"on",
