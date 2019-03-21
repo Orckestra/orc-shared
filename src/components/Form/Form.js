@@ -5,7 +5,6 @@ const Form = styled.div`
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
-	overflow-y: auto;
 	padding: 20px;
 	padding-top: 0;
 	font-size: 12px;

@@ -1,4 +1,5 @@
 import Selector from "../../Selector";
+import MultiSelector from "../../MultiSelector";
 import SmallButton from "./SmallButton";
 import { ReadOnly, LineLabel } from "./ReadOnly";
 import { CheckboxInput, SwitchInput } from "./Toggles";
@@ -13,6 +14,7 @@ const inputs = {
 	DateInput,
 	EmailInput,
 	NumberInput,
+	MultiSelector,
 	LineLabel,
 	ReadOnly,
 	Selector,

@@ -7,6 +7,7 @@ describe("Input field collection", () => {
 			DateInput: expect.it("to be a function"),
 			EmailInput: expect.it("to be a function"),
 			NumberInput: expect.it("to be a function"),
+			MultiSelector: expect.it("to be a function"),
 			LineLabel: expect.it("to be a function"),
 			ReadOnly: expect.it("to be a function"),
 			Selector: expect.it("to be a function"),

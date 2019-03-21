@@ -59,6 +59,8 @@ export const Dropdown = styled.div`
 	border-radius: 4px;
 	padding: 4px 0;
 	width: 100%;
+	max-height: 40vh;
+	overflow-y: auto;
 	background-color: white;
 	visibility: hidden;
 
