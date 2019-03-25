@@ -43,7 +43,7 @@ describe("makeApiActions", () => {
 					types: makeActionTypes("TEST_ACTION"),
 					endpoint: "/mock/endpoint",
 					method: "POST",
-					body: { test: true, someText: "This is a text value" },
+					body: '{"test":true,"someText":"This is a text value"}',
 				},
 			},
 		));

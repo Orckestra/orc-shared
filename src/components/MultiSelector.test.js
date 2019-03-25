@@ -10,7 +10,7 @@ import {
 } from "./Selector";
 import FullSelector, { Selector } from "./MultiSelector";
 
-describe("Selector", () => {
+describe("MultiSelector", () => {
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>
 		expect(
 			<Selector
@@ -142,9 +142,9 @@ describe("Selector", () => {
 				"with event",
 				"click",
 				"on",
-				<Option key="1" />,
+				<Option>Opt 4</Option>,
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[3, 1]] }]),
+				expect(updater, "to have calls satisfying", [{ args: [[3, 4]] }]),
 			));
 
 		it("can remove value when clicking a visual option", () =>
@@ -157,15 +157,56 @@ describe("Selector", () => {
 						{ value: 3, label: "Opt 3" },
 						{ value: 4, label: "Opt 4" },
 					]}
-					value={[1, 3]}
+					value={[4, 3]}
 				/>,
 				"when deeply rendered",
 				"with event",
 				"click",
 				"on",
-				<Option key="1" />,
+				<Option>Opt 4</Option>,
 			).then(() =>
 				expect(updater, "to have calls satisfying", [{ args: [[3]] }]),
+			));
+
+		it("deals with an empty value prop change", () =>
+			expect(
+				<FullSelector
+					update={updater}
+					options={[
+						{ value: 1, label: "Opt 1" },
+						{ value: 2, label: "Opt 2" },
+						{ value: 3, label: "Opt 3" },
+						{ value: 4, label: "Opt 4" },
+					]}
+				/>,
+				"when deeply rendered",
+				"with event",
+				"change",
+				{ target: { value: 2 } },
+				"on",
+				<select />,
+			).then(() =>
+				expect(updater, "to have calls satisfying", [{ args: [[2]] }]),
+			));
+
+		it("deals with an empty value prop click", () =>
+			expect(
+				<FullSelector
+					update={updater}
+					options={[
+						{ value: 1, label: "Opt 1" },
+						{ value: 2, label: "Opt 2" },
+						{ value: 3, label: "Opt 3" },
+						{ value: 4, label: "Opt 4" },
+					]}
+				/>,
+				"when deeply rendered",
+				"with event",
+				"click",
+				"on",
+				<Option>Opt 2</Option>,
+			).then(() =>
+				expect(updater, "to have calls satisfying", [{ args: [[2]] }]),
 			));
 	});
 });

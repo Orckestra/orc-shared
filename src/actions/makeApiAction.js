@@ -14,7 +14,7 @@ export const makeApiAction = (
 	method = "GET",
 	configuration = {},
 ) => {
-	const { meta, ...remainder } = configuration;
+	const { meta, body, ...remainder } = configuration;
 	let types = makeActionTypes(name);
 	if (meta) {
 		types = types.map(addMeta(meta));
@@ -24,6 +24,7 @@ export const makeApiAction = (
 			types,
 			endpoint,
 			method,
+			body: JSON.stringify(body),
 			...remainder,
 		},
 	};

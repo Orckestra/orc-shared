@@ -55,6 +55,7 @@ export const Dropdown = styled.div`
 	position: absolute;
 	left: 0;
 	top: calc(100% + 1px);
+	z-index: 1;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	padding: 4px 0;
