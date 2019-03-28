@@ -6,6 +6,7 @@ import {
 	InnerSelect,
 	Wrapper,
 	SelectBox,
+	SelectedValue,
 	Dropdown,
 	Option,
 	Placeholder,
@@ -21,18 +22,24 @@ const arrayToggle = (arr, item) => {
 };
 
 const withSelectHandlers = withHandlers({
+	clearValue: ({ update }) => () => update([]),
 	clickOption: ({ update, value = [] }) =>
 		memoize(clickValue => () => update(arrayToggle(value, clickValue))),
 	onChange: ({ update, value = [] }) => e =>
 		update(arrayToggle(value, e.target.value)),
 });
 
-export const Selector = ({
+const labelFromOptions = options =>
+	options.map(option => option.label).join(", ");
+
+export const MultiSelector = ({
 	id,
 	value = [],
 	options,
 	onChange,
+	clearValue,
 	clickOption,
+	clearMessage = "Clear",
 	placeholder = "",
 }) => (
 	<Wrapper>
@@ -44,12 +51,20 @@ export const Selector = ({
 			))}
 		</InnerSelect>
 		<SelectBox htmlFor={id}>
-			{options
-				.filter(option => value.indexOf(option.value) !== -1)
-				.map(option => option.label)
-				.join(", ") || <Placeholder>{placeholder}</Placeholder>}
+			{value.length ? (
+				<SelectedValue>
+					{labelFromOptions(
+						options.filter(option => value.indexOf(option.value) !== -1),
+					)}
+				</SelectedValue>
+			) : (
+				<Placeholder>{placeholder}</Placeholder>
+			)}
 		</SelectBox>
 		<Dropdown>
+			<Option key="multiselect_clear" onClick={clearValue}>
+				{clearMessage}
+			</Option>
 			{options.map(option => (
 				<Option
 					key={option.value}
@@ -66,4 +81,4 @@ export const Selector = ({
 export default compose(
 	withSelectHandlers,
 	withId("selector"),
-)(Selector);
+)(MultiSelector);

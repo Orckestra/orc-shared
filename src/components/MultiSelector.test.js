@@ -4,16 +4,17 @@ import {
 	InnerSelect,
 	Wrapper,
 	SelectBox,
+	SelectedValue,
 	Dropdown,
 	Option,
 	Placeholder,
 } from "./Selector";
-import FullSelector, { Selector } from "./MultiSelector";
+import FullSelector, { MultiSelector } from "./MultiSelector";
 
 describe("MultiSelector", () => {
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>
 		expect(
-			<Selector
+			<MultiSelector
 				id="test"
 				clickOption={() => () => {}}
 				options={[
@@ -40,8 +41,11 @@ describe("MultiSelector", () => {
 						Opt 4
 					</option>
 				</InnerSelect>
-				<SelectBox htmlFor="test">Opt 1, Opt 3</SelectBox>
+				<SelectBox htmlFor="test">
+					<SelectedValue>Opt 1, Opt 3</SelectedValue>
+				</SelectBox>
 				<Dropdown>
+					<Option key="multiselect_clear">Clear</Option>
 					<Option key={1} active>
 						Opt 1
 					</Option>
@@ -56,7 +60,7 @@ describe("MultiSelector", () => {
 
 	it("renders a placeholder if no value set", () =>
 		expect(
-			<Selector
+			<MultiSelector
 				id="test"
 				placeholder="This space for rent"
 				clickOption={() => () => {}}
@@ -66,7 +70,6 @@ describe("MultiSelector", () => {
 					{ value: 3, label: "Opt 3" },
 					{ value: 4, label: "Opt 4" },
 				]}
-				value=""
 			/>,
 			"to render as",
 			<Wrapper>
@@ -166,6 +169,27 @@ describe("MultiSelector", () => {
 				<Option>Opt 4</Option>,
 			).then(() =>
 				expect(updater, "to have calls satisfying", [{ args: [[3]] }]),
+			));
+
+		it("sets empty value when cleared", () =>
+			expect(
+				<FullSelector
+					update={updater}
+					options={[
+						{ value: 1, label: "Opt 1" },
+						{ value: 2, label: "Opt 2" },
+						{ value: 3, label: "Opt 3" },
+						{ value: 4, label: "Opt 4" },
+					]}
+					value={[4, 3]}
+				/>,
+				"when deeply rendered",
+				"with event",
+				"click",
+				"on",
+				<Option>Clear</Option>,
+			).then(() =>
+				expect(updater, "to have calls satisfying", [{ args: [[]] }]),
 			));
 
 		it("deals with an empty value prop change", () =>

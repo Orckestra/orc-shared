@@ -5,6 +5,7 @@ import FullSelector, {
 	InnerSelect,
 	Wrapper,
 	SelectBox,
+	SelectedValue,
 	Dropdown,
 	Option,
 	Placeholder,
@@ -40,7 +41,9 @@ describe("Selector", () => {
 						Opt 4
 					</option>
 				</InnerSelect>
-				<SelectBox htmlFor="test">Opt 3</SelectBox>
+				<SelectBox htmlFor="test">
+					<SelectedValue>Opt 3</SelectedValue>
+				</SelectBox>
 				<Dropdown>
 					<Option key={1}>Opt 1</Option>
 					<Option key={2}>Opt 2</Option>
@@ -64,7 +67,6 @@ describe("Selector", () => {
 					{ value: 3, label: "Opt 3" },
 					{ value: 4, label: "Opt 4" },
 				]}
-				value=""
 			/>,
 			"to render as",
 			<Wrapper>

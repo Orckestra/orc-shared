@@ -50,6 +50,13 @@ export const SelectBox = styled.label`
 	}
 `;
 
+export const SelectedValue = styled.span`
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+	text-overflow: ellipsis;
+`;
+
 export const Dropdown = styled.div`
 	box-sizing: border-box;
 	position: absolute;
@@ -116,9 +123,15 @@ export const Selector = ({
 			))}
 		</InnerSelect>
 		<SelectBox htmlFor={id}>
-			{options
-				.filter(option => option.value === value)
-				.map(option => option.label)[0] || (
+			{value ? (
+				<SelectedValue>
+					{
+						options
+							.filter(option => option.value === value)
+							.map(option => option.label)[0]
+					}
+				</SelectedValue>
+			) : (
 				<Placeholder>{placeholder}</Placeholder>
 			)}
 		</SelectBox>

@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { ifFlag } from "../../utils";
-
+import { SelectedValue } from "../Selector";
 const Form = styled.div`
 	flex: 1 0 auto;
 	display: flex;
@@ -11,7 +11,12 @@ const Form = styled.div`
 
 	${ifFlag(
 		"wide",
-		css``,
+		css`
+			& ${SelectedValue} {
+				width: calc(100vw - 200px);
+				${"" /* XXX: This works for base cases, needs to be better - Gert */}
+			}
+		`,
 		css`
 			flex-wrap: wrap;
 			align-items: flex-start;
@@ -20,6 +25,9 @@ const Form = styled.div`
 			& > * {
 				margin-right: 50px;
 				width: 430px;
+			}
+			& ${SelectedValue} {
+				width: 348px;
 			}
 		`,
 	)};
