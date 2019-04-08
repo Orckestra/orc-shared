@@ -15,11 +15,11 @@ const FieldElements = ({
 	...elementProps
 }) => (
 	<React.Fragment>
-		{fields.map(({ type, name, ...props }) => {
+		{fields.map(({ type, name, label, ...props }) => {
 			switch (type) {
 				case "Fieldset": {
 					return (
-						<Fieldset key={name} label={props.label}>
+						<Fieldset key={name} label={label}>
 							<FieldElements
 								fields={props.fields}
 								getUpdater={getUpdater}
@@ -35,7 +35,7 @@ const FieldElements = ({
 					return (
 						<Combination
 							key={name}
-							label={props.label}
+							label={label}
 							proportions={props.proportions}
 						>
 							<FieldElements
@@ -55,6 +55,7 @@ const FieldElements = ({
 						<FieldList
 							key={name}
 							name={name}
+							label={label}
 							values={values}
 							getUpdater={getUpdater}
 							rowCount={props.rowCount}
@@ -69,6 +70,7 @@ const FieldElements = ({
 						<InputField
 							key={name}
 							name={name}
+							label={label}
 							type={type}
 							update={getUpdater(name)}
 							value={values[name]}
