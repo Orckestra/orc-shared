@@ -5,6 +5,7 @@ import { compose } from "recompose";
 import UrlPattern from "url-pattern";
 import { getThemeProp } from "../../utils";
 import routingConnector from "../../hocs/routingConnector";
+import { mapHref } from "../../actions/navigation";
 import Toolbar from "../Toolbar";
 import withWaypointing from "./withWaypointing";
 
@@ -39,14 +40,19 @@ export const SubPage = ({
 	location,
 	history,
 	root,
+	dispatch,
 }) => {
 	const { component: View, ...props } = config;
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
 	const WrappedView = withWaypointing(View);
+	const closeSubPage = () => {
+		history.push(baseHref);
+		dispatch(mapHref(baseHref, baseHref));
+	};
 	return (
 		<React.Fragment>
-			<Backdrop onClick={() => history.push(baseHref)} />
+			<Backdrop onClick={closeSubPage} />
 			<Dialog>
 				<Toolbar
 					tools={[
@@ -58,7 +64,7 @@ export const SubPage = ({
 									theme,
 								}),
 							},
-							onClick: () => history.push(baseHref),
+							onClick: closeSubPage,
 						},
 						{ type: "separator", key: "subpage_sep_nav" },
 						...tools,
@@ -79,9 +85,10 @@ SubPage.defaultProps = {
 };
 
 const mapToolFuncs = (dispatch, { config }) => {
-	if (typeof config.toolFuncSelector !== "function") return {};
+	if (typeof config.toolFuncSelector !== "function") return { dispatch };
 	return {
 		funcs: config.toolFuncSelector(dispatch),
+		dispatch,
 	};
 };
 

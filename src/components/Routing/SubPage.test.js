@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
+import { mapHref } from "../../actions/navigation";
 import Toolbar from "../Toolbar";
 import { SubPage, Backdrop, Dialog, withToolbar } from "./SubPage";
 import withWaypointing from "./withWaypointing";
@@ -11,9 +12,10 @@ const InnerView = () => <div />;
 const WrappedView = withWaypointing(InnerView);
 
 describe("SubPage", () => {
-	let history;
+	let history, dispatch;
 	beforeEach(() => {
 		history = { push: sinon.spy().named("history.push") };
+		dispatch = sinon.spy().named("dispatch");
 	});
 
 	it("shows overtop its parent", () =>
@@ -24,6 +26,7 @@ describe("SubPage", () => {
 				path="/foo/bar"
 				match={{ params: {} }}
 				history={history}
+				dispatch={dispatch}
 			/>,
 			"to render as",
 			<React.Fragment>
@@ -43,12 +46,16 @@ describe("SubPage", () => {
 					<WrappedView set={true} />
 				</Dialog>
 			</React.Fragment>,
-		).then(() =>
+		).then(() => {
 			expect(history.push, "to have calls satisfying", [
 				{ args: ["/foo"] },
 				{ args: ["/foo"] },
-			]),
-		));
+			]);
+			expect(dispatch, "to have calls satisfying", [
+				{ args: [mapHref("/foo", "/foo")] },
+				{ args: [mapHref("/foo", "/foo")] },
+			]);
+		}));
 
 	it("adds toolbar config to the built-in navigation button", () =>
 		expect(
