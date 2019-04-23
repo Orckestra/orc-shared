@@ -53,6 +53,15 @@ describe("Placeholder", () => {
 				</PlaceholderSubtitle>
 			</PlaceholderBox>,
 		));
+
+	it("renders a warning placeholder", () =>
+		expect(
+			<Placeholder icon="testIcon" warn />,
+			"to exactly render as",
+			<PlaceholderBox warn>
+				<PlaceholderIcon id="testIcon" />
+			</PlaceholderBox>,
+		));
 });
 
 describe("PlaceholderIcon", () => {
