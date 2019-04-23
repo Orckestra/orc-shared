@@ -44,6 +44,32 @@ describe("Sidebar", () => {
 			</Bar>,
 		));
 
+	it("renders a sidebar showing active module", () =>
+		expect(
+			<Sidebar
+				modules={modules}
+				path="/Global/second"
+				activeModules={["first"]}
+			/>,
+			"to render as",
+			<Bar>
+				<MenuToggle />
+				<EnhancedMenuItem
+					icon="cars"
+					id="first"
+					label="First page"
+					path="/Global/second"
+					active
+				/>
+				<EnhancedMenuItem
+					icon="person"
+					id="second"
+					label="Second page"
+					path="/Global/second"
+				/>
+			</Bar>,
+		));
+
 	it("renders an open sidebar", () =>
 		expect(
 			<Sidebar open modules={modules} path="/Global/second" />,

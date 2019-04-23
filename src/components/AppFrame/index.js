@@ -59,6 +59,7 @@ export const AppFrame = ({
 	applications,
 	applicationId,
 	modules,
+	activeModules,
 	menuLabel,
 	menuItems,
 	linkHOC,
@@ -80,6 +81,7 @@ export const AppFrame = ({
 			open={open}
 			toggle={toggle}
 			modules={modules}
+			activeModules={activeModules}
 			path={location.pathname}
 		/>
 		<ViewPort open={open} onClick={reset}>

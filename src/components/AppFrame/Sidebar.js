@@ -38,12 +38,24 @@ export const EnhancedMenuItem = compose(
 	})),
 )(MenuItem);
 
-const Sidebar = ({ open, toggle, modules = [], path = "" }) => {
+const Sidebar = ({
+	open,
+	toggle,
+	modules = [],
+	activeModules = [],
+	path = "",
+}) => {
 	return (
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
 			{modules.map(item => (
-				<EnhancedMenuItem key={item.id} {...item} open={open} path={path} />
+				<EnhancedMenuItem
+					key={item.id}
+					{...item}
+					open={open}
+					path={path}
+					active={activeModules.includes(item.id)}
+				/>
 			))}
 		</Bar>
 	);

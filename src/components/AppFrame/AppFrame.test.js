@@ -41,6 +41,7 @@ describe("AppFrame", () => {
 			applications: [{ src: "/", label: "This", id: "current" }],
 			applicationId: "current",
 			modules: [],
+			activeModules: ["foo"],
 			menuLabel: "TestLabel",
 			menuItems: [],
 			location: { pathname: "/Foo/bar" },
@@ -77,6 +78,7 @@ describe("AppFrame", () => {
 				<Sidebar
 					linkHOC={props.linkHOC}
 					modules={props.modules}
+					activeModules={["foo"]}
 					path="/Foo/bar"
 				/>
 				<ViewPort>

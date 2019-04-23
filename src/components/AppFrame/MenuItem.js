@@ -14,6 +14,7 @@ const FilteredLink = ({
 
 export const Block = styled(FilteredLink)`
 	display: block;
+	position: relative;
 	padding: 0 10px;
 	margin-bottom: 35px;
 	color: ${props => (props.active ? props.theme.appHighlightColor : "#999999")};
@@ -37,6 +38,14 @@ Block.defaultProps = {
 	},
 };
 
+export const Active = styled.div`
+	border-radius: 50%;
+	border: 4px solid #ff0000;
+	position: absolute;
+	top: 0;
+	left: 27px;
+`;
+
 export const MenuIcon = styled(Icon)`
 	font-size: 24px;
 	vertical-align: middle;
@@ -53,7 +62,14 @@ export const Label = styled.span`
 	opacity: ${props => (props.show ? 1 : 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, href, ...props }) => {
+const MenuItem = ({
+	open = false,
+	label = "",
+	icon,
+	active,
+	href,
+	...props
+}) => {
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = Block.withComponent("a");
@@ -61,6 +77,7 @@ const MenuItem = ({ open = false, label = "", icon, href, ...props }) => {
 	return (
 		<ItemWrapper to={href} {...props}>
 			<MenuIcon id={icon} />
+			{active ? <Active /> : null}
 			<Label show={open}>{label}</Label>
 		</ItemWrapper>
 	);
