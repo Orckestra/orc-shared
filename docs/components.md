@@ -7,6 +7,7 @@
 - `applications`: A list of applications to be made available in the application selector. An application is defined as an object containing `url`, `name`, `iconUri` and `displayName` values.
 - `applicationId`: The `name` of the current application as given in `applications`.
 - `modules`: A list of modules provided by this application, given as objects containing an `id` (used to generate its URL), a `component` to render, and an `icon` and a `label` (`react-intl` message descriptor) to show in the sidebar menu. See [documentation](moduleFile.md).
+- `activeModules`: An array of module `id` to be shown as active (a red dot will appear by the icon).
 - `menuLabel`: The label for the topbar menu. Typically the logged-in user's email.
 - `menuItems`: A list of items in the topbar menu, given as objects containing `label` (`react-intl` message descriptor), `handler`function for selecting the item, and an `icon` id to show.
 - `scopeHOC`: A higher-order component that furnishes the scope selector with properties. See `Scope` component for the props this should provide.
@@ -103,6 +104,7 @@ Intended to convert a module table into a page rendering system, it sets up a `N
 - `title`: A string or message descriptor to be rendered as large text.
 - `subtitle`: A string or message descriptor to be shown below the title, slightly smaller.
 - `animate`: A flag, if set the icon will rotate.
+- `warn`: A flag, if set the placeholder is shown in dark red rather than grey.
 
 Shows an element suitable for being used as a placeholder or load spinner in e.g. lists without content.
 
