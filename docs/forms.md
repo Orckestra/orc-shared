@@ -54,3 +54,5 @@ Depending on the particlar purpose, binary values can be handled with either `Ch
 ## Miscellaneous
 
 A variable length list shows a button to delete rows from it, and for this it uses the `SmallButton` type. This control may also be used for other functions. The button must be provided with an `altText` property describing the button function, to ensure accessibility.
+
+Normal sized buttons with text are also available in the `Button` type. It follows the normal interface of the [`Button` component](components.md#Button), and uses the update function it is provided as a click handler.

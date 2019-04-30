@@ -24,7 +24,7 @@ export const FormButton = ({
 	icon,
 	buttonText,
 	update,
-	"aria-buttonTextledby": aria, // Not meaningful for buttons
+	"aria-labelledby": aria, // Not meaningful for buttons
 	...props
 }) => (
 	<PositionedButton id={id} {...props} onClick={update}>
