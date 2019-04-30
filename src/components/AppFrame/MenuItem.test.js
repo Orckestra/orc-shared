@@ -1,6 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import MenuItem, { Block, MenuIcon, Label, Active } from "./MenuItem";
+import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
 
 describe("MenuItem", () => {
 	it("renders an icon and no label", () =>
@@ -35,11 +35,11 @@ describe("MenuItem", () => {
 
 	it("shows activity marker", () =>
 		expect(
-			<MenuItem icon="cake" label="Test" active />,
+			<MenuItem icon="cake" label="Test" alert />,
 			"to render as",
 			<Block>
 				<MenuIcon id="cake" />
-				<Active />
+				<Alert />
 				<Label>Test</Label>
 			</Block>,
 		));

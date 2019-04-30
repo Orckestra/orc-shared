@@ -54,7 +54,7 @@ const Sidebar = ({
 					{...item}
 					open={open}
 					path={path}
-					active={activeModules.includes(item.id)}
+					alert={activeModules.includes(item.id)}
 				/>
 			))}
 		</Bar>

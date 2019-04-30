@@ -44,7 +44,7 @@ describe("Sidebar", () => {
 			</Bar>,
 		));
 
-	it("renders a sidebar showing active module", () =>
+	it("renders a sidebar showing alerts", () =>
 		expect(
 			<Sidebar
 				modules={modules}
@@ -59,7 +59,7 @@ describe("Sidebar", () => {
 					id="first"
 					label="First page"
 					path="/Global/second"
-					active
+					alert
 				/>
 				<EnhancedMenuItem
 					icon="person"

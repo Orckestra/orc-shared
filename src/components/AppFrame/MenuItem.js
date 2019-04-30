@@ -38,7 +38,7 @@ Block.defaultProps = {
 	},
 };
 
-export const Active = styled.div`
+export const Alert = styled.div`
 	border-radius: 50%;
 	border: 4px solid #ff0000;
 	position: absolute;
@@ -66,7 +66,7 @@ const MenuItem = ({
 	open = false,
 	label = "",
 	icon,
-	active,
+	alert,
 	href,
 	...props
 }) => {
@@ -77,7 +77,7 @@ const MenuItem = ({
 	return (
 		<ItemWrapper to={href} {...props}>
 			<MenuIcon id={icon} />
-			{active ? <Active /> : null}
+			{alert ? <Alert /> : null}
 			<Label show={open}>{label}</Label>
 		</ItemWrapper>
 	);
