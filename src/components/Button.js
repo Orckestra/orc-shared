@@ -10,23 +10,23 @@ const background = ifFlag(
 	ifFlag(
 		"active",
 		css`
-			background-image: none;
-			background-color: #fff;
-			color: ${getThemeProp(["appHighlightColor"], "#333")};
-		`,
-		css`
+			color: #fff;
 			background-image: linear-gradient(
 				${getThemeProp(["appHighlightColor"], "#333", color =>
 					tint(0.05, color),
 				)},
 				${getThemeProp(["appHighlightColor"], "#333")}
 			);
-			color: #fff;
 			&:enabled:active {
 				background-image: none;
 				background-color: #fff;
 				color: ${getThemeProp(["appHighlightColor"], "#333")};
 			}
+		`,
+		css`
+			color: ${getThemeProp(["appHighlightColor"], "#333")};
+			background-image: none;
+			background-color: #fff;
 		`,
 	),
 	ifFlag(
