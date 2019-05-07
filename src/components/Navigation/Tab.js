@@ -60,7 +60,7 @@ export const TabText = styled.span`
 `;
 
 export const CloseIcon = styled(Icon).attrs({
-	id: getThemeProp(["icon", "close"], "close"),
+	id: getThemeProp(["icons", "close"], "close"),
 })`
 	flex: 0 0 auto;
 	margin-left: 10px;
