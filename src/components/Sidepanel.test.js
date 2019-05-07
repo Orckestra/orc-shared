@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Sidepanel, { PanelDrawer } from "./Sidepanel";
 
-const RenderSidepanel = class Wrapped extends React.Component {
+class RenderSidepanel extends React.Component {
 	render() {
 		return (
 			<div id="outer">
@@ -10,7 +10,7 @@ const RenderSidepanel = class Wrapped extends React.Component {
 			</div>
 		);
 	}
-};
+}
 
 describe("Sidepanel", () => {
 	let appRoot, modalRoot;
