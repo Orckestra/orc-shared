@@ -4,13 +4,54 @@ import { ThemeProvider } from "styled-components";
 import { shade } from "polished";
 import Text from "./Text";
 import Icon from "./Icon";
-import FullToast, { Toast, ToastBox, ToastIcon, CloseIcon } from "./Toast";
+import FullToastList, {
+	Toast,
+	ToastBox,
+	ToastIcon,
+	CloseIcon,
+} from "./ToastList";
 
 class RenderToast extends React.Component {
 	render() {
-		return <FullToast {...this.props} />;
+		return <FullToastList {...this.props} />;
 	}
 }
+
+describe("ToastList", () => {
+	describe("full render", () => {
+		let appRoot, modalRoot;
+		beforeEach(() => {
+			appRoot = document.createElement("div");
+			appRoot.id = "app";
+			document.body.appendChild(appRoot);
+			modalRoot = document.getElementById("toast");
+		});
+		afterEach(() => {
+			try {
+				ReactDOM.unmountComponentAtNode(appRoot);
+			} catch (_) {}
+			document.body.removeChild(appRoot);
+		});
+
+		it("renders in a portal", () => {
+			const render = ReactDOM.render(
+				<RenderToast toasts={[{ key: 1 }]} />,
+				appRoot,
+			);
+			return expect(
+				render,
+				"queried for",
+				<Text message="[No message]" />,
+			).then(elm => {
+				let node = ReactDOM.findDOMNode(elm);
+				while (node.parentNode !== document.body) {
+					node = node.parentNode;
+				}
+				return expect(node, "to be", modalRoot);
+			});
+		});
+	});
+});
 
 describe("Toast", () => {
 	it("shows a message", () =>
@@ -71,7 +112,7 @@ describe("Toast", () => {
 		it("renders a default type", () =>
 			expect(
 				<ThemeProvider theme={theme}>
-					<Toast />
+					<Toast in />
 				</ThemeProvider>,
 				"to render style rules",
 				"to contain",
@@ -81,7 +122,7 @@ describe("Toast", () => {
 		it("renders a set type", () =>
 			expect(
 				<ThemeProvider theme={theme}>
-					<Toast type="test" />
+					<Toast in type="test" />
 				</ThemeProvider>,
 				"to render style rules",
 				"to contain",
@@ -107,36 +148,5 @@ describe("Toast", () => {
 				"to contain",
 				":hover {background-color: " + shade(0.3, "#ff0000") + ";}",
 			));
-	});
-
-	describe("full render", () => {
-		let appRoot, modalRoot;
-		beforeEach(() => {
-			appRoot = document.createElement("div");
-			appRoot.id = "app";
-			document.body.appendChild(appRoot);
-			modalRoot = document.getElementById("toast");
-		});
-		afterEach(() => {
-			try {
-				ReactDOM.unmountComponentAtNode(appRoot);
-			} catch (_) {}
-			document.body.removeChild(appRoot);
-		});
-
-		it("renders in a portal", () => {
-			const render = ReactDOM.render(<RenderToast />, appRoot);
-			return expect(
-				render,
-				"queried for",
-				<Text message="[No message]" />,
-			).then(elm => {
-				let node = ReactDOM.findDOMNode(elm);
-				while (node.parentNode !== document.body) {
-					node = node.parentNode;
-				}
-				return expect(node, "to be", modalRoot);
-			});
-		});
 	});
 });

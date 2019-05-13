@@ -156,13 +156,14 @@ Displays all available icons along with the ids to access them.
 
 Displays a horizontal toggle switch. This is a wrapper around a `<input type="checkbox" />`, so any props that work with that will also work here. Use `value` to set the value, not `checked`. If no `id` is passed, one will be generated and used.
 
-## Toast
+## ToastList
 
-- `message`: A string or message descriptor containing the text to be shown.
-- `type`: A string denoting the type of toast.
-- `closeFunc`: A function that is called when the close icon is clocked.
+- `toasts`: An array containing prop objects for the toasts to be shown, each as follows:
+  - `message`: A string or message descriptor containing the text to be shown.
+  - `type`: A string denoting the type of toast.
+  - `closeFunc`: A function that is called when the close icon is clocked. Optional.
 
-Shows a message box in the upper right corner, displaying the selected icon and message. It is up to the showing component to determine when to remove the toast, to this end a close function hook is provided to allow user interaction. Types may be defined in the theme by setting `toastColors` and `icons.toast`: each of these should be an object with type names as keys, giving the background color and icon of the toast type, respectively.
+Shows a list of message boxes in the upper right corner, displaying the selected icon and message. It is up to the showing component to determine when to remove a toast toast, to this end a close function hook is provided to allow user interaction. Types may be defined in the theme by setting `toastColors` and `icons.toast`: each of these should be an object with type names as keys, giving the background color and icon of the toast type, respectively. The list is rendered in a portal with the id `"toast"`, which is automatically created.
 
 ## Toolbar
 
