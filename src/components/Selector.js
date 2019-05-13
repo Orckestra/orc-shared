@@ -55,6 +55,7 @@ export const SelectedValue = styled.span`
 	overflow: hidden;
 	display: inline-block;
 	text-overflow: ellipsis;
+	width: calc(100% - 20px);
 `;
 
 export const Dropdown = styled.div`

@@ -26,9 +26,6 @@ const Form = styled.div`
 				margin-right: 50px;
 				width: 430px;
 			}
-			& ${SelectedValue} {
-				width: 348px;
-			}
 		`,
 	)};
 `;
