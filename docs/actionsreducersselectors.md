@@ -21,6 +21,10 @@
 
 The app's navigation infrastructure requires handling of module and page tabs, typically in response to navigation. `setRoute(location, match)` is called by the routing components when rendering a view, putting information in the state about the currently matched view and location. `mapHref(from, to)` sets a href mapping up to allow tabs to directly navigate to their selected segment. `removeTab(module, path)` permits closing page tabs.
 
+## toasts
+
+Small temporary notifications (aka. toasts) can be shown by dispatching the return value of `pushToast(message, type)`. The value of `message` can be a plain string or a message descriptor (as per `react-intl`). `shiftToast()` returns an action that will clear the first shown toast, and is generally used for timed dismissal of the toast.
+
 ## View state
 
 Provides actions for setting partial or complete view state for named components (see also `reducers/view`, below, and [`hocs/withViewState`](hocs.md#withviewstatecomponent), which use them).
@@ -44,6 +48,10 @@ This reducer interacts with `redux-api-middleware`, in that it tracks ongoing re
 ## `navigation`
 
 Takes care of storing tabs and mappings when a new view is navigated to, and handles calls for the removal of tabs as well.
+
+## `toasts`
+
+Handles storing the list of shown toasts. See [above](#toasts)
 
 # Selectors
 

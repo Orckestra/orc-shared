@@ -12,6 +12,7 @@ import localeFactory from "./reducers/localeFactory";
 import viewReducer from "./reducers/view";
 import requestReducer from "./reducers/request";
 import navigationReducer from "./reducers/navigation";
+import toastReducer from "./reducers/toasts";
 
 const basename = window.BASE_PATH || "";
 
@@ -42,6 +43,7 @@ const buildStore = reducers => {
 			router: connectRouter(history),
 			requests: requestReducer,
 			view: viewReducer,
+			toasts: toastReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 
