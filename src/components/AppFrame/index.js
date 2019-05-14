@@ -5,6 +5,7 @@ import withToggle from "../../hocs/withToggle";
 import Scope from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
+import ConnectedToastList from "./ConnectedToastList";
 
 injectGlobal`
 	html {
@@ -68,6 +69,7 @@ export const AppFrame = ({
 	children,
 }) => (
 	<Base>
+		<ConnectedToastList />
 		<Topbar
 			linkHOC={linkHOC}
 			onClick={reset}

@@ -8,6 +8,7 @@ import Scope from "../Scope";
 import FullAppFrame, { Base, ViewPort, AppFrame } from "./index";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
+import ConnectedToastList from "./ConnectedToastList";
 
 class ClassAppFrame extends React.Component {
 	render() {
@@ -68,6 +69,7 @@ describe("AppFrame", () => {
 			<AppFrame {...props} {...{ toggle, reset }} />,
 			"to render as",
 			<Base>
+				<ConnectedToastList />
 				<Topbar
 					linkHOC={props.linkHOC}
 					applications={props.applications}
@@ -124,6 +126,7 @@ describe("AppFrame", () => {
 							suportedLocales: [],
 						},
 						view: { scopeSelector: { filter: "Foo" } },
+						toasts: { queue: [] },
 					}),
 			};
 			const { ConnectedScope, ...remainder } = props;
