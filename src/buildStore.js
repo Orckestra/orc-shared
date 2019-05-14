@@ -8,6 +8,7 @@ import {
 import { createBrowserHistory } from "history";
 import { combineReducers } from "redux-immutable";
 import addLocales from "./addLocales";
+import { spawnerMiddleware } from "./spawnerMiddleware";
 import localeFactory from "./reducers/localeFactory";
 import viewReducer from "./reducers/view";
 import requestReducer from "./reducers/request";
@@ -21,7 +22,7 @@ export let buildReducer;
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const enhancer = composeEnhancers(
-	applyMiddleware(routerMiddleware(history), apiMiddleware),
+	applyMiddleware(routerMiddleware(history), apiMiddleware, spawnerMiddleware),
 );
 
 const initialState = Immutable.Map();
