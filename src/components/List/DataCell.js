@@ -4,11 +4,17 @@ import { FormattedNumber, FormattedDate, FormattedTime } from "react-intl";
 import { safeGet } from "../../utils";
 import Switch from "../Switch";
 import Checkbox from "../Checkbox";
+import Text from "../Text";
 
 const arrify = thing => (Array.isArray(thing) ? thing : [thing]);
 
 const renderByType = (value, def, rowId, selected, row) => {
+	const transformedValue = def.transform ? def.transform(value) : value;
 	switch (def.type) {
+		case "custom": {
+			const Comp = def.component;
+			return <Comp {...row} />;
+		}
 		case "currency": {
 			let currency = def.currency;
 			if (Array.isArray(currency)) {
@@ -18,16 +24,17 @@ const renderByType = (value, def, rowId, selected, row) => {
 				<FormattedNumber
 					style="currency" // eslint-disable-line react/style-prop-object
 					currency={currency}
-					value={value}
+					value={transformedValue}
 				/>
 			);
 		}
 		case "date":
-			return <FormattedDate value={value} />;
+			return <FormattedDate value={transformedValue} />;
 		case "datetime":
 			return (
 				<React.Fragment>
-					<FormattedDate value={value} /> <FormattedTime value={value} />
+					<FormattedDate value={transformedValue} />{" "}
+					<FormattedTime value={transformedValue} />
 				</React.Fragment>
 			);
 		case "select":
@@ -39,9 +46,15 @@ const renderByType = (value, def, rowId, selected, row) => {
 				/>
 			);
 		case "switch":
-			return <Switch value={!!value} {...def.switch} data-row-id={rowId} />;
+			return (
+				<Switch
+					value={!!transformedValue}
+					{...def.switch}
+					data-row-id={rowId}
+				/>
+			);
 		default:
-			return value;
+			return transformedValue ? <Text message={transformedValue} /> : null;
 	}
 };
 

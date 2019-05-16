@@ -66,6 +66,7 @@ describe("List", () => {
 					row={expect.it("to be", rows[0])}
 					columnDefs={expect.it("to be", columnDefs)}
 					onClick={rowOnClick}
+					bgColor={undefined}
 				/>
 				<Row
 					key="b"
@@ -80,6 +81,99 @@ describe("List", () => {
 					row={expect.it("to be", rows[2])}
 					columnDefs={expect.it("to be", columnDefs)}
 					onClick={rowOnClick}
+				/>
+			</tbody>,
+		);
+	});
+
+	it("renders rows with data-based backgrounds", () => {
+		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
+		const columnDefs = [{}];
+		const rowOnClick = () => {};
+		const colorMap = {
+			a: "#ff0000",
+			b: "#00ff00",
+			c: "#0000ff",
+		};
+		const colorGetter = row => colorMap[row.key];
+		return expect(
+			<List
+				columnDefs={columnDefs}
+				rows={rows}
+				keyField={["key"]}
+				rowOnClick={rowOnClick}
+				rowBackgroundGetter={colorGetter}
+			/>,
+			"when rendered",
+			"to contain",
+			<tbody>
+				<Row
+					key="a"
+					rowId="a"
+					row={expect.it("to be", rows[0])}
+					columnDefs={expect.it("to be", columnDefs)}
+					onClick={rowOnClick}
+					bgColor="#ff0000"
+				/>
+				<Row
+					key="b"
+					rowId="b"
+					row={expect.it("to be", rows[1])}
+					columnDefs={expect.it("to be", columnDefs)}
+					onClick={rowOnClick}
+					bgColor="#00ff00"
+				/>
+				<Row
+					key="c"
+					rowId="c"
+					row={expect.it("to be", rows[2])}
+					columnDefs={expect.it("to be", columnDefs)}
+					onClick={rowOnClick}
+					bgColor="#0000ff"
+				/>
+			</tbody>,
+		);
+	});
+
+	it("renders rows with index-based backgrounds", () => {
+		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
+		const columnDefs = [{}];
+		const rowOnClick = () => {};
+		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
+		return expect(
+			<List
+				columnDefs={columnDefs}
+				rows={rows}
+				keyField={["key"]}
+				rowOnClick={rowOnClick}
+				rowBackgroundGetter={colorGetter}
+			/>,
+			"when rendered",
+			"to contain",
+			<tbody>
+				<Row
+					key="a"
+					rowId="a"
+					row={expect.it("to be", rows[0])}
+					columnDefs={expect.it("to be", columnDefs)}
+					onClick={rowOnClick}
+					bgColor="green"
+				/>
+				<Row
+					key="b"
+					rowId="b"
+					row={expect.it("to be", rows[1])}
+					columnDefs={expect.it("to be", columnDefs)}
+					onClick={rowOnClick}
+					bgColor="red"
+				/>
+				<Row
+					key="c"
+					rowId="c"
+					row={expect.it("to be", rows[2])}
+					columnDefs={expect.it("to be", columnDefs)}
+					onClick={rowOnClick}
+					bgColor="green"
 				/>
 			</tbody>,
 		);

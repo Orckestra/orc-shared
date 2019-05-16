@@ -16,9 +16,10 @@ describe("Row", () => {
 				rowId="rowIdentifier"
 				columnDefs={columnDefs}
 				onClick={onClick}
+				bgColor="#ff0000"
 			/>,
 			"to render as",
-			<TableRow onClick={onClick}>
+			<TableRow onClick={onClick} bgColor="#ff0000">
 				<DataCell
 					key="a"
 					rowId="rowIdentifier"
@@ -96,4 +97,32 @@ describe("withRowClick", () => {
 				),
 			),
 	);
+});
+
+describe("TableRow", () => {
+	it("renders with a hover transition", () =>
+		expect(<TableRow />, "to render style rules").then(styles =>
+			expect(
+				styles,
+				"to contain",
+				"transition: background-color 0.2s ease-in;",
+			).and("to contain", ":hover {background-color: #f3f3f3;}"),
+		));
+
+	it("renders a specific background color when given", () =>
+		expect(
+			<TableRow bgColor="#ff0000" />,
+			"to render style rules",
+			"to contain",
+			"background-color: #ff0000;",
+		));
+
+	it("renders no transition if given a bgColor prop", () =>
+		expect(<TableRow bgColor="#ff0000" />, "to render style rules").then(
+			styles =>
+				expect(styles, "not to match", /transition: background-color/).and(
+					"not to match",
+					/:hover \{[^}]*background-color:[^}]*\}/,
+				),
+		));
 });

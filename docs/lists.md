@@ -31,6 +31,12 @@ An array longer than one element will adreess further into a nested row object. 
 
 A path array pointing to the street of the row would look like `['address', 'street']`, and using this array as your `keyfield` means the unique id of this row would be `"272nd Street"`.
 
+### Visualization
+
+Rows can be given different background colors with the `rowBackgroundGetter` prop. The function passed here should have the signature `(Object, Integer) => String(Css color)` - the object passed will be the data object for the row, the number will be that row's number. The return value must be a valid [CSS color description](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value) as a string, or a falsy value (e.g. `undefined`, `false`, an empty string). The resulting color will be inserted in the stylesheet for the row as its background.
+
+This can be used to distinguish certain rows by the value of a data field, or to color alternate rows, among other things.
+
 ## Column configuration
 
 ### The basics
@@ -54,7 +60,13 @@ A column definition can have a type field, which will show the value formatted i
 
 Amounts of money are best shown using `type: 'currency'`. To correctly show this type, you should also set the `currency` field, which may be a string containing a three-letter ISO 4217 currency code, or an array indicating the field name of the row where the currency string may be found for each row. Note that even if this field is directly on the row object, the `currency` value should be an array to be interpeted this way.
 
-Lastly, `type: 'switch'` shows a switch control (using the `Switch` component). The configuration (i.e. properties to be given the component, including captions and colors for on and off state) for this control can be entered in the `switch` field of the column definition object. An `onChange` function should be furnished here to allow operating the switch to have an effect.
+For boolean values, `type: 'switch'` shows a switch control (using the `Switch` component). The configuration (i.e. properties to be given the component, including captions and colors for on and off state) for this control can be entered in the `switch` field of the column definition object. An `onChange` function should be furnished here to allow operating the switch to have an effect.
+
+Lastly, `type: 'custom'` allows a custom component (given as the `component` field) to be shown in place of the cell, and will be passed the entire row data object as properties.
+
+### Value transformation
+
+A column definition may contain a `transform` field, which should be a function which takes the field value and outputs a value of the field's type. This can be used to map machine-readable values to human readable values, to coerce values into a form renderable as the desirable type, etc.
 
 ### Row selection
 

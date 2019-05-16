@@ -3,6 +3,9 @@ import DataCell, { TableData } from "./DataCell";
 import { FormattedNumber, FormattedDate, FormattedTime } from "react-intl";
 import Switch from "../Switch";
 import Checkbox from "../Checkbox";
+import Text from "../Text";
+
+const TestComp = () => <div />;
 
 describe("DataCell", () => {
 	it("renders a cell as defined by column and row", () => {
@@ -11,7 +14,9 @@ describe("DataCell", () => {
 		return expect(
 			<DataCell columnDef={columnDef} row={row} />,
 			"to render as",
-			<TableData>A text</TableData>,
+			<TableData>
+				<Text message="A text" />
+			</TableData>,
 		);
 	});
 
@@ -31,7 +36,9 @@ describe("DataCell", () => {
 		return expect(
 			<DataCell columnDef={columnDef} row={row} />,
 			"to render as",
-			<TableData>empty</TableData>,
+			<TableData>
+				<Text message="empty" />
+			</TableData>,
 		);
 	});
 
@@ -127,6 +134,36 @@ describe("DataCell", () => {
 			"to render as",
 			<TableData>
 				<Switch value={false} data-row-id="rowIdent" onColor="#ff00ff" />
+			</TableData>,
+		);
+	});
+
+	it("renders a cell with a value transformer", () => {
+		const columnDef = {
+			fieldName: "test",
+			transform: val => val.toUpperCase(),
+		};
+		const row = { test: "text", extraneous: "Don't show" };
+		return expect(
+			<DataCell columnDef={columnDef} row={row} />,
+			"to render as",
+			<TableData>
+				<Text message="TEXT" />
+			</TableData>,
+		);
+	});
+
+	it("renders a cell with type custom", () => {
+		const columnDef = {
+			type: "custom",
+			component: TestComp,
+		};
+		const row = { test: "A text", extraneous: "Don't show" };
+		return expect(
+			<DataCell columnDef={columnDef} row={row} />,
+			"to render as",
+			<TableData>
+				<TestComp test="A text" extraneous="Don't show" />
 			</TableData>,
 		);
 	});

@@ -48,6 +48,7 @@ export const List = ({
 	scrollTop = 0,
 	height = 300, // Arbitrary, set this prop according to scroll viewport size
 	scrollBuffer = 10,
+	rowBackgroundGetter = () => {},
 }) => {
 	if (columnDefs.length === 0) return null;
 	const rowIds = [],
@@ -79,6 +80,7 @@ export const List = ({
 				row={row}
 				onClick={rowOnClick}
 				selected={selection.indexOf(id) !== -1}
+				bgColor={rowBackgroundGetter(row, index)}
 			/>,
 		);
 	});
