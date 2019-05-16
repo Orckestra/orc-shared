@@ -1,4 +1,3 @@
-import React from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle } from "recompose";
 import { unwrapImmutable } from "../../utils";
