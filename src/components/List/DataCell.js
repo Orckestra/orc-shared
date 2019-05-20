@@ -13,7 +13,7 @@ const renderByType = (value, def, rowId, selected, row) => {
 	switch (def.type) {
 		case "custom": {
 			const Comp = def.component;
-			return <Comp {...row} />;
+			return <Comp {...row} {...def.funcs} />;
 		}
 		case "currency": {
 			let currency = def.currency;

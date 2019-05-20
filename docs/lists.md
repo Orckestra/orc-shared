@@ -62,7 +62,7 @@ Amounts of money are best shown using `type: 'currency'`. To correctly show this
 
 For boolean values, `type: 'switch'` shows a switch control (using the `Switch` component). The configuration (i.e. properties to be given the component, including captions and colors for on and off state) for this control can be entered in the `switch` field of the column definition object. An `onChange` function should be furnished here to allow operating the switch to have an effect.
 
-Lastly, `type: 'custom'` allows a custom component (given as the `component` field) to be shown in place of the cell, and will be passed the entire row data object as properties.
+Lastly, `type: 'custom'` allows a custom component (given as the `component` field) to be shown in place of the cell, and will be passed the entire row data object as properties. Its `fieldName` will not be used for any purpose other than identification - i.e. it should still have one, but it does not need to refer to a data field on the row object. You can also pass functions through to custom components by using `funcs` field, the contents of an object here will be passed to the component as props.
 
 ### Value transformation
 

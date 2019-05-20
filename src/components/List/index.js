@@ -145,11 +145,20 @@ StatefulList.propTypes = {
 				// function(descending: boolean, columnId: string, columnType: type enum)
 				// Is called with the desired direction on click, should cause the list
 				// to be sorted according to this column.
-				type: pt.oneOf(["number", "currency", "date", "datetime", "switch"]), // default shows raw value
+				type: pt.oneOf([
+					"number",
+					"currency",
+					"date",
+					"datetime",
+					"switch",
+					"custom",
+				]), // default shows raw value
 				// Switch type shows a switch, and takes a boolean value and an onChange handler that takes a row id.
 				currency: pt.oneOfType([pt.string, pt.arrayOf(pt.string)]),
 				// only used for type 'currency', string or path to string value containing three-letter ISO 4217 currency code,
 				switch: pt.object, // object, contains properties for the switch component, only used for type 'switch'
+				component: pt.func, // component to show in type 'custom' cells
+				funcs: pt.object, // object containing functions to pas to custom component
 				defaultValue: pt.any, // default value of correct type
 			}),
 		]),
