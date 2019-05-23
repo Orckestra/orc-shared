@@ -20,14 +20,20 @@ const basename = window.BASE_PATH || "";
 export const history = createBrowserHistory({ basename });
 export let buildReducer;
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const enhancer = composeEnhancers(
-	applyMiddleware(routerMiddleware(history), apiMiddleware, spawnerMiddleware),
-);
-
 const initialState = Immutable.Map();
 
-const buildStore = reducers => {
+const buildStore = (reducers, devOptions = {}) => {
+	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(devOptions)
+		: compose;
+	const enhancer = composeEnhancers(
+		applyMiddleware(
+			routerMiddleware(history),
+			apiMiddleware,
+			spawnerMiddleware,
+		),
+	);
+
 	const supportedLocales = SUPPORTED_LOCALES || ["en"];
 	// Set supported languages
 	const supportedLanguageTags = supportedLocales // Only the initial language tag

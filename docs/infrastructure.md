@@ -5,6 +5,7 @@ This code can be used to set up the standard infrastructure of Orckestra apps.
 ## `buildState`
 
 - `reducers`: A plain JS object containing reducer functions as consumed by [`combineReducers()` from `redux-immutable`](https://github.com/gajus/redux-immutable#usage). The returned store will use the keys of the reducers as their keys in the state. Should not contain the keys `locale`, `navigation`, `router`, `requests`, `toasts`, or `view`, as these are in use for internationalization, navigation info, routing, request tracking and view data, respectively.
+- `devOptions`: An options object for the dev tools, as described in the [Redux dev tools documentation](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md).
 
 Constructs a state store with support for dev tools (as browser extension), routing, localization, API access and Immutable state.
 
