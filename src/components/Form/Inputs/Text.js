@@ -16,6 +16,7 @@ export const FormInput = styled(Input)`
 		z-index: 1;
 	}
 
+	${"" /* These are hacks, work only in Chrome, best not used */}
 	&[type="date"],
 	&[type="number"],
 	&[type="time"] {

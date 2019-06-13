@@ -2,14 +2,20 @@ import styled from "styled-components";
 import Button from "../../Button";
 
 export const ButtonWrapper = styled.div`
+	box-sizing: border-box;
 	display: flex;
 	height: 30px;
 	flex: 0 1 auto;
+	border-radius: 4px;
+	border: 1px solid #ccc;
 
 	& > * {
+		height: 28px;
+		border: 0 none transparent;
 		border-radius: 0;
 		margin-right: -1px;
 		flex: 0 1 100%;
+		box-shadow: none;
 	}
 
 	& > :first-child {
