@@ -2,6 +2,7 @@ import React from "react";
 import { FormattedDate } from "react-intl";
 import sinon from "sinon";
 import MockDate from "mockdate";
+import Kalendaryo from "kalendaryo";
 import { FormInput } from "./Text";
 import {
 	PositionedWrapper,
@@ -20,9 +21,19 @@ import {
 } from "./Date";
 
 describe("DateInput", () => {
+	let update, reset;
+	beforeEach(() => {
+		update = sinon.spy().named("update");
+		reset = sinon.spy().named("reset");
+	});
 	it("renders a basic date input, preliminary", () =>
 		expect(
-			<CrudeDateInput update={() => {}} otherProp />,
+			<CrudeDateInput
+				update={update}
+				reset={reset}
+				value="2019-04-15"
+				otherProp
+			/>,
 			"to render as",
 			<PositionedWrapper>
 				<FormInput
@@ -30,11 +41,20 @@ describe("DateInput", () => {
 					onChange={expect.it("to be a function")}
 					otherProp
 				/>
+				<Kalendaryo
+					startSelectedDateAt={new Date("2019-04-15")}
+					startCurrentDateAt={new Date("2019-04-15")}
+					render={CalendarDropdown}
+					onSelectedChange={expect.it("called with", [new Date("2019-04-12")])}
+				/>
 				<CalendarButton>
 					<CalendarIcon />
 				</CalendarButton>
 			</PositionedWrapper>,
-		));
+		).then(() => {
+			expect(update, "to have a call satisfying", { args: ["2019-04-12"] });
+			expect(reset, "was called");
+		}));
 });
 
 describe("CalendarDropdown", () => {
