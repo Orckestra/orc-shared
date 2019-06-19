@@ -13,16 +13,19 @@ export const currentLocale = createSelector(
 	(data, defaultLocale) => data.get("locale") || defaultLocale,
 );
 
-export const cultures = createSelector(localeData, locale =>
-	locale.get("cultures"),
+export const cultures = createSelector(
+	localeData,
+	locale => locale.get("cultures"),
 );
 
-export const cultureList = createSelector(cultures, cultures =>
-	cultures.keySeq(),
+export const cultureList = createSelector(
+	cultures,
+	cultures => cultures.keySeq(),
 );
 
-export const defaultCulture = createSelector(localeData, locale =>
-	locale.get("defaultCulture"),
+export const defaultCulture = createSelector(
+	localeData,
+	locale => locale.get("defaultCulture"),
 );
 
 export const orderedCultureList = createSelector(
@@ -34,4 +37,14 @@ export const orderedCultureList = createSelector(
 			if (b === defaultCulture) return 1;
 			return 0;
 		}),
+);
+
+export const orderedCultureOptionList = createSelector(
+	orderedCultureList,
+	cultures,
+	(list, cultures) =>
+		list.map(iso => ({
+			value: iso,
+			label: cultures.getIn([iso, "cultureName"]),
+		})),
 );
