@@ -27,6 +27,15 @@ const background = ifFlag(
 			color: ${getThemeProp(["appHighlightColor"], "#333")};
 			background-image: none;
 			background-color: #fff;
+			&:enabled:active {
+				color: #fff;
+				background-image: linear-gradient(
+					${getThemeProp(["appHighlightColor"], "#333", color =>
+						tint(0.05, color),
+					)},
+					${getThemeProp(["appHighlightColor"], "#333")}
+				);
+			}
 		`,
 	),
 	ifFlag(
@@ -34,6 +43,9 @@ const background = ifFlag(
 		css`
 			background-image: none;
 			background-color: #efefef;
+			&:enabled:active {
+				background-color: #f7f7f7;
+			}
 		`,
 		css`
 			background-image: none;
