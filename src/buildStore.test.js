@@ -57,6 +57,11 @@ describe("buildStore", () => {
 					"to satisfy",
 					Immutable.fromJS({
 						applications: { list: [] },
+						authentication: {
+							upn: null,
+							name: null,
+							rolesClaimsValues: {},
+						},
 						router: {
 							location: {
 								pathname: "/",

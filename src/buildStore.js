@@ -10,6 +10,7 @@ import { combineReducers } from "redux-immutable";
 import addLocales from "./addLocales";
 import { spawnerMiddleware } from "./spawnerMiddleware";
 import applicationReducer from "./reducers/applications";
+import authenticationReducer from "./reducers/authentication";
 import localeFactory from "./reducers/localeFactory";
 import navigationReducer from "./reducers/navigation";
 import requestReducer from "./reducers/request";
@@ -48,6 +49,7 @@ const buildStore = (reducers, devOptions = {}) => {
 		combineReducers({
 			...reducers,
 			applications: applicationReducer,
+			authentication: authenticationReducer,
 			locale: localeReducer,
 			navigation: navigationReducer,
 			router: connectRouter(history),
