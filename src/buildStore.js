@@ -9,6 +9,7 @@ import { createBrowserHistory } from "history";
 import { combineReducers } from "redux-immutable";
 import addLocales from "./addLocales";
 import { spawnerMiddleware } from "./spawnerMiddleware";
+import applicationReducer from "./reducers/applications";
 import localeFactory from "./reducers/localeFactory";
 import viewReducer from "./reducers/view";
 import requestReducer from "./reducers/request";
@@ -45,6 +46,7 @@ const buildStore = (reducers, devOptions = {}) => {
 	buildReducer = reducers =>
 		combineReducers({
 			...reducers,
+			applications: applicationReducer,
 			locale: localeReducer,
 			navigation: navigationReducer,
 			router: connectRouter(history),
