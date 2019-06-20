@@ -75,6 +75,7 @@ describe("buildStore", () => {
 							moduleTabs: {},
 						},
 						requests: {},
+						settings: { defaultApp: 0 },
 						view: {},
 						test: false,
 					}),

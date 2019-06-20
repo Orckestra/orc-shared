@@ -11,10 +11,11 @@ import addLocales from "./addLocales";
 import { spawnerMiddleware } from "./spawnerMiddleware";
 import applicationReducer from "./reducers/applications";
 import localeFactory from "./reducers/localeFactory";
-import viewReducer from "./reducers/view";
-import requestReducer from "./reducers/request";
 import navigationReducer from "./reducers/navigation";
+import requestReducer from "./reducers/request";
+import settingsReducer from "./reducers/settings";
 import toastReducer from "./reducers/toasts";
+import viewReducer from "./reducers/view";
 
 const basename = window.BASE_PATH || "";
 
@@ -51,8 +52,9 @@ const buildStore = (reducers, devOptions = {}) => {
 			navigation: navigationReducer,
 			router: connectRouter(history),
 			requests: requestReducer,
-			view: viewReducer,
+			settings: settingsReducer,
 			toasts: toastReducer,
+			view: viewReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 

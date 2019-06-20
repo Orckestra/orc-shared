@@ -8,6 +8,22 @@ export const [
 	GET_CULTURES_FAILURE,
 ] = makeActionTypes(GET_CULTURES);
 
+export const GET_MY_CULTURE = "GET_MY_CULTURE";
+
+export const [
+	GET_MY_CULTURE_REQUEST,
+	GET_MY_CULTURE_SUCCESS,
+	GET_MY_CULTURE_FAILURE,
+] = makeActionTypes(GET_MY_CULTURE);
+
+export const SET_DEFAULT_LANGUAGE = "SET_DEFAULT_LANGUAGE";
+
+export const [
+	SET_DEFAULT_LANGUAGE_REQUEST,
+	SET_DEFAULT_LANGUAGE_SUCCESS,
+	SET_DEFAULT_LANGUAGE_FAILURE,
+] = makeActionTypes(SET_DEFAULT_LANGUAGE);
+
 export const CHANGE_LOCALE = "CHANGE_LOCALE";
 
 export const changeLocale = locale => ({
