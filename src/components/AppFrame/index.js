@@ -6,6 +6,7 @@ import Scope from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 import About from "./About";
+import Preferences from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
 
 injectGlobal`
@@ -69,6 +70,8 @@ export const AppFrame = ({
 	ConnectedScope,
 	children,
 	aboutMessages,
+	prefMessages,
+	prefActions,
 }) => (
 	<Base>
 		<ConnectedToastList />
@@ -92,6 +95,7 @@ export const AppFrame = ({
 			<ConnectedScope>{children}</ConnectedScope>
 		</ViewPort>
 		<About messages={aboutMessages} />
+		<Preferences messages={prefMessages} actions={prefActions} />
 	</Base>
 );
 AppFrame.displayName = "AppFrame";

@@ -6,6 +6,8 @@ import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 import withViewState from "../../hocs/withViewState";
 
+export const ABOUT_NAME = "__aboutBox";
+
 const getModalRoot = () => document.getElementById("modal");
 
 const AboutBox = withClickOutside(transition.div`
@@ -88,6 +90,6 @@ const WiredAbout = withViewState(About);
 
 export default props =>
 	ReactDOM.createPortal(
-		<WiredAbout name="__aboutBox" {...props} />,
+		<WiredAbout name={ABOUT_NAME} {...props} />,
 		getModalRoot(),
 	);

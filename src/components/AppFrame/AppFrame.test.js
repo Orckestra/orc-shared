@@ -48,6 +48,8 @@ describe("AppFrame", () => {
 			location: { pathname: "/Foo/bar" },
 			linkHOC: x => x,
 			ConnectedScope,
+			aboutMessages: {},
+			prefMessages: {},
 		};
 
 		toggle = () => {};
@@ -113,6 +115,26 @@ describe("AppFrame", () => {
 				dispatch: () => {},
 				getState: () =>
 					Immutable.fromJS({
+						applications: {
+							list: [
+								{
+									id: 3,
+									name: "Orders",
+									isVisible: true,
+									isAbsoluteUrl: true,
+									url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
+									iconUri:
+										"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
+									displayName: {
+										"en-CA": "Marketing Legacy",
+										"en-US": "Marketing Legacy",
+										"fr-CA": "Marketing Legacy",
+										"fr-FR": "Marketing Legacy",
+										"it-IT": "Marketing Legacy",
+									},
+								},
+							],
+						},
 						navigation: {
 							route: {
 								match: {
@@ -124,7 +146,17 @@ describe("AppFrame", () => {
 						},
 						locale: {
 							suportedLocales: [],
+							cultures: {
+								"en-US": {
+									cultureIso: "en-US",
+									cultureName: "English - United States",
+									sortOrder: 0,
+									isDefault: true,
+								},
+							},
+							defaultCulture: "fr-FR",
 						},
+						settings: { defaultApp: 12 },
 						view: { scopeSelector: { filter: "Foo" } },
 						toasts: { queue: [] },
 					}),
