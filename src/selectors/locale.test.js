@@ -6,6 +6,7 @@ import {
 	cultureList,
 	defaultCulture,
 	orderedCultureList,
+	orderedCultureOptionList,
 } from "./locale";
 
 describe("default locale selector", () => {
@@ -183,12 +184,63 @@ describe("orderedCultureList", () => {
 		});
 	});
 
-	it("returns a culture Seq with the default culture first", () =>
+	it("returns a list of culture ISO names with the default culture first", () =>
 		expect(
 			orderedCultureList,
 			"called with",
 			[state],
 			"to equal",
 			Immutable.Seq(["fr-FR", "en-US", "en-CA", "fr-CA"]),
+		));
+});
+
+describe("orderedCultureOptionList", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: {
+				cultures: {
+					"en-US": {
+						cultureIso: "en-US",
+						cultureName: "English - United States",
+						sortOrder: 0,
+						isDefault: false,
+					},
+					"en-CA": {
+						cultureIso: "en-CA",
+						cultureName: "English - Canada",
+						sortOrder: 0,
+						isDefault: false,
+					},
+					"fr-FR": {
+						cultureIso: "fr-FR",
+						cultureName: "French - France",
+						sortOrder: 0,
+						isDefault: true,
+					},
+					"fr-CA": {
+						cultureIso: "fr-CA",
+						cultureName: "French - Canada",
+						sortOrder: 0,
+						isDefault: false,
+					},
+				},
+				defaultCulture: "fr-FR",
+			},
+		});
+	});
+
+	it("returns a list of label/value pairs with the default culture first", () =>
+		expect(
+			orderedCultureOptionList,
+			"called with",
+			[state],
+			"to satisfy",
+			Immutable.List([
+				{ value: "fr-FR", label: "French - France" },
+				{ value: "en-US", label: "English - United States" },
+				{ value: "en-CA", label: "English - Canada" },
+				{ value: "fr-CA", label: "French - Canada" },
+			]),
 		));
 });
