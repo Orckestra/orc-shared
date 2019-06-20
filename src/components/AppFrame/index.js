@@ -5,6 +5,7 @@ import withToggle from "../../hocs/withToggle";
 import Scope from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
+import About from "./About";
 import ConnectedToastList from "./ConnectedToastList";
 
 injectGlobal`
@@ -67,6 +68,7 @@ export const AppFrame = ({
 	location,
 	ConnectedScope,
 	children,
+	aboutMessages,
 }) => (
 	<Base>
 		<ConnectedToastList />
@@ -89,6 +91,7 @@ export const AppFrame = ({
 		<ViewPort open={open} onClick={reset}>
 			<ConnectedScope>{children}</ConnectedScope>
 		</ViewPort>
+		<About messages={aboutMessages} />
 	</Base>
 );
 AppFrame.displayName = "AppFrame";
