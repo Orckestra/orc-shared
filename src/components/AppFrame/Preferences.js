@@ -18,7 +18,7 @@ import { defaultAppId } from "../../selectors/settings";
 
 export const PREFS_NAME = "__prefsDialog";
 
-const PrefPanel = styled(Sidepanel)`
+export const PrefPanel = styled(Sidepanel)`
 	background-color: #f7f7f7;
 	border-left: 1px solid #ccc;
 	border-top: 1px solid #ccc;
@@ -30,7 +30,7 @@ const PrefPanel = styled(Sidepanel)`
 	flex-direction: column;
 `;
 
-const Header = styled.div`
+export const Header = styled.div`
 	flex: 0 0 auto;
 	border-bottom: 1px solid #ccc;
 	border-top-left-radius: 5px;
@@ -43,7 +43,7 @@ const Header = styled.div`
 	background-color: #ffffff;
 `;
 
-const PrefForm = styled.div`
+export const PrefForm = styled.div`
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
@@ -51,7 +51,7 @@ const PrefForm = styled.div`
 	font-size: 12px;
 `;
 
-const Footer = styled.div`
+export const Footer = styled.div`
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
@@ -62,17 +62,17 @@ const Footer = styled.div`
 	height: 60px;
 `;
 
-const PrefButton = styled(Button)`
+export const PrefButton = styled(Button)`
 	margin-right: 20px;
 	min-width: 110px;
 `;
 
-const getUpdater = memoize(update =>
+export const getUpdater = memoize(update =>
 	memoize(name => value => update(name, value)),
 );
 
 // Use FieldElements to build a form?
-const Preferences = ({
+export const Preferences = ({
 	save,
 	clear,
 	viewState,
@@ -120,7 +120,7 @@ const Preferences = ({
 	</PrefPanel>
 );
 
-const withPreferences = connect(
+export const withPreferences = connect(
 	state => ({
 		language: {
 			current: currentLocale(state),

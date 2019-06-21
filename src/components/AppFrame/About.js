@@ -10,7 +10,7 @@ export const ABOUT_NAME = "__aboutBox";
 
 const getModalRoot = () => document.getElementById("modal");
 
-const AboutBox = withClickOutside(transition.div`
+export const AboutBox = withClickOutside(transition.div`
 	box-sizing: border-box;
 	z-index: 9999;
 	position: absolute;
@@ -40,26 +40,27 @@ const AboutBox = withClickOutside(transition.div`
 `);
 AboutBox.defaultProps = { timeout: 800, unmountOnExit: true };
 
-const AboutParagraph = styled.p`
+export const AboutParagraph = styled.p`
 	margin-top: 20px;
 `;
 
-const AboutLink = styled.a`
+export const AboutLink = styled.a`
 	color: #23527c;
 	text-decoration: none;
 `;
 
-const About = ({ viewState, updateViewState, messages }) => (
+export const getClickOutsideHandler = ({ show }, updateViewState) =>
+	show
+		? event => {
+				event.stopPropagation();
+				updateViewState("show", false);
+		  }
+		: () => {};
+
+export const About = ({ viewState, updateViewState, messages }) => (
 	<AboutBox
 		in={viewState.show}
-		onClickOutside={
-			viewState.show
-				? event => {
-						event.stopPropagation();
-						updateViewState("show", false);
-				  }
-				: () => {}
-		}
+		onClickOutside={getClickOutsideHandler(viewState, updateViewState)}
 	>
 		<img src={window.BASE_PATH + "/aboutLogo.png"} alt="Orckestra" />
 		<AboutParagraph>
