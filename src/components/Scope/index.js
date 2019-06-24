@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { compose, withHandlers } from "recompose";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withViewState from "../../hocs/withViewState";
+import withScopeData from "../../hocs/withScopeData";
 import Button from "../Button";
 import Selector from "./Selector";
 
@@ -91,6 +92,7 @@ const withScopeRoute = WrapScope => props => (
 );
 
 export default compose(
+	withScopeData,
 	withScopeRoute,
 	withViewState,
 	withSelectorHandlers,

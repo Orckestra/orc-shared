@@ -29,7 +29,7 @@ describe("Scope", () => {
 	it("renders a scope bar and selector panel, and viewport", () =>
 		expect(
 			<Scope
-				currentScope={{ name: "ScopeName" }}
+				currentScope={{ name: "Test 1" }}
 				getScope={getScope}
 				reset={reset}
 				updateViewState={updateViewState}
@@ -46,11 +46,7 @@ describe("Scope", () => {
 			</Scope>,
 			"to render as",
 			<React.Fragment>
-				<ScopeBar
-					name="ScopeName"
-					show={true}
-					updateViewState={updateViewState}
-				/>
+				<ScopeBar name="Test 1" show={true} updateViewState={updateViewState} />
 				<Selector
 					show={true}
 					reset={expect
@@ -69,12 +65,12 @@ describe("Scope", () => {
 
 	it("defaults to not showing the selector", () =>
 		expect(
-			<Scope currentScope={{ name: "ScopeName" }}>
+			<Scope currentScope={{ name: "Test 1" }}>
 				<div id="child" />
 			</Scope>,
 			"to render as",
 			<React.Fragment>
-				<ScopeBar name="ScopeName" />
+				<ScopeBar name="Test 1" />
 				<Selector show={false} />
 				<div id="child" />
 			</React.Fragment>,
@@ -114,12 +110,39 @@ describe("Fully connected Scope", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
-				suportedLocales: [],
+				locale: "en",
+				suportedLocales: ["en"],
 			},
 			navigation: {
-				route: { location: {}, match: { params: { scope: "ScopeName" } } },
+				route: { location: {}, match: { params: { scope: "test1" } } },
 			},
 			view: { scopeSelector: { filter: "Foo" } },
+			scopes: {
+				test1: {
+					id: "test1",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+				},
+				test2: {
+					id: "test2",
+					name: { "en-US": "Test 2" },
+					foo: false,
+					bar: true,
+				},
+				test3: {
+					id: "test3",
+					name: { "en-CA": "Test 3" },
+					foo: true,
+					bar: false,
+				},
+				test4: {
+					id: "test4",
+					name: { "en-US": "Test 4" },
+					foo: true,
+					bar: true,
+				},
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -144,16 +167,9 @@ describe("Fully connected Scope", () => {
 	it("renders a Scope with the right properties", () => {
 		const render = ReactDOM.render(
 			<Provider store={store}>
-				<MemoryRouter initialEntries={["/ScopeName/foo"]} initialIndex={0}>
+				<MemoryRouter initialEntries={["/test1/foo"]} initialIndex={0}>
 					<I18n>
-						<FullScope
-							currentScope={{ name: "ScopeName" }}
-							getScope={() => ({})}
-							filterPlaceholder={{
-								id: "test.filter",
-								defaultMessage: "Filter",
-							}}
-						/>
+						<FullScope />
 					</I18n>
 				</MemoryRouter>
 			</Provider>,
@@ -164,13 +180,12 @@ describe("Fully connected Scope", () => {
 			"to contain",
 			<Scope
 				name="scopeSelector"
-				currentScope={{ name: "ScopeName" }}
+				currentScope={{ name: "Test 1" }}
 				getScope={expect.it("to be a function")}
 				updateViewState={expect.it("to be a function")}
 				reset={expect.it("to be a function")}
 				updateNodeState={expect.it("to be a function")}
 				updateFilter={expect.it("to be a function")}
-				filterPlaceholder={{ id: "test.filter", defaultMessage: "Filter" }}
 				viewState={{ filter: "Foo" }}
 			/>,
 		);

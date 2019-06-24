@@ -1,4 +1,6 @@
 import { makeActionTypes } from "./makeApiAction";
+import makeOrcApiAction from "./makeOrcApiAction";
+import { buildUrl } from "../utils";
 
 export const GET_CULTURES = "GET_CULTURES";
 
@@ -8,6 +10,9 @@ export const [
 	GET_CULTURES_FAILURE,
 ] = makeActionTypes(GET_CULTURES);
 
+export const getCultures = () =>
+	makeOrcApiAction(GET_CULTURES, buildUrl(["cultures"]));
+
 export const GET_MY_CULTURE = "GET_MY_CULTURE";
 
 export const [
@@ -16,6 +21,9 @@ export const [
 	GET_MY_CULTURE_FAILURE,
 ] = makeActionTypes(GET_MY_CULTURE);
 
+export const getMyCulture = () =>
+	makeOrcApiAction(GET_MY_CULTURE, buildUrl(["my", "culture"]));
+
 export const SET_DEFAULT_LANGUAGE = "SET_DEFAULT_LANGUAGE";
 
 export const [
@@ -23,6 +31,14 @@ export const [
 	SET_DEFAULT_LANGUAGE_SUCCESS,
 	SET_DEFAULT_LANGUAGE_FAILURE,
 ] = makeActionTypes(SET_DEFAULT_LANGUAGE);
+
+export const setDefaultLanguage = lang =>
+	makeOrcApiAction(
+		SET_DEFAULT_LANGUAGE,
+		buildUrl(["my", "culture", lang]),
+		"POST",
+		{ meta: { lang } },
+	);
 
 export const CHANGE_LOCALE = "CHANGE_LOCALE";
 

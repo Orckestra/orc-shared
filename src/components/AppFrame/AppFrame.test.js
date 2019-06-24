@@ -29,12 +29,6 @@ const TestComp1 = () => <div />;
 const TestComp2 = () => <div />;
 const TestComp3 = () => <div />;
 
-const scopeHOC = Scope => props => (
-	<Scope currentScope={{ name: "foo" }} {...props} />
-);
-
-const ConnectedScope = scopeHOC(Scope);
-
 describe("AppFrame", () => {
 	let props, toggle, reset;
 	beforeEach(() => {
@@ -47,9 +41,9 @@ describe("AppFrame", () => {
 			menuItems: [],
 			location: { pathname: "/Foo/bar" },
 			linkHOC: x => x,
-			ConnectedScope,
 			aboutMessages: {},
 			prefMessages: {},
+			scopeFilterPlaceholder: { id: "scope.filter", defaultMessage: "Filter" },
 		};
 
 		toggle = () => {};
@@ -138,9 +132,9 @@ describe("AppFrame", () => {
 						navigation: {
 							route: {
 								match: {
-									url: "/foo/test",
+									url: "/test1/test",
 									path: "/:scope/test",
-									params: { scope: "foo" },
+									params: { scope: "test1" },
 								},
 							},
 						},
@@ -156,14 +150,39 @@ describe("AppFrame", () => {
 							},
 							defaultCulture: "fr-FR",
 						},
+						scopes: {
+							test1: {
+								id: "test1",
+								name: { "en-CA": "Test 1" },
+								foo: false,
+								bar: false,
+							},
+							test2: {
+								id: "test2",
+								name: { "en-US": "Test 2" },
+								foo: false,
+								bar: true,
+							},
+							test3: {
+								id: "test3",
+								name: { "en-CA": "Test 3" },
+								foo: true,
+								bar: false,
+							},
+							test4: {
+								id: "test4",
+								name: { "en-US": "Test 4" },
+								foo: true,
+								bar: true,
+							},
+						},
 						settings: { defaultApp: 12 },
-						view: { scopeSelector: { filter: "Foo" } },
+						view: { scopeSelector: { filter: "1" } },
 						toasts: { queue: [] },
 					}),
 			};
-			const { ConnectedScope, ...remainder } = props;
-			innerProps = remainder;
-			outerProps = { store, scopeHOC, ...remainder };
+			innerProps = props;
+			outerProps = { store, ...props };
 			appRoot = document.createElement("div");
 			appRoot.id = "app";
 			document.body.appendChild(appRoot);

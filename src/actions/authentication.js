@@ -1,4 +1,6 @@
 import { makeActionTypes } from "./makeApiAction";
+import makeOrcApiAction from "./makeOrcApiAction";
+import { buildUrl } from "../utils";
 
 export const GET_AUTHENTICATION_PROFILE = "GET_AUTHENTICATION_PROFILE";
 
@@ -8,6 +10,12 @@ export const [
 	GET_AUTHENTICATION_PROFILE_FAILURE,
 ] = makeActionTypes(GET_AUTHENTICATION_PROFILE);
 
+export const getAuthProfile = () =>
+	makeOrcApiAction(
+		GET_AUTHENTICATION_PROFILE,
+		buildUrl(["authentication", "profile"]),
+	);
+
 export const SIGN_OUT = "SIGN_OUT";
 
 export const [
@@ -15,3 +23,7 @@ export const [
 	SIGN_OUT_SUCCESS,
 	SIGN_OUT_FAILURE,
 ] = makeActionTypes(SIGN_OUT);
+
+export const signOut = () =>
+	// TODO: Add return URL
+	makeOrcApiAction(SIGN_OUT, buildUrl(["authentication", "signout"]), "POST");

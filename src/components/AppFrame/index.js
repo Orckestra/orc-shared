@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
-import { compose, withPropsOnChange, setDisplayName } from "recompose";
 import withToggle from "../../hocs/withToggle";
 import Scope from "../Scope";
 import Topbar from "./Topbar";
@@ -51,10 +50,6 @@ export const ViewPort = styled.div`
 			: ""};
 `;
 
-const withEnhancedScope = withPropsOnChange(["scopeHOC"], ({ scopeHOC }) => ({
-	ConnectedScope: setDisplayName("ConnectedScope")(scopeHOC(Scope)),
-}));
-
 export const AppFrame = ({
 	open,
 	toggle,
@@ -67,11 +62,11 @@ export const AppFrame = ({
 	menuItems,
 	linkHOC,
 	location,
-	ConnectedScope,
 	children,
 	aboutMessages,
 	prefMessages,
 	prefActions,
+	scopeFilterPlaceholder,
 }) => (
 	<Base>
 		<ConnectedToastList />
@@ -92,7 +87,7 @@ export const AppFrame = ({
 			path={location.pathname}
 		/>
 		<ViewPort open={open} onClick={reset}>
-			<ConnectedScope>{children}</ConnectedScope>
+			<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
 		</ViewPort>
 		<About messages={aboutMessages} />
 		<Preferences messages={prefMessages} actions={prefActions} />
@@ -100,7 +95,4 @@ export const AppFrame = ({
 );
 AppFrame.displayName = "AppFrame";
 
-export default compose(
-	withEnhancedScope,
-	withToggle("open"),
-)(AppFrame);
+export default withToggle("open")(AppFrame);
