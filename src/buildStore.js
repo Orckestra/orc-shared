@@ -14,6 +14,7 @@ import authenticationReducer from "./reducers/authentication";
 import localeFactory from "./reducers/localeFactory";
 import navigationReducer from "./reducers/navigation";
 import requestReducer from "./reducers/request";
+import scopesReducer from "./reducers/scopes";
 import settingsReducer from "./reducers/settings";
 import toastReducer from "./reducers/toasts";
 import viewReducer from "./reducers/view";
@@ -54,6 +55,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			navigation: navigationReducer,
 			router: connectRouter(history),
 			requests: requestReducer,
+			scopes: scopesReducer,
 			settings: settingsReducer,
 			toasts: toastReducer,
 			view: viewReducer,

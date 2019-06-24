@@ -24,8 +24,9 @@ const settingsReducer = (state = initialState, action) => {
 
 // No need to store default culture separately,
 // just set the current locale accordingly.
-addSpawner(GET_MY_CULTURE_SUCCESS, action =>
-	changeLocale(action.payload.cultureIso),
+addSpawner(
+	GET_MY_CULTURE_SUCCESS,
+	/* istanbul ignore next */ action => changeLocale(action.payload.cultureIso),
 );
 
 export default settingsReducer;
