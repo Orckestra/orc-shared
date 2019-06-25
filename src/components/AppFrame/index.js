@@ -1,5 +1,7 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
+import { compose } from "recompose";
+import withAuthentication from "../../hocs/withAuthentication";
 import withToggle from "../../hocs/withToggle";
 import Scope from "../Scope";
 import Topbar from "./Topbar";
@@ -95,4 +97,7 @@ export const AppFrame = ({
 );
 AppFrame.displayName = "AppFrame";
 
-export default withToggle("open")(AppFrame);
+export default compose(
+	withAuthentication,
+	withToggle("open"),
+)(AppFrame);

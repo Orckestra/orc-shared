@@ -129,6 +129,9 @@ describe("AppFrame", () => {
 								},
 							],
 						},
+						authentication: {
+							name: "foo@bar.com",
+						},
 						navigation: {
 							route: {
 								match: {
