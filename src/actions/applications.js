@@ -15,14 +15,14 @@ export const getApplications = () =>
 
 export const GET_MY_APPLICATION = "GET_MY_APPLICATION";
 
-export const getMyApplication = () =>
-	makeOrcApiAction(GET_MY_APPLICATION, buildUrl(["my", "application"]));
-
 export const [
 	GET_MY_APPLICATION_REQUEST,
 	GET_MY_APPLICATION_SUCCESS,
 	GET_MY_APPLICATION_FAILURE,
 ] = makeActionTypes(GET_MY_APPLICATION);
+
+export const getMyApplication = () =>
+	makeOrcApiAction(GET_MY_APPLICATION, buildUrl(["my", "application"]));
 
 export const SET_MY_APPLICATION = "SET_MY_APPLICATION";
 
