@@ -5,7 +5,7 @@ import Immutable from "immutable";
 import sinon from "sinon";
 import withScopeData from "./withScopeData";
 
-jest.mock("../utils/loadConfig", () => {
+jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
 	modExport.loadConfig = () => Promise.resolve({});
 	modExport.buildUrl = () => "URL";

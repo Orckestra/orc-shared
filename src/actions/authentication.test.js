@@ -10,7 +10,7 @@ import {
 	signOut,
 } from "./authentication";
 
-jest.mock("../utils/loadConfig", () => {
+jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
 	modExport.loadConfig = () => Promise.resolve({});
 	modExport.buildUrl = (path = [], params = "") =>

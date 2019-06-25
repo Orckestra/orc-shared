@@ -1,5 +1,5 @@
 import sinon from "sinon";
-import { loadConfig, resetConfig, buildUrl } from "./loadConfig";
+import { loadConfig, resetConfig, buildUrl } from "./buildUrl";
 
 describe("loadConfig", () => {
 	let oldFetch, fail, response, placeholderBuildUrl;

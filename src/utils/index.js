@@ -9,7 +9,7 @@ import debounce from "./debounce";
 import stripKey from "./stripKey";
 import memoize from "./memoize";
 import curry from "./curry";
-import { buildUrl, loadConfig } from "./loadConfig";
+import { loadConfig } from "./buildUrl";
 
 export {
 	safeGet,
@@ -26,5 +26,4 @@ export {
 	memoize,
 	curry,
 	loadConfig,
-	buildUrl,
 };

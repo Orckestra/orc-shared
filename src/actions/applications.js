@@ -1,6 +1,6 @@
 import { makeActionTypes } from "./makeApiAction";
 import makeOrcApiAction from "./makeOrcApiAction";
-import { buildUrl } from "../utils";
+import { buildUrl } from "../utils/buildUrl";
 
 export const GET_APPLICATIONS = "GET_APPLICATIONS";
 
