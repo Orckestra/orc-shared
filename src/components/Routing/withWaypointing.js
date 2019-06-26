@@ -5,6 +5,7 @@ import routingConnector from "../../hocs/routingConnector";
 import { selectRouteHref } from "../../selectors/navigation";
 import { setRoute, mapHref } from "../../actions/navigation";
 import withInitialLoad from "../../hocs/withInitialLoad";
+import withUpdateHandler from "../../hocs/withUpdateHandler";
 
 const withWaypointing = memoize(
 	compose(
@@ -25,6 +26,7 @@ const withWaypointing = memoize(
 			}),
 		),
 		withInitialLoad("setRoute", ({ routeIsAligned }) => !routeIsAligned),
+		withUpdateHandler("setRoute", (_, { routeIsAligned }) => !routeIsAligned),
 	),
 );
 

@@ -5,6 +5,7 @@ import Immutable from "immutable";
 import sinon from "sinon";
 import { push } from "connected-react-router";
 import { REMOVE_TAB } from "../../actions/navigation";
+import { resetLastScope } from "../../selectors/navigation";
 import withNavigationData, { getPageData } from "./withNavigationData";
 
 const TestComp = () => <div />;
@@ -23,6 +24,11 @@ describe("withNavigation", () => {
 			objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
 			navigation: {
 				tabIndex: {
+					"/OtherScope/test": {
+						href: "/OtherScope/test",
+						path: "/:scope/test",
+						params: { scope: "OtherScope" },
+					},
 					"/TestScope/test/page1": {
 						href: "/TestScope/test/page1",
 						path: "/:scope/test/page1",
@@ -44,6 +50,7 @@ describe("withNavigation", () => {
 				},
 				moduleTabs: {
 					test: [
+						"/OtherScope/test",
 						"/TestScope/test/page1",
 						"/OtherScope/test/foo",
 						"/OtherScope/test/bar",
@@ -85,6 +92,9 @@ describe("withNavigation", () => {
 			},
 		};
 	});
+	afterEach(() => {
+		resetLastScope();
+	});
 
 	it("provides state information about navigation", () =>
 		expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
@@ -121,6 +131,7 @@ describe("withNavigation", () => {
 							href: "/OtherScope/test/foo",
 							mappedFrom: "/OtherScope/test/foo",
 							active: false,
+							outsideScope: true,
 						},
 						{
 							label: {
@@ -133,6 +144,7 @@ describe("withNavigation", () => {
 							href: "/OtherScope/test/bar",
 							mappedFrom: "/OtherScope/test/bar",
 							active: false,
+							outsideScope: true,
 						},
 						{
 							href: "/TestScope/test/notexist",

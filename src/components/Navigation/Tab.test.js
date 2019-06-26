@@ -81,24 +81,26 @@ describe("Tab", () => {
 	});
 
 	describe("with close handler", () => {
-		const innerClose = sinon.spy().named("innerClose");
-		const close = sinon.spy(() => innerClose).named("close");
-		return expect(
-			<FullTab
-				label="A page"
-				href="/Foo/modu/page/sub"
-				mappedFrom="/Foo/modu/page"
-				close={close}
-			/>,
-			"when rendered",
-			"has elements",
-		)
-			.then(elements => expect(elements.props.close, "called"))
-			.then(() =>
-				expect(close, "to have calls satisfying", [
-					{ args: ["/Foo/modu/page/sub", "/Foo/modu/page"] },
-				]),
+		it("curries close handler with tab and mapped href", () => {
+			const innerClose = sinon.spy().named("innerClose");
+			const close = sinon.spy(() => innerClose).named("close");
+			return expect(
+				<FullTab
+					label="A page"
+					href="/Foo/modu/page/sub"
+					mappedFrom="/Foo/modu/page"
+					close={close}
+				/>,
+				"when rendered",
+				"has elements",
 			)
-			.then(() => expect(innerClose, "was called"));
+				.then(elements => expect(elements.props.close, "called"))
+				.then(() =>
+					expect(close, "to have calls satisfying", [
+						{ args: ["/Foo/modu/page/sub", "/Foo/modu/page"] },
+					]),
+				)
+				.then(() => expect(innerClose, "was called"));
+		});
 	});
 });

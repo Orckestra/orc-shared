@@ -1,10 +1,11 @@
 import { push } from "connected-react-router";
-import { unwrapImmutable } from "../../utils";
+import { unwrapImmutable, safeGet } from "../../utils";
 import { removeTab } from "../../actions/navigation";
 import routingConnector from "../../hocs/routingConnector";
 import {
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
+	getCurrentScope,
 } from "../../selectors/navigation";
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
@@ -51,7 +52,11 @@ const withNavigationData = routingConnector(
 			href: moduleHref,
 		};
 		const pages = unwrapImmutable(selectMappedCurrentModuleList(state)).filter(
-			page => page.href !== moduleHref,
+			page =>
+				page &&
+				page.href !==
+					`/${safeGet(page, "params", "scope") ||
+						getCurrentScope(state)}/${moduleName}`,
 		);
 		return {
 			pages: [module, ...pages].map(page => {
@@ -59,6 +64,8 @@ const withNavigationData = routingConnector(
 				const pageBaseHref = params.scope
 					? `/${params.scope}/${moduleName}`
 					: moduleHref;
+				const outsideScope =
+					params.scope && params.scope !== getCurrentScope(state);
 				const pageData = getPageData(
 					page.href.replace(pageBaseHref, ""),
 					params,
@@ -79,6 +86,7 @@ const withNavigationData = routingConnector(
 				const href = hrefMapper(page.href);
 				return {
 					...page,
+					outsideScope,
 					label,
 					href,
 					mappedFrom: page.href,

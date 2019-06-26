@@ -28,13 +28,22 @@ export const PageTab = styled.div`
 			color: #999999;
 		`,
 	)};
+
+	${ifFlag(
+		"outsideScope",
+		css`
+			background-color: #eeeeee;
+		`,
+	)}
 `;
 
 export const ModuleTab = styled(PageTab)`
 	margin-left: 0px;
 `;
 
-export const TabLink = styled(Link)`
+const FilteredLink = ({ outsideScope, ...props }) => <Link {...props} />;
+
+export const TabLink = styled(FilteredLink)`
 	flex: 0 1 100%;
 	overflow: hidden;
 	color: inherit;
@@ -42,6 +51,13 @@ export const TabLink = styled(Link)`
 	display: flex;
 	justify-content: center;
 	padding: 11px 15px;
+
+	${ifFlag(
+		"outsideScope",
+		css`
+			cursor: not-allowed;
+		`,
+	)}
 `;
 
 export const ModuleIcon = styled(Icon)`
@@ -73,11 +89,30 @@ export const CloseIcon = styled(Icon).attrs({
 	}
 `;
 
-export const Tab = ({ href, label, icon, module, active, close }) => {
+export const Tab = ({
+	href,
+	label,
+	icon,
+	module,
+	active,
+	close,
+	outsideScope,
+}) => {
 	const ThisTab = module ? ModuleTab : PageTab;
 	return (
-		<ThisTab active={active}>
-			<TabLink to={href}>
+		<ThisTab active={active} outsideScope={outsideScope}>
+			<TabLink
+				to={href}
+				outsideScope={outsideScope}
+				onClick={
+					outsideScope
+						? event => {
+								event.preventDefault();
+								event.stopPropagation();
+						  }
+						: () => {}
+				}
+			>
 				{module ? <ModuleIcon id={icon} /> : null}
 				<TabText>
 					<Text message={label} />

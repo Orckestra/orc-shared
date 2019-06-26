@@ -20,18 +20,21 @@ export const TabBar = styled.div`
 
 export const Bar = ({ pages, close }) => (
 	<TabBar>
-		{pages.map(({ href, mappedFrom, label, active, icon }, index) => (
-			<Tab
-				key={href}
-				module={index === 0}
-				icon={icon}
-				href={href}
-				mappedFrom={mappedFrom}
-				label={label}
-				active={active}
-				close={close}
-			/>
-		))}
+		{pages.map(
+			({ href, mappedFrom, label, active, icon, outsideScope }, index) => (
+				<Tab
+					key={href}
+					module={index === 0}
+					icon={icon}
+					href={href}
+					mappedFrom={mappedFrom}
+					label={label}
+					active={active}
+					close={close}
+					outsideScope={outsideScope}
+				/>
+			),
+		)}
 	</TabBar>
 );
 
