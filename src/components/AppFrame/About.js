@@ -67,7 +67,7 @@ export const About = ({ viewState, updateViewState, messages }) => (
 			<Text
 				message={{
 					...messages.ccVersion,
-					values: { versionNumber: "3.22.0.657" }, // Needs to come from API
+					values: { version: window.orcVersion },
 				}}
 			/>
 		</AboutParagraph>

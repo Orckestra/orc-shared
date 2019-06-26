@@ -13,6 +13,7 @@ describe("About", () => {
 	let messages;
 	beforeEach(() => {
 		window.BASE_PATH = "/test-app";
+		window.orcVersion = "x.y.z";
 		messages = {
 			ccName: "Test App",
 			ccVersion: { id: "foo", defaultMessage: "Version {version}" },
@@ -23,6 +24,7 @@ describe("About", () => {
 	});
 	afterEach(() => {
 		delete window.BASE_PATH;
+		delete window.orcVersion;
 	});
 
 	it("renders an about box with messages and background images", () =>
@@ -36,7 +38,7 @@ describe("About", () => {
 						message={{
 							id: "foo",
 							defaultMessage: "Version {version}",
-							values: {},
+							values: { version: "x.y.z" },
 						}}
 					/>
 				</AboutParagraph>
