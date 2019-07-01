@@ -38,9 +38,13 @@ describe("AppFrame", () => {
 			modules: [],
 			activeModules: ["foo"],
 			menuLabel: "TestLabel",
-			menuItems: [],
 			location: { pathname: "/Foo/bar" },
 			linkHOC: x => x,
+			menuMessages: {
+				sign_out: { id: "msg.signout" },
+				preferences: { id: "msg.prefs" },
+				about: { id: "msg.about" },
+			},
 			aboutMessages: {},
 			prefMessages: {},
 			scopeFilterPlaceholder: { id: "scope.filter", defaultMessage: "Filter" },
@@ -71,7 +75,7 @@ describe("AppFrame", () => {
 					applications={props.applications}
 					applicationId={props.applicationId}
 					menuLabel={props.menuLabel}
-					menuItems={props.menuItems}
+					menuMessages={props.menuMessages}
 				/>
 				<Sidebar
 					linkHOC={props.linkHOC}

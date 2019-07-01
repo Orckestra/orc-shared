@@ -1,8 +1,12 @@
 import React from "react";
 import styled, { injectGlobal, css } from "styled-components";
+import { connect } from "react-redux";
 import { compose } from "recompose";
+import { getApplications } from "../../actions/applications";
+import withInitialLoad from "../../hocs/withInitialLoad";
 import withAuthentication from "../../hocs/withAuthentication";
 import withToggle from "../../hocs/withToggle";
+import { localizedAppSelector } from "../../selectors/applications";
 import Scope from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
@@ -61,10 +65,10 @@ export const AppFrame = ({
 	modules,
 	activeModules,
 	menuLabel,
-	menuItems,
 	linkHOC,
 	location,
 	children,
+	menuMessages,
 	aboutMessages,
 	prefMessages,
 	prefActions,
@@ -78,7 +82,7 @@ export const AppFrame = ({
 			applications={applications}
 			applicationId={applicationId}
 			menuLabel={menuLabel}
-			menuItems={menuItems}
+			menuMessages={menuMessages}
 		/>
 		<Sidebar
 			linkHOC={linkHOC}
@@ -92,12 +96,21 @@ export const AppFrame = ({
 			<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
 		</ViewPort>
 		<About messages={aboutMessages} />
-		<Preferences messages={prefMessages} actions={prefActions} />
+		<Preferences messages={prefMessages} />
 	</Base>
 );
 AppFrame.displayName = "AppFrame";
 
 export default compose(
+	connect(
+		state => ({
+			applications: localizedAppSelector(state).toJS(),
+		}),
+		dispatch => ({
+			loadApplications: () => dispatch(getApplications()),
+		}),
+	),
+	withInitialLoad("loadApplications", props => props.applications.length === 0),
 	withAuthentication,
 	withToggle("open"),
 )(AppFrame);

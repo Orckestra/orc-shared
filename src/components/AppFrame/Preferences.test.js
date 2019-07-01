@@ -2,12 +2,22 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
 import { CHANGE_LOCALE } from "../../actions/locale";
+import {
+	SET_DEFAULT_LANGUAGE_REQUEST,
+	SET_DEFAULT_LANGUAGE_SUCCESS,
+	SET_DEFAULT_LANGUAGE_FAILURE,
+} from "../../actions/locale";
+import {
+	SET_MY_APPLICATION_REQUEST,
+	SET_MY_APPLICATION_SUCCESS,
+	SET_MY_APPLICATION_FAILURE,
+} from "../../actions/applications";
 import Text from "../Text";
 import FieldElements from "../Form/FieldElements";
 import {
-	PREFS_NAME,
 	PrefPanel,
 	Header,
 	PrefForm,
@@ -17,6 +27,14 @@ import {
 	Preferences,
 	withPreferences,
 } from "./Preferences";
+
+jest.mock("../../utils/buildUrl", () => {
+	const modExport = {};
+	modExport.loadConfig = () => Promise.resolve({});
+	modExport.buildUrl = (path = [], params = "") =>
+		"URL: " + path.join("/") + " " + JSON.stringify(params);
+	return modExport;
+});
 
 describe("Preferences", () => {
 	let messages, language, applications, clear, save;
@@ -303,13 +321,7 @@ describe("Preferences", () => {
 			return expect(
 				<Provider store={store}>
 					<MemoryRouter>
-						<EnhComp
-							name="test"
-							actions={{
-								saveLanguage: lang => ({ type: "SAVE_LANG", payload: lang }),
-								saveApplication: app => ({ type: "SAVE_APP", payload: app }),
-							}}
-						/>
+						<EnhComp name="test" />
 					</MemoryRouter>
 				</Provider>,
 				"to deeply render as",
@@ -357,9 +369,32 @@ describe("Preferences", () => {
 					},
 					{
 						args: [
-							expect.it("to equal", {
-								type: "SAVE_LANG",
-								payload: "en-US",
+							expect.it("to satisfy", {
+								[RSAA]: {
+									types: [
+										{
+											type: SET_DEFAULT_LANGUAGE_REQUEST,
+											meta: { lang: "en-US" },
+										},
+										{
+											type: SET_DEFAULT_LANGUAGE_SUCCESS,
+											meta: { lang: "en-US" },
+										},
+										{
+											type: SET_DEFAULT_LANGUAGE_FAILURE,
+											meta: { lang: "en-US" },
+										},
+									],
+									endpoint: 'URL: my/culture/en-US ""',
+									method: "POST",
+									credentials: "include",
+									bailout: expect.it("to be a function"),
+									headers: {
+										Accept: "application/json; charset=utf-8",
+										"Content-Type": "application/json",
+									},
+									options: { redirect: "follow" },
+								},
 							}),
 						],
 					},
@@ -372,11 +407,25 @@ describe("Preferences", () => {
 						],
 					},
 					{
-						// CAlled save() with application
+						// Called save() with application
 						args: [
-							expect.it("to equal", {
-								type: "SAVE_APP",
-								payload: 3,
+							expect.it("to satisfy", {
+								[RSAA]: {
+									types: [
+										{ type: SET_MY_APPLICATION_REQUEST, meta: { appId: 3 } },
+										{ type: SET_MY_APPLICATION_SUCCESS, meta: { appId: 3 } },
+										{ type: SET_MY_APPLICATION_FAILURE, meta: { appId: 3 } },
+									],
+									endpoint: 'URL: my/application/3 ""',
+									method: "POST",
+									credentials: "include",
+									bailout: expect.it("to be a function"),
+									headers: {
+										Accept: "application/json; charset=utf-8",
+										"Content-Type": "application/json",
+									},
+									options: { redirect: "follow" },
+								},
 							}),
 						],
 					},

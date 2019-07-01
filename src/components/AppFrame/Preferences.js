@@ -8,6 +8,8 @@ import Text from "../Text";
 import FieldElements from "../Form/FieldElements";
 import withViewState from "../../hocs/withViewState";
 import { setValue } from "../../actions/view";
+import { setDefaultLanguage } from "../../actions/locale";
+import { setMyApplication } from "../../actions/applications";
 import { changeLocale } from "../../actions/locale";
 import { localizedAppOptionSelector } from "../../selectors/applications";
 import {
@@ -131,16 +133,16 @@ export const withPreferences = connect(
 			options: unwrapImmutable(localizedAppOptionSelector(state)),
 		},
 	}),
-	(dispatch, { actions }) => ({
+	dispatch => ({
 		clear: () => dispatch(setValue(PREFS_NAME, { show: false })),
 		save: ({ language, application }) => {
 			if (language) {
 				dispatch(changeLocale(language));
-				dispatch(actions.saveLanguage(language));
+				dispatch(setDefaultLanguage(language));
 				// TODO: reload any language dependent data?
 			}
 			if (application) {
-				dispatch(actions.saveApplication(application));
+				dispatch(setMyApplication(application));
 			}
 			dispatch(setValue(PREFS_NAME, { show: false }));
 		},

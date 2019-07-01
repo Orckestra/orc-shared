@@ -23,7 +23,7 @@ jest.mock("../utils/buildUrl", () => {
 });
 
 describe("getApplications", () => {
-	it("creates a RSAA to **DO**", () =>
+	it("creates a RSAA to get applications", () =>
 		expect(getApplications, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
@@ -46,7 +46,7 @@ describe("getApplications", () => {
 });
 
 describe("getMyApplication", () => {
-	it("creates a RSAA to **DO**", () =>
+	it("creates a RSAA to get the user's default application", () =>
 		expect(getMyApplication, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
@@ -68,7 +68,7 @@ describe("getMyApplication", () => {
 		}));
 });
 describe("setMyApplication", () => {
-	it("creates a RSAA to **DO**", () =>
+	it("creates a RSAA to set the user's default application", () =>
 		expect(
 			setMyApplication,
 			"when called with",

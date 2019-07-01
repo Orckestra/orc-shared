@@ -10,7 +10,7 @@ import Topbar, {
 } from "./Topbar";
 
 describe("Topbar", () => {
-	let applications, props, linkHOC, path, clicker, menuItems;
+	let applications, props, linkHOC, path, clicker, menuMessages;
 	beforeEach(() => {
 		applications = [
 			{
@@ -27,13 +27,13 @@ describe("Topbar", () => {
 		linkHOC = x => x;
 		path = [{ crumb: 1 }, { crumb: 2 }, { crumb: 3 }];
 		clicker = () => {};
-		menuItems = [];
+		menuMessages = {};
 		props = {
 			onClick: clicker,
 			path,
 			linkHOC,
 			menuLabel: "TestLabel",
-			menuItems,
+			menuMessages,
 			applications,
 			applicationId: "current",
 		};
@@ -53,7 +53,7 @@ describe("Topbar", () => {
 					/>
 					<CurrentApp displayName="Test label" iconUri="/test/url" />
 				</AppBox>
-				<Menu menuLabel="TestLabel" menuItems={menuItems} />
+				<Menu menuLabel="TestLabel" messages={menuMessages} />
 			</Wrapper>,
 		));
 
@@ -65,7 +65,7 @@ describe("Topbar", () => {
 				<AppBox>
 					<CurrentApp />
 				</AppBox>
-				<Menu menuLabel="TestLabel" menuItems={menuItems} />
+				<Menu menuLabel="TestLabel" messages={menuMessages} />
 			</Wrapper>,
 		));
 
@@ -77,7 +77,7 @@ describe("Topbar", () => {
 				<AppBox>
 					<CurrentApp />
 				</AppBox>
-				<Menu menuLabel="TestLabel" menuItems={menuItems} />
+				<Menu menuLabel="TestLabel" messages={menuMessages} />
 			</Wrapper>,
 		));
 });

@@ -1,8 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { compose, withProps } from "recompose";
+import { injectIntl } from "react-intl";
+import { getThemeProp } from "../../utils";
+import { setStateField } from "../../actions/view";
+import { signOut } from "../../actions/authentication";
+import { PREFS_NAME } from "./Preferences";
+import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
 import DropMenu from "../DropMenu";
-import { getThemeProp } from "../../utils";
 
 export const Wrapper = styled.div`
 	height: 40px;
@@ -11,7 +18,41 @@ export const Wrapper = styled.div`
 	justify-content: space-between;
 `;
 
-export const Menu = styled(DropMenu)`
+const withUserMenu = compose(
+	injectIntl,
+	connect(
+		() => ({}),
+		dispatch => ({
+			menuFuncs: {
+				signOut: () => dispatch(signOut()),
+				showPreferences: () =>
+					dispatch(setStateField(PREFS_NAME, "show", true)),
+				showAbout: () => dispatch(setStateField(ABOUT_NAME, "show", true)),
+			},
+		}),
+	),
+	withProps(({ intl, menuFuncs, messages }) => ({
+		menuItems: [
+			{
+				label: intl.formatMessage(messages.sign_out),
+				handler: menuFuncs.signOut,
+				icon: "logout-1",
+			},
+			{
+				label: intl.formatMessage(messages.preferences),
+				handler: menuFuncs.showPreferences,
+				icon: "settings-cogwheel",
+			},
+			{
+				label: intl.formatMessage(messages.about),
+				handler: menuFuncs.showAbout,
+				icon: "infomation-circle",
+			},
+		],
+	})),
+);
+
+export const Menu = withUserMenu(styled(DropMenu)`
 	box-sizing: border-box;
 	font-family: Roboto Condensed, sans-serif;
 	font-size: 12px;
@@ -20,7 +61,7 @@ export const Menu = styled(DropMenu)`
 	min-width: 180px;
 	padding-top: 14px;
 	padding-right: 32px;
-`;
+`);
 
 export const AppBox = styled.div`
 	height: 100%;
@@ -55,7 +96,13 @@ CurrentApp.displayName = "CurrentApp";
 
 const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
 
-const Topbar = ({ applications, applicationId, onClick, ...config }) => (
+const Topbar = ({
+	applications,
+	applicationId,
+	onClick,
+	menuMessages,
+	...config
+}) => (
 	<Wrapper onClick={onClick}>
 		<AppBox>
 			<ApplicationSelector
@@ -64,9 +111,9 @@ const Topbar = ({ applications, applicationId, onClick, ...config }) => (
 					applicationId,
 				}}
 			/>
-			<CurrentApp {...getApp(applications, applicationId) || {}} />
+			<CurrentApp {...(getApp(applications, applicationId) || {})} />
 		</AppBox>
-		<Menu {...config} />
+		<Menu {...config} messages={menuMessages} />
 	</Wrapper>
 );
 
