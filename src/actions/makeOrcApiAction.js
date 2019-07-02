@@ -23,8 +23,9 @@ const makeOrcApiAction = (
 		credentials: "include",
 		// Bail out if an instance of this request is already running (or if passed bailout returns true)
 		bailout: state =>
-			(configuration.bailout && configuration.bailout(state)) ||
-			state.getIn(["requests", name]),
+			(typeof configuration.bailout === "function"
+				? !!configuration.bailout(state)
+				: !!configuration.bailout) || !!state.getIn(["requests", name]),
 		headers,
 		options,
 	});

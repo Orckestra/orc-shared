@@ -34,13 +34,7 @@ describe("makeOrcApiAction", () => {
 					options: {
 						redirect: "follow",
 					},
-					bailout: expect
-						.it("to be a function")
-						.and(
-							"when called with",
-							[Immutable.fromJS({ requests: { TEST_ACTION: true } })],
-							"to be true",
-						),
+					bailout: expect.it("to be a function"),
 					credentials: "include",
 				},
 			},
@@ -93,4 +87,110 @@ describe("makeOrcApiAction", () => {
 				},
 			},
 		));
+
+	describe("bailout", () => {
+		it("bails out if same request active", () => {
+			const bailout = makeOrcApiAction(
+				"TEST_ACTION",
+				"https://orc-oco.api.test/",
+			)[RSAA].bailout;
+			return expect(
+				bailout,
+				"when called with",
+				[Immutable.fromJS({ requests: { TEST_ACTION: true } })],
+				"to be true",
+			);
+		});
+
+		it("does not bail out if same request inactive", () => {
+			const bailout = makeOrcApiAction(
+				"TEST_ACTION",
+				"https://orc-oco.api.test/",
+			)[RSAA].bailout;
+			return expect(
+				bailout,
+				"when called with",
+				[Immutable.fromJS({ requests: { OTHER_ACTION: true } })],
+				"to be false",
+			);
+		});
+
+		it("bails out if configured bailout is a function that returns true", () => {
+			const bailout = makeOrcApiAction(
+				"TEST_ACTION",
+				"https://orc-oco.api.test/",
+				"GET",
+				{ bailout: state => state.getIn(["random", "thing"]) },
+			)[RSAA].bailout;
+			return expect(
+				bailout,
+				"when called with",
+				[
+					Immutable.fromJS({
+						random: { thing: true },
+						requests: {},
+					}),
+				],
+				"to be true",
+			);
+		});
+
+		it("does not bail out if configured bailout is a function that returns false", () => {
+			const bailout = makeOrcApiAction(
+				"TEST_ACTION",
+				"https://orc-oco.api.test/",
+				"GET",
+				{ bailout: state => state.getIn(["random", "thing"]) },
+			)[RSAA].bailout;
+			return expect(
+				bailout,
+				"when called with",
+				[
+					Immutable.fromJS({
+						random: { thing: false },
+						requests: {},
+					}),
+				],
+				"to be false",
+			);
+		});
+
+		it("bails out if configured bailout is a truthy non-function value", () => {
+			const bailout = makeOrcApiAction(
+				"TEST_ACTION",
+				"https://orc-oco.api.test/",
+				"GET",
+				{ bailout: "yep" },
+			)[RSAA].bailout;
+			return expect(
+				bailout,
+				"when called with",
+				[
+					Immutable.fromJS({
+						requests: {},
+					}),
+				],
+				"to be true",
+			);
+		});
+
+		it("does not bail out if configured bailout is a falsy non-function value", () => {
+			const bailout = makeOrcApiAction(
+				"TEST_ACTION",
+				"https://orc-oco.api.test/",
+				"GET",
+				{ bailout: 0 },
+			)[RSAA].bailout;
+			return expect(
+				bailout,
+				"when called with",
+				[
+					Immutable.fromJS({
+						requests: {},
+					}),
+				],
+				"to be false",
+			);
+		});
+	});
 });
