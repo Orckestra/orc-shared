@@ -6,9 +6,17 @@ Higher order components are useful for providing state to components while keepi
 
 A combination of the redux store connector with the `react-router` router, enabling routing information to be accessed. Is also used when navigation does not cause a view change as expected. Drop in replacement for `react-redux`'s `connect()` HOC.
 
+## `withAuthentication(Component)`
+
+Used to add an authentication check and loader/error message if not authenticated. Not usually used for app building, but is part of the AppFrame component.
+
 ## `withClickOutside(Component)`
 
 Adds support for a `onClickOutside` prop to the component. This prop should be a function, and is used as an event handler for clicks outside the elements rendered by the component. Useful for e.g. closing dropdowns, intercepting clicks outside a modal dialog, etc. Clicks outside are handled during the capture phase, on `window.document`. This permits stopping event propagation at this point, before any DOM elements are allowed to respond to it.
+
+## `withErrorBoundary(name, handler)(Component)`
+
+Sets an [error boundary ](https://reactjs.org/docs/error-boundaries.html) on the wrapped component using the given name and handler. Use this to capture and handle render-time errors.
 
 ## `withId(name)(Component)`
 
@@ -40,6 +48,10 @@ Sets an `onClick` prop on the wrapped component that will attempt to navigate to
 
 If the `request` named is currently in progress (i.e. we are between a `<request>_REQUEST` action and a `<request>_SUCCESS` or `<request>_FAILURE` action being dispatched), the wrapped component will have an `active` prop set to true. This allows the component to indicate loading status to the user.
 
+## `withScopeData(Component)`
+
+Provides the full scope information, including all available scopes and the currently selected scope.
+
 ## `withScrollBox(Component)`
 
 The given component will be wrapped in a scrollable `<div>`, and is passed a `height` and a `width` prop containing the size in pixels of that element as currently rendered, updated on resize.
@@ -47,6 +59,10 @@ The given component will be wrapped in a scrollable `<div>`, and is passed a `he
 ## `withToggle(propname)(Component)`
 
 Sets up a boolean property on the component, toggled with the `toggle` function property.
+
+## `withUpdateHandler(handlerName, test)(Component)`
+
+Whenever the wrapped component is updated, the test is called with the previous properties and the next ones. If it returns true, the function named in the first parameter, which must exist as a property on the component, is called (without parameters). This echoes `withInitialLoad`, above.
 
 ## `withViewState(Component)`
 

@@ -10,9 +10,8 @@
 - `activeModules`: An array of module `id` to be shown as active (a red dot will appear by the icon).
 - `menuLabel`: The label for the topbar menu. Typically the logged-in user's email.
 - `menuItems`: A list of items in the topbar menu, given as objects containing `label` (`react-intl` message descriptor), `handler`function for selecting the item, and an `icon` id to show.
-- `scopeHOC`: A higher-order component that furnishes the scope selector with properties. See `Scope` component for the props this should provide.
 
-Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with user menu and help popup. Modules will be rendered as links in the sidebar, and as routes to components in the viewport. It also includes showing toasts with a queued [ToastList](#toastlist).
+Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with user menu and help popup. Modules will be rendered as links in the sidebar, and as routes to components in the viewport. It also includes showing toasts with a queued [ToastList](#toastlist), as well as About and Preference elements.
 
 ## Button
 
