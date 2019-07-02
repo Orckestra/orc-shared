@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
 	justify-content: space-between;
 `;
 
-const withUserMenu = compose(
+export const withUserMenu = compose(
 	injectIntl,
 	connect(
 		() => ({}),

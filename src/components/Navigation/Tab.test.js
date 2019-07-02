@@ -12,19 +12,27 @@ import FullTab, {
 } from "./Tab";
 
 describe("Tab", () => {
-	it("renders a module tab with icon and label", () =>
-		expect(
+	it("renders a module tab with icon and label", () => {
+		const mockEvent = {
+			stopPropagation: sinon.spy().named("event.stopPropagation"),
+			preventDefault: sinon.spy().named("event.preventDefault"),
+		};
+		return expect(
 			<Tab module icon="test" label="A module" href="/Foo/modu" />,
 			"to render as",
 			<ModuleTab>
-				<TabLink to="/Foo/modu">
+				<TabLink to="/Foo/modu" onClick={expect.it("called with", [mockEvent])}>
 					<ModuleIcon id="test" />
 					<TabText>
 						<Text message="A module" />
 					</TabText>
 				</TabLink>
 			</ModuleTab>,
-		));
+		).then(() => {
+			expect(mockEvent.stopPropagation, "was not called");
+			expect(mockEvent.preventDefault, "was not called");
+		});
+	});
 
 	it("renders an active module tab", () =>
 		expect(
@@ -45,6 +53,38 @@ describe("Tab", () => {
 				</TabLink>
 			</ModuleTab>,
 		));
+
+	it("renders a tab outside the current scope", () => {
+		const mockEvent = {
+			stopPropagation: sinon.spy().named("event.stopPropagation"),
+			preventDefault: sinon.spy().named("event.preventDefault"),
+		};
+		return expect(
+			<Tab
+				module
+				outsideScope
+				icon="test"
+				label={{ id: "test.module", defaultMessage: "A module" }}
+				href="/Foo/modu"
+			/>,
+			"to render as",
+			<ModuleTab outsideScope>
+				<TabLink
+					outsideScope
+					to="/Foo/modu"
+					onClick={expect.it("called with", [mockEvent])}
+				>
+					<ModuleIcon id="test" />
+					<TabText>
+						<Text message={{ id: "test.module", defaultMessage: "A module" }} />
+					</TabText>
+				</TabLink>
+			</ModuleTab>,
+		).then(() => {
+			expect(mockEvent.stopPropagation, "was called");
+			expect(mockEvent.preventDefault, "was called");
+		});
+	});
 
 	it("renders a page tab with label and close button", () => {
 		const close = () => {};

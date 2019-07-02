@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
@@ -6,10 +7,10 @@ import sinon from "sinon";
 import { setRoute, mapHref } from "../../actions/navigation";
 import withWaypointing from "./withWaypointing";
 
-const Test = () => <div />;
+const Test = props => <div>{JSON.stringify(props)}</div>;
 
 describe("withWaypointing", () => {
-	let state, store;
+	let state, store, updateState;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			navigation: {
@@ -24,8 +25,11 @@ describe("withWaypointing", () => {
 				},
 			},
 		});
+		updateState = () => {};
 		store = {
-			subscribe: () => {},
+			subscribe: sub => {
+				updateState = sub;
+			},
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
@@ -162,4 +166,43 @@ describe("withWaypointing", () => {
 					},
 				]),
 			));
+
+	it("fires action on updates where route becomes misaligned", () => {
+		const node = document.createElement("div");
+		return expect(withWaypointing, "called with", [Test]).then(EnhancedView => {
+			ReactDOM.render(
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/feep/meep"]}>
+						<Route path="/feep/:some" component={EnhancedView} />
+					</MemoryRouter>
+				</Provider>,
+				node,
+			);
+			expect(store.dispatch, "was not called");
+			state = state
+				.setIn(["navigation", "route", "location", "pathname"], "/feep/murl")
+				.setIn(["navigation", "route", "match", "url"], "/feep/murl");
+			updateState();
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "SET_ROUTE",
+							payload: {
+								location: {
+									pathname: "/feep/meep",
+								},
+								match: {
+									path: "/feep/:some",
+									url: "/feep/meep",
+									isExact: true,
+									params: { some: "meep" },
+								},
+							},
+						},
+					],
+				},
+			]);
+		});
+	});
 });

@@ -1,14 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Immutable from "immutable";
+import sinon from "sinon";
 import I18n from "../I18n";
+import { RSAA } from "redux-api-middleware";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import {
+	GET_APPLICATIONS_REQUEST,
+	GET_APPLICATIONS_SUCCESS,
+	GET_APPLICATIONS_FAILURE,
+} from "../../actions/applications";
 import Scope from "../Scope";
 import FullAppFrame, { Base, ViewPort, AppFrame } from "./index";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 import ConnectedToastList from "./ConnectedToastList";
+
+jest.mock("../../utils/buildUrl", () => {
+	const modExport = {};
+	modExport.loadConfig = () => Promise.resolve({});
+	modExport.buildUrl = () => "URL";
+	return modExport;
+});
 
 class ClassAppFrame extends React.Component {
 	render() {
@@ -33,8 +47,18 @@ describe("AppFrame", () => {
 	let props, toggle, reset;
 	beforeEach(() => {
 		props = {
-			applications: [{ src: "/", label: "This", id: "current" }],
-			applicationId: "current",
+			applications: [
+				{
+					id: 3,
+					name: "Orders",
+					isVisible: true,
+					isAbsoluteUrl: true,
+					url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
+					iconUri: "https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
+					displayName: "Marketing Legacy",
+				},
+			],
+			applicationId: 3,
 			modules: [],
 			activeModules: ["foo"],
 			menuLabel: "TestLabel",
@@ -106,87 +130,87 @@ describe("AppFrame", () => {
 		));
 
 	describe("with state handling", () => {
-		let store, outerProps, innerProps, appRoot, modalRoot;
+		let store, state, outerProps, innerProps, appRoot, modalRoot;
 		beforeEach(() => {
+			state = Immutable.fromJS({
+				applications: {
+					list: [
+						{
+							id: 3,
+							name: "Orders",
+							isVisible: true,
+							isAbsoluteUrl: true,
+							url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
+							iconUri:
+								"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
+							displayName: {
+								"en-CA": "Marketing Legacy",
+								"en-US": "Marketing Legacy",
+								"fr-CA": "Marketing Legacy",
+								"fr-FR": "Marketing Legacy",
+								"it-IT": "Marketing Legacy",
+							},
+						},
+					],
+				},
+				authentication: {
+					name: "foo@bar.com",
+				},
+				navigation: {
+					route: {
+						match: {
+							url: "/test1/test",
+							path: "/:scope/test",
+							params: { scope: "test1" },
+						},
+					},
+				},
+				locale: {
+					suportedLocales: [],
+					cultures: {
+						"en-US": {
+							cultureIso: "en-US",
+							cultureName: "English - United States",
+							sortOrder: 0,
+							isDefault: true,
+						},
+					},
+					defaultCulture: "fr-FR",
+				},
+				scopes: {
+					test1: {
+						id: "test1",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+					},
+					test2: {
+						id: "test2",
+						name: { "en-US": "Test 2" },
+						foo: false,
+						bar: true,
+					},
+					test3: {
+						id: "test3",
+						name: { "en-CA": "Test 3" },
+						foo: true,
+						bar: false,
+					},
+					test4: {
+						id: "test4",
+						name: { "en-US": "Test 4" },
+						foo: true,
+						bar: true,
+					},
+				},
+				settings: { defaultApp: 12 },
+				view: { scopeSelector: { filter: "1" } },
+				toasts: { queue: [] },
+			});
 			store = {
 				subscribe: () => {},
-				dispatch: () => {},
-				getState: () =>
-					Immutable.fromJS({
-						applications: {
-							list: [
-								{
-									id: 3,
-									name: "Orders",
-									isVisible: true,
-									isAbsoluteUrl: true,
-									url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
-									iconUri:
-										"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
-									displayName: {
-										"en-CA": "Marketing Legacy",
-										"en-US": "Marketing Legacy",
-										"fr-CA": "Marketing Legacy",
-										"fr-FR": "Marketing Legacy",
-										"it-IT": "Marketing Legacy",
-									},
-								},
-							],
-						},
-						authentication: {
-							name: "foo@bar.com",
-						},
-						navigation: {
-							route: {
-								match: {
-									url: "/test1/test",
-									path: "/:scope/test",
-									params: { scope: "test1" },
-								},
-							},
-						},
-						locale: {
-							suportedLocales: [],
-							cultures: {
-								"en-US": {
-									cultureIso: "en-US",
-									cultureName: "English - United States",
-									sortOrder: 0,
-									isDefault: true,
-								},
-							},
-							defaultCulture: "fr-FR",
-						},
-						scopes: {
-							test1: {
-								id: "test1",
-								name: { "en-CA": "Test 1" },
-								foo: false,
-								bar: false,
-							},
-							test2: {
-								id: "test2",
-								name: { "en-US": "Test 2" },
-								foo: false,
-								bar: true,
-							},
-							test3: {
-								id: "test3",
-								name: { "en-CA": "Test 3" },
-								foo: true,
-								bar: false,
-							},
-							test4: {
-								id: "test4",
-								name: { "en-US": "Test 4" },
-								foo: true,
-								bar: true,
-							},
-						},
-						settings: { defaultApp: 12 },
-						view: { scopeSelector: { filter: "1" } },
-						toasts: { queue: [] },
-					}),
+				dispatch: sinon.spy().named("dispatch"),
+				getState: () => state,
 			};
 			innerProps = props;
 			outerProps = { store, ...props };
@@ -219,6 +243,33 @@ describe("AppFrame", () => {
 					toggle={expect.it("to be a function")}
 					reset={expect.it("to be a function")}
 				/>,
+			);
+		});
+
+		it("loads applications if not found", () => {
+			state = state.setIn(["applications", "list"], Immutable.List());
+			const render = ReactDOM.render(
+				<ClassAppFrame {...outerProps} />,
+				appRoot,
+			);
+			return expect(render, "to have rendered", <AppFrame />).then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								[RSAA]: {
+									types: [
+										GET_APPLICATIONS_REQUEST,
+										GET_APPLICATIONS_SUCCESS,
+										GET_APPLICATIONS_FAILURE,
+									],
+									endpoint: "URL",
+									method: "GET",
+								},
+							},
+						],
+					},
+				]),
 			);
 		});
 	});
