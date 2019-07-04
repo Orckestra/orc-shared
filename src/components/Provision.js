@@ -3,14 +3,13 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router/immutable";
 import { ThemeProvider } from "styled-components";
 import { history } from "../buildStore";
-// import { BrowserRouter } from "react-router-dom";
 import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
+import Relogin from "./Relogin";
 
 const Provision = ({ store, theme = {}, children }) => (
 	<Provider store={store}>
-		{/* <BrowserRouter> */}
 		<ConnectedRouter history={history}>
 			<React.Fragment>
 				<Head />
@@ -21,7 +20,7 @@ const Provision = ({ store, theme = {}, children }) => (
 				</ThemeProvider>
 			</React.Fragment>
 		</ConnectedRouter>
-		{/* </BrowserRouter> */}
+		<Relogin />
 	</Provider>
 );
 

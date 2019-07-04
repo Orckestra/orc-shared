@@ -9,6 +9,7 @@ import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
 import Provision from "./Provision";
+import Relogin from "./Relogin";
 
 const fakeStore = {
 	subscribe: listener => () => {},
@@ -41,6 +42,7 @@ describe("Provision", () => {
 						</ThemeProvider>
 					</React.Fragment>
 				</ConnectedRouter>
+				<Relogin />
 			</Provider>,
 		));
 
