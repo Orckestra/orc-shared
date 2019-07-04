@@ -1,6 +1,8 @@
 import React from "react";
 import sinon from "sinon";
 import Text from "../Text";
+import bgImage from "../../content/aboutBackground.png";
+import logoImage from "../../content/aboutLogo.png";
 import {
 	AboutBox,
 	AboutParagraph,
@@ -12,7 +14,6 @@ import {
 describe("About", () => {
 	let messages;
 	beforeEach(() => {
-		window.BASE_PATH = "/test-app";
 		window.orcVersion = "x.y.z";
 		messages = {
 			ccName: "Test App",
@@ -23,7 +24,6 @@ describe("About", () => {
 		};
 	});
 	afterEach(() => {
-		delete window.BASE_PATH;
 		delete window.orcVersion;
 	});
 
@@ -32,7 +32,7 @@ describe("About", () => {
 			<About viewState={{}} messages={messages} />,
 			"to render as",
 			<AboutBox>
-				<img src="/test-app/aboutLogo.png" alt="Orckestra" />
+				<img src={logoImage} alt="Orckestra" />
 				<AboutParagraph>
 					<Text
 						message={{
@@ -59,6 +59,9 @@ describe("About", () => {
 		));
 
 	describe("AboutBox", () => {
+		it("has a background image", () =>
+			expect(<AboutBox in />, "to render style rules", "to contain", bgImage));
+
 		it("renders an opacity-transitioning box", () =>
 			expect(
 				<AboutBox in />,

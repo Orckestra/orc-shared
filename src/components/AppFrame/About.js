@@ -5,6 +5,8 @@ import transition from "styled-transition-group";
 import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 import withViewState from "../../hocs/withViewState";
+import bgImage from "../../content/aboutBackground.png";
+import logoImage from "../../content/aboutLogo.png";
 
 export const ABOUT_NAME = "__aboutBox";
 
@@ -22,7 +24,7 @@ export const AboutBox = withClickOutside(transition.div`
 	color: #ffffff;
 	font-size: 13px;
 	line-height: 16px;
-	background: #0a0a07 url("${window.BASE_PATH}/aboutBackground.png");
+	background: #0a0a07 url(${bgImage});
 	transition: opacity ${props => props.timeout}ms ease-out;
 
 	&:enter {
@@ -62,7 +64,7 @@ export const About = ({ viewState, updateViewState, messages }) => (
 		in={viewState.show}
 		onClickOutside={getClickOutsideHandler(viewState, updateViewState)}
 	>
-		<img src={window.BASE_PATH + "/aboutLogo.png"} alt="Orckestra" />
+		<img src={logoImage} alt="Orckestra" />
 		<AboutParagraph>
 			<Text
 				message={{
