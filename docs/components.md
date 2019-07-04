@@ -78,12 +78,6 @@ Configurable list component. Shows a table of information, according to the give
 
 See also the more [detailed documentation for this component](lists.md).
 
-## Navigation
-
-- `modules`: A map object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages`, `segments` and `subpages` under the module. See [documentation](moduleFile.md).
-
-Shows a tab list for a module, showing tabs for pages that are navigated to.
-
 ## Modal
 
 - `look`: The appearance of the dialog box. One of `'default'` or `'dark'`.
@@ -97,6 +91,21 @@ Shows a modal dialog box, which will close if clicked outside.
 - `modules`: An object containing module data: A `label` (typically a message descriptor), an `icon` identifier, a `component` to render the module with, and any `pages` under the module, defined by component and title. See [documentation](moduleFile.md).
 
 Intended to convert a module table into a page rendering system, it sets up a `Navigation` bar (q.v.) and a set of `Route` elements (from `react-router`, via the Routing components in this library) that render the components associated with different routes. Typically used by feeding it the application's module table and placing it as the child of the `AppFrame`.
+
+## MultiSelector
+
+- `options`: A list of objects containing a `label` and `value` field, used to populate the options list.
+- `placeholder`: A placeholder text to show if no option is selected.
+- `value`: An array of currently selected values.
+- `update`: A function which updates the `value` (in application state, typically).
+
+A styled replacement for the `<selector multiple />` element, based on [Selector](#selector) below.
+
+## Navigation
+
+- `modules`: The module object of the application. See [documentation](moduleFile.md).
+
+Renders a tabbed navigation bar for the currently selected module. Used by (Modules)[#modules], above, should not generally be used on its own.
 
 ## Placeholder
 
@@ -114,6 +123,10 @@ Shows an element suitable for being used as a placeholder or load spinner in e.g
 - `theme`: The theme object to be used in the app.
 
 Sets up the various providers and wrappers needed for an application. Should have one child element, in most cases a redux-connected `<AppFrame>`.
+
+## Relogin
+
+Checks the state, and if logged out renders an iframe that will log in the user again via Azure Active Directory. Used by [Provision](#provision) and should not be used independently.
 
 ## Routing Components
 
@@ -156,14 +169,20 @@ Displays all available icons along with the ids to access them.
 
 Displays a horizontal toggle switch. This is a wrapper around a `<input type="checkbox" />`, so any props that work with that will also work here. Use `value` to set the value, not `checked`. If no `id` is passed, one will be generated and used.
 
+## Text
+
+- `message`: A string or `react-intl` message descriptor to be rendered.
+
+Will selectively render a plain text string or a translated `react-intl` message. If the message requires values but does not have them along (in `message.values`), will render a placeholder. If it fails (e.g. there is no message or it is faulty) will render the error message in bold bright red.
+
 ## ToastList
 
 - `toasts`: An array containing prop objects for the toasts to be shown, each as follows:
   - `message`: A string or message descriptor containing the text to be shown.
   - `type`: A string denoting the type of toast.
-  - `closeFunc`: A function that is called when the close icon is clocked. Optional.
+  - `closeFunc`: A function that is called when the close icon is clicked. Optional.
 
-Shows a list of message boxes in the upper right corner, displaying the selected icon and message. It is up to the showing component to determine when to remove a toast toast, to this end a close function hook is provided to allow user interaction. Types may be defined in the theme by setting `toastColors` and `icons.toast`: each of these should be an object with type names as keys, giving the background color and icon of the toast type, respectively. The list is rendered in a portal with the id `"toast"`, which is automatically created.
+Shows a list of message boxes in the upper right corner, displaying the selected icon and message. It is up to the showing component to determine when to remove a toast, to this end a close function hook is provided to allow user interaction. Types may be defined in the theme by setting `toastColors` and `icons.toast`: each of these should be an object with type names as keys, giving the background color and icon of the toast type, respectively. The list is rendered in a portal with the id `"toast"`, which is automatically created.
 
 ## Toolbar
 
