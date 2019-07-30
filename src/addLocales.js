@@ -1,10 +1,12 @@
 import { addLocaleData } from "react-intl";
 
-const addLocales = (...locales) => {
-	locales.forEach(locale => {
-		const localeData = require("react-intl/locale-data/" + locale);
-		addLocaleData(localeData);
-	});
-};
+const addLocales = (...locales) =>
+	Promise.all(
+		locales.map(locale =>
+			import(
+				/* webpackChunkName: "localeData" */ `react-intl/locale-data/${locale}`
+			).then(localeData => addLocaleData(localeData.default)),
+		),
+	);
 
 export default addLocales;

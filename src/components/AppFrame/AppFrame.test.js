@@ -12,7 +12,7 @@ import {
 	GET_APPLICATIONS_FAILURE,
 } from "../../actions/applications";
 import Scope from "../Scope";
-import FullAppFrame, { Base, ViewPort, AppFrame } from "./index";
+import FullAppFrame, { Base, ViewPort, AppFrame } from "./AppFrame";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 import ConnectedToastList from "./ConnectedToastList";

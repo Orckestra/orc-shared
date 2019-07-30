@@ -5,7 +5,7 @@ import {
 	Placeholder,
 	PlaceholderCell,
 	PlaceholderBox,
-} from "./index";
+} from "./List";
 import Row from "./Row";
 import HeadRow from "./HeadRow";
 
