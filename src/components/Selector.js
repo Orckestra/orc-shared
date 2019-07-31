@@ -71,13 +71,15 @@ export const Dropdown = styled.div`
 	max-height: 40vh;
 	overflow-y: auto;
 	background-color: white;
+	opacity: 0;
 	visibility: hidden;
-
 	${/* Enables click handling on Options while closing dropdown */ ""};
-	transition: visibility 0.1s step-end;
+	transition: visibility 0.4s step-end;
 
-	${InnerSelect}:focus + * + & {
+	${InnerSelect}:focus + ${SelectBox} + & {
+		opacity: 1;
 		visibility: visible;
+		transition: visibility 0s step-end;
 	}
 `;
 
