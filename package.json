@@ -31,7 +31,7 @@
 		"orc-scripts": "0.6.11"
 	},
 	"peerDependencies": {
-		"orc-scripts": "^0.6.6"
+		"orc-scripts": "^0.6.11"
 	},
 	"sideEffects": false,
 	"lint-staged": {
