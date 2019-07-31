@@ -4,10 +4,11 @@
 	"description": "Shared code for Orckestra applications",
 	"main": "dist/",
 	"scripts": {
-		"build": "make-dir dist && copyfiles --up 1 \"src/content/*\" dist && orc-scripts build --ignore \"**/*.test.js\",\"src/translations/*\" --no-copy-files",
+		"build": "npm run build:prep && orc-scripts build --ignore \"**/*.test.js\",\"src/translations/*\" --no-copy-files",
 		"build:clean": "npm run clean && npm run build",
+		"build:prep": "make-dir dist && copyfiles --up 1 \"src/content/*\" dist",
 		"clean": "rimraf dist",
-		"watch": "orc-scripts build --watch",
+		"watch": "npm run build -- --watch",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
 		"coveralls": "cat coverage/lcov.info | coveralls",
