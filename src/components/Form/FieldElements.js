@@ -21,7 +21,6 @@ const FieldElements = ({
 					return (
 						<Fieldset key={name} label={label}>
 							<FieldElements
-								fields={props.fields}
 								getUpdater={getUpdater}
 								values={values}
 								wide={wide}
@@ -39,7 +38,6 @@ const FieldElements = ({
 							proportions={props.proportions}
 						>
 							<FieldElements
-								fields={props.fields}
 								getUpdater={getUpdater}
 								values={values}
 								labelOnly={labelOnly}

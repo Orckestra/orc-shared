@@ -1,4 +1,5 @@
 import React from "react";
+import pt from "prop-types";
 import styled, { keyframes } from "styled-components";
 import { FormattedMessage } from "react-intl";
 import withErrorBoundary from "../hocs/withErrorBoundary";
@@ -57,5 +58,14 @@ const Text = ({ message, error }) => {
 		return <span>{message}</span>;
 	}
 };
+
+export const ptLabel = pt.oneOfType([
+	pt.string,
+	pt.shape({
+		id: pt.string.isRequired,
+		defaultMessage: pt.string.isRequired,
+	}),
+]);
+Text.propTypes = { message: ptLabel };
 
 export default withErrorBoundary("Text")(Text);

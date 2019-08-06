@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import Input from "./Input";
 import Icon from "./Icon";
-import Text from "./Text";
+import Text, { ptLabel } from "./Text";
 
 export const Bar = styled.div`
 	flex: 0 0 64px;
@@ -115,28 +115,31 @@ export const Toolbar = ({ tools }) => (
 );
 
 // These tools are allowed inside tool groups
-const toolPropType = pt.oneOfType([
+const ptTool = pt.oneOfType([
 	pt.shape({
 		type: pt.oneOf(["input"]).isRequired,
 	}),
 	pt.shape({
 		type: pt.oneOf(["button"]).isRequired,
-		label: pt.shape({ icon: pt.string, label: pt.string }).isRequired,
+		label: pt.oneOfType([
+			pt.shape({ icon: pt.string.isRequired, text: ptLabel }),
+			pt.shape({ icon: pt.string, text: ptLabel.isRequired }),
+		]).isRequired,
 	}),
 ]);
 
 // These tools are allowed outside groups
-const toolPropTypeWithGroup = pt.oneOfType([
-	toolPropType,
+const ptToolWithGroup = pt.oneOfType([
+	ptTool,
 	pt.shape({ type: pt.oneOf(["separator", "spacer"]).isRequired }),
 	pt.shape({
 		type: pt.oneOf(["group"]).isRequired,
-		tools: pt.arrayOf(toolPropType),
+		tools: pt.arrayOf(ptTool),
 	}),
 ]);
 
 Toolbar.propTypes = {
-	tools: pt.arrayOf(toolPropTypeWithGroup).isRequired,
+	tools: pt.arrayOf(ptToolWithGroup).isRequired,
 };
 
 export default Toolbar;

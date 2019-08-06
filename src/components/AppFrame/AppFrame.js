@@ -1,4 +1,5 @@
 import React from "react";
+import pt from "prop-types";
 import styled, { injectGlobal, css } from "styled-components";
 import { connect } from "react-redux";
 import { compose } from "recompose";
@@ -7,6 +8,7 @@ import withInitialLoad from "../../hocs/withInitialLoad";
 import withAuthentication from "../../hocs/withAuthentication";
 import withToggle from "../../hocs/withToggle";
 import { localizedAppSelector } from "../../selectors/applications";
+import { ptLabel } from "../Text";
 import Scope from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
@@ -65,7 +67,6 @@ export const AppFrame = ({
 	modules,
 	activeModules,
 	menuLabel,
-	linkHOC,
 	location,
 	children,
 	menuMessages,
@@ -77,19 +78,11 @@ export const AppFrame = ({
 	<Base>
 		<ConnectedToastList />
 		<Topbar
-			linkHOC={linkHOC}
+			{...{ applications, applicationId, menuLabel, menuMessages }}
 			onClick={reset}
-			applications={applications}
-			applicationId={applicationId}
-			menuLabel={menuLabel}
-			menuMessages={menuMessages}
 		/>
 		<Sidebar
-			linkHOC={linkHOC}
-			open={open}
-			toggle={toggle}
-			modules={modules}
-			activeModules={activeModules}
+			{...{ open, toggle, modules, activeModules }}
 			path={location.pathname}
 		/>
 		<ViewPort open={open} onClick={reset}>
@@ -101,7 +94,7 @@ export const AppFrame = ({
 );
 AppFrame.displayName = "AppFrame";
 
-export default compose(
+const WiredAppFrame = compose(
 	connect(
 		state => ({
 			applications: localizedAppSelector(state).toJS(),
@@ -114,3 +107,35 @@ export default compose(
 	withAuthentication,
 	withToggle("open"),
 )(AppFrame);
+WiredAppFrame.propTypes = {
+	menuLabel: ptLabel.isRequired,
+	applicationId: pt.string.isRequired,
+	modules: pt.array.isRequired,
+	activeModules: pt.array,
+	menuMessages: pt.shape({
+		sign_out: ptLabel.isRequired,
+		preferences: ptLabel.isRequired,
+		about: ptLabel.isRequired,
+	}).isRequired,
+	scopeFilterPlaceholder: ptLabel,
+	aboutMessages: pt.shape({
+		ccName: ptLabel.isRequired,
+		ccVersion: ptLabel.isRequired,
+		copyrightTermsNotice: ptLabel.isRequired,
+		copyright: ptLabel.isRequired,
+		allRightsReserved: ptLabel.isRequired,
+	}).isRequired,
+	prefMessages: pt.shape({
+		preferences: ptLabel.isRequired,
+		save: ptLabel.isRequired,
+		cancel: ptLabel.isRequired,
+		language: ptLabel.isRequired,
+		defaultApp: ptLabel.isRequired,
+	}).isRequired,
+};
+
+export default WiredAppFrame;
+
+/*
+
+*/

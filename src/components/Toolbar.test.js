@@ -74,14 +74,16 @@ describe("Toolbar", () => {
 			{
 				type: "button",
 				key: 6,
-				label: { text: "Button" },
+				label: { text: { id: "toolbar.button", defaultMessage: "Button" } },
 				onClick: () => {},
 			},
 		];
 	});
 
 	it("renders a toolbar", () =>
-		expect(<Toolbar tools={[]} />, "to exactly render as", <Bar />));
+		expect(<Toolbar tools={[]} />, "to exactly render as", <Bar />).then(() =>
+			expect(console.error, "was not called"),
+		));
 
 	it("renders tools according to its configuration", () =>
 		expect(
@@ -123,9 +125,12 @@ describe("Toolbar", () => {
 					primary
 				/>
 				<ToolSeparator />
-				<ToolButton onClick={toolList[6].onClick} label={{ text: "Button" }} />
+				<ToolButton
+					onClick={toolList[6].onClick}
+					label={{ text: { id: "toolbar.button", defaultMessage: "Button" } }}
+				/>
 			</Bar>,
-		));
+		).then(() => expect(console.error, "was not called")));
 });
 
 describe("toolComponents.input", () => {

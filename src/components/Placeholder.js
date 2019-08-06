@@ -1,6 +1,7 @@
 import React from "react";
+import pt from "prop-types";
 import styled, { css, keyframes } from "styled-components";
-import Text from "./Text";
+import Text, { ptLabel } from "./Text";
 import Icon from "./Icon";
 import { ifFlag } from "../utils";
 
@@ -49,5 +50,11 @@ const Placeholder = ({ icon, title, subtitle, animate, warn }) => (
 		) : null}
 	</PlaceholderBox>
 );
-
+Placeholder.propTypes = {
+	icon: pt.string,
+	title: ptLabel,
+	subtitle: ptLabel,
+	animate: pt.bool,
+	warn: pt.bool,
+};
 export default Placeholder;

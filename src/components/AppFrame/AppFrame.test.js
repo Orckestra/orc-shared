@@ -63,7 +63,6 @@ describe("AppFrame", () => {
 			activeModules: ["foo"],
 			menuLabel: "TestLabel",
 			location: { pathname: "/Foo/bar" },
-			linkHOC: x => x,
 			menuMessages: {
 				sign_out: { id: "msg.signout" },
 				preferences: { id: "msg.prefs" },
@@ -95,14 +94,12 @@ describe("AppFrame", () => {
 			<Base>
 				<ConnectedToastList />
 				<Topbar
-					linkHOC={props.linkHOC}
 					applications={props.applications}
 					applicationId={props.applicationId}
 					menuLabel={props.menuLabel}
 					menuMessages={props.menuMessages}
 				/>
 				<Sidebar
-					linkHOC={props.linkHOC}
 					modules={props.modules}
 					activeModules={["foo"]}
 					path="/Foo/bar"

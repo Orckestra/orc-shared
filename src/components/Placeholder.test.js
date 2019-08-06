@@ -21,10 +21,12 @@ describe("Placeholder", () => {
 					<Text message="A subtitle" />
 				</PlaceholderSubtitle>
 			</PlaceholderBox>,
-		));
+		).then(() => expect(console.error, "was not called")));
 
 	it("renders an empty placeholder", () =>
-		expect(<Placeholder />, "to exactly render as", <PlaceholderBox />));
+		expect(<Placeholder />, "to exactly render as", <PlaceholderBox />).then(
+			() => expect(console.error, "was not called"),
+		));
 
 	it("renders an animated icon", () =>
 		expect(
@@ -33,7 +35,7 @@ describe("Placeholder", () => {
 			<PlaceholderBox>
 				<PlaceholderIcon id="testIcon" animate />
 			</PlaceholderBox>,
-		));
+		).then(() => expect(console.error, "was not called")));
 
 	it("translates title and subtitle if given message descriptors", () =>
 		expect(
@@ -52,7 +54,7 @@ describe("Placeholder", () => {
 					/>
 				</PlaceholderSubtitle>
 			</PlaceholderBox>,
-		));
+		).then(() => expect(console.error, "was not called")));
 
 	it("renders a warning placeholder", () =>
 		expect(
@@ -61,7 +63,7 @@ describe("Placeholder", () => {
 			<PlaceholderBox warn>
 				<PlaceholderIcon id="testIcon" />
 			</PlaceholderBox>,
-		));
+		).then(() => expect(console.error, "was not called")));
 });
 
 describe("PlaceholderIcon", () => {

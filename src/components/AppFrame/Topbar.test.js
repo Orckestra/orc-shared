@@ -31,7 +31,7 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Topbar", () => {
-	let applications, props, linkHOC, path, clicker, menuMessages;
+	let applications, props, clicker, menuMessages;
 	beforeEach(() => {
 		applications = [
 			{
@@ -45,8 +45,6 @@ describe("Topbar", () => {
 				iconUri: "/test/elsewhere",
 			},
 		];
-		linkHOC = x => x;
-		path = [{ crumb: 1 }, { crumb: 2 }, { crumb: 3 }];
 		clicker = () => {};
 		menuMessages = {
 			sign_out: { id: "msg.signout" },
@@ -55,8 +53,6 @@ describe("Topbar", () => {
 		};
 		props = {
 			onClick: clicker,
-			path,
-			linkHOC,
 			menuLabel: "TestLabel",
 			menuMessages,
 			applications,
