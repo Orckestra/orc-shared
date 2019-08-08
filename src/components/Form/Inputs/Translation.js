@@ -25,10 +25,16 @@ const LanguageLabel = styled.label`
 	background-color: #eaeaea;
 `;
 
-export const TranslationField = ({ lang, message, onChange, required }) => (
+export const TranslationField = ({
+	lang,
+	message,
+	onChange,
+	required,
+	...props
+}) => (
 	<ButtonWrapper invalid={required && !message}>
 		<LanguageLabel>{lang}</LanguageLabel>
-		<FormInput value={message} onChange={onChange} />
+		<FormInput value={message} onChange={onChange} {...props} />
 	</ButtonWrapper>
 );
 TranslationField.displayName = "TranslationField";
@@ -80,6 +86,7 @@ export const TranslationInput = ({
 	toggle,
 	required,
 	moreLabel = "[more]",
+	...props
 }) => {
 	return (
 		<TranslationWrapper>
@@ -91,6 +98,7 @@ export const TranslationInput = ({
 						message={value[lang]}
 						onChange={handlers(lang)}
 						required
+						{...props}
 					/>
 				) : null,
 			)}

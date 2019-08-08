@@ -122,9 +122,16 @@ export const Selector = ({
 	clickOption,
 	placeholder = "",
 	required,
+	...props
 }) => (
 	<Wrapper>
-		<InnerSelect id={id} onChange={onChange} value={value} required={required}>
+		<InnerSelect
+			id={id}
+			onChange={onChange}
+			value={value}
+			required={required}
+			{...props}
+		>
 			{required ? <option></option> : null}
 			{options.map(option => (
 				<option key={option.value} value={option.value}>

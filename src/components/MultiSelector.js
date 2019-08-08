@@ -42,6 +42,7 @@ export const MultiSelector = ({
 	clearMessage = "Clear",
 	placeholder = "",
 	required,
+	...props
 }) => (
 	<Wrapper>
 		<InnerSelect
@@ -50,6 +51,7 @@ export const MultiSelector = ({
 			value={value}
 			multiple
 			required={required}
+			{...props}
 		>
 			{options.map(option => (
 				<option key={option.value} value={option.value}>

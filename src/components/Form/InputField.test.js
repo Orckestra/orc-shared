@@ -13,12 +13,19 @@ describe("InputField", () => {
 
 	Object.keys(inputs).forEach(type => {
 		describe("input type " + type, () => {
-			let Input, intl;
+			let Input, intl, val, emptyVal;
 			beforeEach(() => {
 				Input = inputs[type];
 				intl = {
 					formatMessage: message => message.defaultMessage,
 				};
+				if (type === "MultiSelector") {
+					val = ["thing"];
+					emptyVal = [];
+				} else {
+					val = "thing";
+					emptyVal = "";
+				}
 			});
 
 			it("renders a " + type + " input as a form field", () =>
@@ -28,7 +35,7 @@ describe("InputField", () => {
 						name="fieldName"
 						type={type}
 						label={`A ${type} field`}
-						value="thing"
+						value={val}
 						placeholder={{ id: "foo.bar", defaultMessage: "Placeholder" }}
 						otherProp
 					/>,
@@ -36,7 +43,7 @@ describe("InputField", () => {
 					<Field id="fieldName" label={`A ${type} field`}>
 						<Input
 							id="fieldName"
-							value="thing"
+							value={val}
 							otherProp
 							placeholder="Placeholder"
 						/>
@@ -51,9 +58,10 @@ describe("InputField", () => {
 						name="fieldName"
 						type={type}
 						label={`A ${type} field`}
-						value="thing"
+						value={val}
 						placeholder={{ id: "foo.bar", defaultMessage: "Placeholder" }}
 						required={`A ${type} field is a required field`}
+						wasBlurred
 						otherProp
 					/>,
 					"to render as",
@@ -64,23 +72,24 @@ describe("InputField", () => {
 					>
 						<Input
 							id="fieldName"
-							value="thing"
+							value={val}
 							otherProp
 							placeholder="Placeholder"
-							required
 						/>
 					</Field>,
 				));
-			it("renders a required and missing field", () =>
+
+			it("renders a required and empty field", () =>
 				expect(
 					<InputField
 						intl={intl}
 						name="fieldName"
 						type={type}
 						label={`A ${type} field`}
-						value=""
+						value={emptyVal}
 						placeholder={{ id: "foo.bar", defaultMessage: "Placeholder" }}
 						required={`A ${type} field is a required field`}
+						wasBlurred
 						otherProp
 					/>,
 					"to render as",
@@ -92,7 +101,7 @@ describe("InputField", () => {
 					>
 						<Input
 							id="fieldName"
-							value=""
+							value={emptyVal}
 							otherProp
 							placeholder="Placeholder"
 							required
@@ -108,12 +117,12 @@ describe("InputField", () => {
 						listIndex={12}
 						type={type}
 						label={`A ${type} field`}
-						value="thing"
+						value={val}
 						otherProp
 					/>,
 					"to render as",
 					<Field id="fieldName[12]" label={`A ${type} field`}>
-						<Input id="fieldName[12]" value="thing" otherProp />
+						<Input id="fieldName[12]" value={val} otherProp />
 					</Field>,
 				));
 		});

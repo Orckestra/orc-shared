@@ -1,7 +1,13 @@
 import React from "react";
 import { injectIntl } from "react-intl";
+import { withStateHandlers } from "recompose";
 import inputs from "./Inputs";
 import Field from "./Field";
+
+/* istanbul ignore next */
+export const withBlurFlag = withStateHandlers(() => ({ wasBlurred: false }), {
+	onBlur: () => () => ({ wasBlurred: true }),
+});
 
 export const InputField = ({
 	intl,
@@ -13,6 +19,7 @@ export const InputField = ({
 	listIndex,
 	placeholder,
 	required,
+	wasBlurred,
 	...props
 }) => {
 	const Input = inputs[type];
@@ -31,7 +38,9 @@ export const InputField = ({
 			labelOnly={labelOnly}
 			center={type === "SwitchInput" || type === "CheckboxInput"}
 			required={required}
-			invalid={required && !(Array.isArray(value) ? value.length : value)}
+			invalid={
+				wasBlurred && required && !(Array.isArray(value) ? value.length : value)
+			}
 		>
 			<Input
 				{...props}
@@ -43,10 +52,10 @@ export const InputField = ({
 						? intl.formatMessage(placeholder)
 						: undefined
 				}
-				required={!!required}
+				required={required && wasBlurred}
 			/>
 		</Field>
 	);
 };
 
-export default injectIntl(InputField);
+export default injectIntl(withBlurFlag(InputField));
