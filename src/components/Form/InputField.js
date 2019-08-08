@@ -12,6 +12,7 @@ export const InputField = ({
 	value = "",
 	listIndex,
 	placeholder,
+	required,
 	...props
 }) => {
 	const Input = inputs[type];
@@ -29,6 +30,8 @@ export const InputField = ({
 			label={label}
 			labelOnly={labelOnly}
 			center={type === "SwitchInput" || type === "CheckboxInput"}
+			required={required}
+			invalid={required && !(Array.isArray(value) ? value.length : value)}
 		>
 			<Input
 				{...props}
@@ -40,6 +43,7 @@ export const InputField = ({
 						? intl.formatMessage(placeholder)
 						: undefined
 				}
+				required={!!required}
 			/>
 		</Field>
 	);

@@ -55,6 +55,24 @@ describe("DateInput", () => {
 			expect(update, "to have a call satisfying", { args: ["2019-04-12"] });
 			expect(reset, "was called");
 		}));
+
+	it("renders a required date input", () =>
+		expect(
+			<CrudeDateInput
+				update={update}
+				reset={reset}
+				value=""
+				required
+				otherProp
+			/>,
+			"to render as",
+			<PositionedWrapper invalid>
+				<FormInput type="date" otherProp />
+				<CalendarButton>
+					<CalendarIcon />
+				</CalendarButton>
+			</PositionedWrapper>,
+		));
 });
 
 describe("CalendarDropdown", () => {

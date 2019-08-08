@@ -19,4 +19,20 @@ describe("TimeInput", () => {
 				</TimeButton>
 			</ButtonWrapper>,
 		));
+
+	it("renders a required time input with invalid value", () =>
+		expect(
+			<TimeInput update={() => {}} otherProp required />,
+			"to render as",
+			<ButtonWrapper invalid>
+				<FormInput
+					type="time"
+					onChange={expect.it("to be a function")}
+					otherProp
+				/>
+				<TimeButton>
+					<TimeIcon />
+				</TimeButton>
+			</ButtonWrapper>,
+		));
 });

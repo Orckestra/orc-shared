@@ -27,7 +27,7 @@ describe("Selector", () => {
 			/>,
 			"to render as",
 			<Wrapper>
-				<InnerSelect id="test">
+				<InnerSelect id="test" value={3}>
 					<option key={1} value={1}>
 						Opt 1
 					</option>
@@ -50,6 +50,47 @@ describe("Selector", () => {
 					<Option key={3} active>
 						Opt 3
 					</Option>
+					<Option key={4}>Opt 4</Option>
+				</Dropdown>
+			</Wrapper>,
+		));
+
+	it("renders a wrapped, hidden select element, and visual cover elements", () =>
+		expect(
+			<Selector
+				id="test"
+				clickOption={() => () => {}}
+				options={[
+					{ value: 1, label: "Opt 1" },
+					{ value: 2, label: "Opt 2" },
+					{ value: 3, label: "Opt 3" },
+					{ value: 4, label: "Opt 4" },
+				]}
+				value=""
+				required
+			/>,
+			"to render as",
+			<Wrapper>
+				<InnerSelect id="test" required>
+					<option></option>
+					<option key={1} value={1}>
+						Opt 1
+					</option>
+					<option key={2} value={2}>
+						Opt 2
+					</option>
+					<option key={3} value={3}>
+						Opt 3
+					</option>
+					<option key={4} value={4}>
+						Opt 4
+					</option>
+				</InnerSelect>
+				<SelectBox htmlFor="test"></SelectBox>
+				<Dropdown>
+					<Option key={1}>Opt 1</Option>
+					<Option key={2}>Opt 2</Option>
+					<Option key={3}>Opt 3</Option>
 					<Option key={4}>Opt 4</Option>
 				</Dropdown>
 			</Wrapper>,

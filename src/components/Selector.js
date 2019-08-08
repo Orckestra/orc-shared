@@ -48,6 +48,11 @@ export const SelectBox = styled.label`
 		transform: rotate(0.5turn);
 		transform-origin: center 8px;
 	}
+	
+	${InnerSelect}:invalid + & {
+		border-color: ${getThemeProp(["errorColor"], "#ce4844")};
+		box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
+	}
 `;
 
 export const SelectedValue = styled.span`
@@ -116,9 +121,11 @@ export const Selector = ({
 	onChange,
 	clickOption,
 	placeholder = "",
+	required,
 }) => (
 	<Wrapper>
-		<InnerSelect id={id} onChange={onChange} value={value}>
+		<InnerSelect id={id} onChange={onChange} value={value} required={required}>
+			{required ? <option></option> : null}
 			{options.map(option => (
 				<option key={option.value} value={option.value}>
 					{option.label}

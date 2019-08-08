@@ -19,6 +19,16 @@ describe("NumberInput", () => {
 			</ButtonWrapper>,
 		));
 
+	it("renders a required input field with invalid value", () =>
+		expect(
+			<NumberInput required value="" />,
+			"renders elements",
+			"to render as",
+			<ButtonWrapper invalid>
+				<FormInput type="number" value="" />
+			</ButtonWrapper>,
+		));
+
 	it("rounds input value top the step size", () =>
 		expect(
 			<NumberInput value={103.271} step={0.25} />,
@@ -26,6 +36,16 @@ describe("NumberInput", () => {
 			"to render as",
 			<ButtonWrapper>
 				<FormInput type="number" value={103.25} />
+			</ButtonWrapper>,
+		));
+
+	it("renders a required input field with invalid value", () =>
+		expect(
+			<NumberInput required step={0.1} value="" />,
+			"renders elements",
+			"to render as",
+			<ButtonWrapper invalid>
+				<FormInput type="number" value="" />
 			</ButtonWrapper>,
 		));
 

@@ -25,8 +25,8 @@ const LanguageLabel = styled.label`
 	background-color: #eaeaea;
 `;
 
-export const TranslationField = ({ lang, message, onChange }) => (
-	<ButtonWrapper>
+export const TranslationField = ({ lang, message, onChange, required }) => (
+	<ButtonWrapper invalid={required && !message}>
 		<LanguageLabel>{lang}</LanguageLabel>
 		<FormInput value={message} onChange={onChange} />
 	</ButtonWrapper>
@@ -78,6 +78,7 @@ export const TranslationInput = ({
 	cultures,
 	showAll,
 	toggle,
+	required,
 	moreLabel = "[more]",
 }) => {
 	return (
@@ -89,6 +90,7 @@ export const TranslationInput = ({
 						lang={lang}
 						message={value[lang]}
 						onChange={handlers(lang)}
+						required
 					/>
 				) : null,
 			)}

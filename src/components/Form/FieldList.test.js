@@ -48,6 +48,30 @@ describe("FieldList", () => {
 		);
 	});
 
+	it("renders an empty fixed-length list", () => {
+		const update = sinon.spy().named("update");
+		const getUpdater = name => value => update(name, value);
+		return expect(
+			<FieldList
+				name="testlistminfixed"
+				rowField={{ type: "TextInput", name: "data" }}
+				getUpdater={getUpdater}
+				rowCount={0}
+				values={{}}
+			/>,
+			"renders elements", // render through withRowGetter
+			"renders elements", // render through withListUpdater
+			"when rendered",
+			"to have rendered",
+			<List>
+				<FieldElements
+					fields={[{ type: "TextInput", name: "data" }]}
+					labelOnly
+				/>
+			</List>,
+		);
+	});
+
 	it("renders a fixed-length list with static values", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);

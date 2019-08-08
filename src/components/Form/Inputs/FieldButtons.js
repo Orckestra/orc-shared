@@ -1,5 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Button from "../../Button";
+import { ifFlag, getThemeProp } from "../../../utils";
 
 export const ButtonWrapper = styled.div`
 	box-sizing: border-box;
@@ -27,6 +28,18 @@ export const ButtonWrapper = styled.div`
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 	}
+
+	${ifFlag(
+		"invalid",
+		css`
+			border-color: ${getThemeProp(["errorColor"], "#ce4844")};
+
+			&:hover,
+			&:active {
+				box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
+			}
+		`,
+	)}
 `;
 
 export const Spinners = styled.div`

@@ -98,9 +98,8 @@ export const FieldList = ({
 	if (listIndex !== undefined) {
 		return <span>Cannot render list inside list</span>;
 	}
-	const renderField = rowCount
-		? rowField
-		: decorateField(rowField, props.remove);
+	const renderField =
+		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
 	return (
 		<List>
 			<FieldElements fields={[renderField]} labelOnly />
@@ -116,20 +115,22 @@ export const FieldList = ({
 					}}
 				/>
 			))}
-			{rowCount ? null : (
+			{rowCount === undefined ? (
 				<Field>
 					<ListControlButton onClick={listUpdater(-1)}>
 						<Text message={props.add || "[add]"} />
 					</ListControlButton>
 				</Field>
-			)}
+			) : null}
 		</List>
 	);
 };
 
 const createRowGetter = (valueList = [], rowCount) => {
 	const rows = [];
-	if (rowCount) {
+	if (rowCount === undefined) {
+		rows.push(...valueList);
+	} else {
 		for (let i = 0; i < rowCount; i += 1) {
 			const row = { ...valueList[i] };
 			if (!row.id) {
@@ -145,8 +146,6 @@ const createRowGetter = (valueList = [], rowCount) => {
 			}
 			rows.push(row);
 		}
-	} else {
-		rows.push(...valueList);
 	}
 	return () => rows;
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Input from "../../Input";
-import { memoize } from "../../../utils";
+import { memoize, getThemeProp } from "../../../utils";
 
 export const FormInput = styled(Input)`
 	box-sizing: border-box;
@@ -14,6 +14,11 @@ export const FormInput = styled(Input)`
 	&:active,
 	&:focus {
 		z-index: 1;
+	}
+
+	&:invalid {
+		border-color: ${getThemeProp(["errorColor"], "#ce4844")};
+		box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
 	}
 
 	${"" /* These are hacks, work only in Chrome, best not used */}

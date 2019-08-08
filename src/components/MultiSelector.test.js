@@ -64,6 +64,7 @@ describe("MultiSelector", () => {
 				id="test"
 				placeholder="This space for rent"
 				clickOption={() => () => {}}
+				required
 				options={[
 					{ value: 1, label: "Opt 1" },
 					{ value: 2, label: "Opt 2" },
@@ -73,6 +74,7 @@ describe("MultiSelector", () => {
 			/>,
 			"to render as",
 			<Wrapper>
+				<InnerSelect id="test" multiple required />
 				<SelectBox htmlFor="test">
 					<Placeholder>This space for rent</Placeholder>
 				</SelectBox>

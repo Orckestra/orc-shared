@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { ifFlag } from "../../utils";
+import { ifFlag, getThemeProp } from "../../utils";
 import Text from "../Text";
 
 export const FieldBox = styled.div`
@@ -8,10 +8,19 @@ export const FieldBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin-top: 20px;
+	position: relative;
 `;
 
 export const Label = styled.label`
-	color: #999999;
+	${ifFlag(
+		"invalid",
+		css`
+			color: ${getThemeProp(["errorColor"], "#ce4844")};
+		`,
+		css`
+			color: #999999;
+		`,
+	)}
 	min-height: 17px;
 	${ifFlag(
 		"center",
@@ -26,22 +35,56 @@ export const Label = styled.label`
 			margin-bottom: 10px;
 		`,
 	)};
+	${ifFlag(
+		"required",
+		css`
+			&::after {
+				content: " *";
+				color: #666;
+			}
+		`,
+	)}
 `;
 
-const Field = ({ id, label, center, labelOnly, children }) => (
-	<FieldBox>
-		{label !== undefined ? (
-			<Label
-				htmlFor={labelOnly ? undefined : id}
-				labelOnly={labelOnly}
-				id={id + "_label"}
-				center={center}
-			>
-				<Text message={label} />
-			</Label>
-		) : null}
-		{labelOnly ? null : children}
-	</FieldBox>
-);
+export const RequiredNotice = styled.div`
+	position: absolute;
+	bottom: -1.2em;
+	left: 12px;
+	color: ${getThemeProp(["errorColor"], "#ce4844")};
+`;
+
+const Field = ({
+	id,
+	label,
+	center,
+	labelOnly,
+	required,
+	invalid,
+	children,
+}) => {
+	const reqFlag = { invalid };
+	if (required) reqFlag.required = true;
+	return (
+		<FieldBox>
+			{label !== undefined ? (
+				<Label
+					htmlFor={labelOnly ? undefined : id}
+					labelOnly={labelOnly}
+					id={id + "_label"}
+					center={center}
+					{...reqFlag}
+				>
+					<Text message={label} />
+				</Label>
+			) : null}
+			{labelOnly ? null : children}
+			{!labelOnly && required && invalid ? (
+				<RequiredNotice>
+					<Text message={required} />
+				</RequiredNotice>
+			) : null}
+		</FieldBox>
+	);
+};
 
 export default Field;

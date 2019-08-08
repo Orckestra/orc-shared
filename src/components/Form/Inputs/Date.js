@@ -177,14 +177,27 @@ export const CalendarButton = styled(InputButton)`
 	background-color: #fff;
 `;
 
-export const CrudeDateInput = ({ update, toggle, reset, open, ...props }) => (
-	<PositionedWrapper onClickOutside={reset}>
-		<FormInput type="date" onChange={getEventUpdater(update)} {...props} />
+export const CrudeDateInput = ({
+	update,
+	toggle,
+	reset,
+	open,
+	required,
+	value,
+	...props
+}) => (
+	<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
+		<FormInput
+			type="date"
+			onChange={getEventUpdater(update)}
+			{...props}
+			value={value}
+		/>
 		<Kalendaryo
 			open={open}
 			render={CalendarDropdown}
-			startSelectedDateAt={new Date(props.value)}
-			startCurrentDateAt={new Date(props.value)}
+			startSelectedDateAt={new Date(value)}
+			startCurrentDateAt={new Date(value)}
 			onSelectedChange={date => {
 				update(format(date, "YYYY-MM-DD"));
 				reset();

@@ -44,6 +44,62 @@ describe("InputField", () => {
 				),
 			);
 
+			it("renders a required field", () =>
+				expect(
+					<InputField
+						intl={intl}
+						name="fieldName"
+						type={type}
+						label={`A ${type} field`}
+						value="thing"
+						placeholder={{ id: "foo.bar", defaultMessage: "Placeholder" }}
+						required={`A ${type} field is a required field`}
+						otherProp
+					/>,
+					"to render as",
+					<Field
+						id="fieldName"
+						label={`A ${type} field`}
+						required={`A ${type} field is a required field`}
+					>
+						<Input
+							id="fieldName"
+							value="thing"
+							otherProp
+							placeholder="Placeholder"
+							required
+						/>
+					</Field>,
+				));
+			it("renders a required and missing field", () =>
+				expect(
+					<InputField
+						intl={intl}
+						name="fieldName"
+						type={type}
+						label={`A ${type} field`}
+						value=""
+						placeholder={{ id: "foo.bar", defaultMessage: "Placeholder" }}
+						required={`A ${type} field is a required field`}
+						otherProp
+					/>,
+					"to render as",
+					<Field
+						id="fieldName"
+						label={`A ${type} field`}
+						required={`A ${type} field is a required field`}
+						invalid
+					>
+						<Input
+							id="fieldName"
+							value=""
+							otherProp
+							placeholder="Placeholder"
+							required
+						/>
+					</Field>,
+				));
+
 			it("modifies the field name if inside a list", () =>
 				expect(
 					<InputField

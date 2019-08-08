@@ -41,9 +41,16 @@ export const MultiSelector = ({
 	clickOption,
 	clearMessage = "Clear",
 	placeholder = "",
+	required,
 }) => (
 	<Wrapper>
-		<InnerSelect id={id} onChange={onChange} value={value} multiple>
+		<InnerSelect
+			id={id}
+			onChange={onChange}
+			value={value}
+			multiple
+			required={required}
+		>
 			{options.map(option => (
 				<option key={option.value} value={option.value}>
 					{option.label}

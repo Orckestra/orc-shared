@@ -45,8 +45,8 @@ export const withNumberHandlers = withHandlers({
 });
 
 export const NumberInput = withNumberHandlers(
-	({ value = "", step, increment, decrement, ...props }) => (
-		<ButtonWrapper>
+	({ value = "", step, increment, decrement, required, ...props }) => (
+		<ButtonWrapper invalid={required && !value}>
 			<FormInput
 				type="number"
 				step={step}
