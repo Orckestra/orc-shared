@@ -4,10 +4,9 @@
 	"description": "Shared code for Orckestra applications",
 	"main": "dist/",
 	"scripts": {
-		"build": "npm run build:prep && orc-scripts build --ignore \"**/*.test.js\",\"src/translations/*\" --no-copy-files",
+		"build": "orc-scripts prep && orc-scripts build --ignore \"**/*.test.js\",\"src/translations/*\" --no-copy-files",
 		"build:clean": "npm run clean && npm run build",
-		"build:prep": "make-dir dist && copyfiles --up 1 \"src/content/*\" dist",
-		"clean": "rimraf dist",
+		"clean": "orc-scripts clean",
 		"watch": "npm run build -- --watch",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
@@ -28,7 +27,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.6.15"
+		"orc-scripts": "0.6.17"
 	},
 	"peerDependencies": {
 		"orc-scripts": "^0.6.11"
