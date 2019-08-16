@@ -14,7 +14,7 @@ Nested objects and arrays in row fields are possible, [see below](#goingdeep).
 
 By default, the row data objects are identified by their `id` field, but it may be that the identifying field has another name. In this case, setting the `keyField` property on the list as an array containing the field name of the uniquely identifying field will cause the `List` to handle it correctly.
 
-An array longer than one element will adreess further into a nested row object. An example row object might look as follows:
+An array longer than one element will adress further into a nested row object. An example row object might look as follows:
 
 ```js
 {
@@ -52,7 +52,7 @@ The basic data column configuration is one which shows the row value as plain te
 
 The `fieldName` is the name of a variable found in the row object, the `label` is a plain string or message descriptor (as useable by `react-intl`) to be displayed as the column header. An array of these column definition objects should be given to the `List` component as the `columnDef` prop.
 
-The value of `fieldName` can also be an array of field names pointing into a nested object, as [described above](#rowidentity).
+The value of `fieldName` can also be an array of field names pointing into a nested object, as [described under Row Identity above](#rowidentity).
 
 ### Types
 
@@ -63,6 +63,16 @@ Amounts of money are best shown using `type: 'currency'`. To correctly show this
 For boolean values, `type: 'switch'` shows a switch control (using the `Switch` component). The configuration (i.e. properties to be given the component, including captions and colors for on and off state) for this control can be entered in the `switch` field of the column definition object. An `onChange` function should be furnished here to allow operating the switch to have an effect.
 
 Lastly, `type: 'custom'` allows a custom component (given as the `component` field) to be shown in place of the cell, and will be passed the entire row data object as properties. Its `fieldName` will not be used for any purpose other than identification - i.e. it should still have one, but it does not need to refer to a data field on the row object. You can also pass functions through to custom components by using `funcs` field, the contents of an object here will be passed to the component as props.
+
+### Column sorting
+
+Setting a `sort` field in the column definition enables sorting. It should contain a function which takes three parameters:
+
+- `descending`: boolean, true if rows should be sorted in descending order.
+- `columnId`: string, the `fieldName` of the column to sort by.
+- `columnType`: string, the `type` of the column to be sorted by.
+
+When called, this function should cause the data supplied to the list to be sorted according to the given parameters. In other words, sorting is not automatic, this function is a way for the user to signal that they wish the table to be sorted.
 
 ### Value transformation
 

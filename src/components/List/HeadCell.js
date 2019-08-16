@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { FormattedMessage } from "react-intl";
+import Text from "../Text";
 import Checkbox from "../Checkbox";
 import { ifFlag } from "../../utils";
 
@@ -97,7 +97,7 @@ const HeadCell = ({ columnDef, rowIds = [], allSelected }) => (
 				/>
 			) : columnDef.label ? (
 				[
-					<FormattedMessage key="msg" {...columnDef.label} />,
+					<Text key="msg" message={columnDef.label} />,
 					columnDef.sort ? (
 						<SortMark key="sort" direction={columnDef.sortDirection} />
 					) : null,

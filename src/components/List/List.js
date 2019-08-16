@@ -130,46 +130,13 @@ const StatefulList = compose(
 	withListState,
 )(List);
 StatefulList.propTypes = {
-	columnDefs: pt.arrayOf(
-		pt.oneOfType([
-			pt.shape({ type: pt.oneOf(["select"]).isRequired }),
-			// Type 'select'handles selection of rows.
-			// Sorting isn't meaningful, label is replaced by a checkbox to select all/none.
-			pt.shape({
-				fieldName: pt.oneOfType([pt.string, pt.arrayOf(pt.string)]).required,
-				label: pt.shape({
-					id: pt.string.required,
-					defaultMessage: pt.string,
-				}),
-				sort: pt.func,
-				// function(descending: boolean, columnId: string, columnType: type enum)
-				// Is called with the desired direction on click, should cause the list
-				// to be sorted according to this column.
-				type: pt.oneOf([
-					"number",
-					"currency",
-					"date",
-					"datetime",
-					"switch",
-					"custom",
-				]), // default shows raw value
-				// Switch type shows a switch, and takes a boolean value and an onChange handler that takes a row id.
-				currency: pt.oneOfType([pt.string, pt.arrayOf(pt.string)]),
-				// only used for type 'currency', string or path to string value containing three-letter ISO 4217 currency code,
-				switch: pt.object, // object, contains properties for the switch component, only used for type 'switch'
-				component: pt.func, // component to show in type 'custom' cells
-				funcs: pt.object, // object containing functions to pas to custom component
-				defaultValue: pt.any, // default value of correct type
-			}),
-		]),
-	),
+	columnDefs: pt.arrayOf(pt.object), // Each object must be a valid column definition
 	rows: pt.arrayOf(pt.object),
 	rowOnClick: pt.func, // Click handler for row.
-	placeholder: pt.node, // A React element to render as placeholder.
 	// Fires when row is clicked, excluding select or switch columns
 	// Event target will have a 'rowId' data value which identifies the clicked row.
+	placeholder: pt.node, // A React element to render as placeholder.
 	keyField: pt.arrayOf(pt.string), // Path to identifying data field on each row.
-
 	// Infinite/virtual scroll
 	// If scrollLoader is present, below props will control the scrolling
 	scrollLoader: pt.func, // Loader function. Called with page number to be loaded.

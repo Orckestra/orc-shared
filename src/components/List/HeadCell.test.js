@@ -1,6 +1,6 @@
 import React from "react";
-import { FormattedMessage } from "react-intl";
 import sinon from "sinon";
+import Text from "../Text";
 import Checkbox from "../Checkbox";
 import HeadCell, {
 	SortMark,
@@ -15,7 +15,7 @@ describe("HeadCell", () => {
 	it("renders a header cell with the column label", () => {
 		const columnDef = {
 			fieldName: "a",
-			label: { id: "test.label", defaultMessage: "Test column" },
+			label: "Test column",
 			width: 42,
 		};
 		return expect(
@@ -23,7 +23,7 @@ describe("HeadCell", () => {
 			"to render as",
 			<TableHeader width={42}>
 				<HeadBox>
-					<FormattedMessage id="test.label" defaultMessage="Test column" />
+					<Text message={"Test column"} />
 				</HeadBox>
 			</TableHeader>,
 		);
@@ -92,7 +92,7 @@ describe("HeadCell", () => {
 			<HeadCell columnDef={columnDef} />,
 			"to render as",
 			<TableHeader onClick={columnDef.sort}>
-				<FormattedMessage id="test.label" defaultMessage="Test column" />
+				<Text message={{ id: "test.label", defaultMessage: "Test column" }} />
 				<SortMark />
 			</TableHeader>,
 		);
@@ -109,7 +109,7 @@ describe("HeadCell", () => {
 			<HeadCell columnDef={columnDef} />,
 			"to render as",
 			<TableHeader>
-				<FormattedMessage id="test.label" defaultMessage="Test column" />
+				<Text message={{ id: "test.label", defaultMessage: "Test column" }} />
 				<SortMark direction="asc" />
 			</TableHeader>,
 		);
@@ -126,7 +126,7 @@ describe("HeadCell", () => {
 			<HeadCell columnDef={columnDef} />,
 			"to render as",
 			<TableHeader>
-				<FormattedMessage id="test.label" defaultMessage="Test column" />
+				<Text message={{ id: "test.label", defaultMessage: "Test column" }} />
 				<SortMark direction="desc" />
 			</TableHeader>,
 		);
