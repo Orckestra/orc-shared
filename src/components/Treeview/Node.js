@@ -1,7 +1,7 @@
 import React from "react";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
-import { Indicator, NonIndicator, Label } from "./Label";
+import { Indicator, BeforeIndicator, NonIndicator, Label } from "./Label";
 import { safeGet } from "../../utils";
 
 export const TreeContext = React.createContext();
@@ -15,7 +15,10 @@ export const LeafNode = nodeData => (
 				return (
 					<React.Fragment>
 						{safeGet(nodeData, "children", "length") ? (
-							<Indicator open={nodeData.open} onClick={toggle} />
+							<>
+								<BeforeIndicator />
+								<Indicator open={nodeData.open} onClick={toggle} />
+							</>
 						) : (
 							<NonIndicator />
 						)}
@@ -56,7 +59,9 @@ export const Node = ({ root, id }) => (
 					)}
 					{open && safeGet(nodeData, "children", "length") ? (
 						<Branch>
-							{nodeData.children.map(id => <Node key={id} id={id} />)}
+							{nodeData.children.map(id => (
+								<Node key={id} id={id} />
+							))}
 						</Branch>
 					) : null}
 				</React.Fragment>
