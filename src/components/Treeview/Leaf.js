@@ -1,5 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { branchLength, branchHeight } from "./settings";
+import { getThemeProp, ifFlag } from "../../utils";
 
 export const Root = styled.li`
 	position: relative;
@@ -8,15 +9,14 @@ export const Root = styled.li`
 `;
 
 export const Leaf = styled(Root)`
-	&:before {
-		/* Horizontal branch */
+	&:last-of-type::before {
 		content: " ";
-		background-color: #666;
+		background-color: #333;
+		width: 1px;
+		height: 50%;
+		left: -${props => branchLength(props) + 1}px;
 		position: absolute;
-		height: 1px;
-		left: -${branchLength}px;
-		width: ${branchLength}px;
-		bottom: ${branchHeight}px;
+		top: calc(50%);
 	}
 
 	&:last-child::after {
@@ -24,9 +24,11 @@ export const Leaf = styled(Root)`
 		content: " ";
 		background-color: #333;
 		position: absolute;
+		top: calc(50%);
 		left: -${props => branchLength(props) + 1}px;
 		bottom: 0;
 		height: ${branchHeight}px;
 		width: 1px;
+		height: 50%;
 	}
 `;

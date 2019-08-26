@@ -31,7 +31,7 @@ describe("DateInput", () => {
 			<CrudeDateInput
 				update={update}
 				reset={reset}
-				value="2019-04-15"
+				value="2019-04-15 00:00:00"
 				otherProp
 			/>,
 			"to render as",
@@ -42,10 +42,12 @@ describe("DateInput", () => {
 					otherProp
 				/>
 				<Kalendaryo
-					startSelectedDateAt={new Date("2019-04-15")}
-					startCurrentDateAt={new Date("2019-04-15")}
+					startSelectedDateAt={new Date("2019-04-15 00:00:00")}
+					startCurrentDateAt={new Date("2019-04-15 00:00:00")}
 					render={CalendarDropdown}
-					onSelectedChange={expect.it("called with", [new Date("2019-04-12")])}
+					onSelectedChange={expect.it("called with", [
+						new Date("2019-04-12 00:00:00"),
+					])}
 				/>
 				<CalendarButton>
 					<CalendarIcon />
@@ -77,7 +79,7 @@ describe("DateInput", () => {
 
 describe("CalendarDropdown", () => {
 	beforeEach(() => {
-		MockDate.set("2019-04-08");
+		MockDate.set("2019-04-08 00:00:00");
 	});
 	afterEach(() => {
 		MockDate.reset();
@@ -86,54 +88,54 @@ describe("CalendarDropdown", () => {
 	it("renders a calendar browser", () =>
 		expect(
 			<CalendarDropdown
-				date={new Date("2019-04-10")}
-				selectedDate={new Date("2019-04-15")}
+				date={new Date("2019-04-10 00:00:00")}
+				selectedDate={new Date("2019-04-15 00:00:00")}
 				getFormattedDate={date => date.toDateString()}
 				getWeeksInMonth={() => [
 					[
-						{ label: "1", dateValue: new Date("2019-04-01") },
-						{ label: "2", dateValue: new Date("2019-04-02") },
-						{ label: "3", dateValue: new Date("2019-04-03") },
-						{ label: "4", dateValue: new Date("2019-04-04") },
-						{ label: "5", dateValue: new Date("2019-04-05") },
-						{ label: "6", dateValue: new Date("2019-04-06") },
-						{ label: "7", dateValue: new Date("2019-04-07") },
+						{ label: "1", dateValue: new Date("2019-04-01 00:00:00") },
+						{ label: "2", dateValue: new Date("2019-04-02 00:00:00") },
+						{ label: "3", dateValue: new Date("2019-04-03 00:00:00") },
+						{ label: "4", dateValue: new Date("2019-04-04 00:00:00") },
+						{ label: "5", dateValue: new Date("2019-04-05 00:00:00") },
+						{ label: "6", dateValue: new Date("2019-04-06 00:00:00") },
+						{ label: "7", dateValue: new Date("2019-04-07 00:00:00") },
 					],
 					[
-						{ label: "8", dateValue: new Date("2019-04-08") },
-						{ label: "9", dateValue: new Date("2019-04-09") },
-						{ label: "10", dateValue: new Date("2019-04-10") },
-						{ label: "11", dateValue: new Date("2019-04-11") },
-						{ label: "12", dateValue: new Date("2019-04-12") },
-						{ label: "13", dateValue: new Date("2019-04-13") },
-						{ label: "14", dateValue: new Date("2019-04-14") },
+						{ label: "8", dateValue: new Date("2019-04-08 00:00:00") },
+						{ label: "9", dateValue: new Date("2019-04-09 00:00:00") },
+						{ label: "10", dateValue: new Date("2019-04-10 00:00:00") },
+						{ label: "11", dateValue: new Date("2019-04-11 00:00:00") },
+						{ label: "12", dateValue: new Date("2019-04-12 00:00:00") },
+						{ label: "13", dateValue: new Date("2019-04-13 00:00:00") },
+						{ label: "14", dateValue: new Date("2019-04-14 00:00:00") },
 					],
 					[
-						{ label: "15", dateValue: new Date("2019-04-15") },
-						{ label: "16", dateValue: new Date("2019-04-16") },
-						{ label: "17", dateValue: new Date("2019-04-17") },
-						{ label: "18", dateValue: new Date("2019-04-18") },
-						{ label: "19", dateValue: new Date("2019-04-19") },
-						{ label: "20", dateValue: new Date("2019-04-20") },
-						{ label: "21", dateValue: new Date("2019-04-21") },
+						{ label: "15", dateValue: new Date("2019-04-15 00:00:00") },
+						{ label: "16", dateValue: new Date("2019-04-16 00:00:00") },
+						{ label: "17", dateValue: new Date("2019-04-17 00:00:00") },
+						{ label: "18", dateValue: new Date("2019-04-18 00:00:00") },
+						{ label: "19", dateValue: new Date("2019-04-19 00:00:00") },
+						{ label: "20", dateValue: new Date("2019-04-20 00:00:00") },
+						{ label: "21", dateValue: new Date("2019-04-21 00:00:00") },
 					],
 					[
-						{ label: "22", dateValue: new Date("2019-04-22") },
-						{ label: "23", dateValue: new Date("2019-04-23") },
-						{ label: "24", dateValue: new Date("2019-04-24") },
-						{ label: "25", dateValue: new Date("2019-04-25") },
-						{ label: "26", dateValue: new Date("2019-04-26") },
-						{ label: "27", dateValue: new Date("2019-04-27") },
-						{ label: "28", dateValue: new Date("2019-04-28") },
+						{ label: "22", dateValue: new Date("2019-04-22 00:00:00") },
+						{ label: "23", dateValue: new Date("2019-04-23 00:00:00") },
+						{ label: "24", dateValue: new Date("2019-04-24 00:00:00") },
+						{ label: "25", dateValue: new Date("2019-04-25 00:00:00") },
+						{ label: "26", dateValue: new Date("2019-04-26 00:00:00") },
+						{ label: "27", dateValue: new Date("2019-04-27 00:00:00") },
+						{ label: "28", dateValue: new Date("2019-04-28 00:00:00") },
 					],
 					[
-						{ label: "29", dateValue: new Date("2019-04-29") },
-						{ label: "30", dateValue: new Date("2019-04-30") },
-						{ label: "1", dateValue: new Date("2019-05-01") },
-						{ label: "2", dateValue: new Date("2019-05-02") },
-						{ label: "3", dateValue: new Date("2019-05-03") },
-						{ label: "4", dateValue: new Date("2019-05-04") },
-						{ label: "5", dateValue: new Date("2019-05-05") },
+						{ label: "29", dateValue: new Date("2019-04-29 00:00:00") },
+						{ label: "30", dateValue: new Date("2019-04-30 00:00:00") },
+						{ label: "1", dateValue: new Date("2019-05-01 00:00:00") },
+						{ label: "2", dateValue: new Date("2019-05-02 00:00:00") },
+						{ label: "3", dateValue: new Date("2019-05-03 00:00:00") },
+						{ label: "4", dateValue: new Date("2019-05-04 00:00:00") },
+						{ label: "5", dateValue: new Date("2019-05-05 00:00:00") },
 					],
 				]}
 			/>,
@@ -146,7 +148,10 @@ describe("CalendarDropdown", () => {
 					<CalendarHeader>
 						<LastArrow />
 						<MonthName>
-							<FormattedDate value={new Date("2019-04-10")} month="long" />
+							<FormattedDate
+								value={new Date("2019-04-10 00:00:00")}
+								month="long"
+							/>
 						</MonthName>
 						<NextArrow />
 					</CalendarHeader>
@@ -155,43 +160,43 @@ describe("CalendarDropdown", () => {
 							<tr>
 								<th>
 									<FormattedDate
-										value={new Date("2019-04-01")}
+										value={new Date("2019-04-01 00:00:00")}
 										weekday="short"
 									/>
 								</th>
 								<th>
 									<FormattedDate
-										value={new Date("2019-04-02")}
+										value={new Date("2019-04-02 00:00:00")}
 										weekday="short"
 									/>
 								</th>
 								<th>
 									<FormattedDate
-										value={new Date("2019-04-03")}
+										value={new Date("2019-04-03 00:00:00")}
 										weekday="short"
 									/>
 								</th>
 								<th>
 									<FormattedDate
-										value={new Date("2019-04-04")}
+										value={new Date("2019-04-04 00:00:00")}
 										weekday="short"
 									/>
 								</th>
 								<th>
 									<FormattedDate
-										value={new Date("2019-04-05")}
+										value={new Date("2019-04-05 00:00:00")}
 										weekday="short"
 									/>
 								</th>
 								<th>
 									<FormattedDate
-										value={new Date("2019-04-06")}
+										value={new Date("2019-04-06 00:00:00")}
 										weekday="short"
 									/>
 								</th>
 								<th>
 									<FormattedDate
-										value={new Date("2019-04-07")}
+										value={new Date("2019-04-07 00:00:00")}
 										weekday="short"
 									/>
 								</th>
@@ -199,49 +204,49 @@ describe("CalendarDropdown", () => {
 						</thead>
 						<tbody>
 							<tr>
-								<Day thisDate={new Date("2019-04-01")} />
-								<Day thisDate={new Date("2019-04-02")} />
-								<Day thisDate={new Date("2019-04-03")} />
-								<Day thisDate={new Date("2019-04-04")} />
-								<Day thisDate={new Date("2019-04-05")} />
-								<Day thisDate={new Date("2019-04-06")} />
-								<Day thisDate={new Date("2019-04-07")} />
+								<Day thisDate={new Date("2019-04-01 00:00:00")} />
+								<Day thisDate={new Date("2019-04-02 00:00:00")} />
+								<Day thisDate={new Date("2019-04-03 00:00:00")} />
+								<Day thisDate={new Date("2019-04-04 00:00:00")} />
+								<Day thisDate={new Date("2019-04-05 00:00:00")} />
+								<Day thisDate={new Date("2019-04-06 00:00:00")} />
+								<Day thisDate={new Date("2019-04-07 00:00:00")} />
 							</tr>
 							<tr>
-								<Day thisDate={new Date("2019-04-08")} />
-								<Day thisDate={new Date("2019-04-09")} />
-								<Day thisDate={new Date("2019-04-10")} />
-								<Day thisDate={new Date("2019-04-11")} />
-								<Day thisDate={new Date("2019-04-12")} />
-								<Day thisDate={new Date("2019-04-13")} />
-								<Day thisDate={new Date("2019-04-14")} />
+								<Day thisDate={new Date("2019-04-08 00:00:00")} />
+								<Day thisDate={new Date("2019-04-09 00:00:00")} />
+								<Day thisDate={new Date("2019-04-10 00:00:00")} />
+								<Day thisDate={new Date("2019-04-11 00:00:00")} />
+								<Day thisDate={new Date("2019-04-12 00:00:00")} />
+								<Day thisDate={new Date("2019-04-13 00:00:00")} />
+								<Day thisDate={new Date("2019-04-14 00:00:00")} />
 							</tr>
 							<tr>
-								<Day thisDate={new Date("2019-04-15")} />
-								<Day thisDate={new Date("2019-04-16")} />
-								<Day thisDate={new Date("2019-04-17")} />
-								<Day thisDate={new Date("2019-04-18")} />
-								<Day thisDate={new Date("2019-04-19")} />
-								<Day thisDate={new Date("2019-04-20")} />
-								<Day thisDate={new Date("2019-04-21")} />
+								<Day thisDate={new Date("2019-04-15 00:00:00")} />
+								<Day thisDate={new Date("2019-04-16 00:00:00")} />
+								<Day thisDate={new Date("2019-04-17 00:00:00")} />
+								<Day thisDate={new Date("2019-04-18 00:00:00")} />
+								<Day thisDate={new Date("2019-04-19 00:00:00")} />
+								<Day thisDate={new Date("2019-04-20 00:00:00")} />
+								<Day thisDate={new Date("2019-04-21 00:00:00")} />
 							</tr>
 							<tr>
-								<Day thisDate={new Date("2019-04-22")} />
-								<Day thisDate={new Date("2019-04-23")} />
-								<Day thisDate={new Date("2019-04-24")} />
-								<Day thisDate={new Date("2019-04-25")} />
-								<Day thisDate={new Date("2019-04-26")} />
-								<Day thisDate={new Date("2019-04-27")} />
-								<Day thisDate={new Date("2019-04-28")} />
+								<Day thisDate={new Date("2019-04-22 00:00:00")} />
+								<Day thisDate={new Date("2019-04-23 00:00:00")} />
+								<Day thisDate={new Date("2019-04-24 00:00:00")} />
+								<Day thisDate={new Date("2019-04-25 00:00:00")} />
+								<Day thisDate={new Date("2019-04-26 00:00:00")} />
+								<Day thisDate={new Date("2019-04-27 00:00:00")} />
+								<Day thisDate={new Date("2019-04-28 00:00:00")} />
 							</tr>
 							<tr>
-								<Day thisDate={new Date("2019-04-29")} />
-								<Day thisDate={new Date("2019-04-30")} />
-								<Day thisDate={new Date("2019-05-01")} />
-								<Day thisDate={new Date("2019-05-02")} />
-								<Day thisDate={new Date("2019-05-03")} />
-								<Day thisDate={new Date("2019-05-04")} />
-								<Day thisDate={new Date("2019-05-05")} />
+								<Day thisDate={new Date("2019-04-29 00:00:00")} />
+								<Day thisDate={new Date("2019-04-30 00:00:00")} />
+								<Day thisDate={new Date("2019-05-01 00:00:00")} />
+								<Day thisDate={new Date("2019-05-02 00:00:00")} />
+								<Day thisDate={new Date("2019-05-03 00:00:00")} />
+								<Day thisDate={new Date("2019-05-04 00:00:00")} />
+								<Day thisDate={new Date("2019-05-05 00:00:00")} />
 							</tr>
 						</tbody>
 					</DateTable>
@@ -249,25 +254,25 @@ describe("CalendarDropdown", () => {
 			)
 				.and(
 					"queried for",
-					<Day thisDate={new Date("2019-04-08")} />,
+					<Day thisDate={new Date("2019-04-08 00:00:00")} />,
 					"to render as",
 					<DayCell today>8</DayCell>,
 				)
 				.and(
 					"queried for",
-					<Day thisDate={new Date("2019-04-10")} />,
+					<Day thisDate={new Date("2019-04-10 00:00:00")} />,
 					"to render as",
 					<DayCell active>10</DayCell>,
 				)
 				.and(
 					"queried for",
-					<Day thisDate={new Date("2019-04-15")} />,
+					<Day thisDate={new Date("2019-04-15 00:00:00")} />,
 					"to render as",
 					<DayCell selected>15</DayCell>,
 				)
 				.and(
 					"queried for",
-					<Day thisDate={new Date("2019-05-02")} />,
+					<Day thisDate={new Date("2019-05-02 00:00:00")} />,
 					"to render as",
 					<DayCell outsideMonth>2</DayCell>,
 				),
@@ -277,34 +282,34 @@ describe("CalendarDropdown", () => {
 		const pick = sinon.spy().named("pickDate");
 		return expect(
 			<CalendarDropdown
-				date={new Date("2019-04-10")}
-				selectedDate={new Date("2019-04-15")}
+				date={new Date("2019-04-10 00:00:00")}
+				selectedDate={new Date("2019-04-15 00:00:00")}
 				getFormattedDate={date => date.toDateString()}
 				pickDate={pick}
 				getWeeksInMonth={() => [
 					[
-						{ label: "8", dateValue: new Date("2019-04-08") },
-						{ label: "9", dateValue: new Date("2019-04-09") },
-						{ label: "10", dateValue: new Date("2019-04-10") },
-						{ label: "11", dateValue: new Date("2019-04-11") },
-						{ label: "12", dateValue: new Date("2019-04-12") },
-						{ label: "13", dateValue: new Date("2019-04-13") },
-						{ label: "14", dateValue: new Date("2019-04-14") },
+						{ label: "8", dateValue: new Date("2019-04-08 00:00:00") },
+						{ label: "9", dateValue: new Date("2019-04-09 00:00:00") },
+						{ label: "10", dateValue: new Date("2019-04-10 00:00:00") },
+						{ label: "11", dateValue: new Date("2019-04-11 00:00:00") },
+						{ label: "12", dateValue: new Date("2019-04-12 00:00:00") },
+						{ label: "13", dateValue: new Date("2019-04-13 00:00:00") },
+						{ label: "14", dateValue: new Date("2019-04-14 00:00:00") },
 					],
 					[
-						{ label: "15", dateValue: new Date("2019-04-15") },
-						{ label: "16", dateValue: new Date("2019-04-16") },
-						{ label: "17", dateValue: new Date("2019-04-17") },
-						{ label: "18", dateValue: new Date("2019-04-18") },
-						{ label: "19", dateValue: new Date("2019-04-19") },
-						{ label: "20", dateValue: new Date("2019-04-20") },
-						{ label: "21", dateValue: new Date("2019-04-21") },
+						{ label: "15", dateValue: new Date("2019-04-15 00:00:00") },
+						{ label: "16", dateValue: new Date("2019-04-16 00:00:00") },
+						{ label: "17", dateValue: new Date("2019-04-17 00:00:00") },
+						{ label: "18", dateValue: new Date("2019-04-18 00:00:00") },
+						{ label: "19", dateValue: new Date("2019-04-19 00:00:00") },
+						{ label: "20", dateValue: new Date("2019-04-20 00:00:00") },
+						{ label: "21", dateValue: new Date("2019-04-21 00:00:00") },
 					],
 				]}
 			/>,
 			"when rendered",
 			"queried for",
-			<Day thisDate={new Date("2019-04-12")} />,
+			<Day thisDate={new Date("2019-04-12 00:00:00")} />,
 			"when rendered",
 			"with event",
 			"click",
@@ -312,7 +317,7 @@ describe("CalendarDropdown", () => {
 			<DayCell />,
 		).then(() =>
 			expect(pick, "to have calls satisfying", [
-				{ args: [new Date("2019-04-12")] },
+				{ args: [new Date("2019-04-12 00:00:00")] },
 			]),
 		);
 	});
@@ -321,28 +326,28 @@ describe("CalendarDropdown", () => {
 		const last = sinon.spy().named("lastMonth");
 		return expect(
 			<CalendarDropdown
-				date={new Date("2019-04-10")}
-				selectedDate={new Date("2019-04-15")}
+				date={new Date("2019-04-10 00:00:00")}
+				selectedDate={new Date("2019-04-15 00:00:00")}
 				getFormattedDate={date => date.toDateString()}
 				setDatePrevMonth={last}
 				getWeeksInMonth={() => [
 					[
-						{ label: "8", dateValue: new Date("2019-04-08") },
-						{ label: "9", dateValue: new Date("2019-04-09") },
-						{ label: "10", dateValue: new Date("2019-04-10") },
-						{ label: "11", dateValue: new Date("2019-04-11") },
-						{ label: "12", dateValue: new Date("2019-04-12") },
-						{ label: "13", dateValue: new Date("2019-04-13") },
-						{ label: "14", dateValue: new Date("2019-04-14") },
+						{ label: "8", dateValue: new Date("2019-04-08 00:00:00") },
+						{ label: "9", dateValue: new Date("2019-04-09 00:00:00") },
+						{ label: "10", dateValue: new Date("2019-04-10 00:00:00") },
+						{ label: "11", dateValue: new Date("2019-04-11 00:00:00") },
+						{ label: "12", dateValue: new Date("2019-04-12 00:00:00") },
+						{ label: "13", dateValue: new Date("2019-04-13 00:00:00") },
+						{ label: "14", dateValue: new Date("2019-04-14 00:00:00") },
 					],
 					[
-						{ label: "15", dateValue: new Date("2019-04-15") },
-						{ label: "16", dateValue: new Date("2019-04-16") },
-						{ label: "17", dateValue: new Date("2019-04-17") },
-						{ label: "18", dateValue: new Date("2019-04-18") },
-						{ label: "19", dateValue: new Date("2019-04-19") },
-						{ label: "20", dateValue: new Date("2019-04-20") },
-						{ label: "21", dateValue: new Date("2019-04-21") },
+						{ label: "15", dateValue: new Date("2019-04-15 00:00:00") },
+						{ label: "16", dateValue: new Date("2019-04-16 00:00:00") },
+						{ label: "17", dateValue: new Date("2019-04-17 00:00:00") },
+						{ label: "18", dateValue: new Date("2019-04-18 00:00:00") },
+						{ label: "19", dateValue: new Date("2019-04-19 00:00:00") },
+						{ label: "20", dateValue: new Date("2019-04-20 00:00:00") },
+						{ label: "21", dateValue: new Date("2019-04-21 00:00:00") },
 					],
 				]}
 			/>,
@@ -358,28 +363,28 @@ describe("CalendarDropdown", () => {
 		const next = sinon.spy().named("nextMonth");
 		return expect(
 			<CalendarDropdown
-				date={new Date("2019-04-10")}
-				selectedDate={new Date("2019-04-15")}
+				date={new Date("2019-04-10 00:00:00")}
+				selectedDate={new Date("2019-04-15 00:00:00")}
 				getFormattedDate={date => date.toDateString()}
 				setDateNextMonth={next}
 				getWeeksInMonth={() => [
 					[
-						{ label: "8", dateValue: new Date("2019-04-08") },
-						{ label: "9", dateValue: new Date("2019-04-09") },
-						{ label: "10", dateValue: new Date("2019-04-10") },
-						{ label: "11", dateValue: new Date("2019-04-11") },
-						{ label: "12", dateValue: new Date("2019-04-12") },
-						{ label: "13", dateValue: new Date("2019-04-13") },
-						{ label: "14", dateValue: new Date("2019-04-14") },
+						{ label: "8", dateValue: new Date("2019-04-08 00:00:00") },
+						{ label: "9", dateValue: new Date("2019-04-09 00:00:00") },
+						{ label: "10", dateValue: new Date("2019-04-10 00:00:00") },
+						{ label: "11", dateValue: new Date("2019-04-11 00:00:00") },
+						{ label: "12", dateValue: new Date("2019-04-12 00:00:00") },
+						{ label: "13", dateValue: new Date("2019-04-13 00:00:00") },
+						{ label: "14", dateValue: new Date("2019-04-14 00:00:00") },
 					],
 					[
-						{ label: "15", dateValue: new Date("2019-04-15") },
-						{ label: "16", dateValue: new Date("2019-04-16") },
-						{ label: "17", dateValue: new Date("2019-04-17") },
-						{ label: "18", dateValue: new Date("2019-04-18") },
-						{ label: "19", dateValue: new Date("2019-04-19") },
-						{ label: "20", dateValue: new Date("2019-04-20") },
-						{ label: "21", dateValue: new Date("2019-04-21") },
+						{ label: "15", dateValue: new Date("2019-04-15 00:00:00") },
+						{ label: "16", dateValue: new Date("2019-04-16 00:00:00") },
+						{ label: "17", dateValue: new Date("2019-04-17 00:00:00") },
+						{ label: "18", dateValue: new Date("2019-04-18 00:00:00") },
+						{ label: "19", dateValue: new Date("2019-04-19 00:00:00") },
+						{ label: "20", dateValue: new Date("2019-04-20 00:00:00") },
+						{ label: "21", dateValue: new Date("2019-04-21 00:00:00") },
 					],
 				]}
 			/>,
