@@ -97,7 +97,7 @@ export const TranslationInput = ({
 						lang={lang}
 						message={value[lang]}
 						onChange={handlers(lang)}
-						required
+						required={required}
 						{...props}
 					/>
 				) : null,

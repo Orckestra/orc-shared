@@ -2,11 +2,9 @@
 
 Form pages are the work horses of the UI. This is where you view and edit the information for the work items the application handles, be they products, shops, market segments or anything else.
 
-The actual form itself is defined by an array of data objects. The objects all hold at least a `type` string, which defines what further information it can use, and what it will be rendered as.
+To provide the values entered into the form, a `value` prop should be provided (most likely from application state). An update function should be provided in the `getUpdater` prop that, given a field name, will return a function that will update that field wih the value passed as parameter (example: `fieldName => value => update(fieldName, value)`). This function can be memoized, which may help performance of large forms.
 
-Labels (typically the `label` field) can be either plain strings or `react-intl` message descriptors.
-
-To provide the values entered into the form, a `value` prop should be provided (most likely from application state). An update function should be provided in the `getUpdater` prop that, given a field name, will return a function that will update that field wih the value passed as parameter (example: `fieldName => value => update(fieldName, value)`).
+The actual form fields and layout are defined by an array of data objects in the `fields` prop. The objects all hold at least a `type` string, which defines what further information it can use, and what it will be rendered as. See below for information on the different types of fields. Labels (in the `label` field) can be either plain strings or `react-intl` message descriptors.
 
 ## Structuring your form
 
@@ -28,7 +26,7 @@ Lists handle values presented as arrays of data objects, with fields in those da
 
 ## Read-only data display
 
-Two types, `ReadOnly` and `LineLabel` provide a way to display data without providing editing functionality. The former is useful for showing data values, while the former prints larger text and is best used for labelling information, such as day names in a table displaying information over a week. Both of these types will accept plain strings and `react-intl` message descriptors both as values.
+Two types, `ReadOnly` and `LineLabel` provide a way to display data without providing editing functionality. The former is useful for showing data values, while the latter prints larger text and is best used for labelling information, such as day names in a table displaying information over a week. Both of these types will accept plain strings and `react-intl` message descriptors as values.
 
 ## Basic input fields
 
@@ -53,6 +51,6 @@ Depending on the particlar purpose, binary values can be handled with either `Ch
 
 ## Miscellaneous
 
-A variable length list shows a button to delete rows from it, and for this it uses the `SmallButton` type. This control may also be used for other functions. The button must be provided with an `altText` property describing the button function, to ensure accessibility.
+Buttons with text and icons are available in the `Button` type. It follows the normal interface of the [`Button` component](components.md#Button), and uses the update function it is provided as a click handler. It may be provided with an `icon` and a `buttonText` (string or message descriptor).
 
-Normal sized buttons with text are also available in the `Button` type. It follows the normal interface of the [`Button` component](components.md#Button), and uses the update function it is provided as a click handler.
+A variable length list shows a small button with an icon to delete rows from it, and for this it uses the `SmallButton` type. This control may also be used for other functions. The button must be provided with `icon` and an `altText` property describing the button function, to ensure accessibility.

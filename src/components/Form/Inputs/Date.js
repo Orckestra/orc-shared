@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { getDate, getDay, isSameMonth, isToday, format } from "date-fns";
+import { getDate, getDay, isSameMonth, isToday, format, parse } from "date-fns";
 import { FormattedDate } from "react-intl";
 import Kalendaryo from "kalendaryo";
-import { getThemeProp, ifFlag } from "../../../utils";
+import { getThemeProp, ifFlag, logPass } from "../../../utils";
 import withClickOutside from "../../../hocs/withClickOutside";
 import withToggle from "../../../hocs/withToggle";
 import Icon from "../../Icon";
@@ -196,8 +196,8 @@ export const CrudeDateInput = ({
 		<Kalendaryo
 			open={open}
 			render={CalendarDropdown}
-			startSelectedDateAt={new Date(value)}
-			startCurrentDateAt={new Date(value)}
+			startSelectedDateAt={parse(value)}
+			startCurrentDateAt={parse(value)}
 			onSelectedChange={date => {
 				update(format(date, "YYYY-MM-DD"));
 				reset();
