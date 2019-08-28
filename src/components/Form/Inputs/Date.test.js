@@ -32,7 +32,7 @@ describe("DateInput", () => {
 			<CrudeDateInput
 				update={update}
 				reset={reset}
-				value="2019-04-15"
+				value="2019-04-15 00:00:00"
 				otherProp
 			/>,
 			"to render as",

@@ -10,21 +10,44 @@ describe("ScopeNode", () => {
 
 	it("displays an icon and a label for a scope", () =>
 		expect(
-			<ScopeNode name="A scope" type="test" onClick={onClick} />,
+			<ScopeNode name="A scope" type="test" id="scopeId" onClick={onClick} />,
+			"to render with all attributes as",
+			<ContentLabel onClick={onClick} type="test">
+				<ScopeIcon type="test" />A scope
+			</ContentLabel>,
+		));
+
+	it("displays an icon and a the fallback id for a scope when name is undefined", () =>
+		expect(
+			<ScopeNode type="test" id="scope-Id" onClick={onClick} />,
 			"to render with all attributes as",
 			<ContentLabel onClick={onClick} type="test">
 				<ScopeIcon type="test" />
-				A scope
+				scope-Id
+			</ContentLabel>,
+		));
+
+	it("displays an icon and a the fallback id for a scope when name is null", () =>
+		expect(
+			<ScopeNode name={null} type="test" id="scope-Id" onClick={onClick} />,
+			"to render with all attributes as",
+			<ContentLabel onClick={onClick} type="test">
+				<ScopeIcon type="test" />
+				scope-Id
 			</ContentLabel>,
 		));
 
 	it("handles virtual scopes", () =>
 		expect(
-			<ScopeNode name="A scope" type="Virtual" onClick={onClick} />,
+			<ScopeNode
+				name="A scope"
+				type="Virtual"
+				id="scopeId"
+				onClick={onClick}
+			/>,
 			"to render with all attributes as",
 			<ContentLabel type="Virtual">
-				<ScopeIcon type="Virtual" />
-				A scope
+				<ScopeIcon type="Virtual" />A scope
 			</ContentLabel>,
 		));
 });

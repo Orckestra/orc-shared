@@ -9,11 +9,18 @@ export const ScopeIcon = styled(Icon).attrs({
 })`
 	font-size: 20px;
 	vertical-align: middle;
-	padding-right: 11px;
+	padding-right: 8px;
+	flex-shrink: 0;
 	color: ${getThemeProp(["scopeTypeColors", props => props.type], "inherit")};
 `;
 
+export const ScopeText = styled.div`
+	word-break: break-word;
+`;
+
 export const ContentLabel = styled.div`
+	display: flex;
+	align-items: center;
 	padding: 10px;
 	width: 100%;
 	${switchEnum("type", {
@@ -35,10 +42,10 @@ export const ContentLabel = styled.div`
 	})};
 `;
 
-export const ScopeNode = ({ type, name, onClick }) => (
+export const ScopeNode = ({ type, name, id, onClick }) => (
 	<ContentLabel type={type} onClick={type === "Virtual" ? undefined : onClick}>
 		<ScopeIcon type={type} />
-		{name}
+		<ScopeText type={type}>{name || id}</ScopeText>
 	</ContentLabel>
 );
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, Indicator, NonIndicator } from "./Label";
+import { Label, Indicator, BeforeIndicator, NonIndicator } from "./Label";
 import Icon from "../Icon";
 
 describe("Indicator", () => {
@@ -73,30 +73,24 @@ describe("Indicator", () => {
 	});
 });
 
+describe("BeforeIndicator", () => {
+	it("renders a branch continuation before indicator", () =>
+		expect(
+			<BeforeIndicator />,
+			"to render style rules",
+			"to contain",
+			"margin-left: -16px;",
+		));
+});
+
 describe("NonIndicator", () => {
 	it("renders a branch continuation", () =>
 		expect(
 			<NonIndicator />,
 			"to render style rules",
 			"to contain",
-			"margin-bottom: 18px;",
+			"margin: auto 0 auto -16px;",
 		));
-
-	describe("with theme", () => {
-		let theme;
-		beforeEach(() => {
-			theme = {
-				treeSettings: { branchHeight: 12 },
-			};
-		});
-
-		it("renders a branch continuation", () =>
-			expect(<NonIndicator theme={theme} />, "to render as", <div />).and(
-				"to render style rules",
-				"to contain",
-				"margin-bottom: 12px;",
-			));
-	});
 });
 
 describe("Label", () => {
