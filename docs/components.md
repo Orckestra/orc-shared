@@ -20,6 +20,20 @@ Intended as the outermost visual component of an application, and handles the si
 
 A styled `<button>`, set up to look consistent across the UI. Use this as a drop-in replacement for `<button>` elements.
 
+## CategoryList
+
+- `columnDefs`: An array of objects, each describing one column in the table.
+- `rows`: An array of data objects, each corresponding to one row in the table. Should contain the fields defined in `columnDefs`, and importantly, the `keyField` (q.v.).
+- `rowOnClick`: A click handler for rows. The target element of the event will have `data-row-id` set, which can be accessed via `event.target.dataset["rowId"]`, and which contains the row ID of the row that was clicked (see also `keyField`). This handler is not fired when the click was on a form element (i.e. `<input>`, `<select>`, `<label>`).
+- `keyField`: A key name (or key path) pointing to a member on each row that is uniquely identifying. This value will be used to reference the row in selections, the `rowOnClick` handler, etc.
+- `categoryField`: A name or path (as with `keyField` above) pointing to a member on each row identifying its category. The contents of this field will be used as a label for the category. Defaults to `["category"]`.
+- `placeholder`: If a React node is included as this prop, the list, when empty, will display this instead, centered in the area where list elements would be.
+- `rowBackgroundGetter`: A function that, given the data for a row and optionally the number of the row, returns a string containing a CSS color (e.g. `"red"`, `"#ff0000"` or `"rgba(255, 0, 0, 0.7)"`)
+
+Configurable list component. Shows a table of information, according to the given configuration, dividing them by categories.
+
+See also the more [detailed documentation for list components](lists.md).
+
 ## Checkbox
 
 Shows a pretty checkbox. The same props are accepted as for `<input type="checked" />` elements. Use `value` for whether the checkbox is checked or not, rather than `checked`. If no `id` is passed, one will be generated and used.
@@ -76,7 +90,7 @@ A styled input field to be used in place of `<input>`. Takes the same props as t
 
 Configurable list component. Shows a table of information, according to the given configuration. If the `scrollLoader` prop is present, the list will be rendered with virtual scrolling, and the loader function will be called everytime the user scrolls close to the botton of the list. Props for controlling infinite scroll can be found in documentation of the `withInfiniteScroll` HOC, which is used to add this functionality.
 
-See also the more [detailed documentation for this component](lists.md).
+See also the more [detailed documentation for list components](lists.md).
 
 ## Modal
 
