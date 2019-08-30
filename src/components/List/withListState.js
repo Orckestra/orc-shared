@@ -69,6 +69,8 @@ const withLinkHooks = mapProps(
 		return {
 			columnDefs: enhancedColumnDefs,
 			selection,
+			updateViewState,
+			viewState,
 			...otherProps,
 		};
 	},
