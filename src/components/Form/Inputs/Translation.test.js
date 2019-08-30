@@ -5,6 +5,7 @@ import sinon from "sinon";
 import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
 import Text from "../../Text";
+import { ButtonWrapper } from "./FieldButtons";
 import TranslationInput, {
 	TranslationWrapper,
 	TranslationField,
@@ -129,4 +130,38 @@ describe("TranslationInput", () => {
 			"to be ok",
 		);
 	});
+
+	it("handles being required but missing", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<IntlProvider locale="en">
+						<TranslationInput
+							name="test"
+							value={{}}
+							required
+							moreLabel="Show more things"
+						/>
+					</IntlProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when deeply rendered",
+		).then(render =>
+			expect(
+				render,
+				"to have rendered",
+				<TranslationWrapper>
+					<TranslationField lang="en-CA" required />
+					<ShowButton onClick={expect.it("to be a function")}>
+						<ShowButtonChevron />
+						<Text message="Show more things" />
+					</ShowButton>
+				</TranslationWrapper>,
+			).and(
+				"queried for",
+				<TranslationField />,
+				"to have rendered",
+				<ButtonWrapper invalid={true} />,
+			),
+		));
 });
