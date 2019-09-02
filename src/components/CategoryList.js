@@ -24,7 +24,7 @@ export const CategoryHeader = styled.td`
 	position: relative;
 	padding: 11px 45px;
 	background-color: #f1eae0;
-	${ifFlag("closed", "border-bottom: 1px solid #cccccc")}
+	${ifFlag("closed", "border-bottom: 1px solid #cccccc;")}
 	cursor: pointer;
 `;
 
