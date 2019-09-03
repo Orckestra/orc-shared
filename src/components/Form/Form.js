@@ -156,90 +156,11 @@ export const FormPage = ({
 
 const WiredForm = withScrollBox(withCultureCount(FormPage));
 
-/* PropTypes */
-const ptField = pt.oneOfType([
-	pt.shape({
-		type: pt.oneOf([
-			"CheckboxInput",
-			"DateInput",
-			"EmailInput",
-			"LineLabel",
-			"NumberInput",
-			"ReadOnly",
-			"TextInput",
-			"TimeInput",
-		]).isRequired,
-		label: ptLabel,
-		name: pt.string.isRequired,
-	}),
-	pt.shape({
-		type: pt.oneOf(["TranslationInput"]).isRequired,
-		label: ptLabel,
-		name: pt.string.isRequired,
-		moreLabel: ptLabel.isRequired,
-	}),
-	pt.shape({
-		type: pt.oneOf(["SwitchInput"]).isRequired,
-		label: ptLabel,
-		name: pt.string.isRequired,
-		onCaption: ptLabel,
-		offCaption: ptLabel,
-		onColor: pt.string,
-		offColor: pt.string,
-	}),
-	pt.shape({
-		type: pt.oneOf(["Selector", "MultiSelector"]).isRequired,
-		name: pt.string.isRequired,
-		label: ptLabel,
-		options: pt.arrayOf(
-			pt.exact({ label: ptLabel.isRequired, value: pt.any.isRequired }),
-		),
-		placeholder: ptLabel,
-	}),
-	pt.shape({
-		type: pt.oneOf(["Button"]).isRequired,
-		name: pt.string.isRequired,
-		buttonText: ptLabel,
-		primary: pt.bool,
-		icon: pt.string,
-	}),
-	pt.shape({
-		type: pt.oneOf(["SmallButton"]).isRequired,
-		name: pt.string.isRequired,
-		altText: ptLabel,
-		primary: pt.bool,
-		icon: pt.string,
-	}),
-]);
-
-const ptComboField = pt.shape({
-	type: pt.oneOf(["Combination"]).isRequired,
-	label: ptLabel,
-	fields: pt.arrayOf(ptField).isRequired,
-	proportions: pt.arrayOf(pt.oneOfType([pt.string, pt.number])),
-});
-
-const ptFieldSet = pt.shape({
-	type: pt.oneOf(["Fieldset"]).isRequired,
-	label: ptLabel,
-	fields: pt.arrayOf(ptField).isRequired,
-});
-
-const ptList = pt.shape({
-	type: pt.oneOf(["List"]),
-	rowCount: pt.number,
-	staticValues: pt.arrayOf(pt.object),
-	rowField: pt.oneOf([ptField, ptComboField]).isRequired,
-});
-
 WiredForm.propTypes = {
 	getUpdater: pt.func.isRequired,
-	fields: pt.arrayOf(pt.oneOfType([ptField, ptComboField, ptFieldSet, ptList]))
-		.isRequired,
+	fields: pt.arrayOf(pt.object).isRequired,
 	values: pt.object.isRequired,
 	wide: pt.bool,
 };
-
-/* PropTypes end */
 
 export default WiredForm;
