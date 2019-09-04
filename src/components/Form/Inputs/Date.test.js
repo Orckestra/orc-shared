@@ -4,9 +4,9 @@ import sinon from "sinon";
 import MockDate from "mockdate";
 import { parse } from "date-fns";
 import Kalendaryo from "kalendaryo";
-import { FormInput } from "./Text";
 import {
 	PositionedWrapper,
+	DateInputField,
 	CrudeDateInput,
 	CalendarIcon,
 	CalendarButton,
@@ -32,16 +32,12 @@ describe("DateInput", () => {
 			<CrudeDateInput
 				update={update}
 				reset={reset}
-				value="2019-04-15 00:00:00"
+				value="2019-04-15"
 				otherProp
 			/>,
 			"to render as",
 			<PositionedWrapper>
-				<FormInput
-					type="date"
-					onChange={expect.it("to be a function")}
-					otherProp
-				/>
+				<DateInputField update={update} value="2019-04-15" otherProp />
 				<Kalendaryo
 					startSelectedDateAt={parse("2019-04-15")}
 					startCurrentDateAt={parse("2019-04-15")}
@@ -68,13 +64,15 @@ describe("DateInput", () => {
 			/>,
 			"to render as",
 			<PositionedWrapper invalid>
-				<FormInput type="date" otherProp />
+				<DateInputField otherProp />
 				<CalendarButton>
 					<CalendarIcon />
 				</CalendarButton>
 			</PositionedWrapper>,
 		));
 });
+
+describe("DateInputField", () => {});
 
 describe("CalendarDropdown", () => {
 	beforeEach(() => {

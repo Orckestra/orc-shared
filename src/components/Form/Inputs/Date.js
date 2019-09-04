@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { getDate, getDay, isSameMonth, isToday, format, parse } from "date-fns";
-import { FormattedDate } from "react-intl";
+import { FormattedDate, injectIntl } from "react-intl";
 import Kalendaryo from "kalendaryo";
-import { getThemeProp, ifFlag, logPass } from "../../../utils";
+import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";
 import withClickOutside from "../../../hocs/withClickOutside";
 import withToggle from "../../../hocs/withToggle";
 import Icon from "../../Icon";
@@ -177,6 +177,122 @@ export const CalendarButton = styled(InputButton)`
 	background-color: #fff;
 `;
 
+export let DateInputField;
+if (Intl.DateTimeFormat.prototype.formatToParts) {
+	const getFormatter = memoize(locale =>
+		Intl.DateTimeFormat(locale, {
+			day: "2-digit",
+			month: "2-digit",
+			year: "numeric",
+		}),
+	);
+
+	const LiteralInput = styled(FormInput).attrs({
+		tabIndex: -1,
+	})`
+		flex: 0 0 auto;
+		min-width: 0;
+		width: 1em;
+		padding-left: 0.2em;
+		padding-right: 0.2em;
+		text-align: center;
+
+		&:focus {
+			box-shadow: none;
+			border-color: #333;
+		}
+		&:last-of-type {
+			flex-grow: 1;
+		}
+	`;
+
+	const DatePartInput = styled(FormInput)`
+		padding-left: 0.2em;
+		padding-right: 0.2em;
+		min-width: 0;
+		width: 1em;
+		flex-grow: 0;
+		flex-shrink: 0;
+		text-align: center;
+
+		&:first-child {
+			text-align: right;
+		}
+		&:last-of-type {
+			text-align: left;
+		}
+
+		${switchEnum("part", {
+			day: css`
+				flex-basis: 2em;
+			`,
+			month: css`
+				flex-basis: 2em;
+			`,
+			year: css`
+				flex-basis: 3em;
+			`,
+		})}
+	`;
+
+	const getDateUpdater = (update, part, value) => {
+		let prefix, suffix, partLength, min, max;
+		if (part === "year") {
+			prefix = "";
+			suffix = value.substring(4);
+			partLength = 4;
+			min = 1970;
+			max = 2999;
+		} else if (part === "month") {
+			prefix = value.substring(0, 5);
+			suffix = value.substring(7);
+			partLength = 2;
+			min = 1;
+			max = 12;
+		} else {
+			prefix = value.substring(0, 8);
+			suffix = "";
+			partLength = 2;
+			min = 1;
+			max = 31;
+		}
+		return event => {
+			const eventVal = Math.max(min, Math.min(max, event.target.value)) + "";
+			const value = eventVal.padStart(partLength, "0").slice(-partLength);
+			update(prefix + value + suffix);
+		};
+	};
+
+	DateInputField = injectIntl(({ value, intl, update, ...props }) => {
+		const formatter = getFormatter(intl.locale);
+		const parts = formatter.formatToParts(parse(value));
+		return (
+			<React.Fragment>
+				{parts.map(({ type, value: partValue }, index) =>
+					type === "literal" ? (
+						<LiteralInput key={index} value={partValue} type="text" readOnly />
+					) : (
+						<DatePartInput
+							key={index}
+							{...props}
+							value={partValue}
+							part={type}
+							onChange={getDateUpdater(update, type, value)}
+							type="number"
+						/>
+					),
+				)}
+				<LiteralInput value="" type="text" readOnly />
+			</React.Fragment>
+		);
+	});
+} else {
+	// IE11 does not support any of this
+	DateInputField = ({ update, ...props }) => (
+		<FormInput {...props} onChange={getEventUpdater(update)} type="text" />
+	);
+}
+
 export const CrudeDateInput = ({
 	update,
 	toggle,
@@ -187,12 +303,7 @@ export const CrudeDateInput = ({
 	...props
 }) => (
 	<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
-		<FormInput
-			type="date"
-			onChange={getEventUpdater(update)}
-			{...props}
-			value={value}
-		/>
+		<DateInputField update={update} {...props} value={value} />
 		<Kalendaryo
 			open={open}
 			render={CalendarDropdown}
