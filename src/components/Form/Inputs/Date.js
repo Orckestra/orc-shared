@@ -177,7 +177,8 @@ export const CalendarButton = styled(InputButton)`
 	background-color: #fff;
 `;
 
-export let DateInputField;
+export let DateInputField, getDateUpdater, LiteralInput, DatePartInput;
+/* istanbul ignore else */
 if (Intl.DateTimeFormat.prototype.formatToParts) {
 	const getFormatter = memoize(locale =>
 		Intl.DateTimeFormat(locale, {
@@ -187,8 +188,10 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		}),
 	);
 
-	const LiteralInput = styled(FormInput).attrs({
+	LiteralInput = styled(FormInput).attrs({
 		tabIndex: -1,
+		type: "text",
+		readOnly: true,
 	})`
 		flex: 0 0 auto;
 		min-width: 0;
@@ -206,7 +209,10 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		}
 	`;
 
-	const DatePartInput = styled(FormInput)`
+	DatePartInput = styled(FormInput).attrs({
+		onFocus: /* istanbul ignore next */ () => event => event.target.select(),
+		type: "number",
+	})`
 		padding-left: 0.2em;
 		padding-right: 0.2em;
 		min-width: 0;
@@ -235,31 +241,26 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		})}
 	`;
 
-	const getDateUpdater = (update, part, value) => {
-		let prefix, suffix, partLength, min, max;
+	let getDateUpdater = (update, part, value) => {
+		let prefix, suffix, partLength;
+		const match = value.match(/^(\d+)-(\d+)-(\d+)$/);
 		if (part === "year") {
 			prefix = "";
-			suffix = value.substring(4);
+			suffix = "-" + match[2] + "-" + match[3];
 			partLength = 4;
-			min = 1970;
-			max = 2999;
 		} else if (part === "month") {
-			prefix = value.substring(0, 5);
-			suffix = value.substring(7);
+			prefix = match[1] + "-";
+			suffix = "-" + match[3];
 			partLength = 2;
-			min = 1;
-			max = 12;
 		} else {
-			prefix = value.substring(0, 8);
+			prefix = match[1] + "-" + match[2] + "-";
 			suffix = "";
 			partLength = 2;
-			min = 1;
-			max = 31;
 		}
 		return event => {
-			const eventVal = Math.max(min, Math.min(max, event.target.value)) + "";
+			let eventVal = event.target.value + "";
 			const value = eventVal.padStart(partLength, "0").slice(-partLength);
-			update(prefix + value + suffix);
+			update(format(parse(prefix + value + suffix), "YYYY-MM-DD"));
 		};
 	};
 
@@ -270,7 +271,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 			<React.Fragment>
 				{parts.map(({ type, value: partValue }, index) =>
 					type === "literal" ? (
-						<LiteralInput key={index} value={partValue} type="text" readOnly />
+						<LiteralInput key={index} value={partValue} />
 					) : (
 						<DatePartInput
 							key={index}
@@ -278,11 +279,10 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 							value={partValue}
 							part={type}
 							onChange={getDateUpdater(update, type, value)}
-							type="number"
 						/>
 					),
 				)}
-				<LiteralInput value="" type="text" readOnly />
+				<LiteralInput value="" />
 			</React.Fragment>
 		);
 	});
@@ -314,7 +314,7 @@ export const CrudeDateInput = ({
 				reset();
 			}}
 		/>
-		<CalendarButton onClick={toggle}>
+		<CalendarButton onClick={toggle} active={open}>
 			<CalendarIcon />
 		</CalendarButton>
 	</PositionedWrapper>
