@@ -91,22 +91,6 @@ describe("DateInputField", () => {
 				<LiteralInput value="" />
 			</DateInputField>,
 		));
-
-	it("sets up a date field set according to locale (fr-FR)", () =>
-		expect(
-			<IntlProvider locale="fr-FR">
-				<DateInputField update={() => {}} value={"2014-05-24"} />
-			</IntlProvider>,
-			"to deeply render as",
-			<DateInputField>
-				<DatePartInput part="year" value="2014" />
-				<LiteralInput value="-" />
-				<DatePartInput part="month" value="05" />
-				<LiteralInput value="-" />
-				<DatePartInput part="day" value="24" />
-				<LiteralInput value="" />
-			</DateInputField>,
-		));
 });
 
 describe("getDateUpdater", () => {
