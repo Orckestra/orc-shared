@@ -1,6 +1,5 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { branchLength, branchHeight } from "./settings";
-import { getThemeProp, ifFlag } from "../../utils";
 
 export const Root = styled.li`
 	position: relative;

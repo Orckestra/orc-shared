@@ -4,7 +4,6 @@ import { memoize } from "../../utils";
 import routingConnector from "../../hocs/routingConnector";
 import withScrollBox from "../../hocs/withScrollBox";
 import { cultureList } from "../../selectors/locale";
-import { ptLabel } from "../Text";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
 
