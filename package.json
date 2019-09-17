@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "0.7.11",
+	"version": "0.7.12",
 	"description": "Shared code for Orckestra applications",
 	"main": "dist/",
 	"scripts": {
