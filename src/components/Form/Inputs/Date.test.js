@@ -30,7 +30,8 @@ describe("DateInput", () => {
 		update = sinon.spy().named("update");
 		reset = sinon.spy().named("reset");
 	});
-	it("renders a basic date input, preliminary", () =>
+
+	it("renders a three-part date input", () =>
 		expect(
 			<CrudeDateInput
 				update={update}
@@ -55,6 +56,16 @@ describe("DateInput", () => {
 			expect(update, "to have a call satisfying", { args: ["2019-04-12"] });
 			expect(reset, "was called");
 		}));
+
+	it("renders a date input with a default value", () =>
+		expect(
+			<IntlProvider locale="en-US">
+				<CrudeDateInput update={update} reset={reset} otherProp />
+			</IntlProvider>,
+			"when deeply rendered",
+			"to contain",
+			<DateInputField value="1970-01-01" />,
+		));
 
 	it("renders a required date input", () =>
 		expect(
@@ -88,6 +99,22 @@ describe("DateInputField", () => {
 				<DatePartInput part="day" value="24" />
 				<LiteralInput value="/" />
 				<DatePartInput part="year" value="2014" />
+				<LiteralInput value="" />
+			</DateInputField>,
+		));
+
+	it("handles empty value", () =>
+		expect(
+			<IntlProvider locale="en-US">
+				<DateInputField update={() => {}} value="" />
+			</IntlProvider>,
+			"to deeply render as",
+			<DateInputField>
+				<DatePartInput part="month" value="01" />
+				<LiteralInput value="/" />
+				<DatePartInput part="day" value="01" />
+				<LiteralInput value="/" />
+				<DatePartInput part="year" value="1970" />
 				<LiteralInput value="" />
 			</DateInputField>,
 		));

@@ -265,8 +265,9 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 	};
 
 	DateInputField = injectIntl(({ value, intl, update, ...props }) => {
+		const safeValue = value || "1970-01-01";
 		const formatter = getFormatter(intl.locale);
-		const parts = formatter.formatToParts(parse(value));
+		const parts = formatter.formatToParts(parse(safeValue));
 		return (
 			<React.Fragment>
 				{parts.map(({ type, value: partValue }, index) =>
@@ -278,7 +279,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 							{...props}
 							value={partValue}
 							part={type}
-							onChange={getDateUpdater(update, type, value)}
+							onChange={getDateUpdater(update, type, safeValue)}
 						/>
 					),
 				)}
@@ -299,25 +300,28 @@ export const CrudeDateInput = ({
 	reset,
 	open,
 	required,
-	value,
+	value = "1970-01-01",
 	...props
-}) => (
-	<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
-		<DateInputField update={update} {...props} value={value} />
-		<Kalendaryo
-			open={open}
-			render={CalendarDropdown}
-			startSelectedDateAt={parse(value)}
-			startCurrentDateAt={parse(value)}
-			onSelectedChange={date => {
-				update(format(date, "YYYY-MM-DD"));
-				reset();
-			}}
-		/>
-		<CalendarButton onClick={toggle} active={open}>
-			<CalendarIcon />
-		</CalendarButton>
-	</PositionedWrapper>
-);
+}) => {
+	const safeValue = value || "1970-01-01";
+	return (
+		<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
+			<DateInputField update={update} {...props} value={safeValue} />
+			<Kalendaryo
+				open={open}
+				render={CalendarDropdown}
+				startSelectedDateAt={parse(safeValue)}
+				startCurrentDateAt={parse(safeValue)}
+				onSelectedChange={date => {
+					update(format(date, "YYYY-MM-DD"));
+					reset();
+				}}
+			/>
+			<CalendarButton onClick={toggle} active={open}>
+				<CalendarIcon />
+			</CalendarButton>
+		</PositionedWrapper>
+	);
+};
 
 export const DateInput = withToggle("open")(CrudeDateInput);

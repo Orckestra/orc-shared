@@ -19,10 +19,11 @@ const withCultureList = routingConnector(
 
 const LanguageLabel = styled.label`
 	flex: 0 0 auto;
-	min-width: 35px;
-	border: 1px solid #ccc;
+	min-width: 55px;
+	border-right: 1px solid #ccc;
 	padding: 5px 10px;
 	background-color: #eaeaea;
+	margin-right: 0;
 `;
 
 export const TranslationField = ({

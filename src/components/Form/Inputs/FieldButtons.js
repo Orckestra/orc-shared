@@ -11,6 +11,7 @@ export const ButtonWrapper = styled.div`
 	border: 1px solid #ccc;
 
 	& > * {
+		box-sizing: border-box;
 		height: 28px;
 		border: 0 none transparent;
 		border-radius: 0;
@@ -47,6 +48,15 @@ export const Spinners = styled.div`
 	flex-direction: column;
 	height: 30px;
 	flex: 0 0 auto;
+	margin-top: -1px;
+	margin-bottom: -1px;
+
+	&:first-child > * {
+		margin-left: -1px;
+	}
+	&:last-child > * {
+		margin-right: -1px;
+	}
 `;
 
 export const InputButton = styled(Button)`
