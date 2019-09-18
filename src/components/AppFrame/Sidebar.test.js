@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import Sidebar, { Bar, EnhancedMenuItem, MenuToggle } from "./Sidebar";
+import Sidebar, { Bar, EnhancedMenuItem, MenuToggle, Logo } from "./Sidebar";
 import MenuItem from "./MenuItem";
 
 describe("Sidebar", () => {
@@ -41,6 +41,7 @@ describe("Sidebar", () => {
 					label="Second page"
 					path="/Global/second"
 				/>
+				<Logo />
 			</Bar>,
 		));
 
