@@ -72,15 +72,24 @@ const withNavigationData = routingConnector(
 					moduleData,
 				) || { label: "[Not found]" };
 				let label = pageData.label;
-				const dataPath = pageData.dataPath && [...pageData.dataPath];
-				if (dataPath && pageData.dataIdParam) {
-					dataPath.push(params[pageData.dataIdParam]);
-				}
 				if (label && label.id) {
 					label = { ...label };
-					if (dataPath) {
-						let dataObject = dataPath && unwrapImmutable(state.getIn(dataPath));
-						label.values = { ...dataObject, ...label.values };
+					let labelValues;
+					if (pageData.labelValueSelector) {
+						labelValues = unwrapImmutable(pageData.labelValueSelector(state));
+					} else if (Array.isArray(pageData.dataPath)) {
+						console.warn(
+							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+						);
+						const dataPath = [...pageData.dataPath];
+						/* istanbul ignore else */
+						if (pageData.dataIdParam) {
+							dataPath.push(params[pageData.dataIdParam]);
+						}
+						labelValues = dataPath && unwrapImmutable(state.getIn(dataPath));
+					}
+					if (labelValues) {
+						label.values = { ...labelValues, ...label.values };
 					}
 				}
 				const href = hrefMapper(page.href);

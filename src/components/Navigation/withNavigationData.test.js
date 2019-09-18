@@ -44,6 +44,11 @@ describe("withNavigation", () => {
 						path: "/:scope/test/:page2",
 						params: { scope: "OtherScope", page2: "bar" },
 					},
+					"/TestScope/test/page3": {
+						href: "/TestScope/test/page3",
+						path: "/:scope/test/page3",
+						params: { scope: "TestScope" },
+					},
 					"/TestScope/test/notexist": {
 						href: "/TestScope/test/notexist",
 					},
@@ -54,6 +59,7 @@ describe("withNavigation", () => {
 						"/TestScope/test/page1",
 						"/OtherScope/test/foo",
 						"/OtherScope/test/bar",
+						"/TestScope/test/page3",
 						"/TestScope/test/notexist",
 					],
 				},
@@ -87,6 +93,11 @@ describe("withNavigation", () => {
 						dataPath: ["objs", "test"],
 						dataIdParam: "page2",
 						component: TestComp3,
+					},
+					"/page3": {
+						label: { id: "page3", defaultMessage: "Page 3 {someField}" },
+						component: TestComp4,
+						labelValueSelector: state => state.getIn(["objs", "test", "bar"]),
 					},
 				},
 			},
@@ -145,6 +156,16 @@ describe("withNavigation", () => {
 							mappedFrom: "/OtherScope/test/bar",
 							active: false,
 							outsideScope: true,
+						},
+						{
+							label: {
+								id: "page3",
+								defaultMessage: "Page 3 {someField}",
+								values: { someField: "22" },
+							},
+							href: "/TestScope/test/page3",
+							mappedFrom: "/TestScope/test/page3",
+							active: false,
 						},
 						{
 							href: "/TestScope/test/notexist",
