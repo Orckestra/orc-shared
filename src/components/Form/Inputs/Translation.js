@@ -17,7 +17,7 @@ const withCultureList = routingConnector(
 	dispatch => ({}),
 );
 
-const LanguageLabel = styled.label`
+export const LanguageLabel = styled.label`
 	flex: 0 0 auto;
 	min-width: 55px;
 	border-right: 1px solid #ccc;
@@ -28,7 +28,7 @@ const LanguageLabel = styled.label`
 
 export const TranslationField = ({
 	lang,
-	message,
+	message = "",
 	onChange,
 	required,
 	...props

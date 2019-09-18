@@ -6,11 +6,13 @@ import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
 import Text from "../../Text";
 import { ButtonWrapper } from "./FieldButtons";
+import { FormInput } from "./Text";
 import TranslationInput, {
 	TranslationWrapper,
 	TranslationField,
 	ShowButton,
 	ShowButtonChevron,
+	LanguageLabel,
 } from "./Translation";
 
 describe("TranslationInput", () => {
@@ -164,4 +166,36 @@ describe("TranslationInput", () => {
 				<ButtonWrapper invalid={true} />,
 			),
 		));
+});
+
+describe("TranslationField", () => {
+	let onChange;
+	beforeEach(() => {
+		onChange = () => {};
+	});
+
+	it("shows a single language label and a text field", () =>
+		expect(
+			<TranslationField
+				lang="en-US"
+				message="A hat, pardner"
+				onChange={onChange}
+				otherProp
+			/>,
+			"to render as",
+			<ButtonWrapper>
+				<LanguageLabel>en-US</LanguageLabel>
+				<FormInput value="A hat, pardner" onChange={onChange} otherProp />
+			</ButtonWrapper>,
+		));
+
+	it("handles missing message", () =>
+		expect(
+			<TranslationField lang="en-US" onChange={onChange} otherProp />,
+			"to render as",
+			<ButtonWrapper>
+				<LanguageLabel>en-US</LanguageLabel>
+				<FormInput value="" onChange={onChange} otherProp />
+			</ButtonWrapper>,
+		).then(() => expect(console.error, "was not called")));
 });
