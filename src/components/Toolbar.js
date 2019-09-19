@@ -1,6 +1,7 @@
 import React from "react";
 import pt from "prop-types";
 import styled from "styled-components";
+import { getThemeProp } from "../utils";
 import Button from "./Button";
 import Input from "./Input";
 import Icon from "./Icon";
@@ -74,6 +75,12 @@ export const Spacer = styled.div`
 	flex: 100%;
 `;
 
+export const ToolbarLabel = styled.div`
+	font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
+	font-size: 14px;
+	color: ${getThemeProp(["appHighlightColor"], "#999")};
+`;
+
 // Define the dictionary so we can use it below
 export const toolComponents = {};
 
@@ -114,6 +121,13 @@ export const Toolbar = ({ tools }) => (
 	<Bar>{tools.map(renderToolComponent)}</Bar>
 );
 
+toolComponents.label = ({ label }) => (
+	<ToolbarLabel>
+		<Text message={label} />
+	</ToolbarLabel>
+);
+toolComponents.label.displayName = "ToolLabel";
+
 // These tools are allowed inside tool groups
 const ptTool = pt.oneOfType([
 	pt.shape({
@@ -128,9 +142,13 @@ const ptTool = pt.oneOfType([
 	}),
 ]);
 
-// These tools are allowed outside groups
+// These tools are only allowed outside groups
 const ptToolWithGroup = pt.oneOfType([
 	ptTool,
+	pt.shape({
+		type: pt.oneOf(["label"]).isRequired,
+		label: ptLabel.isRequired,
+	}),
 	pt.shape({ type: pt.oneOf(["separator", "spacer"]).isRequired }),
 	pt.shape({
 		type: pt.oneOf(["group"]).isRequired,
