@@ -9,21 +9,23 @@ import debounce from "./debounce";
 import stripKey from "./stripKey";
 import memoize from "./memoize";
 import curry from "./curry";
+import insertIcons from "./insertIcons";
 import { loadConfig } from "./buildUrl";
 
 export {
-	safeGet,
+	curry,
+	debounce,
+	flatten,
 	getThemeProp,
 	ifFlag,
+	insertIcons,
+	loadConfig,
+	logPass,
+	memoize,
+	normalizeForSearch,
+	safeGet,
+	setTranslation,
+	stripKey,
 	switchEnum,
 	unwrapImmutable,
-	logPass,
-	normalizeForSearch,
-	flatten,
-	setTranslation,
-	debounce,
-	stripKey,
-	memoize,
-	curry,
-	loadConfig,
 };
