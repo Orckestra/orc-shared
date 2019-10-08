@@ -47,6 +47,7 @@ describe("Request reducer", () => {
 			"to equal",
 			Immutable.fromJS({
 				SOME_FLAG: true,
+				TEST_THIS: action,
 				[ERROR]: action,
 			}),
 		);
@@ -66,6 +67,7 @@ describe("Request reducer", () => {
 			"to equal",
 			Immutable.fromJS({
 				SOME_FLAG: true,
+				TEST_THIS: action,
 				[ERROR]: action,
 			}),
 		);
