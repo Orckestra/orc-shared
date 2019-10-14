@@ -39,6 +39,8 @@ export const getPageData = (path, params, module) => {
 	});
 };
 
+const labelDataStore = {};
+
 const withNavigationData = routingConnector(
 	(state, { modules, match, location }) => {
 		const currentHref = location.pathname;
@@ -75,7 +77,12 @@ const withNavigationData = routingConnector(
 				if (label && label.id) {
 					label = { ...label };
 					let labelValues;
-					if (pageData.labelValueSelector) {
+					if (
+						labelDataStore[page.href] &&
+						Object.keys(labelDataStore[page.href]).length
+					) {
+						labelValues = labelDataStore[page.href];
+					} else if (pageData.labelValueSelector) {
 						labelValues = unwrapImmutable(pageData.labelValueSelector(state));
 					} else if (Array.isArray(pageData.dataPath)) {
 						console.warn(
@@ -89,6 +96,8 @@ const withNavigationData = routingConnector(
 						labelValues = dataPath && unwrapImmutable(state.getIn(dataPath));
 					}
 					if (labelValues) {
+						// Save label values to state for future retrieval
+						labelDataStore[page.href] = labelValues;
 						label.values = { ...labelValues, ...label.values };
 					}
 				}
