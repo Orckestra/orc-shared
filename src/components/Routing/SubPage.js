@@ -29,7 +29,8 @@ export const Dialog = styled.div`
 	right: 0;
 	background: white;
 	border-top-left-radius: 8px;
-	box-shadow: -3px 0 4px 0 rgba(0,0,0,0.25);}
+	box-shadow: -3px 0 4px 0 rgba(0, 0, 0, 0.25);
+	z-index: 100;
 `;
 
 export const SubPage = ({
