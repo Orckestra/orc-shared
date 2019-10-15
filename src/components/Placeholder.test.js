@@ -10,9 +10,14 @@ import Placeholder, {
 describe("Placeholder", () => {
 	it("renders a placeholder with icon, title, and subtitle", () =>
 		expect(
-			<Placeholder icon="testIcon" title="A title" subtitle="A subtitle" />,
+			<Placeholder
+				icon="testIcon"
+				title="A title"
+				subtitle="A subtitle"
+				otherProp={true}
+			/>,
 			"to exactly render as",
-			<PlaceholderBox>
+			<PlaceholderBox otherProp={true}>
 				<PlaceholderIcon id="testIcon" />
 				<PlaceholderTitle>
 					<Text message="A title" />
