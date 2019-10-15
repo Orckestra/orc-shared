@@ -1,9 +1,10 @@
 import React from "react";
 import Segment from "./Segment";
 import withWaypointing from "./withWaypointing";
+import withErrorBoundary from "../../hocs/withErrorBoundary";
 
 const View = () => <div />;
-const ShownView = withWaypointing(View);
+const ShownView = withErrorBoundary("/")(withWaypointing(View));
 
 describe("Segment", () => {
 	// < Shows view as right side of segment list, redirects tab of parent segpage >
@@ -11,7 +12,7 @@ describe("Segment", () => {
 	// view / subpage
 	it("shows the selected view", () =>
 		expect(
-			<Segment config={{ component: View }} />,
+			<Segment location={{ pathname: "/" }} config={{ component: View }} />,
 			"to render as",
 			<ShownView />,
 		));

@@ -3,10 +3,11 @@ import { Switch, Route } from "react-router";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Page from "./Page";
+import withErrorBoundary from "../../hocs/withErrorBoundary";
 import withWaypointing from "./withWaypointing";
 
 const View = () => <div />;
-const ShownView = withWaypointing(View);
+const ShownView = withErrorBoundary("/nabble")(withWaypointing(View));
 
 const Sub1 = () => <div />;
 const Sub2 = () => <div />;

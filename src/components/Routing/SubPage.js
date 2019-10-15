@@ -5,6 +5,7 @@ import { compose } from "recompose";
 import UrlPattern from "url-pattern";
 import { getThemeProp } from "../../utils";
 import routingConnector from "../../hocs/routingConnector";
+import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { mapHref } from "../../actions/navigation";
 import Toolbar from "../Toolbar";
 import withWaypointing from "./withWaypointing";
@@ -46,7 +47,9 @@ export const SubPage = ({
 	const { component: View, ...props } = config;
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
-	const WrappedView = withWaypointing(View);
+	const WrappedView = withErrorBoundary(location.pathname)(
+		withWaypointing(View),
+	);
 	const closeSubPage = () => {
 		history.push(baseHref);
 		dispatch(mapHref(baseHref, baseHref));

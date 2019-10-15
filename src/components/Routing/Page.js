@@ -1,11 +1,12 @@
 import React from "react";
 import { Switch, Route } from "react-router";
+import withErrorBoundary from "../../hocs/withErrorBoundary";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import withWaypointing from "./withWaypointing";
 
 const Page = ({ component: View, path, pages = {}, subpages = {} }) => {
-	const WrappedView = withWaypointing(View);
+	const WrappedView = withErrorBoundary(path)(withWaypointing(View));
 	return (
 		<React.Fragment>
 			<Switch>
