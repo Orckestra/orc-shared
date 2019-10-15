@@ -12,9 +12,7 @@ import HeadRow from "./List/HeadRow";
 
 describe("CategoryList", () => {
 	it("renders nothing if no columnDefs", () =>
-		expect(<CategoryList rows={[{}]} />, "when rendered").then(render =>
-			expect(render.getRenderOutput(), "to equal", null),
-		));
+		expect(<CategoryList rows={[{}]} />, "renders elements", "to be null"));
 
 	it("renders a table", () =>
 		expect(<CategoryList columnDefs={[{}]} />, "to render as", <Table />));
