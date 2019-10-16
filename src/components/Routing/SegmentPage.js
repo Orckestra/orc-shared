@@ -13,6 +13,7 @@ export const Wrapper = styled.div`
 	display: flex;
 	border-top: 1px solid #ccc;
 	flex: 0 1 100%;
+	height: 100%;
 
 	${TabBar} + & {
 		margin-top: 30px;
