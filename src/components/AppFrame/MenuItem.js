@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
+import Text from "../Text";
 import Icon from "../Icon";
 
 const FilteredLink = ({
@@ -78,7 +79,9 @@ const MenuItem = ({
 		<ItemWrapper to={href} {...props}>
 			<MenuIcon id={icon} />
 			{alert ? <Alert /> : null}
-			<Label show={open}>{label}</Label>
+			<Label show={open}>
+				<Text message={label} />
+			</Label>
 		</ItemWrapper>
 	);
 };
