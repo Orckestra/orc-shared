@@ -18,7 +18,7 @@ Intended as the outermost visual component of an application, and handles the si
 - `primary`: If this flag is set, the button will be highlighted as a primary button.
 - `active`: If this flag is set, the button will be shown as currently active. Implies a toggle function.
 
-A styled `<button>`, set up to look consistent across the UI. Use this as a drop-in replacement for `<button>` elements.
+A styled `<button>`, set up to look consistent across the UI. Use this as a drop-in replacement for `<button>` elements where needed. For most purposes, however, the [`IconButton` component](#iconbutton) is a better choice.
 
 ## CategoryList
 
@@ -73,6 +73,15 @@ Redux-connected internationalization-provider. Use this as a wrapper component f
 - `id`: ID of the icon to display.
 
 Shows a single SVG icon, according to the icon id given. Requires `content/icons.svg` (or another, similarly structured SVG sprite sheet) to have been inserted in the DOM. Size is controlled by setting the CSS font-size.
+
+## IconButton
+
+- `icon`: ID of icon to show.
+- `label`: String or message descriptor of button text label.
+
+Renders a styled button with an icon, a label, or both. This component should be your first choice for this purpose, as it will handle the look and feel of the button in a consistent manner.
+
+Properties not listed above are passed through to the underlying `Button` component, so any handlers, flags (`primary` for example), etc. can be passed this way.
 
 ## Input
 

@@ -1,11 +1,10 @@
 import React from "react";
 import Text from "./Text";
+import IconButton from "./IconButton";
 import {
 	Bar,
 	ToolGroup,
 	ToolbarButton,
-	ToolbarButtonIcon,
-	ToolbarButtonText,
 	ToolbarInput,
 	Separator,
 	Spacer,
@@ -180,20 +179,14 @@ describe("toolComponents.button", () => {
 		expect(
 			<ToolButton oddProp="Test" label={{ icon: "test" }} />,
 			"to exactly render as",
-			<ToolbarButton oddProp="Test">
-				<ToolbarButtonIcon id="test" />
-			</ToolbarButton>,
+			<ToolbarButton oddProp="Test" icon="test" />,
 		));
 
 	it("renders a styled button with text", () =>
 		expect(
 			<ToolButton onClick={console.log} label={{ text: "A label" }} />,
 			"to exactly render as",
-			<ToolbarButton onClick={console.log}>
-				<ToolbarButtonText>
-					<Text message="A label" />
-				</ToolbarButtonText>
-			</ToolbarButton>,
+			<ToolbarButton onClick={console.log} label="A label" />,
 		));
 
 	it("renders a styled button with text and icon", () =>
@@ -203,13 +196,29 @@ describe("toolComponents.button", () => {
 				label={{ icon: "test", text: "A label" }}
 			/>,
 			"to exactly render as",
-			<ToolbarButton things={{ stuff: "nonsense" }}>
-				<ToolbarButtonIcon id="test" />
-				<ToolbarButtonText>
-					<Text message="A label" />
-				</ToolbarButtonText>
-			</ToolbarButton>,
+			<ToolbarButton
+				things={{ stuff: "nonsense" }}
+				icon="test"
+				label="A label"
+			/>,
 		));
+
+	describe("ToolbarButton", () => {
+		it("renders an IconButton", () =>
+			expect(
+				<ToolbarButton
+					things={{ stuff: "nonsense" }}
+					icon="test"
+					label="A label"
+				/>,
+				"to render as",
+				<IconButton
+					things={{ stuff: "nonsense" }}
+					icon="test"
+					label="A label"
+				/>,
+			));
+	});
 });
 
 describe("toolComponents.group", () => {

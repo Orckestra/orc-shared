@@ -1,22 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../../Button";
-import Icon from "../../Icon";
-import Text from "../../Text";
 import withId from "../../../hocs/withId";
+import IconButton from "../../IconButton";
 
-export const PositionedButton = styled(Button)`
+export const PositionedButton = styled(IconButton)`
 	width: max-content;
-	padding: 6px;
 	position: relative;
-`;
-
-export const ButtonIcon = styled(Icon)`
-	font-size: 16px;
-	vertical-align: top;
-	& + span {
-		margin-left: 6px;
-	}
 `;
 
 export const FormButton = ({
@@ -27,10 +16,13 @@ export const FormButton = ({
 	"aria-labelledby": aria, // Not meaningful for buttons
 	...props
 }) => (
-	<PositionedButton id={id} {...props} onClick={update}>
-		{icon ? <ButtonIcon id={icon} /> : null}
-		{buttonText ? <Text message={buttonText} /> : null}
-	</PositionedButton>
+	<PositionedButton
+		id={id}
+		{...props}
+		onClick={update}
+		icon={icon}
+		label={buttonText}
+	/>
 );
 FormButton.displayName = "FormButton";
 

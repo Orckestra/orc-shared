@@ -2,9 +2,8 @@ import React from "react";
 import pt from "prop-types";
 import styled from "styled-components";
 import { getThemeProp } from "../utils";
-import Button from "./Button";
+import IconButton from "./IconButton";
 import Input from "./Input";
-import Icon from "./Icon";
 import Text, { ptLabel } from "./Text";
 
 export const Bar = styled.div`
@@ -31,7 +30,7 @@ export const ToolGroup = styled.div`
 	}
 `;
 
-export const ToolbarButton = styled(Button)`
+export const ToolbarButton = styled(IconButton)`
 	flex: 0 0;
 	margin: 0 5px;
 	min-width: auto;
@@ -39,18 +38,6 @@ export const ToolbarButton = styled(Button)`
 	&:focus,
 	&:hover {
 		z-index: 10;
-	}
-`;
-
-export const ToolbarButtonIcon = styled(Icon)`
-	font-size: 15px;
-	margin: -3px -2px;
-`;
-
-export const ToolbarButtonText = styled.span`
-	${ToolbarButtonIcon} + & {
-		margin-left: 12px;
-		vertical-align: top;
 	}
 `;
 
@@ -95,14 +82,7 @@ toolComponents.input = props => <ToolbarInput {...props} />;
 toolComponents.input.displayName = "ToolInput";
 
 toolComponents.button = ({ label, ...props }) => (
-	<ToolbarButton {...props}>
-		{label.icon ? <ToolbarButtonIcon id={label.icon} /> : null}
-		{label.text ? (
-			<ToolbarButtonText>
-				<Text message={label.text} />
-			</ToolbarButtonText>
-		) : null}
-	</ToolbarButton>
+	<ToolbarButton {...props} icon={label.icon} label={label.text} />
 );
 toolComponents.button.displayName = "ToolButton";
 
