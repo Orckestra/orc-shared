@@ -17,9 +17,17 @@ describe("Indicator", () => {
 			"color: #ffffff;",
 		));
 
-	it("renders open arrows in grey", () =>
+	it("renders open arrows in dark grey", () =>
 		expect(
 			<Indicator open />,
+			"to render style rules",
+			"to contain",
+			"color: #333;",
+		));
+
+	it("renders open arrows in light grey when dark", () =>
+		expect(
+			<Indicator open dark />,
 			"to render style rules",
 			"to contain",
 			"color: #ccc;",
@@ -63,9 +71,17 @@ describe("Indicator", () => {
 				"color: red;",
 			));
 
-		it("renders open arrows in grey", () =>
+		it("renders open arrows in dark grey", () =>
 			expect(
 				<Indicator theme={theme} open />,
+				"to render style rules",
+				"to contain",
+				"color: #333;",
+			));
+
+		it("renders open arrows in light grey when dark", () =>
+			expect(
+				<Indicator theme={theme} open dark />,
 				"to render style rules",
 				"to contain",
 				"color: #ccc;",

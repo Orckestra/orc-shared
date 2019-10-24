@@ -21,10 +21,6 @@ describe("Leaf", () => {
 			/>,
 			"to render style rules",
 		).then(styles =>
-			expect(
-				styles,
-				"to match",
-				/:last-of-type::before {[^}]*left: -13px;[^}]*}/,
-			).and("to match", /:last-child::after {[^}]*left: -13px;[^}]*}/),
+			expect(styles, "to match", /:last-child::after {[^}]*left: -13px;[^}]*}/),
 		));
 });

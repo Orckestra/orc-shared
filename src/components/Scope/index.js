@@ -38,13 +38,12 @@ export const withSelectorHandlers = withHandlers({
 		updateViewState("show", false);
 		event.stopPropagation();
 	},
-	updateNodeState: /* istanbul ignore next */ ({ updateViewState }) => update =>
-		updateViewState("nodeState", update),
 	updateFilter: /* istanbul ignore next */ ({ updateViewState }) => event =>
 		updateViewState("filter", event.target.value),
 });
 
 export const Scope = ({
+	name,
 	currentScope,
 	getScope,
 	updateViewState,
@@ -66,6 +65,7 @@ export const Scope = ({
 				}}
 			/>
 			<Selector
+				name={name}
 				show={show}
 				reset={reset}
 				getScope={getScope}

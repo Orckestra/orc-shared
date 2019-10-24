@@ -225,9 +225,10 @@ The tooltip is hidden by moving it outside of view. This is by design, as it all
 
 - `Content`: A React component. This will render the leaf nodes of the tree. Default: a null component.
 - `getNode`: A function which takes a node id, and returns a data object for the node containing at least the node id, and the ids of any children. If no object is returned, the node will not be rendered. Default: Returns null.
+- `name`: A name to indicate the view state to use.
 - `rootId`: An id identifying the root node of the tree.
-- `nodeState`: An object containing ids of open nodes.
-- `updateNodeState`: A function to update the `nodeState` with, takes the modified `nodeState`. Default: No-op.
 - `openAll`: If truthy all nodes are rendered as open, regardless of `nodeState`.
 
-Renders a tree view, with opening and closing nodes. The data for a given node, as well as any extra props given to the Treeview, will be passed on to any rendered `Content` elements as props. This means that an onClick handler on `Treeview` will be given to all its `Content` elements, for instance.
+Renders a tree view, with opening and closing nodes and visual indication of the tree's structure. The data for a given node, as well as any extra props (beyond the ones listed above) given to the Treeview, will be passed on to any rendered `Content` elements as props. This means that an onClick handler on `Treeview` will be given to all its `Content` elements, for instance.
+
+`<Content />` must render to exactly 40 pixels height, as otherwise the indicator lines for the tree structure will look wrong. (This limitation will hopefully be removed in future.)

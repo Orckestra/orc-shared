@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ifFlag } from "../../utils";
 import { branchLength, branchHeight } from "./settings";
 
 export const Root = styled.li`
@@ -8,20 +9,10 @@ export const Root = styled.li`
 `;
 
 export const Leaf = styled(Root)`
-	&:last-of-type::before {
-		content: " ";
-		background-color: #333;
-		width: 1px;
-		height: 50%;
-		left: -${props => branchLength(props) + 1}px;
-		position: absolute;
-		top: calc(50%);
-	}
-
 	&:last-child::after {
 		/* blocker - hides lowest part of vertical branch */
 		content: " ";
-		background-color: #333;
+		background-color: ${ifFlag("dark", "#333", "#fff")};
 		position: absolute;
 		top: calc(50%);
 		left: -${props => branchLength(props) + 1}px;
