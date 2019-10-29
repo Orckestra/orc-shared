@@ -70,7 +70,7 @@ const decorateField = (field, remove = "[remove]") => {
 		type: "Combination",
 		name: "rowField",
 		// Set field base size to fit in field set
-		proportions: ["340px", "30px"],
+		proportions: [100, "30px"],
 		fields: [
 			field,
 			{
