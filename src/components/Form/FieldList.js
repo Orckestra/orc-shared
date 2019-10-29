@@ -91,7 +91,6 @@ export const FieldList = ({
 	rowField,
 	listUpdater,
 	rowCount,
-	wide,
 	listIndex,
 	...props
 }) => {

@@ -38,6 +38,19 @@ export const Wrapper = styled.div`
 	display: flex;
 `;
 
+const splitFields = (fields, cols) => {
+	if (cols <= 1) return [fields];
+	const elmsPerCol = Math.ceil(fields.length / cols);
+	return fields.reduce((current, field, index) => {
+		if (index % elmsPerCol === 0) {
+			current.push([field]);
+		} else {
+			current[current.length - 1].push(field);
+		}
+		return current;
+	}, []);
+};
+
 export const FormPage = ({
 	cols = [1, 1, 1],
 	getUpdater,
@@ -48,32 +61,18 @@ export const FormPage = ({
 	wide,
 }) => {
 	let colSpans = wide ? [1] : cols;
-	const colCount = colSpans.reduce((a, b) => a + b, 0);
-	const elmsPerCol = Math.ceil(fields.length / colSpans.length);
-	const colFields =
-		colSpans.length < 2
-			? [fields]
-			: fields.reduce((current, field, index) => {
-					if (index % elmsPerCol === 0) {
-						current.push([field]);
-					} else {
-						current[current.length - 1].push(field);
-					}
-					return current;
-			  }, []);
+	const colFields = splitFields(fields, colSpans.length);
 	return (
 		<Wrapper>
 			{colFields.map((fields, index) => (
 				<Form
 					key={index}
 					spanWidth={colSpans[index] /* istanbul ignore next*/ || 1}
-					colCount={colCount}
 				>
 					<FieldElements
 						getUpdater={getUpdater}
 						fields={addNamesToFields(fields)}
 						values={values}
-						wide={wide}
 					/>
 				</Form>
 			))}

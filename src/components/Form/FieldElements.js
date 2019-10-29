@@ -11,7 +11,6 @@ const FieldElements = ({
 	labelOnly,
 	getUpdater = () => {},
 	values = {},
-	wide,
 	...elementProps
 }) => (
 	<React.Fragment>
@@ -23,7 +22,6 @@ const FieldElements = ({
 							<FieldElements
 								getUpdater={getUpdater}
 								values={values}
-								wide={wide}
 								{...elementProps}
 								{...props}
 							/>
@@ -41,7 +39,6 @@ const FieldElements = ({
 								getUpdater={getUpdater}
 								values={values}
 								labelOnly={labelOnly}
-								wide={wide}
 								{...elementProps}
 								{...props}
 							/>
@@ -57,7 +54,6 @@ const FieldElements = ({
 							values={values}
 							getUpdater={getUpdater}
 							rowCount={props.rowCount}
-							wide={wide}
 							{...elementProps}
 							{...props}
 						/>

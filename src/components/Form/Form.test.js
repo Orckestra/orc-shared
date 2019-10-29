@@ -34,7 +34,7 @@ describe("FormPage", () => {
 			/>,
 			"to render as",
 			<Wrapper>
-				<Form spanWidth={1} colCount={3}>
+				<Form spanWidth={1}>
 					<FieldElements
 						getUpdater={getUpdater}
 						fields={fields}
@@ -54,7 +54,7 @@ describe("FormPage", () => {
 			/>,
 			"to render as",
 			<Wrapper>
-				<Form spanWidth={1} colCount={1}>
+				<Form spanWidth={1}>
 					<FieldElements
 						getUpdater={getUpdater}
 						fields={fields}
@@ -74,14 +74,14 @@ describe("FormPage", () => {
 			/>,
 			"to render as",
 			<Wrapper>
-				<Form spanWidth={2} colCount={3}>
+				<Form spanWidth={2}>
 					<FieldElements
 						getUpdater={getUpdater}
 						fields={manyFields.slice(0, 5)}
 						values={{ text1: "foo" }}
 					/>
 				</Form>
-				<Form spanWidth={1} colCount={3}>
+				<Form spanWidth={1}>
 					<FieldElements
 						getUpdater={getUpdater}
 						fields={manyFields.slice(5, 10)}
