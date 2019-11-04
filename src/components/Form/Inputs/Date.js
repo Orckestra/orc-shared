@@ -31,8 +31,14 @@ export const CalendarBox = styled.div`
 
 	${ifFlag(
 		"open",
-		"visibility: visibile; opacity: 1;",
-		"visibility: hidden; opacity: 0;",
+		css`
+			visibility: visible;
+			opacity: 1;
+		`,
+		css`
+			visibility: hidden;
+			opacity: 0;
+		`,
 	)}
 `;
 
@@ -54,11 +60,11 @@ const MonthArrow = styled(Icon).attrs({ role: "button" })`
 `;
 
 export const LastArrow = styled(MonthArrow).attrs({
-	id: getThemeProp(["icons", "right"], "navigation-before-1"),
+	id: getThemeProp(["icons", "prev"], "previous"),
 	"aria-label": "last month",
 })``;
 export const NextArrow = styled(MonthArrow).attrs({
-	id: getThemeProp(["icons", "left"], "navigation-next-1"),
+	id: getThemeProp(["icons", "next"], "next"),
 	"aria-label": "next month",
 })``;
 
@@ -77,14 +83,19 @@ export const DayCell = styled.td.attrs({ role: "button" })`
 	${ifFlag("today", "font-weight: bold;")}
 	${ifFlag(
 		"outsideMonth",
-		"background-color: white; color: #cccccc;",
+		css`
+			background-color: white;
+			color: #cccccc;
+		`,
 		ifFlag(
 			"selected",
 			css`
 				background-color: ${getThemeProp(["appHighlightColor"], "#cccccc")};
 				border-radius: 3px;
 			`,
-			"background-color: #efefef;",
+			css`
+				background-color: #efefef;
+			`,
 		),
 	)}
 `;
@@ -117,7 +128,6 @@ export const CalendarDropdown = ({
 	setDatePrevMonth,
 	setDateNextMonth,
 	getFormattedDate,
-	setDate,
 	pickDate,
 }) => {
 	const getClickHandler = getClickHandlerGetter(pickDate);
@@ -127,7 +137,7 @@ export const CalendarDropdown = ({
 			<CalendarHeader>
 				<LastArrow onClick={setDatePrevMonth} />
 				<MonthName>
-					<FormattedDate value={date} month="long" />
+					<FormattedDate value={date} month="long" year="numeric" />
 				</MonthName>
 				<NextArrow onClick={setDateNextMonth} />
 			</CalendarHeader>
@@ -260,7 +270,8 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		return event => {
 			let eventVal = event.target.value + "";
 			const value = eventVal.padStart(partLength, "0").slice(-partLength);
-			update(format(parse(prefix + value + suffix), "YYYY-MM-DD"));
+			const newDate = parse(prefix + value + suffix);
+			update(format(newDate, "YYYY-MM-DD"));
 		};
 	};
 
@@ -300,18 +311,20 @@ export const CrudeDateInput = ({
 	reset,
 	open,
 	required,
-	value = "1970-01-01",
+	value,
 	...props
 }) => {
 	const safeValue = value || "1970-01-01";
+	const parsedValue = parse(safeValue);
 	return (
 		<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
 			<DateInputField update={update} {...props} value={safeValue} />
 			<Kalendaryo
+				key={open} // Re-render if opened and closed
 				open={open}
 				render={CalendarDropdown}
-				startSelectedDateAt={parse(safeValue)}
-				startCurrentDateAt={parse(safeValue)}
+				startSelectedDateAt={parsedValue}
+				startCurrentDateAt={parsedValue}
 				onSelectedChange={date => {
 					update(format(date, "YYYY-MM-DD"));
 					reset();
