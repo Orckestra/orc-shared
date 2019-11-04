@@ -185,7 +185,7 @@ describe("FieldList", () => {
 						{
 							type: "Combination",
 							name: "rowField",
-							proportions: ["340px", "30px"],
+							proportions: [100, "30px"],
 							fields: [
 								{ type: "TextInput", name: "data" },
 								{
