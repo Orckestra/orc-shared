@@ -19,7 +19,6 @@ export const PositionedWrapper = withClickOutside(styled(ButtonWrapper)`
 export const CalendarBox = styled.div`
 	box-sizing: border-box;
 	height: auto;
-	width: 70%;
 	position: absolute;
 	top: 30px;
 	right: 3px;
