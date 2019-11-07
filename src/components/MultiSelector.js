@@ -24,7 +24,7 @@ const arrayToggle = (arr, item) => {
 
 const withSelectHandlers = withHandlers({
 	clearValue: ({ update }) => () => update([]),
-	selectAll: ({ update, options = [] }) => () =>
+	selectAll: ({ update, options }) => () =>
 		update(options.map(opt => opt.value)),
 	clickOption: ({ update, value = [] }) =>
 		memoize(clickValue => () => update(arrayToggle(value, clickValue))),

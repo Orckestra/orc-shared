@@ -22,7 +22,7 @@ Combination fields can have a collective `label`, set on the combination itself,
 
 Two types of list are available, fixed and variable length, respectively. Both have the `List` type. Fixed length lists have a `rowCount` field and may have a `staticValues` field containing an array of data to be added to the corresponding row. Variable length lists will have a button to add rows, and each row a button to delete it. The add button should be labeled with the `add` field.
 
-In both cases, lists expect a single field definition object in the `rowField` property, but this may be a combination field. Any label given here will be used to build a list head, with each row being rendered as an unlabeled instance of the field definition.
+In both cases, lists expect a single field definition object in the `rowField` property, but this may be a combination field. Any label given here will be used to build a list head, with each row being rendered as an unlabeled instance of the field definition. If the `tallRows` flag is set, however, labels and fields are rendered together, with a margin and horizontal bar between them. This is useful to emphasize the individual rows, but should be avoided in cases where there are many entries.
 
 Lists handle values presented as arrays of data objects, with fields in those data objects being mapped to named inputs in the row field. On changes (including addition and deletion of rows), they will call the update function with the entire list contents, updated according to which field was changed.
 

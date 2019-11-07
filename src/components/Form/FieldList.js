@@ -1,7 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { compose, withHandlers } from "recompose";
-import { memoize } from "../../utils";
+import { ifFlag, memoize } from "../../utils";
 import Button from "../Button";
 import Text from "../Text";
 import FieldElements from "./FieldElements";
@@ -27,15 +27,34 @@ const stripLabelFromTree = ({ fields, label, ...remainder }) => {
 export const List = styled.div`
 	display: flex;
 	flex-direction: column;
-	margin-top: 20px;
+	${ifFlag(
+		"tallRows",
+		css`
+			& > ${FieldBox} {
+				margin: 0;
+				padding: 20px 0;
+				border-bottom: 1px solid #ccc;
+			}
 
-	& > ${FieldBox} {
-		margin-top: 0;
-	}
+			& > ${FieldBox}:first-child {
+				margin-top: 15px;
+			}
+			& > ${FieldBox}:last-child {
+				border-bottom: 0 none transparent;
+			}
+		`,
+		css`
+			margin-top: 20px;
 
-	& > ${FieldBox} + ${FieldBox} {
-		margin-top: 10px;
-	}
+			& > ${FieldBox} {
+				margin-top: 0;
+			}
+
+			& > ${FieldBox} + ${FieldBox} {
+				margin-top: 10px;
+			}
+		`,
+	)}
 `;
 
 export const ListControlButton = styled(Button).attrs({ primary: true })`
@@ -49,7 +68,7 @@ const decorateField = (field, remove = "[remove]") => {
 		/* istanbul ignore next */
 		const { fields = [], proportions = [], ...remainder } = field;
 		const decoratedProportions = [...proportions];
-		decoratedProportions[fields.length] = "30px";
+		decoratedProportions[fields.length] = "30px"; // Set this way to ensure index match
 		const decoratedFields = fields.concat([
 			{
 				type: "SmallButton",
@@ -92,6 +111,7 @@ export const FieldList = ({
 	listUpdater,
 	rowCount,
 	listIndex,
+	tallRows,
 	...props
 }) => {
 	if (listIndex !== undefined) {
@@ -100,12 +120,12 @@ export const FieldList = ({
 	const renderField =
 		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
 	return (
-		<List>
-			<FieldElements fields={[renderField]} labelOnly />
+		<List {...{ tallRows }}>
+			{tallRows ? null : <FieldElements fields={[renderField]} labelOnly />}
 			{getRows().map((row, index) => (
 				<FieldElements
 					key={row.id}
-					fields={[stripLabelFromTree(renderField)]}
+					fields={[tallRows ? renderField : stripLabelFromTree(renderField)]}
 					listIndex={index}
 					getUpdater={listUpdater(index)}
 					values={{

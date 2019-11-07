@@ -36,6 +36,7 @@ export const addNamesToFields = memoize(fields =>
 
 export const Wrapper = styled.div`
 	display: flex;
+	margin-bottom: 20px;
 `;
 
 const splitFields = (fields, cols) => {
