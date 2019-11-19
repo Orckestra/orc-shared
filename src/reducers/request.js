@@ -16,11 +16,12 @@ const requestReducer = (state = initialState, action) => {
 	}
 	if (action.type.endsWith("_FAILURE")) {
 		const requestName = action.type.replace(/_FAILURE$/, "");
-		let outState = state.delete(requestName);
 		if (safeGet(action, "payload", "status") === 403) {
-			return outState.set(LOGOUT, true);
+			return state.delete(requestName).set(LOGOUT, true);
 		} else {
-			return outState.set(ERROR, Immutable.fromJS(action));
+			return state
+				.set(requestName, Immutable.fromJS(action))
+				.set(ERROR, Immutable.fromJS(action));
 		}
 	}
 	return state;

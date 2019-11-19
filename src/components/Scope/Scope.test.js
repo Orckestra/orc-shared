@@ -184,7 +184,6 @@ describe("Fully connected Scope", () => {
 				getScope={expect.it("to be a function")}
 				updateViewState={expect.it("to be a function")}
 				reset={expect.it("to be a function")}
-				updateNodeState={expect.it("to be a function")}
 				updateFilter={expect.it("to be a function")}
 				viewState={{ filter: "Foo" }}
 			/>,

@@ -1,12 +1,15 @@
 import React from "react";
-import { FormattedDate } from "react-intl";
+import { IntlProvider, FormattedDate } from "react-intl";
 import sinon from "sinon";
 import MockDate from "mockdate";
 import { parse } from "date-fns";
 import Kalendaryo from "kalendaryo";
-import { FormInput } from "./Text";
 import {
 	PositionedWrapper,
+	DateInputField,
+	LiteralInput,
+	DatePartInput,
+	getDateUpdater,
 	CrudeDateInput,
 	CalendarIcon,
 	CalendarButton,
@@ -27,21 +30,18 @@ describe("DateInput", () => {
 		update = sinon.spy().named("update");
 		reset = sinon.spy().named("reset");
 	});
-	it("renders a basic date input, preliminary", () =>
+
+	it("renders a three-part date input", () =>
 		expect(
 			<CrudeDateInput
 				update={update}
 				reset={reset}
-				value="2019-04-15 00:00:00"
+				value="2019-04-15"
 				otherProp
 			/>,
 			"to render as",
 			<PositionedWrapper>
-				<FormInput
-					type="date"
-					onChange={expect.it("to be a function")}
-					otherProp
-				/>
+				<DateInputField update={update} value="2019-04-15" otherProp />
 				<Kalendaryo
 					startSelectedDateAt={parse("2019-04-15")}
 					startCurrentDateAt={parse("2019-04-15")}
@@ -57,6 +57,16 @@ describe("DateInput", () => {
 			expect(reset, "was called");
 		}));
 
+	it("renders a date input with a default value", () =>
+		expect(
+			<IntlProvider locale="en-US">
+				<CrudeDateInput update={update} reset={reset} otherProp />
+			</IntlProvider>,
+			"when deeply rendered",
+			"to contain",
+			<DateInputField value="1970-01-01" />,
+		));
+
 	it("renders a required date input", () =>
 		expect(
 			<CrudeDateInput
@@ -68,11 +78,151 @@ describe("DateInput", () => {
 			/>,
 			"to render as",
 			<PositionedWrapper invalid>
-				<FormInput type="date" otherProp />
+				<DateInputField otherProp />
 				<CalendarButton>
 					<CalendarIcon />
 				</CalendarButton>
 			</PositionedWrapper>,
+		));
+});
+
+describe("DateInputField", () => {
+	it("sets up a date field set according to locale (en-US)", () =>
+		expect(
+			<IntlProvider locale="en-US">
+				<DateInputField update={() => {}} value={"2014-05-24"} />
+			</IntlProvider>,
+			"to deeply render as",
+			<DateInputField>
+				<DatePartInput part="month" value="05" />
+				<LiteralInput value="/" />
+				<DatePartInput part="day" value="24" />
+				<LiteralInput value="/" />
+				<DatePartInput part="year" value="2014" />
+				<LiteralInput value="" />
+			</DateInputField>,
+		));
+
+	it("handles empty value", () =>
+		expect(
+			<IntlProvider locale="en-US">
+				<DateInputField update={() => {}} value="" />
+			</IntlProvider>,
+			"to deeply render as",
+			<DateInputField>
+				<DatePartInput part="month" value="01" />
+				<LiteralInput value="/" />
+				<DatePartInput part="day" value="01" />
+				<LiteralInput value="/" />
+				<DatePartInput part="year" value="1970" />
+				<LiteralInput value="" />
+			</DateInputField>,
+		));
+});
+
+describe("getDateUpdater", () => {
+	let update;
+	beforeEach(() => {
+		update = sinon.spy().named("update");
+	});
+
+	it("creates a change handler which updates the day of a date", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "day", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "18" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["2014-05-18"] }]),
+		));
+
+	it("creates a change handler which updates the month of a date", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "month", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "11" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["2014-11-24"] }]),
+		));
+
+	it("creates a change handler which updates the year of a date", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "year", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "1988" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["1988-05-24"] }]),
+		));
+
+	it("handles short day values", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "day", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "8" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["2014-05-08"] }]),
+		));
+
+	it("handles short month values", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "month", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "3" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["2014-03-24"] }]),
+		));
+
+	it("handles short year values", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "year", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "19" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["0019-05-24"] }]),
+		));
+
+	it("handles long day values", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "day", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "122" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["2014-05-22"] }]),
+		));
+
+	it("handles long month values", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "month", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "112" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["2014-12-24"] }]),
+		));
+
+	it("handles long year values", () =>
+		expect(
+			getDateUpdater,
+			"when called with",
+			[update, "year", "2014-05-24"],
+			"when called with",
+			[{ target: { value: "19882" } }],
+		).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["9882-05-24"] }]),
 		));
 });
 

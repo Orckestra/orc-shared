@@ -4,22 +4,28 @@ import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-import {
-	fieldHeight,
-	calculateFormHeight,
-	withCultureCount,
-	addNamesToFields,
-	FormPage,
-} from "./Form";
+import { withCultureCount, addNamesToFields, FormPage, Wrapper } from "./Form";
 
 describe("FormPage", () => {
-	let getUpdater, fields;
+	let getUpdater, fields, manyFields;
 	beforeEach(() => {
 		getUpdater = () => {};
 		fields = [{ type: "TextInput", name: "text1", label: "A text" }];
+		manyFields = [
+			{ type: "TextInput", name: "text0", label: "A text" },
+			{ type: "TextInput", name: "text1", label: "A text" },
+			{ type: "TextInput", name: "text2", label: "A text" },
+			{ type: "TextInput", name: "text3", label: "A text" },
+			{ type: "TextInput", name: "text4", label: "A text" },
+			{ type: "TextInput", name: "text5", label: "A text" },
+			{ type: "TextInput", name: "text6", label: "A text" },
+			{ type: "TextInput", name: "text7", label: "A text" },
+			{ type: "TextInput", name: "text8", label: "A text" },
+			{ type: "TextInput", name: "text9", label: "A text" },
+		];
 	});
 
-	it("renders a form and calculates a best-guess height", () =>
+	it("renders a form with a single field", () =>
 		expect(
 			<FormPage
 				fields={fields}
@@ -27,348 +33,63 @@ describe("FormPage", () => {
 				getUpdater={getUpdater}
 			/>,
 			"to render as",
-			<Form h={77} wide={undefined}>
-				<FieldElements
-					getUpdater={getUpdater}
-					fields={fields}
-					values={{ text1: "foo" }}
-				/>
-			</Form>,
+			<Wrapper>
+				<Form spanWidth={1}>
+					<FieldElements
+						getUpdater={getUpdater}
+						fields={fields}
+						values={{ text1: "foo" }}
+					/>
+				</Form>
+			</Wrapper>,
 		));
-});
 
-describe("fieldHeight", () => {
-	it("calculates the height of a single field", () =>
+	it("still respects 'wide' flag", () =>
 		expect(
-			fieldHeight,
-			"called with",
-			[{ type: "TextInput", name: "text1" }, { text1: "foo" }],
-			"to equal",
-			30 + 20,
+			<FormPage
+				wide
+				fields={fields}
+				values={{ text1: "foo" }}
+				getUpdater={getUpdater}
+			/>,
+			"to render as",
+			<Wrapper>
+				<Form spanWidth={1}>
+					<FieldElements
+						getUpdater={getUpdater}
+						fields={fields}
+						values={{ text1: "foo" }}
+					/>
+				</Form>
+			</Wrapper>,
 		));
 
-	it("calculates the height of a single field with label", () =>
+	it("renders a form with a multiple fields", () =>
 		expect(
-			fieldHeight,
-			"called with",
-			[{ type: "TextInput", name: "text1", label: "A text" }, { text1: "foo" }],
-			"to equal",
-			27 + 30 + 20,
+			<FormPage
+				cols={[2, 1]}
+				fields={manyFields}
+				values={{ text1: "foo" }}
+				getUpdater={getUpdater}
+			/>,
+			"to render as",
+			<Wrapper>
+				<Form spanWidth={2}>
+					<FieldElements
+						getUpdater={getUpdater}
+						fields={manyFields.slice(0, 5)}
+						values={{ text1: "foo" }}
+					/>
+				</Form>
+				<Form spanWidth={1}>
+					<FieldElements
+						getUpdater={getUpdater}
+						fields={manyFields.slice(5, 10)}
+						values={{ text1: "foo" }}
+					/>
+				</Form>
+			</Wrapper>,
 		));
-
-	it("calculates the height of a field set", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "Fieldset",
-					name: "set",
-					label: "A text",
-					fields: [
-						{
-							type: "TextInput",
-							name: "var1",
-							label: "A text",
-						},
-						{ type: "NumberInput", name: "var2", label: "A number" },
-					],
-				},
-				{ var1: "foo", var2: 5 },
-			],
-			"to equal",
-			47 + 77 + 77 + 20,
-		));
-
-	it("calculates the height of a combination field with outer label", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "Combination",
-					name: "combo",
-					label: "A text",
-					proportions: [60, 40],
-					fields: [
-						{ type: "TextInput", name: "var1" },
-						{ type: "NumberInput", name: "var2" },
-					],
-				},
-				{ var1: "foo", var2: 5 },
-			],
-			"to equal",
-			27 + 30 + 20,
-		));
-
-	it("calculates the height of a combination field with inner labels", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "Combination",
-					name: "combo",
-					proportions: [60, 40],
-					fields: [
-						{
-							type: "TextInput",
-							name: "var1",
-							label: "A text",
-						},
-						{
-							type: "NumberInput",
-							name: "var2",
-							label: "A number",
-						},
-					],
-				},
-				{ var1: "foo", var2: 5 },
-			],
-			"to equal",
-			27 + 30 + 20,
-		));
-
-	it("calculates the height of a variable length list", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "List",
-					name: "list",
-					rowField: {
-						type: "TextInput",
-						name: "var1",
-						label: "A text",
-					},
-				},
-				{ list: [{ var1: "foo" }, { var1: "bar" }, { var1: "meep" }] },
-			],
-			"to equal",
-			27 + 3 * 40 + 40 + 10,
-		));
-
-	it("calculates the height of an empty variable length list", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "List",
-					name: "list",
-					rowField: {
-						type: "TextInput",
-						name: "var1",
-						label: "A text",
-					},
-				},
-			],
-			"to equal",
-			27 + 0 * 40 + 40 + 10,
-		));
-
-	it("calculates the height of a fixed length list", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "List",
-					name: "list",
-					rowCount: 3,
-					rowField: {
-						type: "TextInput",
-						name: "var1",
-						label: "A text",
-					},
-				},
-				{ list: [{ var1: "foo" }, { var1: "bar" }, { var1: "meep" }] },
-			],
-			"to equal",
-			27 + 3 * 40 + 10,
-		));
-
-	it("calculates the height of a translation input with label", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "TranslationInput",
-					name: "translate",
-					label: "Translated text",
-				},
-				{},
-				4,
-			],
-			"to equal",
-			27 + 4 * 40 + 10,
-		));
-
-	it("calculates the height of a translation input without label", () =>
-		expect(
-			fieldHeight,
-			"called with",
-			[
-				{
-					type: "TranslationInput",
-					name: "translate",
-				},
-				{},
-				4,
-			],
-			"to equal",
-			4 * 40 + 10,
-		));
-});
-
-describe("calculateFormHeight", () => {
-	it("determines the height a form needs to house its elements", () =>
-		expect(
-			calculateFormHeight,
-			"called with",
-			[
-				1500,
-				[
-					{ type: "TextInput", name: "text1", label: "A text" },
-					{
-						type: "Fieldset",
-						name: "set",
-						label: "A text",
-						fields: [
-							{
-								type: "TextInput",
-								name: "var1",
-								label: "A text",
-							},
-							{ type: "NumberInput", name: "var2", label: "A number" },
-						],
-					},
-					{ type: "TextInput", name: "text2", label: "A different text" },
-				],
-			],
-			"to equal",
-			fieldHeight({
-				type: "Fieldset",
-				name: "set",
-				label: "A text",
-				fields: [
-					{
-						type: "TextInput",
-						name: "var1",
-						label: "A text",
-					},
-					{ type: "NumberInput", name: "var2", label: "A number" },
-				],
-			}),
-		));
-
-	it("stays within width bounds where possible", () =>
-		expect(
-			calculateFormHeight,
-			"called with",
-			[
-				500,
-				[
-					{ type: "TextInput", name: "text1", label: "A text" },
-					{
-						type: "Fieldset",
-						name: "set",
-						label: "A text",
-						fields: [
-							{
-								type: "TextInput",
-								name: "var1",
-								label: "A text",
-							},
-							{ type: "NumberInput", name: "var2", label: "A number" },
-						],
-					},
-				],
-			],
-			"to equal",
-			fieldHeight({ type: "TextInput", name: "text1", label: "A text" }) +
-				fieldHeight({
-					type: "Fieldset",
-					name: "set",
-					label: "A text",
-					fields: [
-						{
-							type: "TextInput",
-							name: "var1",
-							label: "A text",
-						},
-						{ type: "NumberInput", name: "var2", label: "A number" },
-					],
-				}),
-		));
-
-	it("tries to set very large elements alone", () =>
-		expect(
-			calculateFormHeight,
-			"called with",
-			[
-				2000,
-				[
-					{ type: "TextInput", name: "text1", label: "A text" },
-					{ type: "TextInput", name: "text2", label: "A text" },
-					{ type: "TextInput", name: "text3", label: "A text" },
-					{ type: "TextInput", name: "text4", label: "A text" },
-					{ type: "TextInput", name: "text5", label: "A text" },
-					{
-						type: "Fieldset",
-						name: "set",
-						label: "A text",
-						fields: [
-							{
-								type: "List",
-								name: "list",
-								rowCount: 6,
-								rowField: {
-									type: "TextInput",
-									name: "var1",
-									label: "A text",
-								},
-							},
-							{
-								type: "TextInput",
-								name: "var1",
-								label: "A text",
-							},
-							{ type: "NumberInput", name: "var2", label: "A number" },
-						],
-					},
-				],
-			],
-			"to equal",
-			fieldHeight({
-				type: "Fieldset",
-				name: "set",
-				label: "A text",
-				fields: [
-					{
-						type: "List",
-						name: "list",
-						rowCount: 6,
-						rowField: {
-							type: "TextInput",
-							name: "var1",
-							label: "A text",
-						},
-					},
-					{
-						type: "TextInput",
-						name: "var1",
-						label: "A text",
-					},
-					{ type: "NumberInput", name: "var2", label: "A number" },
-				],
-			}),
-		));
-
-	it("does not break if fields undefined", () =>
-		expect(calculateFormHeight, "called with", [1000], "to equal", 0));
 });
 
 const TestComp = () => <div />;

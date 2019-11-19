@@ -1,5 +1,11 @@
 import React from "react";
-import { Selector, Wrapper, SearchInput, SelectorPanel } from "./Selector";
+import {
+	Selector,
+	Wrapper,
+	SearchInput,
+	InputBox,
+	SelectorPanel,
+} from "./Selector";
 import ScopeNode from "./ScopeNode";
 import Treeview from "../Treeview";
 
@@ -11,8 +17,6 @@ describe("Selector", () => {
 			reset: () => {},
 			intl: { formatMessage: msg => msg.defaultMessage },
 			getScope: () => {},
-			nodeState: {},
-			updateNodeState: () => {},
 			filter: "",
 			updateFilter: () => {},
 			filterPlaceholder: { defaultMessage: "Type a scope name" },
@@ -25,18 +29,18 @@ describe("Selector", () => {
 			"to render as",
 			<SelectorPanel in>
 				<Wrapper onClickOutside={props.reset}>
-					<SearchInput
-						placeholder="Type a scope name"
-						value={props.filter}
-						onChange={props.updateFilter}
-					/>
+					<InputBox>
+						<SearchInput
+							placeholder="Type a scope name"
+							value={props.filter}
+							onChange={props.updateFilter}
+						/>
+					</InputBox>
 					<Treeview
 						Content={ScopeNode}
 						rootId="Global"
 						getNode={props.getScope}
 						openAll={false}
-						nodeState={props.nodeState}
-						updateNodeState={props.updateNodeState}
 						closeSelector={props.reset}
 					/>
 				</Wrapper>

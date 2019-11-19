@@ -6,10 +6,10 @@ import { safeGet } from "../../utils";
 
 export const TreeContext = React.createContext();
 
-export const LeafNode = nodeData => (
-	<Leaf>
+export const LeafNode = ({ dark, ...nodeData }) => (
+	<Leaf dark={dark}>
 		<TreeContext.Consumer>
-			{({ Content, nodeState, updateNodeState, otherProps }) => {
+			{({ Content, nodeState, updateNodeState, dark, otherProps }) => {
 				const toggle = () =>
 					updateNodeState({ ...nodeState, [nodeData.id]: !nodeData.open });
 				return (
@@ -17,7 +17,7 @@ export const LeafNode = nodeData => (
 						{safeGet(nodeData, "children", "length") ? (
 							<>
 								<BeforeIndicator />
-								<Indicator open={nodeData.open} onClick={toggle} />
+								<Indicator open={nodeData.open} onClick={toggle} dark={dark} />
 							</>
 						) : (
 							<NonIndicator />
@@ -46,7 +46,7 @@ RootNode.displayName = "RootNode";
 
 export const Node = ({ root, id }) => (
 	<TreeContext.Consumer>
-		{({ openAll, getNode, nodeState }) => {
+		{({ openAll, getNode, nodeState, dark }) => {
 			const nodeData = getNode(id);
 			if (!nodeData) return null;
 			const open = root || openAll || nodeState[id] || false;
@@ -55,10 +55,10 @@ export const Node = ({ root, id }) => (
 					{root ? (
 						<RootNode {...nodeData} />
 					) : (
-						<LeafNode {...nodeData} open={open} />
+						<LeafNode {...nodeData} open={open} dark={dark} />
 					)}
 					{open && safeGet(nodeData, "children", "length") ? (
-						<Branch>
+						<Branch dark={dark}>
 							{nodeData.children.map(id => (
 								<Node key={id} id={id} />
 							))}

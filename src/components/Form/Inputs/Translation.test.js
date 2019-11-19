@@ -5,11 +5,14 @@ import sinon from "sinon";
 import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
 import Text from "../../Text";
+import { ButtonWrapper } from "./FieldButtons";
+import { FormInput } from "./Text";
 import TranslationInput, {
 	TranslationWrapper,
 	TranslationField,
 	ShowButton,
 	ShowButtonChevron,
+	LanguageLabel,
 } from "./Translation";
 
 describe("TranslationInput", () => {
@@ -129,4 +132,70 @@ describe("TranslationInput", () => {
 			"to be ok",
 		);
 	});
+
+	it("handles being required but missing", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<IntlProvider locale="en">
+						<TranslationInput
+							name="test"
+							value={{}}
+							required
+							moreLabel="Show more things"
+						/>
+					</IntlProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when deeply rendered",
+		).then(render =>
+			expect(
+				render,
+				"to have rendered",
+				<TranslationWrapper>
+					<TranslationField lang="en-CA" required />
+					<ShowButton onClick={expect.it("to be a function")}>
+						<ShowButtonChevron />
+						<Text message="Show more things" />
+					</ShowButton>
+				</TranslationWrapper>,
+			).and(
+				"queried for",
+				<TranslationField />,
+				"to have rendered",
+				<ButtonWrapper invalid={true} />,
+			),
+		));
+});
+
+describe("TranslationField", () => {
+	let onChange;
+	beforeEach(() => {
+		onChange = () => {};
+	});
+
+	it("shows a single language label and a text field", () =>
+		expect(
+			<TranslationField
+				lang="en-US"
+				message="A hat, pardner"
+				onChange={onChange}
+				otherProp
+			/>,
+			"to render as",
+			<ButtonWrapper>
+				<LanguageLabel>en-US</LanguageLabel>
+				<FormInput value="A hat, pardner" onChange={onChange} otherProp />
+			</ButtonWrapper>,
+		));
+
+	it("handles missing message", () =>
+		expect(
+			<TranslationField lang="en-US" onChange={onChange} otherProp />,
+			"to render as",
+			<ButtonWrapper>
+				<LanguageLabel>en-US</LanguageLabel>
+				<FormInput value="" onChange={onChange} otherProp />
+			</ButtonWrapper>,
+		).then(() => expect(console.error, "was not called")));
 });

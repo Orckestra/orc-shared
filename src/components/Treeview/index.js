@@ -1,9 +1,22 @@
 import React from "react";
+import { compose, mapProps } from "recompose";
+import withViewState from "../../hocs/withViewState";
 import { Wrapper } from "./Branch";
 import Node, { TreeContext } from "./Node";
 
+export const withNodeState = compose(
+	withViewState,
+	/* istanbul ignore next */
+	mapProps(({ name, viewState, updateViewState, ...props }) => ({
+		nodeState: viewState.nodeState,
+		updateNodeState: update => updateViewState("nodeState", update),
+		...props,
+	})),
+);
+
 /* istanbul ignore next */
-const Treeview = ({
+export const Treeview = ({
+	dark,
 	Content = () => null,
 	rootId,
 	getNode = () => null,
@@ -15,6 +28,7 @@ const Treeview = ({
 	<Wrapper>
 		<TreeContext.Provider
 			value={{
+				dark,
 				Content,
 				getNode,
 				openAll,
@@ -28,4 +42,4 @@ const Treeview = ({
 	</Wrapper>
 );
 
-export default Treeview;
+export default withNodeState(Treeview);

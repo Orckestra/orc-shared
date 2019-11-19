@@ -22,13 +22,26 @@ export const Wrapper = styled.div`
 `;
 
 export const SelectBox = styled.label`
+	position: relative;
 	box-sizing: border-box;
 	display: block;
-	height: 30px;
+	min-height: 30px;
+	max-height: 70px;
+	overflow: hidden;
 	padding: 5px 10px;
 	border 1px solid #ccc;
 	border-radius: 4px;
 	background-color: white;
+
+	&::before {
+		content: " ";
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		box-shadow: 0 -10px 5px -5px inset white;
+	}
 
 	&::after {
 		content: "ˇ";
@@ -56,10 +69,7 @@ export const SelectBox = styled.label`
 `;
 
 export const SelectedValue = styled.span`
-	white-space: nowrap;
-	overflow: hidden;
 	display: inline-block;
-	text-overflow: ellipsis;
 	width: calc(100% - 20px);
 `;
 

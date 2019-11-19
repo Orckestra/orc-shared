@@ -1,5 +1,6 @@
 import React from "react";
 import sinon from "sinon";
+import Text from "./Text";
 import {
 	InnerSelect,
 	Wrapper,
@@ -45,7 +46,12 @@ describe("MultiSelector", () => {
 					<SelectedValue>Opt 1, Opt 3</SelectedValue>
 				</SelectBox>
 				<Dropdown>
-					<Option key="multiselect_clear">Clear</Option>
+					<Option key="multiselect_clear">
+						<Text message="[Clear]" />
+					</Option>
+					<Option key="multiselect_selectAll">
+						<Text message="[Select all]" />
+					</Option>
 					<Option key={1} active>
 						Opt 1
 					</Option>
@@ -56,6 +62,46 @@ describe("MultiSelector", () => {
 					<Option key={4}>Opt 4</Option>
 				</Dropdown>
 			</Wrapper>,
+		));
+
+	it("only renders 'Clear' if value not empty", () =>
+		expect(
+			<MultiSelector
+				id="test"
+				clickOption={() => () => {}}
+				options={[
+					{ value: 1, label: "Opt 1" },
+					{ value: 2, label: "Opt 2" },
+					{ value: 3, label: "Opt 3" },
+					{ value: 4, label: "Opt 4" },
+				]}
+				value={[]}
+			/>,
+			"when rendered",
+			"not to contain",
+			<Option key="multiselect_clear">
+				<Text message="[Clear]" />
+			</Option>,
+		));
+
+	it("only renders 'Select all' if value not full", () =>
+		expect(
+			<MultiSelector
+				id="test"
+				clickOption={() => () => {}}
+				options={[
+					{ value: 1, label: "Opt 1" },
+					{ value: 2, label: "Opt 2" },
+					{ value: 3, label: "Opt 3" },
+					{ value: 4, label: "Opt 4" },
+				]}
+				value={[1, 2, 3, 4]}
+			/>,
+			"when rendered",
+			"not to contain",
+			<Option key="multiselect_selectAll">
+				<Text message="[Select all]" />
+			</Option>,
 		));
 
 	it("renders a placeholder if no value set", () =>
@@ -189,9 +235,34 @@ describe("MultiSelector", () => {
 				"with event",
 				"click",
 				"on",
-				<Option>Clear</Option>,
+				<Option>
+					<Text>[Clear]</Text>
+				</Option>,
 			).then(() =>
 				expect(updater, "to have calls satisfying", [{ args: [[]] }]),
+			));
+
+		it("sets full value when select all chosen", () =>
+			expect(
+				<FullSelector
+					update={updater}
+					options={[
+						{ value: 1, label: "Opt 1" },
+						{ value: 2, label: "Opt 2" },
+						{ value: 3, label: "Opt 3" },
+						{ value: 4, label: "Opt 4" },
+					]}
+					value={[4, 3]}
+				/>,
+				"when deeply rendered",
+				"with event",
+				"click",
+				"on",
+				<Option>
+					<Text>[Select all]</Text>
+				</Option>,
+			).then(() =>
+				expect(updater, "to have calls satisfying", [{ args: [[1, 2, 3, 4]] }]),
 			));
 
 		it("deals with an empty value prop change", () =>

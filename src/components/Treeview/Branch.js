@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { ifFlag } from "../../utils";
 import { branchIndent, branchLength, branchHeight } from "./settings";
 
 const baseBranch = css`
@@ -22,7 +23,7 @@ export const Branch = styled.ul`
 	&:last-child::after {
 		/* blocker - hides lowest part of vertical branch */
 		content: " ";
-		background-color: #333;
+		background-color: ${ifFlag("dark", "#333", "#fff")};
 		position: absolute;
 		left: -${props => branchIndent(props) + branchLength(props) + 2}px;
 		bottom: 0;
@@ -32,11 +33,12 @@ export const Branch = styled.ul`
 `;
 
 export const Wrapper = styled.ul`
-	${baseBranch} overflow-y: auto;
+	${baseBranch}
+
+	overflow-y: auto;
 	overflow-x: hidden;
 	margin-left: 0;
 	padding: ${props => branchLength(props) - 5}px;
-	border-top-width: 1px;
 
 	& > ${Branch} {
 		/* First Branch immediately under Wrapper needs margin adjusted to look right */

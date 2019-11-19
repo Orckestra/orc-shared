@@ -15,6 +15,10 @@ export const Wrapper = withClickOutside(styled.div`
 	flex-direction: column;
 `);
 
+export const InputBox = styled.div`
+	border-bottom: 1px solid #666;
+`;
+
 export const SearchInput = styled(Input)`
 	background-color: transparent;
 	border-color: #999;
@@ -32,32 +36,35 @@ export const SelectorPanel = styled(Sidepanel)`
 `;
 
 export const Selector = ({
+	name,
 	show,
 	reset,
 	intl,
 	getScope,
-	nodeState,
-	updateNodeState,
 	filter,
 	updateFilter,
 	filterPlaceholder,
 }) => (
 	<SelectorPanel in={show} width="27vw" timeout={300}>
 		<Wrapper onClickOutside={reset}>
-			<SearchInput
-				placeholder={filterPlaceholder && intl.formatMessage(filterPlaceholder)}
-				value={filter}
-				onChange={updateFilter}
-			/>
+			<InputBox>
+				<SearchInput
+					placeholder={
+						filterPlaceholder && intl.formatMessage(filterPlaceholder)
+					}
+					value={filter}
+					onChange={updateFilter}
+				/>
+			</InputBox>
 			<Treeview
 				{...{
+					name,
 					Content: ScopeNode,
 					rootId: "Global",
 					getNode: getScope,
 					openAll: !!filter,
-					nodeState,
-					updateNodeState,
 					closeSelector: reset,
+					dark: true,
 				}}
 			/>
 		</Wrapper>

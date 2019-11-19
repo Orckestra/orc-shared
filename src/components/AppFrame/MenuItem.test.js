@@ -1,5 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
+import Text from "../Text";
 import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
 
 describe("MenuItem", () => {
@@ -19,7 +20,9 @@ describe("MenuItem", () => {
 			"to render as",
 			<Block>
 				<MenuIcon id="cake" />
-				<Label>Test</Label>
+				<Label>
+					<Text message="Test" />
+				</Label>
 			</Block>,
 		));
 
@@ -40,7 +43,9 @@ describe("MenuItem", () => {
 			<Block>
 				<MenuIcon id="cake" />
 				<Alert />
-				<Label>Test</Label>
+				<Label>
+					<Text message="Test" />
+				</Label>
 			</Block>,
 		));
 

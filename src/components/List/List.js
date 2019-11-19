@@ -37,6 +37,34 @@ export const Table = styled.table`
 	font-size: 13px;
 `;
 
+export const HEADER_HEIGHT = 41;
+export const ROW_HEIGHT = 51;
+
+const calculateVirtualization = (
+	virtual,
+	scrollTop,
+	scrollBuffer,
+	height,
+	rows,
+) => {
+	let virtualFilter, heightAbove, heightBelow;
+	if (virtual) {
+		const correctedScrollTop = scrollTop - HEADER_HEIGHT; // Subtract header height
+		const firstIn = Math.floor(correctedScrollTop / ROW_HEIGHT);
+		const firstShow = Math.max(firstIn - scrollBuffer, 0);
+		const lastIn = Math.ceil((correctedScrollTop + height) / ROW_HEIGHT);
+		const lastShow = Math.min(lastIn + scrollBuffer, rows.length);
+		virtualFilter = index => index >= firstShow && index < lastShow;
+		heightAbove = firstShow * ROW_HEIGHT;
+		heightBelow = (rows.length - lastShow) * ROW_HEIGHT;
+	} else {
+		virtualFilter = () => true;
+		heightAbove = 0;
+		heightBelow = 0;
+	}
+	return { virtualFilter, heightAbove, heightBelow };
+};
+
 export const List = ({
 	columnDefs = [],
 	rows = [],
@@ -52,22 +80,14 @@ export const List = ({
 }) => {
 	if (columnDefs.length === 0) return null;
 	const rowIds = [],
-		rowElements = [],
-		headerHeight = 41,
-		rowHeight = 51;
-	let virtualFilter = () => true;
-	let heightAbove = 0,
-		heightBelow = 0;
-	if (virtual) {
-		const correctedScrollTop = scrollTop - headerHeight; // Subtract header height
-		const firstIn = Math.floor(correctedScrollTop / rowHeight);
-		const firstShow = Math.max(firstIn - scrollBuffer, 0);
-		const lastIn = Math.ceil((correctedScrollTop + height) / rowHeight);
-		const lastShow = Math.min(lastIn + scrollBuffer, rows.length);
-		virtualFilter = index => index >= firstShow && index < lastShow;
-		heightAbove = firstShow * rowHeight;
-		heightBelow = (rows.length - lastShow) * rowHeight;
-	}
+		rowElements = [];
+	const { virtualFilter, heightAbove, heightBelow } = calculateVirtualization(
+		virtual,
+		scrollTop,
+		scrollBuffer,
+		height,
+		rows,
+	);
 	rows.forEach((row, index) => {
 		const id = safeGet(row, ...keyField) + ""; // Ensure rowId is string
 		rowIds.push(id);
@@ -97,7 +117,7 @@ export const List = ({
 			<Placeholder
 				key="placeholder"
 				width={columnDefs.length}
-				height={height - headerHeight}
+				height={height - HEADER_HEIGHT}
 			>
 				{placeholder}
 			</Placeholder>,

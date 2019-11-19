@@ -2,6 +2,7 @@ import React from "react";
 import { compose, withHandlers } from "recompose";
 import { memoize } from "../utils";
 import withId from "../hocs/withId";
+import Text from "./Text";
 import {
 	InnerSelect,
 	Wrapper,
@@ -23,6 +24,8 @@ const arrayToggle = (arr, item) => {
 
 const withSelectHandlers = withHandlers({
 	clearValue: ({ update }) => () => update([]),
+	selectAll: ({ update, options }) => () =>
+		update(options.map(opt => opt.value)),
 	clickOption: ({ update, value = [] }) =>
 		memoize(clickValue => () => update(arrayToggle(value, clickValue))),
 	onChange: ({ update, value = [] }) => e =>
@@ -38,8 +41,10 @@ export const MultiSelector = ({
 	options,
 	onChange,
 	clearValue,
+	selectAll,
 	clickOption,
-	clearMessage = "Clear",
+	selectAllMessage = "[Select all]",
+	clearMessage = "[Clear]",
 	placeholder = "",
 	required,
 	...props
@@ -71,9 +76,16 @@ export const MultiSelector = ({
 			)}
 		</SelectBox>
 		<Dropdown>
-			<Option key="multiselect_clear" onClick={clearValue}>
-				{clearMessage}
-			</Option>
+			{value.length ? (
+				<Option key="multiselect_clear" onClick={clearValue}>
+					<Text message={clearMessage} />
+				</Option>
+			) : null}
+			{value.length === options.length ? null : (
+				<Option key="multiselect_selectAll" onClick={selectAll}>
+					<Text message={selectAllMessage} />
+				</Option>
+			)}
 			{options.map(option => (
 				<Option
 					key={option.value}

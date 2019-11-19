@@ -23,6 +23,10 @@ This middleware is added by default when using `buildStore`. and permits adding 
 
 The `utils.js` file contains a number of useful utility functions, for use in various parts of the application.
 
+### Content helpers
+
+`insertIcons(svgString)` takes a string of SVG, parses it and inserts it into the body of the DOM. It is useful for adding dynamically and/or statically imported icon sheets (i.e. collections of `<symbol>` tags) to the site, as Webpack will provide the string content of imported SVG files. If the imported SVG is malformed, no SVG will be injected. If the SVG contains non-`<symbol>` SVG, behavior is undefined but likely shows the SVG in a non-useful way.
+
 ### Helpers for `styled-components`
 
 `getThemeProp(path, defaultValue)` will return a prop function (suitable for use in a styled-components template string) that finds the value indicated by `path` (an array of strings), or returns `defaultValue` if that fails. Both `defaultValue` and elements of `path` may be prop functions themselves.

@@ -16,7 +16,7 @@ export const Indicator = styled(Icon).attrs({
 	flex: 0 0 auto;
 	color: ${ifFlag(
 		"open",
-		"#ccc",
+		ifFlag("dark", "#ccc", "#333"),
 		getThemeProp(["appHighlightColor"], "#ffffff"),
 	)};
 `;

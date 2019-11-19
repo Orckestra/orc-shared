@@ -18,7 +18,21 @@ Intended as the outermost visual component of an application, and handles the si
 - `primary`: If this flag is set, the button will be highlighted as a primary button.
 - `active`: If this flag is set, the button will be shown as currently active. Implies a toggle function.
 
-A styled `<button>`, set up to look consistent across the UI. Use this as a drop-in replacement for `<button>` elements.
+A styled `<button>`, set up to look consistent across the UI. Use this as a drop-in replacement for `<button>` elements where needed. For most purposes, however, the [`IconButton` component](#iconbutton) is a better choice.
+
+## CategoryList
+
+- `columnDefs`: An array of objects, each describing one column in the table.
+- `rows`: An array of data objects, each corresponding to one row in the table. Should contain the fields defined in `columnDefs`, and importantly, the `keyField` (q.v.).
+- `rowOnClick`: A click handler for rows. The target element of the event will have `data-row-id` set, which can be accessed via `event.target.dataset["rowId"]`, and which contains the row ID of the row that was clicked (see also `keyField`). This handler is not fired when the click was on a form element (i.e. `<input>`, `<select>`, `<label>`).
+- `keyField`: A key name (or key path) pointing to a member on each row that is uniquely identifying. This value will be used to reference the row in selections, the `rowOnClick` handler, etc.
+- `categoryField`: A name or path (as with `keyField` above) pointing to a member on each row identifying its category. The contents of this field will be used as a label for the category. Defaults to `["category"]`.
+- `placeholder`: If a React node is included as this prop, the list, when empty, will display this instead, centered in the area where list elements would be.
+- `rowBackgroundGetter`: A function that, given the data for a row and optionally the number of the row, returns a string containing a CSS color (e.g. `"red"`, `"#ff0000"` or `"rgba(255, 0, 0, 0.7)"`)
+
+Configurable list component. Shows a table of information, according to the given configuration, dividing them by categories.
+
+See also the more [detailed documentation for list components](lists.md).
 
 ## Checkbox
 
@@ -60,6 +74,15 @@ Redux-connected internationalization-provider. Use this as a wrapper component f
 
 Shows a single SVG icon, according to the icon id given. Requires `content/icons.svg` (or another, similarly structured SVG sprite sheet) to have been inserted in the DOM. Size is controlled by setting the CSS font-size.
 
+## IconButton
+
+- `icon`: ID of icon to show.
+- `label`: String or message descriptor of button text label.
+
+Renders a styled button with an icon, a label, or both. This component should be your first choice for this purpose, as it will handle the look and feel of the button in a consistent manner.
+
+Properties not listed above are passed through to the underlying `Button` component, so any handlers, flags (`primary` for example), etc. can be passed this way.
+
 ## Input
 
 A styled input field to be used in place of `<input>`. Takes the same props as this element and should be used as a replacement of it. Avoid using this for checkboxes, instead use the `Checkbox` component.
@@ -76,7 +99,7 @@ A styled input field to be used in place of `<input>`. Takes the same props as t
 
 Configurable list component. Shows a table of information, according to the given configuration. If the `scrollLoader` prop is present, the list will be rendered with virtual scrolling, and the loader function will be called everytime the user scrolls close to the botton of the list. Props for controlling infinite scroll can be found in documentation of the `withInfiniteScroll` HOC, which is used to add this functionality.
 
-See also the more [detailed documentation for this component](lists.md).
+See also the more [detailed documentation for list components](lists.md).
 
 ## Modal
 
@@ -188,7 +211,7 @@ Shows a list of message boxes in the upper right corner, displaying the selected
 
 - `tools`: Array of objects denoting the tools to be shown.
 
-Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `separator` and `spacer`. The former two will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id, or a `text`. In turn, `group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a cohesive group of controls. Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar. For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
+Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `label`, `separator` and `spacer`. The former two will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id, or a `text`. In turn, `group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a cohesive group of controls. the `label` type tajkes a string or message descriptor in its `label` field, and shows it on the toolbar, suitably formatted. Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar. For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
 
 ## Tooltip
 
@@ -202,9 +225,10 @@ The tooltip is hidden by moving it outside of view. This is by design, as it all
 
 - `Content`: A React component. This will render the leaf nodes of the tree. Default: a null component.
 - `getNode`: A function which takes a node id, and returns a data object for the node containing at least the node id, and the ids of any children. If no object is returned, the node will not be rendered. Default: Returns null.
+- `name`: A name to indicate the view state to use.
 - `rootId`: An id identifying the root node of the tree.
-- `nodeState`: An object containing ids of open nodes.
-- `updateNodeState`: A function to update the `nodeState` with, takes the modified `nodeState`. Default: No-op.
 - `openAll`: If truthy all nodes are rendered as open, regardless of `nodeState`.
 
-Renders a tree view, with opening and closing nodes. The data for a given node, as well as any extra props given to the Treeview, will be passed on to any rendered `Content` elements as props. This means that an onClick handler on `Treeview` will be given to all its `Content` elements, for instance.
+Renders a tree view, with opening and closing nodes and visual indication of the tree's structure. The data for a given node, as well as any extra props (beyond the ones listed above) given to the Treeview, will be passed on to any rendered `Content` elements as props. This means that an onClick handler on `Treeview` will be given to all its `Content` elements, for instance.
+
+`<Content />` must render to exactly 40 pixels height, as otherwise the indicator lines for the tree structure will look wrong. (This limitation will hopefully be removed in future.)

@@ -19,9 +19,7 @@ const generateRows = count => {
 
 describe("List", () => {
 	it("renders nothing if no columnDefs", () =>
-		expect(<List rows={[{}]} />, "when rendered").then(render =>
-			expect(render.getRenderOutput(), "to equal", null),
-		));
+		expect(<List rows={[{}]} />, "renders elements", "to be null"));
 
 	it("renders a table", () =>
 		expect(<List columnDefs={[{}]} />, "to render as", <Table />));

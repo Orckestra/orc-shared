@@ -7,9 +7,10 @@ import { mapHref } from "../../actions/navigation";
 import Toolbar from "../Toolbar";
 import { SubPage, Backdrop, Dialog, withToolbar } from "./SubPage";
 import withWaypointing from "./withWaypointing";
+import withErrorBoundary from "../../hocs/withErrorBoundary";
 
 const InnerView = () => <div />;
-const WrappedView = withWaypointing(InnerView);
+const WrappedView = withErrorBoundary("/foo/bar")(withWaypointing(InnerView));
 
 describe("SubPage", () => {
 	let history, dispatch;
@@ -25,6 +26,7 @@ describe("SubPage", () => {
 				root="/foo"
 				path="/foo/bar"
 				match={{ params: {} }}
+				location={{ pathname: "/foo/bar" }}
 				history={history}
 				dispatch={dispatch}
 			/>,
@@ -83,6 +85,7 @@ describe("SubPage", () => {
 				]}
 				root="/foo"
 				path="/foo/bar"
+				location={{ pathname: "/foo/bar" }}
 				match={{ params: {} }}
 			/>,
 			"when rendered",

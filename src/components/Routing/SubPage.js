@@ -3,11 +3,16 @@ import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import UrlPattern from "url-pattern";
-import { getThemeProp } from "../../utils";
+import { getThemeProp, memoize } from "../../utils";
 import routingConnector from "../../hocs/routingConnector";
+import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { mapHref } from "../../actions/navigation";
 import Toolbar from "../Toolbar";
 import withWaypointing from "./withWaypointing";
+
+const getWrappedView = memoize((path, View) =>
+	withErrorBoundary(path)(withWaypointing(View)),
+);
 
 export const Backdrop = styled.div`
 	position: absolute;
@@ -29,7 +34,8 @@ export const Dialog = styled.div`
 	right: 0;
 	background: white;
 	border-top-left-radius: 8px;
-	box-shadow: -3px 0 4px 0 rgba(0,0,0,0.25);}
+	box-shadow: -3px 0 4px 0 rgba(0, 0, 0, 0.25);
+	z-index: 100;
 `;
 
 export const SubPage = ({
@@ -45,7 +51,7 @@ export const SubPage = ({
 	const { component: View, ...props } = config;
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
-	const WrappedView = withWaypointing(View);
+	const WrappedView = getWrappedView(location.pathname, View);
 	const closeSubPage = () => {
 		history.push(baseHref);
 		dispatch(mapHref(baseHref, baseHref));

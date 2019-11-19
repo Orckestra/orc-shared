@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { getDate, getDay, isSameMonth, isToday, format, parse } from "date-fns";
-import { FormattedDate } from "react-intl";
+import { FormattedDate, injectIntl } from "react-intl";
 import Kalendaryo from "kalendaryo";
-import { getThemeProp, ifFlag, logPass } from "../../../utils";
+import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";
 import withClickOutside from "../../../hocs/withClickOutside";
 import withToggle from "../../../hocs/withToggle";
 import Icon from "../../Icon";
@@ -19,7 +19,6 @@ export const PositionedWrapper = withClickOutside(styled(ButtonWrapper)`
 export const CalendarBox = styled.div`
 	box-sizing: border-box;
 	height: auto;
-	width: 70%;
 	position: absolute;
 	top: 30px;
 	right: 3px;
@@ -31,8 +30,14 @@ export const CalendarBox = styled.div`
 
 	${ifFlag(
 		"open",
-		"visibility: visibile; opacity: 1;",
-		"visibility: hidden; opacity: 0;",
+		css`
+			visibility: visible;
+			opacity: 1;
+		`,
+		css`
+			visibility: hidden;
+			opacity: 0;
+		`,
 	)}
 `;
 
@@ -54,11 +59,11 @@ const MonthArrow = styled(Icon).attrs({ role: "button" })`
 `;
 
 export const LastArrow = styled(MonthArrow).attrs({
-	id: getThemeProp(["icons", "right"], "navigation-before-1"),
+	id: getThemeProp(["icons", "prev"], "previous"),
 	"aria-label": "last month",
 })``;
 export const NextArrow = styled(MonthArrow).attrs({
-	id: getThemeProp(["icons", "left"], "navigation-next-1"),
+	id: getThemeProp(["icons", "next"], "next"),
 	"aria-label": "next month",
 })``;
 
@@ -77,14 +82,19 @@ export const DayCell = styled.td.attrs({ role: "button" })`
 	${ifFlag("today", "font-weight: bold;")}
 	${ifFlag(
 		"outsideMonth",
-		"background-color: white; color: #cccccc;",
+		css`
+			background-color: white;
+			color: #cccccc;
+		`,
 		ifFlag(
 			"selected",
 			css`
 				background-color: ${getThemeProp(["appHighlightColor"], "#cccccc")};
 				border-radius: 3px;
 			`,
-			"background-color: #efefef;",
+			css`
+				background-color: #efefef;
+			`,
 		),
 	)}
 `;
@@ -117,7 +127,6 @@ export const CalendarDropdown = ({
 	setDatePrevMonth,
 	setDateNextMonth,
 	getFormattedDate,
-	setDate,
 	pickDate,
 }) => {
 	const getClickHandler = getClickHandlerGetter(pickDate);
@@ -127,7 +136,7 @@ export const CalendarDropdown = ({
 			<CalendarHeader>
 				<LastArrow onClick={setDatePrevMonth} />
 				<MonthName>
-					<FormattedDate value={date} month="long" />
+					<FormattedDate value={date} month="long" year="numeric" />
 				</MonthName>
 				<NextArrow onClick={setDateNextMonth} />
 			</CalendarHeader>
@@ -177,6 +186,124 @@ export const CalendarButton = styled(InputButton)`
 	background-color: #fff;
 `;
 
+export let DateInputField, getDateUpdater, LiteralInput, DatePartInput;
+/* istanbul ignore else */
+if (Intl.DateTimeFormat.prototype.formatToParts) {
+	const getFormatter = memoize(locale =>
+		Intl.DateTimeFormat(locale, {
+			day: "2-digit",
+			month: "2-digit",
+			year: "numeric",
+		}),
+	);
+
+	LiteralInput = styled(FormInput).attrs({
+		tabIndex: -1,
+		type: "text",
+		readOnly: true,
+	})`
+		flex: 0 0 auto;
+		min-width: 0;
+		width: 1em;
+		padding-left: 0.2em;
+		padding-right: 0.2em;
+		text-align: center;
+
+		&:focus {
+			box-shadow: none;
+			border-color: #333;
+		}
+		&:last-of-type {
+			flex-grow: 1;
+		}
+	`;
+
+	DatePartInput = styled(FormInput).attrs({
+		onFocus: /* istanbul ignore next */ () => event => event.target.select(),
+		type: "number",
+	})`
+		padding-left: 0.2em;
+		padding-right: 0.2em;
+		min-width: 0;
+		width: 1em;
+		flex-grow: 0;
+		flex-shrink: 0;
+		text-align: center;
+
+		&:first-child {
+			text-align: right;
+		}
+		&:last-of-type {
+			text-align: left;
+		}
+
+		${switchEnum("part", {
+			day: css`
+				flex-basis: 2em;
+			`,
+			month: css`
+				flex-basis: 2em;
+			`,
+			year: css`
+				flex-basis: 3em;
+			`,
+		})}
+	`;
+
+	let getDateUpdater = (update, part, value) => {
+		let prefix, suffix, partLength;
+		const match = value.match(/^(\d+)-(\d+)-(\d+)$/);
+		if (part === "year") {
+			prefix = "";
+			suffix = "-" + match[2] + "-" + match[3];
+			partLength = 4;
+		} else if (part === "month") {
+			prefix = match[1] + "-";
+			suffix = "-" + match[3];
+			partLength = 2;
+		} else {
+			prefix = match[1] + "-" + match[2] + "-";
+			suffix = "";
+			partLength = 2;
+		}
+		return event => {
+			let eventVal = event.target.value + "";
+			const value = eventVal.padStart(partLength, "0").slice(-partLength);
+			const newDate = parse(prefix + value + suffix);
+			update(format(newDate, "YYYY-MM-DD"));
+		};
+	};
+
+	DateInputField = injectIntl(({ value, intl, update, ...props }) => {
+		const safeValue = value || "1970-01-01";
+		const formatter = getFormatter(intl.locale);
+		const parts = formatter.formatToParts(parse(safeValue));
+		return (
+			<React.Fragment>
+				{parts.map(({ type, value: partValue }, index) =>
+					type === "literal" ? (
+						<LiteralInput key={index} value={partValue} />
+					) : (
+						<DatePartInput
+							key={index}
+							{...props}
+							value={partValue}
+							part={type}
+							onChange={getDateUpdater(update, type, safeValue)}
+						/>
+					),
+				)}
+				<LiteralInput value="" />
+			</React.Fragment>
+		);
+	});
+} else {
+	// IE11 does not support any of this
+	DateInputField = ({ update, ...props }) => (
+		<FormInput {...props} onChange={getEventUpdater(update)} type="text" />
+	);
+}
+
 export const CrudeDateInput = ({
 	update,
 	toggle,
@@ -185,28 +312,28 @@ export const CrudeDateInput = ({
 	required,
 	value,
 	...props
-}) => (
-	<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
-		<FormInput
-			type="date"
-			onChange={getEventUpdater(update)}
-			{...props}
-			value={value}
-		/>
-		<Kalendaryo
-			open={open}
-			render={CalendarDropdown}
-			startSelectedDateAt={parse(value)}
-			startCurrentDateAt={parse(value)}
-			onSelectedChange={date => {
-				update(format(date, "YYYY-MM-DD"));
-				reset();
-			}}
-		/>
-		<CalendarButton onClick={toggle}>
-			<CalendarIcon />
-		</CalendarButton>
-	</PositionedWrapper>
-);
+}) => {
+	const safeValue = value || "1970-01-01";
+	const parsedValue = parse(safeValue);
+	return (
+		<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
+			<DateInputField update={update} {...props} value={safeValue} />
+			<Kalendaryo
+				key={open} // Re-render if opened and closed
+				open={open}
+				render={CalendarDropdown}
+				startSelectedDateAt={parsedValue}
+				startCurrentDateAt={parsedValue}
+				onSelectedChange={date => {
+					update(format(date, "YYYY-MM-DD"));
+					reset();
+				}}
+			/>
+			<CalendarButton onClick={toggle} active={open}>
+				<CalendarIcon />
+			</CalendarButton>
+		</PositionedWrapper>
+	);
+};
 
 export const DateInput = withToggle("open")(CrudeDateInput);

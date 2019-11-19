@@ -13,6 +13,7 @@ export const PlaceholderBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin: auto;
 	${ifFlag("warn", "color: #a72825;", "color: #ababab;")}
 `;
 
@@ -35,8 +36,8 @@ export const PlaceholderSubtitle = styled.div`
 	font-size: 1.3em;
 `;
 
-const Placeholder = ({ icon, title, subtitle, animate, warn }) => (
-	<PlaceholderBox warn={warn}>
+const Placeholder = ({ icon, title, subtitle, animate, warn, ...props }) => (
+	<PlaceholderBox warn={warn} {...props}>
 		{icon ? <PlaceholderIcon id={icon} animate={animate} /> : null}
 		{title ? (
 			<PlaceholderTitle>

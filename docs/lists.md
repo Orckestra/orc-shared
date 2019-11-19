@@ -1,8 +1,8 @@
 # Lists
 
-The `List` component is used to show and handle data that consists of an ordered set of objects, each containing a set of fields of the same shape. Configuring a List component, however, can be moderately complex.
+The `List` and `CategoryList` components are used to show and handle data that consists of an ordered set of objects, each containing a set of fields of the same shape. Configuring a list component, however, can be moderately complex.
 
-A `List` should always have a `name` property which uniquely identifies it, as it needs to maintain view state (using [the `withViewState` HOC](hocs.md#withviewstatecomponent)).
+A list should always have a `name` property which uniquely identifies it, as it needs to maintain view state (using [the `withViewState` HOC](hocs.md#withviewstatecomponent)).
 
 ## Data linkage
 
@@ -82,6 +82,10 @@ A column definition may contain a `transform` field, which should be a function 
 
 Adding a column definition object like `{ type: 'select' }` will insert a selection column. This should be the first column of the list. The selection is stored in the view state for the list (i.e. if the `name` property of the `List` component is `'orderList'`, the selection will be at `state.getIn(['view', 'orderList', 'selection'])`), and consists of an array of row IDs of selected rows.
 
+### Testing your column definitions
+
+You can use `unexpected` to check the validity of a column definition by using the assertion `"to be a column defintion"` on it. This will verify that the object passed is correct and readable by the component.
+
 ## Click handling on rows
 
 It's a common UI pattern to have some kind of effect when a user clicks on a row in a list, typically opening the row's data up in a more detailed interface, or selecting it to be shown elsewhere on screen. This is accomplished by setting a handler function in the `rowOnClick` property of the list. The event target will have a `rowId` in its [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) identifying the clicked row.
@@ -89,6 +93,8 @@ It's a common UI pattern to have some kind of effect when a user clicks on a row
 Clicking on selection checkboxes or switches in a row will not fire the row click handler.
 
 ## Infinite scroll and virtual rendering
+
+This section does not apply to `CategoryList`.
 
 Lists with many items can become slow and unresponsive to interact with. As well, large datasets can be unmanageable to load at once, slowing down user experience unnecessarily. To work around this, the `List` component supports infinite scrolling and virtual rendering. Infinite scrolling means that, as the user scrolls close to the end of the currently available list, a request is sent off to load in more items. Virtual rendering means that the list only renders the items needed to display the current screen, greatly speeding up handling.
 

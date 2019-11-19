@@ -1,9 +1,9 @@
 import React from "react";
 import pt from "prop-types";
 import styled from "styled-components";
-import Button from "./Button";
+import { getThemeProp } from "../utils";
+import IconButton from "./IconButton";
 import Input from "./Input";
-import Icon from "./Icon";
 import Text, { ptLabel } from "./Text";
 
 export const Bar = styled.div`
@@ -30,7 +30,7 @@ export const ToolGroup = styled.div`
 	}
 `;
 
-export const ToolbarButton = styled(Button)`
+export const ToolbarButton = styled(IconButton)`
 	flex: 0 0;
 	margin: 0 5px;
 	min-width: auto;
@@ -38,18 +38,6 @@ export const ToolbarButton = styled(Button)`
 	&:focus,
 	&:hover {
 		z-index: 10;
-	}
-`;
-
-export const ToolbarButtonIcon = styled(Icon)`
-	font-size: 15px;
-	margin: -3px -2px;
-`;
-
-export const ToolbarButtonText = styled.span`
-	${ToolbarButtonIcon} + & {
-		margin-left: 12px;
-		vertical-align: top;
 	}
 `;
 
@@ -74,13 +62,19 @@ export const Spacer = styled.div`
 	flex: 100%;
 `;
 
+export const ToolbarLabel = styled.div`
+	font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
+	font-size: 14px;
+	color: ${getThemeProp(["appHighlightColor"], "#999")};
+`;
+
 // Define the dictionary so we can use it below
 export const toolComponents = {};
 
 // Turns a tool definition into a rendered React element
-const renderToolComponent = ({ type, subType, ...props }) => {
+const renderToolComponent = ({ key, type, subType, ...props }) => {
 	const Comp = toolComponents[type];
-	return <Comp type={subType} {...props} />;
+	return <Comp key={key} type={subType} {...props} />;
 };
 
 // Fill in the tool types
@@ -88,14 +82,7 @@ toolComponents.input = props => <ToolbarInput {...props} />;
 toolComponents.input.displayName = "ToolInput";
 
 toolComponents.button = ({ label, ...props }) => (
-	<ToolbarButton {...props}>
-		{label.icon ? <ToolbarButtonIcon id={label.icon} /> : null}
-		{label.text ? (
-			<ToolbarButtonText>
-				<Text message={label.text} />
-			</ToolbarButtonText>
-		) : null}
-	</ToolbarButton>
+	<ToolbarButton {...props} icon={label.icon} label={label.text} />
 );
 toolComponents.button.displayName = "ToolButton";
 
@@ -114,6 +101,13 @@ export const Toolbar = ({ tools }) => (
 	<Bar>{tools.map(renderToolComponent)}</Bar>
 );
 
+toolComponents.label = ({ label }) => (
+	<ToolbarLabel>
+		<Text message={label} />
+	</ToolbarLabel>
+);
+toolComponents.label.displayName = "ToolLabel";
+
 // These tools are allowed inside tool groups
 const ptTool = pt.oneOfType([
 	pt.shape({
@@ -128,9 +122,13 @@ const ptTool = pt.oneOfType([
 	}),
 ]);
 
-// These tools are allowed outside groups
+// These tools are only allowed outside groups
 const ptToolWithGroup = pt.oneOfType([
 	ptTool,
+	pt.shape({
+		type: pt.oneOf(["label"]).isRequired,
+		label: ptLabel.isRequired,
+	}),
 	pt.shape({ type: pt.oneOf(["separator", "spacer"]).isRequired }),
 	pt.shape({
 		type: pt.oneOf(["group"]).isRequired,

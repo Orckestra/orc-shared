@@ -78,7 +78,7 @@ describe("FieldList", () => {
 		return expect(
 			<FieldList
 				name="testlistfixedstat"
-				rowField={{ type: "TextInput", name: "data" }}
+				rowField={{ type: "TextInput", name: "data", label: "A label" }}
 				getUpdater={getUpdater}
 				rowCount={3}
 				staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
@@ -92,7 +92,7 @@ describe("FieldList", () => {
 			"to have rendered",
 			<List>
 				<FieldElements
-					fields={[{ type: "TextInput", name: "data" }]}
+					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
 					labelOnly
 				/>
 				<FieldElements
@@ -107,6 +107,48 @@ describe("FieldList", () => {
 				/>
 				<FieldElements
 					fields={[{ type: "TextInput", name: "data" }]}
+					listIndex={2}
+					values={{
+						id: expect.it("to be a number").and("to be greater than", 5),
+						stat: true,
+					}}
+				/>
+			</List>,
+		);
+	});
+
+	it("renders a fixed-length list with tall rows", () => {
+		const update = sinon.spy().named("update");
+		const getUpdater = name => value => update(name, value);
+		return expect(
+			<FieldList
+				name="testlisttallrows"
+				rowField={{ type: "TextInput", name: "data", label: "A label" }}
+				getUpdater={getUpdater}
+				rowCount={3}
+				tallRows
+				staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
+				values={{
+					testlisttallrows: [{ id: 4, data: "foo" }, { id: 5, data: "bar" }],
+				}}
+			/>,
+			"renders elements", // render through withRowGetter
+			"renders elements", // render through withListUpdater
+			"when rendered",
+			"to have rendered",
+			<List>
+				<FieldElements
+					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+					listIndex={0}
+					values={{ id: 4, data: "foo", stat: true }}
+				/>
+				<FieldElements
+					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+					listIndex={1}
+					values={{ id: 5, data: "bar", stat: false }}
+				/>
+				<FieldElements
+					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
 					listIndex={2}
 					values={{
 						id: expect.it("to be a number").and("to be greater than", 5),
@@ -185,7 +227,7 @@ describe("FieldList", () => {
 						{
 							type: "Combination",
 							name: "rowField",
-							proportions: ["340px", "30px"],
+							proportions: [100, "30px"],
 							fields: [
 								{ type: "TextInput", name: "data" },
 								{
@@ -381,5 +423,23 @@ describe("FieldList", () => {
 			<FieldList listIndex={0} />,
 			"to deeply render as",
 			<span>Cannot render list inside list</span>,
+		));
+});
+
+describe("List", () => {
+	it("sets layout for fieldboxes under it", () =>
+		expect(<List />, "to render style rules").then(styles =>
+			expect(styles, "to contain", "> .Field__FieldBox").and(
+				"to contain",
+				"margin-top: 20px",
+			),
+		));
+
+	it("sets layout for fieldboxes under it with tall rows", () =>
+		expect(<List tallRows />, "to render style rules").then(styles =>
+			expect(styles, "to contain", "> .Field__FieldBox").and(
+				"to contain",
+				"border-bottom: 1px solid",
+			),
 		));
 });
