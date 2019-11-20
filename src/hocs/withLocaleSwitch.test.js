@@ -25,11 +25,9 @@ describe("withLocaleSwitch", () => {
 						<Comp locale="en" />
 					</MemoryRouter>
 				</Provider>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"click",
-				"on",
-				<button />,
+				{ type: "click" },
 			).then(() =>
 				expect(store.dispatch, "to have calls satisfying", [
 					{ args: [changeLocale("en")] },

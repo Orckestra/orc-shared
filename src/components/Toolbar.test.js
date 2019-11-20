@@ -1,4 +1,5 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import Text from "./Text";
 import IconButton from "./IconButton";
 import {
@@ -92,78 +93,96 @@ describe("Toolbar", () => {
 	});
 
 	it("renders a toolbar", () =>
-		expect(<Toolbar tools={[]} />, "to exactly render as", <Bar />).then(() =>
-			expect(console.error, "was not called"),
-		));
+		expect(
+			<IntlProvider locale="en">
+				<Toolbar tools={[]} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<Bar />,
+		).then(() => expect(console.error, "was not called")));
 
 	it("renders tools according to its configuration", () =>
 		expect(
-			<Toolbar tools={toolList} />,
-			"to exactly render as",
-			<Bar>
-				<ToolInput
-					type="search"
-					onChange={toolList[0].onChange}
-					value="search"
-				/>
-				<ToolButton onClick={toolList[1].onClick} label={{ icon: "funnel" }} />
-				<ToolSpacer />
-				<Group
-					tools={[
-						{
-							type: "button",
-							key: 0,
-							label: { text: "Button" },
-							onClick: toolList[3].tools[0].onClick,
-						},
-						{
-							type: "input",
-							key: 1,
-							onChange: toolList[3].tools[1].onChange,
-							placeholder: "Text",
-						},
-						{
-							type: "button",
-							key: 2,
-							label: { text: "Button" },
-							onClick: toolList[3].tools[2].onClick,
-						},
-					]}
-				/>
-				<ToolButton
-					onClick={toolList[4].onClick}
-					label={{ icon: "eye", text: "Button" }}
-					primary
-				/>
-				<ToolSeparator />
-				<ToolLabel
-					label={{ id: "toolbar.label", defaultMessage: "Label message" }}
-				/>
-				<ToolButton
-					onClick={toolList[7].onClick}
-					label={{ text: { id: "toolbar.button", defaultMessage: "Button" } }}
-				/>
-				<ToolLabel label="Label message" />
-			</Bar>,
+			<IntlProvider locale="en">
+				<Toolbar tools={toolList} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<Bar>
+					<ToolInput
+						type="search"
+						onChange={toolList[0].onChange}
+						value="search"
+					/>
+					<ToolButton
+						onClick={toolList[1].onClick}
+						label={{ icon: "funnel" }}
+					/>
+					<ToolSpacer />
+					<Group
+						tools={[
+							{
+								type: "button",
+								key: 0,
+								label: { text: "Button" },
+								onClick: toolList[3].tools[0].onClick,
+							},
+							{
+								type: "input",
+								key: 1,
+								onChange: toolList[3].tools[1].onChange,
+								placeholder: "Text",
+							},
+							{
+								type: "button",
+								key: 2,
+								label: { text: "Button" },
+								onClick: toolList[3].tools[2].onClick,
+							},
+						]}
+					/>
+					<ToolButton
+						onClick={toolList[4].onClick}
+						label={{ icon: "eye", text: "Button" }}
+						primary
+					/>
+					<ToolSeparator />
+					<ToolLabel
+						label={{ id: "toolbar.label", defaultMessage: "Label message" }}
+					/>
+					<ToolButton
+						onClick={toolList[7].onClick}
+						label={{ text: { id: "toolbar.button", defaultMessage: "Button" } }}
+					/>
+					<ToolLabel label="Label message" />
+				</Bar>
+			</IntlProvider>,
 		).then(() => expect(console.error, "was not called")));
 });
 
 describe("toolComponents.input", () => {
 	it("renders a styled input", () =>
 		expect(
-			<ToolInput
-				random={4}
-				oddProp="Test"
-				onChange={console.log}
-				things={{ stuff: "nonsense" }}
-			/>,
-			"to render as",
-			<ToolbarInput
-				random={4}
-				oddProp="Test"
-				onChange={console.log}
-				things={{ stuff: "nonsense" }}
-			/>,
+			<IntlProvider locale="en">
+				<ToolInput
+					random={4}
+					oddProp="Test"
+					onChange={console.log}
+					things={{ stuff: "nonsense" }}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<ToolbarInput
+					random={4}
+					oddProp="Test"
+					onChange={console.log}
+					things={{ stuff: "nonsense" }}
+				/>
+			</IntlProvider>,
 		));
 });
 
@@ -171,21 +190,24 @@ describe("toolComponents.button", () => {
 	it("renders a styled empty button", () =>
 		expect(
 			<ToolButton random={4} label={{}} />,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<ToolbarButton random={4} />,
 		));
 
 	it("renders a styled button with icon", () =>
 		expect(
 			<ToolButton oddProp="Test" label={{ icon: "test" }} />,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<ToolbarButton oddProp="Test" icon="test" />,
 		));
 
 	it("renders a styled button with text", () =>
 		expect(
 			<ToolButton onClick={console.log} label={{ text: "A label" }} />,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<ToolbarButton onClick={console.log} label="A label" />,
 		));
 
@@ -195,7 +217,8 @@ describe("toolComponents.button", () => {
 				things={{ stuff: "nonsense" }}
 				label={{ icon: "test", text: "A label" }}
 			/>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<ToolbarButton
 				things={{ stuff: "nonsense" }}
 				icon="test"
@@ -211,7 +234,8 @@ describe("toolComponents.button", () => {
 					icon="test"
 					label="A label"
 				/>,
-				"to render as",
+				"when mounted",
+				"to satisfy",
 				<IconButton
 					things={{ stuff: "nonsense" }}
 					icon="test"
@@ -248,11 +272,16 @@ describe("toolComponents.group", () => {
 
 	it("renders a styled group", () =>
 		expect(
-			<Group tools={tools} />,
-			"to exactly render as",
+			<IntlProvider locale="en">
+				<Group tools={tools} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ToolGroup>
 				<ToolButton label={{ text: "Button" }} onClick={tools[0].onClick} />
-				<ToolInput onChange={tools[1].onChange} placeholder="Text" />
+				<IntlProvider locale="en">
+					<ToolInput onChange={tools[1].onChange} placeholder="Text" />
+				</IntlProvider>
 				<ToolButton label={{ text: "Button" }} onClick={tools[2].onClick} />
 			</ToolGroup>,
 		));
@@ -260,19 +289,20 @@ describe("toolComponents.group", () => {
 
 describe("toolComponents.spacer", () => {
 	it("renders a styled spacer", () =>
-		expect(<ToolSpacer />, "to render as", <Spacer />));
+		expect(<ToolSpacer />, "when mounted", "to satisfy", <Spacer />));
 });
 
 describe("toolComponents.separator", () => {
 	it("renders a styled separator", () =>
-		expect(<ToolSeparator />, "to render as", <Separator />));
+		expect(<ToolSeparator />, "when mounted", "to satisfy", <Separator />));
 });
 
 describe("toolComponents.label", () => {
 	it("renders a styled label", () =>
 		expect(
 			<ToolLabel label={{ id: "toolbar.label", defaultMessage: "A label" }} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<ToolbarLabel>
 				<Text message={{ id: "toolbar.label", defaultMessage: "A label" }} />
 			</ToolbarLabel>,

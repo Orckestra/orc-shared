@@ -1,4 +1,6 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
+import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
 import { FormInput } from "./Text";
 import { ButtonWrapper, Spinners, InputButton } from "./FieldButtons";
@@ -7,11 +9,15 @@ import { NumberInput, roundToStep, withNumberHandlers } from "./Number";
 describe("NumberInput", () => {
 	it("renders an input field with up/down spinner buttons", () =>
 		expect(
-			<NumberInput value={103.271} />,
-			"renders elements",
-			"to render as",
+			<IntlProvider locale="en-US">
+				<NumberInput value={103.271} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper>
-				<FormInput type="number" value={103.271} />
+				<IntlProvider locale="en-US">
+					<FormInput type="number" value={103.271} />
+				</IntlProvider>
 				<Spinners>
 					<InputButton>⮝</InputButton>
 					<InputButton>⮟</InputButton>
@@ -21,41 +27,61 @@ describe("NumberInput", () => {
 
 	it("renders a required input field with invalid value", () =>
 		expect(
-			<NumberInput required value="" />,
-			"renders elements",
-			"to render as",
+			<IntlProvider locale="en-US">
+				<NumberInput required value="" />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper invalid>
-				<FormInput type="number" value="" />
+				<IntlProvider locale="en-US">
+					<FormInput type="number" value="" />
+				</IntlProvider>
+				<Ignore />
 			</ButtonWrapper>,
 		));
 
 	it("rounds input value top the step size", () =>
 		expect(
-			<NumberInput value={103.271} step={0.25} />,
-			"renders elements",
-			"to render as",
+			<IntlProvider locale="en-US">
+				<NumberInput value={103.271} step={0.25} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper>
-				<FormInput type="number" value={103.25} />
+				<IntlProvider locale="en-US">
+					<FormInput type="number" value={103.25} />
+				</IntlProvider>
+				<Ignore />
 			</ButtonWrapper>,
 		));
 
 	it("renders a required input field with invalid value", () =>
 		expect(
-			<NumberInput required step={0.1} value="" />,
-			"renders elements",
-			"to render as",
+			<IntlProvider locale="en-US">
+				<NumberInput required step={0.1} value="" />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper invalid>
-				<FormInput type="number" value="" />
+				<IntlProvider locale="en-US">
+					<FormInput type="number" value="" />
+				</IntlProvider>
+				<Ignore />
 			</ButtonWrapper>,
 		));
 
 	it("sets a default value to ensure input is controlled", () =>
 		expect(
-			<NumberInput />,
-			"renders elements",
-			"to render as",
+			<IntlProvider locale="en-US">
+				<NumberInput />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper>
-				<FormInput type="number" value="" />
+				<IntlProvider locale="en-US">
+					<FormInput type="number" value="" />
+				</IntlProvider>
+				<Ignore />
 			</ButtonWrapper>,
 		));
 });
@@ -80,7 +106,17 @@ describe("roundToStep", () => {
 		expect(roundToStep, "when called with", [10, "foo"], "to equal", ""));
 });
 
-const TestComp = () => <div />;
+const TestComp = ({ value, onChange, increment, decrement }) => (
+	<div>
+		<input id="field" value={value} onChange={onChange} />
+		<button id="up" onClick={increment}>
+			Up
+		</button>
+		<button id="down" onClick={decrement}>
+			Down
+		</button>
+	</div>
+);
 
 describe("withNumberHandlers", () => {
 	let update;
@@ -91,75 +127,73 @@ describe("withNumberHandlers", () => {
 	describe("with no control prop", () => {
 		it("onChange handler enforces numbers", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
-				expect(<EnhComp update={update} />, "when rendered", "has elements")
-					.then(elements =>
-						expect(elements.props.onChange, "called with", [
-							{ target: { value: "foo" } },
-						])
-							.and("called with", [{ target: { value: 0 } }])
-							.and("called with", [{ target: { value: 12.29 } }])
-							.and("called with", [{ target: { value: 0.13 } }]),
-					)
-					.then(() =>
-						expect(update, "to have calls satisfying", [
-							{ args: [""] },
-							{ args: [0] },
-							{ args: [12.29] },
-							{ args: [0.13] },
-						]),
-					),
+				expect(
+					<EnhComp update={update} />,
+					"when mounted",
+					"with event",
+					{ type: "change", target: "#field", value: "foo" },
+					"with event",
+					{ type: "change", target: "#field", value: "0" },
+					"with event",
+					{ type: "change", target: "#field", value: "12.29" },
+					"with event",
+					{ type: "change", target: "#field", value: "0.13" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [
+						{ args: [""] },
+						{ args: [0] },
+						{ args: [12.29] },
+						{ args: [0.13] },
+					]),
+				),
 			));
 
 		it("increment handler raises value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} value={3.545444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
+				),
 			));
 
 		it("increments from zero", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} value={0} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [1] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [1] }]),
+				),
 			));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} value={3.545444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [2.545444] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [2.545444] }]),
+				),
 			));
 
 		it("decrements from zero", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} value={0} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [-1] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [-1] }]),
+				),
 			));
 	});
 
@@ -168,14 +202,15 @@ describe("withNumberHandlers", () => {
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} step={0.1} />,
-					"to render as",
-					<TestComp
-						onChange={expect
-							.it("called with", [{ target: { value: "foo" } }])
-							.and("called with", [{ target: { value: 0 } }])
-							.and("called with", [{ target: { value: 12.29 } }])
-							.and("called with", [{ target: { value: 0.13 } }])}
-					/>,
+					"when mounted",
+					"with event",
+					{ type: "change", target: "#field", value: "foo" },
+					"with event",
+					{ type: "change", target: "#field", value: "0" },
+					"with event",
+					{ type: "change", target: "#field", value: "12.29" },
+					"with event",
+					{ type: "change", target: "#field", value: "0.13" },
 				).then(() =>
 					expect(update, "to have calls satisfying", [
 						{ args: [""] },
@@ -190,52 +225,48 @@ describe("withNumberHandlers", () => {
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} step={0.1} value={3.5} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3.6] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3.6] }]),
+				),
 			));
 
 		it("increments from zero", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} step={0.1} value={0} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [0.1] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [0.1] }]),
+				),
 			));
 
 		it("decrement handler lowers value by step size", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} step={0.1} value={3.5} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3.4] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3.4] }]),
+				),
 			));
 
 		it("decrements from zero", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp update={update} step={0.1} value={0} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [-0.1] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [-0.1] }]),
+				),
 			));
 	});
 
@@ -244,64 +275,59 @@ describe("withNumberHandlers", () => {
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp min={3} update={update} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements =>
-						expect(elements.props.onChange, "called with", [
-							{ target: { value: "foo" } },
-						])
-							.and("called with", [{ target: { value: 0 } }])
-							.and("called with", [{ target: { value: 12.29 } }])
-							.and("called with", [{ target: { value: 0.13 } }]),
-					)
-					.then(() =>
-						expect(update, "to have calls satisfying", [
-							{ args: [""] },
-							{ args: [3] },
-							{ args: [12.29] },
-							{ args: [3] },
-						]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "change", target: "#field", value: "foo" },
+					"with event",
+					{ type: "change", target: "#field", value: "0" },
+					"with event",
+					{ type: "change", target: "#field", value: "12.29" },
+					"with event",
+					{ type: "change", target: "#field", value: "0.13" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [
+						{ args: [""] },
+						{ args: [3] },
+						{ args: [12.29] },
+						{ args: [3] },
+					]),
+				),
 			));
 
 		it("increment handler raises value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp min={3} update={update} value={3.545444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
+				),
 			));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp min={3} update={update} value={4.545444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3.545444] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3.545444] }]),
+				),
 			));
 
 		it("respects minimum", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp min={3} update={update} value={3.545444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3] }]),
+				),
 			));
 	});
 
@@ -310,64 +336,59 @@ describe("withNumberHandlers", () => {
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} min={3} update={update} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements =>
-						expect(elements.props.onChange, "called with", [
-							{ target: { value: "foo" } },
-						])
-							.and("called with", [{ target: { value: 0 } }])
-							.and("called with", [{ target: { value: 12.29 } }])
-							.and("called with", [{ target: { value: 0.13 } }]),
-					)
-					.then(() =>
-						expect(update, "to have calls satisfying", [
-							{ args: [""] },
-							{ args: [3] },
-							{ args: [12.3] },
-							{ args: [3] },
-						]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "change", target: "#field", value: "foo" },
+					"with event",
+					{ type: "change", target: "#field", value: "0" },
+					"with event",
+					{ type: "change", target: "#field", value: "12.29" },
+					"with event",
+					{ type: "change", target: "#field", value: "0.13" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [
+						{ args: [""] },
+						{ args: [3] },
+						{ args: [12.3] },
+						{ args: [3] },
+					]),
+				),
 			));
 
 		it("increment handler raises value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} min={3} update={update} value={3.545444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3.6] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3.6] }]),
+				),
 			));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} min={3} update={update} value={3.555444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3.5] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3.5] }]),
+				),
 			));
 
 		it("respects minimum", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} min={3} update={update} value={3.045444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3] }]),
+				),
 			));
 	});
 
@@ -376,64 +397,59 @@ describe("withNumberHandlers", () => {
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp max={3} update={update} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements =>
-						expect(elements.props.onChange, "called with", [
-							{ target: { value: "foo" } },
-						])
-							.and("called with", [{ target: { value: 0 } }])
-							.and("called with", [{ target: { value: 12.29 } }])
-							.and("called with", [{ target: { value: 0.13 } }]),
-					)
-					.then(() =>
-						expect(update, "to have calls satisfying", [
-							{ args: [""] },
-							{ args: [0] },
-							{ args: [3] },
-							{ args: [0.13] },
-						]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "change", target: "#field", value: "foo" },
+					"with event",
+					{ type: "change", target: "#field", value: "0" },
+					"with event",
+					{ type: "change", target: "#field", value: "12.29" },
+					"with event",
+					{ type: "change", target: "#field", value: "0.13" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [
+						{ args: [""] },
+						{ args: [0] },
+						{ args: [3] },
+						{ args: [0.13] },
+					]),
+				),
 			));
 
 		it("increment handler raises value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp max={3} update={update} value={1.545344} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [2.545344] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [2.545344] }]),
+				),
 			));
 
 		it("respects maximum", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp max={3} update={update} value={2.5458} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3] }]),
+				),
 			));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp max={3} update={update} value={2.545} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [1.545] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [1.545] }]),
+				),
 			));
 	});
 
@@ -442,64 +458,59 @@ describe("withNumberHandlers", () => {
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} max={3} update={update} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements =>
-						expect(elements.props.onChange, "called with", [
-							{ target: { value: "foo" } },
-						])
-							.and("called with", [{ target: { value: 0 } }])
-							.and("called with", [{ target: { value: 12.29 } }])
-							.and("called with", [{ target: { value: 0.13 } }]),
-					)
-					.then(() =>
-						expect(update, "to have calls satisfying", [
-							{ args: [""] },
-							{ args: [0] },
-							{ args: [3] },
-							{ args: [0.1] },
-						]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "change", target: "#field", value: "foo" },
+					"with event",
+					{ type: "change", target: "#field", value: "0" },
+					"with event",
+					{ type: "change", target: "#field", value: "12.29" },
+					"with event",
+					{ type: "change", target: "#field", value: "0.13" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [
+						{ args: [""] },
+						{ args: [0] },
+						{ args: [3] },
+						{ args: [0.1] },
+					]),
+				),
 			));
 
 		it("increment handler raises value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} max={3} update={update} value={1.545} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [1.6] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [1.6] }]),
+				),
 			));
 
 		it("respects maximum", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} max={3} update={update} value={2.9999} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.increment, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#up" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3] }]),
+				),
 			));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(withNumberHandlers, "called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp step={0.1} max={3} update={update} value={3.555444} />,
-					"when rendered",
-					"has elements",
-				)
-					.then(elements => expect(elements.props.decrement, "called"))
-					.then(() =>
-						expect(update, "to have calls satisfying", [{ args: [3.5] }]),
-					),
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#down" },
+				).then(() =>
+					expect(update, "to have calls satisfying", [{ args: [3.5] }]),
+				),
 			));
 	});
 });

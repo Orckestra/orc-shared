@@ -14,7 +14,8 @@ describe("ReadOnly", () => {
 			<ReadOnly
 				value={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }}
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<CenterWrapper>
 				<ReadOnlyBlock>
 					<Text
@@ -29,7 +30,8 @@ describe("LineLabel", () => {
 	it("renders a text in large font", () =>
 		expect(
 			<LineLabel value="A text value" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<CenterWrapper>
 				<Label>
 					<Text message="A text value" />

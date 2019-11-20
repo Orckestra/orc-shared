@@ -1,4 +1,5 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import Text from "./Text";
 import Placeholder, {
 	PlaceholderBox,
@@ -16,7 +17,8 @@ describe("Placeholder", () => {
 				subtitle="A subtitle"
 				otherProp={true}
 			/>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<PlaceholderBox otherProp={true}>
 				<PlaceholderIcon id="testIcon" />
 				<PlaceholderTitle>
@@ -29,14 +31,18 @@ describe("Placeholder", () => {
 		).then(() => expect(console.error, "was not called")));
 
 	it("renders an empty placeholder", () =>
-		expect(<Placeholder />, "to exactly render as", <PlaceholderBox />).then(
-			() => expect(console.error, "was not called"),
-		));
+		expect(
+			<Placeholder />,
+			"when mounted",
+			"to satisfy",
+			<PlaceholderBox />,
+		).then(() => expect(console.error, "was not called")));
 
 	it("renders an animated icon", () =>
 		expect(
 			<Placeholder icon="testIcon" animate />,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<PlaceholderBox>
 				<PlaceholderIcon id="testIcon" animate />
 			</PlaceholderBox>,
@@ -44,19 +50,29 @@ describe("Placeholder", () => {
 
 	it("translates title and subtitle if given message descriptors", () =>
 		expect(
-			<Placeholder
-				title={{ id: "test.title", defaultMessage: "A title" }}
-				subtitle={{ id: "test.subtitle", defaultMessage: "A subtitle" }}
-			/>,
-			"to exactly render as",
+			<IntlProvider
+				locale="en"
+				messages={{
+					"test.title": "The title",
+					"test.subtitle": "The subtitle",
+				}}
+			>
+				<Placeholder
+					title={{ id: "test.title", defaultMessage: "A default title" }}
+					subtitle={{
+						id: "test.subtitle",
+						defaultMessage: "A default subtitle",
+					}}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<PlaceholderBox>
 				<PlaceholderTitle>
-					<Text message={{ id: "test.title", defaultMessage: "A title" }} />
+					<span>The title</span>
 				</PlaceholderTitle>
 				<PlaceholderSubtitle>
-					<Text
-						message={{ id: "test.subtitle", defaultMessage: "A subtitle" }}
-					/>
+					<span>The subtitle</span>
 				</PlaceholderSubtitle>
 			</PlaceholderBox>,
 		).then(() => expect(console.error, "was not called")));
@@ -64,7 +80,8 @@ describe("Placeholder", () => {
 	it("renders a warning placeholder", () =>
 		expect(
 			<Placeholder icon="testIcon" warn />,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<PlaceholderBox warn>
 				<PlaceholderIcon id="testIcon" />
 			</PlaceholderBox>,
@@ -74,16 +91,18 @@ describe("Placeholder", () => {
 describe("PlaceholderIcon", () => {
 	it("renders with animation", () =>
 		expect(
-			<PlaceholderIcon animate />,
-			"to render style rules",
+			<PlaceholderIcon id="spinner" animate />,
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"animation: ",
 		));
 
 	it("renders without animation", () =>
 		expect(
-			<PlaceholderIcon />,
-			"to render style rules",
+			<PlaceholderIcon id="spinner" />,
+			"when mounted",
+			"to have style rules satisfying",
 			"not to contain",
 			"animation: ",
 		));

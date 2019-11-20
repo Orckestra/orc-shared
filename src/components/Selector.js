@@ -168,6 +168,7 @@ export const Selector = ({
 					key={option.value}
 					active={option.value === value}
 					onClick={clickOption(option.value)}
+					data-test-id={option.value}
 				>
 					{option.label}
 				</Option>
@@ -176,7 +177,4 @@ export const Selector = ({
 	</Wrapper>
 );
 
-export default compose(
-	withSelectHandlers,
-	withId("selector"),
-)(Selector);
+export default compose(withSelectHandlers, withId("selector"))(Selector);

@@ -1,18 +1,16 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import withAuthentication, {
-	Loader,
-	Wrapper,
-	Error,
-} from "./withAuthentication";
+import withAuthentication, { Loader, Wrapper } from "./withAuthentication";
 import { ERROR, LOGOUT } from "../reducers/request";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 
-const TestComp = () => <div />;
+const TestComp = () => {
+	return <div className="test"></div>;
+};
 
 describe("withAuthentication", () => {
-	let state, store;
+	let state, store, AuthedComp;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			requests: {},
@@ -20,72 +18,50 @@ describe("withAuthentication", () => {
 				name: "foo@bar.com",
 			},
 		});
-		store = {
+		store = state => ({
 			subscribe: () => {},
 			getState: () => state,
 			dispatch: () => {},
-		};
+		});
+		AuthedComp = withAuthentication(TestComp);
 	});
 
 	it("shows the wrapped component if authenticated", () =>
-		expect(withAuthentication, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<EnhComp />
-					</Provider>,
-					"when deeply rendered",
-				),
-			)
-			.then(render =>
-				expect(render, "to contain", <TestComp />)
-					.and("not to contain", <Loader />)
-					.and("not to contain", <Error />),
-			));
+		expect(
+			<Provider store={store(state)}>
+				<AuthedComp />
+			</Provider>,
+			"when mounted",
+			"to exhaustively satisfy",
+			<TestComp />,
+		));
 
 	it("shows a load indicator component if authentication is ongoing", () => {
 		state = state.setIn(["requests", GET_AUTHENTICATION_PROFILE], true);
-		return expect(withAuthentication, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<EnhComp />
-					</Provider>,
-					"when deeply rendered",
-				),
-			)
-			.then(render =>
-				expect(render, "not to contain", <TestComp />)
-					.and("to contain", <Loader />)
-					.and("not to contain", <Error />),
-			);
+		return expect(
+			<Provider store={store(state)}>
+				<AuthedComp />
+			</Provider>,
+			"when mounted",
+			"to exhaustively satisfy",
+			<Loader />,
+		);
 	});
 
 	it("shows an error screen if not logged in", () => {
 		state = state
 			.deleteIn(["authentication", "name"])
 			.setIn(["requests", LOGOUT], true);
-		return expect(withAuthentication, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<EnhComp />
-					</Provider>,
-					"when deeply rendered",
-				),
-			)
-			.then(render =>
-				expect(render, "not to contain", <TestComp />)
-					.and("not to contain", <Loader />)
-					.and(
-						"to contain",
-						<Error>
-							<Wrapper>
-								<h1>Not logged in</h1>
-							</Wrapper>
-						</Error>,
-					),
-			);
+		return expect(
+			<Provider store={store(state)}>
+				<AuthedComp />
+			</Provider>,
+			"when mounted",
+			"to exhaustively satisfy",
+			<Wrapper>
+				<h1>Not logged in</h1>
+			</Wrapper>,
+		);
 	});
 
 	it("shows an error screen if an error occured", () => {
@@ -96,37 +72,26 @@ describe("withAuthentication", () => {
 				payload: { status: 404, message: "404 - NotFound" },
 			}),
 		);
-		return expect(withAuthentication, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<EnhComp />
-					</Provider>,
-					"when deeply rendered",
-				),
-			)
-			.then(render =>
-				expect(render, "not to contain", <TestComp />)
-					.and("not to contain", <Loader />)
-					.and(
-						"to contain",
-						<Error>
-							<Wrapper>
-								<h1>404 - NotFound</h1>
-								Last failing action:{" "}
-								<pre>
-									{"{\n" +
-										'  "type": "TEST_ACTION",\n' +
-										'  "payload": {\n' +
-										'    "status": 404,\n' +
-										'    "message": "404 - NotFound"\n' +
-										"  }\n" +
-										"}"}
-								</pre>
-							</Wrapper>
-						</Error>,
-					),
-			);
+		return expect(
+			<Provider store={store(state)}>
+				<AuthedComp />
+			</Provider>,
+			"when mounted",
+			"to exhaustively satisfy",
+			<Wrapper>
+				<h1>404 - NotFound</h1>
+				{"Last failing action: "}
+				<pre>
+					{"{\n" +
+						'  "type": "TEST_ACTION",\n' +
+						'  "payload": {\n' +
+						'    "status": 404,\n' +
+						'    "message": "404 - NotFound"\n' +
+						"  }\n" +
+						"}"}
+				</pre>
+			</Wrapper>,
+		);
 	});
 
 	it("shows an error screen if an error without payload occured", () => {
@@ -136,28 +101,16 @@ describe("withAuthentication", () => {
 				type: "TEST_ACTION",
 			}),
 		);
-		return expect(withAuthentication, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<EnhComp />
-					</Provider>,
-					"when deeply rendered",
-				),
-			)
-			.then(render =>
-				expect(render, "not to contain", <TestComp />)
-					.and("not to contain", <Loader />)
-					.and(
-						"to contain",
-						<Error>
-							<Wrapper>
-								<h1>An error occurred</h1>
-								Last failing action:{" "}
-								<pre>{'{\n  "type": "TEST_ACTION"\n}'}</pre>
-							</Wrapper>
-						</Error>,
-					),
-			);
+		return expect(
+			<Provider store={store(state)}>
+				<AuthedComp />
+			</Provider>,
+			"when mounted",
+			"to exhaustively satisfy",
+			<Wrapper>
+				<h1>An error occurred</h1>
+				Last failing action: <pre>{'{\n  "type": "TEST_ACTION"\n}'}</pre>
+			</Wrapper>,
+		);
 	});
 });

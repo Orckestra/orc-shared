@@ -81,7 +81,7 @@ export const ShowButtonChevron = styled(Icon).attrs({
 
 export const TranslationInput = ({
 	handlers,
-	value,
+	value = {},
 	cultures,
 	showAll,
 	toggle,

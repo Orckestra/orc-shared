@@ -21,7 +21,8 @@ describe("withInitialLoad", () => {
 			.then(EnhComp =>
 				expect(
 					<EnhComp loader={loader} loadOnMount={true} />,
-					"when deeply rendered",
+					"when mounted",
+					"to be ok",
 				),
 			)
 			.then(() => expect(loader, "was called")));
@@ -35,7 +36,7 @@ describe("withInitialLoad", () => {
 			[TestComp],
 		)
 			.then(EnhComp =>
-				expect(<EnhComp loader={loader} />, "when deeply rendered"),
+				expect(<EnhComp loader={loader} />, "when mounted", "to be ok"),
 			)
 			.then(() => expect(loader, "was not called")));
 
@@ -48,7 +49,7 @@ describe("withInitialLoad", () => {
 			[TestComp],
 		)
 			.then(EnhComp =>
-				expect(<EnhComp loader={loader} />, "when deeply rendered"),
+				expect(<EnhComp loader={loader} />, "when mounted", "to be ok"),
 			)
 			.then(() => expect(loader, "was not called")));
 });

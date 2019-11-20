@@ -14,12 +14,9 @@ describe("DevPages", () => {
 						<TestComp />
 					</DevPages>
 				</MemoryRouter>,
-				"when deeply rendered",
-			).then(render =>
-				expect(render, "to contain", <TestComp />).and(
-					"not to contain",
-					<Spritesheet />,
-				),
+				"when mounted",
+				"to satisfy",
+				<TestComp />,
 			));
 	});
 
@@ -31,12 +28,9 @@ describe("DevPages", () => {
 						<TestComp />
 					</DevPages>
 				</MemoryRouter>,
-				"when deeply rendered",
-			).then(render =>
-				expect(render, "not to contain", <TestComp />).and(
-					"to contain",
-					<Spritesheet />,
-				),
+				"when mounted",
+				"to satisfy",
+				<Spritesheet />,
 			));
 	});
 });

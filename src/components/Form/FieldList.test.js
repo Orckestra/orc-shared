@@ -1,13 +1,18 @@
 import React from "react";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
+import ShallowRenderer from "react-test-renderer/shallow";
 import Text from "../Text";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
-import InputField from "./InputField";
-import SmallButton, { RoundButton } from "./Inputs/SmallButton";
-import { TextInput, FormInput } from "./Inputs/Text";
+import { RoundButton } from "./Inputs/SmallButton";
+import { FormInput } from "./Inputs/Text";
 import FieldList, { List, ListControlButton, REMOVE_ROW } from "./FieldList";
+
+const getClassName = elm => {
+	const renderer = new ShallowRenderer();
+	return renderer.render(elm).props.className.split(" ")[0];
+};
 
 describe("FieldList", () => {
 	let clock;
@@ -22,28 +27,32 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<FieldList
-				name="testlistminfixed"
-				rowField={{ type: "TextInput", name: "data" }}
-				getUpdater={getUpdater}
-				rowCount={1}
-				values={{}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
-			"to have rendered",
+			<IntlProvider>
+				<FieldList
+					name="testlistminfixed"
+					rowField={{ type: "TextInput", name: "data" }}
+					getUpdater={getUpdater}
+					rowCount={1}
+					values={{}}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<List>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data" }]}
-					labelOnly
-				/>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data" }]}
-					values={{
-						id: expect.it("to be a number"),
-					}}
-				/>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data" }]}
+						labelOnly
+					/>
+				</IntlProvider>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data[0]" }]}
+						values={{
+							id: expect.it("to be a number"),
+						}}
+					/>
+				</IntlProvider>
 			</List>,
 		);
 	});
@@ -52,22 +61,24 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<FieldList
-				name="testlistminfixed"
-				rowField={{ type: "TextInput", name: "data" }}
-				getUpdater={getUpdater}
-				rowCount={0}
-				values={{}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
-			"to have rendered",
-			<List>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data" }]}
-					labelOnly
+			<IntlProvider>
+				<FieldList
+					name="testlistminfixed"
+					rowField={{ type: "TextInput", name: "data" }}
+					getUpdater={getUpdater}
+					rowCount={0}
+					values={{}}
 				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<List>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data" }]}
+						labelOnly
+					/>
+				</IntlProvider>
 			</List>,
 		);
 	});
@@ -76,43 +87,54 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<FieldList
-				name="testlistfixedstat"
-				rowField={{ type: "TextInput", name: "data", label: "A label" }}
-				getUpdater={getUpdater}
-				rowCount={3}
-				staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-				values={{
-					testlistfixedstat: [{ id: 4, data: "foo" }, { id: 5, data: "bar" }],
-				}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
-			"to have rendered",
-			<List>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-					labelOnly
-				/>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data" }]}
-					listIndex={0}
-					values={{ id: 4, data: "foo", stat: true }}
-				/>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data" }]}
-					listIndex={1}
-					values={{ id: 5, data: "bar", stat: false }}
-				/>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data" }]}
-					listIndex={2}
+			<IntlProvider>
+				<FieldList
+					name="testlistfixedstat"
+					rowField={{ type: "TextInput", name: "data", label: "A label" }}
+					getUpdater={getUpdater}
+					rowCount={3}
+					staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
 					values={{
-						id: expect.it("to be a number").and("to be greater than", 5),
-						stat: true,
+						testlistfixedstat: [
+							{ id: 4, data: "foo" },
+							{ id: 5, data: "bar" },
+						],
 					}}
 				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<List>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+						labelOnly
+					/>
+				</IntlProvider>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data" }]}
+						listIndex={0}
+						values={{ id: 4, data: "foo", stat: true }}
+					/>
+				</IntlProvider>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data" }]}
+						listIndex={1}
+						values={{ id: 5, data: "bar", stat: false }}
+					/>
+				</IntlProvider>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data" }]}
+						listIndex={2}
+						values={{
+							id: expect.it("to be a number").and("to be greater than", 5),
+							stat: true,
+						}}
+					/>
+				</IntlProvider>
 			</List>,
 		);
 	});
@@ -121,40 +143,49 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<FieldList
-				name="testlisttallrows"
-				rowField={{ type: "TextInput", name: "data", label: "A label" }}
-				getUpdater={getUpdater}
-				rowCount={3}
-				tallRows
-				staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-				values={{
-					testlisttallrows: [{ id: 4, data: "foo" }, { id: 5, data: "bar" }],
-				}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
-			"to have rendered",
-			<List>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-					listIndex={0}
-					values={{ id: 4, data: "foo", stat: true }}
-				/>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-					listIndex={1}
-					values={{ id: 5, data: "bar", stat: false }}
-				/>
-				<FieldElements
-					fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-					listIndex={2}
+			<IntlProvider>
+				<FieldList
+					name="testlisttallrows"
+					rowField={{ type: "TextInput", name: "data", label: "A label" }}
+					getUpdater={getUpdater}
+					rowCount={3}
+					tallRows
+					staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
 					values={{
-						id: expect.it("to be a number").and("to be greater than", 5),
-						stat: true,
+						testlisttallrows: [
+							{ id: 4, data: "foo" },
+							{ id: 5, data: "bar" },
+						],
 					}}
 				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<List tallRows>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+						listIndex={0}
+						values={{ id: 4, data: "foo", stat: true }}
+					/>
+				</IntlProvider>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+						listIndex={1}
+						values={{ id: 5, data: "bar", stat: false }}
+					/>
+				</IntlProvider>
+				<IntlProvider>
+					<FieldElements
+						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+						listIndex={2}
+						values={{
+							id: expect.it("to be a number").and("to be greater than", 5),
+							stat: true,
+						}}
+					/>
+				</IntlProvider>
 			</List>,
 		);
 	});
@@ -179,18 +210,15 @@ describe("FieldList", () => {
 					}}
 				/>
 			</IntlProvider>,
-			"when deeply rendered",
-			"queried for",
-			<FieldElements values={{ id: 5 }} />,
-			"queried for",
-			<InputField type="TextInput" />,
-			"queried for",
-			<TextInput />,
+			"when mounted",
 			"with event",
-			"change",
-			{ target: { value: "New Value" } },
-			"on",
-			<FormInput />,
+			{
+				type: "change",
+				value: "New Value",
+				target: `.${getClassName(<List />)} > :nth-child(3) .${getClassName(
+					<FormInput />,
+				)}`,
+			},
 		).then(() =>
 			expect(update, "to have calls satisfying", [
 				{
@@ -211,91 +239,26 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<FieldList
-				name="testlistminvar"
-				rowField={{ type: "TextInput", name: "data" }}
-				getUpdater={getUpdater}
-				values={{}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
-			"to have rendered",
-			<List>
-				<FieldElements
-					fields={[
-						{
-							type: "Combination",
-							name: "rowField",
-							proportions: [100, "30px"],
-							fields: [
-								{ type: "TextInput", name: "data" },
-								{
-									type: "SmallButton",
-									name: REMOVE_ROW,
-									primary: true,
-									icon: "cross",
-								},
-							],
-						},
-					]}
-					labelOnly
+			<IntlProvider>
+				<FieldList
+					name="testlistminvar"
+					rowField={{ type: "TextInput", name: "data" }}
+					getUpdater={getUpdater}
+					values={{}}
 				/>
-				<Field>
-					<ListControlButton>
-						<Text message="[add]" />
-					</ListControlButton>
-				</Field>
-			</List>,
-		);
-	});
-
-	it("renders a variable-length list, with values and row addition", () => {
-		const update = sinon.spy().named("update");
-		const getUpdater = name => value => update(name, value);
-		return expect(
-			<FieldList
-				name="testlistvaradd"
-				rowField={{
-					type: "Combination",
-					name: "rowField",
-					proportions: [50, 50],
-					fields: [
-						{ type: "TextInput", name: "data" },
-						{
-							type: "NumberInput",
-							name: "num",
-						},
-					],
-				}}
-				getUpdater={getUpdater}
-				values={{
-					testlistvaradd: [
-						{ id: 101, data: "foo", num: 55 },
-						{ id: 102, data: "bar", num: 81 },
-					],
-				}}
-			/>,
-			"renders elements", // render through withRowGetter
-			"renders elements", // render through withListUpdater
-			"when rendered",
-		).then(render =>
-			expect(
-				render,
-				"to have rendered",
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider>
 				<List>
 					<FieldElements
 						fields={[
 							{
 								type: "Combination",
 								name: "rowField",
-								proportions: [50, 50, "30px"],
+								proportions: [100, "30px"],
 								fields: [
 									{ type: "TextInput", name: "data" },
-									{
-										type: "NumberInput",
-										name: "num",
-									},
 									{
 										type: "SmallButton",
 										name: REMOVE_ROW,
@@ -307,78 +270,151 @@ describe("FieldList", () => {
 						]}
 						labelOnly
 					/>
-					<FieldElements
-						fields={[
-							{
-								type: "Combination",
-								name: "rowField",
-								proportions: [50, 50, "30px"],
-								fields: [
-									{ type: "TextInput", name: "data" },
-									{
-										type: "NumberInput",
-										name: "num",
-									},
-									{
-										type: "SmallButton",
-										name: REMOVE_ROW,
-										primary: true,
-										icon: "cross",
-									},
-								],
-							},
-						]}
-						values={{ id: 101, data: "foo", num: 55 }}
-					/>
-					<FieldElements
-						fields={[
-							{
-								type: "Combination",
-								name: "rowField",
-								proportions: [50, 50, "30px"],
-								fields: [
-									{ type: "TextInput", name: "data" },
-									{
-										type: "NumberInput",
-										name: "num",
-									},
-									{
-										type: "SmallButton",
-										name: REMOVE_ROW,
-										primary: true,
-										icon: "cross",
-									},
-								],
-							},
-						]}
-						values={{ id: 102, data: "bar", num: 81 }}
-					/>
 					<Field>
 						<ListControlButton>
 							<Text message="[add]" />
 						</ListControlButton>
 					</Field>
-				</List>,
-			)
-				.and("with event click", "on", <ListControlButton />)
-				.then(() =>
-					expect(update, "to have calls satisfying", [
-						{
-							args: [
-								"testlistvaradd",
-								[
-									{ id: 101, data: "foo", num: 55 },
-									{ id: 102, data: "bar", num: 81 },
+				</List>
+			</IntlProvider>,
+		);
+	});
+
+	it("renders a variable-length list, with values and row addition", () => {
+		const update = sinon.spy().named("update");
+		const getUpdater = name => value => update(name, value);
+		return expect(
+			<IntlProvider>
+				<FieldList
+					name="testlistvaradd"
+					rowField={{
+						type: "Combination",
+						name: "rowField",
+						proportions: [50, 50],
+						fields: [
+							{ type: "TextInput", name: "data" },
+							{
+								type: "NumberInput",
+								name: "num",
+							},
+						],
+					}}
+					getUpdater={getUpdater}
+					values={{
+						testlistvaradd: [
+							{ id: 101, data: "foo", num: 55 },
+							{ id: 102, data: "bar", num: 81 },
+						],
+					}}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			expect
+				.it(
+					"to satisfy",
+					<IntlProvider>
+						<List>
+							<FieldElements
+								fields={[
 									{
-										id: expect
-											.it("to be a number")
-											.and("to be greater than", 2),
+										type: "Combination",
+										name: "rowField",
+										proportions: [50, 50, "30px"],
+										fields: [
+											{ type: "TextInput", name: "data" },
+											{
+												type: "NumberInput",
+												name: "num",
+											},
+											{
+												type: "SmallButton",
+												name: REMOVE_ROW,
+												primary: true,
+												icon: "cross",
+												altText: "[remove]",
+											},
+										],
 									},
-								],
-							],
-						},
-					]),
-				),
+								]}
+								labelOnly
+							/>
+							<FieldElements
+								listIndex={0}
+								fields={[
+									{
+										type: "Combination",
+										name: "rowField",
+										proportions: [50, 50, "30px"],
+										fields: [
+											{ type: "TextInput", name: "data" },
+											{
+												type: "NumberInput",
+												name: "num",
+											},
+											{
+												type: "SmallButton",
+												name: REMOVE_ROW,
+												primary: true,
+												icon: "cross",
+												altText: "[remove]",
+											},
+										],
+									},
+								]}
+								values={{ id: 101, data: "foo", num: 55 }}
+							/>
+							<FieldElements
+								listIndex={1}
+								fields={[
+									{
+										type: "Combination",
+										name: "rowField",
+										proportions: [50, 50, "30px"],
+										fields: [
+											{ type: "TextInput", name: "data" },
+											{
+												type: "NumberInput",
+												name: "num",
+											},
+											{
+												type: "SmallButton",
+												name: REMOVE_ROW,
+												primary: true,
+												icon: "cross",
+												altText: "[remove]",
+											},
+										],
+									},
+								]}
+								values={{ id: 102, data: "bar", num: 81 }}
+							/>
+							<Field>
+								<ListControlButton>
+									<Text message="[add]" />
+								</ListControlButton>
+							</Field>
+						</List>
+					</IntlProvider>,
+				)
+				.and("with event", {
+					type: "click",
+					target: "." + getClassName(<ListControlButton />),
+				}),
+		).then(() =>
+			expect(update, "to have calls satisfying", [
+				{
+					args: [
+						"testlistvaradd",
+						[
+							{ id: 101, data: "foo", num: 55 },
+							{ id: 102, data: "bar", num: 81 },
+							{
+								id: expect.it("to be a number").and("to be greater than", 2),
+							},
+						],
+					],
+				},
+			]),
 		);
 	});
 
@@ -392,27 +428,27 @@ describe("FieldList", () => {
 					rowField={{ type: "TextInput", name: "data" }}
 					getUpdater={getUpdater}
 					values={{
-						testlistrowdel: [{ id: 8, data: "bar" }, { id: 9, data: "foo" }],
+						testlistrowdel: [
+							{ id: 8, data: "bar" },
+							{ id: 9, data: "foo" },
+						],
 					}}
 				/>
 			</IntlProvider>,
-			"when deeply rendered",
-			"queried for",
-			<FieldElements values={{ id: 9 }} />,
-			"queried for",
-			<InputField type="SmallButton" />,
-			"queried for",
-			<SmallButton />,
+			"when mounted",
 			"with event",
-			"click",
-			"on",
-			<RoundButton />,
+			{
+				type: "click",
+				target: `.${getClassName(<List />)} > :nth-child(2) .${getClassName(
+					<RoundButton />,
+				)}`,
+			},
 		)
 			.then(() => clock.tick(1))
 			.then(() =>
 				expect(update, "to have calls satisfying", [
 					{
-						args: ["testlistrowdel", [{ id: 8, data: "bar" }]],
+						args: ["testlistrowdel", [{ id: 9, data: "foo" }]],
 					},
 				]),
 			);
@@ -421,25 +457,30 @@ describe("FieldList", () => {
 	it("will not render inside another list", () =>
 		expect(
 			<FieldList listIndex={0} />,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<span>Cannot render list inside list</span>,
 		));
 });
 
 describe("List", () => {
 	it("sets layout for fieldboxes under it", () =>
-		expect(<List />, "to render style rules").then(styles =>
-			expect(styles, "to contain", "> .Field__FieldBox").and(
-				"to contain",
-				"margin-top: 20px",
-			),
+		expect(
+			<List />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "> .Field__FieldBox")
+				.and("to contain", "margin-top: 20px"),
 		));
 
 	it("sets layout for fieldboxes under it with tall rows", () =>
-		expect(<List tallRows />, "to render style rules").then(styles =>
-			expect(styles, "to contain", "> .Field__FieldBox").and(
-				"to contain",
-				"border-bottom: 1px solid",
-			),
+		expect(
+			<List tallRows />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "> .Field__FieldBox")
+				.and("to contain", "border-bottom: 1px solid"),
 		));
 });

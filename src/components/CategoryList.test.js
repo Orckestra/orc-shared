@@ -1,27 +1,48 @@
 import React from "react";
 import sinon from "sinon";
+import { Ignore } from "unexpected-reaction";
 import {
 	CategoryList,
 	CategoryRow,
 	CategoryHeader,
 	CategoryIndicator,
 } from "./CategoryList";
+import { Wrapper as Checkbox, Cover } from "./Checkbox";
 import { Table, Placeholder } from "./List/List";
-import Row from "./List/Row";
-import HeadRow from "./List/HeadRow";
+import { TableRow } from "./List/Row";
+import { TableData } from "./List/DataCell";
+import { HeadTableRow } from "./List/HeadRow";
+import { HeadBox, TableHeader } from "./List/HeadCell";
 
 describe("CategoryList", () => {
 	it("renders nothing if no columnDefs", () =>
-		expect(<CategoryList rows={[{}]} />, "renders elements", "to be null"));
+		expect(
+			<div>
+				<CategoryList rows={[{}]} />
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div />,
+		));
 
 	it("renders a table", () =>
-		expect(<CategoryList columnDefs={[{}]} />, "to render as", <Table />));
+		expect(
+			<CategoryList columnDefs={[{}]} />,
+			"when mounted",
+			"to satisfy",
+			<Table>
+				<thead>
+					<Ignore />
+				</thead>
+				<tbody></tbody>
+			</Table>,
+		));
 
 	it("renders just a header", () =>
 		expect(
 			<CategoryList columnDefs={[{}, {}, {}]} />,
-			"when rendered",
-			"to contain with all children",
+			"when mounted",
+			"to contain",
 			<tbody />,
 		));
 
@@ -32,8 +53,8 @@ describe("CategoryList", () => {
 				columnDefs={[{}, {}, {}]}
 				placeholder={<div />}
 			/>,
-			"when rendered",
-			"to contain with all children",
+			"when mounted",
+			"to contain",
 			<tbody>
 				<Placeholder width={3} height={80}>
 					<div />
@@ -41,9 +62,9 @@ describe("CategoryList", () => {
 			</tbody>,
 		));
 
-	it("renders a row for each row data object", () => {
+	it("renders a category row and a row for each row data object", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ fieldName: "key" }];
 		const rowOnClick = () => {};
 		return expect(
 			<CategoryList
@@ -52,31 +73,27 @@ describe("CategoryList", () => {
 				keyField={["key"]}
 				rowOnClick={rowOnClick}
 			/>,
-			"when rendered",
+			"when mounted",
 			"to contain",
 			<tbody>
-				<Row
-					key="a"
-					rowId="a"
-					row={expect.it("to be", rows[0])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor={undefined}
-				/>
-				<Row
-					key="b"
-					rowId="b"
-					row={expect.it("to be", rows[1])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-				/>
-				<Row
-					key="c"
-					rowId="c"
-					row={expect.it("to be", rows[2])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-				/>
+				<CategoryRow>
+					<Ignore />
+				</CategoryRow>
+				<TableRow>
+					<TableData>
+						<span>a</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>b</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>c</span>
+					</TableData>
+				</TableRow>
 			</tbody>,
 		);
 	});
@@ -90,7 +107,7 @@ describe("CategoryList", () => {
 			{ key: "e", category: "Things" },
 			{ key: "f", category: "Stuff" },
 		];
-		const columnDefs = [{}, {}];
+		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
 			<CategoryList
@@ -99,7 +116,7 @@ describe("CategoryList", () => {
 				keyField={["key"]}
 				rowOnClick={rowOnClick}
 			/>,
-			"when rendered",
+			"when mounted",
 			"to contain",
 			<tbody>
 				<CategoryRow>
@@ -108,53 +125,60 @@ describe("CategoryList", () => {
 						Stuff
 					</CategoryHeader>
 				</CategoryRow>
-				<Row
-					key="a"
-					rowId="a"
-					row={expect.it("to be", rows[0])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor={undefined}
-				/>
-				<Row
-					key="c"
-					rowId="c"
-					row={expect.it("to be", rows[2])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-				/>
-				<Row
-					key="f"
-					rowId="f"
-					row={expect.it("to be", rows[5])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-				/>
+				<TableRow>
+					<TableData>
+						<span>a</span>
+					</TableData>
+					<TableData>
+						<span>Stuff</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>c</span>
+					</TableData>
+					<TableData>
+						<span>Stuff</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>f</span>
+					</TableData>
+					<TableData>
+						<span>Stuff</span>
+					</TableData>
+				</TableRow>
 				<CategoryRow>
-					<CategoryHeader colSpan={2}>Things</CategoryHeader>
+					<CategoryHeader colSpan={2}>
+						<CategoryIndicator />
+						Things
+					</CategoryHeader>
 				</CategoryRow>
-				<Row
-					key="b"
-					rowId="b"
-					row={expect.it("to be", rows[1])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor={undefined}
-				/>
-				<Row
-					key="d"
-					rowId="d"
-					row={expect.it("to be", rows[3])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-				/>
-				<Row
-					key="e"
-					rowId="e"
-					row={expect.it("to be", rows[4])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-				/>
+				<TableRow>
+					<TableData>
+						<span>b</span>
+					</TableData>
+					<TableData>
+						<span>Things</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>d</span>
+					</TableData>
+					<TableData>
+						<span>Things</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>e</span>
+					</TableData>
+					<TableData>
+						<span>Things</span>
+					</TableData>
+				</TableRow>
 			</tbody>,
 		);
 	});
@@ -168,7 +192,7 @@ describe("CategoryList", () => {
 			{ key: "e", category: "Things" },
 			{ key: "f", category: "Stuff" },
 		];
-		const columnDefs = [{}, {}];
+		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
 			<CategoryList
@@ -178,42 +202,46 @@ describe("CategoryList", () => {
 				rowOnClick={rowOnClick}
 				viewState={{ closedCategories: ["Stuff"] }}
 			/>,
-			"when rendered",
-		).then(render =>
-			expect(
-				render,
-				"not to contain",
-				<tbody>
-					<Row
-						key="a"
-						rowId="a"
-						row={expect.it("to be", rows[0])}
-						columnDefs={expect.it("to be", columnDefs)}
-						onClick={rowOnClick}
-						bgColor={undefined}
-					/>
-					<Row
-						key="c"
-						rowId="c"
-						row={expect.it("to be", rows[2])}
-						columnDefs={expect.it("to be", columnDefs)}
-						onClick={rowOnClick}
-					/>
-					<Row
-						key="f"
-						rowId="f"
-						row={expect.it("to be", rows[5])}
-						columnDefs={expect.it("to be", columnDefs)}
-						onClick={rowOnClick}
-					/>
-				</tbody>,
-			).and(
-				"to contain",
-				<CategoryHeader colSpan={2}>
-					<CategoryIndicator closed />
-					Stuff
-				</CategoryHeader>,
-			),
+			"when mounted",
+			"to contain",
+			<tbody>
+				<CategoryRow>
+					<CategoryHeader colSpan={2} closed>
+						<CategoryIndicator closed />
+						Stuff
+					</CategoryHeader>
+				</CategoryRow>
+				<CategoryRow>
+					<CategoryHeader colSpan={2}>
+						<CategoryIndicator />
+						Things
+					</CategoryHeader>
+				</CategoryRow>
+				<TableRow>
+					<TableData>
+						<span>b</span>
+					</TableData>
+					<TableData>
+						<span>Things</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>d</span>
+					</TableData>
+					<TableData>
+						<span>Things</span>
+					</TableData>
+				</TableRow>
+				<TableRow>
+					<TableData>
+						<span>e</span>
+					</TableData>
+					<TableData>
+						<span>Things</span>
+					</TableData>
+				</TableRow>
+			</tbody>,
 		);
 	});
 
@@ -227,7 +255,7 @@ describe("CategoryList", () => {
 			{ key: "e", category: "Things" },
 			{ key: "f", category: "Stuff" },
 		];
-		const columnDefs = [{}, {}];
+		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
 			<CategoryList
@@ -238,10 +266,9 @@ describe("CategoryList", () => {
 				viewState={{ closedCategories: [] }}
 				updateViewState={updater}
 			/>,
-			"when rendered",
-			"with event click",
-			"on",
-			<CategoryHeader>Stuff</CategoryHeader>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[data-test-id="category_Stuff"]' },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: ["closedCategories", ["Stuff"]] },
@@ -270,10 +297,9 @@ describe("CategoryList", () => {
 				viewState={{ closedCategories: ["Stuff"] }}
 				updateViewState={updater}
 			/>,
-			"when rendered",
-			"with event click",
-			"on",
-			<CategoryHeader>Stuff</CategoryHeader>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[data-test-id="category_Stuff"]' },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: ["closedCategories", []] },
@@ -283,7 +309,7 @@ describe("CategoryList", () => {
 
 	it("renders rows with data-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ fieldName: "key" }];
 		const rowOnClick = () => {};
 		const colorMap = {
 			a: "#ff0000",
@@ -299,40 +325,34 @@ describe("CategoryList", () => {
 				rowOnClick={rowOnClick}
 				rowBackgroundGetter={colorGetter}
 			/>,
-			"when rendered",
+			"when mounted",
 			"to contain",
 			<tbody>
-				<Row
-					key="a"
-					rowId="a"
-					row={expect.it("to be", rows[0])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor="#ff0000"
-				/>
-				<Row
-					key="b"
-					rowId="b"
-					row={expect.it("to be", rows[1])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor="#00ff00"
-				/>
-				<Row
-					key="c"
-					rowId="c"
-					row={expect.it("to be", rows[2])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor="#0000ff"
-				/>
+				<CategoryRow>
+					<Ignore />
+				</CategoryRow>
+				<TableRow bgColor="#ff0000">
+					<TableData>
+						<span>a</span>
+					</TableData>
+				</TableRow>
+				<TableRow bgColor="#00ff00">
+					<TableData>
+						<span>b</span>
+					</TableData>
+				</TableRow>
+				<TableRow bgColor="#0000ff">
+					<TableData>
+						<span>c</span>
+					</TableData>
+				</TableRow>
 			</tbody>,
 		);
 	});
 
 	it("renders rows with index-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ fieldName: "key" }];
 		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
@@ -343,40 +363,34 @@ describe("CategoryList", () => {
 				rowOnClick={rowOnClick}
 				rowBackgroundGetter={colorGetter}
 			/>,
-			"when rendered",
+			"when mounted",
 			"to contain",
 			<tbody>
-				<Row
-					key="a"
-					rowId="a"
-					row={expect.it("to be", rows[0])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor="green"
-				/>
-				<Row
-					key="b"
-					rowId="b"
-					row={expect.it("to be", rows[1])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor="red"
-				/>
-				<Row
-					key="c"
-					rowId="c"
-					row={expect.it("to be", rows[2])}
-					columnDefs={expect.it("to be", columnDefs)}
-					onClick={rowOnClick}
-					bgColor="green"
-				/>
+				<CategoryRow>
+					<Ignore />
+				</CategoryRow>
+				<TableRow bgColor="green">
+					<TableData>
+						<span>a</span>
+					</TableData>
+				</TableRow>
+				<TableRow bgColor="red">
+					<TableData>
+						<span>b</span>
+					</TableData>
+				</TableRow>
+				<TableRow bgColor="green">
+					<TableData>
+						<span>c</span>
+					</TableData>
+				</TableRow>
 			</tbody>,
 		);
 	});
 
 	it("renders a header based on column definitions", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ type: "select" }, { fieldName: "key", label: "Key" }];
 		const selection = ["a"];
 		return expect(
 			<CategoryList
@@ -385,21 +399,31 @@ describe("CategoryList", () => {
 				keyField={["key"]}
 				selection={selection}
 			/>,
-			"when rendered",
+			"when mounted",
 			"to contain",
 			<thead>
-				<HeadRow
-					columnDefs={columnDefs}
-					rowIds={["a", "b", "c"]}
-					allSelected={false}
-				/>
+				<HeadTableRow>
+					<TableHeader select>
+						<HeadBox>
+							<Checkbox>
+								<Ignore />
+								<Ignore />
+							</Checkbox>
+						</HeadBox>
+					</TableHeader>
+					<TableHeader>
+						<HeadBox>
+							<span>Key</span>
+						</HeadBox>
+					</TableHeader>
+				</HeadTableRow>
 			</thead>,
 		);
 	});
 
 	it("renders a header when all rows are selected", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ type: "select" }, { fieldName: "key", label: "Key" }];
 		const selection = ["a", "b", "c"];
 		return expect(
 			<CategoryList
@@ -408,10 +432,24 @@ describe("CategoryList", () => {
 				keyField={["key"]}
 				selection={selection}
 			/>,
-			"when rendered",
+			"when mounted",
 			"to contain",
 			<thead>
-				<HeadRow allSelected={true} />
+				<HeadTableRow>
+					<TableHeader select>
+						<HeadBox>
+							<Checkbox>
+								<Ignore />
+								<Cover value={true} />
+							</Checkbox>
+						</HeadBox>
+					</TableHeader>
+					<TableHeader>
+						<HeadBox>
+							<span>Key</span>
+						</HeadBox>
+					</TableHeader>
+				</HeadTableRow>
 			</thead>,
 		);
 	});

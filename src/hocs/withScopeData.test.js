@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
+import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
 import withScopeData from "./withScopeData";
 
@@ -12,8 +13,24 @@ jest.mock("../utils/buildUrl", () => {
 	return modExport;
 });
 
-const TestComp = () => <div />;
-
+const TestComp = props => (
+	<div>
+		{"{\n  " +
+			Object.entries(props)
+				.map(
+					([prop, value]) =>
+						prop +
+						": " +
+						(typeof value === "function"
+							? "function"
+							: typeof value === "string"
+							? '"' + value + '"'
+							: value),
+				)
+				.join(",\n  ") +
+			"\n}"}
+	</div>
+);
 describe("withScopeData", () => {
 	let state, store;
 	beforeEach(() => {
@@ -69,9 +86,13 @@ describe("withScopeData", () => {
 							<Comp />
 						</MemoryRouter>
 					</Provider>,
-					"when deeply rendered",
-					"to have rendered with all attributes",
+					"when mounted",
+					"to satisfy",
 					<TestComp
+						match={{ path: "/", url: "/", params: {}, isExact: true }}
+						location={{ pathname: "/", search: "", hash: "" }}
+						history={{}}
+						staticContext={undefined}
 						currentScope={{
 							id: "test3",
 							name: "Test 3",
@@ -87,9 +108,6 @@ describe("withScopeData", () => {
 								bar: true,
 							})}
 						loadScopes={expect.it("to be a function")}
-						match={{ path: "/", url: "/", params: {}, isExact: true }}
-						location={{ pathname: "/", search: "", hash: "" }}
-						history={expect.it("to be an object")}
 					/>,
 				),
 			)
@@ -105,10 +123,26 @@ describe("withScopeData", () => {
 							<Comp />
 						</MemoryRouter>
 					</Provider>,
-					"to deeply render as",
-					<TestComp />,
+					"when mounted",
+					"to be ok",
 				),
 			)
-			.then(() => expect(store.dispatch, "was called"));
+			.then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								[RSAA]: {
+									types: [
+										"GET_SCOPES_REQUEST",
+										"GET_SCOPES_SUCCESS",
+										"GET_SCOPES_FAILURE",
+									],
+								},
+							},
+						],
+					},
+				]),
+			);
 	});
 });

@@ -77,12 +77,20 @@ export const MultiSelector = ({
 		</SelectBox>
 		<Dropdown>
 			{value.length ? (
-				<Option key="multiselect_clear" onClick={clearValue}>
+				<Option
+					key="multiselect_clear"
+					onClick={clearValue}
+					data-test-id="multiselect_clear"
+				>
 					<Text message={clearMessage} />
 				</Option>
 			) : null}
 			{value.length === options.length ? null : (
-				<Option key="multiselect_selectAll" onClick={selectAll}>
+				<Option
+					key="multiselect_selectAll"
+					onClick={selectAll}
+					data-test-id="multiselect_selectAll"
+				>
 					<Text message={selectAllMessage} />
 				</Option>
 			)}
@@ -91,6 +99,7 @@ export const MultiSelector = ({
 					key={option.value}
 					active={value.indexOf(option.value) !== -1}
 					onClick={clickOption(option.value)}
+					data-test-id={option.value}
 				>
 					{option.label}
 				</Option>
@@ -99,7 +108,4 @@ export const MultiSelector = ({
 	</Wrapper>
 );
 
-export default compose(
-	withSelectHandlers,
-	withId("selector"),
-)(MultiSelector);
+export default compose(withSelectHandlers, withId("selector"))(MultiSelector);

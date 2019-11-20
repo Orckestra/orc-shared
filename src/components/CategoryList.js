@@ -98,6 +98,7 @@ export const CategoryList = ({
 			rowElements.push(
 				<CategoryRow key={"category_" + key}>
 					<CategoryHeader
+						data-test-id={"category_" + key}
 						closed={closed}
 						colSpan={columnDefs.length}
 						onClick={clickHandler}

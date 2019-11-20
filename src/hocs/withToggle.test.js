@@ -1,29 +1,39 @@
 import React from "react";
+import { mount, simulate } from "react-dom-testing";
 import withToggle from "./withToggle";
 
 const TestComp = ({ toggle, toggledOn, reset }) => (
-	<div onClick={toggle} onKeyDown={reset}>
+	<div
+		onClick={e => {
+			// console.log(e);
+			toggle();
+		}}
+		onKeyDown={e => {
+			// console.log(e);
+			reset();
+		}}
+	>
 		{toggledOn ? 1 : 0}
 	</div>
 );
 
 describe("withToggle", () => {
-	it("provides toggle and toggledOn props, handling state", () =>
+	it.only("provides toggle and toggledOn props, handling state", () =>
 		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
 			TestComp,
-		]).then(Comp =>
-			expect(<Comp />, "to render as", <TestComp toggledOn={false} />)
-				.and("when deeply rendered")
-				.then(element =>
-					expect(
-						element,
-						"to contain",
-						<div onClick={expect.it("to be a function")}>0</div>,
-					)
-						.and("with event click", "to contain", <div>1</div>)
-						.and("with event click", "to contain", <div>0</div>),
-				),
-		));
+		]).then(Comp => {
+			const element = mount(<Comp />);
+			expect(element, "to satisfy", <TestComp toggledOn={false} />);
+			expect(
+				element,
+				"to satisfy",
+				<div onClick={expect.it("to be a function")}>0</div>,
+			);
+			simulate(element, "click");
+			expect(element, /*"with event", "click",*/ "to satisfy", <div>1</div>);
+			simulate(element, "click");
+			expect(element, /*"with event", "click",*/ "to satisfy", <div>0</div>);
+		}));
 
 	it("allows initializing the toggled parameter", () =>
 		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
@@ -31,7 +41,8 @@ describe("withToggle", () => {
 		]).then(Comp =>
 			expect(
 				<Comp toggledOnInit={true} />,
-				"to render as",
+				"when mounted",
+				"to satisfy",
 				<TestComp toggledOn={true} />,
 			),
 		));
@@ -39,21 +50,18 @@ describe("withToggle", () => {
 	it("can be reset by calling that function", () =>
 		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
 			TestComp,
-		]).then(Comp =>
-			expect(
-				<Comp toggledOnInit={true} />,
-				"to render as",
-				<TestComp toggledOn={true} />,
-			)
-				.and("when deeply rendered")
-				.then(element =>
+		]).then(Comp => {
+			const element = mount(<Comp toggledOnInit={true} />);
+
+			return expect(element, "to satisfy", <TestComp toggledOn={true} />).then(
+				() =>
 					expect(
 						element,
-						"to contain",
+						"to satisfy",
 						<div onClick={expect.it("to be a function")}>1</div>,
 					)
-						.and("with event keyDown", "to contain", <div>0</div>)
-						.and("with event keyDown", "to contain", <div>0</div>),
-				),
-		));
+						.and("with event", "keyDown", "to satisfy", <div>0</div>)
+						.and("with event", "keyDown", "to satisfy", <div>0</div>),
+			);
+		}));
 });

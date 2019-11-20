@@ -1,6 +1,8 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import ShallowRenderer from "react-test-renderer/shallow";
+import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
 import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
@@ -14,6 +16,11 @@ import TranslationInput, {
 	ShowButtonChevron,
 	LanguageLabel,
 } from "./Translation";
+
+const getClassName = elm => {
+	const renderer = new ShallowRenderer();
+	return renderer.render(elm).props.className.split(" ")[1];
+};
 
 describe("TranslationInput", () => {
 	let state, store, update;
@@ -49,9 +56,12 @@ describe("TranslationInput", () => {
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<TranslationWrapper>
-				<TranslationField lang="en-CA" />
+				<IntlProvider locale="en">
+					<TranslationField lang="en-CA" />
+				</IntlProvider>
 				<ShowButton onClick={expect.it("to be a function")}>
 					<ShowButtonChevron />
 					<Text message="Show more things" />
@@ -68,15 +78,20 @@ describe("TranslationInput", () => {
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
-			"when deeply rendered",
-			"with event click",
-			"on",
-			<ShowButton />,
-			"to have rendered",
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<ShowButton />) },
+			"to satisfy",
 			<TranslationWrapper>
-				<TranslationField lang="en-CA" />
-				<TranslationField lang="en-US" />
-				<TranslationField lang="fr-CA" message="Des mots" />
+				<IntlProvider locale="en">
+					<TranslationField lang="en-CA" />
+				</IntlProvider>
+				<IntlProvider locale="en">
+					<TranslationField lang="en-US" />
+				</IntlProvider>
+				<IntlProvider locale="en">
+					<TranslationField lang="fr-CA" message="Des mots" />
+				</IntlProvider>
 			</TranslationWrapper>,
 		));
 
@@ -94,14 +109,9 @@ describe("TranslationInput", () => {
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
-			"when deeply rendered",
-			"queried for",
-			<TranslationField lang="en-CA" />,
+			"when mounted",
 			"with event",
-			"change",
-			{ target: { value: "New" } },
-			"on",
-			<input />,
+			{ type: "change", value: "New", target: "input" },
 		).then(() =>
 			expect(update, "to have calls satisfying", [
 				{
@@ -128,7 +138,7 @@ describe("TranslationInput", () => {
 					/>
 				</MemoryRouter>
 			</Provider>,
-			"when deeply rendered",
+			"when mounted",
 			"to be ok",
 		);
 	});
@@ -147,24 +157,28 @@ describe("TranslationInput", () => {
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
-			"when deeply rendered",
-		).then(render =>
-			expect(
-				render,
-				"to have rendered",
-				<TranslationWrapper>
-					<TranslationField lang="en-CA" required />
-					<ShowButton onClick={expect.it("to be a function")}>
-						<ShowButtonChevron />
-						<Text message="Show more things" />
-					</ShowButton>
-				</TranslationWrapper>,
-			).and(
-				"queried for",
-				<TranslationField />,
-				"to have rendered",
-				<ButtonWrapper invalid={true} />,
-			),
+			"when mounted",
+			"to satisfy",
+			expect
+				.it(
+					"to satisfy",
+					<TranslationWrapper>
+						<IntlProvider locale="en">
+							<TranslationField lang="en-CA" required />
+						</IntlProvider>
+						<ShowButton onClick={expect.it("to be a function")}>
+							<ShowButtonChevron />
+							<Text message="Show more things" />
+						</ShowButton>
+					</TranslationWrapper>,
+				)
+				.and(
+					"to contain",
+					<ButtonWrapper invalid={true}>
+						<Ignore />
+						<Ignore />
+					</ButtonWrapper>,
+				),
 		));
 });
 
@@ -176,26 +190,36 @@ describe("TranslationField", () => {
 
 	it("shows a single language label and a text field", () =>
 		expect(
-			<TranslationField
-				lang="en-US"
-				message="A hat, pardner"
-				onChange={onChange}
-				otherProp
-			/>,
-			"to render as",
+			<IntlProvider locale="en">
+				<TranslationField
+					lang="en-US"
+					message="A hat, pardner"
+					onChange={onChange}
+					otherProp
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper>
 				<LanguageLabel>en-US</LanguageLabel>
-				<FormInput value="A hat, pardner" onChange={onChange} otherProp />
+				<IntlProvider locale="en">
+					<FormInput value="A hat, pardner" onChange={onChange} otherProp />
+				</IntlProvider>
 			</ButtonWrapper>,
 		));
 
 	it("handles missing message", () =>
 		expect(
-			<TranslationField lang="en-US" onChange={onChange} otherProp />,
-			"to render as",
+			<IntlProvider locale="en">
+				<TranslationField lang="en-US" onChange={onChange} otherProp />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper>
 				<LanguageLabel>en-US</LanguageLabel>
-				<FormInput value="" onChange={onChange} otherProp />
+				<IntlProvider locale="en">
+					<FormInput value="" onChange={onChange} otherProp />
+				</IntlProvider>
 			</ButtonWrapper>,
 		).then(() => expect(console.error, "was not called")));
 });

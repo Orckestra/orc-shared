@@ -14,16 +14,24 @@ describe("Relogin", () => {
 	it("is an iframe pointing to the origin", () =>
 		expect(
 			<Relogin loggedOut clear={clear} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<iframe title="relogin" src={window.location.origin} onLoad={clear} />,
 		));
 
 	it("does not render if not needed", () =>
-		expect(<Relogin loggedOut={false} />, "renders elements", "to be null"));
+		expect(
+			<div>
+				<Relogin loggedOut={false} />
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div />,
+		));
 });
 
 describe("withLoggedInStatus", () => {
-	const TestComp = () => <div />;
+	const TestComp = ({ clear }) => <div onClick={clear} />;
 	let state, store;
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -45,11 +53,9 @@ describe("withLoggedInStatus", () => {
 					<Provider store={store}>
 						<EnhComp />
 					</Provider>,
-					"to deeply render as",
-					<TestComp
-						loggedOut
-						clear={expect.it("to be a function").and("called")}
-					/>,
+					"when mounted",
+					"with event",
+					"click",
 				),
 			)
 			.then(() =>
