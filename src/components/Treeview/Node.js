@@ -15,10 +15,10 @@ export const LeafNode = ({ dark, ...nodeData }) => (
 				return (
 					<React.Fragment>
 						{safeGet(nodeData, "children", "length") ? (
-							<>
-								<BeforeIndicator />
-								<Indicator open={nodeData.open} onClick={toggle} dark={dark} />
-							</>
+							[
+								<BeforeIndicator />,
+								<Indicator open={nodeData.open} onClick={toggle} dark={dark} />,
+							]
 						) : (
 							<NonIndicator />
 						)}

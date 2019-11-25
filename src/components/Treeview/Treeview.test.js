@@ -4,9 +4,12 @@ import sinon from "sinon";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { Treeview, withNodeState } from "./index";
-import Node from "./Node";
+import { Root } from "./Leaf";
+import { Label } from "./Label";
 
-const TestNode = ({ id }) => <div id={id} />;
+const TestNode = ({ id, updateNodeState, testVal }) => (
+	<div id={id} onClick={() => updateNodeState(testVal)} />
+);
 
 describe("TreeView", () => {
 	let getNode, nodes, rootId, openAll, nodeState, updateNodeState, otherProps;
@@ -36,7 +39,7 @@ describe("TreeView", () => {
 		otherProps = { someProp: "A string", otherThing: { isObj: true } };
 	});
 
-	it("shows a tree", () =>
+	it("shows a tree root", () =>
 		expect(
 			<Treeview
 				rootId={rootId}
@@ -48,9 +51,13 @@ describe("TreeView", () => {
 				updateNodeState={updateNodeState}
 				{...otherProps}
 			/>,
-			"when rendered",
-			"to contain with all attributes",
-			<Node root id="root1" />,
+			"when mounted",
+			"to contain",
+			<Root>
+				<Label>
+					<div id="root1" />
+				</Label>
+			</Root>,
 		));
 });
 
@@ -79,7 +86,8 @@ describe("withNodeState", () => {
 						<EnhNode name="test1" foo="bar" />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<TestNode
 					nodeState={{ node1: true }}
 					updateNodeState={expect.it("to be a function")}
@@ -94,15 +102,16 @@ describe("withNodeState", () => {
 				expect(
 					<Provider store={store}>
 						<MemoryRouter>
-							<EnhNode name="test1" foo="bar" />
+							<EnhNode
+								name="test1"
+								foo="bar"
+								testVal={{ node1: true, node2: true }}
+							/>
 						</MemoryRouter>
 					</Provider>,
-					"to deeply render as",
-					<TestNode
-						updateNodeState={expect.it("called with", [
-							{ node1: true, node2: true },
-						])}
-					/>,
+					"when mounted",
+					"with event",
+					{ type: "click" },
 				),
 			)
 			.then(() =>
