@@ -27,6 +27,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
+		"date-fns": "2.8.1",
 		"orc-scripts": "0.6.28"
 	},
 	"peerDependencies": {
