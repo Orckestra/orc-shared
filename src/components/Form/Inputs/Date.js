@@ -270,7 +270,10 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 			let eventVal = event.target.value + "";
 			const value = eventVal.padStart(partLength, "0").slice(-partLength);
 			const newDate = parse(prefix + value + suffix);
-			update(format(newDate, "YYYY-MM-DD"));
+			const dateOnly = new Date(
+				newDate.valueOf() + newDate.getTimezoneOffset() * 60 * 1000,
+			);
+			update(format(dateOnly, "YYYY-MM-DD"));
 		};
 	};
 
