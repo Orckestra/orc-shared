@@ -1,80 +1,125 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Immutable from "immutable";
-import sinon from "sinon";
+import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import Immutable from "immutable";
+import sinon from "sinon";
+import { getClassName, PropStruct } from "../../utils/testUtils";
 import I18n from "../I18n";
-import FullScope, { Scope, ScopeBar, Bar, AlignedButton } from "./index";
-import Selector from "./Selector";
+import { setupScope, Scope, ScopeBar, Bar, AlignedButton } from "./index";
+import { Wrapper as SelectorWrapper, InputBox, SearchInput } from "./Selector";
+import { Wrapper as BranchWrapper } from "../Treeview/Branch";
 
 describe("Scope", () => {
-	let reset,
+	let state,
+		store,
+		reset,
 		updateViewState,
 		updateNodeState,
 		updateFilter,
-		mockEvent,
 		getScope,
-		nodeState;
+		nodeState,
+		modalRoot;
 	beforeEach(() => {
+		state = Immutable.fromJS({});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		reset = sinon.spy().named("reset");
 		updateViewState = sinon.spy().named("updateViewState");
 		updateNodeState = sinon.spy().named("updateNodeState");
 		updateFilter = sinon.spy().named("updateFilter");
-		mockEvent = { stopPropagation: sinon.spy().named("event.stopPropagation") };
 		getScope = () => {};
 		nodeState = { foo: true, bar: false };
+		modalRoot = document.createElement("div");
+		modalRoot.id = "modal";
+		document.body.appendChild(modalRoot);
+	});
+	afterEach(() => {
+		document.body.removeChild(modalRoot);
 	});
 
 	it("renders a scope bar and selector panel, and viewport", () =>
 		expect(
-			<Scope
-				currentScope={{ name: "Test 1" }}
-				getScope={getScope}
-				reset={reset}
-				updateViewState={updateViewState}
-				updateNodeState={updateNodeState}
-				updateFilter={updateFilter}
-				viewState={{
-					nodeState: nodeState,
-					show: true,
-					filter: "",
-				}}
-				filterPlaceholder={{ defaultMessage: "Type a scope name" }}
-			>
+			<div>
+				<Provider store={store}>
+					<IntlProvider>
+						<MemoryRouter>
+							<Scope
+								currentScope={{ name: "Test 1" }}
+								getScope={getScope}
+								reset={reset}
+								updateViewState={updateViewState}
+								updateNodeState={updateNodeState}
+								updateFilter={updateFilter}
+								viewState={{
+									nodeState: nodeState,
+									show: true,
+									filter: "",
+								}}
+								filterPlaceholder={{
+									defaultMessage: "Type a scope name",
+									id: "test.placeholder",
+								}}
+							>
+								<div id="child" />
+							</Scope>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<Bar>
+					<AlignedButton active>Test 1</AlignedButton>
+				</Bar>
 				<div id="child" />
-			</Scope>,
-			"to render as",
-			<React.Fragment>
-				<ScopeBar name="Test 1" show={true} updateViewState={updateViewState} />
-				<Selector
-					show={true}
-					reset={expect
-						.it("to be a function")
-						.and("when called with", [mockEvent])}
-					getScope={getScope}
-					nodeState={nodeState}
-					updateNodeState={updateNodeState}
-					filter=""
-					updateFilter={updateFilter}
-					filterPlaceholder={{ defaultMessage: "Type a scope name" }}
-				/>
-				<div id="child" />
-			</React.Fragment>,
+			</div>,
+		).then(() =>
+			expect(
+				modalRoot,
+				"to satisfy",
+				<div>
+					<div>
+						<SelectorWrapper>
+							<InputBox>
+								<IntlProvider>
+									<SearchInput />
+								</IntlProvider>
+							</InputBox>
+							<BranchWrapper />
+						</SelectorWrapper>
+					</div>
+				</div>,
+			),
 		));
 
 	it("defaults to not showing the selector", () =>
 		expect(
-			<Scope currentScope={{ name: "Test 1" }}>
+			<div>
+				<Provider store={store}>
+					<IntlProvider>
+						<MemoryRouter>
+							<Scope currentScope={{ name: "Test 1" }}>
+								<div id="child" />
+							</Scope>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<Bar>
+					<AlignedButton>Test 1</AlignedButton>
+				</Bar>
 				<div id="child" />
-			</Scope>,
-			"to render as",
-			<React.Fragment>
-				<ScopeBar name="Test 1" />
-				<Selector show={false} />
-				<div id="child" />
-			</React.Fragment>,
-		));
+			</div>,
+		).then(() => expect(modalRoot, "to satisfy", <div></div>)));
 });
 
 describe("ScopeBar", () => {
@@ -86,15 +131,12 @@ describe("ScopeBar", () => {
 	it("renders the button to show the scope dialog", () =>
 		expect(
 			<ScopeBar name="Scope name" updateViewState={updateViewState} />,
-			"to render as",
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<AlignedButton />) },
+			"to satisfy",
 			<Bar>
-				<AlignedButton
-					onClick={expect
-						.it("to be a function")
-						.and("when called", "to be undefined")}
-				>
-					Scope name
-				</AlignedButton>
+				<AlignedButton>Scope name</AlignedButton>
 			</Bar>,
 		).then(() =>
 			Promise.all([
@@ -105,8 +147,10 @@ describe("ScopeBar", () => {
 		));
 });
 
-describe("Fully connected Scope", () => {
+describe("setupScope", () => {
 	let store, state, appRoot, modalRoot;
+	const TestComp = setupScope(PropStruct);
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
@@ -116,7 +160,7 @@ describe("Fully connected Scope", () => {
 			navigation: {
 				route: { location: {}, match: { params: { scope: "test1" } } },
 			},
-			view: { scopeSelector: { filter: "Foo" } },
+			view: { scopeSelector: { filter: "Foo", show: true } },
 			scopes: {
 				test1: {
 					id: "test1",
@@ -165,28 +209,39 @@ describe("Fully connected Scope", () => {
 	});
 
 	it("renders a Scope with the right properties", () => {
-		const render = ReactDOM.render(
+		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/test1/foo"]} initialIndex={0}>
 					<I18n>
-						<FullScope />
+						<TestComp />
 					</I18n>
 				</MemoryRouter>
 			</Provider>,
 			appRoot,
 		);
 		return expect(
-			render,
-			"to contain",
-			<Scope
-				name="scopeSelector"
-				currentScope={{ name: "Test 1" }}
-				getScope={expect.it("to be a function")}
-				updateViewState={expect.it("to be a function")}
-				reset={expect.it("to be a function")}
-				updateFilter={expect.it("to be a function")}
-				viewState={{ filter: "Foo" }}
-			/>,
+			appRoot,
+			"to satisfy",
+			<div>
+				<PropStruct
+					name="scopeSelector"
+					currentScope={{
+						id: "test1",
+						name: "Test 1",
+						foo: false,
+						bar: false,
+					}}
+					getScope={() => {}}
+					loadScopes={() => {}}
+					updateViewState={() => {}}
+					reset={() => {}}
+					updateFilter={() => {}}
+					viewState={{ filter: "Foo", show: true }}
+					match="__ignore"
+					location="__ignore"
+					history="__ignore"
+				/>
+			</div>,
 		);
 	});
 });

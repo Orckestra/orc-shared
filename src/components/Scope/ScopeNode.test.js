@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "../Icon";
-import { ScopeIcon, ContentLabel, ScopeNode } from "./ScopeNode";
+import { ScopeIcon, ContentLabel, ScopeNode, ScopeText } from "./ScopeNode";
 
 describe("ScopeNode", () => {
 	let onClick;
@@ -14,27 +14,25 @@ describe("ScopeNode", () => {
 				name="A scope"
 				type="test"
 				id="scopeId"
-				isAuthorizedScope={true}
 				onClick={onClick}
+				isAuthorizedScope
 			/>,
-			"to render with all attributes as",
-			<ContentLabel onClick={onClick} isGlobal={false}>
-				<ScopeIcon type="test" />A scope
+			"when mounted",
+			"to satisfy",
+			<ContentLabel onClick={onClick}>
+				<ScopeIcon type="test" />
+				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
 		));
 
-	it("displays an icon and a label for a scope without click option when not an authorized scope", () =>
+	it("displays an icon and a label for an unauthorized scope", () =>
 		expect(
-			<ScopeNode
-				name="A scope"
-				type="test"
-				id="scopeId"
-				isAuthorizedScope={false}
-				onClick={onClick}
-			/>,
-			"to render with all attributes as",
-			<ContentLabel isGlobal={false}>
-				<ScopeIcon type="test" />A scope
+			<ScopeNode name="A scope" type="test" id="scopeId" onClick={onClick} />,
+			"when mounted",
+			"to satisfy",
+			<ContentLabel>
+				<ScopeIcon type="test" />
+				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
 		));
 
@@ -43,13 +41,14 @@ describe("ScopeNode", () => {
 			<ScopeNode
 				type="test"
 				id="scope-Id"
-				isAuthorizedScope={true}
 				onClick={onClick}
+				isAuthorizedScope
 			/>,
-			"to render with all attributes as",
-			<ContentLabel onClick={onClick} isGlobal={false}>
+			"when mounted",
+			"to satisfy",
+			<ContentLabel onClick={onClick}>
 				<ScopeIcon type="test" />
-				scope-Id
+				<ScopeText>scope-Id</ScopeText>
 			</ContentLabel>,
 		));
 
@@ -59,13 +58,14 @@ describe("ScopeNode", () => {
 				name={null}
 				type="test"
 				id="scope-Id"
-				isAuthorizedScope={true}
 				onClick={onClick}
+				isAuthorizedScope
 			/>,
-			"to render with all attributes as",
-			<ContentLabel onClick={onClick} isGlobal={false}>
+			"when mounted",
+			"to satisfy",
+			<ContentLabel onClick={onClick}>
 				<ScopeIcon type="test" />
-				scope-Id
+				<ScopeText>scope-Id</ScopeText>
 			</ContentLabel>,
 		));
 
@@ -75,64 +75,75 @@ describe("ScopeNode", () => {
 				name="A scope"
 				type="Virtual"
 				id="scopeId"
-				isAuthorizedScope={true}
+				onClick={onClick}
+				isAuthorizedScope
+			/>,
+			"when mounted",
+			"to satisfy",
+			<ContentLabel>
+				<ScopeIcon type="Virtual" />
+				<ScopeText>A scope</ScopeText>
+			</ContentLabel>,
+		));
+
+	it("handles unauthorized virtual scopes", () =>
+		expect(
+			<ScopeNode
+				name="A scope"
+				type="Virtual"
+				id="scopeId"
 				onClick={onClick}
 			/>,
-			"to render with all attributes as",
-			<ContentLabel isGlobal={false}>
-				<ScopeIcon type="Virtual" />A scope
+			"when mounted",
+			"to satisfy",
+			<ContentLabel>
+				<ScopeIcon type="Virtual" />
+				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
 		));
 });
 
 describe("ContentLabel", () => {
-	let onClick;
-	beforeEach(() => {
-		onClick = () => {};
-	});
-
-	it("sets css for authorized Global scope", () =>
+	it("sets css for Global clickable scope", () =>
 		expect(
-			<ContentLabel isGlobal={true} onClick={onClick} />,
-			"to render style rules",
-		).then(styles =>
-			expect(styles, "to contain", "text-transform: uppercase;").and(
-				"to contain",
-				":hover {background-color: #222;}",
-			),
+			<ContentLabel isGlobal onClick={() => {}} />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "text-transform: uppercase;")
+				.and("to contain", ":hover {background-color: #222;}"),
 		));
 
-	it("sets css for unauthorized Global scope", () =>
+	it("sets css for other clickable scopes", () =>
 		expect(
-			<ContentLabel isGlobal={true} />,
-			"to render style rules",
-		).then(styles =>
-			expect(styles, "to contain", "text-transform: uppercase;").and(
-				"not to contain",
-				":hover",
-			),
+			<ContentLabel onClick={() => {}} />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("not to contain", "text-transform: uppercase;")
+				.and("to contain", ":hover {background-color: #222;}"),
 		));
 
-	it("sets css for not-clickable scope", () =>
+	it("sets css for Global unclickable scope", () =>
 		expect(
-			<ContentLabel isGlobal={false} />,
-			"to render style rules",
-		).then(styles =>
-			expect(styles, "to contain", "color: #999; cursor: default;").and(
-				"not to contain",
-				":hover",
-			),
+			<ContentLabel isGlobal />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "text-transform: uppercase;")
+				.and("to contain", "cursor: default;")
+				.and("not to contain", ":hover"),
 		));
 
-	it("sets css for clickable scope", () =>
+	it("sets css for other unclickable scopes", () =>
 		expect(
-			<ContentLabel isGlobal={false} onClick={onClick} />,
-			"to render style rules",
-		).then(styles =>
-			expect(styles, "not to contain", "text-transform: uppercase;").and(
-				"to contain",
-				":hover {background-color: #222;}",
-			),
+			<ContentLabel />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("not to contain", "text-transform: uppercase;")
+				.and("to contain", "cursor: default;")
+				.and("not to contain", ":hover"),
 		));
 });
 
@@ -154,14 +165,16 @@ describe("ScopeIcon", () => {
 	it("renders an icon with id based on scope type", () =>
 		expect(
 			<ScopeIcon theme={theme} type="Test" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Icon id="test-icon" />,
 		));
 
 	it("renders in a color based on scope type", () =>
 		expect(
 			<ScopeIcon theme={theme} type="Test" />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"color: #00ff00;",
 		));
@@ -169,7 +182,8 @@ describe("ScopeIcon", () => {
 	it("by default renders a cross", () =>
 		expect(
 			<ScopeIcon theme={theme} type="N/A" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Icon id="cross" />,
 		));
 });

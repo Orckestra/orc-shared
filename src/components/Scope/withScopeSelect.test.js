@@ -37,13 +37,9 @@ describe("withScopeSelect", () => {
 						<Comp id="Feep" closeSelector={closer} />
 					</MemoryRouter>
 				</Provider>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
 				"click",
-				"on",
-				<div />,
-				"to contain",
-				<TestComp onClick={expect.it("to be a function")} />,
 			).then(() =>
 				expect([store.dispatch, closer], "to have calls satisfying", [
 					{

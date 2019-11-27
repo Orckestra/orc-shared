@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Icon from "../Icon";
 import withScopeSelect from "./withScopeSelect";
-import { getThemeProp, switchEnum, ifFlag } from "../../utils";
+import { getThemeProp, ifFlag } from "../../utils";
 
 export const ScopeIcon = styled(Icon).attrs({
 	id: getThemeProp(["icons", "scopeTypes", props => props.type], "cross"),
@@ -49,7 +49,7 @@ export const ScopeNode = ({ type, name, id, isAuthorizedScope, onClick }) => (
 		onClick={isAuthorizedScope && type !== "Virtual" ? onClick : undefined}
 	>
 		<ScopeIcon type={type} />
-		<ScopeText type={type}>{name || id}</ScopeText>
+		<ScopeText>{name || id}</ScopeText>
 	</ContentLabel>
 );
 

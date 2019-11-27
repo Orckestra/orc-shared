@@ -91,9 +91,11 @@ const withScopeRoute = WrapScope => props => (
 	</Switch>
 );
 
-export default compose(
+export const setupScope = compose(
 	withScopeData,
 	withScopeRoute,
 	withViewState,
 	withSelectorHandlers,
-)(Scope);
+);
+
+export default setupScope(Scope);
