@@ -8,24 +8,29 @@ export const getClassName = elm => {
 };
 
 export const PropStruct = props => (
-	<div>
+	<dl>
 		{Object.entries(props)
 			.sort((a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0))
 			.map(([key, value]) =>
-				value === undefined ? null : value === "__ignore" ? (
-					<Ignore />
-				) : (
-					<p>
-						{`${key}: `}
-						{typeof value === "object" ? (
-							<PropStruct {...value} />
-						) : typeof value === "string" ? (
-							`string "${value}"`
-						) : (
-							typeof value + " " + value
-						)}
-					</p>
-				),
+				value === undefined
+					? null
+					: value === "__ignore"
+					? [<Ignore />, <Ignore />]
+					: [
+							<dt>{`${key}: `}</dt>,
+							<dd>
+								{typeof value === "object" ? (
+									<PropStruct {...value} />
+								) : typeof value === "function" ? (
+									"Function"
+								) : typeof value === "string" ? (
+									`string "${value}"`
+								) : (
+									typeof value + " " + value
+								)}
+								{"\n"}
+							</dd>,
+					  ],
 			)}
-	</div>
+	</dl>
 );
