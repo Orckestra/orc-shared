@@ -4,7 +4,7 @@ import { Ignore } from "unexpected-reaction";
 import { mount } from "react-dom-testing";
 import sinon from "sinon";
 import MockDate from "mockdate";
-import { parse } from "date-fns";
+import { parseISO } from "date-fns";
 import Kalendaryo from "kalendaryo";
 import {
 	PositionedWrapper,
@@ -48,8 +48,8 @@ describe("DateInput", () => {
 				<PositionedWrapper>
 					<DateInputField update={update} value="2019-04-15" otherProp />
 					<Kalendaryo
-						startSelectedDateAt={parse("2019-04-15")}
-						startCurrentDateAt={parse("2019-04-15")}
+						startSelectedDateAt={parseISO("2019-04-15")}
+						startCurrentDateAt={parseISO("2019-04-15")}
 						render={CalendarDropdown}
 					/>
 					<CalendarButton>
@@ -270,7 +270,7 @@ describe("getDateUpdater", () => {
 
 describe("CalendarDropdown", () => {
 	beforeEach(() => {
-		MockDate.set(parse("2019-04-08"));
+		MockDate.set(parseISO("2019-04-08"));
 	});
 	afterEach(() => {
 		MockDate.reset();
@@ -280,54 +280,54 @@ describe("CalendarDropdown", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<CalendarDropdown
-					date={parse("2019-04-10")}
-					selectedDate={parse("2019-04-15")}
+					date={parseISO("2019-04-10")}
+					selectedDate={parseISO("2019-04-15")}
 					getFormattedDate={(date = new Date()) => date.toDateString()}
 					getWeeksInMonth={() => [
 						[
-							{ label: "1", dateValue: parse("2019-04-01") },
-							{ label: "2", dateValue: parse("2019-04-02") },
-							{ label: "3", dateValue: parse("2019-04-03") },
-							{ label: "4", dateValue: parse("2019-04-04") },
-							{ label: "5", dateValue: parse("2019-04-05") },
-							{ label: "6", dateValue: parse("2019-04-06") },
-							{ label: "7", dateValue: parse("2019-04-07") },
+							{ label: "1", dateValue: parseISO("2019-04-01") },
+							{ label: "2", dateValue: parseISO("2019-04-02") },
+							{ label: "3", dateValue: parseISO("2019-04-03") },
+							{ label: "4", dateValue: parseISO("2019-04-04") },
+							{ label: "5", dateValue: parseISO("2019-04-05") },
+							{ label: "6", dateValue: parseISO("2019-04-06") },
+							{ label: "7", dateValue: parseISO("2019-04-07") },
 						],
 						[
-							{ label: "8", dateValue: parse("2019-04-08") },
-							{ label: "9", dateValue: parse("2019-04-09") },
-							{ label: "10", dateValue: parse("2019-04-10") },
-							{ label: "11", dateValue: parse("2019-04-11") },
-							{ label: "12", dateValue: parse("2019-04-12") },
-							{ label: "13", dateValue: parse("2019-04-13") },
-							{ label: "14", dateValue: parse("2019-04-14") },
+							{ label: "8", dateValue: parseISO("2019-04-08") },
+							{ label: "9", dateValue: parseISO("2019-04-09") },
+							{ label: "10", dateValue: parseISO("2019-04-10") },
+							{ label: "11", dateValue: parseISO("2019-04-11") },
+							{ label: "12", dateValue: parseISO("2019-04-12") },
+							{ label: "13", dateValue: parseISO("2019-04-13") },
+							{ label: "14", dateValue: parseISO("2019-04-14") },
 						],
 						[
-							{ label: "15", dateValue: parse("2019-04-15") },
-							{ label: "16", dateValue: parse("2019-04-16") },
-							{ label: "17", dateValue: parse("2019-04-17") },
-							{ label: "18", dateValue: parse("2019-04-18") },
-							{ label: "19", dateValue: parse("2019-04-19") },
-							{ label: "20", dateValue: parse("2019-04-20") },
-							{ label: "21", dateValue: parse("2019-04-21") },
+							{ label: "15", dateValue: parseISO("2019-04-15") },
+							{ label: "16", dateValue: parseISO("2019-04-16") },
+							{ label: "17", dateValue: parseISO("2019-04-17") },
+							{ label: "18", dateValue: parseISO("2019-04-18") },
+							{ label: "19", dateValue: parseISO("2019-04-19") },
+							{ label: "20", dateValue: parseISO("2019-04-20") },
+							{ label: "21", dateValue: parseISO("2019-04-21") },
 						],
 						[
-							{ label: "22", dateValue: parse("2019-04-22") },
-							{ label: "23", dateValue: parse("2019-04-23") },
-							{ label: "24", dateValue: parse("2019-04-24") },
-							{ label: "25", dateValue: parse("2019-04-25") },
-							{ label: "26", dateValue: parse("2019-04-26") },
-							{ label: "27", dateValue: parse("2019-04-27") },
-							{ label: "28", dateValue: parse("2019-04-28") },
+							{ label: "22", dateValue: parseISO("2019-04-22") },
+							{ label: "23", dateValue: parseISO("2019-04-23") },
+							{ label: "24", dateValue: parseISO("2019-04-24") },
+							{ label: "25", dateValue: parseISO("2019-04-25") },
+							{ label: "26", dateValue: parseISO("2019-04-26") },
+							{ label: "27", dateValue: parseISO("2019-04-27") },
+							{ label: "28", dateValue: parseISO("2019-04-28") },
 						],
 						[
-							{ label: "29", dateValue: parse("2019-04-29") },
-							{ label: "30", dateValue: parse("2019-04-30") },
-							{ label: "1", dateValue: parse("2019-05-01") },
-							{ label: "2", dateValue: parse("2019-05-02") },
-							{ label: "3", dateValue: parse("2019-05-03") },
-							{ label: "4", dateValue: parse("2019-05-04") },
-							{ label: "5", dateValue: parse("2019-05-05") },
+							{ label: "29", dateValue: parseISO("2019-04-29") },
+							{ label: "30", dateValue: parseISO("2019-04-30") },
+							{ label: "1", dateValue: parseISO("2019-05-01") },
+							{ label: "2", dateValue: parseISO("2019-05-02") },
+							{ label: "3", dateValue: parseISO("2019-05-03") },
+							{ label: "4", dateValue: parseISO("2019-05-04") },
+							{ label: "5", dateValue: parseISO("2019-05-05") },
 						],
 					]}
 				/>
@@ -426,28 +426,28 @@ describe("CalendarDropdown", () => {
 		return expect(
 			<IntlProvider locale="en-US">
 				<CalendarDropdown
-					date={parse("2019-04-10")}
-					selectedDate={parse("2019-04-15")}
+					date={parseISO("2019-04-10")}
+					selectedDate={parseISO("2019-04-15")}
 					getFormattedDate={(date = new Date()) => date.toDateString()}
 					pickDate={pick}
 					getWeeksInMonth={() => [
 						[
-							{ label: "8", dateValue: parse("2019-04-08") },
-							{ label: "9", dateValue: parse("2019-04-09") },
-							{ label: "10", dateValue: parse("2019-04-10") },
-							{ label: "11", dateValue: parse("2019-04-11") },
-							{ label: "12", dateValue: parse("2019-04-12") },
-							{ label: "13", dateValue: parse("2019-04-13") },
-							{ label: "14", dateValue: parse("2019-04-14") },
+							{ label: "8", dateValue: parseISO("2019-04-08") },
+							{ label: "9", dateValue: parseISO("2019-04-09") },
+							{ label: "10", dateValue: parseISO("2019-04-10") },
+							{ label: "11", dateValue: parseISO("2019-04-11") },
+							{ label: "12", dateValue: parseISO("2019-04-12") },
+							{ label: "13", dateValue: parseISO("2019-04-13") },
+							{ label: "14", dateValue: parseISO("2019-04-14") },
 						],
 						[
-							{ label: "15", dateValue: parse("2019-04-15") },
-							{ label: "16", dateValue: parse("2019-04-16") },
-							{ label: "17", dateValue: parse("2019-04-17") },
-							{ label: "18", dateValue: parse("2019-04-18") },
-							{ label: "19", dateValue: parse("2019-04-19") },
-							{ label: "20", dateValue: parse("2019-04-20") },
-							{ label: "21", dateValue: parse("2019-04-21") },
+							{ label: "15", dateValue: parseISO("2019-04-15") },
+							{ label: "16", dateValue: parseISO("2019-04-16") },
+							{ label: "17", dateValue: parseISO("2019-04-17") },
+							{ label: "18", dateValue: parseISO("2019-04-18") },
+							{ label: "19", dateValue: parseISO("2019-04-19") },
+							{ label: "20", dateValue: parseISO("2019-04-20") },
+							{ label: "21", dateValue: parseISO("2019-04-21") },
 						],
 					]}
 				/>
@@ -456,11 +456,11 @@ describe("CalendarDropdown", () => {
 			"with event",
 			{
 				type: "click",
-				target: `[data-test-id="${parse("2019-04-12").toDateString()}"]`,
+				target: `[data-test-id="${parseISO("2019-04-12").toDateString()}"]`,
 			},
 		).then(() =>
 			expect(pick, "to have calls satisfying", [
-				{ args: [parse("2019-04-12")] },
+				{ args: [parseISO("2019-04-12")] },
 			]),
 		);
 	});
@@ -470,28 +470,28 @@ describe("CalendarDropdown", () => {
 		return expect(
 			<IntlProvider locale="en-US">
 				<CalendarDropdown
-					date={parse("2019-04-10")}
-					selectedDate={parse("2019-04-15")}
+					date={parseISO("2019-04-10")}
+					selectedDate={parseISO("2019-04-15")}
 					getFormattedDate={(date = new Date()) => date.toDateString()}
 					setDatePrevMonth={last}
 					getWeeksInMonth={() => [
 						[
-							{ label: "8", dateValue: parse("2019-04-08") },
-							{ label: "9", dateValue: parse("2019-04-09") },
-							{ label: "10", dateValue: parse("2019-04-10") },
-							{ label: "11", dateValue: parse("2019-04-11") },
-							{ label: "12", dateValue: parse("2019-04-12") },
-							{ label: "13", dateValue: parse("2019-04-13") },
-							{ label: "14", dateValue: parse("2019-04-14") },
+							{ label: "8", dateValue: parseISO("2019-04-08") },
+							{ label: "9", dateValue: parseISO("2019-04-09") },
+							{ label: "10", dateValue: parseISO("2019-04-10") },
+							{ label: "11", dateValue: parseISO("2019-04-11") },
+							{ label: "12", dateValue: parseISO("2019-04-12") },
+							{ label: "13", dateValue: parseISO("2019-04-13") },
+							{ label: "14", dateValue: parseISO("2019-04-14") },
 						],
 						[
-							{ label: "15", dateValue: parse("2019-04-15") },
-							{ label: "16", dateValue: parse("2019-04-16") },
-							{ label: "17", dateValue: parse("2019-04-17") },
-							{ label: "18", dateValue: parse("2019-04-18") },
-							{ label: "19", dateValue: parse("2019-04-19") },
-							{ label: "20", dateValue: parse("2019-04-20") },
-							{ label: "21", dateValue: parse("2019-04-21") },
+							{ label: "15", dateValue: parseISO("2019-04-15") },
+							{ label: "16", dateValue: parseISO("2019-04-16") },
+							{ label: "17", dateValue: parseISO("2019-04-17") },
+							{ label: "18", dateValue: parseISO("2019-04-18") },
+							{ label: "19", dateValue: parseISO("2019-04-19") },
+							{ label: "20", dateValue: parseISO("2019-04-20") },
+							{ label: "21", dateValue: parseISO("2019-04-21") },
 						],
 					]}
 				/>
@@ -507,28 +507,28 @@ describe("CalendarDropdown", () => {
 		return expect(
 			<IntlProvider locale="en-US">
 				<CalendarDropdown
-					date={parse("2019-04-10")}
-					selectedDate={parse("2019-04-15")}
+					date={parseISO("2019-04-10")}
+					selectedDate={parseISO("2019-04-15")}
 					getFormattedDate={(date = new Date()) => date.toDateString()}
 					setDateNextMonth={next}
 					getWeeksInMonth={() => [
 						[
-							{ label: "8", dateValue: parse("2019-04-08") },
-							{ label: "9", dateValue: parse("2019-04-09") },
-							{ label: "10", dateValue: parse("2019-04-10") },
-							{ label: "11", dateValue: parse("2019-04-11") },
-							{ label: "12", dateValue: parse("2019-04-12") },
-							{ label: "13", dateValue: parse("2019-04-13") },
-							{ label: "14", dateValue: parse("2019-04-14") },
+							{ label: "8", dateValue: parseISO("2019-04-08") },
+							{ label: "9", dateValue: parseISO("2019-04-09") },
+							{ label: "10", dateValue: parseISO("2019-04-10") },
+							{ label: "11", dateValue: parseISO("2019-04-11") },
+							{ label: "12", dateValue: parseISO("2019-04-12") },
+							{ label: "13", dateValue: parseISO("2019-04-13") },
+							{ label: "14", dateValue: parseISO("2019-04-14") },
 						],
 						[
-							{ label: "15", dateValue: parse("2019-04-15") },
-							{ label: "16", dateValue: parse("2019-04-16") },
-							{ label: "17", dateValue: parse("2019-04-17") },
-							{ label: "18", dateValue: parse("2019-04-18") },
-							{ label: "19", dateValue: parse("2019-04-19") },
-							{ label: "20", dateValue: parse("2019-04-20") },
-							{ label: "21", dateValue: parse("2019-04-21") },
+							{ label: "15", dateValue: parseISO("2019-04-15") },
+							{ label: "16", dateValue: parseISO("2019-04-16") },
+							{ label: "17", dateValue: parseISO("2019-04-17") },
+							{ label: "18", dateValue: parseISO("2019-04-18") },
+							{ label: "19", dateValue: parseISO("2019-04-19") },
+							{ label: "20", dateValue: parseISO("2019-04-20") },
+							{ label: "21", dateValue: parseISO("2019-04-21") },
 						],
 					]}
 				/>

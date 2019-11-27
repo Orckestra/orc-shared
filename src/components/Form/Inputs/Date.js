@@ -1,6 +1,13 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { getDate, getDay, isSameMonth, isToday, format, parse } from "date-fns";
+import {
+	getDate,
+	getDay,
+	isSameMonth,
+	isToday,
+	format,
+	parseISO,
+} from "date-fns";
 import { FormattedDate, injectIntl } from "react-intl";
 import Kalendaryo from "kalendaryo";
 import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";
@@ -272,15 +279,15 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		return event => {
 			let eventVal = event.target.value + "";
 			const value = eventVal.padStart(partLength, "0").slice(-partLength);
-			const newDate = parse(prefix + value + suffix);
-			update(format(newDate, "YYYY-MM-DD"));
+			const newDate = parseISO(prefix + value + suffix /* + " 12:00"*/);
+			update(format(newDate, "yyyy-MM-dd"));
 		};
 	};
 
 	DateInputField = injectIntl(({ value, intl, update, ...props }) => {
 		const safeValue = value || "1970-01-01";
 		const formatter = getFormatter(intl.locale);
-		const parts = formatter.formatToParts(parse(safeValue));
+		const parts = formatter.formatToParts(parseISO(safeValue));
 		return (
 			<React.Fragment>
 				{parts.map(({ type, value: partValue }, index) =>
@@ -317,7 +324,7 @@ export const CrudeDateInput = ({
 	...props
 }) => {
 	const safeValue = value || "1970-01-01";
-	const parsedValue = parse(safeValue);
+	const parsedValue = parseISO(safeValue);
 	return (
 		<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
 			<DateInputField update={update} {...props} value={safeValue} />
@@ -328,7 +335,7 @@ export const CrudeDateInput = ({
 				startSelectedDateAt={parsedValue}
 				startCurrentDateAt={parsedValue}
 				onSelectedChange={date => {
-					update(format(date, "YYYY-MM-DD"));
+					update(format(date, "yyyy-MM-dd"));
 					reset();
 				}}
 			/>
