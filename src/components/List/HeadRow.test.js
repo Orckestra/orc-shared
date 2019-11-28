@@ -11,7 +11,8 @@ describe("HeadRow", () => {
 		];
 		return expect(
 			<HeadRow columnDefs={columnDefs} allSelected={false} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<HeadTableRow>
 				<HeadCell key="a" columnDef={columnDefs[0]} allSelected={false} />
 				<HeadCell key="b" columnDef={columnDefs[1]} allSelected={false} />

@@ -2,21 +2,40 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
-import ReactTestUtils from "react-dom/test-utils";
 import sinon from "sinon";
+import { PropStruct } from "../../utils/testUtils";
 import withListState from "./withListState";
 
-class TestComp extends React.Component {
-	// It's a class so React's kinda bad test tools can use it...
+const SelectionTestComp = ({
+	selection = [],
+	columnDefs = [{ onChange: () => {} }],
+}) => (
+	<div onClick={() => columnDefs[0].onChange(["list", "of", "row", "ids"])}>
+		<input
+			id="yes"
+			onChange={columnDefs[0].onChange}
+			data-row-id="selectedRow"
+		/>
+		<input id="no" onChange={columnDefs[0].onChange} data-row-id="myRow" />[
+		{selection.join(", ")}]
+	</div>
+);
+
+class SortTestComp extends React.Component {
 	render() {
-		return <div />;
+		return (
+			<div>
+				{this.props.columnDefs.map(def => (
+					<button
+						id={def.fieldName}
+						key={def.fieldName}
+						onClick={def.sort}
+					></button>
+				))}
+			</div>
+		);
 	}
 }
-
-const getFakeEvent = name => ({
-	stopPropagation: () => {},
-	target: { dataset: { rowId: name } },
-});
 
 describe("withListState", () => {
 	let store, state, columnDefs;
@@ -33,20 +52,28 @@ describe("withListState", () => {
 	});
 
 	it("does not change column definitions without cause", () =>
-		expect(withListState, "called with", [TestComp]).then(EnhComp =>
+		expect(withListState, "called with", [PropStruct]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
 					<MemoryRouter>
 						<EnhComp name="test" columnDefs={columnDefs} />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
-				<TestComp
-					columnDefs={expect.it("to exhaustively satisfy", [
+				"when mounted",
+				"to satisfy",
+				<PropStruct
+					columnDefs={[
 						{
 							fieldName: "a",
 						},
-					])}
+					]}
+					history="__ignore"
+					location="__ignore"
+					match="__ignore"
+					name="__ignore"
+					selection="__ignore"
+					updateViewState="__ignore"
+					viewState="__ignore"
 				/>,
 			),
 		));
@@ -62,7 +89,7 @@ describe("withListState", () => {
 		});
 
 		it("adds field name and onChange to select columns", () =>
-			expect(withListState, "called with", [TestComp])
+			expect(withListState, "called with", [SelectionTestComp])
 				.then(EnhComp =>
 					expect(
 						<Provider store={store}>
@@ -70,43 +97,26 @@ describe("withListState", () => {
 								<EnhComp name="test" columnDefs={columnDefs} />
 							</MemoryRouter>
 						</Provider>,
-						"to deeply render as",
-						<TestComp
-							selection={["selectedRow"]}
-							columnDefs={[
-								expect.it("to exhaustively satisfy", {
-									type: "select",
-									fieldName: "selection",
-									onChange: expect
-										// Replace selection
-										.it("called with", [["list", "of", "row", "ids"]])
-										// Add name to selection
-										.and("called with", [getFakeEvent("myRow")])
-										// remove name from selection
-										.and("called with", [getFakeEvent("selectedRow")]),
-								}),
-								{
-									fieldName: "a",
-								},
-							]}
-						/>,
+						"when mounted",
+						// Add name to selection
+						"with event",
+						{
+							type: "change",
+							target: "input#no",
+						},
+						// remove name from selection
+						"with event",
+						{
+							type: "change",
+							target: "input#yes",
+						},
+						// Replace selection
+						"with event",
+						"click",
 					),
 				)
 				.then(() =>
 					expect(store.dispatch, "to have calls satisfying", [
-						{
-							args: [
-								// Replace selection
-								{
-									type: "VIEW_STATE_SET_FIELD",
-									payload: {
-										name: "test",
-										field: "selection",
-										value: ["list", "of", "row", "ids"],
-									},
-								},
-							],
-						},
 						{
 							args: [
 								// Add name to selection
@@ -129,21 +139,36 @@ describe("withListState", () => {
 								},
 							],
 						},
+						{
+							args: [
+								// Replace selection
+								{
+									type: "VIEW_STATE_SET_FIELD",
+									payload: {
+										name: "test",
+										field: "selection",
+										value: ["list", "of", "row", "ids"],
+									},
+								},
+							],
+						},
 					]),
 				));
 
 		it("handles missing selection", () => {
 			state = state.deleteIn(["view", "test", "selection"]);
-			return expect(withListState, "called with", [TestComp]).then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<MemoryRouter>
-							<EnhComp name="test" columnDefs={columnDefs} />
-						</MemoryRouter>
-					</Provider>,
-					"to deeply render as",
-					<TestComp selection={[]} />,
-				),
+			return expect(withListState, "called with", [SelectionTestComp]).then(
+				EnhComp =>
+					expect(
+						<Provider store={store}>
+							<MemoryRouter>
+								<EnhComp name="test" columnDefs={columnDefs} />
+							</MemoryRouter>
+						</Provider>,
+						"when mounted",
+						"to satisfy",
+						<SelectionTestComp selection={[]} />,
+					),
 			);
 		});
 	});
@@ -164,14 +189,19 @@ describe("withListState", () => {
 				sinon.spy().named("sorter-c"),
 			];
 			columnDefs = [
-				{ fieldName: "a", sort: sorterSpies[0], type: "currency" },
+				{
+					fieldName: "a",
+					sort: sorterSpies[0],
+					type: "currency",
+					onChange: () => {},
+				},
 				{ fieldName: "b", sort: sorterSpies[1], type: "date" },
 				{ fieldName: "c", sort: sorterSpies[2], type: "switch" },
 			];
 		});
 
 		it("wraps sort functions to set view state", () =>
-			expect(withListState, "called with", [TestComp])
+			expect(withListState, "called with", [SortTestComp])
 				.then(EnhComp =>
 					expect(
 						<Provider store={store}>
@@ -179,34 +209,13 @@ describe("withListState", () => {
 								<EnhComp name="test" columnDefs={columnDefs} />
 							</MemoryRouter>
 						</Provider>,
-						"when deeply rendered",
-						"queried for",
-						<TestComp />,
-					)
-						.then(render => {
-							ReactTestUtils.findRenderedComponentWithType(
-								render,
-								TestComp,
-							).props.columnDefs[0].sort();
-							return render;
-						})
-						.then(render =>
-							expect(
-								render,
-								"to contain",
-								<TestComp
-									columnDefs={[
-										expect.it("to exhaustively satisfy", {
-											fieldName: "a",
-											type: "currency",
-											sort: expect.it("to be a function"),
-										}),
-										{ fieldName: "b" },
-										{ fieldName: "c" },
-									]}
-								/>,
-							),
-						),
+						"when mounted",
+						"with event",
+						{
+							type: "click",
+							target: "button#a",
+						},
+					),
 				)
 				.then(() =>
 					expect(store.dispatch, "to have calls satisfying", [
@@ -232,7 +241,7 @@ describe("withListState", () => {
 				));
 
 		it("wraps sort functions to handle flipping sort direction", () =>
-			expect(withListState, "called with", [TestComp])
+			expect(withListState, "called with", [SortTestComp])
 				.then(EnhComp =>
 					expect(
 						<Provider store={store}>
@@ -240,36 +249,13 @@ describe("withListState", () => {
 								<EnhComp name="test" columnDefs={columnDefs} />
 							</MemoryRouter>
 						</Provider>,
-						"when deeply rendered",
-						"queried for",
-						<TestComp selection={[]} />,
-					)
-						.then(render => {
-							ReactTestUtils.findRenderedComponentWithType(
-								render,
-								TestComp,
-							).props.columnDefs[1].sort();
-							return render;
-						})
-						.then(render =>
-							expect(
-								render,
-								"to contain",
-								<TestComp
-									selection={[]}
-									columnDefs={[
-										{ fieldName: "a" },
-										expect.it("to satisfy", {
-											fieldName: "b",
-											type: "date",
-											sort: expect.it("to be a function"),
-											sortDirection: "asc",
-										}),
-										{ fieldName: "c" },
-									]}
-								/>,
-							),
-						),
+						"when mounted",
+						"with event",
+						{
+							type: "click",
+							target: "button#b",
+						},
+					),
 				)
 				.then(() =>
 					expect(store.dispatch, "to have calls satisfying", [

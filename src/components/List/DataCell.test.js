@@ -1,6 +1,6 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import DataCell, { TableData } from "./DataCell";
-import { FormattedNumber, FormattedDate, FormattedTime } from "react-intl";
 import Switch from "../Switch";
 import Checkbox from "../Checkbox";
 import Text from "../Text";
@@ -13,7 +13,8 @@ describe("DataCell", () => {
 		const row = { test: "A text", extraneous: "Don't show" };
 		return expect(
 			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableData>
 				<Text message="A text" />
 			</TableData>,
@@ -25,7 +26,8 @@ describe("DataCell", () => {
 		const row = { extraneous: "Don't show" };
 		return expect(
 			<DataCell columnDef={columnDef} row={row} />,
-			"to render with all children as",
+			"when mounted",
+			"to satisfy",
 			<TableData />,
 		);
 	});
@@ -35,7 +37,8 @@ describe("DataCell", () => {
 		const row = { extraneous: "Don't show" };
 		return expect(
 			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableData>
 				<Text message="empty" />
 			</TableData>,
@@ -46,11 +49,13 @@ describe("DataCell", () => {
 		const columnDef = { fieldName: "test", type: "currency", currency: "USD" };
 		const row = { test: 1200, extraneous: "Don't show" };
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			<IntlProvider>
+				<DataCell columnDef={columnDef} row={row} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<TableData>
-				{/* eslint-disable-next-line react/style-prop-object */}
-				<FormattedNumber style="currency" currency="USD" value={1200} />
+				<span>$1,200.00</span>
 			</TableData>,
 		);
 	});
@@ -63,11 +68,13 @@ describe("DataCell", () => {
 		};
 		const row = { test: 1200, extraneous: "Don't show", currency: "EUR" };
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			<IntlProvider>
+				<DataCell columnDef={columnDef} row={row} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<TableData>
-				{/* eslint-disable-next-line react/style-prop-object */}
-				<FormattedNumber style="currency" currency="EUR" value={1200} />
+				<span>€1,200.00</span>
 			</TableData>,
 		);
 	});
@@ -79,10 +86,13 @@ describe("DataCell", () => {
 			extraneous: "Don't show",
 		};
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			<IntlProvider>
+				<DataCell columnDef={columnDef} row={row} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<TableData>
-				<FormattedDate value="2018-01-23T08:28:46.0000000Z" />
+				<span>1/23/2018</span>
 			</TableData>,
 		);
 	});
@@ -94,11 +104,13 @@ describe("DataCell", () => {
 			extraneous: "Don't show",
 		};
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			<IntlProvider>
+				<DataCell columnDef={columnDef} row={row} />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<TableData>
-				<FormattedDate value="2018-01-23T08:28:46.0000000Z" />{" "}
-				<FormattedTime value="2018-01-23T08:28:46.0000000Z" />
+				<span>1/23/2018</span> <span>9:28 AM</span>
 			</TableData>,
 		);
 	});
@@ -112,9 +124,15 @@ describe("DataCell", () => {
 		};
 		return expect(
 			<DataCell columnDef={columnDef} row={row} rowId="rowIdent" selected />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableData>
-				<Checkbox value={true} data-row-id="rowIdent" onChange={onChange} />
+				<Checkbox
+					id="select_rowIdent"
+					value={true}
+					data-row-id="rowIdent"
+					onChange={onChange}
+				/>
 			</TableData>,
 		);
 	});
@@ -131,9 +149,15 @@ describe("DataCell", () => {
 		};
 		return expect(
 			<DataCell columnDef={columnDef} row={row} rowId="rowIdent" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableData>
-				<Switch value={false} data-row-id="rowIdent" onColor="#ff00ff" />
+				<Switch
+					id="switch0"
+					value={false}
+					data-row-id="rowIdent"
+					onColor="#ff00ff"
+				/>
 			</TableData>,
 		);
 	});
@@ -146,7 +170,8 @@ describe("DataCell", () => {
 		const row = { test: "text", extraneous: "Don't show" };
 		return expect(
 			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableData>
 				<Text message="TEXT" />
 			</TableData>,
@@ -161,7 +186,8 @@ describe("DataCell", () => {
 		const row = { test: "A text", extraneous: "Don't show" };
 		return expect(
 			<DataCell columnDef={columnDef} row={row} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableData>
 				<TestComp test="A text" extraneous="Don't show" />
 			</TableData>,
