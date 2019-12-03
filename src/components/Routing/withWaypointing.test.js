@@ -4,10 +4,9 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import sinon from "sinon";
+import { PropStruct } from "../../utils/testUtils";
 import { setRoute, mapHref } from "../../actions/navigation";
 import withWaypointing from "./withWaypointing";
-
-const Test = props => <div>{JSON.stringify(props)}</div>;
 
 describe("withWaypointing", () => {
 	let state, store, updateState;
@@ -36,7 +35,7 @@ describe("withWaypointing", () => {
 	});
 
 	it("wraps a component to tell its route info to Redux on mount", () =>
-		expect(withWaypointing, "called with", [Test])
+		expect(withWaypointing, "called with", [PropStruct])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
@@ -44,8 +43,15 @@ describe("withWaypointing", () => {
 							<Route path="/foo/bar" component={EnhancedView} />
 						</MemoryRouter>
 					</Provider>,
-					"to deeply render as",
-					<Test />,
+					"when mounted",
+					"to satisfy",
+					<PropStruct
+						history="__ignore"
+						location="__ignore"
+						match="__ignore"
+						routeIsAligned="__ignore"
+						setRoute="__ignore"
+					/>,
 				),
 			)
 			.then(() =>
@@ -67,7 +73,7 @@ describe("withWaypointing", () => {
 			));
 
 	it("does not fire action if pathname is already the same", () =>
-		expect(withWaypointing, "called with", [Test])
+		expect(withWaypointing, "called with", [PropStruct])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
@@ -75,15 +81,21 @@ describe("withWaypointing", () => {
 							<Route path="/feep/:some" component={EnhancedView} />
 						</MemoryRouter>
 					</Provider>,
-					"when deeply rendered",
-					"to have rendered",
-					<Test />,
+					"when mounted",
+					"to satisfy",
+					<PropStruct
+						history="__ignore"
+						location="__ignore"
+						match="__ignore"
+						routeIsAligned="__ignore"
+						setRoute="__ignore"
+					/>,
 				),
 			)
 			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
 
 	it("does fire action if path parameters different", () =>
-		expect(withWaypointing, "called with", [Test])
+		expect(withWaypointing, "called with", [PropStruct])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
@@ -91,9 +103,15 @@ describe("withWaypointing", () => {
 							<Route path="/feep/:some" component={EnhancedView} />
 						</MemoryRouter>
 					</Provider>,
-					"when deeply rendered",
-					"to have rendered",
-					<Test />,
+					"when mounted",
+					"to satisfy",
+					<PropStruct
+						history="__ignore"
+						location="__ignore"
+						match="__ignore"
+						routeIsAligned="__ignore"
+						setRoute="__ignore"
+					/>,
 				),
 			)
 			.then(() =>
@@ -115,7 +133,7 @@ describe("withWaypointing", () => {
 			));
 
 	it("does not fire action if route match is not exact", () =>
-		expect(withWaypointing, "called with", [Test])
+		expect(withWaypointing, "called with", [PropStruct])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
@@ -123,15 +141,21 @@ describe("withWaypointing", () => {
 							<Route path="/feep/meep" component={EnhancedView} />
 						</MemoryRouter>
 					</Provider>,
-					"when deeply rendered",
-					"to have rendered",
-					<Test />,
+					"when mounted",
+					"to satisfy",
+					<PropStruct
+						history="__ignore"
+						location="__ignore"
+						match="__ignore"
+						routeIsAligned="__ignore"
+						setRoute="__ignore"
+					/>,
 				),
 			)
 			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
 
 	it("maps the href to a root if so directed", () =>
-		expect(withWaypointing, "called with", [Test])
+		expect(withWaypointing, "called with", [PropStruct])
 			.then(EnhancedView =>
 				expect(
 					<Provider store={store}>
@@ -142,8 +166,16 @@ describe("withWaypointing", () => {
 							/>
 						</MemoryRouter>
 					</Provider>,
-					"to deeply render as",
-					<Test />,
+					"when mounted",
+					"to satisfy",
+					<PropStruct
+						history="__ignore"
+						location="__ignore"
+						match="__ignore"
+						routeIsAligned="__ignore"
+						setRoute="__ignore"
+						mapFrom="/foo"
+					/>,
 				),
 			)
 			.then(() =>
@@ -169,40 +201,42 @@ describe("withWaypointing", () => {
 
 	it("fires action on updates where route becomes misaligned", () => {
 		const node = document.createElement("div");
-		return expect(withWaypointing, "called with", [Test]).then(EnhancedView => {
-			ReactDOM.render(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/feep/meep"]}>
-						<Route path="/feep/:some" component={EnhancedView} />
-					</MemoryRouter>
-				</Provider>,
-				node,
-			);
-			expect(store.dispatch, "was not called");
-			state = state
-				.setIn(["navigation", "route", "location", "pathname"], "/feep/murl")
-				.setIn(["navigation", "route", "match", "url"], "/feep/murl");
-			updateState();
-			expect(store.dispatch, "to have calls satisfying", [
-				{
-					args: [
-						{
-							type: "SET_ROUTE",
-							payload: {
-								location: {
-									pathname: "/feep/meep",
-								},
-								match: {
-									path: "/feep/:some",
-									url: "/feep/meep",
-									isExact: true,
-									params: { some: "meep" },
+		return expect(withWaypointing, "called with", [PropStruct]).then(
+			EnhancedView => {
+				ReactDOM.render(
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/feep/meep"]}>
+							<Route path="/feep/:some" component={EnhancedView} />
+						</MemoryRouter>
+					</Provider>,
+					node,
+				);
+				expect(store.dispatch, "was not called");
+				state = state
+					.setIn(["navigation", "route", "location", "pathname"], "/feep/murl")
+					.setIn(["navigation", "route", "match", "url"], "/feep/murl");
+				updateState();
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								type: "SET_ROUTE",
+								payload: {
+									location: {
+										pathname: "/feep/meep",
+									},
+									match: {
+										path: "/feep/:some",
+										url: "/feep/meep",
+										isExact: true,
+										params: { some: "meep" },
+									},
 								},
 							},
-						},
-					],
-				},
-			]);
-		});
+						],
+					},
+				]);
+			},
+		);
 	});
 });

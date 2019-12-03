@@ -1,19 +1,36 @@
 import React from "react";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import Segment from "./Segment";
-import withWaypointing from "./withWaypointing";
-import withErrorBoundary from "../../hocs/withErrorBoundary";
 
-const View = () => <div />;
-const ShownView = withErrorBoundary("/")(withWaypointing(View));
+const View = () => <div id="view" />;
 
 describe("Segment", () => {
-	// < Shows view as right side of segment list, redirects tab of parent segpage >
-	// view
-	// view / subpage
+	let state, store;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: {
+					match: { path: "/foo/bar", url: "/foo/bar", params: {} },
+				},
+			},
+		});
+		store = {
+			getState: () => state,
+			dispatch: () => {},
+			subscribe: () => {},
+		};
+	});
 	it("shows the selected view", () =>
 		expect(
-			<Segment location={{ pathname: "/" }} config={{ component: View }} />,
-			"to render as",
-			<ShownView />,
+			<Provider store={store}>
+				<MemoryRouter>
+					<Segment location={{ pathname: "/" }} config={{ component: View }} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<View />,
 		));
 });

@@ -6,7 +6,6 @@ import { MemoryRouter } from "react-router-dom";
 import inputs from "./Inputs";
 import Field from "./Field";
 import { InputField } from "./InputField";
-
 const IntlInputField = injectIntl(InputField);
 const IntlField = injectIntl(Field);
 

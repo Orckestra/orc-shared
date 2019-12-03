@@ -1,125 +1,255 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import { MemoryRouter } from "react-router-dom";
+import { Router, MemoryRouter, Route } from "react-router-dom";
+import { IntlProvider } from "react-intl";
+import { createMemoryHistory } from "history";
+import Immutable from "immutable";
+import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
+import { getClassName, PropStruct } from "../../utils/testUtils";
 import { mapHref } from "../../actions/navigation";
-import Toolbar from "../Toolbar";
+import Toolbar, {
+	Bar,
+	toolComponents,
+	ToolbarButton as ToolbarInnerButton,
+} from "../Toolbar";
 import { SubPage, Backdrop, Dialog, withToolbar } from "./SubPage";
-import withWaypointing from "./withWaypointing";
-import withErrorBoundary from "../../hocs/withErrorBoundary";
 
-const InnerView = () => <div />;
-const WrappedView = withErrorBoundary("/foo/bar")(withWaypointing(InnerView));
+const { button: ToolbarButton, separator: ToolbarSeparator } = toolComponents;
+
+const InnerView = ({
+	pathname,
+	search,
+	mapFrom,
+	match,
+	location,
+	routeIsAligned,
+	set,
+}) => (
+	<PropStruct
+		{...{ pathname, search, mapFrom, match, location, routeIsAligned, set }}
+	/>
+);
 
 describe("SubPage", () => {
-	let history, dispatch;
+	let history, dispatch, state, store;
 	beforeEach(() => {
-		history = { push: sinon.spy().named("history.push") };
+		history = createMemoryHistory({ initialEntries: ["/foo/bar"] });
+		sinon.spy(history, "push");
+		history.push.named("history.push");
 		dispatch = sinon.spy().named("dispatch");
+		state = Immutable.fromJS({
+			navigation: {
+				route: {
+					match: { path: "/foo/bar", url: "/foo/bar", params: {} },
+				},
+			},
+		});
+		store = {
+			getState: () => state,
+			dispatch: dispatch,
+			subscribe: () => {},
+		};
+	});
+	afterAll(() => {
+		history.spy.restore();
 	});
 
-	it("shows overtop its parent", () =>
+	it("shows a dialog containing the configured view", () =>
 		expect(
-			<SubPage
-				config={{ component: InnerView, set: true }}
-				root="/foo"
-				path="/foo/bar"
-				match={{ params: {} }}
-				location={{ pathname: "/foo/bar" }}
-				history={history}
-				dispatch={dispatch}
-			/>,
-			"to render as",
-			<React.Fragment>
-				<Backdrop onClick={expect.it("to be a function").and("called")} />
+			<div>
+				<div id="outer" />
+				<Provider store={store}>
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={() => (
+								<SubPage
+									config={{ component: InnerView, set: true }}
+									root="/foo"
+									path="/foo/bar"
+									match={{ path: "/foo/bar", url: "/foo/bar", params: {} }}
+									location={{ pathname: "/foo/bar" }}
+									history={history}
+									dispatch={dispatch}
+								/>
+							)}
+						/>
+					</Router>
+				</Provider>
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<div id="outer" />
+				<Backdrop />
 				<Dialog>
-					<Toolbar
-						tools={[
-							{
-								type: "button",
-								key: "subPage_goBack",
-								label: { icon: "arrow-left" },
-								onClick: expect.it("to be a function").and("called"),
-							},
-							{ type: "separator", key: "subpage_sep_nav" },
-						]}
+					<Bar>
+						<ToolbarButton label={{ icon: "arrow-left" }} />
+						<ToolbarSeparator />
+					</Bar>
+					<InnerView
+						set={true}
+						mapFrom="/foo"
+						match={{
+							isExact: true,
+							path: "/foo/bar",
+							url: "/foo/bar",
+							params: {},
+						}}
+						location={{
+							hash: "",
+							pathname: "/foo/bar",
+							search: "",
+						}}
+						routeIsAligned={true}
 					/>
-					<WrappedView set={true} />
 				</Dialog>
-			</React.Fragment>,
+			</div>,
+		));
+
+	it("closes when clicking close button", () =>
+		expect(
+			<div>
+				<div id="outer" />
+				<Provider store={store}>
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={() => (
+								<SubPage
+									config={{ component: InnerView, set: true }}
+									root="/foo"
+									path="/foo/bar"
+									match={{ path: "/foo", url: "/foo", params: {} }}
+									location={{ pathname: "/foo/bar" }}
+									history={history}
+									dispatch={dispatch}
+								/>
+							)}
+						/>
+					</Router>
+				</Provider>
+			</div>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<ToolbarInnerButton />) },
 		).then(() => {
-			expect(history.push, "to have calls satisfying", [
-				{ args: ["/foo"] },
-				{ args: ["/foo"] },
-			]);
+			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
 			expect(dispatch, "to have calls satisfying", [
 				{ args: [mapHref("/foo", "/foo")] },
+			]);
+		}));
+
+	it("closes when clicking on backdrop", () =>
+		expect(
+			<div>
+				<Provider store={store}>
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={() => (
+								<SubPage
+									config={{ component: InnerView, set: true }}
+									root="/foo"
+									path="/foo/bar"
+									match={{ params: {} }}
+									location={{ pathname: "/foo/bar" }}
+									history={history}
+									dispatch={dispatch}
+								/>
+							)}
+						/>
+					</Router>
+				</Provider>
+			</div>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<Backdrop />) },
+		).then(() => {
+			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
+			expect(dispatch, "to have calls satisfying", [
 				{ args: [mapHref("/foo", "/foo")] },
 			]);
 		}));
 
 	it("adds toolbar config to the built-in navigation button", () =>
 		expect(
-			<SubPage
-				config={{
-					component: InnerView,
-					set: true,
-				}}
-				tools={[
-					{
-						type: "button",
-						key: 0,
-						label: { text: "Button" },
-					},
-					{
-						type: "input",
-						key: 1,
-						placeholder: "Text",
-					},
-					{
-						type: "button",
-						key: 2,
-						label: { text: "Button" },
-					},
-				]}
-				root="/foo"
-				path="/foo/bar"
-				location={{ pathname: "/foo/bar" }}
-				match={{ params: {} }}
-			/>,
-			"when rendered",
-			"to contain",
-			<Toolbar
-				tools={[
-					{
-						type: "button",
-						key: "subPage_goBack",
-						label: { icon: "arrow-left" },
-						onClick: expect.it("to be a function"),
-					},
-					{ type: "separator", key: "subpage_sep_nav" },
-					{
-						type: "button",
-						key: 0,
-						label: { text: "Button" },
-					},
-					{
-						type: "input",
-						key: 1,
-						placeholder: "Text",
-					},
-					{
-						type: "button",
-						key: 2,
-						label: { text: "Button" },
-					},
-				]}
-			/>,
+			<div>
+				<Provider store={store}>
+					<IntlProvider>
+						<MemoryRouter>
+							<SubPage
+								config={{
+									component: InnerView,
+									set: true,
+								}}
+								tools={[
+									{
+										type: "button",
+										key: 0,
+										label: { text: "Button" },
+									},
+									{
+										type: "input",
+										key: 1,
+										placeholder: "Text",
+									},
+									{
+										type: "button",
+										key: 2,
+										label: { text: "Button" },
+									},
+								]}
+								root="/foo"
+								path="/foo/bar"
+								location={{ pathname: "/foo/bar" }}
+								match={{ params: {} }}
+							/>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<Backdrop />
+				<Dialog>
+					<IntlProvider>
+						<Toolbar
+							tools={[
+								{
+									type: "button",
+									key: "subPage_goBack",
+									label: { icon: "arrow-left" },
+								},
+								{ type: "separator", key: "subpage_sep_nav" },
+								{
+									type: "button",
+									key: 0,
+									label: { text: "Button" },
+								},
+								{
+									type: "input",
+									key: 1,
+									placeholder: "Text",
+								},
+								{
+									type: "button",
+									key: 2,
+									label: { text: "Button" },
+								},
+							]}
+						/>
+					</IntlProvider>
+					<Ignore />
+				</Dialog>
+			</div>,
 		));
 });
 
-const TestComp = () => <div />;
+const TestComp = props => <PropStruct {...props} />;
 
 describe("withToolbar", () => {
 	let store;
@@ -141,9 +271,16 @@ describe("withToolbar", () => {
 						</ThemeProvider>
 					</MemoryRouter>
 				</Provider>,
-				"when deeply rendered",
-				"to contain",
-				<TestComp theme={{ test: true, value: "high" }} />,
+				"when mounted",
+				"to satisfy",
+				<TestComp
+					theme={{ test: true, value: "high" }}
+					config="__ignore"
+					dispatch="__ignore"
+					history="__ignore"
+					location="__ignore"
+					match="__ignore"
+				/>,
 			),
 		));
 
@@ -157,12 +294,30 @@ describe("withToolbar", () => {
 						</ThemeProvider>
 					</MemoryRouter>
 				</Provider>,
-				"when deeply rendered",
-				"to contain",
+				"when mounted",
+				"to satisfy",
 				<TestComp
-					history={expect.it("to be an object")}
-					location={{ pathname: "/" }}
-					match={{ url: "/", path: "/", params: {} }}
+					history={{
+						action: "__ignore",
+						block: "__ignore",
+						canGo: "__ignore",
+						createHref: "__ignore",
+						entries: "__ignore",
+						go: "__ignore",
+						goBack: "__ignore",
+						goForward: "__ignore",
+						index: "__ignore",
+						length: "__ignore",
+						listen: "__ignore",
+						location: "__ignore",
+						push: "__ignore",
+						replace: "__ignore",
+					}}
+					location={{ pathname: "/", hash: "", search: "" }}
+					match={{ isExact: true, url: "/", path: "/", params: {} }}
+					config="__ignore"
+					dispatch="__ignore"
+					theme="__ignore"
 				/>,
 			),
 		));
@@ -184,14 +339,22 @@ describe("withToolbar", () => {
 						</ThemeProvider>
 					</MemoryRouter>
 				</Provider>,
-				"when deeply rendered",
-				"to contain",
-				<TestComp tools={[{ foo: true }, { bar: false }]} />,
+				"when mounted",
+				"to satisfy",
+				<TestComp
+					tools={[{ foo: true }, { bar: false }]}
+					config="__ignore"
+					dispatch="__ignore"
+					theme="__ignore"
+					history="__ignore"
+					location="__ignore"
+					match="__ignore"
+				/>,
 			),
 		));
 
-	it("calls the tool function selector to generate functions to toolbar", () =>
-		expect(withToolbar, "when called with", [TestComp])
+	it("calls the tool function selector to generate functions for toolbar", () =>
+		expect(withToolbar, "when called with", [Toolbar])
 			.then(EnhComp =>
 				expect(
 					<Provider store={store}>
@@ -203,22 +366,41 @@ describe("withToolbar", () => {
 											dispatchThing: foo => () => dispatch({ isFoo: foo }),
 										}),
 										toolStateSelector: (state, funcs) => [
-											{ foo: funcs.dispatchThing(state.foo) },
-											{ bar: funcs.dispatchThing(state.bar) },
+											{
+												type: "button",
+												key: 0,
+												label: { text: "Button" },
+												onClick: funcs.dispatchThing(state.foo),
+											},
+											{
+												type: "button",
+												key: 2,
+												label: { text: "Button" },
+												onClick: funcs.dispatchThing(state.bar),
+											},
 										],
 									}}
 								/>
 							</ThemeProvider>
 						</MemoryRouter>
 					</Provider>,
-					"to deeply render as",
-					<TestComp
+					"when mounted",
+					"with event",
+					{ type: "click", target: "button:last-child" },
+					"with event",
+					{ type: "click", target: "button:first-child" },
+					"to satisfy",
+					<Toolbar
 						tools={[
 							{
-								foo: expect.it("to be a function").and("called"),
+								type: "button",
+								key: 0,
+								label: { text: "Button" },
 							},
 							{
-								bar: expect.it("to be a function").and("called"),
+								type: "button",
+								key: 2,
+								label: { text: "Button" },
 							},
 						]}
 					/>,

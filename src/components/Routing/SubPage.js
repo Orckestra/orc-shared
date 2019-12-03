@@ -66,7 +66,10 @@ export const SubPage = ({
 							type: "button",
 							key: "subPage_goBack",
 							label: {
-								icon: getThemeProp(["icons", "backArrow"], "back")({
+								icon: getThemeProp(
+									["icons", "backArrow"],
+									"back",
+								)({
 									theme,
 								}),
 							},
@@ -107,10 +110,7 @@ const mapToolbar = (state, { config, funcs }) => {
 
 export const withToolbar = compose(
 	routingConnector(() => ({}), mapToolFuncs),
-	connect(
-		mapToolbar,
-		() => ({}),
-	),
+	connect(mapToolbar, () => ({})),
 	withTheme,
 );
 
