@@ -49,17 +49,12 @@ describe("withToggle", () => {
 		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
 			TestComp,
 		]).then(Comp => {
-			const element = mount(<Comp toggledOnInit={true} />);
-
-			return expect(element, "to satisfy", <TestComp toggledOn={true} />).then(
-				() =>
-					expect(
-						element,
-						"to satisfy",
-						<div onClick={expect.it("to be a function")}>1</div>,
-					)
-						.and("with event", "keyDown", "to satisfy", <div>0</div>)
-						.and("with event", "keyDown", "to satisfy", <div>0</div>),
-			);
+			const element = mount(<Comp />);
+			simulate(element, "click");
+			expect(element, "to satisfy", <div>1</div>);
+			simulate(element, "keyDown");
+			expect(element, "to satisfy", <div>0</div>);
+			simulate(element, "keyDown");
+			expect(element, "to satisfy", <div>0</div>);
 		}));
 });
