@@ -1,7 +1,5 @@
 import React from "react";
-// import { act } from "react-dom/test-utils";
-// import ShallowRenderer from "react-test-renderer/shallow";
-import { mount, simulate } from "react-dom-testing";
+import { mount } from "react-dom-testing";
 import sinon from "sinon";
 import { withInfiniteScroll, getOnScroll } from "./withInfiniteScroll";
 
@@ -48,22 +46,21 @@ describe("withInfiniteScroll", () => {
 		));
 
 	describe.skip("scroll prop updates", () => {
+		// jsdom does not appear to support scroll events and values as of 2019-12
 		let ScrollComp;
 		beforeEach(() => {
 			ScrollComp = withInfiniteScroll(TestComp);
 		});
 
 		it("updates the scrollTop prop", () => {
-			const spy = sinon.spy().named("onScroll");
-			const element = mount(<ScrollComp onScroll={spy} />);
+			const onScroll = sinon.spy().named("onScroll");
+			const element = mount(<ScrollComp onScroll={onScroll} />);
 			expect(element, "to have text", expect.it("to contain", "scrollTop: 0"));
 			element.scrollTop = 100;
-			simulate(element, "scroll");
-			expect(spy, "was called");
+			element.dispatchEvent(new window.Event("scroll"));
+			expect(onScroll, "was called");
 			expect(
 				element,
-				// "with event",
-				// "scroll",
 				"to have text",
 				expect.it("to contain", "scrollTop: 100"),
 			);
@@ -84,6 +81,19 @@ describe("withInfiniteScroll", () => {
 					pageLength: 10,
 					scrollLoader: loader,
 				},
+			);
+		});
+
+		it("has default values", () => {
+			onScroll = getOnScroll(
+				{},
+				{
+					scrollLoader: loader,
+				},
+			);
+			const fakeEvent = getFakeEvent(100);
+			return expect(onScroll, "called with", [fakeEvent]).then(() =>
+				expect(loader, "was not called"),
 			);
 		});
 

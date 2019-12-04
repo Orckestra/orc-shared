@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { PropStruct } from "../../utils/testUtils";
+import { PropStruct, getClassName } from "../../utils/testUtils";
 import { CHANGE_LOCALE } from "../../actions/locale";
 import {
 	SET_DEFAULT_LANGUAGE_REQUEST,
@@ -90,58 +90,62 @@ describe("Preferences", () => {
 			"when mounted",
 			"to satisfy",
 			null,
-		).then(
-			expect(
-				modalRoot,
-				"to satisfy",
-				<div>
+		)
+			.then(
+				expect(
+					modalRoot,
+					"with event",
+					{
+						type: "click",
+						target: "." + getClassName(<PrefButton />) + ":last-child",
+					},
+					"to satisfy",
 					<div>
-						<Header>
-							<span>Preferences</span>
-						</Header>
-						<PrefForm>
-							<FieldBox>
-								<Label id="language_label">
-									<span>Display language</span>
-								</Label>
-								<SelectorWrapper>
-									<select id="language">
+						<div>
+							<Header>
+								<span>Preferences</span>
+							</Header>
+							<PrefForm>
+								<FieldBox>
+									<Label id="language_label">
+										<span>Display language</span>
+									</Label>
+									<SelectorWrapper>
+										<select id="language">
+											<Ignore />
+											<Ignore />
+										</select>
 										<Ignore />
 										<Ignore />
-									</select>
-									<Ignore />
-									<Ignore />
-								</SelectorWrapper>
-							</FieldBox>
-							<FieldBox>
-								<Label id="application_label">
-									<span>Default application</span>
-								</Label>
-								<SelectorWrapper>
-									<select id="application">
+									</SelectorWrapper>
+								</FieldBox>
+								<FieldBox>
+									<Label id="application_label">
+										<span>Default application</span>
+									</Label>
+									<SelectorWrapper>
+										<select id="application">
+											<Ignore />
+											<Ignore />
+										</select>
 										<Ignore />
 										<Ignore />
-									</select>
-									<Ignore />
-									<Ignore />
-								</SelectorWrapper>
-							</FieldBox>
-						</PrefForm>
-						<Footer>
-							<PrefButton onClick={clear}>
-								<span>Cancel</span>
-							</PrefButton>
-							<PrefButton
-								primary
-								onClick={expect.it("when called", "to be undefined")}
-							>
-								<span>Save</span>
-							</PrefButton>
-						</Footer>
-					</div>
-				</div>,
-			),
-		));
+									</SelectorWrapper>
+								</FieldBox>
+							</PrefForm>
+							<Footer>
+								<PrefButton onClick={clear}>
+									<span>Cancel</span>
+								</PrefButton>
+								<PrefButton primary onClick={() => {}}>
+									<span>Save</span>
+								</PrefButton>
+							</Footer>
+						</div>
+					</div>,
+				),
+			)
+			.then(() => expect(save, "was called")));
 
 	it("shows view state fields", () =>
 		expect(

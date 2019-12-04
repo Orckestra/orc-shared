@@ -5,11 +5,9 @@ import withToggle from "./withToggle";
 const TestComp = ({ toggle, toggledOn, reset }) => (
 	<div
 		onClick={e => {
-			// console.log(e);
 			toggle();
 		}}
 		onKeyDown={e => {
-			// console.log(e);
 			reset();
 		}}
 	>
@@ -18,7 +16,7 @@ const TestComp = ({ toggle, toggledOn, reset }) => (
 );
 
 describe("withToggle", () => {
-	it.only("provides toggle and toggledOn props, handling state", () =>
+	it("provides toggle and toggledOn props, handling state", () =>
 		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
 			TestComp,
 		]).then(Comp => {
@@ -30,9 +28,9 @@ describe("withToggle", () => {
 				<div onClick={expect.it("to be a function")}>0</div>,
 			);
 			simulate(element, "click");
-			expect(element, /*"with event", "click",*/ "to satisfy", <div>1</div>);
+			expect(element, "to satisfy", <div>1</div>);
 			simulate(element, "click");
-			expect(element, /*"with event", "click",*/ "to satisfy", <div>0</div>);
+			expect(element, "to satisfy", <div>0</div>);
 		}));
 
 	it("allows initializing the toggled parameter", () =>

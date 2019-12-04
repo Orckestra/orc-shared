@@ -189,7 +189,7 @@ describe("toolComponents.input", () => {
 describe("toolComponents.button", () => {
 	it("renders a styled empty button", () =>
 		expect(
-			<ToolButton random={4} label={{}} />,
+			<ToolButton random={4} />,
 			"when mounted",
 			"to satisfy",
 			<ToolbarButton random={4} />,

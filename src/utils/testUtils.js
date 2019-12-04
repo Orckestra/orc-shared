@@ -7,17 +7,20 @@ export const getClassName = elm => {
 	return renderer.render(elm).props.className.split(" ")[0];
 };
 
+export const firstItemComparator = (a, b) =>
+	a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0;
+
 export const PropStruct = props => (
 	<dl>
 		{Object.entries(props)
-			.sort((a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0))
+			.sort(firstItemComparator)
 			.map(([key, value]) =>
 				value === undefined
 					? null
 					: value === "__ignore"
 					? [<Ignore />, <Ignore />]
 					: [
-							<dt>{`${key}: `}</dt>,
+							<dt>{`${key}:`}</dt>,
 							<dd>
 								{typeof value === "object" ? (
 									<PropStruct {...value} />

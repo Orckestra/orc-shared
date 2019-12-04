@@ -334,10 +334,12 @@ export const CrudeDateInput = ({
 				render={CalendarDropdown}
 				startSelectedDateAt={parsedValue}
 				startCurrentDateAt={parsedValue}
-				onSelectedChange={date => {
-					update(format(date, "yyyy-MM-dd"));
-					reset();
-				}}
+				onSelectedChange={
+					/* istanbul ignore next */ date => {
+						update(format(date, "yyyy-MM-dd"));
+						reset();
+					}
+				}
 			/>
 			<CalendarButton onClick={toggle} active={open}>
 				<CalendarIcon />
