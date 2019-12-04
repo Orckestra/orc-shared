@@ -1,6 +1,26 @@
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import { Ignore } from "unexpected-reaction";
+const sinon = require("sinon");
+
+const spyNames = ["log", "warn", "error"];
+let spiedFuncs;
+export const spyOnConsole = () => {
+	beforeEach(() => {
+		spiedFuncs = spyNames.map(funcName => {
+			const func = sinon.spy().named("console." + funcName);
+			const oldFunc = console[funcName];
+			console[funcName] = func;
+			return oldFunc;
+		});
+	});
+	afterEach(() => {
+		spiedFuncs.forEach((func, index) => {
+			const name = spyNames[index];
+			console[name] = func;
+		});
+	});
+};
 
 export const getClassName = elm => {
 	const renderer = new ShallowRenderer();

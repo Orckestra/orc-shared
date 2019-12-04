@@ -3,6 +3,7 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider, injectIntl } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
+import { spyOnConsole } from "../../utils/testUtils";
 import inputs from "./Inputs";
 import Field from "./Field";
 import { InputField } from "./InputField";
@@ -10,6 +11,8 @@ const IntlInputField = injectIntl(InputField);
 const IntlField = injectIntl(Field);
 
 describe("InputField", () => {
+	spyOnConsole();
+
 	it("gives error message if given no type", () =>
 		expect(
 			<IntlProvider locale="en-US">

@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import { FormattedMessage } from "react-intl";
+import { spyOnConsole } from "../utils/testUtils";
 import I18n from "./I18n";
 
 jest.mock("translations/en.json", () => ({
@@ -10,6 +11,7 @@ jest.mock("translations/en.json", () => ({
 }));
 
 describe("I18n", () => {
+	spyOnConsole();
 	let store, state;
 	beforeEach(() => {
 		state = Immutable.fromJS({

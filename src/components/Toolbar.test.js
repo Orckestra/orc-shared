@@ -1,5 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
+import { spyOnConsole } from "../utils/testUtils";
 import Text from "./Text";
 import IconButton from "./IconButton";
 import {
@@ -24,6 +25,7 @@ const {
 } = toolComponents;
 
 describe("Toolbar", () => {
+	spyOnConsole();
 	let toolList;
 	beforeEach(() => {
 		toolList = [

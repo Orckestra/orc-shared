@@ -1,5 +1,6 @@
 import React from "react";
 import { mount } from "react-dom-testing";
+import { spyOnConsole } from "../utils/testUtils";
 import withErrorBoundary from "./withErrorBoundary";
 
 const FailBall = ({ error }) => {
@@ -10,6 +11,7 @@ const FailBall = ({ error }) => {
 const BoundedFailBall = withErrorBoundary("Failed")(FailBall);
 
 describe("withErrorBoundary", () => {
+	spyOnConsole();
 	it("catches errors and passes them to component", () =>
 		expect(
 			<BoundedFailBall />,

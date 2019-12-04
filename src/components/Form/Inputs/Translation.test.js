@@ -1,11 +1,12 @@
 import React from "react";
+import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import ShallowRenderer from "react-test-renderer/shallow";
 import { Ignore } from "unexpected-reaction";
-import sinon from "sinon";
-import Immutable from "immutable";
 import { IntlProvider } from "react-intl";
+import sinon from "sinon";
+import { spyOnConsole } from "../../../utils/testUtils";
 import Text from "../../Text";
 import { ButtonWrapper } from "./FieldButtons";
 import { FormInput } from "./Text";
@@ -183,6 +184,8 @@ describe("TranslationInput", () => {
 });
 
 describe("TranslationField", () => {
+	spyOnConsole();
+
 	let onChange;
 	beforeEach(() => {
 		onChange = () => {};

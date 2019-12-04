@@ -1,5 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
+import { spyOnConsole } from "../utils/testUtils";
 import Text from "./Text";
 import Placeholder, {
 	PlaceholderBox,
@@ -9,6 +10,7 @@ import Placeholder, {
 } from "./Placeholder";
 
 describe("Placeholder", () => {
+	spyOnConsole();
 	it("renders a placeholder with icon, title, and subtitle", () =>
 		expect(
 			<Placeholder
