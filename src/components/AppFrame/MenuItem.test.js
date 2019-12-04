@@ -1,52 +1,94 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import Text from "../Text";
 import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
+
+const BlockWithA = Block.withComponent("a");
 
 describe("MenuItem", () => {
 	it("renders an icon and no label", () =>
 		expect(
-			<MenuItem random="prop" icon="cake" />,
-			"to render as",
-			<Block random="prop">
-				<MenuIcon id="cake" />
-				<Label />
-			</Block>,
+			<MemoryRouter>
+				<MenuItem href="/foo/test" data-test-id="test" icon="cake" />
+			</MemoryRouter>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block data-test-id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Label>
+						<span></span>
+					</Label>
+				</Block>
+			</MemoryRouter>,
+		));
+
+	it("renders a menu toggle as an <a> tag", () =>
+		expect(
+			<MemoryRouter>
+				<MenuItem icon="cake" menuToggle />
+			</MemoryRouter>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<BlockWithA menuToggle>
+					<MenuIcon id="cake" />
+					<Label>
+						<span></span>
+					</Label>
+				</BlockWithA>
+			</MemoryRouter>,
 		));
 
 	it("renders an icon and label", () =>
 		expect(
-			<MenuItem icon="cake" label="Test" />,
-			"to render as",
-			<Block>
-				<MenuIcon id="cake" />
-				<Label>
-					<Text message="Test" />
-				</Label>
-			</Block>,
+			<MemoryRouter>
+				<MenuItem href="/foo/test" icon="cake" label="Test" />
+			</MemoryRouter>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block to="/foo/test">
+					<MenuIcon id="cake" />
+					<Label>
+						<span>Test</span>
+					</Label>
+				</Block>
+			</MemoryRouter>,
 		));
 
 	it("renders an open state", () =>
 		expect(
-			<MenuItem icon="cake" open />,
-			"to render as",
-			<Block>
-				<MenuIcon id="cake" />
-				<Label show />
-			</Block>,
+			<MemoryRouter>
+				<MenuItem href="/foo/test" icon="cake" open />
+			</MemoryRouter>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block to="/foo/test">
+					<MenuIcon id="cake" />
+					<Label show>
+						<span></span>
+					</Label>
+				</Block>
+			</MemoryRouter>,
 		));
 
 	it("shows activity marker", () =>
 		expect(
-			<MenuItem icon="cake" label="Test" alert />,
-			"to render as",
-			<Block>
-				<MenuIcon id="cake" />
-				<Alert />
-				<Label>
-					<Text message="Test" />
-				</Label>
-			</Block>,
+			<MemoryRouter>
+				<MenuItem href="/foo/test" icon="cake" label="Test" alert />
+			</MemoryRouter>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert />
+					<Label>
+						<span>Test</span>
+					</Label>
+				</Block>
+			</MemoryRouter>,
 		));
 
 	describe("Block", () => {
@@ -55,7 +97,8 @@ describe("MenuItem", () => {
 				<MemoryRouter>
 					<Block to="" active />
 				</MemoryRouter>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #ffffff;",
 			));
@@ -65,7 +108,8 @@ describe("MenuItem", () => {
 				<MemoryRouter>
 					<Block to="" />
 				</MemoryRouter>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #999999;",
 			));
@@ -75,7 +119,8 @@ describe("MenuItem", () => {
 				<MemoryRouter>
 					<Block to="" />
 				</MemoryRouter>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to match",
 				/:hover\s*\{[^}]*\bcolor: #ffffff;[^}]*\}/,
 			));
@@ -85,7 +130,8 @@ describe("MenuItem", () => {
 				<MemoryRouter>
 					<Block to="" menuToggle />
 				</MemoryRouter>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"not to match",
 				/:hover\s*\{[^}]*\bcolor: #ffffff;[^}]*\}/,
 			));
@@ -95,12 +141,19 @@ describe("MenuItem", () => {
 		it("sets full opacity if open", () =>
 			expect(
 				<Label show />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"opacity: 1;",
 			));
 
 		it("sets zero opacity if not open", () =>
-			expect(<Label />, "to render style rules", "to contain", "opacity: 0;"));
+			expect(
+				<Label />,
+				"when mounted",
+				"to have style rules satisfying",
+				"to contain",
+				"opacity: 0;",
+			));
 	});
 });

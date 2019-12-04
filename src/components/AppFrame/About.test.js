@@ -29,9 +29,10 @@ describe("About", () => {
 
 	it("renders an about box with messages and background images", () =>
 		expect(
-			<About viewState={{}} messages={messages} />,
-			"to render as",
-			<AboutBox>
+			<About viewState={{ show: true }} messages={messages} />,
+			"when mounted",
+			"to satisfy",
+			<AboutBox in>
 				<img src={logoImage} alt="Orckestra" />
 				<AboutParagraph>
 					<Text
@@ -60,12 +61,19 @@ describe("About", () => {
 
 	describe("AboutBox", () => {
 		it("has a background image", () =>
-			expect(<AboutBox in />, "to render style rules", "to contain", bgImage));
+			expect(
+				<AboutBox in />,
+				"when mounted",
+				"to have style rules satisfying",
+				"to contain",
+				bgImage,
+			));
 
 		it("renders an opacity-transitioning box", () =>
 			expect(
 				<AboutBox in />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"transition: opacity 800ms ease-out;",
 			));

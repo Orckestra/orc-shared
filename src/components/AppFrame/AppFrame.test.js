@@ -2,20 +2,32 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
+import { Ignore } from "unexpected-reaction";
+import { getClassName, PropStruct } from "../../utils/testUtils";
 import I18n from "../I18n";
 import { RSAA } from "redux-api-middleware";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import {
 	GET_APPLICATIONS_REQUEST,
 	GET_APPLICATIONS_SUCCESS,
 	GET_APPLICATIONS_FAILURE,
 } from "../../actions/applications";
-import Scope from "../Scope";
-import FullAppFrame, { Base, ViewPort, AppFrame } from "./AppFrame";
-import Topbar from "./Topbar";
-import Sidebar from "./Sidebar";
-import ConnectedToastList from "./ConnectedToastList";
+import { Bar as ScopeBar, AlignedButton } from "../Scope";
+import FullAppFrame, {
+	appFrameWiring,
+	Base,
+	ViewPort,
+	AppFrame,
+} from "./AppFrame";
+import {
+	Wrapper as AppSelWrapper,
+	MenuIcon,
+} from "./ApplicationSelector/Header";
+import { Wrapper as MenuWrapper } from "../DropMenu/DropMenu";
+import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
+import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
+import { BlockWithA } from "./MenuItem";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -24,28 +36,15 @@ jest.mock("../../utils/buildUrl", () => {
 	return modExport;
 });
 
-class ClassAppFrame extends React.Component {
-	render() {
-		const { store, ...props } = this.props;
-		return (
-			<Provider store={store}>
-				<BrowserRouter>
-					<I18n>
-						<FullAppFrame {...props} />
-					</I18n>
-				</BrowserRouter>
-			</Provider>
-		);
-	}
-}
-
-const TestComp1 = () => <div />;
-const TestComp2 = () => <div />;
-const TestComp3 = () => <div />;
+const TestComp1 = () => <div id="view1" />;
+const TestComp2 = () => <div id="view2" />;
+const TestComp3 = () => <div id="view3" />;
 
 describe("AppFrame", () => {
-	let props, toggle, reset;
+	let props, toggle, reset, state, store, modalRoot;
 	beforeEach(() => {
+		toggle = sinon.spy().named("toggle");
+		reset = sinon.spy().named("reset");
 		props = {
 			applications: [
 				{
@@ -71,10 +70,28 @@ describe("AppFrame", () => {
 			aboutMessages: {},
 			prefMessages: {},
 			scopeFilterPlaceholder: { id: "scope.filter", defaultMessage: "Filter" },
+			toggle,
+			reset,
 		};
-
-		toggle = () => {};
-		reset = () => {};
+		state = Immutable.fromJS({
+			applications: { list: [] },
+			locale: { cultures: [] },
+			navigation: { route: { match: {} } },
+			scopes: {},
+			settings: { defaultApp: 0 },
+			toasts: { queue: [] },
+		});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
+		modalRoot = document.createElement("div");
+		modalRoot.id = "modal";
+		document.body.appendChild(modalRoot);
+	});
+	afterEach(() => {
+		document.body.removeChild(modalRoot);
 	});
 
 	it("renders a viewport, top bar and sidebar", () => {
@@ -89,45 +106,93 @@ describe("AppFrame", () => {
 			<TestComp3 key="3" />,
 		];
 		return expect(
-			<AppFrame {...props} {...{ toggle, reset }} />,
-			"to render as",
-			<Base>
-				<ConnectedToastList />
-				<Topbar
-					applications={props.applications}
-					applicationId={props.applicationId}
-					menuLabel={props.menuLabel}
-					menuMessages={props.menuMessages}
-				/>
-				<Sidebar
-					modules={props.modules}
-					activeModules={["foo"]}
-					path="/Foo/bar"
-				/>
-				<ViewPort>
-					<Scope>
+			<Provider store={store}>
+				<MemoryRouter>
+					<I18n>
+						<AppFrame {...props} {...{ toggle, reset }} />
+					</I18n>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Base>
+					<Wrapper>
+						<AppBox>
+							<AppSelWrapper>
+								<MenuIcon />
+							</AppSelWrapper>
+							<AppLabel>
+								<AppLogo />
+							</AppLabel>
+						</AppBox>
+						<MenuWrapper>
+							<Ignore />
+						</MenuWrapper>
+					</Wrapper>
+					<SideBar>
+						<MenuToggle />
+						<Ignore />
+						<Ignore />
+						<Ignore />
+						<Logo />
+					</SideBar>
+					<ViewPort>
+						<ScopeBar>
+							<AlignedButton></AlignedButton>
+						</ScopeBar>
 						<TestComp1 key="1" />
 						<TestComp2 key="2" />
 						<TestComp3 key="3" />
-					</Scope>
-				</ViewPort>
-			</Base>,
+					</ViewPort>
+				</Base>
+			</MemoryRouter>,
 		);
 	});
 
 	it("propagates open flag, toggle and reset functions", () =>
 		expect(
-			<AppFrame open {...props} />,
-			"to render as",
+			<Provider store={store}>
+				<MemoryRouter>
+					<I18n>
+						<AppFrame open {...props} />
+					</I18n>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<Wrapper />) },
+			"with event",
+			{ type: "click", target: "." + getClassName(<BlockWithA />) },
+			"with event",
+			{ type: "click", target: "." + getClassName(<ViewPort />) },
+			"to satisfy",
 			<Base>
-				<Topbar onClick={expect.it("to be", props.reset)} />
-				<Sidebar open toggle={expect.it("to be", props.toggle)} />
-				<ViewPort open onClick={expect.it("to be", props.reset)} />
+				<Wrapper>
+					<Ignore />
+					<Ignore />
+				</Wrapper>
+				<SideBar open>
+					<MenuToggle open />
+					<Logo />
+				</SideBar>
+				<ViewPort open>
+					<Ignore />
+				</ViewPort>
 			</Base>,
+			/* <Topbar onClick={expect.it("to be", props.reset)} />
+				<Sidebar open toggle={expect.it("to be", props.toggle)} />
+				<ViewPort open onClick={expect.it("to be", props.reset)} /> */
+		).then(() =>
+			expect([reset, toggle], "to have calls satisfying", [
+				{ spy: reset },
+				{ spy: toggle },
+				{ spy: reset },
+			]),
 		));
 
 	describe("with state handling", () => {
-		let store, state, outerProps, innerProps, appRoot, modalRoot;
+		let store, state, appRoot;
 		beforeEach(() => {
 			state = Immutable.fromJS({
 				applications: {
@@ -209,47 +274,85 @@ describe("AppFrame", () => {
 				dispatch: sinon.spy().named("dispatch"),
 				getState: () => state,
 			};
-			innerProps = props;
-			outerProps = { store, ...props };
 			appRoot = document.createElement("div");
 			appRoot.id = "app";
 			document.body.appendChild(appRoot);
-			modalRoot = document.createElement("div");
-			modalRoot.id = "modal";
-			document.body.appendChild(modalRoot);
 		});
 		afterEach(() => {
 			try {
 				ReactDOM.unmountComponentAtNode(appRoot);
 			} catch (_) {}
 			document.body.removeChild(appRoot);
-			document.body.removeChild(modalRoot);
 		});
 
 		it("adds toggleable and resettable open flag", () => {
-			const render = ReactDOM.render(
-				<ClassAppFrame {...outerProps} />,
-				appRoot,
-			);
+			const WiredAppFrame = appFrameWiring(PropStruct);
 			return expect(
-				render,
-				"to have rendered",
-				<AppFrame
-					{...innerProps}
-					open={false}
-					toggle={expect.it("to be a function")}
-					reset={expect.it("to be a function")}
-				/>,
+				<Provider store={store}>
+					<MemoryRouter>
+						<I18n>
+							<WiredAppFrame {...props} />
+						</I18n>
+					</MemoryRouter>
+				</Provider>,
+				"to satisfy",
+				<Provider store={store}>
+					<MemoryRouter>
+						<I18n>
+							<PropStruct
+								open={false}
+								toggle={expect.it("to be a function")}
+								reset={expect.it("to be a function")}
+								activeModules={["foo"]}
+								applicationId={3}
+								applications={[
+									{
+										id: 3,
+										name: "Orders",
+										isVisible: true,
+										isAbsoluteUrl: true,
+										url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
+										iconUri:
+											"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
+										displayName: "Marketing Legacy",
+									},
+								]}
+								dispatch={() => {}}
+								loadApplications={() => {}}
+								location={{ pathname: "/Foo/bar" }}
+								modules={[]}
+								menuLabel="TestLabel"
+								menuMessages={{
+									sign_out: { id: "msg.signout" },
+									preferences: { id: "msg.prefs" },
+									about: { id: "msg.about" },
+								}}
+								aboutMessages={{}}
+								prefMessages={{}}
+								scopeFilterPlaceholder={{
+									id: "scope.filter",
+									defaultMessage: "Filter",
+								}}
+							/>
+						</I18n>
+					</MemoryRouter>
+				</Provider>,
 			);
 		});
 
 		it("loads applications if not found", () => {
 			state = state.setIn(["applications", "list"], Immutable.List());
-			const render = ReactDOM.render(
-				<ClassAppFrame {...outerProps} />,
-				appRoot,
-			);
-			return expect(render, "to have rendered", <AppFrame />).then(() =>
+			return expect(
+				<Provider store={store}>
+					<MemoryRouter>
+						<I18n>
+							<FullAppFrame {...props} />
+						</I18n>
+					</MemoryRouter>
+				</Provider>,
+				"when mounted",
+				"to be ok",
+			).then(() =>
 				expect(store.dispatch, "to have calls satisfying", [
 					{
 						args: [
@@ -274,7 +377,7 @@ describe("AppFrame", () => {
 	describe("global styles", () => {
 		it("ensures required styling on html element to make IE11 happy", () =>
 			// render any component from AppFrame.js to ensure jsdom has styles injected
-			expect(<Base />, "when deeply rendered").then(() =>
+			expect(<Base />, "when mounted", "to be ok").then(() =>
 				expect(
 					"html",
 					"as a selector to have style rules",
@@ -285,7 +388,7 @@ describe("AppFrame", () => {
 
 		it("ensures required body styling", () =>
 			// render any component from AppFrame.js to ensure jsdom has styles injected
-			expect(<Base />, "when deeply rendered").then(() =>
+			expect(<Base />, "when mounted", "to be ok").then(() =>
 				expect(
 					"body",
 					"as a selector to have style rules",
@@ -296,7 +399,7 @@ describe("AppFrame", () => {
 
 		it("ensures required viewport styling", () =>
 			// render any component from AppFrame.js to ensure jsdom has styles injected
-			expect(<Base />, "when deeply rendered").then(() =>
+			expect(<Base />, "when mounted", "to be ok").then(() =>
 				expect(
 					"#app",
 					"as a selector to have style rules",
@@ -311,7 +414,8 @@ describe("ViewPort", () => {
 	it("does not translate when closed", () =>
 		expect(
 			<ViewPort />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"not to contain",
 			"translateX",
 		));
@@ -319,7 +423,8 @@ describe("ViewPort", () => {
 	it("translates to the side when open", () =>
 		expect(
 			<ViewPort open />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"transform: translateX(150px);",
 		));

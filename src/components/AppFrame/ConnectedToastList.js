@@ -6,7 +6,7 @@ import ToastList from "../ToastList";
 
 export const TOAST_TIMEOUT = 5; // seconds
 
-const withToastData = connect(
+export const withToastData = connect(
 	state => ({
 		toasts: unwrapImmutable(state.getIn(["toasts", "queue"]).take(3)),
 	}),
