@@ -5,9 +5,10 @@ export const List = styled.div`
 	display: flex;
 	min-height: 10vh;
 	max-height: 90vh;
+	overflow-x: hidden;
 	overflow-y: auto;
 	width: 60vw;
-	padding: 45px 40px 10px;
+	padding: 45px 60px 10px;
 	justify-content: center;
 	flex-wrap: wrap;
 `;
@@ -15,7 +16,7 @@ export const List = styled.div`
 export const Block = styled.div`
 	flex: 0 0 140px;
 	text-align: center;
-	height: 115px;
+	height: 120px;
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
@@ -39,7 +40,7 @@ export const Label = styled.span`
 	}
 	visibility: hidden;
 	display: block;
-	margin-top: 22px;
+	margin: 22px -60px 0;
 	font-family: Roboto, sans-serif;
 	font-size: 14px;
 	text-transform: uppercase;
