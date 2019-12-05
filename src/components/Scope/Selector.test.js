@@ -17,6 +17,7 @@ describe("Selector", () => {
 			reset: () => {},
 			intl: { formatMessage: msg => msg.defaultMessage },
 			getScope: () => {},
+			defaultNodeState: { foo: true, bar: true },
 			filter: "",
 			updateFilter: () => {},
 			filterPlaceholder: { defaultMessage: "Type a scope name" },
@@ -42,6 +43,7 @@ describe("Selector", () => {
 						getNode={props.getScope}
 						openAll={false}
 						closeSelector={props.reset}
+						defaultNodeState={{ foo: true, bar: true }}
 					/>
 				</Wrapper>
 			</SelectorPanel>,

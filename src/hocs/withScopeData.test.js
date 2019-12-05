@@ -32,24 +32,29 @@ describe("withScopeData", () => {
 					name: { "en-CA": "Test 1" },
 					foo: false,
 					bar: false,
+					children: ["test2"],
 				},
 				test2: {
 					id: "test2",
 					name: { "en-US": "Test 2" },
 					foo: false,
 					bar: true,
+					parentScopeId: "test1",
+					children: ["test3", "test4"],
 				},
 				test3: {
 					id: "test3",
 					name: { "en-CA": "Test 3" },
 					foo: true,
 					bar: false,
+					parentScopeId: "test2",
 				},
 				test4: {
 					id: "test4",
 					name: { "en-US": "Test 4" },
 					foo: true,
 					bar: true,
+					parentScopeId: "test2",
 				},
 			},
 		});
@@ -85,11 +90,17 @@ describe("withScopeData", () => {
 								name: "Test 2",
 								foo: false,
 								bar: true,
+								parentScopeId: "test1",
+								children: ["test3", "test4"],
 							})}
 						loadScopes={expect.it("to be a function")}
 						match={{ path: "/", url: "/", params: {}, isExact: true }}
 						location={{ pathname: "/", search: "", hash: "" }}
 						history={expect.it("to be an object")}
+						defaultNodeState={{
+							test1: true,
+							test2: true,
+						}}
 					/>,
 				),
 			)

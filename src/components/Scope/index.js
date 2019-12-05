@@ -48,6 +48,7 @@ export const Scope = ({
 	getScope,
 	updateViewState,
 	reset,
+	defaultNodeState = {},
 	updateNodeState,
 	updateFilter,
 	children,
@@ -70,6 +71,7 @@ export const Scope = ({
 				reset={reset}
 				getScope={getScope}
 				nodeState={nodeState}
+				defaultNodeState={defaultNodeState}
 				updateNodeState={updateNodeState}
 				filter={filter}
 				updateFilter={updateFilter}
