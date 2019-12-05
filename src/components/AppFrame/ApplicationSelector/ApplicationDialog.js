@@ -4,6 +4,8 @@ import styled from "styled-components";
 export const List = styled.div`
 	display: flex;
 	min-height: 10vh;
+	max-height: 90vh;
+	overflow-y: auto;
 	width: 60vw;
 	padding: 45px 40px 10px;
 	justify-content: center;
