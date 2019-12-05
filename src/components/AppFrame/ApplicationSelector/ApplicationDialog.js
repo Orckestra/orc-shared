@@ -21,9 +21,12 @@ export const Block = styled.div`
 export const Link = styled.a``;
 
 export const Logo = styled.img`
+	height: 60px;
+	width: 60px;
 	border-radius: 50%;
 
 	${Link}:hover > & {
+		background-color: rgba(255, 255, 255, 0.65);
 		box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.65);
 	}
 `;
