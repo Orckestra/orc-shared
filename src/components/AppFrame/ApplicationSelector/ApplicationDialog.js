@@ -66,6 +66,7 @@ const ApplicationDialog = ({
 			<Block key={app.name}>
 				<Link
 					href={app.url}
+					target="_blank"
 					onClick={
 						app.name === applicationId
 							? event => {
