@@ -5,10 +5,26 @@ import withInitialLoad from "./withInitialLoad";
 import { currentScopeSelector, scopeGetter } from "../selectors/scope";
 import { getScopes } from "../actions/scopes";
 
-const mapStateToProps = state => ({
-	currentScope: unwrapImmutable(currentScopeSelector(state)),
-	getScope: scopeGetter(state),
-});
+const buildDefaultNodeState = (current, getScopes) => {
+	let node = current;
+	let viewState = {};
+	while ((node = getScopes(node.parentScopeId))) {
+		viewState[node.id] = true;
+	}
+	return viewState;
+};
+
+const mapStateToProps = state => {
+	const props = {
+		currentScope: unwrapImmutable(currentScopeSelector(state)),
+		getScope: scopeGetter(state),
+	};
+	props.defaultNodeState = buildDefaultNodeState(
+		props.currentScope,
+		props.getScope,
+	);
+	return props;
+};
 const mapDispatchToProps = dispatch => ({
 	loadScopes: () => dispatch(getScopes()),
 });

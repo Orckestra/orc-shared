@@ -41,6 +41,7 @@ export const Selector = ({
 	reset,
 	intl,
 	getScope,
+	defaultNodeState,
 	filter,
 	updateFilter,
 	filterPlaceholder,
@@ -65,6 +66,7 @@ export const Selector = ({
 					openAll: !!filter,
 					closeSelector: reset,
 					dark: true,
+					defaultNodeState,
 				}}
 			/>
 		</Wrapper>

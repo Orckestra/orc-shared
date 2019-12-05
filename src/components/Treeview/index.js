@@ -7,11 +7,19 @@ import Node, { TreeContext } from "./Node";
 export const withNodeState = compose(
 	withViewState,
 	/* istanbul ignore next */
-	mapProps(({ name, viewState, updateViewState, ...props }) => ({
-		nodeState: viewState.nodeState,
-		updateNodeState: update => updateViewState("nodeState", update),
-		...props,
-	})),
+	mapProps(
+		({
+			name,
+			viewState,
+			defaultNodeState = {},
+			updateViewState,
+			...props
+		}) => ({
+			nodeState: { ...defaultNodeState, ...viewState.nodeState },
+			updateNodeState: update => updateViewState("nodeState", update),
+			...props,
+		}),
+	),
 );
 
 /* istanbul ignore next */

@@ -35,6 +35,7 @@ describe("Scope", () => {
 				updateViewState={updateViewState}
 				updateNodeState={updateNodeState}
 				updateFilter={updateFilter}
+				defaultNodeState={{ bar: true, feep: true }}
 				viewState={{
 					nodeState: nodeState,
 					show: true,
@@ -54,6 +55,7 @@ describe("Scope", () => {
 						.and("when called with", [mockEvent])}
 					getScope={getScope}
 					nodeState={nodeState}
+					defaultNodeState={{ bar: true, feep: true }}
 					updateNodeState={updateNodeState}
 					filter=""
 					updateFilter={updateFilter}
