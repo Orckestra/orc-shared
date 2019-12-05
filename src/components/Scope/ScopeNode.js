@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Icon from "../Icon";
 import withScopeSelect from "./withScopeSelect";
-import { getThemeProp, switchEnum, ifFlag } from "../../utils";
+import { getThemeProp, switchEnum } from "../../utils";
 
 export const ScopeIcon = styled(Icon).attrs({
 	id: getThemeProp(["icons", "scopeTypes", props => props.type], "cross"),
@@ -23,31 +23,27 @@ export const ContentLabel = styled.div`
 	align-items: center;
 	padding: 10px;
 	width: 100%;
-	${ifFlag(
-		"onClick",
-		css`
+	${switchEnum("type", {
+		Global: css`
+			text-transform: uppercase;
 			&:hover {
 				background-color: #222;
 			}
 		`,
-		css`
+		Virtual: css`
 			color: #999;
 			cursor: default;
 		`,
-	)};
-	${ifFlag(
-		"isGlobal",
-		css`
-			text-transform: uppercase;
+		default: css`
+			&:hover {
+				background-color: #222;
+			}
 		`,
-	)};
+	})};
 `;
 
-export const ScopeNode = ({ type, name, id, isAuthorizedScope, onClick }) => (
-	<ContentLabel
-		isGlobal={type === "Global"}
-		onClick={isAuthorizedScope && type !== "Virtual" ? onClick : undefined}
-	>
+export const ScopeNode = ({ type, name, id, onClick }) => (
+	<ContentLabel type={type} onClick={type === "Virtual" ? undefined : onClick}>
 		<ScopeIcon type={type} />
 		<ScopeText type={type}>{name || id}</ScopeText>
 	</ContentLabel>
