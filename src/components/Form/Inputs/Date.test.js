@@ -2,7 +2,7 @@ import React from "react";
 import { IntlProvider, FormattedDate } from "react-intl";
 import sinon from "sinon";
 import MockDate from "mockdate";
-import { parseISO } from "date-fns";
+import { parseISO } from "date-fns-2";
 import Kalendaryo from "kalendaryo";
 import {
 	PositionedWrapper,
