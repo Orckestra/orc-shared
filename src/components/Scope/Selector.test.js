@@ -58,7 +58,7 @@ describe("Selector", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<Selector {...props} />
 					</IntlProvider>
 				</MemoryRouter>
@@ -74,7 +74,7 @@ describe("Selector", () => {
 					<div>
 						<Wrapper>
 							<InputBox>
-								<IntlProvider>
+								<IntlProvider locale="en">
 									<SearchInput />
 								</IntlProvider>
 							</InputBox>

@@ -46,7 +46,7 @@ describe("Scope", () => {
 		expect(
 			<div>
 				<Provider store={store}>
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<MemoryRouter>
 							<Scope
 								currentScope={{ name: "Test 1" }}
@@ -88,7 +88,7 @@ describe("Scope", () => {
 					<div>
 						<SelectorWrapper>
 							<InputBox>
-								<IntlProvider>
+								<IntlProvider locale="en">
 									<SearchInput />
 								</IntlProvider>
 							</InputBox>
@@ -103,7 +103,7 @@ describe("Scope", () => {
 		expect(
 			<div>
 				<Provider store={store}>
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<MemoryRouter>
 							<Scope currentScope={{ name: "Test 1" }}>
 								<div id="child" />

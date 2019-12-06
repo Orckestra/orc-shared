@@ -28,7 +28,7 @@ describe("FormPage", () => {
 
 	it("renders a form with a single field", () =>
 		expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FormPage
 					fields={fields}
 					values={{ text1: "foo" }}
@@ -37,7 +37,7 @@ describe("FormPage", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<Wrapper>
 					<Form spanWidth={1}>
 						<FieldElements
@@ -52,7 +52,7 @@ describe("FormPage", () => {
 
 	it("still respects 'wide' flag", () =>
 		expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FormPage
 					wide
 					fields={fields}
@@ -62,7 +62,7 @@ describe("FormPage", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<Wrapper>
 					<Form spanWidth={1}>
 						<FieldElements
@@ -77,7 +77,7 @@ describe("FormPage", () => {
 
 	it("renders a form with a multiple fields", () =>
 		expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FormPage
 					cols={[2, 1]}
 					fields={manyFields}
@@ -87,7 +87,7 @@ describe("FormPage", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<Wrapper>
 					<Form spanWidth={2}>
 						<FieldElements

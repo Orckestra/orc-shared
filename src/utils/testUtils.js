@@ -38,10 +38,10 @@ export const PropStruct = props => (
 				value === undefined
 					? null
 					: value === "__ignore"
-					? [<Ignore />, <Ignore />]
+					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
 					: [
-							<dt>{`${key}:`}</dt>,
-							<dd>
+							<dt key={"dt-" + key}>{`${key}:`}</dt>,
+							<dd key={"dd-" + key}>
 								{typeof value === "object" ? (
 									<PropStruct {...value} />
 								) : typeof value === "function" ? (

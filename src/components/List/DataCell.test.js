@@ -12,12 +12,24 @@ describe("DataCell", () => {
 		const columnDef = { fieldName: "test" };
 		const row = { test: "A text", extraneous: "Don't show" };
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
+			<table>
+				<tbody>
+					<tr>
+						<DataCell columnDef={columnDef} row={row} />
+					</tr>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<Text message="A text" />
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<Text message="A text" />
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -25,10 +37,22 @@ describe("DataCell", () => {
 		const columnDef = { fieldName: "test" };
 		const row = { extraneous: "Don't show" };
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
+			<table>
+				<tbody>
+					<tr>
+						<DataCell columnDef={columnDef} row={row} />
+					</tr>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableData />,
+			<table>
+				<tbody>
+					<tr>
+						<TableData />
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -36,12 +60,24 @@ describe("DataCell", () => {
 		const columnDef = { fieldName: ["test", "deep"], defaultValue: "empty" };
 		const row = { extraneous: "Don't show" };
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
+			<table>
+				<tbody>
+					<tr>
+						<DataCell columnDef={columnDef} row={row} />
+					</tr>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<Text message="empty" />
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<Text message="empty" />
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -49,14 +85,26 @@ describe("DataCell", () => {
 		const columnDef = { fieldName: "test", type: "currency", currency: "USD" };
 		const row = { test: 1200, extraneous: "Don't show" };
 		return expect(
-			<IntlProvider>
-				<DataCell columnDef={columnDef} row={row} />
+			<IntlProvider locale="en">
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<span>$1,200.00</span>
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<span>$1,200.00</span>
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -68,14 +116,26 @@ describe("DataCell", () => {
 		};
 		const row = { test: 1200, extraneous: "Don't show", currency: "EUR" };
 		return expect(
-			<IntlProvider>
-				<DataCell columnDef={columnDef} row={row} />
+			<IntlProvider locale="en">
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<span>€1,200.00</span>
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<span>€1,200.00</span>
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -86,14 +146,26 @@ describe("DataCell", () => {
 			extraneous: "Don't show",
 		};
 		return expect(
-			<IntlProvider>
-				<DataCell columnDef={columnDef} row={row} />
+			<IntlProvider locale="en">
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<span>1/23/2018</span>
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<span>1/23/2018</span>
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -104,14 +176,26 @@ describe("DataCell", () => {
 			extraneous: "Don't show",
 		};
 		return expect(
-			<IntlProvider>
-				<DataCell columnDef={columnDef} row={row} />
+			<IntlProvider locale="en">
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<span>1/23/2018</span> <span>9:28 AM</span>
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<span>1/23/2018</span> <span>9:28 AM</span>
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -123,42 +207,74 @@ describe("DataCell", () => {
 			extraneous: "Don't show",
 		};
 		return expect(
-			<DataCell columnDef={columnDef} row={row} rowId="rowIdent" selected />,
+			<table>
+				<tbody>
+					<tr>
+						<DataCell
+							columnDef={columnDef}
+							row={row}
+							rowId="rowIdent"
+							selected
+						/>
+					</tr>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<Checkbox
-					id="select_rowIdent"
-					value={true}
-					data-row-id="rowIdent"
-					onChange={onChange}
-				/>
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<Checkbox
+								id="select_rowIdent"
+								value={true}
+								data-row-id="rowIdent"
+								onChange={onChange}
+							/>
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
 	it("renders a cell with type switch", () => {
+		const onChange = () => {};
 		const columnDef = {
 			fieldName: "test",
 			type: "switch",
 			switch: { onColor: "#ff00ff" },
+			onChange,
 		};
 		const row = {
 			test: false,
 			extraneous: "Don't show",
 		};
 		return expect(
-			<DataCell columnDef={columnDef} row={row} rowId="rowIdent" />,
+			<table>
+				<tbody>
+					<tr>
+						<DataCell columnDef={columnDef} row={row} rowId="rowIdent" />
+					</tr>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<Switch
-					id="switch0"
-					value={false}
-					data-row-id="rowIdent"
-					onColor="#ff00ff"
-				/>
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<Switch
+								id="switch0"
+								value={false}
+								data-row-id="rowIdent"
+								onColor="#ff00ff"
+								onChange={onChange}
+							/>
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -169,12 +285,24 @@ describe("DataCell", () => {
 		};
 		const row = { test: "text", extraneous: "Don't show" };
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
+			<table>
+				<tbody>
+					<tr>
+						<DataCell columnDef={columnDef} row={row} />
+					</tr>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<Text message="TEXT" />
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<Text message="TEXT" />
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -185,12 +313,24 @@ describe("DataCell", () => {
 		};
 		const row = { test: "A text", extraneous: "Don't show" };
 		return expect(
-			<DataCell columnDef={columnDef} row={row} />,
+			<table>
+				<tbody>
+					<tr>
+						<DataCell columnDef={columnDef} row={row} />
+					</tr>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableData>
-				<TestComp test="A text" extraneous="Don't show" />
-			</TableData>,
+			<table>
+				<tbody>
+					<tr>
+						<TableData>
+							<TestComp test="A text" extraneous="Don't show" />
+						</TableData>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 });

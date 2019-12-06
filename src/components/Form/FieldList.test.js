@@ -27,7 +27,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FieldList
 					name="testlistminfixed"
 					rowField={{ type: "TextInput", name: "data" }}
@@ -39,13 +39,13 @@ describe("FieldList", () => {
 			"when mounted",
 			"to satisfy",
 			<List>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data" }]}
 						labelOnly
 					/>
 				</IntlProvider>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data[0]" }]}
 						values={{
@@ -61,7 +61,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FieldList
 					name="testlistminfixed"
 					rowField={{ type: "TextInput", name: "data" }}
@@ -73,7 +73,7 @@ describe("FieldList", () => {
 			"when mounted",
 			"to satisfy",
 			<List>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data" }]}
 						labelOnly
@@ -87,7 +87,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FieldList
 					name="testlistfixedstat"
 					rowField={{ type: "TextInput", name: "data", label: "A label" }}
@@ -105,27 +105,27 @@ describe("FieldList", () => {
 			"when mounted",
 			"to satisfy",
 			<List>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
 						labelOnly
 					/>
 				</IntlProvider>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data" }]}
 						listIndex={0}
 						values={{ id: 4, data: "foo", stat: true }}
 					/>
 				</IntlProvider>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data" }]}
 						listIndex={1}
 						values={{ id: 5, data: "bar", stat: false }}
 					/>
 				</IntlProvider>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data" }]}
 						listIndex={2}
@@ -143,7 +143,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FieldList
 					name="testlisttallrows"
 					rowField={{ type: "TextInput", name: "data", label: "A label" }}
@@ -162,21 +162,21 @@ describe("FieldList", () => {
 			"when mounted",
 			"to satisfy",
 			<List tallRows>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
 						listIndex={0}
 						values={{ id: 4, data: "foo", stat: true }}
 					/>
 				</IntlProvider>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
 						listIndex={1}
 						values={{ id: 5, data: "bar", stat: false }}
 					/>
 				</IntlProvider>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<FieldElements
 						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
 						listIndex={2}
@@ -239,7 +239,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FieldList
 					name="testlistminvar"
 					rowField={{ type: "TextInput", name: "data" }}
@@ -249,7 +249,7 @@ describe("FieldList", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<List>
 					<FieldElements
 						fields={[
@@ -284,7 +284,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FieldList
 					name="testlistvaradd"
 					rowField={{
@@ -312,7 +312,7 @@ describe("FieldList", () => {
 			expect
 				.it(
 					"to satisfy",
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<List>
 							<FieldElements
 								fields={[

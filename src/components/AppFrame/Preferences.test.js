@@ -76,7 +76,7 @@ describe("Preferences", () => {
 
 	it("renders a form dialog", () =>
 		expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<Preferences
 					viewState={{ show: true }}
 					updateViewState={() => {}}
@@ -149,7 +149,7 @@ describe("Preferences", () => {
 
 	it("shows view state fields", () =>
 		expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<Preferences
 					viewState={{ show: true, language: "fr", application: 2 }}
 					messages={messages}
@@ -207,7 +207,7 @@ describe("Preferences", () => {
 		delete language.current;
 		delete applications.current;
 		expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<Preferences
 					viewState={{ show: true }}
 					messages={messages}

@@ -178,7 +178,7 @@ describe("SubPage", () => {
 		expect(
 			<div>
 				<Provider store={store}>
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<MemoryRouter>
 							<SubPage
 								config={{
@@ -216,7 +216,7 @@ describe("SubPage", () => {
 			<div>
 				<Backdrop />
 				<Dialog>
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<Toolbar
 							tools={[
 								{

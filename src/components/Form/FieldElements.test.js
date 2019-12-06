@@ -25,7 +25,7 @@ describe("FieldElements", () => {
 		() =>
 			expect(
 				mount(
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<FieldElements
 							fields={[
 								{
@@ -69,7 +69,7 @@ describe("FieldElements", () => {
 				).childNodes,
 				"to satisfy",
 				[
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<InputField
 							key="thing"
 							name="thing"
@@ -79,7 +79,7 @@ describe("FieldElements", () => {
 							someProp={12.5}
 						/>
 					</IntlProvider>,
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<Fieldset label="A field set">
 							<FieldElements
 								fields={[
@@ -93,7 +93,7 @@ describe("FieldElements", () => {
 							/>
 						</Fieldset>
 					</IntlProvider>,
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<Combination label="Combined fields" proportions={["300px", 100]}>
 							<FieldElements
 								fields={[
@@ -105,7 +105,7 @@ describe("FieldElements", () => {
 							/>
 						</Combination>
 					</IntlProvider>,
-					<IntlProvider>
+					<IntlProvider locale="en">
 						<FieldList
 							name="list"
 							values={values}
@@ -121,7 +121,7 @@ describe("FieldElements", () => {
 
 	it("handles absent update function and values", () =>
 		expect(
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<FieldElements
 					fields={[
 						{
@@ -133,7 +133,7 @@ describe("FieldElements", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider>
+			<IntlProvider locale="en">
 				<React.Fragment>
 					<InputField update={undefined} value={undefined} type="Something" />
 				</React.Fragment>

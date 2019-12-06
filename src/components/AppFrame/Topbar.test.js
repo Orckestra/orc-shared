@@ -79,7 +79,7 @@ describe("Topbar", () => {
 	it("renders a top bar of an app", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<Topbar {...props} />
 				</IntlProvider>
 			</Provider>,
@@ -104,7 +104,7 @@ describe("Topbar", () => {
 	it("doesn't break if no current app", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<Topbar {...props} applicationId="wrong" />
 				</IntlProvider>
 			</Provider>,
@@ -126,7 +126,7 @@ describe("Topbar", () => {
 	it("doesn't break if no apps at all", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider>
+				<IntlProvider locale="en">
 					<Topbar {...props} applications={undefined} />
 				</IntlProvider>
 			</Provider>,
