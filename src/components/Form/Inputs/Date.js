@@ -7,7 +7,7 @@ import {
 	isToday,
 	format,
 	parseISO,
-} from "date-fns";
+} from "date-fns-2";
 import { FormattedDate, injectIntl } from "react-intl";
 import Kalendaryo from "kalendaryo";
 import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";

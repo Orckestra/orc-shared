@@ -34,7 +34,7 @@ describe("TreeView", () => {
 		getNode = name => nodes[name];
 		rootId = "root1";
 		openAll = false;
-		nodeState = { testNode1: true };
+		nodeState = { testNode1: true, testNode3: false };
 		updateNodeState = () => {};
 		otherProps = { someProp: "A string", otherThing: { isObj: true } };
 	});
@@ -67,7 +67,7 @@ describe("withNodeState", () => {
 		state = Immutable.fromJS({
 			view: {
 				test1: {
-					nodeState: { node1: true },
+					nodeState: { node1: true, node2: false },
 				},
 			},
 		});
@@ -83,13 +83,17 @@ describe("withNodeState", () => {
 			expect(
 				<Provider store={store}>
 					<MemoryRouter>
-						<EnhNode name="test1" foo="bar" />
+						<EnhNode
+							name="test1"
+							foo="bar"
+							defaultNodeState={{ node2: true, node3: true }}
+						/>
 					</MemoryRouter>
 				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<TestNode
-					nodeState={{ node1: true }}
+					nodeState={{ node1: true, node2: false, node3: true }}
 					updateNodeState={expect.it("to be a function")}
 					foo="bar"
 				/>,

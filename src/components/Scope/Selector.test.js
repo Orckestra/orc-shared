@@ -31,6 +31,7 @@ describe("Selector", () => {
 			reset: () => {},
 			intl: { formatMessage: msg => msg.defaultMessage },
 			getScope: id => nodes[id],
+			defaultNodeState: { foo: true, bar: true },
 			filter: "",
 			updateFilter: () => {},
 			filterPlaceholder: { defaultMessage: "Type a scope name" },

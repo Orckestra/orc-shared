@@ -76,27 +76,10 @@ describe("ScopeNode", () => {
 				type="Virtual"
 				id="scopeId"
 				onClick={onClick}
-				isAuthorizedScope
 			/>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel>
-				<ScopeIcon type="Virtual" />
-				<ScopeText>A scope</ScopeText>
-			</ContentLabel>,
-		));
-
-	it("handles unauthorized virtual scopes", () =>
-		expect(
-			<ScopeNode
-				name="A scope"
-				type="Virtual"
-				id="scopeId"
-				onClick={onClick}
-			/>,
-			"when mounted",
-			"to satisfy",
-			<ContentLabel>
+			<ContentLabel type="Virtual">
 				<ScopeIcon type="Virtual" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
@@ -104,46 +87,37 @@ describe("ScopeNode", () => {
 });
 
 describe("ContentLabel", () => {
-	it("sets css for Global clickable scope", () =>
+	it("sets css for Global scope", () =>
 		expect(
-			<ContentLabel isGlobal onClick={() => {}} />,
+			<ContentLabel type="Global" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
 				.it("to contain", "text-transform: uppercase;")
-				.and("to contain", ":hover {background-color: #222;}"),
+				.and("to contain", ":hover {background-color: #222;}")
+				.and("not to contain", "color: #999; cursor: default;"),
 		));
 
-	it("sets css for other clickable scopes", () =>
+	it("sets css for Virtual scopes", () =>
 		expect(
-			<ContentLabel onClick={() => {}} />,
+			<ContentLabel type="Virtual" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("not to contain", "text-transform: uppercase;")
-				.and("to contain", ":hover {background-color: #222;}"),
-		));
-
-	it("sets css for Global unclickable scope", () =>
-		expect(
-			<ContentLabel isGlobal />,
-			"when mounted",
-			"to have style rules satisfying",
-			expect
-				.it("to contain", "text-transform: uppercase;")
-				.and("to contain", "cursor: default;")
+				.it("to contain", "color: #999; cursor: default;")
+				.and("not to contain", "text-transform: uppercase;")
 				.and("not to contain", ":hover"),
 		));
 
-	it("sets css for other unclickable scopes", () =>
+	it("sets css for other scopes", () =>
 		expect(
-			<ContentLabel />,
+			<ContentLabel type="someOther" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("not to contain", "text-transform: uppercase;")
-				.and("to contain", "cursor: default;")
-				.and("not to contain", ":hover"),
+				.it("not to contain", "color: #999; cursor: default;")
+				.and("not to contain", "text-transform: uppercase;")
+				.and("to contain", ":hover {background-color: #222;}"),
 		));
 });
 

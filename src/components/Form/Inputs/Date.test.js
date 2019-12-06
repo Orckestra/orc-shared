@@ -4,7 +4,7 @@ import { Ignore } from "unexpected-reaction";
 import { mount } from "react-dom-testing";
 import sinon from "sinon";
 import MockDate from "mockdate";
-import { parseISO } from "date-fns";
+import { parseISO } from "date-fns-2";
 import Kalendaryo from "kalendaryo";
 import {
 	PositionedWrapper,

@@ -55,6 +55,7 @@ describe("Scope", () => {
 								updateViewState={updateViewState}
 								updateNodeState={updateNodeState}
 								updateFilter={updateFilter}
+								defaultNodeState={{ bar: true, feep: true }}
 								viewState={{
 									nodeState: nodeState,
 									show: true,
@@ -233,6 +234,7 @@ describe("setupScope", () => {
 					}}
 					getScope={() => {}}
 					loadScopes={() => {}}
+					defaultNodeState={{}}
 					updateViewState={() => {}}
 					reset={() => {}}
 					updateFilter={() => {}}

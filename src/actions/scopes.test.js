@@ -19,7 +19,8 @@ describe("getScopes", () => {
 		expect(getScopes, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [GET_SCOPES_REQUEST, GET_SCOPES_SUCCESS, GET_SCOPES_FAILURE],
-				endpoint: "URL: my/scope/Order/tree {}",
+				endpoint:
+					'URL: scopes/Global {"IncludeChildren":true,"IncludeCurrency":true}',
 				method: "GET",
 				body: undefined,
 				credentials: "include",
