@@ -7,7 +7,7 @@ import Sidebar, { Bar, EnhancedMenuItem, MenuToggle, Logo } from "./Sidebar";
 import MenuItem from "./MenuItem";
 
 describe("Sidebar", () => {
-	let modules;
+	let state, store, modules;
 	beforeEach(() => {
 		modules = [
 			{
@@ -21,86 +21,133 @@ describe("Sidebar", () => {
 				label: "Second page",
 			},
 		];
+		state = Immutable.fromJS({
+			navigation: { route: { match: {} } },
+		});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 	});
 
 	it("renders a sidebar with app selector and page menu", () =>
 		expect(
-			<Sidebar modules={modules} path="/Global/second" />,
-			"to render as",
-			<Bar>
-				<MenuToggle />
-				<EnhancedMenuItem
-					icon="cars"
-					id="first"
-					label="First page"
-					path="/Global/second"
-				/>
-				<EnhancedMenuItem
-					icon="person"
-					id="second"
-					label="Second page"
-					path="/Global/second"
-				/>
-				<Logo />
-			</Bar>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<Sidebar modules={modules} path="/Global/second" />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<MemoryRouter>
+					<Bar>
+						<MenuToggle />
+						<EnhancedMenuItem
+							icon="cars"
+							id="first"
+							label="First page"
+							path="/Global/second"
+						/>
+						<EnhancedMenuItem
+							icon="person"
+							id="second"
+							label="Second page"
+							path="/Global/second"
+						/>
+						<Logo />
+					</Bar>
+				</MemoryRouter>
+			</Provider>,
 		));
 
 	it("renders a sidebar showing alerts", () =>
 		expect(
-			<Sidebar
-				modules={modules}
-				path="/Global/second"
-				activeModules={["first"]}
-			/>,
-			"to render as",
-			<Bar>
-				<MenuToggle />
-				<EnhancedMenuItem
-					icon="cars"
-					id="first"
-					label="First page"
-					path="/Global/second"
-					alert
-				/>
-				<EnhancedMenuItem
-					icon="person"
-					id="second"
-					label="Second page"
-					path="/Global/second"
-				/>
-			</Bar>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<Sidebar
+						modules={modules}
+						path="/Global/second"
+						activeModules={["first"]}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<MemoryRouter>
+					<Bar>
+						<MenuToggle />
+						<EnhancedMenuItem
+							icon="cars"
+							id="first"
+							label="First page"
+							path="/Global/second"
+							alert
+						/>
+						<EnhancedMenuItem
+							icon="person"
+							id="second"
+							label="Second page"
+							path="/Global/second"
+						/>
+						<Logo />
+					</Bar>
+				</MemoryRouter>
+			</Provider>,
 		));
 
 	it("renders an open sidebar", () =>
 		expect(
-			<Sidebar open modules={modules} path="/Global/second" />,
-			"to render as",
-			<Bar>
-				<MenuToggle open />
-				<EnhancedMenuItem
-					open
-					icon="cars"
-					id="first"
-					label="First page"
-					path="/Global/second"
-				/>
-				<EnhancedMenuItem
-					open
-					icon="person"
-					id="second"
-					label="Second page"
-					path="/Global/second"
-				/>
-			</Bar>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<Sidebar open modules={modules} path="/Global/second" />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<MemoryRouter>
+					<Bar>
+						<MenuToggle open />
+						<EnhancedMenuItem
+							open
+							icon="cars"
+							id="first"
+							label="First page"
+							path="/Global/second"
+						/>
+						<EnhancedMenuItem
+							open
+							icon="person"
+							id="second"
+							label="Second page"
+							path="/Global/second"
+						/>
+						<Logo />
+					</Bar>
+				</MemoryRouter>
+			</Provider>,
 		));
 
 	it("renders a minimal sidebar", () =>
 		expect(
-			<Sidebar />,
-			"to render as",
-			<Bar>
-				<MenuToggle />
-			</Bar>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<Sidebar />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<MemoryRouter>
+					<Bar>
+						<MenuToggle />
+						<Logo />
+					</Bar>
+				</MemoryRouter>
+			</Provider>,
 		));
 });
 
@@ -130,8 +177,11 @@ describe("EnhancedMenuItem", () => {
 					<EnhancedMenuItem id="route" path="/Global/somewhere" />
 				</MemoryRouter>
 			</Provider>,
-			"to deeply render as",
-			<MenuItem href="/Global/route" />,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<MenuItem href="/Global/route" />
+			</MemoryRouter>,
 		));
 
 	it("sets the active flag if path matches href", () =>
@@ -141,8 +191,11 @@ describe("EnhancedMenuItem", () => {
 					<EnhancedMenuItem id="route" path="/Global/route/subpath" />
 				</MemoryRouter>
 			</Provider>,
-			"to deeply render as",
-			<MenuItem active href="/Global/route" />,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<MenuItem active href="/Global/route" />
+			</MemoryRouter>,
 		));
 });
 
@@ -160,7 +213,8 @@ describe("MenuToggle", () => {
 						<MenuToggle toggle={toggle} />
 					</MemoryRouter>
 				</ThemeProvider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<MenuItem
 					menuToggle
 					icon="menu"
@@ -175,7 +229,8 @@ describe("MenuToggle", () => {
 						<MenuToggle toggle={toggle} open />
 					</MemoryRouter>
 				</ThemeProvider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<MenuItem
 					menuToggle
 					open
@@ -203,7 +258,8 @@ describe("MenuToggle", () => {
 						<MenuToggle toggle={toggle} />
 					</MemoryRouter>
 				</ThemeProvider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<MenuItem
 					menuToggle
 					icon="closed"
@@ -218,7 +274,8 @@ describe("MenuToggle", () => {
 						<MenuToggle toggle={toggle} open />
 					</MemoryRouter>
 				</ThemeProvider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<MenuItem
 					menuToggle
 					open

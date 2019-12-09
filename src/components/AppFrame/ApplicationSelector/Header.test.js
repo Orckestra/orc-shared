@@ -14,7 +14,8 @@ describe("Header", () => {
 	it("renders an icon and label", () =>
 		expect(
 			<Header open={true} application={application} toggle={toggle} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper onClick={toggle}>
 				<MenuIcon />
 			</Wrapper>,

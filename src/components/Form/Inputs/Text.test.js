@@ -1,4 +1,5 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import { FormInput, getEventUpdater, TextInput, EmailInput } from "./Text";
 
@@ -10,9 +11,14 @@ describe("TextInput", () => {
 
 	it("renders a text input with change handler", () =>
 		expect(
-			<TextInput update={update} value="foo" otherProp />,
-			"to render as",
-			<FormInput type="text" onChange={getEventUpdater(update)} otherProp />,
+			<IntlProvider locale="en">
+				<TextInput update={update} value="foo" otherProp />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<FormInput type="text" onChange={getEventUpdater(update)} otherProp />
+			</IntlProvider>,
 		));
 });
 
@@ -24,9 +30,14 @@ describe("EmailInput", () => {
 
 	it("renders a text input with change handler", () =>
 		expect(
-			<EmailInput update={update} value="foo" otherProp />,
-			"to render as",
-			<FormInput type="email" onChange={getEventUpdater(update)} otherProp />,
+			<IntlProvider locale="en">
+				<EmailInput update={update} value="foo" otherProp />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<FormInput type="email" onChange={getEventUpdater(update)} otherProp />
+			</IntlProvider>,
 		));
 });
 

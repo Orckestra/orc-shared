@@ -78,10 +78,10 @@ const renderToolComponent = ({ key, type, subType, ...props }) => {
 };
 
 // Fill in the tool types
-toolComponents.input = props => <ToolbarInput {...props} />;
+toolComponents.input = ToolbarInput;
 toolComponents.input.displayName = "ToolInput";
 
-toolComponents.button = ({ label, ...props }) => (
+toolComponents.button = ({ label = {}, ...props }) => (
 	<ToolbarButton {...props} icon={label.icon} label={label.text} />
 );
 toolComponents.button.displayName = "ToolButton";

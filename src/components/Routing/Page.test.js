@@ -1,110 +1,96 @@
 import React from "react";
-import { Switch, Route } from "react-router";
-import FullPage from "./FullPage";
-import SubPage from "./SubPage";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
 import Page from "./Page";
-import withErrorBoundary from "../../hocs/withErrorBoundary";
-import withWaypointing from "./withWaypointing";
+import { Backdrop, Dialog } from "./SubPage";
+import { Bar, toolComponents } from "../Toolbar";
 
-const View = () => <div />;
-const ShownView = withErrorBoundary("/nabble")(withWaypointing(View));
+const { button: ToolbarButton, separator: ToolbarSeparator } = toolComponents;
 
-const Sub1 = () => <div />;
-const Sub2 = () => <div />;
+const View = () => <div id="view" />;
+const Sub1 = () => <div id="sub1" />;
+const Sub2 = () => <div id="sub2" />;
 
 describe("Page", () => {
-	it("sets out Routes to render its view and descendant pages", () =>
+	let state, store;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: { route: {} },
+		});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
+	});
+
+	it("shows the page view when its path is matched", () =>
 		expect(
-			<Page
-				component={View}
-				path="/nabble"
-				pages={{
-					"/foo": { component: Sub1 },
-					"/bar": { component: Sub2 },
-				}}
-			/>,
-			"to render as",
-			<React.Fragment>
-				<Switch>
-					<Route
-						path="/nabble/foo"
-						render={expect.it(
-							"when called with",
-							[{ location: {}, match: {} }],
-							"to satisfy",
-							<FullPage path="/nabble/foo" config={{ component: Sub1 }} />,
-						)}
-					/>
-					<Route
-						path="/nabble/bar"
-						render={expect.it(
-							"when called with",
-							[{ location: {}, match: {} }],
-							"to satisfy",
-							<FullPage path="/nabble/bar" config={{ component: Sub2 }} />,
-						)}
-					/>
-					<Route
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/nabble"]}>
+					<Page
+						component={View}
 						path="/nabble"
-						render={expect.it(
-							"when called with",
-							[{ location: {}, match: { url: "/nabble" } }],
-							"to satisfy",
-							<ShownView
-								mapFrom="/nabble"
-								location={{}}
-								match={{ url: "/nabble" }}
-							/>,
-						)}
+						pages={{
+							"/foo": { component: Sub1 },
+							"/bar": { component: Sub2 },
+						}}
 					/>
-				</Switch>
-			</React.Fragment>,
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<View />,
 		));
 
-	it("sets out Routes to render its view and subpages", () =>
-		// view / subpage
+	it("shows nested page when its path is matched", () =>
 		expect(
-			<Page
-				component={View}
-				path="/nabble"
-				subpages={{
-					"/foo": { component: Sub1 },
-					"/bar": { component: Sub2 },
-				}}
-			/>,
-			"to render as",
-			<React.Fragment>
-				<Switch>
-					<Route
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/nabble/bar"]}>
+					<Page
+						component={View}
 						path="/nabble"
-						render={expect.it(
-							"when called with",
-							[{ location: {}, match: { url: "/nabble" } }],
-							"to satisfy",
-							<ShownView mapFrom="/nabble" />,
-						)}
+						pages={{
+							"/foo": { component: Sub1 },
+							"/bar": { component: Sub2 },
+						}}
 					/>
-				</Switch>
-				<Switch>
-					<Route
-						path="/nabble/foo"
-						render={expect.it(
-							"when called with",
-							[{ location: {}, match: {} }],
-							"to satisfy",
-							<SubPage root="/nabble" config={{ component: Sub1 }} />,
-						)}
-					/>
-					<Route
-						path="/nabble/bar"
-						render={expect.it(
-							"when called with",
-							[{ location: {}, match: {} }],
-							"to satisfy",
-							<SubPage root="/nabble" config={{ component: Sub2 }} />,
-						)}
-					/>
-				</Switch>
-			</React.Fragment>,
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Sub2 />,
+		));
+
+	it("renders both its own view as well as matched subpage", () =>
+		expect(
+			<div>
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/nabble/bar"]}>
+						<Page
+							component={View}
+							path="/nabble"
+							subpages={{
+								"/foo": { component: Sub1 },
+								"/bar": { component: Sub2 },
+							}}
+						/>
+					</MemoryRouter>
+				</Provider>
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<View />
+				<Backdrop />
+				<Dialog>
+					<Bar>
+						<ToolbarButton label={{ icon: "arrow-left" }} />
+						<ToolbarSeparator />
+					</Bar>
+					<Sub2 />
+				</Dialog>
+			</div>,
 		));
 });

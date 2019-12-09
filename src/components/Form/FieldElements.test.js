@@ -1,4 +1,6 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
+import { mount } from "react-dom-testing";
 import Fieldset from "./Fieldset";
 import Combination from "./Combination";
 import FieldList from "./FieldList";
@@ -22,100 +24,119 @@ describe("FieldElements", () => {
 			"combination fields, and lists",
 		() =>
 			expect(
-				<FieldElements
-					fields={[
-						{
-							type: "Something",
-							name: "thing",
-							someProp: 12.5,
-						},
-						{
-							type: "Fieldset",
-							name: "set",
-							label: "A field set",
-							fields: [
-								{
-									type: "Whatever",
-									name: "stuff",
-								},
-							],
-						},
-						{
-							type: "Combination",
-							name: "combo",
-							label: "Combined fields",
-							proportions: ["300px", 100],
-							fields: [
-								{ type: "AnotherThing", name: "item" },
-								{ type: "EvenMore", name: "otheritem" },
-							],
-						},
-						{
-							type: "List",
-							name: "list",
-							rowCount: 15,
-							someProp: "Is this way",
-						},
-					]}
-					values={values}
-					getUpdater={getUpdater}
-				/>,
-				"to render as",
-				<React.Fragment>
-					<InputField
-						key="thing"
-						name="thing"
-						type="Something"
-						update={expect.it("when called", "to equal", "thing")}
-						value="foo"
-						someProp={12.5}
-					/>
-					<Fieldset label="A field set">
+				mount(
+					<IntlProvider locale="en">
 						<FieldElements
 							fields={[
 								{
-									type: "Whatever",
-									name: "stuff",
+									type: "Something",
+									name: "thing",
+									someProp: 12.5,
+								},
+								{
+									type: "Fieldset",
+									name: "set",
+									label: "A field set",
+									fields: [
+										{
+											type: "Whatever",
+											name: "stuff",
+										},
+									],
+								},
+								{
+									type: "Combination",
+									name: "combo",
+									label: "Combined fields",
+									proportions: ["300px", 100],
+									fields: [
+										{ type: "AnotherThing", name: "item" },
+										{ type: "EvenMore", name: "otheritem" },
+									],
+								},
+								{
+									type: "List",
+									name: "list",
+									rowCount: 15,
+									someProp: "Is this way",
+									rowField: { name: "listStuff", type: "Text" },
 								},
 							]}
 							values={values}
 							getUpdater={getUpdater}
 						/>
-					</Fieldset>
-					<Combination label="Combined fields" proportions={["300px", 100]}>
-						<FieldElements
-							fields={[
-								{ type: "AnotherThing", name: "item" },
-								{ type: "EvenMore", name: "otheritem" },
-							]}
-							values={values}
-							getUpdater={getUpdater}
+					</IntlProvider>,
+				).childNodes,
+				"to satisfy",
+				[
+					<IntlProvider locale="en">
+						<InputField
+							key="thing"
+							name="thing"
+							type="Something"
+							update={expect.it("when called", "to equal", "thing")}
+							value="foo"
+							someProp={12.5}
 						/>
-					</Combination>
-					<FieldList
-						name="list"
-						values={values}
-						getUpdater={getUpdater}
-						rowCount={15}
-						someProp="Is this way"
-					/>
-				</React.Fragment>,
+					</IntlProvider>,
+					<IntlProvider locale="en">
+						<Fieldset label="A field set">
+							<FieldElements
+								fields={[
+									{
+										type: "Whatever",
+										name: "stuff",
+									},
+								]}
+								values={values}
+								getUpdater={getUpdater}
+							/>
+						</Fieldset>
+					</IntlProvider>,
+					<IntlProvider locale="en">
+						<Combination label="Combined fields" proportions={["300px", 100]}>
+							<FieldElements
+								fields={[
+									{ type: "AnotherThing", name: "item" },
+									{ type: "EvenMore", name: "otheritem" },
+								]}
+								values={values}
+								getUpdater={getUpdater}
+							/>
+						</Combination>
+					</IntlProvider>,
+					<IntlProvider locale="en">
+						<FieldList
+							name="list"
+							values={values}
+							rowField={{ name: "listStuff", type: "Text" }}
+							getUpdater={getUpdater}
+							rowCount={15}
+							someProp="Is this way"
+						/>
+					</IntlProvider>,
+				],
 			),
 	);
 
 	it("handles absent update function and values", () =>
 		expect(
-			<FieldElements
-				fields={[
-					{
-						type: "Something",
-						name: "thing",
-					},
-				]}
-			/>,
-			"to render as",
-			<React.Fragment>
-				<InputField update={undefined} value={undefined} />
-			</React.Fragment>,
+			<IntlProvider locale="en">
+				<FieldElements
+					fields={[
+						{
+							type: "Something",
+							name: "thing",
+						},
+					]}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<React.Fragment>
+					<InputField update={undefined} value={undefined} type="Something" />
+				</React.Fragment>
+			</IntlProvider>,
 		));
 });

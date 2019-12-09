@@ -9,8 +9,8 @@ describe("withScrollBox", () => {
 		expect(withScrollBox, "when called with", [TestComp]).then(EnhComp =>
 			expect(
 				<EnhComp other="prop">This is inside the box</EnhComp>,
-				"when deeply rendered",
-				"to have rendered",
+				"when mounted",
+				"to satisfy",
 				<Scrollbox>
 					<TestComp
 						other="prop"

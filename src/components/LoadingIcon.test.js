@@ -9,7 +9,8 @@ describe("LoadingIcon", () => {
 			<ThemeProvider theme={{}}>
 				<LoadingIcon />
 			</ThemeProvider>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Placeholder icon="loading" animate />,
 		));
 
@@ -18,7 +19,8 @@ describe("LoadingIcon", () => {
 			<ThemeProvider theme={{ icons: { loading: "spinner" } }}>
 				<LoadingIcon />
 			</ThemeProvider>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Placeholder icon="spinner" animate />,
 		));
 });

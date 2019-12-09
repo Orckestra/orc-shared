@@ -73,7 +73,6 @@ export const getUpdater = memoize(update =>
 	memoize(name => value => update(name, value)),
 );
 
-// Use FieldElements to build a form?
 export const Preferences = ({
 	save,
 	clear,
@@ -124,6 +123,7 @@ export const Preferences = ({
 
 export const withPreferences = connect(
 	state => ({
+		name: PREFS_NAME,
 		language: {
 			current: currentLocale(state),
 			options: unwrapImmutable(orderedCultureOptionList(state)),
@@ -151,4 +151,4 @@ export const withPreferences = connect(
 
 const WiredPrefs = withPreferences(withViewState(Preferences));
 
-export default props => <WiredPrefs name={PREFS_NAME} {...props} />;
+export default props => <WiredPrefs {...props} />;

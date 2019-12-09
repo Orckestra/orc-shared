@@ -20,7 +20,8 @@ describe("HeadCell", () => {
 		};
 		return expect(
 			<HeadCell columnDef={columnDef} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableHeader width={42}>
 				<HeadBox>
 					<Text message={"Test column"} />
@@ -35,7 +36,8 @@ describe("HeadCell", () => {
 		};
 		return expect(
 			<HeadCell columnDef={columnDef} />,
-			"to render with all children as",
+			"when mounted",
+			"to satisfy",
 			<TableHeader>
 				<HeadBox />
 			</TableHeader>,
@@ -50,10 +52,13 @@ describe("HeadCell", () => {
 		const rowIds = ["a", "b", "c"];
 		return expect(
 			<HeadCell columnDef={columnDef} rowIds={rowIds} />,
-			"to render as",
-			<TableHeader>
+			"when mounted",
+			"with event",
+			{ type: "change", target: "input" },
+			"to satisfy",
+			<TableHeader select>
 				<HeadBox>
-					<Checkbox value={false} onChange={expect.it("when called")} />
+					<Checkbox id="select_headRow" value={false} />
 				</HeadBox>
 			</TableHeader>,
 		).then(() =>
@@ -71,10 +76,13 @@ describe("HeadCell", () => {
 		const rowIds = ["a", "b", "c"];
 		return expect(
 			<HeadCell columnDef={columnDef} rowIds={rowIds} allSelected />,
-			"to render as",
-			<TableHeader>
+			"when mounted",
+			"with event",
+			{ type: "change", target: "input" },
+			"to satisfy",
+			<TableHeader select>
 				<HeadBox>
-					<Checkbox value={true} onChange={expect.it("when called")} />
+					<Checkbox id="select_headRow" value={true} />
 				</HeadBox>
 			</TableHeader>,
 		).then(() =>
@@ -90,10 +98,13 @@ describe("HeadCell", () => {
 		};
 		return expect(
 			<HeadCell columnDef={columnDef} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableHeader onClick={columnDef.sort}>
-				<Text message={{ id: "test.label", defaultMessage: "Test column" }} />
-				<SortMark />
+				<HeadBox>
+					<span>Test column</span>
+					<SortMark />
+				</HeadBox>
 			</TableHeader>,
 		);
 	});
@@ -107,10 +118,13 @@ describe("HeadCell", () => {
 		};
 		return expect(
 			<HeadCell columnDef={columnDef} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableHeader>
-				<Text message={{ id: "test.label", defaultMessage: "Test column" }} />
-				<SortMark direction="asc" />
+				<HeadBox>
+					<span>Test column</span>
+					<SortMark direction="asc" />
+				</HeadBox>
 			</TableHeader>,
 		);
 	});
@@ -124,10 +138,13 @@ describe("HeadCell", () => {
 		};
 		return expect(
 			<HeadCell columnDef={columnDef} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableHeader>
-				<Text message={{ id: "test.label", defaultMessage: "Test column" }} />
-				<SortMark direction="desc" />
+				<HeadBox>
+					<span>Test column</span>
+					<SortMark direction="desc" />
+				</HeadBox>
 			</TableHeader>,
 		);
 	});
@@ -140,7 +157,8 @@ describe("TableHeader", () => {
 	it("sets a width if selection column", () =>
 		expect(
 			<SwitchedTableHeader select />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"width: 56px;",
 		));
@@ -148,7 +166,8 @@ describe("TableHeader", () => {
 	it("sets a width if told to", () =>
 		expect(
 			<SwitchedTableHeader width={55} />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"width: 55%;",
 		));
@@ -156,15 +175,26 @@ describe("TableHeader", () => {
 
 describe("SortMark", () => {
 	it("renders a downwards arrow when ascending", () =>
-		expect(<SortMark direction="asc" />, "to render as", <UpMark />));
+		expect(
+			<SortMark direction="asc" />,
+			"when mounted",
+			"to satisfy",
+			<UpMark />,
+		));
 
 	it("renders an upwards arrow when descending", () =>
-		expect(<SortMark direction="desc" />, "to render as", <DownMark />));
+		expect(
+			<SortMark direction="desc" />,
+			"when mounted",
+			"to satisfy",
+			<DownMark />,
+		));
 
 	it("renders bidirectional arrows when no direction set", () =>
 		expect(
 			<SortMark />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<MarkBox>
 				<UpMark />
 				<DownMark />

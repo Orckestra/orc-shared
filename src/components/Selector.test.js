@@ -1,5 +1,6 @@
 import React from "react";
 import sinon from "sinon";
+import { Ignore } from "unexpected-reaction";
 import FullSelector, {
 	Selector,
 	InnerSelect,
@@ -18,26 +19,27 @@ describe("Selector", () => {
 				id="test"
 				clickOption={() => () => {}}
 				options={[
-					{ value: 1, label: "Opt 1" },
-					{ value: 2, label: "Opt 2" },
-					{ value: 3, label: "Opt 3" },
-					{ value: 4, label: "Opt 4" },
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
 				]}
-				value={3}
+				value="3"
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper>
-				<InnerSelect id="test" value={3}>
-					<option key={1} value={1}>
+				<InnerSelect id="test" value="3">
+					<option key="1" value="1">
 						Opt 1
 					</option>
-					<option key={2} value={2}>
+					<option key="2" value="2">
 						Opt 2
 					</option>
-					<option key={3} value={3}>
+					<option key="3" value="3">
 						Opt 3
 					</option>
-					<option key={4} value={4}>
+					<option key="4" value="4">
 						Opt 4
 					</option>
 				</InnerSelect>
@@ -45,12 +47,12 @@ describe("Selector", () => {
 					<SelectedValue>Opt 3</SelectedValue>
 				</SelectBox>
 				<Dropdown>
-					<Option key={1}>Opt 1</Option>
-					<Option key={2}>Opt 2</Option>
-					<Option key={3} active>
+					<Option key="1">Opt 1</Option>
+					<Option key="2">Opt 2</Option>
+					<Option key="3" active>
 						Opt 3
 					</Option>
-					<Option key={4}>Opt 4</Option>
+					<Option key="4">Opt 4</Option>
 				</Dropdown>
 			</Wrapper>,
 		));
@@ -61,37 +63,40 @@ describe("Selector", () => {
 				id="test"
 				clickOption={() => () => {}}
 				options={[
-					{ value: 1, label: "Opt 1" },
-					{ value: 2, label: "Opt 2" },
-					{ value: 3, label: "Opt 3" },
-					{ value: 4, label: "Opt 4" },
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
 				]}
 				value=""
 				required
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper>
 				<InnerSelect id="test" required>
 					<option></option>
-					<option key={1} value={1}>
+					<option key="1" value="1">
 						Opt 1
 					</option>
-					<option key={2} value={2}>
+					<option key="2" value="2">
 						Opt 2
 					</option>
-					<option key={3} value={3}>
+					<option key="3" value="3">
 						Opt 3
 					</option>
-					<option key={4} value={4}>
+					<option key="4" value="4">
 						Opt 4
 					</option>
 				</InnerSelect>
-				<SelectBox htmlFor="test"></SelectBox>
+				<SelectBox htmlFor="test">
+					<Placeholder />
+				</SelectBox>
 				<Dropdown>
-					<Option key={1}>Opt 1</Option>
-					<Option key={2}>Opt 2</Option>
-					<Option key={3}>Opt 3</Option>
-					<Option key={4}>Opt 4</Option>
+					<Option key="1">Opt 1</Option>
+					<Option key="2">Opt 2</Option>
+					<Option key="3">Opt 3</Option>
+					<Option key="4">Opt 4</Option>
 				</Dropdown>
 			</Wrapper>,
 		));
@@ -103,17 +108,20 @@ describe("Selector", () => {
 				placeholder="This space for rent"
 				clickOption={() => () => {}}
 				options={[
-					{ value: 1, label: "Opt 1" },
-					{ value: 2, label: "Opt 2" },
-					{ value: 3, label: "Opt 3" },
-					{ value: 4, label: "Opt 4" },
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
 				]}
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper>
+				<Ignore />
 				<SelectBox htmlFor="test">
 					<Placeholder>This space for rent</Placeholder>
 				</SelectBox>
+				<Ignore />
 			</Wrapper>,
 		));
 
@@ -128,21 +136,18 @@ describe("Selector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
-					value={3}
+					value="3"
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"change",
-				{ target: { value: 2 } },
-				"on",
-				<select />,
+				{ type: "change", target: "select", value: "2" },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [2] }]),
+				expect(updater, "to have calls satisfying", [{ args: ["2"] }]),
 			));
 
 		it("can update value when clicking a visual option", () =>
@@ -150,20 +155,18 @@ describe("Selector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
-					value={3}
+					value="3"
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"click",
-				"on",
-				<Option key="1" />,
+				{ type: "click", target: '[data-test-id="1"]' },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [1] }]),
+				expect(updater, "to have calls satisfying", [{ args: ["1"] }]),
 			));
 	});
 });

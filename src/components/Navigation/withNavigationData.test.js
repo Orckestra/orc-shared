@@ -7,15 +7,64 @@ import { push } from "connected-react-router";
 import { REMOVE_TAB } from "../../actions/navigation";
 import { resetLastScope } from "../../selectors/navigation";
 import withNavigationData, { getPageData } from "./withNavigationData";
+import { PropStruct } from "../../utils/testUtils";
 
-const TestComp = () => <div />;
-const TestComp1 = () => <div />;
-const TestComp2 = () => <div />;
-const TestComp3 = () => <div />;
-const TestComp4 = () => <div />;
-const TestComp5 = () => <div />;
-const TestComp6 = () => <div />;
-const TestComp7 = () => <div />;
+const TestComp = ({
+	close = () => () => () => {},
+	history,
+	location,
+	match,
+	modules,
+	staticContext,
+	...props
+}) => (
+	<div
+		data-test-id="comp-0"
+		onChange={event =>
+			close(
+				props.moduleName,
+				props.moduleHref,
+			)(...JSON.parse(event.target.value || "[]"))(event)
+		}
+	>
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp1 = props => (
+	<div data-test-id="comp-1">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp2 = props => (
+	<div data-test-id="comp-2">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp3 = props => (
+	<div data-test-id="comp-3">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp4 = props => (
+	<div data-test-id="comp-4">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp5 = props => (
+	<div data-test-id="comp-5">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp6 = props => (
+	<div data-test-id="comp-6">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp7 = props => (
+	<div data-test-id="comp-7">
+		<PropStruct {...props} />
+	</div>
+);
 
 describe("withNavigation", () => {
 	let state, store, modules;
@@ -68,7 +117,7 @@ describe("withNavigation", () => {
 					match: {
 						url: "/TestScope/test/page1",
 						path: "/:scope/test/page1",
-						params: { scope: "Global", page2: "bar" },
+						params: { scope: "TestScope", page2: "bar" },
 					},
 				},
 			},
@@ -115,7 +164,8 @@ describe("withNavigation", () => {
 						<EnhComp modules={modules} />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<TestComp
 					pages={[
 						{
@@ -130,6 +180,9 @@ describe("withNavigation", () => {
 							href: "/TestScope/test/page1",
 							mappedFrom: "/TestScope/test/page1",
 							active: true,
+							params: "__ignore",
+							path: "__ignore",
+							outsideScope: false,
 						},
 						{
 							label: {
@@ -142,6 +195,8 @@ describe("withNavigation", () => {
 							href: "/OtherScope/test/foo",
 							mappedFrom: "/OtherScope/test/foo",
 							active: false,
+							params: "__ignore",
+							path: "__ignore",
 							outsideScope: true,
 						},
 						{
@@ -155,6 +210,8 @@ describe("withNavigation", () => {
 							href: "/OtherScope/test/bar",
 							mappedFrom: "/OtherScope/test/bar",
 							active: false,
+							params: "__ignore",
+							path: "__ignore",
 							outsideScope: true,
 						},
 						{
@@ -166,6 +223,9 @@ describe("withNavigation", () => {
 							href: "/TestScope/test/page3",
 							mappedFrom: "/TestScope/test/page3",
 							active: false,
+							params: "__ignore",
+							path: "__ignore",
+							outsideScope: false,
 						},
 						{
 							href: "/TestScope/test/notexist",
@@ -196,8 +256,9 @@ describe("withNavigation", () => {
 						<EnhComp modules={modules} />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
-				<TestComp />,
+				"when mounted",
+				"to satisfy",
+				<TestComp moduleName="" moduleHref="" pages="__ignore" />,
 			),
 		);
 	});
@@ -268,7 +329,8 @@ describe("withNavigation", () => {
 							<EnhComp modules={modules} />
 						</MemoryRouter>
 					</Provider>,
-					"to deeply render as",
+					"when mounted",
+					"to satisfy",
 					<TestComp
 						pages={[
 							{
@@ -283,6 +345,8 @@ describe("withNavigation", () => {
 								href: "/TestScope/test/page2/sub",
 								mappedFrom: "/TestScope/test/page2",
 								active: false,
+								outsideScope: false,
+								params: "__ignore",
 							},
 						]}
 						moduleName="test"
@@ -304,17 +368,16 @@ describe("withNavigation", () => {
 						<EnhComp modules={modules} />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
-				<TestComp
-					close={expect.it(
-						"called with",
-						["test", "/TestScope/test"],
-						"called with",
-						["/TestScope/test/page2/info", "/TestScope/test/page2"],
-						"called with",
-						[fakeEvent],
-					)}
-				/>,
+				"when mounted",
+				"with event",
+				{
+					type: "change",
+					value: JSON.stringify([
+						"/TestScope/test/page2/info",
+						"/TestScope/test/page2",
+					]),
+					data: fakeEvent,
+				},
 			).then(() =>
 				Promise.all([
 					expect(store.dispatch, "to have calls satisfying", [
@@ -346,17 +409,16 @@ describe("withNavigation", () => {
 						<EnhComp modules={modules} />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
-				<TestComp
-					close={expect.it(
-						"called with",
-						["test", "/TestScope/test"],
-						"called with",
-						["/TestScope/test/page2/info", "/TestScope/test/page2"],
-						"called with",
-						[fakeEvent],
-					)}
-				/>,
+				"when mounted",
+				"with event",
+				{
+					type: "change",
+					value: JSON.stringify([
+						"/TestScope/test/page2/info",
+						"/TestScope/test/page2",
+					]),
+					data: fakeEvent,
+				},
 			).then(() =>
 				Promise.all([
 					expect(store.dispatch, "to have calls satisfying", [

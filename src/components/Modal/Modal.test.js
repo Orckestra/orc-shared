@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import FullModal, { Modal } from "./index";
+import ReactDOM from "react-dom";
+import { Modal } from "./index";
 import Wrapper from "./Wrapper";
 import Background from "./Background";
 import Dialog from "./Dialog";
@@ -8,9 +9,22 @@ const TestComp1 = () => <div />;
 const TestComp2 = () => <div />;
 
 describe("Modal", () => {
-	let toggle;
+	let appRoot, modalRoot, toggle;
 	beforeEach(() => {
+		appRoot = document.createElement("div");
+		appRoot.id = "app";
+		document.body.appendChild(appRoot);
+		modalRoot = document.createElement("div");
+		modalRoot.id = "modal";
+		document.body.appendChild(modalRoot);
 		toggle = () => {};
+	});
+	afterEach(() => {
+		try {
+			ReactDOM.unmountComponentAtNode(appRoot);
+		} catch (_) {}
+		document.body.removeChild(appRoot);
+		document.body.removeChild(modalRoot);
 	});
 
 	it("renders the structure of a modal dialog", () =>
@@ -22,7 +36,8 @@ describe("Modal", () => {
 				content={toggle => <TestComp2 toggle={toggle} />}
 				look="dark"
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Fragment>
 				<TestComp1 toggle={toggle} />
 				<Wrapper timeout={300}>
@@ -33,23 +48,4 @@ describe("Modal", () => {
 				</Wrapper>
 			</Fragment>,
 		));
-
-	describe("with state handling", () => {
-		it("adds toggleable show flag", () =>
-			expect(
-				<FullModal
-					anchor={toggle => <TestComp1 toggle={toggle} />}
-					content={toggle => <TestComp2 toggle={toggle} />}
-					look="dark"
-				/>,
-				"to render as",
-				<Modal
-					show={false}
-					toggle={expect.it("to be a function")}
-					anchor={expect.it("to be a function")}
-					content={expect.it("to be a function")}
-					look="dark"
-				/>,
-			));
-	});
 });

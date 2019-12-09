@@ -21,8 +21,4 @@ const withHideOnSelect = withHandlers({
 	},
 });
 
-export default compose(
-	withHref,
-	withNavigationLink,
-	withHideOnSelect,
-);
+export default compose(withHref, withNavigationLink, withHideOnSelect);

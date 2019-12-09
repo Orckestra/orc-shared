@@ -19,7 +19,8 @@ describe("DropMenu", () => {
 				menuItems={[]}
 				className="test-class"
 			/>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper>
 				<Anchor onClick={toggle} menuLabel="TestLabel" className="test-class" />
 				<Menu menuItems={[]} toggle={toggle} />
@@ -29,7 +30,8 @@ describe("DropMenu", () => {
 	it("flags anchor and menu when open", () =>
 		expect(
 			<DropMenu open toggle={toggle} menuLabel="TestLabel" menuItems={[]} />,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper>
 				<Anchor onClick={toggle} open menuLabel="TestLabel" className="" />
 				<Menu open menuItems={[]} toggle={toggle} />
@@ -44,7 +46,8 @@ describe("DropMenu", () => {
 					menuItems={[]}
 					className="test-class"
 				/>,
-				"to render as",
+				"when mounted",
+				"to satisfy",
 				<DropMenu
 					toggle={expect.it("to be a function")}
 					open={false}

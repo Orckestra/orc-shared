@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Ignore } from "unexpected-reaction";
 import { ThemeProvider } from "styled-components";
 import { shade } from "polished";
-import Text from "./Text";
 import Icon from "./Icon";
 import FullToastList, {
 	Toast,
@@ -19,36 +19,25 @@ class RenderToast extends React.Component {
 
 describe("ToastList", () => {
 	describe("full render", () => {
-		let appRoot, modalRoot;
+		let appRoot, toastRoot;
 		beforeEach(() => {
 			appRoot = document.createElement("div");
 			appRoot.id = "app";
 			document.body.appendChild(appRoot);
-			modalRoot = document.getElementById("toast");
+			toastRoot = document.getElementById("toast");
 		});
 		afterEach(() => {
 			try {
 				ReactDOM.unmountComponentAtNode(appRoot);
-			} catch (_) {}
+			} catch (err) {
+				console.error(err);
+			}
 			document.body.removeChild(appRoot);
 		});
 
 		it("renders in a portal", () => {
-			const render = ReactDOM.render(
-				<RenderToast toasts={[{ key: 1 }]} />,
-				appRoot,
-			);
-			return expect(
-				render,
-				"queried for",
-				<Text message="[No message]" />,
-			).then(elm => {
-				let node = ReactDOM.findDOMNode(elm);
-				while (node.parentNode !== document.body) {
-					node = node.parentNode;
-				}
-				return expect(node, "to be", modalRoot);
-			});
+			ReactDOM.render(<RenderToast toasts={[{ key: 1 }]} />, appRoot);
+			return expect(toastRoot, "to contain", <span>[No message]</span>);
 		});
 	});
 });
@@ -56,40 +45,48 @@ describe("ToastList", () => {
 describe("Toast", () => {
 	it("shows a message", () =>
 		expect(
-			<Toast message="this is a toast" />,
-			"to render as",
-			<ToastBox>
-				<Text message="this is a toast" />
+			<Toast in message="this is a toast" />,
+			"when mounted",
+			"to satisfy",
+			<ToastBox in>
+				<Ignore />
+				<span>this is a toast</span>
 			</ToastBox>,
 		));
 
 	it("shows a translated message", () =>
 		expect(
 			<Toast
+				in
 				message={{ id: "test.toast", defaultMessage: "This is a toast" }}
 			/>,
-			"to render as",
-			<ToastBox>
-				<Text
-					message={{ id: "test.toast", defaultMessage: "This is a toast" }}
-				/>
+			"when mounted",
+			"to satisfy",
+			<ToastBox in>
+				<Ignore />
+				<span>This is a toast</span>
 			</ToastBox>,
 		));
 
 	it("shows an icon", () =>
 		expect(
-			<Toast type="confirm" />,
-			"to render as",
-			<ToastBox>
+			<Toast in type="confirm" />,
+			"when mounted",
+			"to satisfy",
+			<ToastBox in>
 				<ToastIcon type="confirm" />
+				<Ignore />
 			</ToastBox>,
 		));
 
 	it("shows a close icon if a close function is given", () =>
 		expect(
-			<Toast closeFunc={() => {}} />,
-			"to render as",
-			<ToastBox>
+			<Toast in closeFunc={() => {}} />,
+			"when mounted",
+			"to satisfy",
+			<ToastBox in>
+				<Ignore />
+				<Ignore />
 				<CloseIcon onClick={expect.it("to be a function")} />
 			</ToastBox>,
 		));
@@ -114,27 +111,30 @@ describe("Toast", () => {
 				<ThemeProvider theme={theme}>
 					<Toast in />
 				</ThemeProvider>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"background-color: #999;",
-			).and("when deeply rendered", "to contain", <Icon id="bubble-chat-2" />));
+			).and("when mounted", "to contain", <Icon id="bubble-chat-2" />));
 
 		it("renders a set type", () =>
 			expect(
 				<ThemeProvider theme={theme}>
 					<Toast in type="test" />
 				</ThemeProvider>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"background-color: #ff0000;",
-			).and("when deeply rendered", "to contain", <Icon id="test-icon" />));
+			).and("when mounted", "to contain", <Icon id="test-icon" />));
 
 		it("darkens close icon background on hover", () =>
 			expect(
 				<ThemeProvider theme={theme}>
 					<CloseIcon type="" />
 				</ThemeProvider>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				":hover {background-color: " + shade(0.3, "#999") + ";}",
 			));
@@ -144,7 +144,8 @@ describe("Toast", () => {
 				<ThemeProvider theme={theme}>
 					<CloseIcon type="test" />
 				</ThemeProvider>,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				":hover {background-color: " + shade(0.3, "#ff0000") + ";}",
 			));

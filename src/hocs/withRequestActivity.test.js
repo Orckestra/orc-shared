@@ -4,7 +4,24 @@ import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import withRequestActivity from "./withRequestActivity";
 
-const TestComp = () => <div />;
+const TestComp = props => (
+	<div>
+		{"{\n  " +
+			Object.entries(props)
+				.map(
+					([prop, value]) =>
+						prop +
+						": " +
+						(typeof value === "function"
+							? "function"
+							: typeof value === "string"
+							? '"' + value + '"'
+							: value),
+				)
+				.join(",\n  ") +
+			"\n}"}
+	</div>
+);
 
 describe("withRequestActivity", () => {
 	let state, store;
@@ -35,8 +52,9 @@ describe("withRequestActivity", () => {
 						<EnhComp />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
-				<TestComp active />,
+				"when mounted",
+				"to have text",
+				expect.it("to contain", "active: true"),
 			),
 		));
 
@@ -54,8 +72,9 @@ describe("withRequestActivity", () => {
 						<EnhComp />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
-				<TestComp active={false} />,
+				"when mounted",
+				"to have text",
+				expect.it("to contain", "active: false"),
 			),
 		));
 });

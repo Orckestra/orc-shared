@@ -6,24 +6,24 @@ describe("Text", () => {
 	it("renders a simple message", () =>
 		expect(
 			<Text message="Test message" />,
-			"renders elements",
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<span>Test message</span>,
 		));
 
 	it("renders an empty string", () =>
 		expect(
 			<Text message="" />,
-			"renders elements",
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<span>{""}</span>,
 		));
 
 	it("renders a translated message", () =>
 		expect(
 			<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />,
-			"renders elements",
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<FormattedMessage id="test.msg" defaultMessage="Test message" />,
 		));
 
@@ -36,8 +36,8 @@ describe("Text", () => {
 					values: { foo: 3 },
 				}}
 			/>,
-			"renders elements",
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<FormattedMessage
 				id="test.msg"
 				defaultMessage="Test message {foo}"
@@ -53,16 +53,16 @@ describe("Text", () => {
 					defaultMessage: "Test message {foo}",
 				}}
 			/>,
-			"renders elements",
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Placeholder />,
 		));
 
 	it("renders an error", () =>
 		expect(
 			<Text message="Test message" error={{ message: "This failed" }} />,
-			"renders elements",
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<span
 				style={{
 					color: "red",
@@ -70,15 +70,16 @@ describe("Text", () => {
 					fontWeight: "bold",
 				}}
 			>
-				Errored: This failed
+				{"Errored: "}
+				{"This failed"}
 			</span>,
 		));
 
 	it("renders an error if no message given", () =>
 		expect(
 			<Text />,
-			"renders elements",
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<span
 				style={{
 					color: "red",
@@ -86,7 +87,8 @@ describe("Text", () => {
 					fontWeight: "bold",
 				}}
 			>
-				Errored: No message provided
+				{"Errored: "}
+				{"No message provided"}
 			</span>,
 		));
 });

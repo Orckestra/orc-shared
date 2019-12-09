@@ -3,7 +3,13 @@ import sinon from "sinon";
 import { Row, TableRow, withRowClick } from "./Row";
 import DataCell from "./DataCell";
 
-const TestComp = () => <div />;
+const TestComp = ({ onClick }) => (
+	<div onClick={onClick}>
+		<input />
+		<select />
+		<label />
+	</div>
+);
 
 describe("Row", () => {
 	it("it renders a data cell for each column definition", () => {
@@ -18,19 +24,20 @@ describe("Row", () => {
 				onClick={onClick}
 				bgColor="#ff0000"
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TableRow onClick={onClick} bgColor="#ff0000">
 				<DataCell
 					key="a"
 					rowId="rowIdentifier"
-					row={expect.it("to be", row)}
-					columnDef={expect.it("to be", columnDefs[0])}
+					row={row}
+					columnDef={columnDefs[0]}
 				/>
 				<DataCell
 					key="b"
 					rowId="rowIdentifier"
-					row={expect.it("to be", row)}
-					columnDef={expect.it("to be", columnDefs[1])}
+					row={row}
+					columnDef={columnDefs[1]}
 				/>
 			</TableRow>,
 		);
@@ -38,17 +45,17 @@ describe("Row", () => {
 });
 
 describe("withRowClick", () => {
-	let rowOnClick, domElm;
+	let rowOnClick;
 	beforeEach(() => {
 		rowOnClick = sinon.spy().named("rowOnClick");
-		domElm = document.createElement("div");
 	});
 
 	it("only exists if an onClick handler is given from above", () =>
 		expect(withRowClick, "when called with", [TestComp]).then(EnhComp =>
 			expect(
 				<EnhComp rowId="ident" />,
-				"to render with all attributes as",
+				"when mounted",
+				"to satisfy",
 				<TestComp rowId="ident" />,
 			),
 		));
@@ -60,39 +67,48 @@ describe("withRowClick", () => {
 			expect(withRowClick, "when called with", [TestComp]).then(EnhComp =>
 				expect(
 					<EnhComp onClick={rowOnClick} rowId="ident" />,
-					"to render as",
-					<TestComp
-						onClick={expect
-							.it("called with", [
-								{
-									target: domElm,
-								},
-							])
-							.and("called with", [
-								{
-									target: document.createElement("input"),
-								},
-							])
-							.and("called with", [
-								{
-									target: document.createElement("select"),
-								},
-							])
-							.and("called with", [
-								{
-									target: document.createElement("label"),
-								},
-							])
-							.and("called with", [
-								{
-									target: domElm,
-								},
-							])}
-					/>,
+					"when mounted",
+					"with event",
+					"click",
+					"with event",
+					{
+						type: "click",
+						target: "input",
+					},
+					"with event",
+					{
+						type: "click",
+						target: "select",
+					},
+					"with event",
+					{
+						type: "click",
+						target: "label",
+					},
+					"with event",
+					"click",
+					"to satisfy",
+					<TestComp />,
 				).then(() =>
 					expect(rowOnClick, "to have calls satisfying", [
-						{ args: [{ target: { dataset: { rowId: "ident" } } }] },
-						{ args: [{ target: { dataset: { rowId: "ident" } } }] },
+						{
+							args: [
+								{
+									target: expect.it("to have attributes", {
+										"data-row-id": "ident",
+									}),
+								},
+							],
+						},
+						{
+							args: [
+								{
+									target: expect.it("to have attributes", {
+										"data-row-id": "ident",
+									}),
+								},
+							],
+						},
 					]),
 				),
 			),
@@ -101,28 +117,31 @@ describe("withRowClick", () => {
 
 describe("TableRow", () => {
 	it("renders with a hover transition", () =>
-		expect(<TableRow />, "to render style rules").then(styles =>
-			expect(
-				styles,
-				"to contain",
-				"transition: background-color 0.2s ease-in;",
-			).and("to contain", ":hover {background-color: #f3f3f3;}"),
+		expect(
+			<TableRow />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "transition: background-color 0.2s ease-in;")
+				.and("to contain", ":hover {background-color: #f3f3f3;}"),
 		));
 
 	it("renders a specific background color when given", () =>
 		expect(
 			<TableRow bgColor="#ff0000" />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"background-color: #ff0000;",
 		));
 
 	it("renders no transition if given a bgColor prop", () =>
-		expect(<TableRow bgColor="#ff0000" />, "to render style rules").then(
-			styles =>
-				expect(styles, "not to match", /transition: background-color/).and(
-					"not to match",
-					/:hover \{[^}]*background-color:[^}]*\}/,
-				),
+		expect(
+			<TableRow bgColor="#ff0000" />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("not to match", /transition: background-color/)
+				.and("not to match", /:hover \{[^}]*background-color:[^}]*\}/),
 		));
 });

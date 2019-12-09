@@ -17,7 +17,8 @@ describe("SmallButton", () => {
 				altText="Alternative"
 				otherProp
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<RoundButton id="testId" otherProp onClick={update}>
 				<ButtonIcon id="test-icon" />
 				<Tooltip message="Alternative" />
@@ -27,7 +28,8 @@ describe("SmallButton", () => {
 	it("adds an ugly default alt text if none given, shaming the dev", () =>
 		expect(
 			<SmallButton id="testId" icon="test-icon" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<RoundButton id="testId">
 				<ButtonIcon id="test-icon" />
 				<Tooltip message="[altText]" />

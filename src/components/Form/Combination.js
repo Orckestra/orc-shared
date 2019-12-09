@@ -14,15 +14,14 @@ export const CombiningRow = styled.div`
 		margin-right: 0;
 	}
 	${props =>
-		props.proportions.map(
-			(width, index) =>
-				width
-					? css`
+		props.proportions.map((width, index) =>
+			width
+				? css`
 		& > ${FieldBox}:nth-child(${index + 1}) {
 			flex: ${typeof width === "string" ? "0 0 " + width : "0 1 " + width + "%"};
 		}
 	`
-					: "",
+				: "",
 		)};
 `;
 

@@ -31,26 +31,21 @@ describe("Sidepanel", () => {
 	});
 
 	it("renders a PanelDrawer in a portal", () => {
-		const render = ReactDOM.render(
+		ReactDOM.render(
 			<RenderSidepanel in>
 				<div id="inner">Foo</div>
 			</RenderSidepanel>,
 			appRoot,
 		);
-		return expect(render, "queried for", <div id="inner" />).then(elm => {
-			let node = ReactDOM.findDOMNode(elm);
-			while (node.parentNode !== document.body) {
-				node = node.parentNode;
-			}
-			return expect(node, "to be", modalRoot);
-		});
+		return expect(modalRoot, "queried for", "div#inner", "to be ok");
 	});
 
 	describe("PanelDrawer", () => {
 		it("sets the width it is given", () =>
 			expect(
 				<PanelDrawer in width="25vw" />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"width: 25vw;",
 			));
@@ -58,7 +53,8 @@ describe("Sidepanel", () => {
 		it("sets width by default", () =>
 			expect(
 				<PanelDrawer in />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"width: 200px;",
 			));
@@ -66,7 +62,8 @@ describe("Sidepanel", () => {
 		it("sets transition according to timeout", () =>
 			expect(
 				<PanelDrawer in timeout={300} />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"transition: transform 300ms",
 			));
@@ -74,7 +71,8 @@ describe("Sidepanel", () => {
 		it("sets default transition", () =>
 			expect(
 				<PanelDrawer in />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"transition: transform 1000ms",
 			));

@@ -40,6 +40,7 @@ const renderByType = (value, def, rowId, selected, row) => {
 		case "select":
 			return (
 				<Checkbox
+					id={"select_" + rowId}
 					value={selected}
 					data-row-id={rowId}
 					onChange={def.onChange}

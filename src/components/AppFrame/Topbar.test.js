@@ -4,6 +4,7 @@ import sinon from "sinon";
 import { Provider } from "react-redux";
 import { RSAA } from "redux-api-middleware";
 import { IntlProvider } from "react-intl";
+import { Ignore } from "unexpected-reaction";
 import { VIEW_STATE_SET_FIELD } from "../../actions/view";
 import {
 	SIGN_OUT_REQUEST,
@@ -12,7 +13,11 @@ import {
 } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
-import ApplicationSelector from "./ApplicationSelector";
+import {
+	Wrapper as AppSelWrapper,
+	MenuIcon,
+} from "./ApplicationSelector/Header";
+import { Wrapper as MenuWrapper } from "../DropMenu/DropMenu";
 import Topbar, {
 	withUserMenu,
 	Wrapper,
@@ -20,7 +25,6 @@ import Topbar, {
 	CurrentApp,
 	AppLabel,
 	AppLogo,
-	Menu,
 } from "./Topbar";
 
 jest.mock("../../utils/buildUrl", () => {
@@ -31,8 +35,14 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Topbar", () => {
-	let applications, props, clicker, menuMessages;
+	let state, store, applications, props, clicker, menuMessages, modalRoot;
 	beforeEach(() => {
+		state = Immutable.fromJS({});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		applications = [
 			{
 				name: "current",
@@ -58,53 +68,94 @@ describe("Topbar", () => {
 			applications,
 			applicationId: "current",
 		};
+		modalRoot = document.createElement("div");
+		modalRoot.id = "modal";
+		document.body.appendChild(modalRoot);
+	});
+	afterEach(() => {
+		document.body.removeChild(modalRoot);
 	});
 
 	it("renders a top bar of an app", () =>
 		expect(
-			<Topbar {...props} />,
-			"to render as",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Topbar {...props} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
 			<Wrapper onClick={clicker}>
 				<AppBox>
-					<ApplicationSelector
-						{...{
-							applications,
-							applicationId: "current",
-						}}
-					/>
-					<CurrentApp displayName="Test label" iconUri="/test/url" />
+					<AppSelWrapper>
+						<MenuIcon />
+					</AppSelWrapper>
+					<AppLabel>
+						<AppLogo src="/test/url" />
+						Test label
+					</AppLabel>
 				</AppBox>
-				<Menu menuLabel="TestLabel" messages={menuMessages} />
+				<MenuWrapper>
+					<Ignore />
+				</MenuWrapper>
 			</Wrapper>,
 		));
 
 	it("doesn't break if no current app", () =>
 		expect(
-			<Topbar {...props} applicationId="wrong" />,
-			"to render as",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Topbar {...props} applicationId="wrong" />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
 			<Wrapper onClick={clicker}>
 				<AppBox>
-					<CurrentApp />
+					<Ignore />
+					<AppLabel>
+						<AppLogo />
+					</AppLabel>
 				</AppBox>
-				<Menu menuLabel="TestLabel" messages={menuMessages} />
+				<MenuWrapper>
+					<Ignore />
+				</MenuWrapper>
 			</Wrapper>,
 		));
 
 	it("doesn't break if no apps at all", () =>
 		expect(
-			<Topbar {...props} applications={undefined} />,
-			"to render as",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Topbar {...props} applications={undefined} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
 			<Wrapper onClick={clicker}>
 				<AppBox>
-					<CurrentApp />
+					<Ignore />
+					<AppLabel>
+						<AppLogo />
+					</AppLabel>
 				</AppBox>
-				<Menu menuLabel="TestLabel" messages={menuMessages} />
+				<MenuWrapper>
+					<Ignore />
+				</MenuWrapper>
 			</Wrapper>,
 		));
 });
 
 describe("withUserMenu", () => {
-	const TestComp = () => <div />;
+	const TestComp = ({ menuItems }) => (
+		<div>
+			{menuItems.map(({ handler, icon, label }) => (
+				<button onClick={handler} id={icon}>
+					{icon} - {label}
+				</button>
+			))}
+		</div>
+	);
 	let state, store, messages;
 	beforeEach(() => {
 		state = Immutable.fromJS({});
@@ -129,23 +180,29 @@ describe("withUserMenu", () => {
 							<EnhComp messages={messages} />
 						</IntlProvider>
 					</Provider>,
-					"when deeply rendered",
-					"to contain",
+					"when mounted",
+					"with event",
+					{ type: "click", target: "#logout-1" },
+					"with event",
+					{ type: "click", target: "#settings-cogwheel" },
+					"with event",
+					{ type: "click", target: "#infomation-circle" },
+					"to satisfy",
 					<TestComp
 						menuItems={[
 							{
 								label: "Sign out",
-								handler: expect.it("called"),
+								handler: () => {},
 								icon: "logout-1",
 							},
 							{
 								label: "Preferences",
-								handler: expect.it("called"),
+								handler: () => {},
 								icon: "settings-cogwheel",
 							},
 							{
 								label: "About",
-								handler: expect.it("called"),
+								handler: () => {},
 								icon: "infomation-circle",
 							},
 						]}
@@ -191,7 +248,8 @@ describe("CurrentApp", () => {
 	it("renders the app logo and name", () =>
 		expect(
 			<CurrentApp displayName="Test label" iconUri="/test/url" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<AppLabel>
 				<AppLogo src="/test/url" />
 				Test label

@@ -13,19 +13,16 @@ export const currentLocale = createSelector(
 	(data, defaultLocale) => data.get("locale") || defaultLocale,
 );
 
-export const cultures = createSelector(
-	localeData,
-	locale => locale.get("cultures"),
+export const cultures = createSelector(localeData, locale =>
+	locale.get("cultures"),
 );
 
-export const cultureList = createSelector(
-	cultures,
-	cultures => cultures.keySeq(),
+export const cultureList = createSelector(cultures, cultures =>
+	cultures.keySeq(),
 );
 
-export const defaultCulture = createSelector(
-	localeData,
-	locale => locale.get("defaultCulture"),
+export const defaultCulture = createSelector(localeData, locale =>
+	locale.get("defaultCulture"),
 );
 
 export const orderedCultureList = createSelector(

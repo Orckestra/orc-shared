@@ -71,22 +71,33 @@ describe("Navigation", () => {
 					<Navigation modules={modules} />
 				</MemoryRouter>
 			</Provider>,
-			"to deeply render as",
-			<Bar
-				pages={[
-					{
-						label: "Thing",
-					},
-					{
-						label: "Page 1",
-					},
-					{
-						label: "Page 2",
-					},
-				]}
-				moduleName="test"
-				moduleHref="/TestScope/test"
-				close={expect.it("to be a function")}
-			/>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Bar
+					pages={[
+						{
+							label: "Thing",
+							icon: "thing",
+							href: "/TestScope/test",
+							mappedFrom: "/TestScope/test",
+							active: true,
+						},
+						{
+							label: "Page 1",
+							href: "/TestScope/test/page1",
+							mappedFrom: "/TestScope/test/page1",
+						},
+						{
+							label: "Page 2",
+							href: "/TestScope/test/page2",
+							mappedFrom: "/TestScope/test/page2",
+						},
+					]}
+					moduleName="test"
+					moduleHref="/TestScope/test"
+					close={expect.it("to be a function")}
+				/>
+			</MemoryRouter>,
 		));
 });

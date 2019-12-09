@@ -92,6 +92,7 @@ const HeadCell = ({ columnDef, rowIds = [], allSelected }) => (
 		<HeadBox>
 			{columnDef.type === "select" ? (
 				<Checkbox
+					id="select_headRow"
 					value={!!allSelected}
 					onChange={() => columnDef.onChange(allSelected ? [] : rowIds)}
 				/>

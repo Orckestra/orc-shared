@@ -10,7 +10,8 @@ describe("Anchor", () => {
 				menuLabel="A Label"
 				className="propagateThis"
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Header onClick={onClick} className="propagateThis">
 				A Label
 				<Indicator />
@@ -21,7 +22,8 @@ describe("Anchor", () => {
 	it("renders an open menu anchor", () =>
 		expect(
 			<Anchor open menuLabel="A Label" className="propagateThis" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Header open className="propagateThis">
 				A Label
 				<Indicator open />
@@ -39,7 +41,8 @@ describe("Anchor", () => {
 		it("shows the highlight color when closed", () =>
 			expect(
 				<Indicator theme={theme} />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #ff00ff;",
 			));
@@ -47,7 +50,8 @@ describe("Anchor", () => {
 		it("shows the text color when open", () =>
 			expect(
 				<Indicator theme={theme} open />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #ccc;",
 			));
@@ -64,7 +68,8 @@ describe("Anchor", () => {
 		it("shows the text color when closed", () =>
 			expect(
 				<Header theme={theme} />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #ccc;",
 			));
@@ -72,7 +77,8 @@ describe("Anchor", () => {
 		it("shows the highlight color when open", () =>
 			expect(
 				<Header theme={theme} open />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #ff00ff;",
 			));
@@ -80,7 +86,8 @@ describe("Anchor", () => {
 		it("shows the highlight color when hovering", () =>
 			expect(
 				<Header theme={theme} />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to match",
 				/:hover\s*\{[^}]*\bcolor: #ff00ff;[^}]*\}/,
 			));

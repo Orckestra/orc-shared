@@ -8,7 +8,8 @@ describe("Fieldset", () => {
 			<Fieldset label="A field set">
 				<div id="child" />
 			</Fieldset>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<FieldsetBox>
 				<Legend>
 					<Text message="A field set" />

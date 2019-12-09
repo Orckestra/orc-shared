@@ -2,7 +2,8 @@ import React from "react";
 import { Branch, Wrapper } from "./Branch";
 
 describe("Branch", () => {
-	it("renders a <ul>", () => expect(<Branch />, "to render as", <ul />));
+	it("renders a <ul>", () =>
+		expect(<Branch />, "when mounted", "to satisfy", <ul />));
 
 	it("sets styling for showing a branch structure", () =>
 		expect(
@@ -15,9 +16,10 @@ describe("Branch", () => {
 					},
 				}}
 			/>,
-			"to render style rules",
-		).then(styles =>
-			expect(styles, "to contain", "margin-left: 10px;")
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "margin-left: 10px;")
 				.and("to contain", "padding-left: 12px;")
 				.and("to match", /:last-child::after {[^}]*left: -24px;[^}]*}/)
 				.and("to match", /:last-child::after {[^}]*top: -14px;[^}]*}/),
@@ -25,7 +27,8 @@ describe("Branch", () => {
 });
 
 describe("Wrapper", () => {
-	it("renders a <ul>", () => expect(<Wrapper />, "to render as", <ul />));
+	it("renders a <ul>", () =>
+		expect(<Wrapper />, "when mounted", "to satisfy", <ul />));
 
 	it("sets styling for showing the root of a tree structure", () =>
 		expect(
@@ -38,9 +41,10 @@ describe("Wrapper", () => {
 					},
 				}}
 			/>,
-			"to render style rules",
-		).then(styles =>
-			expect(styles, "to contain", "margin-left: 0;")
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "margin-left: 0;")
 				.and("to contain", "padding: 7px;")
 				.and(
 					"to contain",

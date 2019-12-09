@@ -16,7 +16,8 @@ describe("Wrapper", () => {
 	it("sets transition time according to its timeout", () =>
 		expect(
 			<Wrapper in timeout={500} />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"transition: opacity 500ms ease-out;",
 		));
@@ -40,19 +41,19 @@ describe("Wrapper", () => {
 		});
 
 		it("renders a Wrapper in a portal", () => {
-			const render = ReactDOM.render(
+			ReactDOM.render(
 				<RenderWrapper in>
 					<div id="inner">Foo</div>
 				</RenderWrapper>,
 				appRoot,
 			);
-			return expect(render, "queried for", <div id="inner" />).then(elm => {
-				let node = ReactDOM.findDOMNode(elm);
-				while (node.parentNode !== document.body) {
-					node = node.parentNode;
-				}
-				return expect(node, "to be", modalRoot);
-			});
+			return expect(
+				modalRoot,
+				"queried for first",
+				"#inner",
+				"to satisfy",
+				<div>Foo</div>,
+			);
 		});
 	});
 });

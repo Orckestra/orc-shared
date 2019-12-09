@@ -1,13 +1,16 @@
 import React from "react";
 import sinon from "sinon";
+import { Ignore } from "unexpected-reaction";
+import { getClassName } from "../../utils/testUtils";
 import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 
 describe("Menu", () => {
 	it("renders a closed menu", () =>
 		expect(
 			<Menu menuItems={[{ label: "First", icon: "one", handler: () => {} }]} />,
-			"to render with all attributes as",
-			<Drawer />,
+			"when mounted",
+			"to satisfy",
+			null,
 		));
 
 	it("renders an open menu", () =>
@@ -20,7 +23,8 @@ describe("Menu", () => {
 				]}
 				toggle={() => {}}
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Drawer in>
 				<List>
 					<Item>
@@ -44,25 +48,34 @@ describe("Menu", () => {
 				menuItems={[{ label: "Foo", icon: "one", handler }]}
 				toggle={toggle}
 			/>,
-			"to render as",
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<Item />) },
+			"to satisfy",
 			<Drawer in>
-				<List onClickOutside={toggle} />
+				<List onClickOutside={toggle}>
+					<Item>
+						<svg>
+							<Ignore />
+						</svg>
+						<span>Foo</span>
+					</Item>
+				</List>
 			</Drawer>,
-		)
-			.and("with event click", "on", <Item />)
-			.then(() =>
-				Promise.all([
-					expect(toggle, "was called"),
-					expect(handler, "was called"),
-				]),
-			);
+		).then(() =>
+			Promise.all([
+				expect(toggle, "was called"),
+				expect(handler, "was called"),
+			]),
+		);
 	});
 
 	describe("Drawer", () => {
 		it("sets transition time according to its timeout", () =>
 			expect(
 				<Drawer in timeout={500} />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"transition: opacity 500ms ease-out;",
 			));
@@ -79,7 +92,8 @@ describe("Menu", () => {
 		it("shows a background with the highlight color when hovering", () =>
 			expect(
 				<Item theme={theme} />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to match",
 				/:hover\s*\{[^}]*\bbackground-color: #ff00ff;[^}]*\}/,
 			));
@@ -87,7 +101,8 @@ describe("Menu", () => {
 		it("has a default highlight color", () =>
 			expect(
 				<Item />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to match",
 				/:hover\s*\{[^}]*\bbackground-color: #ffffff;[^}]*\}/,
 			));

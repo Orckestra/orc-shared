@@ -1,17 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { compose } from "recompose";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
-import ToastList from "../ToastList";
+import { PropStruct } from "../../utils/testUtils";
 import { shiftToast } from "../../actions/toasts";
 import ConnectedToastList, {
 	TOAST_TIMEOUT,
+	withToastData,
 	withTimedDismissal,
 } from "./ConnectedToastList";
 
 const timeout = TOAST_TIMEOUT * 1000;
-const TestComp = () => <div />;
+const TestComp = props => (
+	<div>
+		<PropStruct {...props} />
+	</div>
+);
 
 describe("ConnectedToastList", () => {
 	let state, store, clock;
@@ -36,25 +42,31 @@ describe("ConnectedToastList", () => {
 	});
 
 	it("provides toasts to a ToastList", () =>
-		expect(
-			<Provider store={store}>
-				<ConnectedToastList />
-			</Provider>,
-			"to deeply render as",
-			<ToastList
-				toasts={[
-					{ type: "confirm", message: "A toast" },
-					{ type: "warn", message: "A warning" },
-				]}
-			/>,
+		expect(withToastData, "called with", [TestComp]).then(EnhComp =>
+			expect(
+				<Provider store={store}>
+					<EnhComp />
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<TestComp
+					toasts={[
+						{ type: "confirm", message: "A toast" },
+						{ type: "warn", message: "A warning" },
+					]}
+					clearFirstToast={() => {}}
+				/>,
+			),
 		));
 
-	it("dismisses toasts one at a time with an interval", () =>
-		expect(
+	it("dismisses toasts one at a time with an interval", () => {
+		const EnhComp = compose(withToastData, withTimedDismissal)(TestComp);
+		return expect(
 			<Provider store={store}>
-				<ConnectedToastList />
+				<EnhComp />
 			</Provider>,
-			"when deeply rendered",
+			"when mounted",
+			"to be ok",
 		)
 			.then(() => expect(store.dispatch, "was not called"))
 			.then(() => clock.tick(timeout))
@@ -69,15 +81,18 @@ describe("ConnectedToastList", () => {
 					{ args: [shiftToast()] },
 					{ args: [shiftToast()] },
 				]),
-			));
+			);
+	});
 
 	it("does not remove toasts if there are none", () => {
+		const EnhComp = compose(withToastData, withTimedDismissal)(TestComp);
 		state = state.setIn(["toasts", "queue"], Immutable.List());
 		return expect(
 			<Provider store={store}>
-				<ConnectedToastList />
+				<EnhComp />
 			</Provider>,
-			"when deeply rendered",
+			"when mounted",
+			"to be ok",
 		)
 			.then(() => expect(store.dispatch, "was not called"))
 			.then(() => clock.tick(timeout))
@@ -93,16 +108,17 @@ describe("ConnectedToastList", () => {
 		appRoot.id = "app";
 		document.body.appendChild(appRoot);
 
-		let render = ReactDOM.render(
-			<EnhComp clearFirstToast={clear} toasts={[]} />,
+		ReactDOM.render(<EnhComp clearFirstToast={clear} toasts={[]} />, appRoot);
+		expect(
 			appRoot,
+			"to contain",
+			<TestComp clearFirstToast={clear} toasts={[]} />,
 		);
-		expect(render, "to contain", <TestComp />);
 		expect(clear, "was not called");
 		clock.tick(timeout);
 		expect(clear, "was not called");
 
-		render = ReactDOM.render(
+		ReactDOM.render(
 			<EnhComp
 				clearFirstToast={clear}
 				toasts={[
@@ -112,18 +128,29 @@ describe("ConnectedToastList", () => {
 			/>,
 			appRoot,
 		);
-		expect(render, "to contain", <TestComp />);
+		expect(
+			appRoot,
+			"to contain",
+			<TestComp
+				clearFirstToast={clear}
+				toasts={[
+					{ type: "confirm", message: "A toast" },
+					{ type: "warn", message: "A warning" },
+				]}
+			/>,
+		);
 		expect(clear, "was not called");
 		clock.tick(timeout);
 		expect(clear, "was called once");
 		clock.tick(timeout);
 		expect(clear, "was called twice");
 
-		render = ReactDOM.render(
-			<EnhComp clearFirstToast={clear} toasts={[]} />,
+		ReactDOM.render(<EnhComp clearFirstToast={clear} toasts={[]} />, appRoot);
+		expect(
 			appRoot,
+			"to contain",
+			<TestComp clearFirstToast={clear} toasts={[]} />,
 		);
-		expect(render, "to contain", <TestComp />);
 		expect(clear, "was called twice");
 		clock.tick(timeout);
 		expect(clear, "was called twice");

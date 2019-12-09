@@ -94,7 +94,7 @@ export const AppFrame = ({
 );
 AppFrame.displayName = "AppFrame";
 
-const WiredAppFrame = compose(
+export const appFrameWiring = compose(
 	connect(
 		state => ({
 			applications: localizedAppSelector(state).toJS(),
@@ -106,7 +106,9 @@ const WiredAppFrame = compose(
 	withInitialLoad("loadApplications", props => props.applications.length === 0),
 	withAuthentication,
 	withToggle("open"),
-)(AppFrame);
+);
+
+const WiredAppFrame = appFrameWiring(AppFrame);
 WiredAppFrame.propTypes = {
 	menuLabel: ptLabel.isRequired,
 	applicationId: pt.string.isRequired,

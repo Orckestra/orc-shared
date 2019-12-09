@@ -8,7 +8,8 @@ describe("Field", () => {
 			<Field id="field" label="A test">
 				<div id="child" />
 			</Field>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" id="field_label">
 					<Text message="A test" />
@@ -22,7 +23,8 @@ describe("Field", () => {
 			<Field id="field" label="A test" required="Required">
 				<div id="child" />
 			</Field>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" id="field_label" required>
 					<Text message="A test" />
@@ -36,7 +38,8 @@ describe("Field", () => {
 			<Field id="field" label="A test" required="Required" invalid>
 				<div id="child" />
 			</Field>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" id="field_label" required invalid>
 					<Text message="A test" />
@@ -53,7 +56,8 @@ describe("Field", () => {
 			<Field id="field">
 				<div id="child" />
 			</Field>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<FieldBox>
 				<div id="child" />
 			</FieldBox>,
@@ -64,7 +68,8 @@ describe("Field", () => {
 			<Field id="field" label="A test" labelOnly required="Required">
 				<div id="child" />
 			</Field>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<FieldBox>
 				<Label labelOnly id="field_label" required>
 					<Text message="A test" />
@@ -77,7 +82,8 @@ describe("Field", () => {
 			<Field id="field" label="A test" center>
 				<div id="child" />
 			</Field>,
-			"to exactly render as",
+			"when mounted",
+			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" center id="field_label">
 					<Text message="A test" />
@@ -91,7 +97,8 @@ describe("Label", () => {
 	it("renders a mark on required labels", () =>
 		expect(
 			<Label required>A text</Label>,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			'::after {content: " *";',
 		));
@@ -99,7 +106,8 @@ describe("Label", () => {
 	it("when not flagged renders a label with bottom margin", () =>
 		expect(
 			<Label>A text</Label>,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"margin-bottom:",
 		));
@@ -107,7 +115,8 @@ describe("Label", () => {
 	it("when flagged renders a label without margin", () =>
 		expect(
 			<Label labelOnly>A text</Label>,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"not to contain",
 			"margin-bottom",
 		));
