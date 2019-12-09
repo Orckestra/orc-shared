@@ -1,6 +1,18 @@
-import { firstItemComparator } from "./testUtils";
+import React from "react";
+import { PropStruct, firstItemComparator } from "./testUtils";
 
 describe("PropStruct", () => {
+	it("handles symbols", () =>
+		expect(
+			<PropStruct symbol={Symbol("foo")} />,
+			"when mounted",
+			"to satisfy",
+			<dl>
+				<dt>symbol:</dt>
+				<dd>symbol Symbol(foo)</dd>
+			</dl>,
+		));
+
 	describe("comparator", () => {
 		it("compares the first element of arrays, a > b", () =>
 			expect(
