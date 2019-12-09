@@ -260,7 +260,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		})}
 	`;
 
-	let getDateUpdater = (update, part, value) => {
+	getDateUpdater = (update, part, value) => {
 		let prefix, suffix, partLength;
 		const match = value.match(/^(\d+)-(\d+)-(\d+)$/);
 		if (part === "year") {
