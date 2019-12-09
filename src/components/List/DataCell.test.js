@@ -172,7 +172,7 @@ describe("DataCell", () => {
 	it("renders a cell with type datetime", () => {
 		const columnDef = { fieldName: "test", type: "datetime" };
 		const row = {
-			test: "2018-01-23T08:28:46.0000000Z",
+			test: "2018-01-23 09:28:46",
 			extraneous: "Don't show",
 		};
 		return expect(
