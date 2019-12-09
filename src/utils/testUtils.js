@@ -48,10 +48,11 @@ export const PropStruct = props => (
 									"Function"
 								) : typeof value === "string" ? (
 									`string "${value}"`
+								) : typeof value === "symbol" ? (
+									`symbol ${value.toString()}`
 								) : (
 									typeof value + " " + value
 								)}
-								{"\n"}
 							</dd>,
 					  ],
 			)}
