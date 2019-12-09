@@ -10,14 +10,16 @@ describe("Button", () => {
 	it("renders a button", () =>
 		expect(
 			<Button onClick={onClick}>Label</Button>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<button onClick={onClick}>Label</button>,
 		));
 
 	it("sets an inactive background-color", () =>
 		expect(
 			<Button />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"background-color: #f7f7f7;",
 		));
@@ -25,7 +27,8 @@ describe("Button", () => {
 	it("sets an active background-color", () =>
 		expect(
 			<Button active />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"background-color: #efefef;",
 		));
@@ -34,7 +37,8 @@ describe("Button", () => {
 		it("sets an inactive background gradient", () =>
 			expect(
 				<Button primary />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"background-color: #fff;",
 			));
@@ -42,7 +46,8 @@ describe("Button", () => {
 		it("sets an active background-color", () =>
 			expect(
 				<Button primary active />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"background-image: linear-gradient( #3d3d3d,#333 )",
 			));

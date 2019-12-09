@@ -2,7 +2,7 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router/immutable";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider, withTheme } from "styled-components";
 import { toClass } from "recompose";
 import { history } from "../buildStore";
 import DevPages from "./DevPages";
@@ -14,13 +14,15 @@ import Relogin from "./Relogin";
 const fakeStore = {
 	subscribe: listener => () => {},
 	dispatch: action => action,
-	getState: () => Immutable.Map(),
+	getState: () => Immutable.fromJS({ locale: {} }),
 	replaceReducer: () => {},
 };
 
 const fakeTheme = { value: "styles" };
 
-const TestComp = toClass(() => <div />);
+const TestComp = toClass(
+	withTheme(({ theme }) => <div>{JSON.stringify(theme)}</div>),
+);
 
 describe("Provision", () => {
 	it("renders", () =>
@@ -28,12 +30,13 @@ describe("Provision", () => {
 			<Provision store={fakeStore} theme={fakeTheme}>
 				<TestComp />
 			</Provision>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Provider store={fakeStore}>
 				<ConnectedRouter history={history}>
 					<React.Fragment>
 						<Head />
-						<ThemeProvider theme={expect.it("to be", fakeTheme)}>
+						<ThemeProvider theme={fakeTheme}>
 							<DevPages>
 								<I18n>
 									<TestComp />
@@ -51,7 +54,8 @@ describe("Provision", () => {
 			<Provision store={fakeStore}>
 				<TestComp />
 			</Provision>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Provider store={fakeStore}>
 				<ConnectedRouter history={history}>
 					<React.Fragment>
@@ -73,7 +77,7 @@ describe("Provision", () => {
 			() =>
 				expect(
 					<Provision store={fakeStore} theme={fakeTheme} />,
-					"when rendered",
+					"when mounted",
 				),
 			"to throw",
 			"React.Children.only expected to receive a single React element child.",

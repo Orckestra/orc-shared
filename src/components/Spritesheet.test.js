@@ -17,16 +17,17 @@ describe("Spritesheet", () => {
 	it("renders a list of icons available in svg sprite sheet", () =>
 		expect(
 			<Spritesheet />,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper>
 				<IconBlock>
-					<Icon id="test-1" /> test-1
+					<Icon id="test-1" /> {"test-1"}
 				</IconBlock>
 				<IconBlock>
-					<Icon id="test-2" /> test-2
+					<Icon id="test-2" /> {"test-2"}
 				</IconBlock>
 				<IconBlock>
-					<Icon id="test-3" /> test-3
+					<Icon id="test-3" /> {"test-3"}
 				</IconBlock>
 			</Wrapper>,
 		));

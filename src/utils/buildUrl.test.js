@@ -1,7 +1,9 @@
 import sinon from "sinon";
+import { spyOnConsole } from "./testUtils";
 import { loadConfig, resetConfig, buildUrl } from "./buildUrl";
 
 describe("loadConfig", () => {
+	spyOnConsole();
 	let oldFetch, fail, response, placeholderBuildUrl;
 	beforeEach(() => {
 		oldFetch = window.fetch;

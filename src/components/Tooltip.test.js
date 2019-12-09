@@ -6,7 +6,8 @@ describe("Tooltip", () => {
 	it("renders a small text message in a popup tip bubble", () =>
 		expect(
 			<Tooltip message="A tip" />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<TooltipBubble>
 				<Text message="A tip" />
 			</TooltipBubble>,

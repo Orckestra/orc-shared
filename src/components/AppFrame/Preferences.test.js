@@ -1,9 +1,12 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
+import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
 import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
+import { Ignore } from "unexpected-reaction";
+import { PropStruct, getClassName } from "../../utils/testUtils";
 import { CHANGE_LOCALE } from "../../actions/locale";
 import {
 	SET_DEFAULT_LANGUAGE_REQUEST,
@@ -15,10 +18,10 @@ import {
 	SET_MY_APPLICATION_SUCCESS,
 	SET_MY_APPLICATION_FAILURE,
 } from "../../actions/applications";
-import Text from "../Text";
-import FieldElements from "../Form/FieldElements";
+import withViewState from "../../hocs/withViewState";
+import { FieldBox, Label } from "../Form/Field";
+import { Wrapper as SelectorWrapper } from "../Selector";
 import {
-	PrefPanel,
 	Header,
 	PrefForm,
 	Footer,
@@ -26,6 +29,7 @@ import {
 	getUpdater,
 	Preferences,
 	withPreferences,
+	PREFS_NAME,
 } from "./Preferences";
 
 jest.mock("../../utils/buildUrl", () => {
@@ -37,7 +41,7 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Preferences", () => {
-	let messages, language, applications, clear, save;
+	let messages, language, applications, clear, save, modalRoot;
 	beforeEach(() => {
 		messages = {
 			preferences: "Preferences",
@@ -62,116 +66,199 @@ describe("Preferences", () => {
 		};
 		clear = () => {};
 		save = sinon.spy().named("save");
+		modalRoot = document.createElement("div");
+		modalRoot.id = "modal";
+		document.body.appendChild(modalRoot);
+	});
+	afterEach(() => {
+		document.body.removeChild(modalRoot);
 	});
 
 	it("renders a form dialog", () =>
 		expect(
-			<Preferences
-				viewState={{ show: true }}
-				messages={messages}
-				language={language}
-				applications={applications}
-				clear={clear}
-				save={save}
-			/>,
-			"to render as",
-			<PrefPanel in>
-				<Header>
-					<Text message="Preferences" />
-				</Header>
-				<PrefForm>
-					<FieldElements
-						fields={[
-							{
-								label: "Display language",
-								type: "Selector",
-								name: "language",
-								options: [
-									{ value: "en", label: "English" },
-									{ value: "fr", label: "French" },
-								],
-							},
-							{
-								label: "Default application",
-								type: "Selector",
-								name: "application",
-								options: [
-									{ value: 2, label: "Marketing" },
-									{ value: 3, label: "Order management" },
-								],
-							},
-						]}
-						getUpdater={expect.it("to be a function")}
-						values={{
-							language: "en",
-							application: 3,
-						}}
-					/>
-				</PrefForm>
-				<Footer>
-					<PrefButton onClick={clear}>
-						<Text message="Cancel" />
-					</PrefButton>
-					<PrefButton
-						primary
-						onClick={expect.it("when called", "to be undefined")}
-					>
-						<Text message="Save" />
-					</PrefButton>
-				</Footer>
-			</PrefPanel>,
-		));
+			<IntlProvider locale="en">
+				<Preferences
+					viewState={{ show: true }}
+					updateViewState={() => {}}
+					messages={messages}
+					language={language}
+					applications={applications}
+					clear={clear}
+					save={save}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			null,
+		)
+			.then(
+				expect(
+					modalRoot,
+					"with event",
+					{
+						type: "click",
+						target: "." + getClassName(<PrefButton />) + ":last-child",
+					},
+					"to satisfy",
+					<div>
+						<div>
+							<Header>
+								<span>Preferences</span>
+							</Header>
+							<PrefForm>
+								<FieldBox>
+									<Label id="language_label">
+										<span>Display language</span>
+									</Label>
+									<SelectorWrapper>
+										<select id="language">
+											<Ignore />
+											<Ignore />
+										</select>
+										<Ignore />
+										<Ignore />
+									</SelectorWrapper>
+								</FieldBox>
+								<FieldBox>
+									<Label id="application_label">
+										<span>Default application</span>
+									</Label>
+									<SelectorWrapper>
+										<select id="application">
+											<Ignore />
+											<Ignore />
+										</select>
+										<Ignore />
+										<Ignore />
+									</SelectorWrapper>
+								</FieldBox>
+							</PrefForm>
+							<Footer>
+								<PrefButton onClick={clear}>
+									<span>Cancel</span>
+								</PrefButton>
+								<PrefButton primary onClick={() => {}}>
+									<span>Save</span>
+								</PrefButton>
+							</Footer>
+						</div>
+					</div>,
+				),
+			)
+			.then(() => expect(save, "was called")));
 
 	it("shows view state fields", () =>
 		expect(
-			<Preferences
-				viewState={{ show: true, language: "fr", application: 2 }}
-				messages={messages}
-				language={language}
-				applications={applications}
-				clear={clear}
-				save={save}
-			/>,
-			"to render as",
-			<PrefPanel in>
-				<Header />
-				<PrefForm>
-					<FieldElements
-						values={{
-							language: "fr",
-							application: 2,
-						}}
-					/>
-				</PrefForm>
-				<Footer />
-			</PrefPanel>,
+			<IntlProvider locale="en">
+				<Preferences
+					viewState={{ show: true, language: "fr", application: 2 }}
+					messages={messages}
+					language={language}
+					applications={applications}
+					clear={clear}
+					save={save}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			null,
+		).then(
+			expect(
+				modalRoot,
+				"to satisfy",
+				<div>
+					<div>
+						<Ignore />
+						<PrefForm>
+							<FieldBox>
+								<Label id="language_label">
+									<span>Display language</span>
+								</Label>
+								<SelectorWrapper>
+									<select id="language" value="fr">
+										<Ignore />
+										<Ignore />
+									</select>
+									<Ignore />
+									<Ignore />
+								</SelectorWrapper>
+							</FieldBox>
+							<FieldBox>
+								<Label id="application_label">
+									<span>Default application</span>
+								</Label>
+								<SelectorWrapper>
+									<select id="application" value={2}>
+										<Ignore />
+										<Ignore />
+									</select>
+									<Ignore />
+									<Ignore />
+								</SelectorWrapper>
+							</FieldBox>
+						</PrefForm>
+						<Ignore />
+					</div>
+				</div>,
+			),
 		));
 
 	it("handles missing current values", () => {
 		delete language.current;
 		delete applications.current;
 		expect(
-			<Preferences
-				viewState={{ show: true }}
-				messages={messages}
-				language={language}
-				applications={applications}
-				clear={clear}
-				save={save}
-			/>,
-			"to render as",
-			<PrefPanel in>
-				<Header />
-				<PrefForm>
-					<FieldElements
-						values={{
-							language: "",
-							application: "",
-						}}
-					/>
-				</PrefForm>
-				<Footer />
-			</PrefPanel>,
+			<IntlProvider locale="en">
+				<Preferences
+					viewState={{ show: true }}
+					messages={messages}
+					language={language}
+					applications={applications}
+					clear={clear}
+					save={save}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			null,
+		).then(
+			expect(
+				modalRoot,
+				"to satisfy",
+				<div>
+					<div>
+						<Ignore />
+						<PrefForm>
+							<FieldBox>
+								<Label id="language_label">
+									<span>Display language</span>
+								</Label>
+								<SelectorWrapper>
+									<select id="language" value="">
+										<Ignore />
+										<Ignore />
+									</select>
+									<Ignore />
+									<Ignore />
+								</SelectorWrapper>
+							</FieldBox>
+							<FieldBox>
+								<Label id="application_label">
+									<span>Default application</span>
+								</Label>
+								<SelectorWrapper>
+									<select id="application" value="">
+										<Ignore />
+										<Ignore />
+									</select>
+									<Ignore />
+									<Ignore />
+								</SelectorWrapper>
+							</FieldBox>
+						</PrefForm>
+						<Ignore />
+					</div>
+				</div>,
+			),
 		);
 	});
 
@@ -222,6 +309,9 @@ describe("Preferences", () => {
 		let state, store;
 		beforeEach(() => {
 			state = Immutable.fromJS({
+				view: {
+					PREFS_NAME: {},
+				},
 				locale: {
 					locale: "fr-CA",
 					supportedLocales: ["en-US", "en-CA", "fr-FR", "fr-CA"],
@@ -315,16 +405,24 @@ describe("Preferences", () => {
 			};
 		});
 
+		const TestComp = ({ language, applications, ...props }) => (
+			<div>
+				<PropStruct {...{ language, applications }} />
+				<button id="clear" onClick={props.clear}></button>
+				<button id="save" onClick={() => props.save(props.viewState)}></button>
+			</div>
+		);
+
 		it("provides settings information to the wrapped component", () => {
-			const TestComp = () => <div />;
-			const EnhComp = withPreferences(TestComp);
+			const EnhComp = withPreferences(withViewState(TestComp));
 			return expect(
 				<Provider store={store}>
 					<MemoryRouter>
-						<EnhComp name="test" />
+						<EnhComp />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<TestComp
 					language={{
 						current: "fr-CA",
@@ -342,22 +440,51 @@ describe("Preferences", () => {
 							{ value: 4, label: "Informations Produit" },
 						],
 					}}
-					clear={expect.it("called")}
-					save={expect
-						.it("called with", [{ language: "en-US" }])
-						.and("called with", [{ application: 3 }])}
+					clear={() => {}}
+					save={() => {}}
 				/>,
+			);
+		});
+
+		it("provides a clear handler", () => {
+			const EnhComp = withPreferences(withViewState(TestComp));
+			return expect(
+				<Provider store={store}>
+					<MemoryRouter>
+						<EnhComp />
+					</MemoryRouter>
+				</Provider>,
+				"when mounted",
+				"with event",
+				{ type: "click", target: "#clear" },
 			).then(() =>
 				expect(store.dispatch, "to have calls satisfying", [
 					{
-						// Called clear()
 						args: [
 							expect.it("to equal", {
 								type: "VIEW_STATE_SET",
-								payload: { name: "__prefsDialog", value: { show: false } },
+								payload: { name: PREFS_NAME, value: { show: false } },
 							}),
 						],
 					},
+				]),
+			);
+		});
+
+		it("can save language changes", () => {
+			state = state.setIn(["view", PREFS_NAME, "language"], "en-US");
+			const EnhComp = withPreferences(withViewState(TestComp));
+			return expect(
+				<Provider store={store}>
+					<MemoryRouter>
+						<EnhComp />
+					</MemoryRouter>
+				</Provider>,
+				"when mounted",
+				"with event",
+				{ type: "click", target: "#save" },
+			).then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
 					{
 						// Called save() with language
 						args: [
@@ -402,12 +529,29 @@ describe("Preferences", () => {
 						args: [
 							expect.it("to equal", {
 								type: "VIEW_STATE_SET",
-								payload: { name: "__prefsDialog", value: { show: false } },
+								payload: { name: PREFS_NAME, value: { show: false } },
 							}),
 						],
 					},
+				]),
+			);
+		});
+
+		it("can save default application", () => {
+			state = state.setIn(["view", PREFS_NAME, "application"], 3);
+			const EnhComp = withPreferences(withViewState(TestComp));
+			return expect(
+				<Provider store={store}>
+					<MemoryRouter>
+						<EnhComp />
+					</MemoryRouter>
+				</Provider>,
+				"when mounted",
+				"with event",
+				{ type: "click", target: "#save" },
+			).then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
 					{
-						// Called save() with application
 						args: [
 							expect.it("to satisfy", {
 								[RSAA]: {
@@ -433,7 +577,7 @@ describe("Preferences", () => {
 						args: [
 							expect.it("to equal", {
 								type: "VIEW_STATE_SET",
-								payload: { name: "__prefsDialog", value: { show: false } },
+								payload: { name: PREFS_NAME, value: { show: false } },
 							}),
 						],
 					},

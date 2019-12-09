@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 const routingConnector = (...connectArgs) =>
-	compose(
-		withRouter,
-		connect(...connectArgs),
-	);
+	compose(withRouter, connect(...connectArgs));
 
 export default routingConnector;

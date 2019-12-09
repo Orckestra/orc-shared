@@ -4,15 +4,26 @@ import Icon from "../Icon";
 
 describe("Indicator", () => {
 	it("renders a closed arrow icon", () =>
-		expect(<Indicator />, "to render as", <Icon id="chevron-right" />));
+		expect(
+			<Indicator />,
+			"when mounted",
+			"to satisfy",
+			<Icon id="chevron-right" />,
+		));
 
 	it("renders an open arrow icon", () =>
-		expect(<Indicator open />, "to render as", <Icon id="chevron-down" />));
+		expect(
+			<Indicator open />,
+			"when mounted",
+			"to satisfy",
+			<Icon id="chevron-down" />,
+		));
 
 	it("renders closed arrows in highlight color", () =>
 		expect(
 			<Indicator />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"color: #ffffff;",
 		));
@@ -20,7 +31,8 @@ describe("Indicator", () => {
 	it("renders open arrows in dark grey", () =>
 		expect(
 			<Indicator open />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"color: #333;",
 		));
@@ -28,7 +40,8 @@ describe("Indicator", () => {
 	it("renders open arrows in light grey when dark", () =>
 		expect(
 			<Indicator open dark />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"color: #ccc;",
 		));
@@ -52,21 +65,24 @@ describe("Indicator", () => {
 		it("renders a closed arrow icon", () =>
 			expect(
 				<Indicator theme={theme} />,
-				"to render as",
+				"when mounted",
+				"to satisfy",
 				<Icon id="arrow-right" />,
 			));
 
 		it("renders an open arrow icon", () =>
 			expect(
 				<Indicator theme={theme} open />,
-				"to render as",
+				"when mounted",
+				"to satisfy",
 				<Icon id="arrow-down" />,
 			));
 
 		it("renders closed arrows in highlight color", () =>
 			expect(
 				<Indicator theme={theme} />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: red;",
 			));
@@ -74,7 +90,8 @@ describe("Indicator", () => {
 		it("renders open arrows in dark grey", () =>
 			expect(
 				<Indicator theme={theme} open />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #333;",
 			));
@@ -82,7 +99,8 @@ describe("Indicator", () => {
 		it("renders open arrows in light grey when dark", () =>
 			expect(
 				<Indicator theme={theme} open dark />,
-				"to render style rules",
+				"when mounted",
+				"to have style rules satisfying",
 				"to contain",
 				"color: #ccc;",
 			));
@@ -93,7 +111,8 @@ describe("BeforeIndicator", () => {
 	it("renders a branch continuation before indicator", () =>
 		expect(
 			<BeforeIndicator />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"margin-left: -16px;",
 		));
@@ -103,7 +122,8 @@ describe("NonIndicator", () => {
 	it("renders a branch continuation", () =>
 		expect(
 			<NonIndicator />,
-			"to render style rules",
+			"when mounted",
+			"to have style rules satisfying",
 			"to contain",
 			"margin: auto 0 auto -16px;",
 		));
@@ -111,5 +131,5 @@ describe("NonIndicator", () => {
 
 describe("Label", () => {
 	it("renders a space for node content", () =>
-		expect(<Label />, "to render as", <div />));
+		expect(<Label />, "when mounted", "to satisfy", <div />));
 });

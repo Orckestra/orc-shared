@@ -76,7 +76,4 @@ const withLinkHooks = mapProps(
 	},
 );
 
-export default compose(
-	withViewState,
-	withLinkHooks,
-);
+export default compose(withViewState, withLinkHooks);

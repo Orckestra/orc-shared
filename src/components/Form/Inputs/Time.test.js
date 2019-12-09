@@ -1,4 +1,5 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import { ButtonWrapper } from "./FieldButtons";
 import { FormInput } from "./Text";
 import { TimeInput, TimeIcon, TimeButton } from "./Time";
@@ -6,14 +7,19 @@ import { TimeInput, TimeIcon, TimeButton } from "./Time";
 describe("TimeInput", () => {
 	it("renders a basic time input, preliminary", () =>
 		expect(
-			<TimeInput update={() => {}} otherProp />,
-			"to render as",
+			<IntlProvider locale="en">
+				<TimeInput update={() => {}} otherProp />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper>
-				<FormInput
-					type="time"
-					onChange={expect.it("to be a function")}
-					otherProp
-				/>
+				<IntlProvider locale="en">
+					<FormInput
+						type="time"
+						onChange={expect.it("to be a function")}
+						otherProp
+					/>
+				</IntlProvider>
 				<TimeButton>
 					<TimeIcon />
 				</TimeButton>
@@ -22,14 +28,19 @@ describe("TimeInput", () => {
 
 	it("renders a required time input with invalid value", () =>
 		expect(
-			<TimeInput update={() => {}} otherProp required />,
-			"to render as",
+			<IntlProvider locale="en">
+				<TimeInput update={() => {}} otherProp required />
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
 			<ButtonWrapper invalid>
-				<FormInput
-					type="time"
-					onChange={expect.it("to be a function")}
-					otherProp
-				/>
+				<IntlProvider locale="en">
+					<FormInput
+						type="time"
+						onChange={expect.it("to be a function")}
+						otherProp
+					/>
+				</IntlProvider>
 				<TimeButton>
 					<TimeIcon />
 				</TimeButton>

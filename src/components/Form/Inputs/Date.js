@@ -17,7 +17,7 @@ import Icon from "../../Icon";
 import { FormInput, getEventUpdater } from "./Text";
 import { ButtonWrapper, InputButton } from "./FieldButtons";
 
-// TODO: Calendar dialog on focus, prevent default behavior in Edge, Firefox
+// TODO: Calendar dialog on focus
 
 export const PositionedWrapper = withClickOutside(styled(ButtonWrapper)`
 	position: relative;
@@ -68,10 +68,12 @@ const MonthArrow = styled(Icon).attrs({ role: "button" })`
 export const LastArrow = styled(MonthArrow).attrs({
 	id: getThemeProp(["icons", "prev"], "previous"),
 	"aria-label": "last month",
+	"data-test-id": "calendar_lastArrow",
 })``;
 export const NextArrow = styled(MonthArrow).attrs({
 	id: getThemeProp(["icons", "next"], "next"),
 	"aria-label": "next month",
+	"data-test-id": "calendar_nextArrow",
 })``;
 
 export const DateTable = styled.table`
@@ -119,6 +121,7 @@ export const Day = ({
 		today={isToday(thisDate)}
 		selected={getFormattedDate(selectedDate) === getFormattedDate(thisDate)}
 		active={getFormattedDate(date) === getFormattedDate(thisDate)}
+		data-test-id={getFormattedDate(thisDate)}
 	>
 		{getDate(thisDate) + ""}
 	</DayCell>
@@ -257,7 +260,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		})}
 	`;
 
-	let getDateUpdater = (update, part, value) => {
+	getDateUpdater = (update, part, value) => {
 		let prefix, suffix, partLength;
 		const match = value.match(/^(\d+)-(\d+)-(\d+)$/);
 		if (part === "year") {
@@ -331,10 +334,12 @@ export const CrudeDateInput = ({
 				render={CalendarDropdown}
 				startSelectedDateAt={parsedValue}
 				startCurrentDateAt={parsedValue}
-				onSelectedChange={date => {
-					update(format(date, "yyyy-MM-dd"));
-					reset();
-				}}
+				onSelectedChange={
+					/* istanbul ignore next */ date => {
+						update(format(date, "yyyy-MM-dd"));
+						reset();
+					}
+				}
 			/>
 			<CalendarButton onClick={toggle} active={open}>
 				<CalendarIcon />

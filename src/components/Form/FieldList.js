@@ -215,7 +215,4 @@ const withListUpdater = withHandlers({
 		getListFieldUpdater(getUpdater(name), getRows),
 });
 
-export default compose(
-	withRowGetter,
-	withListUpdater,
-)(FieldList);
+export default compose(withRowGetter, withListUpdater)(FieldList);

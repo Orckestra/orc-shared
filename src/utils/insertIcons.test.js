@@ -1,6 +1,8 @@
+import { spyOnConsole } from "./testUtils";
 import insertIcons from "./insertIcons";
 
 describe("insertIcons", () => {
+	spyOnConsole();
 	let svgString;
 	beforeEach(() => {
 		svgString = `<svg xmlns="http://www.w3.org/2000/svg">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import Form from "./FormElement";
@@ -27,68 +28,83 @@ describe("FormPage", () => {
 
 	it("renders a form with a single field", () =>
 		expect(
-			<FormPage
-				fields={fields}
-				values={{ text1: "foo" }}
-				getUpdater={getUpdater}
-			/>,
-			"to render as",
-			<Wrapper>
-				<Form spanWidth={1}>
-					<FieldElements
-						getUpdater={getUpdater}
-						fields={fields}
-						values={{ text1: "foo" }}
-					/>
-				</Form>
-			</Wrapper>,
+			<IntlProvider locale="en">
+				<FormPage
+					fields={fields}
+					values={{ text1: "foo" }}
+					getUpdater={getUpdater}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<Wrapper>
+					<Form spanWidth={1}>
+						<FieldElements
+							getUpdater={getUpdater}
+							fields={fields}
+							values={{ text1: "foo" }}
+						/>
+					</Form>
+				</Wrapper>
+			</IntlProvider>,
 		));
 
 	it("still respects 'wide' flag", () =>
 		expect(
-			<FormPage
-				wide
-				fields={fields}
-				values={{ text1: "foo" }}
-				getUpdater={getUpdater}
-			/>,
-			"to render as",
-			<Wrapper>
-				<Form spanWidth={1}>
-					<FieldElements
-						getUpdater={getUpdater}
-						fields={fields}
-						values={{ text1: "foo" }}
-					/>
-				</Form>
-			</Wrapper>,
+			<IntlProvider locale="en">
+				<FormPage
+					wide
+					fields={fields}
+					values={{ text1: "foo" }}
+					getUpdater={getUpdater}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<Wrapper>
+					<Form spanWidth={1}>
+						<FieldElements
+							getUpdater={getUpdater}
+							fields={fields}
+							values={{ text1: "foo" }}
+						/>
+					</Form>
+				</Wrapper>
+			</IntlProvider>,
 		));
 
 	it("renders a form with a multiple fields", () =>
 		expect(
-			<FormPage
-				cols={[2, 1]}
-				fields={manyFields}
-				values={{ text1: "foo" }}
-				getUpdater={getUpdater}
-			/>,
-			"to render as",
-			<Wrapper>
-				<Form spanWidth={2}>
-					<FieldElements
-						getUpdater={getUpdater}
-						fields={manyFields.slice(0, 5)}
-						values={{ text1: "foo" }}
-					/>
-				</Form>
-				<Form spanWidth={1}>
-					<FieldElements
-						getUpdater={getUpdater}
-						fields={manyFields.slice(5, 10)}
-						values={{ text1: "foo" }}
-					/>
-				</Form>
-			</Wrapper>,
+			<IntlProvider locale="en">
+				<FormPage
+					cols={[2, 1]}
+					fields={manyFields}
+					values={{ text1: "foo" }}
+					getUpdater={getUpdater}
+				/>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<Wrapper>
+					<Form spanWidth={2}>
+						<FieldElements
+							getUpdater={getUpdater}
+							fields={manyFields.slice(0, 5)}
+							values={{ text1: "foo" }}
+						/>
+					</Form>
+					<Form spanWidth={1}>
+						<FieldElements
+							getUpdater={getUpdater}
+							fields={manyFields.slice(5, 10)}
+							values={{ text1: "foo" }}
+						/>
+					</Form>
+				</Wrapper>
+			</IntlProvider>,
 		));
 });
 
@@ -121,7 +137,8 @@ describe("withCultureCount", () => {
 						<EnhComp />
 					</MemoryRouter>
 				</Provider>,
-				"to deeply render as",
+				"when mounted",
+				"to satisfy",
 				<TestComp cultureCount={3} />,
 			),
 		));

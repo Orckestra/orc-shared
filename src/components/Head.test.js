@@ -28,7 +28,7 @@ describe("Head", () => {
 	});
 
 	it("renders a Helmet setting the language on the <html> element", () => {
-		const render = ReactDOM.render(
+		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter>
 					<Head />
@@ -36,12 +36,9 @@ describe("Head", () => {
 			</Provider>,
 			node,
 		);
-		return expect(
-			render,
-			"to have rendered",
-			<Helmet>{/* <html lang="fr-CA" /> */}</Helmet>,
-		)
-			.then(() => new Promise(resolve => window.requestAnimationFrame(resolve)))
-			.then(() => expect(document.documentElement.lang, "to be", "fr-CA"));
+		expect(document.documentElement.lang, "not to be", "fr-CA");
+		return new Promise(resolve =>
+			window.requestAnimationFrame(resolve),
+		).then(() => expect(document.documentElement.lang, "to be", "fr-CA"));
 	});
 });

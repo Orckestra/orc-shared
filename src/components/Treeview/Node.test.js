@@ -1,11 +1,15 @@
 import React from "react";
 import sinon from "sinon";
+import { Ignore } from "unexpected-reaction";
+import { getClassName } from "../../utils/testUtils";
 import Node, { RootNode, LeafNode, TreeContext } from "./Node";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
-import { Indicator, NonIndicator, Label } from "./Label";
+import { BeforeIndicator, Indicator, NonIndicator, Label } from "./Label";
 
-const TestComp = () => <div />;
+const TestComp = ({ children, ...props }) => (
+	<div id={props.id}>{JSON.stringify(props)}</div>
+);
 
 describe("RootNode", () => {
 	let contextValue, Wrap;
@@ -26,7 +30,8 @@ describe("RootNode", () => {
 			<Wrap>
 				<RootNode thing="stuff" />
 			</Wrap>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Root>
 				<Label>
 					<TestComp thing="stuff" foo={true} bar={false} />
@@ -58,11 +63,19 @@ describe("LeafNode", () => {
 			<Wrap>
 				<LeafNode thing="stuff" id="testNode" children={["foo"]} />
 			</Wrap>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Leaf>
+				<BeforeIndicator />
 				<Indicator open={undefined} onClick={expect.it("to be a function")} />
 				<Label>
-					<TestComp thing="stuff" foo={true} bar={false} />
+					<TestComp
+						thing="stuff"
+						id="testNode"
+						children={["foo"]}
+						foo={true}
+						bar={false}
+					/>
 				</Label>
 			</Leaf>,
 		));
@@ -72,11 +85,20 @@ describe("LeafNode", () => {
 			<Wrap>
 				<LeafNode open thing="stuff" id="testNode" children={["foo"]} />
 			</Wrap>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Leaf>
+				<BeforeIndicator />
 				<Indicator open={true} onClick={expect.it("to be a function")} />
 				<Label>
-					<TestComp thing="stuff" foo={true} bar={false} />
+					<TestComp
+						open={true}
+						thing="stuff"
+						id="testNode"
+						children={["foo"]}
+						foo={true}
+						bar={false}
+					/>
 				</Label>
 			</Leaf>,
 		));
@@ -86,11 +108,12 @@ describe("LeafNode", () => {
 			<Wrap>
 				<LeafNode thing="stuff" id="testNode" />
 			</Wrap>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Leaf>
 				<NonIndicator />
 				<Label>
-					<TestComp thing="stuff" foo={true} bar={false} />
+					<TestComp thing="stuff" id="testNode" foo={true} bar={false} />
 				</Label>
 			</Leaf>,
 		));
@@ -100,10 +123,9 @@ describe("LeafNode", () => {
 			<Wrap>
 				<LeafNode thing="stuff" id="testNode" children={["foo"]} />
 			</Wrap>,
-			"when deeply rendered",
-			"with event click",
-			"on",
-			<Indicator />,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<Indicator />) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: true }] },
@@ -115,10 +137,9 @@ describe("LeafNode", () => {
 			<Wrap>
 				<LeafNode open thing="stuff" id="testNode" children={["foo"]} />
 			</Wrap>,
-			"when deeply rendered",
-			"with event click",
-			"on",
-			<Indicator />,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "." + getClassName(<Indicator />) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: false }] },
@@ -143,9 +164,11 @@ describe("Node", () => {
 			otherProps: { foo: true, bar: false },
 		};
 		Wrap = props => (
-			<TreeContext.Provider value={contextValue}>
-				{props.children}
-			</TreeContext.Provider>
+			<div>
+				<TreeContext.Provider value={contextValue}>
+					{props.children}
+				</TreeContext.Provider>
+			</div>
 		);
 	});
 
@@ -154,12 +177,9 @@ describe("Node", () => {
 			<Wrap>
 				<Node id="nonExistent" />
 			</Wrap>,
-			"when deeply rendered",
-		).then(render =>
-			expect(render, "not to contain", <LeafNode />).and(
-				"not to contain",
-				<Branch />,
-			),
+			"when mounted",
+			"to satisfy",
+			expect.it("not to contain", <Leaf />).and("not to contain", <Branch />),
 		));
 
 	it("renders a childless node as only the leaf", () =>
@@ -167,15 +187,31 @@ describe("Node", () => {
 			<Wrap>
 				<Node id="exists" />
 			</Wrap>,
-			"when deeply rendered",
-		).then(render =>
-			expect(
-				render,
-				"queried for",
-				<LeafNode />,
-				"to have rendered with all attributes",
-				<LeafNode id="exists" other="data" open={false} />,
-			).and("not to contain", <Branch />),
+			"when mounted",
+			"to satisfy",
+			expect
+				.it(
+					"to satisfy",
+					<div>
+						<Leaf>
+							<NonIndicator />
+							<Ignore />
+						</Leaf>
+					</div>,
+				)
+				.and(
+					"queried for first",
+					"#exists",
+					"to satisfy",
+					<TestComp
+						id="exists"
+						other="data"
+						open={false}
+						foo={true}
+						bar={false}
+					/>,
+				)
+				.and("not to contain", <Branch />),
 		));
 
 	it("renders a childless root node as only the leaf", () =>
@@ -183,15 +219,24 @@ describe("Node", () => {
 			<Wrap>
 				<Node root id="exists" />
 			</Wrap>,
-			"when deeply rendered",
-		).then(render =>
-			expect(
-				render,
-				"queried for",
-				<RootNode />,
-				"to have rendered with all attributes",
-				<RootNode id="exists" other="data" />,
-			).and("not to contain", <Branch />),
+			"when mounted",
+			"to satisfy",
+			expect
+				.it(
+					"to satisfy",
+					<div>
+						<Root>
+							<Ignore />
+						</Root>
+					</div>,
+				)
+				.and(
+					"queried for first",
+					"#exists",
+					"to satisfy",
+					<TestComp id="exists" other="data" foo={true} bar={false} />,
+				)
+				.and("not to contain", <Branch />),
 		));
 
 	it("renders a node with children as leaf and branch", () =>
@@ -199,22 +244,47 @@ describe("Node", () => {
 			<Wrap>
 				<Node id="hasKids" />
 			</Wrap>,
-			"when deeply rendered",
-		).then(render =>
-			expect(
-				render,
-				"queried for",
-				<LeafNode />,
-				"to have rendered with all attributes",
-				<LeafNode id="hasKids" other="info" open={true} />,
-			).and(
-				"queried for",
-				<Branch />,
-				"to have rendered",
-				<Branch>
-					<Node id="exists" />
-				</Branch>,
-			),
+			"when mounted",
+			"to satisfy",
+			expect
+				.it(
+					"to satisfy",
+					<div>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator open />
+							<Label>
+								<Ignore />
+							</Label>
+						</Leaf>
+						<Branch>
+							<Leaf>
+								<Ignore />
+								<Ignore />
+							</Leaf>
+						</Branch>
+					</div>,
+				)
+				.and(
+					"queried for first",
+					"#hasKids",
+					"to satisfy",
+					<TestComp
+						id="hasKids"
+						other="info"
+						open={true}
+						foo={true}
+						bar={false}
+					/>,
+				)
+				.and(
+					"queried for first",
+					"." + getClassName(<Branch />),
+					"to contain",
+					<div id="exists">
+						<Ignore />
+					</div>,
+				),
 		));
 
 	it("renders a closed node with children as only the leaf", () =>
@@ -222,15 +292,39 @@ describe("Node", () => {
 			<Wrap>
 				<Node id="isClosed" />
 			</Wrap>,
-			"when deeply rendered",
-		).then(render =>
-			expect(
-				render,
-				"queried for",
-				<LeafNode />,
-				"to have rendered with all attributes",
-				<LeafNode id="isClosed" other="stuff" open={false} />,
-			).and("not to contain", <Branch />),
+			"when mounted",
+			"to satisfy",
+			expect
+				.it(
+					"to satisfy",
+					<div>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator />
+							<Label>
+								<Ignore />
+							</Label>
+						</Leaf>
+					</div>,
+				)
+				.and(
+					"queried for first",
+					"#isClosed",
+					"to satisfy",
+					<TestComp
+						id="isClosed"
+						other="stuff"
+						open={false}
+						foo={true}
+						bar={false}
+					/>,
+				)
+				.and(
+					"not to contain",
+					<div id="hasKids">
+						<Ignore />
+					</div>,
+				),
 		));
 
 	it("renders a root node with children as leaf and branch", () =>
@@ -238,22 +332,41 @@ describe("Node", () => {
 			<Wrap>
 				<Node root id="isClosed" />
 			</Wrap>,
-			"when deeply rendered",
-		).then(render =>
-			expect(
-				render,
-				"queried for",
-				<RootNode />,
-				"to have rendered with all attributes",
-				<RootNode id="isClosed" other="stuff" />,
-			).and(
-				"queried for",
-				<Branch />,
-				"to have rendered",
-				<Branch>
-					<Node id="hasKids" />
-				</Branch>,
-			),
+			"when mounted",
+			"to satisfy",
+			expect
+				.it(
+					"to satisfy",
+					<div>
+						<Root>
+							<Label>
+								<Ignore />
+							</Label>
+						</Root>
+						<Branch>
+							<Leaf>
+								<Ignore />
+								<Ignore />
+								<Ignore />
+							</Leaf>
+							<Branch>
+								<Ignore />
+							</Branch>
+						</Branch>
+					</div>,
+				)
+				.and(
+					"queried for first",
+					"#isClosed",
+					"to satisfy",
+					<TestComp id="isClosed" other="stuff" foo={true} bar={false} />,
+				)
+				.and(
+					"to contain",
+					<div id="hasKids">
+						<Ignore />
+					</div>,
+				),
 		));
 
 	describe("with openAll set", () => {
@@ -266,22 +379,47 @@ describe("Node", () => {
 				<Wrap>
 					<Node id="hasKids" />
 				</Wrap>,
-				"when deeply rendered",
-			).then(render =>
-				expect(
-					render,
-					"queried for",
-					<LeafNode />,
-					"to have rendered with all attributes",
-					<LeafNode id="hasKids" other="info" open={true} />,
-				).and(
-					"queried for",
-					<Branch />,
-					"to have rendered",
-					<Branch>
-						<Node id="exists" />
-					</Branch>,
-				),
+				"when mounted",
+				"to satisfy",
+				expect
+					.it(
+						"to satisfy",
+						<div>
+							<Leaf>
+								<BeforeIndicator />
+								<Indicator open />
+								<Label>
+									<Ignore />
+								</Label>
+							</Leaf>
+							<Branch>
+								<Leaf>
+									<Ignore />
+									<Ignore />
+								</Leaf>
+							</Branch>
+						</div>,
+					)
+					.and(
+						"queried for first",
+						"#hasKids",
+						"to satisfy",
+						<TestComp
+							id="hasKids"
+							other="info"
+							open={true}
+							foo={true}
+							bar={false}
+						/>,
+					)
+					.and(
+						"queried for first",
+						"." + getClassName(<Branch />),
+						"to contain",
+						<div id="exists">
+							<Ignore />
+						</div>,
+					),
 			));
 
 		it("renders a closed node with children as if open", () =>
@@ -289,22 +427,51 @@ describe("Node", () => {
 				<Wrap>
 					<Node id="isClosed" />
 				</Wrap>,
-				"when deeply rendered",
-			).then(render =>
-				expect(
-					render,
-					"queried for",
-					<LeafNode />,
-					"to have rendered with all attributes",
-					<LeafNode id="isClosed" other="stuff" open={true} />,
-				).and(
-					"queried for",
-					<Branch />,
-					"to have rendered",
-					<Branch>
-						<Node id="hasKids" />
-					</Branch>,
-				),
+				"when mounted",
+				"to satisfy",
+				expect
+					.it(
+						"to satisfy",
+						<div>
+							<Leaf>
+								<BeforeIndicator />
+								<Indicator open />
+								<Label>
+									<Ignore />
+								</Label>
+							</Leaf>
+							<Branch>
+								<Leaf>
+									<Ignore />
+									<Ignore />
+									<Ignore />
+								</Leaf>
+								<Branch>
+									<Ignore />
+								</Branch>
+							</Branch>
+						</div>,
+					)
+					.and(
+						"queried for first",
+						"#isClosed",
+						"to satisfy",
+						<TestComp
+							id="isClosed"
+							other="stuff"
+							open={true}
+							foo={true}
+							bar={false}
+						/>,
+					)
+					.and(
+						"queried for first",
+						"." + getClassName(<Branch />),
+						"to contain",
+						<div id="hasKids">
+							<Ignore />
+						</div>,
+					),
 			));
 	});
 });

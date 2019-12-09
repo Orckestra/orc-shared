@@ -9,7 +9,8 @@ describe("ErrorPlaceholder", () => {
 			<ThemeProvider theme={{}}>
 				<ErrorPlaceholder message="Error" />
 			</ThemeProvider>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Placeholder icon="error" warn title="Error" />,
 		));
 
@@ -18,7 +19,8 @@ describe("ErrorPlaceholder", () => {
 			<ThemeProvider theme={{ icons: { error: "skull" } }}>
 				<ErrorPlaceholder message="Error" description="This failed" />
 			</ThemeProvider>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Placeholder icon="skull" warn title="Error" subtitle="This failed" />,
 		));
 
@@ -28,7 +30,8 @@ describe("ErrorPlaceholder", () => {
 			<ThemeProvider theme={{}}>
 				<ErrorPlaceholder message="Error" onClick={handler} />
 			</ThemeProvider>,
-			"to deeply render as",
+			"when mounted",
+			"to satisfy",
 			<Placeholder icon="error" warn title="Error" onClick={handler} />,
 		);
 	});

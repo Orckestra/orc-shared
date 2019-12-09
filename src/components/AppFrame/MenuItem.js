@@ -39,6 +39,8 @@ Block.defaultProps = {
 	},
 };
 
+export const BlockWithA = Block.withComponent("a");
+
 export const Alert = styled.div`
 	border-radius: 50%;
 	border: 4px solid #ff0000;
@@ -73,7 +75,7 @@ const MenuItem = ({
 }) => {
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
-		ItemWrapper = Block.withComponent("a");
+		ItemWrapper = BlockWithA;
 	}
 	return (
 		<ItemWrapper to={href} {...props}>

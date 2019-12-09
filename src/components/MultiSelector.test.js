@@ -1,4 +1,5 @@
 import React from "react";
+import ShallowRenderer from "react-test-renderer/shallow";
 import sinon from "sinon";
 import Text from "./Text";
 import {
@@ -12,6 +13,11 @@ import {
 } from "./Selector";
 import FullSelector, { MultiSelector } from "./MultiSelector";
 
+const getClassName = elm => {
+	const renderer = new ShallowRenderer();
+	return renderer.render(elm).props.className.split(" ")[1];
+};
+
 describe("MultiSelector", () => {
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>
 		expect(
@@ -19,14 +25,15 @@ describe("MultiSelector", () => {
 				id="test"
 				clickOption={() => () => {}}
 				options={[
-					{ value: 1, label: "Opt 1" },
-					{ value: 2, label: "Opt 2" },
-					{ value: 3, label: "Opt 3" },
-					{ value: 4, label: "Opt 4" },
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
 				]}
-				value={[1, 3]}
+				value={["1", "3"]}
 			/>,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<Wrapper>
 				<InnerSelect id="test" multiple>
 					<option key={1} value={1}>
@@ -70,14 +77,14 @@ describe("MultiSelector", () => {
 				id="test"
 				clickOption={() => () => {}}
 				options={[
-					{ value: 1, label: "Opt 1" },
-					{ value: 2, label: "Opt 2" },
-					{ value: 3, label: "Opt 3" },
-					{ value: 4, label: "Opt 4" },
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
 				]}
 				value={[]}
 			/>,
-			"when rendered",
+			"when mounted",
 			"not to contain",
 			<Option key="multiselect_clear">
 				<Text message="[Clear]" />
@@ -90,14 +97,14 @@ describe("MultiSelector", () => {
 				id="test"
 				clickOption={() => () => {}}
 				options={[
-					{ value: 1, label: "Opt 1" },
-					{ value: 2, label: "Opt 2" },
-					{ value: 3, label: "Opt 3" },
-					{ value: 4, label: "Opt 4" },
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
 				]}
-				value={[1, 2, 3, 4]}
+				value={["1", "2", "3", "4"]}
 			/>,
-			"when rendered",
+			"when mounted",
 			"not to contain",
 			<Option key="multiselect_selectAll">
 				<Text message="[Select all]" />
@@ -112,19 +119,17 @@ describe("MultiSelector", () => {
 				clickOption={() => () => {}}
 				required
 				options={[
-					{ value: 1, label: "Opt 1" },
-					{ value: 2, label: "Opt 2" },
-					{ value: 3, label: "Opt 3" },
-					{ value: 4, label: "Opt 4" },
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
 				]}
 			/>,
-			"to render as",
-			<Wrapper>
-				<InnerSelect id="test" multiple required />
-				<SelectBox htmlFor="test">
-					<Placeholder>This space for rent</Placeholder>
-				</SelectBox>
-			</Wrapper>,
+			"when mounted",
+			"queried for first",
+			"." + getClassName(<Placeholder />),
+			"to satisfy",
+			<Placeholder>This space for rent</Placeholder>,
 		));
 
 	describe("set up to handle values and state", () => {
@@ -138,21 +143,18 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
-					value={[3]}
+					value={["3"]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"change",
-				{ target: { value: 2 } },
-				"on",
-				<select />,
+				{ type: "change", value: "2", target: "select" },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[3, 2]] }]),
+				expect(updater, "to have calls satisfying", [{ args: [["3", "2"]] }]),
 			));
 
 		it("can remove value when inner selector changes", () =>
@@ -160,21 +162,18 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
-					value={[2, 3]}
+					value={["2", "3"]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"change",
-				{ target: { value: 2 } },
-				"on",
-				<select />,
+				{ type: "change", value: "3", target: "select" },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[3]] }]),
+				expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
 			));
 
 		it("can add value when clicking a visual option", () =>
@@ -182,20 +181,18 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
-					value={[3]}
+					value={["3"]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"click",
-				"on",
-				<Option>Opt 4</Option>,
+				{ type: "click", target: '[data-test-id="4"]' },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[3, 4]] }]),
+				expect(updater, "to have calls satisfying", [{ args: [["3", "4"]] }]),
 			));
 
 		it("can remove value when clicking a visual option", () =>
@@ -203,20 +200,18 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
-					value={[4, 3]}
+					value={["4", "3"]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"click",
-				"on",
-				<Option>Opt 4</Option>,
+				{ type: "click", target: '[data-test-id="4"]' },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[3]] }]),
+				expect(updater, "to have calls satisfying", [{ args: [["3"]] }]),
 			));
 
 		it("sets empty value when cleared", () =>
@@ -224,20 +219,16 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
-					value={[4, 3]}
+					value={["4", "3"]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"click",
-				"on",
-				<Option>
-					<Text>[Clear]</Text>
-				</Option>,
+				{ type: "click", target: '[data-test-id="multiselect_clear"]' },
 			).then(() =>
 				expect(updater, "to have calls satisfying", [{ args: [[]] }]),
 			));
@@ -247,22 +238,20 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
 					value={[4, 3]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"click",
-				"on",
-				<Option>
-					<Text>[Select all]</Text>
-				</Option>,
+				{ type: "click", target: '[data-test-id="multiselect_selectAll"]' },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[1, 2, 3, 4]] }]),
+				expect(updater, "to have calls satisfying", [
+					{ args: [["1", "2", "3", "4"]] },
+				]),
 			));
 
 		it("deals with an empty value prop change", () =>
@@ -270,20 +259,17 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"change",
-				{ target: { value: 2 } },
-				"on",
-				<select />,
+				{ type: "change", value: "2", target: "select" },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[2]] }]),
+				expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
 			));
 
 		it("deals with an empty value prop click", () =>
@@ -291,19 +277,17 @@ describe("MultiSelector", () => {
 				<FullSelector
 					update={updater}
 					options={[
-						{ value: 1, label: "Opt 1" },
-						{ value: 2, label: "Opt 2" },
-						{ value: 3, label: "Opt 3" },
-						{ value: 4, label: "Opt 4" },
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
 					]}
 				/>,
-				"when deeply rendered",
+				"when mounted",
 				"with event",
-				"click",
-				"on",
-				<Option>Opt 2</Option>,
+				{ type: "click", target: '[data-test-id="2"]' },
 			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[2]] }]),
+				expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
 			));
 	});
 });

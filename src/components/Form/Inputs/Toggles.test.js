@@ -17,10 +17,12 @@ describe("CheckboxInput", () => {
 
 	it("renders a text input with change handler", () =>
 		expect(
-			<CheckboxInput update={update} value={false} otherProp />,
-			"to render as",
+			<CheckboxInput id="test-item" update={update} value={false} otherProp />,
+			"when mounted",
+			"to satisfy",
 			<CenterMiddleWrapper>
 				<FormCheckbox
+					id="test-item"
 					onChange={getCheckUpdater(update)}
 					value={false}
 					otherProp
@@ -37,10 +39,16 @@ describe("SwitchInput", () => {
 
 	it("renders a text input with change handler", () =>
 		expect(
-			<SwitchInput update={update} value={true} otherProp />,
-			"to render as",
+			<SwitchInput id="test-item" update={update} value={true} otherProp />,
+			"when mounted",
+			"to satisfy",
 			<CenterMiddleWrapper>
-				<Switch onChange={getCheckUpdater(update)} value={true} otherProp />
+				<Switch
+					id="test-item"
+					onChange={getCheckUpdater(update)}
+					value={true}
+					otherProp
+				/>
 			</CenterMiddleWrapper>,
 		));
 });

@@ -5,17 +5,30 @@ import { Loading } from "./Loader";
 
 describe("Loader placeholder", () => {
 	it("renders null if no props set", () =>
-		expect(<Loading />, "renders elements", "to be null"));
+		expect(
+			<div>
+				<Loading />
+			</div>,
+			"when mounted",
+			"to satisfy",
+			<div />,
+		));
 
 	it("renders a load spinner is pastDelay flag set", () =>
-		expect(<Loading pastDelay />, "to render as", <LoadingIcon />));
+		expect(
+			<Loading pastDelay />,
+			"when mounted",
+			"to satisfy",
+			<LoadingIcon />,
+		));
 
 	it("renders an error placeholder if error set", () => {
 		const error = new Error("This is a test");
 		const retry = () => {};
 		return expect(
 			<Loading {...{ error, retry }} />,
-			"to render as",
+			"when mounted",
+			"to satisfy",
 			<ErrorPlaceholder message="This is a test" onClick={retry} />,
 		);
 	});

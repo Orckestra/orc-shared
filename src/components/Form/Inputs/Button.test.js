@@ -10,7 +10,8 @@ describe("FormButton", () => {
 	it("renders a button showing an icon", () =>
 		expect(
 			<FormButton id="testId" update={update} icon="test-icon" otherProp />,
-			"to render with all children as",
+			"when mounted",
+			"to satisfy",
 			<PositionedButton
 				id="testId"
 				otherProp
@@ -27,7 +28,8 @@ describe("FormButton", () => {
 				buttonText="Push this"
 				otherProp
 			/>,
-			"to render with all children as",
+			"when mounted",
+			"to satisfy",
 			<PositionedButton
 				id="testId"
 				otherProp
@@ -45,7 +47,8 @@ describe("FormButton", () => {
 				buttonText="Push this"
 				otherProp
 			/>,
-			"to render with all children as",
+			"when mounted",
+			"to satisfy",
 			<PositionedButton
 				id="testId"
 				otherProp
