@@ -9,6 +9,28 @@ class TestComp2 extends React.Component {
 }
 
 describe("PropStruct", () => {
+	it("handles undefined values", () =>
+		expect(
+			<PropStruct undef={undefined} />,
+			"when mounted",
+			"to satisfy",
+			<dl>
+				<dt>undef:</dt>
+				<dd>undefined</dd>
+			</dl>,
+		));
+
+	it("handles null values", () =>
+		expect(
+			<PropStruct nil={null} />,
+			"when mounted",
+			"to satisfy",
+			<dl>
+				<dt>nil:</dt>
+				<dd>null</dd>
+			</dl>,
+		));
+
 	it("handles symbols", () =>
 		expect(
 			<PropStruct symbol={Symbol("foo")} />,
