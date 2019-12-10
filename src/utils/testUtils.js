@@ -35,15 +35,17 @@ export const PropStruct = props => (
 		{Object.entries(props)
 			.sort(firstItemComparator)
 			.map(([key, value]) =>
-				value === undefined
-					? null
-					: value === "__ignore"
+				value === "__ignore"
 					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
 					: [
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
 								{key === "children" ? (
 									value
+								) : value === undefined ? (
+									"undefined"
+								) : value === null ? (
+									"null"
 								) : typeof value === "object" ? (
 									value["$$typeof"] &&
 									value["$$typeof"] === Symbol.for("react.element") ? (
