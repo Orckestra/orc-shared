@@ -35,7 +35,7 @@ export const PropStruct = props => (
 		{Object.entries(props)
 			.sort(firstItemComparator)
 			.map(([key, value]) =>
-				value === undefined
+				value === undefined || value === null
 					? null
 					: value === "__ignore"
 					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
