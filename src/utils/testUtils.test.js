@@ -1,10 +1,10 @@
 import React from "react";
 import { PropStruct, firstItemComparator } from "./testUtils";
 
-const TestComp = () => <div />;
+const TestComp = ({ id = "tc1", children }) => <div id={id}>{children}</div>;
 class TestComp2 extends React.Component {
 	render() {
-		return <TestComp />;
+		return <TestComp id="tc2" />;
 	}
 }
 
@@ -50,6 +50,25 @@ describe("PropStruct", () => {
 			<dl>
 				<dt>elem:</dt>
 				<dd>React &lt;TestComp2&gt;</dd>
+			</dl>,
+		));
+
+	it('handles prop "children" specially', () =>
+		expect(
+			<PropStruct foo="bar">
+				<TestComp />
+				<TestComp2 />
+			</PropStruct>,
+			"when mounted",
+			"to satisfy",
+			<dl>
+				<dt>children:</dt>
+				<dd>
+					<div id="tc1" />
+					<div id="tc2" />
+				</dd>
+				<dt>foo:</dt>
+				<dd>string "bar"</dd>
 			</dl>,
 		));
 

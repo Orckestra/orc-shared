@@ -42,7 +42,9 @@ export const PropStruct = props => (
 					: [
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
-								{typeof value === "object" ? (
+								{key === "children" ? (
+									value
+								) : typeof value === "object" ? (
 									value["$$typeof"] &&
 									value["$$typeof"] === Symbol.for("react.element") ? (
 										"React <" + (value.type.name || value.type) + ">"
