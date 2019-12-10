@@ -43,7 +43,12 @@ export const PropStruct = props => (
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
 								{typeof value === "object" ? (
-									<PropStruct {...value} />
+									value["$$typeof"] &&
+									value["$$typeof"] === Symbol.for("react.element") ? (
+										"React <" + (value.type.name || value.type) + ">"
+									) : (
+										<PropStruct {...value} />
+									)
 								) : typeof value === "function" ? (
 									"Function"
 								) : typeof value === "string" ? (
