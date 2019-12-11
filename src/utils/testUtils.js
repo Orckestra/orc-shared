@@ -5,6 +5,7 @@ const sinon = require("sinon");
 
 const spyNames = ["log", "warn", "error"];
 let spiedFuncs;
+/* istanbul ignore next */
 export const spyOnConsole = () => {
 	beforeEach(() => {
 		spiedFuncs = spyNames.map(funcName => {
