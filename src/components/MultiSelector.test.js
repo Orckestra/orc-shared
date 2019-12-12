@@ -1,6 +1,6 @@
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
 import sinon from "sinon";
+import { getClassName } from "../utils/testUtils";
 import Text from "./Text";
 import {
 	InnerSelect,
@@ -12,11 +12,6 @@ import {
 	Placeholder,
 } from "./Selector";
 import FullSelector, { MultiSelector } from "./MultiSelector";
-
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[1];
-};
 
 describe("MultiSelector", () => {
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>

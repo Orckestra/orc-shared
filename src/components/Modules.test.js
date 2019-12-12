@@ -2,8 +2,8 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import ShallowRenderer from "react-test-renderer/shallow";
 import { mount } from "react-dom-testing";
+import { getClassName } from "../utils/testUtils";
 import { TabBar } from "./Navigation/Bar";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
 import {
@@ -12,11 +12,6 @@ import {
 	Item as SegmentItem,
 } from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
-
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[1];
-};
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;

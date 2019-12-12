@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
+import { PropStruct } from "../utils/testUtils";
 import withScopeData from "./withScopeData";
 
 jest.mock("../utils/buildUrl", () => {
@@ -13,26 +14,19 @@ jest.mock("../utils/buildUrl", () => {
 	return modExport;
 });
 
-const TestComp = props => (
+const TestComp = ({ spy, getScope, ...props }) => (
 	<div>
-		{"{\n  " +
-			Object.entries(props)
-				.map(
-					([prop, value]) =>
-						prop +
-						": " +
-						(typeof value === "function"
-							? "function"
-							: typeof value === "string"
-							? '"' + value + '"'
-							: value),
-				)
-				.join(",\n  ") +
-			"\n}"}
+		<input
+			id="getScope"
+			value=""
+			onChange={e => spy(getScope(e.target.value))}
+		/>
+		<PropStruct {...props} />
 	</div>
 );
+
 describe("withScopeData", () => {
-	let state, store;
+	let state, store, spy;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			input: {},
@@ -80,6 +74,7 @@ describe("withScopeData", () => {
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
+		spy = sinon.spy().named("getScopeSpy");
 	});
 
 	it("provides scope data props to the enhanced component", () =>
@@ -88,35 +83,44 @@ describe("withScopeData", () => {
 				expect(
 					<Provider store={store}>
 						<MemoryRouter>
-							<Comp />
+							<Comp spy={spy} />
 						</MemoryRouter>
 					</Provider>,
 					"when mounted",
+					"with event",
+					{ type: "change", target: "#getScope", value: "test2" },
 					"to satisfy",
 					<TestComp
-						match={{ path: "/", url: "/", params: {}, isExact: true }}
-						location={{ pathname: "/", search: "", hash: "" }}
-						history={{}}
+						match="__ignore"
+						location="__ignore"
+						history="__ignore"
 						staticContext={undefined}
 						currentScope={{
 							id: "test3",
 							name: "Test 3",
 							foo: true,
 							bar: false,
+							parentScopeId: "test2",
 						}}
-						getScope={expect
-							.it("to be a function")
-							.and("when called with", ["test2"], "to equal", {
-								id: "test2",
-								name: "Test 2",
-								foo: false,
-								bar: true,
-								parentScopeId: "test1",
-								children: ["test3", "test4"],
-							})}
-						defaultNodeState={{}}
-						loadScopes={expect.it("to be a function")}
+						getScope={() => {}}
+						defaultNodeState={{ test1: true, test2: true }}
+						loadScopes={() => {}}
 					/>,
+				).then(() =>
+					expect(spy, "to have calls satisfying", [
+						{
+							args: [
+								{
+									id: "test2",
+									name: "Test 2",
+									foo: false,
+									bar: true,
+									parentScopeId: "test1",
+									children: ["test3", "test4"],
+								},
+							],
+						},
+					]),
 				),
 			)
 			.then(() => expect(store.dispatch, "was not called")));

@@ -1,5 +1,5 @@
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
+import { mount } from "react-dom-testing";
 import { Ignore } from "unexpected-reaction";
 const sinon = require("sinon");
 
@@ -23,9 +23,16 @@ export const spyOnConsole = () => {
 	});
 };
 
-export const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[0];
+export const getClassName = (elm, index = 0) => {
+	const domElm = mount(elm);
+	const classes = domElm.getAttribute("class");
+	if (!classes) {
+		throw new Error(
+			"Class name not found in <" + (elm.type.name || elm.type) + " />",
+		);
+	}
+	console.log(classes);
+	return classes.split(" ")[index];
 };
 
 export const firstItemComparator = (a, b) =>

@@ -1,12 +1,11 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import ShallowRenderer from "react-test-renderer/shallow";
-import { Ignore } from "unexpected-reaction";
 import { IntlProvider } from "react-intl";
+import { MemoryRouter } from "react-router-dom";
+import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
-import { spyOnConsole } from "../../../utils/testUtils";
+import { spyOnConsole, getClassName } from "../../../utils/testUtils";
 import Text from "../../Text";
 import { ButtonWrapper } from "./FieldButtons";
 import { FormInput } from "./Text";
@@ -17,11 +16,6 @@ import TranslationInput, {
 	ShowButtonChevron,
 	LanguageLabel,
 } from "./Translation";
-
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[1];
-};
 
 describe("TranslationInput", () => {
 	let state, store, update;

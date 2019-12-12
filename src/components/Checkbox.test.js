@@ -1,11 +1,7 @@
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
+import { mount } from "react-dom-testing";
+import { getClassName } from "../utils/testUtils";
 import { Checkbox, Wrapper, ContainedInput, Cover } from "./Checkbox";
-
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[1];
-};
 
 describe("Checkbox", () => {
 	it("renders an input and a label", () =>
@@ -32,22 +28,34 @@ describe("ContainedInput", () => {
 
 describe("Cover", () => {
 	it("sets a highlight when input is focused or active", () => {
-		const coverClass = getClassName(<Cover />);
+		const inputClass = getClassName(<ContainedInput />);
+		const coverClass = getClassName(<Cover />, 1); // Get the generated class name
+		mount(<Cover />);
 		return expect(
-			<Cover />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"." +
-				ContainedInput.styledComponentId +
-				":active + ." +
-				coverClass +
-				"," +
-				"." +
-				ContainedInput.styledComponentId +
-				":focus + ." +
-				coverClass +
-				" {box-shadow: 0px 0px 1px 0px #7d7d7d; border-color: #777;}",
+			"." + coverClass,
+			"as a selector to have style rules",
+			expect.it(
+				"to contain",
+				`.${inputClass}:active + .${coverClass},` +
+					`.${inputClass}:focus + .${coverClass}` +
+					" {box-shadow: 0px 0px 1px 0px #7d7d7d; border-color: #777;}",
+			),
+		);
+	});
+
+	it("sets a highlight when input is focused or active, when checked", () => {
+		const inputClass = getClassName(<ContainedInput />);
+		const coverClass = getClassName(<Cover value={true} />, 1); // Get the generated class name
+		mount(<Cover value={true} />);
+		return expect(
+			"." + coverClass,
+			"as a selector to have style rules",
+			expect.it(
+				"to contain",
+				`.${inputClass}:active + .${coverClass},` +
+					`.${inputClass}:focus + .${coverClass}` +
+					" {box-shadow: 0px 0px 1px 0px #7d7d7d; border-color: #777;}",
+			),
 		);
 	});
 
@@ -77,15 +85,34 @@ describe("Cover", () => {
 		});
 
 		it("sets a highlight when input is focused or active", () => {
-			const coverClass = getClassName(<Cover theme={theme} />);
+			const inputClass = getClassName(<ContainedInput />);
+			const coverClass = getClassName(<Cover theme={theme} />, 1); // Get the generated class name
+			mount(<Cover theme={theme} />);
 			return expect(
-				<Cover theme={theme} />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				`.${ContainedInput.styledComponentId}:active + .${coverClass},` +
-					`.${ContainedInput.styledComponentId}:focus + .${coverClass} ` +
-					"{box-shadow: 0px 0px 1px 0px #ce0c0c; border-color: #cc0000;}",
+				"." + coverClass,
+				"as a selector to have style rules",
+				expect.it(
+					"to contain",
+					`.${inputClass}:active + .${coverClass},` +
+						`.${inputClass}:focus + .${coverClass}` +
+						" {box-shadow: 0px 0px 1px 0px #ce0c0c; border-color: #cc0000;}",
+				),
+			);
+		});
+
+		it("sets a highlight when input is focused or active, when checked", () => {
+			const inputClass = getClassName(<ContainedInput />);
+			const coverClass = getClassName(<Cover theme={theme} value={true} />, 1); // Get the generated class name
+			mount(<Cover theme={theme} value={true} />);
+			return expect(
+				"." + coverClass,
+				"as a selector to have style rules",
+				expect.it(
+					"to contain",
+					`.${inputClass}:active + .${coverClass},` +
+						`.${inputClass}:focus + .${coverClass}` +
+						" {box-shadow: 0px 0px 1px 0px #ce0c0c; border-color: #cc0000;}",
+				),
 			);
 		});
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Router } from "react-router-dom";
+import { Router, MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import { Ignore } from "unexpected-reaction";
@@ -28,7 +28,16 @@ describe("Tab", () => {
 			</Router>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<TabLink />) },
+			{
+				type: "click",
+				target:
+					"." +
+					getClassName(
+						<MemoryRouter>
+							<TabLink to="/" />
+						</MemoryRouter>,
+					),
+			},
 			"to satisfy",
 			<Router history={history}>
 				<ModuleTab>
@@ -82,7 +91,16 @@ describe("Tab", () => {
 			</Router>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<TabLink />) },
+			{
+				type: "click",
+				target:
+					"." +
+					getClassName(
+						<MemoryRouter>
+							<TabLink to="/" />
+						</MemoryRouter>,
+					),
+			},
 			"to satisfy",
 			<Router history={history}>
 				<ModuleTab outsideScope>

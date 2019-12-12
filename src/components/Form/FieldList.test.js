@@ -1,18 +1,13 @@
 import React from "react";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
-import ShallowRenderer from "react-test-renderer/shallow";
+import { getClassName } from "../../utils/testUtils";
 import Text from "../Text";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
 import { RoundButton } from "./Inputs/SmallButton";
 import { FormInput } from "./Inputs/Text";
 import FieldList, { List, ListControlButton, REMOVE_ROW } from "./FieldList";
-
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[0];
-};
 
 describe("FieldList", () => {
 	let clock;
@@ -216,7 +211,9 @@ describe("FieldList", () => {
 				type: "change",
 				value: "New Value",
 				target: `.${getClassName(<List />)} > :nth-child(3) .${getClassName(
-					<FormInput />,
+					<IntlProvider locale="en">
+						<FormInput />
+					</IntlProvider>,
 				)}`,
 			},
 		).then(() =>
