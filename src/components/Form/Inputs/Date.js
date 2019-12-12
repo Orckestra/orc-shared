@@ -59,28 +59,28 @@ export const MonthName = styled.div`
 	text-align: center;
 `;
 
-const MonthArrow = styled(Icon).attrs({ role: "button" })`
+const MonthArrow = styled(Icon).attrs(() => ({ role: "button" }))`
 	flex: 0 0 30px;
 	font-size: 10px;
 	cursor: pointer;
 `;
 
-export const LastArrow = styled(MonthArrow).attrs({
-	id: getThemeProp(["icons", "prev"], "previous"),
+export const LastArrow = styled(MonthArrow).attrs(props => ({
+	id: getThemeProp(["icons", "prev"], "previous")(props),
 	"aria-label": "last month",
 	"data-test-id": "calendar_lastArrow",
-})``;
-export const NextArrow = styled(MonthArrow).attrs({
-	id: getThemeProp(["icons", "next"], "next"),
+}))``;
+export const NextArrow = styled(MonthArrow).attrs(props => ({
+	id: getThemeProp(["icons", "next"], "next")(props),
 	"aria-label": "next month",
 	"data-test-id": "calendar_nextArrow",
-})``;
+}))``;
 
 export const DateTable = styled.table`
 	border-collapse: collapse;
 `;
 
-export const DayCell = styled.td.attrs({ role: "button" })`
+export const DayCell = styled.td.attrs(() => ({ role: "button" }))`
 	height: 30px;
 	width: 30px;
 	margin: 0;
@@ -183,9 +183,9 @@ export const CalendarDropdown = ({
 	);
 };
 
-export const CalendarIcon = styled(Icon).attrs({
-	id: getThemeProp(["icons", "date"], "calendar"),
-})`
+export const CalendarIcon = styled(Icon).attrs(props => ({
+	id: getThemeProp(["icons", "date"], "calendar")(props),
+}))`
 	font-size: 20px;
 `;
 
@@ -207,11 +207,11 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		}),
 	);
 
-	LiteralInput = styled(FormInput).attrs({
+	LiteralInput = styled(FormInput).attrs(() => ({
 		tabIndex: -1,
 		type: "text",
 		readOnly: true,
-	})`
+	}))`
 		flex: 0 0 auto;
 		min-width: 0;
 		width: 1em;
@@ -228,10 +228,10 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		}
 	`;
 
-	DatePartInput = styled(FormInput).attrs({
+	DatePartInput = styled(FormInput).attrs(() => ({
 		onFocus: /* istanbul ignore next */ () => event => event.target.select(),
 		type: "number",
-	})`
+	}))`
 		padding-left: 0.2em;
 		padding-right: 0.2em;
 		min-width: 0;

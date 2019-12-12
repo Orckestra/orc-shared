@@ -1,6 +1,6 @@
 import React from "react";
 import pt from "prop-types";
-import styled, { injectGlobal, css } from "styled-components";
+import styled, { createGlobalStyle, css } from "styled-components";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { getApplications } from "../../actions/applications";
@@ -16,7 +16,7 @@ import About from "./About";
 import Preferences from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
 	html {
 		height: 100%;
 	}
@@ -76,6 +76,7 @@ export const AppFrame = ({
 	scopeFilterPlaceholder,
 }) => (
 	<Base>
+		<GlobalStyle />
 		<ConnectedToastList />
 		<Topbar
 			{...{ applications, applicationId, menuLabel, menuMessages }}

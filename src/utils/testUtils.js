@@ -3,10 +3,9 @@ import { mount } from "react-dom-testing";
 import { Ignore } from "unexpected-reaction";
 const sinon = require("sinon");
 
-const spyNames = ["log", "warn", "error"];
-let spiedFuncs;
 /* istanbul ignore next */
-export const spyOnConsole = () => {
+export const spyOnConsole = (spyNames = ["log", "warn", "error"]) => {
+	let spiedFuncs;
 	beforeEach(() => {
 		spiedFuncs = spyNames.map(funcName => {
 			const func = sinon.spy().named("console." + funcName);
@@ -23,16 +22,27 @@ export const spyOnConsole = () => {
 	});
 };
 
-export const getClassName = (elm, index = 0) => {
-	const domElm = mount(elm);
+const getElmClasses = reactElm => {
+	const domElm = mount(reactElm);
 	const classes = domElm.getAttribute("class");
 	if (!classes) {
 		throw new Error(
-			"Class name not found in <" + (elm.type.name || elm.type) + " />",
+			"Class name not found in <" +
+				(reactElm.type.name || reactElm.type) +
+				" />",
 		);
 	}
-	console.log(classes);
+	return classes;
+};
+
+export const getClassName = (elm, index = 0) => {
+	const classes = getElmClasses(elm);
 	return classes.split(" ")[index];
+};
+
+export const getClassSelector = elm => {
+	const classes = getElmClasses(elm);
+	return "." + classes.split(" ").join(".");
 };
 
 export const firstItemComparator = (a, b) =>

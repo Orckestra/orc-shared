@@ -57,7 +57,9 @@ export const List = styled.div`
 	)}
 `;
 
-export const ListControlButton = styled(Button).attrs({ primary: true })`
+export const ListControlButton = styled(Button).attrs(() => ({
+	primary: true,
+}))`
 	align-self: flex-start;
 	min-width: 100px;
 `;

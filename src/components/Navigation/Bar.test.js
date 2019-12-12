@@ -1,7 +1,7 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
-import { getClassName } from "../../utils/testUtils";
+import { getClassSelector } from "../../utils/testUtils";
 import Tab, { CloseIcon } from "./Tab";
 import FullBar, { Bar, TabBar } from "./Bar";
 
@@ -118,7 +118,7 @@ describe("Bar", () => {
 				"with event",
 				{
 					type: "click",
-					target: "." + getClassName(<CloseIcon />),
+					target: getClassSelector(<CloseIcon />),
 				},
 			)
 				.then(() =>

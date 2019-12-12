@@ -1,7 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
-import { getClassName } from "../../utils/testUtils";
+import { getClassName, getClassSelector } from "../../utils/testUtils";
 import Text from "../Text";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
@@ -306,6 +306,7 @@ describe("FieldList", () => {
 				/>
 			</IntlProvider>,
 			"when mounted",
+			"to satisfy",
 			expect
 				.it(
 					"to satisfy",
@@ -395,7 +396,7 @@ describe("FieldList", () => {
 				)
 				.and("with event", {
 					type: "click",
-					target: "." + getClassName(<ListControlButton />),
+					target: getClassSelector(<ListControlButton />),
 				}),
 		).then(() =>
 			expect(update, "to have calls satisfying", [

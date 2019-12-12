@@ -85,7 +85,9 @@ export const Caption = styled.span`
 	)};
 `;
 
-export const ContainedCheckbox = styled.input.attrs({ type: "checkbox" })`
+export const ContainedCheckbox = styled.input.attrs(() => ({
+	type: "checkbox",
+}))`
 	position: absolute;
 	opacity: 0;
 `;
