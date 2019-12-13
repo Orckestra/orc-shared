@@ -71,6 +71,7 @@ export const SelectBox = styled.label`
 export const SelectedValue = styled.span`
 	display: inline-block;
 	width: calc(100% - 20px);
+	white-space: pre;
 `;
 
 export const Dropdown = styled.div`
@@ -102,6 +103,7 @@ export const Option = styled.div`
 	box-sizing: border-box;
 	height: 30px;
 	padding: 6px 12px;
+	white-space: pre;
 	${ifFlag(
 		"active",
 		css`
