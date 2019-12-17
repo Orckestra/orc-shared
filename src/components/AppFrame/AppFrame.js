@@ -3,6 +3,7 @@ import pt from "prop-types";
 import styled, { injectGlobal, css } from "styled-components";
 import { connect } from "react-redux";
 import { compose } from "recompose";
+import { ifFlag } from "../../utils";
 import { getApplications } from "../../actions/applications";
 import withInitialLoad from "../../hocs/withInitialLoad";
 import withAuthentication from "../../hocs/withAuthentication";
@@ -50,12 +51,12 @@ export const ViewPort = styled.div`
 	display: flex;
 	flex-direction: column;
 	transition: transform 0.3s ease-out;
-	${props =>
-		props.open
-			? css`
-					transform: translateX(150px);
-			  `
-			: ""};
+	${ifFlag(
+		"open",
+		css`
+			transform: translateX(150px);
+		`,
+	)};
 `;
 
 export const AppFrame = ({
@@ -137,7 +138,3 @@ WiredAppFrame.propTypes = {
 };
 
 export default WiredAppFrame;
-
-/*
-
-*/

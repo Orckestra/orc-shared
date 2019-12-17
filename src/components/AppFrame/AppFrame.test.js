@@ -1,13 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Immutable from "immutable";
-import sinon from "sinon";
-import { Ignore } from "unexpected-reaction";
-import { getClassName, PropStruct } from "../../utils/testUtils";
-import I18n from "../I18n";
+import { ThemeProvider } from "styled-components";
 import { RSAA } from "redux-api-middleware";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import sinon from "sinon";
+import { Ignore } from "unexpected-reaction";
+import { mount } from "react-dom-testing";
+import { getClassName, PropStruct } from "../../utils/testUtils";
+import I18n from "../I18n";
 import {
 	GET_APPLICATIONS_REQUEST,
 	GET_APPLICATIONS_SUCCESS,
@@ -63,9 +65,9 @@ describe("AppFrame", () => {
 			menuLabel: "TestLabel",
 			location: { pathname: "/Foo/bar" },
 			menuMessages: {
-				sign_out: { id: "msg.signout" },
-				preferences: { id: "msg.prefs" },
-				about: { id: "msg.about" },
+				sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
+				preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
+				about: { id: "msg.about", defaultMessage: "About" },
 			},
 			aboutMessages: {},
 			prefMessages: {},
@@ -108,9 +110,11 @@ describe("AppFrame", () => {
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<I18n>
-						<AppFrame {...props} {...{ toggle, reset }} />
-					</I18n>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} {...{ toggle, reset }} />
+						</I18n>
+					</ThemeProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -323,9 +327,12 @@ describe("AppFrame", () => {
 								modules={[]}
 								menuLabel="TestLabel"
 								menuMessages={{
-									sign_out: { id: "msg.signout" },
-									preferences: { id: "msg.prefs" },
-									about: { id: "msg.about" },
+									sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
+									preferences: {
+										id: "msg.prefs",
+										defaultMessage: "Preferences",
+									},
+									about: { id: "msg.about", defaultMessage: "About" },
 								}}
 								aboutMessages={{}}
 								prefMessages={{}}
@@ -375,38 +382,68 @@ describe("AppFrame", () => {
 	});
 
 	describe("global styles", () => {
-		it("ensures required styling on html element to make IE11 happy", () =>
-			// render any component from AppFrame.js to ensure jsdom has styles injected
-			expect(<Base />, "when mounted", "to be ok").then(() =>
-				expect(
-					"html",
-					"as a selector to have style rules",
-					"to match",
-					/html\s*\{\s*height: 100%;\s*\}/,
-				),
-			));
+		it("ensures required styling on html element to make IE11 happy", () => {
+			// render AppFrame to ensure jsdom has styles injected
+			mount(
+				<Provider store={store}>
+					<MemoryRouter>
+						<ThemeProvider theme={{}}>
+							<I18n>
+								<AppFrame {...props} {...{ toggle, reset }} />
+							</I18n>
+						</ThemeProvider>
+					</MemoryRouter>
+				</Provider>,
+			);
+			return expect(
+				"html",
+				"as a selector to have style rules",
+				"to contain",
+				"height: 100%;",
+			);
+		});
 
-		it("ensures required body styling", () =>
-			// render any component from AppFrame.js to ensure jsdom has styles injected
-			expect(<Base />, "when mounted", "to be ok").then(() =>
-				expect(
-					"body",
-					"as a selector to have style rules",
-					"to match",
-					/body\s*\{\s*height: 100%;\s*margin: 0;\s*overflow: hidden;\s*\}/,
-				),
-			));
+		it("ensures required body styling", () => {
+			// render AppFrame to ensure jsdom has styles injected
+			mount(
+				<Provider store={store}>
+					<MemoryRouter>
+						<ThemeProvider theme={{}}>
+							<I18n>
+								<AppFrame {...props} {...{ toggle, reset }} />
+							</I18n>
+						</ThemeProvider>
+					</MemoryRouter>
+				</Provider>,
+			);
+			return expect(
+				"body",
+				"as a selector to have style rules",
+				"to match",
+				/body\s*\{\s*height: 100%;\s*margin: 0;\s*overflow: hidden;\s*\}/,
+			);
+		});
 
-		it("ensures required viewport styling", () =>
-			// render any component from AppFrame.js to ensure jsdom has styles injected
-			expect(<Base />, "when mounted", "to be ok").then(() =>
-				expect(
-					"#app",
-					"as a selector to have style rules",
-					"to match",
-					/#app\s*\{\s*height: 100%;\s*\}/,
-				),
-			));
+		it("ensures required viewport styling", () => {
+			// render AppFrame to ensure jsdom has styles injected
+			mount(
+				<Provider store={store}>
+					<MemoryRouter>
+						<ThemeProvider theme={{}}>
+							<I18n>
+								<AppFrame {...props} {...{ toggle, reset }} />
+							</I18n>
+						</ThemeProvider>
+					</MemoryRouter>
+				</Provider>,
+			);
+			return expect(
+				"#app",
+				"as a selector to have style rules",
+				"to match",
+				/#app\s*\{\s*height: 100%;\s*\}/,
+			);
+		});
 	});
 });
 
@@ -420,12 +457,13 @@ describe("ViewPort", () => {
 			"translateX",
 		));
 
-	it("translates to the side when open", () =>
-		expect(
+	it("translates to the side when open", () => {
+		return expect(
 			<ViewPort open />,
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
 			"transform: translateX(150px);",
-		));
+		);
+	});
 });
