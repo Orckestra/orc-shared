@@ -1,8 +1,8 @@
 import React from "react";
 import sinon from "sinon";
 import DropMenu, { Wrapper } from "./DropMenu";
-import Anchor from "./Anchor";
-import Menu from "./Menu";
+import Anchor, { Header, Indicator } from "./Anchor";
+import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 import FullMenu from "./index";
 
 describe("DropMenu", () => {
@@ -39,22 +39,133 @@ describe("DropMenu", () => {
 		));
 
 	describe("with state handling", () => {
-		it("adds toggleable open flag", () =>
+		it("renders the anchor", () =>
 			expect(
 				<FullMenu
 					menuLabel="TestLabel"
-					menuItems={[]}
+					menuItems={[
+						{ label: "First", icon: "one", handler: () => {} },
+						{ label: "Second", icon: "two", handler: () => {} },
+					]}
 					className="test-class"
 				/>,
 				"when mounted",
 				"to satisfy",
-				<DropMenu
-					toggle={expect.it("to be a function")}
-					open={false}
+				<Wrapper>
+					<Header className="test-class">
+						TestLabel
+						<Indicator />
+					</Header>
+				</Wrapper>,
+			));
+
+		it("when clicked renders the menu", () =>
+			expect(
+				<FullMenu
 					menuLabel="TestLabel"
-					menuItems={[]}
+					menuItems={[
+						{ label: "First", icon: "one", handler: () => {} },
+						{ label: "Second", icon: "two", handler: () => {} },
+					]}
 					className="test-class"
 				/>,
+				"when mounted",
+				"with event",
+				{ type: "click", target: ".test-class" },
+				"to satisfy",
+				<Wrapper>
+					<Header open className="test-class">
+						TestLabel
+						<Indicator open={true} />
+					</Header>
+					<Drawer in>
+						<List>
+							<Item>
+								<ItemIcon id="one" />
+								<span>First</span>
+							</Item>
+							<Item>
+								<ItemIcon id="two" />
+								<span>Second</span>
+							</Item>
+						</List>
+					</Drawer>
+				</Wrapper>,
 			));
+
+		describe("two adjacent, independent menus", () => {
+			const MakeMenu = ({ num }) => (
+				<FullMenu
+					menuLabel={"TestLabel " + num}
+					menuItems={[
+						{ label: "First", icon: "one", handler: () => {} },
+						{ label: "Second", icon: "two", handler: () => {} },
+					]}
+					className={"test-class-" + num}
+				/>
+			);
+
+			it("renders the anchors", () =>
+				expect(
+					<div>
+						<MakeMenu num="1" />
+						<MakeMenu num="2" />
+					</div>,
+					"when mounted",
+					"to satisfy",
+					<div>
+						<Wrapper>
+							<Header className="test-class-1">
+								TestLabel 1
+								<Indicator />
+							</Header>
+						</Wrapper>
+						<Wrapper>
+							<Header className="test-class-2">
+								TestLabel 2
+								<Indicator />
+							</Header>
+						</Wrapper>
+					</div>,
+				));
+
+			it("when clicked renders the menu", () =>
+				expect(
+					<div>
+						<MakeMenu num="1" />
+						<MakeMenu num="2" />
+					</div>,
+					"when mounted",
+					"with event",
+					{ type: "click", target: ".test-class-2" },
+					"to satisfy",
+					<div>
+						<Wrapper>
+							<Header className="test-class-1">
+								TestLabel 1
+								<Indicator />
+							</Header>
+						</Wrapper>
+						<Wrapper>
+							<Header open className="test-class-2">
+								TestLabel 2
+								<Indicator open={true} />
+							</Header>
+							<Drawer in>
+								<List>
+									<Item>
+										<ItemIcon id="one" />
+										<span>First</span>
+									</Item>
+									<Item>
+										<ItemIcon id="two" />
+										<span>Second</span>
+									</Item>
+								</List>
+							</Drawer>
+						</Wrapper>
+					</div>,
+				));
+		});
 	});
 });
