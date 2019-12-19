@@ -29,11 +29,11 @@ describe("Menu", () => {
 				<List>
 					<Item>
 						<ItemIcon id="one" />
-						<span>First</span>
+						First
 					</Item>
 					<Item>
 						<ItemIcon id="two" />
-						<span>Second</span>
+						Second
 					</Item>
 				</List>
 			</Drawer>,
@@ -58,7 +58,7 @@ describe("Menu", () => {
 						<svg>
 							<Ignore />
 						</svg>
-						<span>Foo</span>
+						Foo
 					</Item>
 				</List>
 			</Drawer>,

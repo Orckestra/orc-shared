@@ -174,9 +174,7 @@ describe("List", () => {
 						</HeadBox>
 					</TableHeader>
 					<TableHeader>
-						<HeadBox>
-							<span>Key</span>
-						</HeadBox>
+						<HeadBox>Key</HeadBox>
 					</TableHeader>
 				</HeadTableRow>
 			</thead>,

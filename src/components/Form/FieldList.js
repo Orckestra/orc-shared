@@ -117,7 +117,7 @@ export const FieldList = ({
 	...props
 }) => {
 	if (listIndex !== undefined) {
-		return <span>Cannot render list inside list</span>;
+		return <>Cannot render list inside list</>;
 	}
 	const renderField =
 		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;

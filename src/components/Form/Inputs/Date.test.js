@@ -338,35 +338,19 @@ describe("CalendarDropdown", () => {
 				<CalendarBox>
 					<CalendarHeader>
 						<LastArrow />
-						<MonthName>
-							<span>April 2019</span>
-						</MonthName>
+						<MonthName>April 2019</MonthName>
 						<NextArrow />
 					</CalendarHeader>
 					<DateTable>
 						<thead>
 							<tr>
-								<th>
-									<span>Mon</span>
-								</th>
-								<th>
-									<span>Tue</span>
-								</th>
-								<th>
-									<span>Wed</span>
-								</th>
-								<th>
-									<span>Thu</span>
-								</th>
-								<th>
-									<span>Fri</span>
-								</th>
-								<th>
-									<span>Sat</span>
-								</th>
-								<th>
-									<span>Sun</span>
-								</th>
+								<th>Mon</th>
+								<th>Tue</th>
+								<th>Wed</th>
+								<th>Thu</th>
+								<th>Fri</th>
+								<th>Sat</th>
+								<th>Sun</th>
 							</tr>
 						</thead>
 						<tbody>

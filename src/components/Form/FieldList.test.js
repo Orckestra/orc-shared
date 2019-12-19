@@ -457,7 +457,7 @@ describe("FieldList", () => {
 			<FieldList listIndex={0} />,
 			"when mounted",
 			"to satisfy",
-			<span>Cannot render list inside list</span>,
+			"Cannot render list inside list",
 		));
 });
 

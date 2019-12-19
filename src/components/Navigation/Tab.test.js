@@ -106,9 +106,7 @@ describe("Tab", () => {
 				<ModuleTab outsideScope>
 					<TabLink outsideScope to="/Foo/modu">
 						<ModuleIcon id="test" />
-						<TabText>
-							<span>A module</span>
-						</TabText>
+						<TabText>A module</TabText>
 					</TabLink>
 				</ModuleTab>
 			</Router>,

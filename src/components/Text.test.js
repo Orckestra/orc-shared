@@ -1,5 +1,4 @@
 import React from "react";
-import { FormattedMessage } from "react-intl";
 import Text, { messageContainsValues, Placeholder } from "./Text";
 
 describe("Text", () => {
@@ -8,23 +7,18 @@ describe("Text", () => {
 			<Text message="Test message" />,
 			"when mounted",
 			"to satisfy",
-			<span>Test message</span>,
+			"Test message",
 		));
 
 	it("renders an empty string", () =>
-		expect(
-			<Text message="" />,
-			"when mounted",
-			"to satisfy",
-			<span>{""}</span>,
-		));
+		expect(<Text message="" />, "when mounted", "to satisfy", ""));
 
 	it("renders a translated message", () =>
 		expect(
 			<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />,
 			"when mounted",
 			"to satisfy",
-			<FormattedMessage id="test.msg" defaultMessage="Test message" />,
+			"Test message",
 		));
 
 	it("renders a translated message with values", () =>
@@ -38,11 +32,7 @@ describe("Text", () => {
 			/>,
 			"when mounted",
 			"to satisfy",
-			<FormattedMessage
-				id="test.msg"
-				defaultMessage="Test message {foo}"
-				values={{ foo: 3 }}
-			/>,
+			"Test message 3",
 		));
 
 	it("renders a translated message missing its values as a placeholder", () =>

@@ -1,5 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
+import { Ignore } from "unexpected-reaction";
 import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
 
 const BlockWithA = Block.withComponent("a");
@@ -15,9 +16,7 @@ describe("MenuItem", () => {
 			<MemoryRouter>
 				<Block data-test-id="test" to="/foo/test">
 					<MenuIcon id="cake" />
-					<Label>
-						<span></span>
-					</Label>
+					<Ignore />
 				</Block>
 			</MemoryRouter>,
 		));
@@ -32,9 +31,7 @@ describe("MenuItem", () => {
 			<MemoryRouter>
 				<BlockWithA menuToggle>
 					<MenuIcon id="cake" />
-					<Label>
-						<span></span>
-					</Label>
+					<Ignore />
 				</BlockWithA>
 			</MemoryRouter>,
 		));
@@ -49,9 +46,7 @@ describe("MenuItem", () => {
 			<MemoryRouter>
 				<Block to="/foo/test">
 					<MenuIcon id="cake" />
-					<Label>
-						<span>Test</span>
-					</Label>
+					<Label>Test</Label>
 				</Block>
 			</MemoryRouter>,
 		));
@@ -67,7 +62,7 @@ describe("MenuItem", () => {
 				<Block to="/foo/test">
 					<MenuIcon id="cake" />
 					<Label show>
-						<span></span>
+						<Ignore />
 					</Label>
 				</Block>
 			</MemoryRouter>,
@@ -84,9 +79,7 @@ describe("MenuItem", () => {
 				<Block to="/foo/test">
 					<MenuIcon id="cake" />
 					<Alert />
-					<Label>
-						<span>Test</span>
-					</Label>
+					<Label>Test</Label>
 				</Block>
 			</MemoryRouter>,
 		));

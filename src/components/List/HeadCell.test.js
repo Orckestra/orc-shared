@@ -102,7 +102,7 @@ describe("HeadCell", () => {
 			"to satisfy",
 			<TableHeader onClick={columnDef.sort}>
 				<HeadBox>
-					<span>Test column</span>
+					Test column
 					<SortMark />
 				</HeadBox>
 			</TableHeader>,
@@ -122,7 +122,7 @@ describe("HeadCell", () => {
 			"to satisfy",
 			<TableHeader>
 				<HeadBox>
-					<span>Test column</span>
+					Test column
 					<SortMark direction="asc" />
 				</HeadBox>
 			</TableHeader>,
@@ -142,7 +142,7 @@ describe("HeadCell", () => {
 			"to satisfy",
 			<TableHeader>
 				<HeadBox>
-					<span>Test column</span>
+					Test column
 					<SortMark direction="desc" />
 				</HeadBox>
 			</TableHeader>,

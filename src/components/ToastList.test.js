@@ -37,7 +37,14 @@ describe("ToastList", () => {
 
 		it("renders in a portal", () => {
 			ReactDOM.render(<RenderToast toasts={[{ key: 1 }]} />, appRoot);
-			return expect(toastRoot, "to contain", <span>[No message]</span>);
+			return expect(
+				toastRoot,
+				"to contain",
+				<ToastBox in>
+					<Ignore />
+					[No message]
+				</ToastBox>,
+			);
 		});
 	});
 });
@@ -50,7 +57,7 @@ describe("Toast", () => {
 			"to satisfy",
 			<ToastBox in>
 				<Ignore />
-				<span>this is a toast</span>
+				this is a toast
 			</ToastBox>,
 		));
 
@@ -64,7 +71,7 @@ describe("Toast", () => {
 			"to satisfy",
 			<ToastBox in>
 				<Ignore />
-				<span>This is a toast</span>
+				This is a toast
 			</ToastBox>,
 		));
 

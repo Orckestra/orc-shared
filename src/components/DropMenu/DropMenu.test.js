@@ -82,11 +82,11 @@ describe("DropMenu", () => {
 						<List>
 							<Item>
 								<ItemIcon id="one" />
-								<span>First</span>
+								First
 							</Item>
 							<Item>
 								<ItemIcon id="two" />
-								<span>Second</span>
+								Second
 							</Item>
 						</List>
 					</Drawer>
@@ -155,11 +155,11 @@ describe("DropMenu", () => {
 								<List>
 									<Item>
 										<ItemIcon id="one" />
-										<span>First</span>
+										First
 									</Item>
 									<Item>
 										<ItemIcon id="two" />
-										<span>Second</span>
+										Second
 									</Item>
 								</List>
 							</Drawer>

@@ -80,19 +80,13 @@ describe("CategoryList", () => {
 					<Ignore />
 				</CategoryRow>
 				<TableRow>
-					<TableData>
-						<span>a</span>
-					</TableData>
+					<TableData>a</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>b</span>
-					</TableData>
+					<TableData>b</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>c</span>
-					</TableData>
+					<TableData>c</TableData>
 				</TableRow>
 			</tbody>,
 		);
@@ -126,28 +120,16 @@ describe("CategoryList", () => {
 					</CategoryHeader>
 				</CategoryRow>
 				<TableRow>
-					<TableData>
-						<span>a</span>
-					</TableData>
-					<TableData>
-						<span>Stuff</span>
-					</TableData>
+					<TableData>a</TableData>
+					<TableData>Stuff</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>c</span>
-					</TableData>
-					<TableData>
-						<span>Stuff</span>
-					</TableData>
+					<TableData>c</TableData>
+					<TableData>Stuff</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>f</span>
-					</TableData>
-					<TableData>
-						<span>Stuff</span>
-					</TableData>
+					<TableData>f</TableData>
+					<TableData>Stuff</TableData>
 				</TableRow>
 				<CategoryRow>
 					<CategoryHeader colSpan={2}>
@@ -156,28 +138,16 @@ describe("CategoryList", () => {
 					</CategoryHeader>
 				</CategoryRow>
 				<TableRow>
-					<TableData>
-						<span>b</span>
-					</TableData>
-					<TableData>
-						<span>Things</span>
-					</TableData>
+					<TableData>b</TableData>
+					<TableData>Things</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>d</span>
-					</TableData>
-					<TableData>
-						<span>Things</span>
-					</TableData>
+					<TableData>d</TableData>
+					<TableData>Things</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>e</span>
-					</TableData>
-					<TableData>
-						<span>Things</span>
-					</TableData>
+					<TableData>e</TableData>
+					<TableData>Things</TableData>
 				</TableRow>
 			</tbody>,
 		);
@@ -218,28 +188,16 @@ describe("CategoryList", () => {
 					</CategoryHeader>
 				</CategoryRow>
 				<TableRow>
-					<TableData>
-						<span>b</span>
-					</TableData>
-					<TableData>
-						<span>Things</span>
-					</TableData>
+					<TableData>b</TableData>
+					<TableData>Things</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>d</span>
-					</TableData>
-					<TableData>
-						<span>Things</span>
-					</TableData>
+					<TableData>d</TableData>
+					<TableData>Things</TableData>
 				</TableRow>
 				<TableRow>
-					<TableData>
-						<span>e</span>
-					</TableData>
-					<TableData>
-						<span>Things</span>
-					</TableData>
+					<TableData>e</TableData>
+					<TableData>Things</TableData>
 				</TableRow>
 			</tbody>,
 		);
@@ -332,19 +290,13 @@ describe("CategoryList", () => {
 					<Ignore />
 				</CategoryRow>
 				<TableRow bgColor="#ff0000">
-					<TableData>
-						<span>a</span>
-					</TableData>
+					<TableData>a</TableData>
 				</TableRow>
 				<TableRow bgColor="#00ff00">
-					<TableData>
-						<span>b</span>
-					</TableData>
+					<TableData>b</TableData>
 				</TableRow>
 				<TableRow bgColor="#0000ff">
-					<TableData>
-						<span>c</span>
-					</TableData>
+					<TableData>c</TableData>
 				</TableRow>
 			</tbody>,
 		);
@@ -370,19 +322,13 @@ describe("CategoryList", () => {
 					<Ignore />
 				</CategoryRow>
 				<TableRow bgColor="green">
-					<TableData>
-						<span>a</span>
-					</TableData>
+					<TableData>a</TableData>
 				</TableRow>
 				<TableRow bgColor="red">
-					<TableData>
-						<span>b</span>
-					</TableData>
+					<TableData>b</TableData>
 				</TableRow>
 				<TableRow bgColor="green">
-					<TableData>
-						<span>c</span>
-					</TableData>
+					<TableData>c</TableData>
 				</TableRow>
 			</tbody>,
 		);
@@ -412,9 +358,7 @@ describe("CategoryList", () => {
 						</HeadBox>
 					</TableHeader>
 					<TableHeader>
-						<HeadBox>
-							<span>Key</span>
-						</HeadBox>
+						<HeadBox>Key</HeadBox>
 					</TableHeader>
 				</HeadTableRow>
 			</thead>,
@@ -445,9 +389,7 @@ describe("CategoryList", () => {
 						</HeadBox>
 					</TableHeader>
 					<TableHeader>
-						<HeadBox>
-							<span>Key</span>
-						</HeadBox>
+						<HeadBox>Key</HeadBox>
 					</TableHeader>
 				</HeadTableRow>
 			</thead>,
