@@ -190,6 +190,8 @@ export const CalendarIcon = styled(Icon).attrs(props => ({
 `;
 
 export const CalendarButton = styled(InputButton)`
+	margin-top: -1px;
+	margin-right: -1px;
 	min-width: 36px;
 	padding: 4px 7px;
 	border-left-color: transparent;

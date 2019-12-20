@@ -6,7 +6,6 @@ import { memoize, getThemeProp } from "../../../utils";
 export const FormInput = styled(Input)`
 	box-sizing: border-box;
 	flex: 0 0 auto;
-	height: 30px;
 	border-radius: 4px;
 	min-width: 40px;
 	width: 100%;
