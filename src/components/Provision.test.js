@@ -1,6 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { withTheme } from "styled-components";
+import { mount } from "react-dom-testing";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
 
@@ -60,4 +61,51 @@ describe("Provision", () => {
 				{},
 			]),
 		));
+
+	describe("global styles", () => {
+		it("ensures required styling on html element to make IE11 happy", () => {
+			// render AppFrame to ensure jsdom has styles injected
+			mount(
+				<Provision store={fakeStore} theme={fakeTheme}>
+					<div />
+				</Provision>,
+			);
+			return expect(
+				"html",
+				"as a selector to have style rules",
+				"to contain",
+				"height: 100%;",
+			);
+		});
+
+		it("ensures required body styling", () => {
+			// render AppFrame to ensure jsdom has styles injected
+			mount(
+				<Provision store={fakeStore} theme={fakeTheme}>
+					<div />
+				</Provision>,
+			);
+			return expect(
+				"body",
+				"as a selector to have style rules",
+				"to match",
+				/body\s*\{\s*height: 100%;\s*margin: 0;\s*overflow: hidden;\s*\}/,
+			);
+		});
+
+		it("ensures required viewport styling", () => {
+			// render AppFrame to ensure jsdom has styles injected
+			mount(
+				<Provision store={fakeStore} theme={fakeTheme}>
+					<div />
+				</Provision>,
+			);
+			return expect(
+				"#app",
+				"as a selector to have style rules",
+				"to match",
+				/#app\s*\{\s*height: 100%;\s*\}/,
+			);
+		});
+	});
 });
