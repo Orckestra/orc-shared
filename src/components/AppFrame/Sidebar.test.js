@@ -34,119 +34,135 @@ describe("Sidebar", () => {
 	it("renders a sidebar with app selector and page menu", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<Sidebar modules={modules} path="/Global/second" />
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Sidebar modules={modules} path="/Global/second" />
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<MemoryRouter>
-					<Bar>
-						<MenuToggle />
-						<EnhancedMenuItem
-							icon="cars"
-							id="first"
-							label="First page"
-							path="/Global/second"
-						/>
-						<EnhancedMenuItem
-							icon="person"
-							id="second"
-							label="Second page"
-							path="/Global/second"
-						/>
-						<Logo />
-					</Bar>
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Bar>
+							<MenuToggle />
+							<EnhancedMenuItem
+								icon="cars"
+								id="first"
+								label="First page"
+								path="/Global/second"
+							/>
+							<EnhancedMenuItem
+								icon="person"
+								id="second"
+								label="Second page"
+								path="/Global/second"
+							/>
+							<Logo />
+						</Bar>
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 		));
 
 	it("renders a sidebar showing alerts", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<Sidebar
-						modules={modules}
-						path="/Global/second"
-						activeModules={["first"]}
-					/>
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Sidebar
+							modules={modules}
+							path="/Global/second"
+							activeModules={["first"]}
+						/>
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<MemoryRouter>
-					<Bar>
-						<MenuToggle />
-						<EnhancedMenuItem
-							icon="cars"
-							id="first"
-							label="First page"
-							path="/Global/second"
-							alert
-						/>
-						<EnhancedMenuItem
-							icon="person"
-							id="second"
-							label="Second page"
-							path="/Global/second"
-						/>
-						<Logo />
-					</Bar>
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Bar>
+							<MenuToggle />
+							<EnhancedMenuItem
+								icon="cars"
+								id="first"
+								label="First page"
+								path="/Global/second"
+								alert
+							/>
+							<EnhancedMenuItem
+								icon="person"
+								id="second"
+								label="Second page"
+								path="/Global/second"
+							/>
+							<Logo />
+						</Bar>
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 		));
 
 	it("renders an open sidebar", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<Sidebar open modules={modules} path="/Global/second" />
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Sidebar open modules={modules} path="/Global/second" />
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<MemoryRouter>
-					<Bar>
-						<MenuToggle open />
-						<EnhancedMenuItem
-							open
-							icon="cars"
-							id="first"
-							label="First page"
-							path="/Global/second"
-						/>
-						<EnhancedMenuItem
-							open
-							icon="person"
-							id="second"
-							label="Second page"
-							path="/Global/second"
-						/>
-						<Logo />
-					</Bar>
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Bar>
+							<MenuToggle open />
+							<EnhancedMenuItem
+								open
+								icon="cars"
+								id="first"
+								label="First page"
+								path="/Global/second"
+							/>
+							<EnhancedMenuItem
+								open
+								icon="person"
+								id="second"
+								label="Second page"
+								path="/Global/second"
+							/>
+							<Logo />
+						</Bar>
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 		));
 
 	it("renders a minimal sidebar", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<Sidebar />
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Sidebar />
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<MemoryRouter>
-					<Bar>
-						<MenuToggle />
-						<Logo />
-					</Bar>
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<Bar>
+							<MenuToggle />
+							<Logo />
+						</Bar>
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 		));
 });

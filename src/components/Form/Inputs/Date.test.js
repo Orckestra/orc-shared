@@ -111,22 +111,22 @@ describe("DateInputField", () => {
 			"to satisfy",
 			[
 				<IntlProvider locale="en-US">
-					<DatePartInput part="month" value="05" />
+					<DatePartInput part="month" value="05" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<LiteralInput value="/" />
+					<LiteralInput value="/" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<DatePartInput part="day" value="24" />
+					<DatePartInput part="day" value="24" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<LiteralInput value="/" />
+					<LiteralInput value="/" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<DatePartInput part="year" value="2014" />
+					<DatePartInput part="year" value="2014" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<LiteralInput value="" />
+					<LiteralInput value="" onChange={() => {}} />
 				</IntlProvider>,
 			],
 		));
@@ -141,22 +141,22 @@ describe("DateInputField", () => {
 			"to satisfy",
 			[
 				<IntlProvider locale="en-US">
-					<DatePartInput part="month" value="01" />
+					<DatePartInput part="month" value="01" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<LiteralInput value="/" />
+					<LiteralInput value="/" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<DatePartInput part="day" value="01" />
+					<DatePartInput part="day" value="01" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<LiteralInput value="/" />
+					<LiteralInput value="/" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<DatePartInput part="year" value="1970" />
+					<DatePartInput part="year" value="1970" onChange={() => {}} />
 				</IntlProvider>,
 				<IntlProvider locale="en-US">
-					<LiteralInput value="" />
+					<LiteralInput value="" onChange={() => {}} />
 				</IntlProvider>,
 			],
 		));

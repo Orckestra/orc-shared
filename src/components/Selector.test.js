@@ -18,6 +18,7 @@ describe("Selector", () => {
 			<Selector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -29,7 +30,7 @@ describe("Selector", () => {
 			"when mounted",
 			"to satisfy",
 			<Wrapper>
-				<InnerSelect id="test" value="3">
+				<InnerSelect id="test" value="3" onChange={() => {}}>
 					<option key="1" value="1">
 						Opt 1
 					</option>
@@ -62,6 +63,7 @@ describe("Selector", () => {
 			<Selector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -74,7 +76,7 @@ describe("Selector", () => {
 			"when mounted",
 			"to satisfy",
 			<Wrapper>
-				<InnerSelect id="test" required>
+				<InnerSelect id="test" required onChange={() => {}}>
 					<option></option>
 					<option key="1" value="1">
 						Opt 1
@@ -107,6 +109,7 @@ describe("Selector", () => {
 				id="test"
 				placeholder="This space for rent"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },

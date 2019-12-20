@@ -57,9 +57,9 @@ describe("Topbar", () => {
 		];
 		clicker = () => {};
 		menuMessages = {
-			sign_out: { id: "msg.signout" },
-			preferences: { id: "msg.prefs" },
-			about: { id: "msg.about" },
+			sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
+			preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
+			about: { id: "msg.about", defaultMessage: "About" },
 		};
 		props = {
 			onClick: clicker,
@@ -150,7 +150,7 @@ describe("withUserMenu", () => {
 	const TestComp = ({ menuItems }) => (
 		<div>
 			{menuItems.map(({ handler, icon, label }) => (
-				<button onClick={handler} id={icon}>
+				<button key={label} onClick={handler} id={icon}>
 					{icon} - {label}
 				</button>
 			))}

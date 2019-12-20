@@ -1,5 +1,5 @@
 import React from "react";
-import Text from "../../Text";
+import { IntlProvider } from "react-intl";
 import {
 	CenterWrapper,
 	ReadOnlyBlock,
@@ -11,17 +11,15 @@ import {
 describe("ReadOnly", () => {
 	it("renders a read-only value in a form", () =>
 		expect(
-			<ReadOnly
-				value={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }}
-			/>,
+			<IntlProvider locale="en">
+				<ReadOnly
+					value={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }}
+				/>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<CenterWrapper>
-				<ReadOnlyBlock>
-					<Text
-						message={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }}
-					/>
-				</ReadOnlyBlock>
+				<ReadOnlyBlock>Read Only</ReadOnlyBlock>
 			</CenterWrapper>,
 		));
 });
@@ -33,9 +31,7 @@ describe("LineLabel", () => {
 			"when mounted",
 			"to satisfy",
 			<CenterWrapper>
-				<Label>
-					<Text message="A text value" />
-				</Label>
+				<Label>A text value</Label>
 			</CenterWrapper>,
 		));
 });

@@ -45,12 +45,21 @@ export const withNumberHandlers = withHandlers({
 });
 
 export const NumberInput = withNumberHandlers(
-	({ value = "", step, increment, decrement, required, ...props }) => (
+	({
+		value = "",
+		step,
+		increment,
+		decrement,
+		required,
+		onChange,
+		...props
+	}) => (
 		<ButtonWrapper invalid={required && !value}>
 			<FormInput
 				type="number"
 				step={step}
 				value={step ? roundToStep(value, step) : value}
+				onChange={onChange}
 				{...props}
 			/>
 			<Spinners>

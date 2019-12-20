@@ -10,14 +10,22 @@ describe("HeadRow", () => {
 			{ fieldName: "c" },
 		];
 		return expect(
-			<HeadRow columnDefs={columnDefs} allSelected={false} />,
+			<table>
+				<thead>
+					<HeadRow columnDefs={columnDefs} allSelected={false} />
+				</thead>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<HeadTableRow>
-				<HeadCell key="a" columnDef={columnDefs[0]} allSelected={false} />
-				<HeadCell key="b" columnDef={columnDefs[1]} allSelected={false} />
-				<HeadCell key="c" columnDef={columnDefs[2]} allSelected={false} />
-			</HeadTableRow>,
+			<table>
+				<thead>
+					<HeadTableRow>
+						<HeadCell key="a" columnDef={columnDefs[0]} allSelected={false} />
+						<HeadCell key="b" columnDef={columnDefs[1]} allSelected={false} />
+						<HeadCell key="c" columnDef={columnDefs[2]} allSelected={false} />
+					</HeadTableRow>
+				</thead>
+			</table>,
 		);
 	});
 });

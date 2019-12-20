@@ -291,9 +291,7 @@ describe("DataCell", () => {
 			<table>
 				<tbody>
 					<tr>
-						<TableData>
-							<Text message="TEXT" />
-						</TableData>
+						<TableData>TEXT</TableData>
 					</tr>
 				</tbody>
 			</table>,

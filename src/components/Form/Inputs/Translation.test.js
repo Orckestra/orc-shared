@@ -18,7 +18,7 @@ import TranslationInput, {
 } from "./Translation";
 
 describe("TranslationInput", () => {
-	let state, store, update;
+	let state, store, update, handlers;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
@@ -36,6 +36,7 @@ describe("TranslationInput", () => {
 			getState: () => state,
 		};
 		update = sinon.spy().named("update");
+		handlers = { "en-US": () => {}, "en-CA": () => {}, "fr-CA": () => {} };
 	});
 
 	it("renders a field for the default culture, and a button to show others", () =>
@@ -55,7 +56,7 @@ describe("TranslationInput", () => {
 			"to satisfy",
 			<TranslationWrapper>
 				<IntlProvider locale="en">
-					<TranslationField lang="en-CA" />
+					<TranslationField lang="en-CA" onChange={() => {}} />
 				</IntlProvider>
 				<ShowButton onClick={expect.it("to be a function")}>
 					<ShowButtonChevron />
@@ -69,7 +70,11 @@ describe("TranslationInput", () => {
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">
-						<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} />
+						<TranslationInput
+							name="test"
+							value={{ "fr-CA": "Des mots" }}
+							handlers={handlers}
+						/>
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
@@ -79,13 +84,17 @@ describe("TranslationInput", () => {
 			"to satisfy",
 			<TranslationWrapper>
 				<IntlProvider locale="en">
-					<TranslationField lang="en-CA" />
+					<TranslationField lang="en-CA" onChange={() => {}} />
 				</IntlProvider>
 				<IntlProvider locale="en">
-					<TranslationField lang="en-US" />
+					<TranslationField lang="en-US" onChange={() => {}} />
 				</IntlProvider>
 				<IntlProvider locale="en">
-					<TranslationField lang="fr-CA" message="Des mots" />
+					<TranslationField
+						lang="fr-CA"
+						message="Des mots"
+						onChange={() => {}}
+					/>
 				</IntlProvider>
 			</TranslationWrapper>,
 		));
@@ -159,11 +168,11 @@ describe("TranslationInput", () => {
 					"to satisfy",
 					<TranslationWrapper>
 						<IntlProvider locale="en">
-							<TranslationField lang="en-CA" required />
+							<TranslationField lang="en-CA" required onChange={() => {}} />
 						</IntlProvider>
 						<ShowButton onClick={expect.it("to be a function")}>
 							<ShowButtonChevron />
-							<Text message="Show more things" />
+							Show more things
 						</ShowButton>
 					</TranslationWrapper>,
 				)
@@ -203,6 +212,12 @@ describe("TranslationField", () => {
 					<FormInput value="A hat, pardner" onChange={onChange} otherProp />
 				</IntlProvider>
 			</ButtonWrapper>,
+		).then(() =>
+			expect(
+				[console.log, console.warn, console.error],
+				"to have calls satisfying",
+				[],
+			),
 		));
 
 	it("handles missing message", () =>
@@ -218,5 +233,11 @@ describe("TranslationField", () => {
 					<FormInput value="" onChange={onChange} otherProp />
 				</IntlProvider>
 			</ButtonWrapper>,
-		).then(() => expect(console.error, "was not called")));
+		).then(() =>
+			expect(
+				[console.log, console.warn, console.error],
+				"to have calls satisfying",
+				[],
+			),
+		));
 });

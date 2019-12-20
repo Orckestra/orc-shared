@@ -55,7 +55,7 @@ const Text = ({ message, error }) => {
 			return <Placeholder />;
 		}
 	} else {
-		return message;
+		return message.toString();
 	}
 };
 

@@ -5,7 +5,7 @@ import sinon from "sinon";
 import withLocaleSwitch from "./withLocaleSwitch";
 import { changeLocale } from "../actions/locale";
 
-const TestComp = props => <button {...props} />;
+const TestComp = ({ onClick }) => <button onClick={onClick} />;
 
 describe("withLocaleSwitch", () => {
 	let store;

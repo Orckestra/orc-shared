@@ -1,6 +1,6 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import sinon from "sinon";
-import Text from "../Text";
 import Checkbox from "../Checkbox";
 import HeadCell, {
 	SortMark,
@@ -19,14 +19,24 @@ describe("HeadCell", () => {
 			width: 42,
 		};
 		return expect(
-			<HeadCell columnDef={columnDef} />,
+			<table>
+				<thead>
+					<tr>
+						<HeadCell columnDef={columnDef} />
+					</tr>
+				</thead>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableHeader width={42}>
-				<HeadBox>
-					<Text message={"Test column"} />
-				</HeadBox>
-			</TableHeader>,
+			<table>
+				<thead>
+					<tr>
+						<TableHeader width={42}>
+							<HeadBox>Test column</HeadBox>
+						</TableHeader>
+					</tr>
+				</thead>
+			</table>,
 		);
 	});
 
@@ -35,12 +45,24 @@ describe("HeadCell", () => {
 			fieldName: "a",
 		};
 		return expect(
-			<HeadCell columnDef={columnDef} />,
+			<table>
+				<thead>
+					<tr>
+						<HeadCell columnDef={columnDef} />
+					</tr>
+				</thead>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<TableHeader>
-				<HeadBox />
-			</TableHeader>,
+			<table>
+				<thead>
+					<tr>
+						<TableHeader>
+							<HeadBox />
+						</TableHeader>
+					</tr>
+				</thead>
+			</table>,
 		);
 	});
 
@@ -51,16 +73,28 @@ describe("HeadCell", () => {
 		};
 		const rowIds = ["a", "b", "c"];
 		return expect(
-			<HeadCell columnDef={columnDef} rowIds={rowIds} />,
+			<table>
+				<thead>
+					<tr>
+						<HeadCell columnDef={columnDef} rowIds={rowIds} />
+					</tr>
+				</thead>
+			</table>,
 			"when mounted",
 			"with event",
 			{ type: "change", target: "input" },
 			"to satisfy",
-			<TableHeader select>
-				<HeadBox>
-					<Checkbox id="select_headRow" value={false} />
-				</HeadBox>
-			</TableHeader>,
+			<table>
+				<thead>
+					<tr>
+						<TableHeader select>
+							<HeadBox>
+								<Checkbox id="select_headRow" value={false} />
+							</HeadBox>
+						</TableHeader>
+					</tr>
+				</thead>
+			</table>,
 		).then(() =>
 			expect(columnDef.onChange, "to have calls satisfying", [
 				{ args: [rowIds] },
@@ -75,16 +109,28 @@ describe("HeadCell", () => {
 		};
 		const rowIds = ["a", "b", "c"];
 		return expect(
-			<HeadCell columnDef={columnDef} rowIds={rowIds} allSelected />,
+			<table>
+				<thead>
+					<tr>
+						<HeadCell columnDef={columnDef} rowIds={rowIds} allSelected />
+					</tr>
+				</thead>
+			</table>,
 			"when mounted",
 			"with event",
 			{ type: "change", target: "input" },
 			"to satisfy",
-			<TableHeader select>
-				<HeadBox>
-					<Checkbox id="select_headRow" value={true} />
-				</HeadBox>
-			</TableHeader>,
+			<table>
+				<thead>
+					<tr>
+						<TableHeader select>
+							<HeadBox>
+								<Checkbox id="select_headRow" value={true} />
+							</HeadBox>
+						</TableHeader>
+					</tr>
+				</thead>
+			</table>,
 		).then(() =>
 			expect(columnDef.onChange, "to have calls satisfying", [{ args: [[]] }]),
 		);
@@ -97,15 +143,29 @@ describe("HeadCell", () => {
 			sort: () => {},
 		};
 		return expect(
-			<HeadCell columnDef={columnDef} />,
+			<IntlProvider locale="en">
+				<table>
+					<thead>
+						<tr>
+							<HeadCell columnDef={columnDef} />
+						</tr>
+					</thead>
+				</table>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<TableHeader onClick={columnDef.sort}>
-				<HeadBox>
-					Test column
-					<SortMark />
-				</HeadBox>
-			</TableHeader>,
+			<table>
+				<thead>
+					<tr>
+						<TableHeader onClick={columnDef.sort}>
+							<HeadBox>
+								Test column
+								<SortMark />
+							</HeadBox>
+						</TableHeader>
+					</tr>
+				</thead>
+			</table>,
 		);
 	});
 
@@ -117,15 +177,29 @@ describe("HeadCell", () => {
 			sortDirection: "asc",
 		};
 		return expect(
-			<HeadCell columnDef={columnDef} />,
+			<IntlProvider locale="en">
+				<table>
+					<thead>
+						<tr>
+							<HeadCell columnDef={columnDef} />
+						</tr>
+					</thead>
+				</table>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<TableHeader>
-				<HeadBox>
-					Test column
-					<SortMark direction="asc" />
-				</HeadBox>
-			</TableHeader>,
+			<table>
+				<thead>
+					<tr>
+						<TableHeader>
+							<HeadBox>
+								Test column
+								<SortMark direction="asc" />
+							</HeadBox>
+						</TableHeader>
+					</tr>
+				</thead>
+			</table>,
 		);
 	});
 
@@ -137,26 +211,38 @@ describe("HeadCell", () => {
 			sortDirection: "desc",
 		};
 		return expect(
-			<HeadCell columnDef={columnDef} />,
+			<IntlProvider locale="en">
+				<table>
+					<thead>
+						<tr>
+							<HeadCell columnDef={columnDef} />
+						</tr>
+					</thead>
+				</table>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<TableHeader>
-				<HeadBox>
-					Test column
-					<SortMark direction="desc" />
-				</HeadBox>
-			</TableHeader>,
+			<table>
+				<thead>
+					<tr>
+						<TableHeader>
+							<HeadBox>
+								Test column
+								<SortMark direction="desc" />
+							</HeadBox>
+						</TableHeader>
+					</tr>
+				</thead>
+			</table>,
 		);
 	});
 });
 
-// Switch components as <tr> warns when outside a table.
-const SwitchedTableHeader = TableHeader.withComponent("div");
-
 describe("TableHeader", () => {
+	// Switch components as <tr> warns when outside a table.
 	it("sets a width if selection column", () =>
 		expect(
-			<SwitchedTableHeader select />,
+			<TableHeader as="div" select />,
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
@@ -165,7 +251,7 @@ describe("TableHeader", () => {
 
 	it("sets a width if told to", () =>
 		expect(
-			<SwitchedTableHeader width={55} />,
+			<TableHeader as="div" width={55} />,
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",

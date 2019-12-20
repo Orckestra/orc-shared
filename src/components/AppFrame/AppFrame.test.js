@@ -59,7 +59,7 @@ describe("AppFrame", () => {
 					displayName: "Marketing Legacy",
 				},
 			],
-			applicationId: 3,
+			applicationId: "3",
 			modules: [],
 			activeModules: ["foo"],
 			menuLabel: "TestLabel",
@@ -69,8 +69,39 @@ describe("AppFrame", () => {
 				preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
 				about: { id: "msg.about", defaultMessage: "About" },
 			},
-			aboutMessages: {},
-			prefMessages: {},
+			aboutMessages: {
+				ccName: {
+					id: "msg.ccName",
+					defaultMessage: "Orckestra Commerce Cloud",
+				},
+				ccVersion: {
+					id: "msg.ccVersion",
+					defaultMessage: "Commerce Cloud {version}",
+				},
+				copyrightTermsNotice: {
+					id: "msg.copyrightTermsNotice",
+					defaultMessage:
+						"This computer program is protected by copyright laws and international treaties. Unauthorized reproduction or redistribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law. Orckestra is a trademark of Orckestra Technologies Inc. All other trademarks are property of the respective owners.",
+				},
+				copyright: {
+					id: "msg.copyright",
+					defaultMessage: "© 2019 Orckestra Technologies Inc.",
+				},
+				allRightsReserved: {
+					id: "msg.allRightsReserved",
+					defaultMessage: "All rights reserved.",
+				},
+			},
+			prefMessages: {
+				preferences: { id: "msg.preferences", defaultMessage: "Preferences" },
+				save: { id: "msg.save", defaultMessage: "Save" },
+				cancel: { id: "msg.cancel", defaultMessage: "Cancel" },
+				language: { id: "msg.language", defaultMessage: "Display language" },
+				defaultApp: {
+					id: "msg.defaultApp",
+					defaultMessage: "Default application",
+				},
+			},
 			scopeFilterPlaceholder: { id: "scope.filter", defaultMessage: "Filter" },
 			toggle,
 			reset,
@@ -119,49 +150,53 @@ describe("AppFrame", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter>
-				<Base>
-					<Wrapper>
-						<AppBox>
-							<AppSelWrapper>
-								<MenuIcon />
-							</AppSelWrapper>
-							<AppLabel>
-								<AppLogo />
-							</AppLabel>
-						</AppBox>
-						<MenuWrapper>
+			<ThemeProvider theme={{}}>
+				<MemoryRouter>
+					<Base>
+						<Wrapper>
+							<AppBox>
+								<AppSelWrapper>
+									<MenuIcon />
+								</AppSelWrapper>
+								<AppLabel>
+									<AppLogo />
+								</AppLabel>
+							</AppBox>
+							<MenuWrapper>
+								<Ignore />
+							</MenuWrapper>
+						</Wrapper>
+						<SideBar>
+							<MenuToggle />
 							<Ignore />
-						</MenuWrapper>
-					</Wrapper>
-					<SideBar>
-						<MenuToggle />
-						<Ignore />
-						<Ignore />
-						<Ignore />
-						<Logo />
-					</SideBar>
-					<ViewPort>
-						<ScopeBar>
-							<AlignedButton></AlignedButton>
-						</ScopeBar>
-						<TestComp1 key="1" />
-						<TestComp2 key="2" />
-						<TestComp3 key="3" />
-					</ViewPort>
-				</Base>
-			</MemoryRouter>,
+							<Ignore />
+							<Ignore />
+							<Logo />
+						</SideBar>
+						<ViewPort>
+							<ScopeBar>
+								<AlignedButton></AlignedButton>
+							</ScopeBar>
+							<TestComp1 key="1" />
+							<TestComp2 key="2" />
+							<TestComp3 key="3" />
+						</ViewPort>
+					</Base>
+				</MemoryRouter>
+			</ThemeProvider>,
 		);
 	});
 
 	it("propagates open flag, toggle and reset functions", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<I18n>
-						<AppFrame open {...props} />
-					</I18n>
-				</MemoryRouter>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<I18n>
+							<AppFrame open {...props} />
+						</I18n>
+					</MemoryRouter>
+				</ThemeProvider>
 			</Provider>,
 			"when mounted",
 			"with event",
@@ -171,19 +206,21 @@ describe("AppFrame", () => {
 			"with event",
 			{ type: "click", target: "." + getClassName(<ViewPort />) },
 			"to satisfy",
-			<Base>
-				<Wrapper>
-					<Ignore />
-					<Ignore />
-				</Wrapper>
-				<SideBar open>
-					<MenuToggle open />
-					<Logo />
-				</SideBar>
-				<ViewPort open>
-					<Ignore />
-				</ViewPort>
-			</Base>,
+			<ThemeProvider theme={{}}>
+				<Base>
+					<Wrapper>
+						<Ignore />
+						<Ignore />
+					</Wrapper>
+					<SideBar open>
+						<MenuToggle open />
+						<Logo />
+					</SideBar>
+					<ViewPort open>
+						<Ignore />
+					</ViewPort>
+				</Base>
+			</ThemeProvider>,
 			/* <Topbar onClick={expect.it("to be", props.reset)} />
 				<Sidebar open toggle={expect.it("to be", props.toggle)} />
 				<ViewPort open onClick={expect.it("to be", props.reset)} /> */
@@ -202,7 +239,7 @@ describe("AppFrame", () => {
 				applications: {
 					list: [
 						{
-							id: 3,
+							id: "3",
 							name: "Orders",
 							isVisible: true,
 							isAbsoluteUrl: true,
@@ -269,7 +306,7 @@ describe("AppFrame", () => {
 						bar: true,
 					},
 				},
-				settings: { defaultApp: 12 },
+				settings: { defaultApp: "12" },
 				view: { scopeSelector: { filter: "1" } },
 				toasts: { queue: [] },
 			});
@@ -293,11 +330,13 @@ describe("AppFrame", () => {
 			const WiredAppFrame = appFrameWiring(PropStruct);
 			return expect(
 				<Provider store={store}>
-					<MemoryRouter>
-						<I18n>
-							<WiredAppFrame {...props} />
-						</I18n>
-					</MemoryRouter>
+					<ThemeProvider theme={{}}>
+						<MemoryRouter>
+							<I18n>
+								<WiredAppFrame {...props} />
+							</I18n>
+						</MemoryRouter>
+					</ThemeProvider>
 				</Provider>,
 				"to satisfy",
 				<Provider store={store}>
@@ -308,10 +347,10 @@ describe("AppFrame", () => {
 								toggle={expect.it("to be a function")}
 								reset={expect.it("to be a function")}
 								activeModules={["foo"]}
-								applicationId={3}
+								applicationId={"3"}
 								applications={[
 									{
-										id: 3,
+										id: "3",
 										name: "Orders",
 										isVisible: true,
 										isAbsoluteUrl: true,
@@ -326,16 +365,9 @@ describe("AppFrame", () => {
 								location={{ pathname: "/Foo/bar" }}
 								modules={[]}
 								menuLabel="TestLabel"
-								menuMessages={{
-									sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
-									preferences: {
-										id: "msg.prefs",
-										defaultMessage: "Preferences",
-									},
-									about: { id: "msg.about", defaultMessage: "About" },
-								}}
-								aboutMessages={{}}
-								prefMessages={{}}
+								menuMessages={props.menuMessages}
+								aboutMessages={props.aboutMessages}
+								prefMessages={props.prefMessages}
 								scopeFilterPlaceholder={{
 									id: "scope.filter",
 									defaultMessage: "Filter",
@@ -351,14 +383,16 @@ describe("AppFrame", () => {
 			state = state.setIn(["applications", "list"], Immutable.List());
 			return expect(
 				<Provider store={store}>
-					<MemoryRouter>
-						<I18n>
-							<FullAppFrame {...props} />
-						</I18n>
-					</MemoryRouter>
+					<ThemeProvider theme={{}}>
+						<MemoryRouter>
+							<I18n>
+								<FullAppFrame {...props} />
+							</I18n>
+						</MemoryRouter>
+					</ThemeProvider>
 				</Provider>,
 				"when mounted",
-				"to be ok",
+				"to be truthy",
 			).then(() =>
 				expect(store.dispatch, "to have calls satisfying", [
 					{
@@ -457,13 +491,12 @@ describe("ViewPort", () => {
 			"translateX",
 		));
 
-	it("translates to the side when open", () => {
-		return expect(
+	it("translates to the side when open", () =>
+		expect(
 			<ViewPort open />,
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
 			"transform: translateX(150px);",
-		);
-	});
+		));
 });

@@ -25,7 +25,7 @@ describe("Provision", () => {
 			"when mounted",
 			"to satisfy",
 			<div>{'{"value":"styles"}'}</div>,
-		));
+		).then(() => expect(console.error, "was not called")));
 
 	it("handles getting no theme", () =>
 		expect(
@@ -35,7 +35,7 @@ describe("Provision", () => {
 			"when mounted",
 			"to satisfy",
 			<div>{"{}"}</div>,
-		));
+		).then(() => expect(console.error, "was not called")));
 
 	it("fails if no children given", () =>
 		expect(

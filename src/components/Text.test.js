@@ -1,4 +1,5 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import Text, { messageContainsValues, Placeholder } from "./Text";
 
 describe("Text", () => {
@@ -15,7 +16,9 @@ describe("Text", () => {
 
 	it("renders a translated message", () =>
 		expect(
-			<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />,
+			<IntlProvider locale="en">
+				<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			"Test message",
@@ -23,13 +26,15 @@ describe("Text", () => {
 
 	it("renders a translated message with values", () =>
 		expect(
-			<Text
-				message={{
-					id: "test.msg",
-					defaultMessage: "Test message {foo}",
-					values: { foo: 3 },
-				}}
-			/>,
+			<IntlProvider locale="en">
+				<Text
+					message={{
+						id: "test.msg",
+						defaultMessage: "Test message {foo}",
+						values: { foo: 3 },
+					}}
+				/>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			"Test message 3",

@@ -156,12 +156,14 @@ describe("SegmentPage", () => {
 			<Provider store={store}>
 				<Router history={history}>
 					<ThemeProvider theme={{}}>
-						<SegmentPage
-							path="/:scope/meep"
-							segments={segments}
-							match={{ params: { scope: "foo" } }}
-							location={{ pathname: "/foo/meep" }}
-						/>
+						<I18n>
+							<SegmentPage
+								path="/:scope/meep"
+								segments={segments}
+								match={{ params: { scope: "foo" } }}
+								location={{ pathname: "/foo/meep" }}
+							/>
+						</I18n>
 					</ThemeProvider>
 				</Router>
 			</Provider>,

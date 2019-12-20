@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { ThemeProvider } from "styled-components";
 import { shade } from "polished";
@@ -63,10 +64,12 @@ describe("Toast", () => {
 
 	it("shows a translated message", () =>
 		expect(
-			<Toast
-				in
-				message={{ id: "test.toast", defaultMessage: "This is a toast" }}
-			/>,
+			<IntlProvider locale="en">
+				<Toast
+					in
+					message={{ id: "test.toast", defaultMessage: "This is a toast" }}
+				/>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<ToastBox in>

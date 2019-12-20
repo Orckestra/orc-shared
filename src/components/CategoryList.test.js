@@ -18,7 +18,7 @@ describe("CategoryList", () => {
 	it("renders nothing if no columnDefs", () =>
 		expect(
 			<div>
-				<CategoryList rows={[{}]} />
+				<CategoryList rows={[{ id: "foo" }]} />
 			</div>,
 			"when mounted",
 			"to satisfy",
@@ -27,12 +27,16 @@ describe("CategoryList", () => {
 
 	it("renders a table", () =>
 		expect(
-			<CategoryList columnDefs={[{}]} />,
+			<CategoryList columnDefs={[{ fieldName: "a" }]} />,
 			"when mounted",
 			"to satisfy",
 			<Table>
 				<thead>
-					<Ignore />
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
 				</thead>
 				<tbody></tbody>
 			</Table>,
@@ -40,26 +44,66 @@ describe("CategoryList", () => {
 
 	it("renders just a header", () =>
 		expect(
-			<CategoryList columnDefs={[{}, {}, {}]} />,
+			<CategoryList
+				columnDefs={[
+					{ fieldName: "a" },
+					{ fieldName: "b" },
+					{ fieldName: "c" },
+				]}
+			/>,
 			"when mounted",
-			"to contain",
-			<tbody />,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody />
+			</table>,
 		));
 
 	it("renders a placeholder if one given and no rows", () =>
 		expect(
 			<CategoryList
 				height={121}
-				columnDefs={[{}, {}, {}]}
+				columnDefs={[
+					{ fieldName: "a" },
+					{ fieldName: "b" },
+					{ fieldName: "c" },
+				]}
 				placeholder={<div />}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<Placeholder width={3} height={80}>
-					<div />
-				</Placeholder>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<Placeholder width={3} height={80}>
+						<div />
+					</Placeholder>
+				</tbody>
+			</table>,
 		));
 
 	it("renders a category row and a row for each row data object", () => {
@@ -74,21 +118,33 @@ describe("CategoryList", () => {
 				rowOnClick={rowOnClick}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<CategoryRow>
-					<Ignore />
-				</CategoryRow>
-				<TableRow>
-					<TableData>a</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>b</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>c</TableData>
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<td>
+							<Ignore />
+							<Ignore />
+						</td>
+					</CategoryRow>
+					<TableRow>
+						<TableData>a</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>b</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>c</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -111,45 +167,57 @@ describe("CategoryList", () => {
 				rowOnClick={rowOnClick}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<CategoryRow>
-					<CategoryHeader colSpan={2}>
-						<CategoryIndicator />
-						Stuff
-					</CategoryHeader>
-				</CategoryRow>
-				<TableRow>
-					<TableData>a</TableData>
-					<TableData>Stuff</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>c</TableData>
-					<TableData>Stuff</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>f</TableData>
-					<TableData>Stuff</TableData>
-				</TableRow>
-				<CategoryRow>
-					<CategoryHeader colSpan={2}>
-						<CategoryIndicator />
-						Things
-					</CategoryHeader>
-				</CategoryRow>
-				<TableRow>
-					<TableData>b</TableData>
-					<TableData>Things</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>d</TableData>
-					<TableData>Things</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>e</TableData>
-					<TableData>Things</TableData>
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<CategoryHeader colSpan={2}>
+							<CategoryIndicator />
+							Stuff
+						</CategoryHeader>
+					</CategoryRow>
+					<TableRow>
+						<TableData>a</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>c</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>f</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<CategoryRow>
+						<CategoryHeader colSpan={2}>
+							<CategoryIndicator />
+							Things
+						</CategoryHeader>
+					</CategoryRow>
+					<TableRow>
+						<TableData>b</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>d</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>e</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -173,33 +241,45 @@ describe("CategoryList", () => {
 				viewState={{ closedCategories: ["Stuff"] }}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<CategoryRow>
-					<CategoryHeader colSpan={2} closed>
-						<CategoryIndicator closed />
-						Stuff
-					</CategoryHeader>
-				</CategoryRow>
-				<CategoryRow>
-					<CategoryHeader colSpan={2}>
-						<CategoryIndicator />
-						Things
-					</CategoryHeader>
-				</CategoryRow>
-				<TableRow>
-					<TableData>b</TableData>
-					<TableData>Things</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>d</TableData>
-					<TableData>Things</TableData>
-				</TableRow>
-				<TableRow>
-					<TableData>e</TableData>
-					<TableData>Things</TableData>
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<CategoryHeader colSpan={2} closed>
+							<CategoryIndicator closed />
+							Stuff
+						</CategoryHeader>
+					</CategoryRow>
+					<CategoryRow>
+						<CategoryHeader colSpan={2}>
+							<CategoryIndicator />
+							Things
+						</CategoryHeader>
+					</CategoryRow>
+					<TableRow>
+						<TableData>b</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>d</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>e</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -244,7 +324,7 @@ describe("CategoryList", () => {
 			{ key: "e", category: "Things" },
 			{ key: "f", category: "Stuff" },
 		];
-		const columnDefs = [{}, {}];
+		const columnDefs = [{ fieldName: "a" }, { fieldName: "b" }];
 		const rowOnClick = () => {};
 		return expect(
 			<CategoryList
@@ -284,21 +364,33 @@ describe("CategoryList", () => {
 				rowBackgroundGetter={colorGetter}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<CategoryRow>
-					<Ignore />
-				</CategoryRow>
-				<TableRow bgColor="#ff0000">
-					<TableData>a</TableData>
-				</TableRow>
-				<TableRow bgColor="#00ff00">
-					<TableData>b</TableData>
-				</TableRow>
-				<TableRow bgColor="#0000ff">
-					<TableData>c</TableData>
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<td>
+							<Ignore />
+							<Ignore />
+						</td>
+					</CategoryRow>
+					<TableRow bgColor="#ff0000">
+						<TableData>a</TableData>
+					</TableRow>
+					<TableRow bgColor="#00ff00">
+						<TableData>b</TableData>
+					</TableRow>
+					<TableRow bgColor="#0000ff">
+						<TableData>c</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -316,27 +408,42 @@ describe("CategoryList", () => {
 				rowBackgroundGetter={colorGetter}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<CategoryRow>
-					<Ignore />
-				</CategoryRow>
-				<TableRow bgColor="green">
-					<TableData>a</TableData>
-				</TableRow>
-				<TableRow bgColor="red">
-					<TableData>b</TableData>
-				</TableRow>
-				<TableRow bgColor="green">
-					<TableData>c</TableData>
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<td>
+							<Ignore />
+							<Ignore />
+						</td>
+					</CategoryRow>
+					<TableRow bgColor="green">
+						<TableData>a</TableData>
+					</TableRow>
+					<TableRow bgColor="red">
+						<TableData>b</TableData>
+					</TableRow>
+					<TableRow bgColor="green">
+						<TableData>c</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
 	it("renders a header based on column definitions", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{ type: "select" }, { fieldName: "key", label: "Key" }];
+		const columnDefs = [
+			{ type: "select", fieldName: "select" },
+			{ fieldName: "key", label: "Key" },
+		];
 		const selection = ["a"];
 		return expect(
 			<CategoryList
@@ -346,28 +453,65 @@ describe("CategoryList", () => {
 				selection={selection}
 			/>,
 			"when mounted",
-			"to contain",
-			<thead>
-				<HeadTableRow>
-					<TableHeader select>
-						<HeadBox>
-							<Checkbox>
-								<Ignore />
-								<Ignore />
-							</Checkbox>
-						</HeadBox>
-					</TableHeader>
-					<TableHeader>
-						<HeadBox>Key</HeadBox>
-					</TableHeader>
-				</HeadTableRow>
-			</thead>,
+			"to satisfy",
+			<table>
+				<thead>
+					<HeadTableRow>
+						<TableHeader select>
+							<HeadBox>
+								<Checkbox>
+									<Ignore />
+									<Ignore />
+								</Checkbox>
+							</HeadBox>
+						</TableHeader>
+						<TableHeader>
+							<HeadBox>Key</HeadBox>
+						</TableHeader>
+					</HeadTableRow>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<Ignore />
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
 	it("renders a header when all rows are selected", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{ type: "select" }, { fieldName: "key", label: "Key" }];
+		const columnDefs = [
+			{ type: "select", fieldName: "select" },
+			{ fieldName: "key", label: "Key" },
+		];
 		const selection = ["a", "b", "c"];
 		return expect(
 			<CategoryList
@@ -377,22 +521,56 @@ describe("CategoryList", () => {
 				selection={selection}
 			/>,
 			"when mounted",
-			"to contain",
-			<thead>
-				<HeadTableRow>
-					<TableHeader select>
-						<HeadBox>
-							<Checkbox>
-								<Ignore />
-								<Cover value={true} />
-							</Checkbox>
-						</HeadBox>
-					</TableHeader>
-					<TableHeader>
-						<HeadBox>Key</HeadBox>
-					</TableHeader>
-				</HeadTableRow>
-			</thead>,
+			"to satisfy",
+			<table>
+				<thead>
+					<HeadTableRow>
+						<TableHeader select>
+							<HeadBox>
+								<Checkbox>
+									<Ignore />
+									<Cover value={true} />
+								</Checkbox>
+							</HeadBox>
+						</TableHeader>
+						<TableHeader>
+							<HeadBox>Key</HeadBox>
+						</TableHeader>
+					</HeadTableRow>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<Ignore />
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 });

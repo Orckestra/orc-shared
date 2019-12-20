@@ -29,7 +29,7 @@ describe("FieldElements", () => {
 						<FieldElements
 							fields={[
 								{
-									type: "Something",
+									type: "ReadOnly",
 									name: "thing",
 									someProp: 12.5,
 								},
@@ -39,7 +39,7 @@ describe("FieldElements", () => {
 									label: "A field set",
 									fields: [
 										{
-											type: "Whatever",
+											type: "NumberInput",
 											name: "stuff",
 										},
 									],
@@ -50,8 +50,8 @@ describe("FieldElements", () => {
 									label: "Combined fields",
 									proportions: ["300px", 100],
 									fields: [
-										{ type: "AnotherThing", name: "item" },
-										{ type: "EvenMore", name: "otheritem" },
+										{ type: "CheckboxInput", name: "item" },
+										{ type: "EmailInput", name: "otheritem" },
 									],
 								},
 								{
@@ -59,7 +59,7 @@ describe("FieldElements", () => {
 									name: "list",
 									rowCount: 15,
 									someProp: "Is this way",
-									rowField: { name: "listStuff", type: "Text" },
+									rowField: { name: "listStuff", type: "TextInput" },
 								},
 							]}
 							values={values}
@@ -73,7 +73,7 @@ describe("FieldElements", () => {
 						<InputField
 							key="thing"
 							name="thing"
-							type="Something"
+							type="ReadOnly"
 							update={expect.it("when called", "to equal", "thing")}
 							value="foo"
 							someProp={12.5}
@@ -84,7 +84,7 @@ describe("FieldElements", () => {
 							<FieldElements
 								fields={[
 									{
-										type: "Whatever",
+										type: "NumberInput",
 										name: "stuff",
 									},
 								]}
@@ -97,8 +97,8 @@ describe("FieldElements", () => {
 						<Combination label="Combined fields" proportions={["300px", 100]}>
 							<FieldElements
 								fields={[
-									{ type: "AnotherThing", name: "item" },
-									{ type: "EvenMore", name: "otheritem" },
+									{ type: "CheckboxInput", name: "item" },
+									{ type: "EmailInput", name: "otheritem" },
 								]}
 								values={values}
 								getUpdater={getUpdater}
@@ -109,7 +109,7 @@ describe("FieldElements", () => {
 						<FieldList
 							name="list"
 							values={values}
-							rowField={{ name: "listStuff", type: "Text" }}
+							rowField={{ name: "listStuff", type: "TextInput" }}
 							getUpdater={getUpdater}
 							rowCount={15}
 							someProp="Is this way"
@@ -125,7 +125,7 @@ describe("FieldElements", () => {
 				<FieldElements
 					fields={[
 						{
-							type: "Something",
+							type: "ReadOnly",
 							name: "thing",
 						},
 					]}
@@ -135,7 +135,7 @@ describe("FieldElements", () => {
 			"to satisfy",
 			<IntlProvider locale="en">
 				<React.Fragment>
-					<InputField update={undefined} value={undefined} type="Something" />
+					<InputField update={undefined} value={undefined} type="ReadOnly" />
 				</React.Fragment>
 			</IntlProvider>,
 		));

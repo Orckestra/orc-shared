@@ -19,6 +19,7 @@ describe("MultiSelector", () => {
 			<MultiSelector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -71,6 +72,7 @@ describe("MultiSelector", () => {
 			<MultiSelector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -91,6 +93,7 @@ describe("MultiSelector", () => {
 			<MultiSelector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -112,6 +115,7 @@ describe("MultiSelector", () => {
 				id="test"
 				placeholder="This space for rent"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				required
 				options={[
 					{ value: "1", label: "Opt 1" },
