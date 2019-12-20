@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { injectIntl } from "react-intl";
-import { withProps } from "recompose";
+import { withProps, compose } from "recompose";
 import { getThemeProp } from "../utils";
 
-const maybeTranslate = (intl, message) =>
-	message && message.id ? intl.formatMessage(message) : message;
+const maybeTranslate = ({ /* intl */ formatMessage }, message) =>
+	message && message.id ? formatMessage(message) : message;
 
 export const InputComponent = styled.input`
 	font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
@@ -22,10 +22,11 @@ export const InputComponent = styled.input`
 	}
 `;
 
-const Input = injectIntl(
+const Input = compose(
+	injectIntl,
 	withProps(({ intl, placeholder }) => ({
 		placeholder: maybeTranslate(intl, placeholder),
-	}))(InputComponent),
-);
+	})),
+)(InputComponent);
 
 export default Input;

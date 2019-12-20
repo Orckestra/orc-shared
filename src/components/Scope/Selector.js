@@ -39,7 +39,7 @@ export const Selector = ({
 	name,
 	show,
 	reset,
-	intl,
+	intl: renamedIntl,
 	getScope,
 	defaultNodeState,
 	filter,
@@ -51,7 +51,7 @@ export const Selector = ({
 			<InputBox>
 				<SearchInput
 					placeholder={
-						filterPlaceholder && intl.formatMessage(filterPlaceholder)
+						filterPlaceholder && renamedIntl.formatMessage(filterPlaceholder)
 					}
 					value={filter}
 					onChange={updateFilter}

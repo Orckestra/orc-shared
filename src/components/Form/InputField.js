@@ -22,6 +22,7 @@ export const InputField = ({
 	wasBlurred,
 	...props
 }) => {
+	const { formatMessage } = intl;
 	const Input = inputs[type];
 	if (!Input) {
 		console.error(`Unknown type "${type}", cannot render field`);
@@ -49,7 +50,7 @@ export const InputField = ({
 				value={value}
 				placeholder={
 					typeof placeholder == "object"
-						? intl.formatMessage(placeholder)
+						? formatMessage(placeholder)
 						: undefined
 				}
 				required={required && wasBlurred}
