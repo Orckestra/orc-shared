@@ -2,8 +2,8 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import ShallowRenderer from "react-test-renderer/shallow";
 import { mount } from "react-dom-testing";
+import { getClassName } from "../utils/testUtils";
 import { TabBar } from "./Navigation/Bar";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
 import {
@@ -12,11 +12,6 @@ import {
 	Item as SegmentItem,
 } from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
-
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[1];
-};
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
@@ -92,9 +87,7 @@ describe("Modules", () => {
 					<ModuleTab active>
 						<TabLink to="/TestScope/demos">
 							<ModuleIcon id="cloud" />
-							<TabText>
-								<span>Module 3</span>
-							</TabText>
+							<TabText>Module 3</TabText>
 						</TabLink>
 					</ModuleTab>
 				</TabBar>
@@ -117,9 +110,7 @@ describe("Modules", () => {
 						<ModuleTab>
 							<TabLink to="/TestScope/users">
 								<ModuleIcon id="user" />
-								<TabText>
-									<span>Module 1</span>
-								</TabText>
+								<TabText>Module 1</TabText>
 							</TabLink>
 						</ModuleTab>
 					</TabBar>
@@ -128,11 +119,9 @@ describe("Modules", () => {
 					<SegmentWrapper>
 						<SegmentList>
 							<SegmentItem to="/TestScope/users/page1" active>
-								<span>Page 1</span>
+								Page 1
 							</SegmentItem>
-							<SegmentItem to="/TestScope/users/page2">
-								<span>Page 2</span>
-							</SegmentItem>
+							<SegmentItem to="/TestScope/users/page2">Page 2</SegmentItem>
 						</SegmentList>
 						<Page1 />
 					</SegmentWrapper>
@@ -156,9 +145,7 @@ describe("Modules", () => {
 						<ModuleTab active>
 							<TabLink to="/TestScope/photos">
 								<ModuleIcon id="image" />
-								<TabText>
-									<span>Module 2</span>
-								</TabText>
+								<TabText>Module 2</TabText>
 							</TabLink>
 						</ModuleTab>
 					</TabBar>
@@ -183,9 +170,7 @@ describe("Modules", () => {
 						<ModuleTab active>
 							<TabLink to="/TestScope/demos">
 								<ModuleIcon id="cloud" />
-								<TabText>
-									<span>Module 3</span>
-								</TabText>
+								<TabText>Module 3</TabText>
 							</TabLink>
 						</ModuleTab>
 					</TabBar>

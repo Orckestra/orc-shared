@@ -9,7 +9,7 @@ export const Wrapper = styled.label`
 	margin: -10px -15px;
 `;
 
-export const ContainedInput = styled.input.attrs({ type: "checkbox" })`
+export const ContainedInput = styled.input.attrs(() => ({ type: "checkbox" }))`
 	position: absolute;
 	opacity: 0;
 	z-index: 10;

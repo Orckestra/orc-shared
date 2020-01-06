@@ -7,8 +7,8 @@ describe("Root", () => {
 });
 
 describe("Leaf", () => {
-	it("renders a <Root>", () =>
-		expect(<Leaf />, "when mounted", "to satisfy", <Root />));
+	it("renders a <li>", () =>
+		expect(<Leaf />, "when mounted", "to satisfy", <li />));
 
 	it("sets styling for a branch structure", () =>
 		expect(

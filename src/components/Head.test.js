@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
-import Helmet from "react-helmet";
 import Head from "./Head";
 
 describe("Head", () => {

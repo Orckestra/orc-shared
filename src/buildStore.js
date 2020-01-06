@@ -7,7 +7,6 @@ import {
 } from "connected-react-router/immutable";
 import { createBrowserHistory } from "history";
 import { combineReducers } from "redux-immutable";
-import addLocales from "./addLocales";
 import { spawnerMiddleware } from "./spawnerMiddleware";
 import applicationReducer from "./reducers/applications";
 import authenticationReducer from "./reducers/authentication";
@@ -39,11 +38,6 @@ const buildStore = (reducers, devOptions = {}) => {
 	);
 
 	const supportedLocales = SUPPORTED_LOCALES || ["en"];
-	// Set supported languages
-	const supportedLanguageTags = supportedLocales // Only the initial language tag
-		.map(locale => locale.replace(/-\w+/g, ""))
-		.filter((item, index, langs) => langs.indexOf(item) === index);
-	addLocales(...supportedLanguageTags);
 	const localeReducer = localeFactory(supportedLocales);
 
 	buildReducer = reducers =>

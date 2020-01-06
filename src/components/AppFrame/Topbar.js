@@ -81,7 +81,7 @@ export const AppLabel = styled.div`
 	align-items: center;
 `;
 
-export const AppLogo = styled.img.attrs({ alt: "" })`
+export const AppLogo = styled.img.attrs(() => ({ alt: "" }))`
 	height: 30px;
 	margin-right: 10px;
 `;

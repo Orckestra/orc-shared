@@ -5,6 +5,7 @@ import { ifFlag, getThemeProp } from "../../../utils";
 export const ButtonWrapper = styled.div`
 	box-sizing: border-box;
 	display: flex;
+	align-items: stretch;
 	height: 30px;
 	flex: 0 1 auto;
 	border-radius: 4px;
@@ -15,7 +16,6 @@ export const ButtonWrapper = styled.div`
 		height: 28px;
 		border: 0 none transparent;
 		border-radius: 0;
-		margin-right: -1px;
 		flex: 0 1 100%;
 		box-shadow: none;
 	}
@@ -25,7 +25,6 @@ export const ButtonWrapper = styled.div`
 		border-bottom-left-radius: 4px;
 	}
 	& > :last-child {
-		margin-right: 0;
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 	}

@@ -28,13 +28,13 @@ export const CategoryHeader = styled.td`
 	cursor: pointer;
 `;
 
-export const CategoryIndicator = styled(Icon).attrs({
+export const CategoryIndicator = styled(Icon).attrs(props => ({
 	id: ifFlag(
 		"closed",
 		getThemeProp(["icons", "indicators", "right"], "chevron-right"),
 		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
-	),
-})`
+	)(props),
+}))`
 	font-size: 12px;
 	position: absolute;
 	left: 22px;

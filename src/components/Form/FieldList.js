@@ -57,7 +57,9 @@ export const List = styled.div`
 	)}
 `;
 
-export const ListControlButton = styled(Button).attrs({ primary: true })`
+export const ListControlButton = styled(Button).attrs(() => ({
+	primary: true,
+}))`
 	align-self: flex-start;
 	min-width: 100px;
 `;
@@ -115,7 +117,7 @@ export const FieldList = ({
 	...props
 }) => {
 	if (listIndex !== undefined) {
-		return <span>Cannot render list inside list</span>;
+		return <>Cannot render list inside list</>;
 	}
 	const renderField =
 		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;

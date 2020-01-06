@@ -3,9 +3,9 @@ import styled from "styled-components";
 import Icon from "../../Icon";
 import { getThemeProp } from "../../../utils";
 
-export const MenuIcon = styled(Icon).attrs({
-	id: getThemeProp(["icons", "menu"], "placeholder"),
-})`
+export const MenuIcon = styled(Icon).attrs(props => ({
+	id: getThemeProp(["icons", "menu"], "placeholder")(props),
+}))`
 	font-size: 24px;
 	margin: auto;
 `;

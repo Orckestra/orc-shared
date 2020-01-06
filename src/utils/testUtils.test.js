@@ -20,8 +20,32 @@ describe("getClassName", () => {
 	it("finds the first class name of the root element given to it", () =>
 		expect(getClassName(<TestComp className="foo bar" />), "to equal", "foo"));
 
+	it("can find later-index class names of the root element given to it", () =>
+		expect(
+			getClassName(<TestComp className="foo bar" />, 1),
+			"to equal",
+			"bar",
+		));
+
+	it("works with svg elements", () =>
+		expect(getClassName(<svg className="foo bar" />), "to equal", "foo"));
+
 	it("works with styled components", () =>
 		expect(getClassName(<TestStyled />), "to match", /__TestStyled-/));
+
+	it("throws an error if no class found", () =>
+		expect(
+			() => getClassName(<div />),
+			"to throw",
+			"Class name not found in <div />",
+		));
+
+	it("throws an error if no class found", () =>
+		expect(
+			() => getClassName(<TestComp />),
+			"to throw",
+			"Class name not found in <TestComp />",
+		));
 });
 
 describe("PropStruct", () => {

@@ -23,9 +23,9 @@ describe("List", () => {
 	it("renders nothing if no columnDefs", () =>
 		expect(<List rows={[{}]} />, "to satisfy", null));
 
-	it("renders a table", () =>
+	it("renders a table with no rows", () =>
 		expect(
-			<List columnDefs={[{}]} />,
+			<List columnDefs={[{ fieldName: "a" }]} />,
 			"when mounted",
 			"to satisfy",
 			<Table>
@@ -40,29 +40,44 @@ describe("List", () => {
 			</Table>,
 		));
 
-	it("renders just a header", () =>
-		expect(
-			<List columnDefs={[{}, {}, {}]} />,
-			"when mounted",
-			"to contain",
-			<tbody />,
-		));
-
 	it("renders a placeholder if one given and no rows", () =>
 		expect(
-			<List height={121} columnDefs={[{}, {}, {}]} placeholder={<div />} />,
+			<List
+				height={121}
+				columnDefs={[
+					{ fieldName: "a" },
+					{ fieldName: "b" },
+					{ fieldName: "c" },
+				]}
+				placeholder={<div />}
+			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<Placeholder width={3} height={80}>
-					<div />
-				</Placeholder>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<Placeholder width={3} height={80}>
+						<div />
+					</Placeholder>
+				</tbody>
+			</table>,
 		));
 
 	it("renders a row for each row data object", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ fieldName: "a" }];
 		const rowOnClick = () => {};
 		return expect(
 			<List
@@ -72,24 +87,33 @@ describe("List", () => {
 				rowOnClick={rowOnClick}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<TableRow>
-					<Ignore />
-				</TableRow>
-				<TableRow>
-					<Ignore />
-				</TableRow>
-				<TableRow>
-					<Ignore />
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<TableRow>
+						<td />
+					</TableRow>
+					<TableRow>
+						<td />
+					</TableRow>
+					<TableRow>
+						<td />
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
 	it("renders rows with data-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ fieldName: "a" }];
 		const rowOnClick = () => {};
 		const colorMap = {
 			a: "#ff0000",
@@ -106,24 +130,33 @@ describe("List", () => {
 				rowBackgroundGetter={colorGetter}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<TableRow bgColor="#ff0000">
-					<Ignore />
-				</TableRow>
-				<TableRow bgColor="#00ff00">
-					<Ignore />
-				</TableRow>
-				<TableRow bgColor="#0000ff">
-					<Ignore />
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<TableRow bgColor="#ff0000">
+						<td />
+					</TableRow>
+					<TableRow bgColor="#00ff00">
+						<td />
+					</TableRow>
+					<TableRow bgColor="#0000ff">
+						<td />
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
 	it("renders rows with index-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{}];
+		const columnDefs = [{ fieldName: "a" }];
 		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
@@ -135,24 +168,36 @@ describe("List", () => {
 				rowBackgroundGetter={colorGetter}
 			/>,
 			"when mounted",
-			"to contain",
-			<tbody>
-				<TableRow bgColor="green">
-					<Ignore />
-				</TableRow>
-				<TableRow bgColor="red">
-					<Ignore />
-				</TableRow>
-				<TableRow bgColor="green">
-					<Ignore />
-				</TableRow>
-			</tbody>,
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<TableRow bgColor="green">
+						<td />
+					</TableRow>
+					<TableRow bgColor="red">
+						<td />
+					</TableRow>
+					<TableRow bgColor="green">
+						<td />
+					</TableRow>
+				</tbody>
+			</table>,
 		);
 	});
 
 	it("renders a header based on column definitions", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{ type: "select" }, { fieldName: "key", label: "Key" }];
+		const columnDefs = [
+			{ type: "select", fieldName: "select" },
+			{ fieldName: "key", label: "Key" },
+		];
 		const selection = ["a"];
 		return expect(
 			<List
@@ -162,30 +207,56 @@ describe("List", () => {
 				selection={selection}
 			/>,
 			"when mounted",
-			"to contain",
-			<thead>
-				<HeadTableRow>
-					<TableHeader select>
-						<HeadBox>
-							<label>
-								<input type="checkbox" value={false} />
-								<label></label>
-							</label>
-						</HeadBox>
-					</TableHeader>
-					<TableHeader>
-						<HeadBox>
-							<span>Key</span>
-						</HeadBox>
-					</TableHeader>
-				</HeadTableRow>
-			</thead>,
+			"to satisfy",
+			<table>
+				<thead>
+					<HeadTableRow>
+						<TableHeader select>
+							<HeadBox>
+								<label>
+									<input type="checkbox" value={false} />
+									<label></label>
+								</label>
+							</HeadBox>
+						</TableHeader>
+						<TableHeader>
+							<HeadBox>Key</HeadBox>
+						</TableHeader>
+					</HeadTableRow>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
 	it("renders a header when all rows are selected", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
-		const columnDefs = [{ type: "select" }];
+		const columnDefs = [{ type: "select", fieldName: "select" }];
 		const selection = ["a", "b", "c"];
 		return expect(
 			<List
@@ -195,19 +266,38 @@ describe("List", () => {
 				selection={selection}
 			/>,
 			"when mounted",
-			"to contain",
-			<thead>
-				<HeadTableRow>
-					<TableHeader select>
-						<HeadBox>
-							<label>
-								<input type="checkbox" value={true} />
-								<label></label>
-							</label>
-						</HeadBox>
-					</TableHeader>
-				</HeadTableRow>
-			</thead>,
+			"to satisfy",
+			<table>
+				<thead>
+					<HeadTableRow>
+						<TableHeader select>
+							<HeadBox>
+								<label>
+									<input type="checkbox" value={true} />
+									<label></label>
+								</label>
+							</HeadBox>
+						</TableHeader>
+					</HeadTableRow>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Ignore />
+						</td>
+					</tr>
+				</tbody>
+			</table>,
 		);
 	});
 
@@ -215,13 +305,13 @@ describe("List", () => {
 		let rows, columnDefs, colorGetter;
 		beforeEach(() => {
 			rows = generateRows(15);
-			columnDefs = [{}];
+			columnDefs = [{ fieldName: "key", label: "Key" }];
 			colorGetter = (row, index) => `rgb(${row.key},${row.key},${row.key})`;
 		});
 
 		it("renders a header with all rows identified when virtual", () => {
 			const rows = generateRows(15);
-			const columnDefs = [{ type: "select" }];
+			const columnDefs = [{ type: "select", fieldName: "select" }];
 			const selection = [
 				"1",
 				"2",
@@ -251,19 +341,50 @@ describe("List", () => {
 					scrollBuffer={1}
 				/>,
 				"when mounted",
-				"to contain",
-				<thead>
-					<HeadTableRow>
-						<TableHeader select>
-							<HeadBox>
-								<label>
-									<input type="checkbox" value={true} />
-									<label></label>
-								</label>
-							</HeadBox>
-						</TableHeader>
-					</HeadTableRow>
-				</thead>,
+				"to satisfy",
+				<table>
+					<thead>
+						<HeadTableRow>
+							<TableHeader select>
+								<HeadBox>
+									<label>
+										<input type="checkbox" value={true} />
+										<label></label>
+									</label>
+								</HeadBox>
+							</TableHeader>
+						</HeadTableRow>
+					</thead>
+					<tbody>
+						<tr />
+						<tr>
+							<td>
+								<Ignore />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<Ignore />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<Ignore />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<Ignore />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<Ignore />
+							</td>
+						</tr>
+						<tr />
+					</tbody>
+				</table>,
 			);
 		});
 
@@ -280,22 +401,39 @@ describe("List", () => {
 					rowBackgroundGetter={colorGetter}
 				/>,
 				"when mounted",
-				"to contain",
-				<tbody>
-					<TableRow bgColor="rgb(1,1,1)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(2,2,2)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(3,3,3)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(4,4,4)">
-						<Ignore />
-					</TableRow>
-					<tr style={{ height: 561 }} />
-				</tbody>,
+				"to satisfy",
+				<table>
+					<thead>
+						<tr>
+							<th>
+								<Ignore />
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<TableRow bgColor="rgb(1,1,1)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(2,2,2)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(3,3,3)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(4,4,4)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<tr style={{ height: 561 }} />
+					</tbody>
+				</table>,
 			));
 
 		it("renders near top", () =>
@@ -311,29 +449,50 @@ describe("List", () => {
 					rowBackgroundGetter={colorGetter}
 				/>,
 				"when mounted",
-				"to contain",
-				<tbody>
-					<tr style={{ height: 51 }} />
-					<TableRow bgColor="rgb(2,2,2)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(3,3,3)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(4,4,4)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(5,5,5)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(6,6,6)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(7,7,7)">
-						<Ignore />
-					</TableRow>
-					<tr style={{ height: 408 }} />
-				</tbody>,
+				"to satisfy",
+				<table>
+					<thead>
+						<tr>
+							<th>
+								<Ignore />
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style={{ height: 51 }} />
+						<TableRow bgColor="rgb(2,2,2)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(3,3,3)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(4,4,4)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(5,5,5)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(6,6,6)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(7,7,7)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<tr style={{ height: 408 }} />
+					</tbody>
+				</table>,
 			));
 
 		it("renders in the middle", () =>
@@ -349,26 +508,45 @@ describe("List", () => {
 					rowBackgroundGetter={colorGetter}
 				/>,
 				"when mounted",
-				"to contain",
-				<tbody>
-					<tr style={{ height: 255 }} />
-					<TableRow bgColor="rgb(6,6,6)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(7,7,7)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(8,8,8)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(9,9,9)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(10,10,10)">
-						<Ignore />
-					</TableRow>
-					<tr style={{ height: 255 }} />
-				</tbody>,
+				"to satisfy",
+				<table>
+					<thead>
+						<tr>
+							<th>
+								<Ignore />
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style={{ height: 255 }} />
+						<TableRow bgColor="rgb(6,6,6)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(7,7,7)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(8,8,8)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(9,9,9)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(10,10,10)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<tr style={{ height: 255 }} />
+					</tbody>
+				</table>,
 			));
 
 		it("renders near end", () =>
@@ -384,29 +562,50 @@ describe("List", () => {
 					rowBackgroundGetter={colorGetter}
 				/>,
 				"when mounted",
-				"to contain",
-				<tbody>
-					<tr style={{ height: 408 }} />
-					<TableRow bgColor="rgb(9,9,9)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(10,10,10)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(11,11,11)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(12,12,12)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(13,13,13)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(14,14,14)">
-						<Ignore />
-					</TableRow>
-					<tr style={{ height: 51 }} />
-				</tbody>,
+				"to satisfy",
+				<table>
+					<thead>
+						<tr>
+							<th>
+								<Ignore />
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style={{ height: 408 }} />
+						<TableRow bgColor="rgb(9,9,9)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(10,10,10)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(11,11,11)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(12,12,12)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(13,13,13)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(14,14,14)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<tr style={{ height: 51 }} />
+					</tbody>
+				</table>,
 			));
 
 		it("renders at end", () =>
@@ -422,22 +621,39 @@ describe("List", () => {
 					rowBackgroundGetter={colorGetter}
 				/>,
 				"when mounted",
-				"to contain",
-				<tbody>
-					<tr style={{ height: 561 }} />
-					<TableRow bgColor="rgb(12,12,12)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(13,13,13)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(14,14,14)">
-						<Ignore />
-					</TableRow>
-					<TableRow bgColor="rgb(15,15,15)">
-						<Ignore />
-					</TableRow>
-				</tbody>,
+				"to satisfy",
+				<table>
+					<thead>
+						<tr>
+							<th>
+								<Ignore />
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style={{ height: 561 }} />
+						<TableRow bgColor="rgb(12,12,12)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(13,13,13)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(14,14,14)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+						<TableRow bgColor="rgb(15,15,15)">
+							<td>
+								<Ignore />
+							</td>
+						</TableRow>
+					</tbody>
+				</table>,
 			));
 	});
 });
@@ -445,19 +661,27 @@ describe("List", () => {
 describe("Placeholder", () => {
 	it("renders wrappers to center the placeholder in the table", () =>
 		expect(
-			<Placeholder width={4} height={450}>
-				<div id="child" />
-			</Placeholder>,
+			<table>
+				<tbody>
+					<Placeholder width={4} height={450}>
+						<div id="child" />
+					</Placeholder>
+				</tbody>
+			</table>,
 			"when mounted",
 			"to satisfy",
-			<tr>
-				<td colSpan={4} style={{ padding: 0 }}>
-					<PlaceholderCell cssHeight={450}>
-						<PlaceholderBox>
-							<div id="child" />
-						</PlaceholderBox>
-					</PlaceholderCell>
-				</td>
-			</tr>,
+			<table>
+				<tbody>
+					<tr>
+						<td colSpan={4} style={{ padding: 0 }}>
+							<PlaceholderCell cssHeight={450}>
+								<PlaceholderBox>
+									<div id="child" />
+								</PlaceholderBox>
+							</PlaceholderCell>
+						</td>
+					</tr>
+				</tbody>
+			</table>,
 		));
 });

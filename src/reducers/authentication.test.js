@@ -94,7 +94,8 @@ describe("authentication", () => {
 
 	describe("sign out", () => {
 		it("redirects to the sign out page", () => {
-			sinon.spy(window.location, "assign");
+			const assign = window.location.assign;
+			window.location.assign = sinon.spy().named("window.location.assign");
 			const oldState = Immutable.fromJS({
 				upn: null,
 				name: null,
@@ -106,12 +107,10 @@ describe("authentication", () => {
 			};
 			const newState = reducer(oldState, action);
 			expect(newState, "to be", oldState);
-			expect(
-				window.location.assign,
-				"was called with",
-				"https://mock.logout.url/LogOut",
-			);
-			window.location.assign.restore();
+			expect(window.location.assign, "to have calls satisfying", [
+				{ args: ["https://mock.logout.url/LogOut"] },
+			]);
+			window.location.assign = assign;
 		});
 	});
 });

@@ -71,6 +71,6 @@ These should generally never be used for live code, but are highly useful tools 
 
 `spyOnConsole()` can be called in a `describe()` block, and will set up (and tear down) `console.log()`, `console.warn()` and `console.error()` as sinon spies. This intercepts their normal function (i.e. no messages are output), but alloows asserting on whether they have been called and with what. Highly useful for testing e.g. error display. (This was universally applied prior to `orc-scripts` v0.7.0.)
 
-`getClassName(<StyledComp />)` will extract the first given class name of a React component, and is most useful for querying for styled components in a DOM tree. It does not include the class selector prefix (i.e. it outputs "myClass", not ".myClass"), so if used as a selector, the class name should be prefixed with a period.
+`getClassName(<StyledComp />, index)` will extract the indexed class name of a React component, and is most useful for querying for styled components in a DOM tree. It does not include the class selector prefix (i.e. it outputs "myClass", not ".myClass"), so if used as a selector, the class name should be prefixed with a period. `index` is zero-based, and defaults to 0. In most cases you will not need this parameter.
 
 `<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing higher order components and other cases where the properties passed to a component are important.

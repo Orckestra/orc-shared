@@ -70,12 +70,8 @@ describe("Placeholder", () => {
 			"when mounted",
 			"to satisfy",
 			<PlaceholderBox>
-				<PlaceholderTitle>
-					<span>The title</span>
-				</PlaceholderTitle>
-				<PlaceholderSubtitle>
-					<span>The subtitle</span>
-				</PlaceholderSubtitle>
+				<PlaceholderTitle>The title</PlaceholderTitle>
+				<PlaceholderSubtitle>The subtitle</PlaceholderSubtitle>
 			</PlaceholderBox>,
 		).then(() => expect(console.error, "was not called")));
 

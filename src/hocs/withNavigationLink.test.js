@@ -5,7 +5,9 @@ import { mount, simulate } from "react-dom-testing";
 import sinon from "sinon";
 import withNavigationLink from "./withNavigationLink";
 
-const TestComp = props => <a {...props}>Anchor</a>;
+const TestComp = ({ active, staticContext, ...props }) => (
+	<a {...props}>Anchor{active ? " active" : ""}</a>
+);
 
 describe.only("withNavigationLink", () => {
 	let fakeStore, mockEvent;

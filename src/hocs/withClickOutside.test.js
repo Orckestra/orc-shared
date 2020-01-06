@@ -20,10 +20,10 @@ describe("withClickOutside", () => {
 	it("acts as a HOC", () =>
 		expect(withClickOutside, "when called with", [TestComp]).then(Comp =>
 			expect(
-				<Comp dataTest />,
+				<Comp data-test />,
 				"when mounted",
 				"to satisfy",
-				<div id="inner" dataTest />,
+				<div id="inner" data-test />,
 			),
 		));
 

@@ -7,13 +7,15 @@ import { ButtonWrapper, InputButton } from "./FieldButtons";
 
 // TODO: Time dialog on focus, prevent default behavior in Edge, Firefox
 
-export const TimeIcon = styled(Icon).attrs({
-	id: getThemeProp(["icons", "time"], "clock"),
-})`
+export const TimeIcon = styled(Icon).attrs(props => ({
+	id: getThemeProp(["icons", "time"], "clock")(props),
+}))`
 	font-size: 20px;
 `;
 
 export const TimeButton = styled(InputButton)`
+	margin-top: -1px;
+	margin-right: -1px;
 	min-width: 36px;
 	padding: 4px 7px;
 	border-left-color: transparent;

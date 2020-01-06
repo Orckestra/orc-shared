@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { ThemeProvider } from "styled-components";
 import { shade } from "polished";
@@ -37,7 +38,14 @@ describe("ToastList", () => {
 
 		it("renders in a portal", () => {
 			ReactDOM.render(<RenderToast toasts={[{ key: 1 }]} />, appRoot);
-			return expect(toastRoot, "to contain", <span>[No message]</span>);
+			return expect(
+				toastRoot,
+				"to contain",
+				<ToastBox in>
+					<Ignore />
+					[No message]
+				</ToastBox>,
+			);
 		});
 	});
 });
@@ -50,21 +58,23 @@ describe("Toast", () => {
 			"to satisfy",
 			<ToastBox in>
 				<Ignore />
-				<span>this is a toast</span>
+				this is a toast
 			</ToastBox>,
 		));
 
 	it("shows a translated message", () =>
 		expect(
-			<Toast
-				in
-				message={{ id: "test.toast", defaultMessage: "This is a toast" }}
-			/>,
+			<IntlProvider locale="en">
+				<Toast
+					in
+					message={{ id: "test.toast", defaultMessage: "This is a toast" }}
+				/>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<ToastBox in>
 				<Ignore />
-				<span>This is a toast</span>
+				This is a toast
 			</ToastBox>,
 		));
 

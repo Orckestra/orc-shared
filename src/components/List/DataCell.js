@@ -52,6 +52,7 @@ const renderByType = (value, def, rowId, selected, row) => {
 					value={!!transformedValue}
 					{...def.switch}
 					data-row-id={rowId}
+					onChange={def.onChange}
 				/>
 			);
 		default:

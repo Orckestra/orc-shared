@@ -62,17 +62,20 @@ ToastBox.defaultProps = {
 	unmountOnExit: true,
 };
 
-export const ToastIcon = styled(Icon).attrs({
-	id: getThemeProp(["icons", "toast", props => props.type], "bubble-chat-2"),
-})`
+export const ToastIcon = styled(Icon).attrs(props => ({
+	id: getThemeProp(
+		["icons", "toast", props => props.type],
+		"bubble-chat-2",
+	)(props),
+}))`
 	font-size: 20px;
 	margin-right: 16px;
 	stroke-width: 2px;
 `;
 
-export const CloseIcon = styled(Icon).attrs({
-	id: getThemeProp(["icons", "close"], "close"),
-})`
+export const CloseIcon = styled(Icon).attrs(props => ({
+	id: getThemeProp(["icons", "close"], "close")(props),
+}))`
 	position: absolute;
 	top: 8px;
 	right: 8px;

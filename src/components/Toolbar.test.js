@@ -1,7 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import { spyOnConsole } from "../utils/testUtils";
-import Text from "./Text";
 import IconButton from "./IconButton";
 import {
 	Bar,
@@ -302,11 +301,11 @@ describe("toolComponents.separator", () => {
 describe("toolComponents.label", () => {
 	it("renders a styled label", () =>
 		expect(
-			<ToolLabel label={{ id: "toolbar.label", defaultMessage: "A label" }} />,
+			<IntlProvider locale="en">
+				<ToolLabel label={{ id: "toolbar.label", defaultMessage: "A label" }} />
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<ToolbarLabel>
-				<Text message={{ id: "toolbar.label", defaultMessage: "A label" }} />
-			</ToolbarLabel>,
+			<ToolbarLabel>A label</ToolbarLabel>,
 		));
 });

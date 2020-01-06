@@ -10,10 +10,11 @@ import SubPage from "./SubPage";
 import Segment from "./Segment";
 
 export const Wrapper = styled.div`
+	box-sizing: border-box;
 	display: flex;
 	border-top: 1px solid #ccc;
 	flex: 0 1 100%;
-	height: 100%;
+	height: calc(100% - 90px);
 
 	${TabBar} + & {
 		margin-top: 30px;

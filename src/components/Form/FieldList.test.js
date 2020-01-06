@@ -1,18 +1,13 @@
 import React from "react";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
-import ShallowRenderer from "react-test-renderer/shallow";
+import { getClassName, getClassSelector } from "../../utils/testUtils";
 import Text from "../Text";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
 import { RoundButton } from "./Inputs/SmallButton";
 import { FormInput } from "./Inputs/Text";
 import FieldList, { List, ListControlButton, REMOVE_ROW } from "./FieldList";
-
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[0];
-};
 
 describe("FieldList", () => {
 	let clock;
@@ -216,7 +211,9 @@ describe("FieldList", () => {
 				type: "change",
 				value: "New Value",
 				target: `.${getClassName(<List />)} > :nth-child(3) .${getClassName(
-					<FormInput />,
+					<IntlProvider locale="en">
+						<FormInput />
+					</IntlProvider>,
 				)}`,
 			},
 		).then(() =>
@@ -309,6 +306,7 @@ describe("FieldList", () => {
 				/>
 			</IntlProvider>,
 			"when mounted",
+			"to satisfy",
 			expect
 				.it(
 					"to satisfy",
@@ -398,7 +396,7 @@ describe("FieldList", () => {
 				)
 				.and("with event", {
 					type: "click",
-					target: "." + getClassName(<ListControlButton />),
+					target: getClassSelector(<ListControlButton />),
 				}),
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -459,7 +457,7 @@ describe("FieldList", () => {
 			<FieldList listIndex={0} />,
 			"when mounted",
 			"to satisfy",
-			<span>Cannot render list inside list</span>,
+			"Cannot render list inside list",
 		));
 });
 

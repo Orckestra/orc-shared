@@ -10,13 +10,13 @@ describe("NumberInput", () => {
 	it("renders an input field with up/down spinner buttons", () =>
 		expect(
 			<IntlProvider locale="en-US">
-				<NumberInput value={103.271} />
+				<NumberInput value={103.271} onChange={() => {}} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<ButtonWrapper>
 				<IntlProvider locale="en-US">
-					<FormInput type="number" value={103.271} />
+					<FormInput type="number" value={103.271} onChange={() => {}} />
 				</IntlProvider>
 				<Spinners>
 					<InputButton>⮝</InputButton>
@@ -28,13 +28,13 @@ describe("NumberInput", () => {
 	it("renders a required input field with invalid value", () =>
 		expect(
 			<IntlProvider locale="en-US">
-				<NumberInput required value="" />
+				<NumberInput required value="" onChange={() => {}} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<ButtonWrapper invalid>
 				<IntlProvider locale="en-US">
-					<FormInput type="number" value="" />
+					<FormInput type="number" value="" onChange={() => {}} />
 				</IntlProvider>
 				<Ignore />
 			</ButtonWrapper>,
@@ -43,13 +43,13 @@ describe("NumberInput", () => {
 	it("rounds input value top the step size", () =>
 		expect(
 			<IntlProvider locale="en-US">
-				<NumberInput value={103.271} step={0.25} />
+				<NumberInput value={103.271} step={0.25} onChange={() => {}} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<ButtonWrapper>
 				<IntlProvider locale="en-US">
-					<FormInput type="number" value={103.25} />
+					<FormInput type="number" value={103.25} onChange={() => {}} />
 				</IntlProvider>
 				<Ignore />
 			</ButtonWrapper>,
@@ -58,13 +58,13 @@ describe("NumberInput", () => {
 	it("renders a required input field with invalid value", () =>
 		expect(
 			<IntlProvider locale="en-US">
-				<NumberInput required step={0.1} value="" />
+				<NumberInput required step={0.1} value="" onChange={() => {}} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<ButtonWrapper invalid>
 				<IntlProvider locale="en-US">
-					<FormInput type="number" value="" />
+					<FormInput type="number" value="" onChange={() => {}} />
 				</IntlProvider>
 				<Ignore />
 			</ButtonWrapper>,
@@ -73,13 +73,13 @@ describe("NumberInput", () => {
 	it("sets a default value to ensure input is controlled", () =>
 		expect(
 			<IntlProvider locale="en-US">
-				<NumberInput />
+				<NumberInput onChange={() => {}} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<ButtonWrapper>
 				<IntlProvider locale="en-US">
-					<FormInput type="number" value="" />
+					<FormInput type="number" value="" onChange={() => {}} />
 				</IntlProvider>
 				<Ignore />
 			</ButtonWrapper>,
