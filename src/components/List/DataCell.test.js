@@ -99,9 +99,7 @@ describe("DataCell", () => {
 			<table>
 				<tbody>
 					<tr>
-						<TableData>
-							<span>$1,200.00</span>
-						</TableData>
+						<TableData>$1,200.00</TableData>
 					</tr>
 				</tbody>
 			</table>,
@@ -130,9 +128,7 @@ describe("DataCell", () => {
 			<table>
 				<tbody>
 					<tr>
-						<TableData>
-							<span>€1,200.00</span>
-						</TableData>
+						<TableData>€1,200.00</TableData>
 					</tr>
 				</tbody>
 			</table>,
@@ -160,9 +156,7 @@ describe("DataCell", () => {
 			<table>
 				<tbody>
 					<tr>
-						<TableData>
-							<span>1/23/2018</span>
-						</TableData>
+						<TableData>1/23/2018</TableData>
 					</tr>
 				</tbody>
 			</table>,
@@ -191,7 +185,7 @@ describe("DataCell", () => {
 				<tbody>
 					<tr>
 						<TableData>
-							<span>1/23/2018</span> <span>9:28 AM</span>
+							<>1/23/2018</> <>9:28 AM</>
 						</TableData>
 					</tr>
 				</tbody>
@@ -297,9 +291,7 @@ describe("DataCell", () => {
 			<table>
 				<tbody>
 					<tr>
-						<TableData>
-							<Text message="TEXT" />
-						</TableData>
+						<TableData>TEXT</TableData>
 					</tr>
 				</tbody>
 			</table>,

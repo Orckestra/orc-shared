@@ -81,9 +81,7 @@ describe("Fullpage", () => {
 			<Wrapper>
 				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
 					<List>
-						<Item to="/meep/snap/stuff">
-							<span>Two</span>
-						</Item>
+						<Item to="/meep/snap/stuff">Two</Item>
 					</List>
 				</MemoryRouter>
 				<View2 />

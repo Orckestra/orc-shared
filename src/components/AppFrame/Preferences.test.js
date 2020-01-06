@@ -102,31 +102,25 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Header>
-								<span>Preferences</span>
-							</Header>
+							<Header>Preferences</Header>
 							<PrefForm>
 								<FieldBox>
-									<Label id="language_label">
-										<span>Display language</span>
-									</Label>
+									<Label id="language_label">Display language</Label>
 									<SelectorWrapper>
 										<select id="language">
-											<Ignore />
-											<Ignore />
+											<option>English</option>
+											<option>French</option>
 										</select>
 										<Ignore />
 										<Ignore />
 									</SelectorWrapper>
 								</FieldBox>
 								<FieldBox>
-									<Label id="application_label">
-										<span>Default application</span>
-									</Label>
+									<Label id="application_label">Default application</Label>
 									<SelectorWrapper>
 										<select id="application">
-											<Ignore />
-											<Ignore />
+											<option>Marketing</option>
+											<option>Order management</option>
 										</select>
 										<Ignore />
 										<Ignore />
@@ -134,11 +128,9 @@ describe("Preferences", () => {
 								</FieldBox>
 							</PrefForm>
 							<Footer>
-								<PrefButton onClick={clear}>
-									<span>Cancel</span>
-								</PrefButton>
+								<PrefButton onClick={clear}>Cancel</PrefButton>
 								<PrefButton primary onClick={() => {}}>
-									<span>Save</span>
+									Save
 								</PrefButton>
 							</Footer>
 						</div>
@@ -171,26 +163,22 @@ describe("Preferences", () => {
 						<Ignore />
 						<PrefForm>
 							<FieldBox>
-								<Label id="language_label">
-									<span>Display language</span>
-								</Label>
+								<Label id="language_label">Display language</Label>
 								<SelectorWrapper>
-									<select id="language" value="fr">
-										<Ignore />
-										<Ignore />
+									<select id="language" value="fr" onChange={() => {}}>
+										<option>English</option>
+										<option>French</option>
 									</select>
 									<Ignore />
 									<Ignore />
 								</SelectorWrapper>
 							</FieldBox>
 							<FieldBox>
-								<Label id="application_label">
-									<span>Default application</span>
-								</Label>
+								<Label id="application_label">Default application</Label>
 								<SelectorWrapper>
-									<select id="application" value={2}>
-										<Ignore />
-										<Ignore />
+									<select id="application" value={2} onChange={() => {}}>
+										<option>Marketing</option>
+										<option>Order management</option>
 									</select>
 									<Ignore />
 									<Ignore />
@@ -229,26 +217,22 @@ describe("Preferences", () => {
 						<Ignore />
 						<PrefForm>
 							<FieldBox>
-								<Label id="language_label">
-									<span>Display language</span>
-								</Label>
+								<Label id="language_label">Display language</Label>
 								<SelectorWrapper>
-									<select id="language" value="">
-										<Ignore />
-										<Ignore />
+									<select id="language" value="" onChange={() => {}}>
+										<option>English</option>
+										<option>French</option>
 									</select>
 									<Ignore />
 									<Ignore />
 								</SelectorWrapper>
 							</FieldBox>
 							<FieldBox>
-								<Label id="application_label">
-									<span>Default application</span>
-								</Label>
+								<Label id="application_label">Default application</Label>
 								<SelectorWrapper>
-									<select id="application" value="">
-										<Ignore />
-										<Ignore />
+									<select id="application" value="" onChange={() => {}}>
+										<option>Marketing</option>
+										<option>Order management</option>
 									</select>
 									<Ignore />
 									<Ignore />
@@ -278,7 +262,9 @@ describe("Preferences", () => {
 				"called with",
 				["testValue"],
 			).then(() =>
-				expect(update, "was called with", "testField", "testValue"),
+				expect(update, "to have calls satisfying", [
+					{ args: ["testField", "testValue"] },
+				]),
 			));
 
 		it("memoizes on update function and field name", () => {

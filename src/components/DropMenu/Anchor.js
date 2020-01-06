@@ -18,13 +18,13 @@ Header.defaultProps = {
 	},
 };
 
-export const Indicator = styled(Icon).attrs({
+export const Indicator = styled(Icon).attrs(props => ({
 	id: ifFlag(
 		"open",
 		getThemeProp(["icons", "indicators", "up"], "chevron-up"),
 		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
-	),
-})`
+	)(props),
+}))`
 	font-size: 10px;
 	padding: 0 11px;
 	color: ${props => (props.open ? "#ccc" : props.theme.appHighlightColor)};

@@ -84,11 +84,9 @@ describe("SegmentPage", () => {
 			<MemoryRouter initialEntries={["/foo/meep/two"]}>
 				<Wrapper>
 					<List>
-						<Item to="/foo/meep/one">
-							<span>Text</span>
-						</Item>
+						<Item to="/foo/meep/one">Text</Item>
 						<Item to="/foo/meep/two" active>
-							<span>Translated</span>
+							Translated
 						</Item>
 					</List>
 					<View2 />
@@ -158,12 +156,14 @@ describe("SegmentPage", () => {
 			<Provider store={store}>
 				<Router history={history}>
 					<ThemeProvider theme={{}}>
-						<SegmentPage
-							path="/:scope/meep"
-							segments={segments}
-							match={{ params: { scope: "foo" } }}
-							location={{ pathname: "/foo/meep" }}
-						/>
+						<I18n>
+							<SegmentPage
+								path="/:scope/meep"
+								segments={segments}
+								match={{ params: { scope: "foo" } }}
+								location={{ pathname: "/foo/meep" }}
+							/>
+						</I18n>
 					</ThemeProvider>
 				</Router>
 			</Provider>,
@@ -172,12 +172,8 @@ describe("SegmentPage", () => {
 			<Wrapper>
 				<MemoryRouter>
 					<List>
-						<Item to="/foo/meep/one">
-							<span>Text</span>
-						</Item>
-						<Item to="/foo/meep/two">
-							<span>Translated</span>
-						</Item>
+						<Item to="/foo/meep/one">Text</Item>
+						<Item to="/foo/meep/two">Translated</Item>
 					</List>
 				</MemoryRouter>
 				<View1 />

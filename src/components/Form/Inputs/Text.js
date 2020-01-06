@@ -6,7 +6,6 @@ import { memoize, getThemeProp } from "../../../utils";
 export const FormInput = styled(Input)`
 	box-sizing: border-box;
 	flex: 0 0 auto;
-	height: 30px;
 	border-radius: 4px;
 	min-width: 40px;
 	width: 100%;
@@ -42,9 +41,19 @@ export const FormInput = styled(Input)`
 
 export const getEventUpdater = memoize(update => e => update(e.target.value));
 
-export const TextInput = ({ update, ...props }) => (
-	<FormInput type="text" onChange={getEventUpdater(update)} {...props} />
+export const TextInput = ({ update, value = "", ...props }) => (
+	<FormInput
+		type="text"
+		onChange={getEventUpdater(update)}
+		{...props}
+		value={value}
+	/>
 );
-export const EmailInput = ({ update, ...props }) => (
-	<FormInput type="email" onChange={getEventUpdater(update)} {...props} />
+export const EmailInput = ({ update, value = "", ...props }) => (
+	<FormInput
+		type="email"
+		onChange={getEventUpdater(update)}
+		{...props}
+		value={value}
+	/>
 );

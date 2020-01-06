@@ -64,16 +64,16 @@ export const TranslationWrapper = styled.div`
 	}
 `;
 
-export const ShowButton = styled.div.attrs({
+export const ShowButton = styled.div.attrs(() => ({
 	role: "button",
-})`
+}))`
 	align-self: flex-end;
 	cursor: pointer;
 `;
 
-export const ShowButtonChevron = styled(Icon).attrs({
-	id: getThemeProp(["icons", "indicators", "down"], "chevron-down"),
-})`
+export const ShowButtonChevron = styled(Icon).attrs(props => ({
+	id: getThemeProp(["icons", "indicators", "down"], "chevron-down")(props),
+}))`
 	font-size: 10px;
 	margin-right: 5px;
 	color: ${getThemeProp(["appHighlightColor"], "#000")};

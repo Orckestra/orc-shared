@@ -1,5 +1,5 @@
 import React from "react";
-import Text from "./Text";
+import { IntlProvider } from "react-intl";
 import FullSwitch, {
 	Switch,
 	Wrapper,
@@ -10,41 +10,40 @@ import FullSwitch, {
 describe("Switch", () => {
 	it("renders a switch in the on position", () =>
 		expect(
-			<Switch value={true} />,
+			<Switch value={true} onChange={() => {}} />,
 			"when mounted",
 			"to satisfy",
 			<Wrapper value={true}>
-				<ContainedCheckbox checked={true} />
+				<ContainedCheckbox checked={true} onChange={() => {}} />
 			</Wrapper>,
 		));
 
 	it("renders a switch in the off position", () =>
 		expect(
-			<Switch value={false} />,
+			<Switch value={false} onChange={() => {}} />,
 			"when mounted",
 			"to satisfy",
 			<Wrapper value={false}>
-				<ContainedCheckbox checked={false} />
+				<ContainedCheckbox checked={false} onChange={() => {}} />
 			</Wrapper>,
 		));
 
 	it("renders captions on the switch", () =>
 		expect(
-			<Switch
-				value={true}
-				onCaption={{ id: "foo", defaultMessage: "Foo!" }}
-				offCaption={{ id: "bar", defaultMessage: "Bar!" }}
-			/>,
+			<IntlProvider locale="en">
+				<Switch
+					value={true}
+					onChange={() => {}}
+					onCaption={{ id: "foo", defaultMessage: "Foo!" }}
+					offCaption={{ id: "bar", defaultMessage: "Bar!" }}
+				/>
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<Wrapper value={true}>
-				<ContainedCheckbox />
-				<Caption value={true}>
-					<Text message={{ id: "foo", defaultMessage: "Foo!" }} />
-				</Caption>
-				<Caption value={false}>
-					<Text message={{ id: "bar", defaultMessage: "Bar!" }} />
-				</Caption>
+				<ContainedCheckbox checked onChange={() => {}} />
+				<Caption value={true}>Foo!</Caption>
+				<Caption value={false}>Bar!</Caption>
 			</Wrapper>,
 		));
 
@@ -61,18 +60,22 @@ describe("Switch", () => {
 	describe("with id handling", () => {
 		it("passes through a given id", () =>
 			expect(
-				<FullSwitch value={true} id="fixedID" />,
+				<FullSwitch onChange={() => {}} value={true} id="fixedID" />,
 				"when mounted",
-				"to satisfy",
-				<Switch value={true} id="fixedID" />,
+				"queried for first",
+				"input",
+				"to have attributes",
+				{ id: "fixedID" },
 			));
 
 		it("sets an id if none given", () =>
 			expect(
-				<FullSwitch value={true} />,
+				<FullSwitch onChange={() => {}} value={true} />,
 				"when mounted",
-				"to satisfy",
-				<Switch value={true} id={expect.it("to match", /^switch\d+$/)} />,
+				"queried for first",
+				"input",
+				"to have attributes",
+				{ id: expect.it("to match", /^switch\d+$/) },
 			));
 	});
 });

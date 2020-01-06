@@ -1,9 +1,10 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { push } from "connected-react-router";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { push } from "connected-react-router";
+import { spyOnConsole } from "../../utils/testUtils";
 import { REMOVE_TAB } from "../../actions/navigation";
 import { resetLastScope } from "../../selectors/navigation";
 import withNavigationData, { getPageData } from "./withNavigationData";
@@ -67,6 +68,8 @@ const TestComp7 = props => (
 );
 
 describe("withNavigation", () => {
+	spyOnConsole(["warn"]);
+
 	let state, store, modules;
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -157,88 +160,103 @@ describe("withNavigation", () => {
 	});
 
 	it("provides state information about navigation", () =>
-		expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
-			expect(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<EnhComp modules={modules} />
-					</MemoryRouter>
-				</Provider>,
-				"when mounted",
-				"to satisfy",
-				<TestComp
-					pages={[
-						{
-							icon: "thing",
-							label: "Thing",
-							href: "/TestScope/test",
-							mappedFrom: "/TestScope/test",
-							active: false,
-						},
-						{
-							label: "Page 1",
-							href: "/TestScope/test/page1",
-							mappedFrom: "/TestScope/test/page1",
-							active: true,
-							params: "__ignore",
-							path: "__ignore",
-							outsideScope: false,
-						},
-						{
-							label: {
-								id: "page2",
-								defaultMessage: "Page 2 {someField}",
-								values: {
-									someField: "11",
+		expect(withNavigationData, "called with", [TestComp])
+			.then(EnhComp =>
+				expect(
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+							<EnhComp modules={modules} />
+						</MemoryRouter>
+					</Provider>,
+					"when mounted",
+					"to satisfy",
+					<TestComp
+						pages={[
+							{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test",
+								mappedFrom: "/TestScope/test",
+								active: false,
+							},
+							{
+								label: "Page 1",
+								href: "/TestScope/test/page1",
+								mappedFrom: "/TestScope/test/page1",
+								active: true,
+								params: "__ignore",
+								path: "__ignore",
+								outsideScope: false,
+							},
+							{
+								label: {
+									id: "page2",
+									defaultMessage: "Page 2 {someField}",
+									values: {
+										someField: "11",
+									},
 								},
+								href: "/OtherScope/test/foo",
+								mappedFrom: "/OtherScope/test/foo",
+								active: false,
+								params: "__ignore",
+								path: "__ignore",
+								outsideScope: true,
 							},
-							href: "/OtherScope/test/foo",
-							mappedFrom: "/OtherScope/test/foo",
-							active: false,
-							params: "__ignore",
-							path: "__ignore",
-							outsideScope: true,
-						},
-						{
-							label: {
-								id: "page2",
-								defaultMessage: "Page 2 {someField}",
-								values: {
-									someField: "22",
+							{
+								label: {
+									id: "page2",
+									defaultMessage: "Page 2 {someField}",
+									values: {
+										someField: "22",
+									},
 								},
+								href: "/OtherScope/test/bar",
+								mappedFrom: "/OtherScope/test/bar",
+								active: false,
+								params: "__ignore",
+								path: "__ignore",
+								outsideScope: true,
 							},
-							href: "/OtherScope/test/bar",
-							mappedFrom: "/OtherScope/test/bar",
-							active: false,
-							params: "__ignore",
-							path: "__ignore",
-							outsideScope: true,
-						},
-						{
-							label: {
-								id: "page3",
-								defaultMessage: "Page 3 {someField}",
-								values: { someField: "22" },
+							{
+								label: {
+									id: "page3",
+									defaultMessage: "Page 3 {someField}",
+									values: { someField: "22" },
+								},
+								href: "/TestScope/test/page3",
+								mappedFrom: "/TestScope/test/page3",
+								active: false,
+								params: "__ignore",
+								path: "__ignore",
+								outsideScope: false,
 							},
-							href: "/TestScope/test/page3",
-							mappedFrom: "/TestScope/test/page3",
-							active: false,
-							params: "__ignore",
-							path: "__ignore",
-							outsideScope: false,
-						},
-						{
-							href: "/TestScope/test/notexist",
-							mappedFrom: "/TestScope/test/notexist",
-							label: "[Not found]",
-							active: false,
-						},
-					]}
-					moduleName="test"
-					moduleHref="/TestScope/test"
-				/>,
-			),
-		));
+							{
+								href: "/TestScope/test/notexist",
+								mappedFrom: "/TestScope/test/notexist",
+								label: "[Not found]",
+								active: false,
+							},
+						]}
+						moduleName="test"
+						moduleHref="/TestScope/test"
+					/>,
+				),
+			)
+			.then(() =>
+				expect(console.warn, "to have calls satisfying", [
+					{
+						args: [
+							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+						],
+					},
+					{
+						args: [
+							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+						],
+					},
+				]),
+			));
 
 	it("handles incomplete paths", () => {
 		state.setIn(

@@ -3,13 +3,13 @@ import Icon from "../Icon";
 import { getThemeProp, ifFlag } from "../../utils";
 import { branchLength } from "./settings";
 
-export const Indicator = styled(Icon).attrs({
+export const Indicator = styled(Icon).attrs(props => ({
 	id: ifFlag(
 		"open",
 		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
 		getThemeProp(["icons", "indicators", "right"], "chevron-right"),
-	),
-})`
+	)(props),
+}))`
 	font-size: 10px;
 	padding: 10px 0 10px 10px;
 	cursor: pointer;

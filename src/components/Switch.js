@@ -5,7 +5,15 @@ import { getThemeProp, ifFlag } from "../utils";
 import withId from "../hocs/withId";
 
 const switchSpeed = 200;
-export const Wrapper = styled.label`
+const FilteredLabel = ({
+	onColor,
+	offColor,
+	onCaption,
+	offCaption,
+	...props
+}) => <label {...props} />;
+
+export const Wrapper = styled(FilteredLabel)`
 	display: inline-block;
 	position: relative;
 	height: 1.2em;
@@ -85,7 +93,9 @@ export const Caption = styled.span`
 	)};
 `;
 
-export const ContainedCheckbox = styled.input.attrs({ type: "checkbox" })`
+export const ContainedCheckbox = styled.input.attrs(() => ({
+	type: "checkbox",
+}))`
 	position: absolute;
 	opacity: 0;
 `;

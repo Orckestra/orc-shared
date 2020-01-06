@@ -75,9 +75,9 @@ export const TabText = styled.span`
 	text-overflow: ellipsis;
 `;
 
-export const CloseIcon = styled(Icon).attrs({
-	id: getThemeProp(["icons", "close"], "close"),
-})`
+export const CloseIcon = styled(Icon).attrs(props => ({
+	id: getThemeProp(["icons", "close"], "close")(props),
+}))`
 	flex: 0 0 auto;
 	margin-left: 10px;
 	margin-right: -5px;

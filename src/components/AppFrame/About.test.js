@@ -1,5 +1,6 @@
 import React from "react";
 import sinon from "sinon";
+import { IntlProvider } from "react-intl";
 import Text from "../Text";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
@@ -29,34 +30,38 @@ describe("About", () => {
 
 	it("renders an about box with messages and background images", () =>
 		expect(
-			<About viewState={{ show: true }} messages={messages} />,
+			<IntlProvider locale="en">
+				<About viewState={{ show: true }} messages={messages} />
+			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			<AboutBox in>
-				<img src={logoImage} alt="Orckestra" />
-				<AboutParagraph>
-					<Text
-						message={{
-							id: "foo",
-							defaultMessage: "Version {version}",
-							values: { version: "x.y.z" },
-						}}
-					/>
-				</AboutParagraph>
-				<AboutParagraph>
-					<Text message="Copyright all rights reserved" />
-				</AboutParagraph>
-				<AboutParagraph>
-					<AboutLink href="https://www.orckestra.com/">
-						<Text message="Test App" />
-					</AboutLink>
-				</AboutParagraph>
-				<AboutParagraph>
-					<Text message="Copyright" />
-					<br />
-					<Text message="All rights reserved" />
-				</AboutParagraph>
-			</AboutBox>,
+			<IntlProvider locale="en">
+				<AboutBox in>
+					<img src={logoImage} alt="Orckestra" />
+					<AboutParagraph>
+						<Text
+							message={{
+								id: "foo",
+								defaultMessage: "Version {version}",
+								values: { version: "x.y.z" },
+							}}
+						/>
+					</AboutParagraph>
+					<AboutParagraph>
+						<Text message="Copyright all rights reserved" />
+					</AboutParagraph>
+					<AboutParagraph>
+						<AboutLink href="https://www.orckestra.com/">
+							<Text message="Test App" />
+						</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						<Text message="Copyright" />
+						<br />
+						<Text message="All rights reserved" />
+					</AboutParagraph>
+				</AboutBox>
+			</IntlProvider>,
 		));
 
 	describe("AboutBox", () => {
@@ -108,7 +113,7 @@ describe("About", () => {
 				"called with",
 				[mockEvent],
 			).then(() => {
-				expect(update, "was called with", "show", false);
+				expect(update, "to have calls satisfying", [{ args: ["show", false] }]);
 				expect(mockEvent.stopPropagation, "was called");
 			}));
 	});

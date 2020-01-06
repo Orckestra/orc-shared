@@ -38,6 +38,6 @@ describe("I18n", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<span>Word</span>,
+			"Word",
 		).then(() => expect(console.error, "was not called")));
 });

@@ -1,6 +1,6 @@
 import React from "react";
-import ShallowRenderer from "react-test-renderer/shallow";
 import sinon from "sinon";
+import { getClassName } from "../utils/testUtils";
 import Text from "./Text";
 import {
 	InnerSelect,
@@ -13,17 +13,13 @@ import {
 } from "./Selector";
 import FullSelector, { MultiSelector } from "./MultiSelector";
 
-const getClassName = elm => {
-	const renderer = new ShallowRenderer();
-	return renderer.render(elm).props.className.split(" ")[1];
-};
-
 describe("MultiSelector", () => {
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>
 		expect(
 			<MultiSelector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -76,6 +72,7 @@ describe("MultiSelector", () => {
 			<MultiSelector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -96,6 +93,7 @@ describe("MultiSelector", () => {
 			<MultiSelector
 				id="test"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -117,6 +115,7 @@ describe("MultiSelector", () => {
 				id="test"
 				placeholder="This space for rent"
 				clickOption={() => () => {}}
+				onChange={() => {}}
 				required
 				options={[
 					{ value: "1", label: "Opt 1" },

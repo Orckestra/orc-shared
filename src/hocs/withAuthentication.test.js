@@ -1,6 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
 import withAuthentication, { Loader, Wrapper } from "./withAuthentication";
 import { ERROR, LOGOUT } from "../reducers/request";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
@@ -40,11 +41,15 @@ describe("withAuthentication", () => {
 		state = state.setIn(["requests", GET_AUTHENTICATION_PROFILE], true);
 		return expect(
 			<Provider store={store(state)}>
-				<AuthedComp />
+				<ThemeProvider theme={{}}>
+					<AuthedComp />
+				</ThemeProvider>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<Loader />,
+			<ThemeProvider theme={{}}>
+				<Loader />
+			</ThemeProvider>,
 		);
 	});
 

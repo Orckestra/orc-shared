@@ -79,7 +79,7 @@ const Menu = ({ open, menuItems, toggle }) => (
 					}}
 				>
 					<ItemIcon id={item.icon} />
-					<span>{item.label}</span>
+					{item.label}
 				</Item>
 			))}
 		</List>

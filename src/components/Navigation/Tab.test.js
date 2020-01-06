@@ -1,5 +1,6 @@
 import React from "react";
-import { Router } from "react-router-dom";
+import { Router, MemoryRouter } from "react-router-dom";
+import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import { Ignore } from "unexpected-reaction";
@@ -24,75 +25,103 @@ describe("Tab", () => {
 	it("renders a module tab with icon and label", () =>
 		expect(
 			<Router history={history}>
-				<Tab module icon="test" label="A module" href="/Foo/modu" />
+				<IntlProvider locale="en">
+					<Tab module icon="test" label="A module" href="/Foo/modu" />
+				</IntlProvider>
 			</Router>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<TabLink />) },
+			{
+				type: "click",
+				target:
+					"." +
+					getClassName(
+						<MemoryRouter>
+							<TabLink to="/" />
+						</MemoryRouter>,
+					),
+			},
 			"to satisfy",
 			<Router history={history}>
-				<ModuleTab>
-					<TabLink to="/Foo/modu">
-						<ModuleIcon id="test" />
-						<TabText>
-							<Text message="A module" />
-						</TabText>
-					</TabLink>
-				</ModuleTab>
+				<IntlProvider locale="en">
+					<ModuleTab>
+						<TabLink to="/Foo/modu">
+							<ModuleIcon id="test" />
+							<TabText>
+								<Text message="A module" />
+							</TabText>
+						</TabLink>
+					</ModuleTab>
+				</IntlProvider>
 			</Router>,
 		));
 
 	it("renders an active module tab", () =>
 		expect(
 			<Router history={history}>
-				<Tab
-					module
-					active
-					icon="test"
-					label={{ id: "test.module", defaultMessage: "A module" }}
-					href="/Foo/modu"
-				/>
+				<IntlProvider locale="en">
+					<Tab
+						module
+						active
+						icon="test"
+						label={{ id: "test.module", defaultMessage: "A module" }}
+						href="/Foo/modu"
+					/>
+				</IntlProvider>
 			</Router>,
 			"when mounted",
 			"to satisfy",
 			<Router history={history}>
-				<ModuleTab active>
-					<TabLink to="/Foo/modu">
-						<ModuleIcon id="test" />
-						<TabText>
-							<Text
-								message={{ id: "test.module", defaultMessage: "A module" }}
-							/>
-						</TabText>
-					</TabLink>
-				</ModuleTab>
+				<IntlProvider locale="en">
+					<ModuleTab active>
+						<TabLink to="/Foo/modu">
+							<ModuleIcon id="test" />
+							<TabText>
+								<Text
+									message={{ id: "test.module", defaultMessage: "A module" }}
+								/>
+							</TabText>
+						</TabLink>
+					</ModuleTab>
+				</IntlProvider>
 			</Router>,
 		));
 
 	it("renders a tab outside the current scope", () =>
 		expect(
 			<Router history={history}>
-				<Tab
-					module
-					outsideScope
-					icon="test"
-					label={{ id: "test.module", defaultMessage: "A module" }}
-					href="/Foo/modu"
-				/>
+				<IntlProvider locale="en">
+					<Tab
+						module
+						outsideScope
+						icon="test"
+						label={{ id: "test.module", defaultMessage: "A module" }}
+						href="/Foo/modu"
+					/>
+				</IntlProvider>
 			</Router>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<TabLink />) },
+			{
+				type: "click",
+				target:
+					"." +
+					getClassName(
+						<MemoryRouter>
+							<TabLink to="/" />
+						</MemoryRouter>,
+					),
+			},
 			"to satisfy",
 			<Router history={history}>
-				<ModuleTab outsideScope>
-					<TabLink outsideScope to="/Foo/modu">
-						<ModuleIcon id="test" />
-						<TabText>
-							<span>A module</span>
-						</TabText>
-					</TabLink>
-				</ModuleTab>
+				<IntlProvider locale="en">
+					<ModuleTab outsideScope>
+						<TabLink outsideScope to="/Foo/modu">
+							<ModuleIcon id="test" />
+							<TabText>A module</TabText>
+						</TabLink>
+					</ModuleTab>
+				</IntlProvider>
 			</Router>,
 		));
 
@@ -100,23 +129,27 @@ describe("Tab", () => {
 		const close = () => {};
 		return expect(
 			<Router history={history}>
-				<Tab
-					label={{ id: "test.page", defaultMessage: "A page" }}
-					href="/Foo/modu/page"
-					close={close}
-				/>
+				<IntlProvider locale="en">
+					<Tab
+						label={{ id: "test.page", defaultMessage: "A page" }}
+						href="/Foo/modu/page"
+						close={close}
+					/>
+				</IntlProvider>
 			</Router>,
 			"when mounted",
 			"to satisfy",
 			<Router history={history}>
-				<PageTab>
-					<TabLink to="/Foo/modu/page">
-						<TabText>
-							<Text message={{ id: "test.page", defaultMessage: "A page" }} />
-						</TabText>
-						<CloseIcon onClick={close} />
-					</TabLink>
-				</PageTab>
+				<IntlProvider locale="en">
+					<PageTab>
+						<TabLink to="/Foo/modu/page">
+							<TabText>
+								<Text message={{ id: "test.page", defaultMessage: "A page" }} />
+							</TabText>
+							<CloseIcon onClick={close} />
+						</TabLink>
+					</PageTab>
+				</IntlProvider>
 			</Router>,
 		);
 	});
@@ -125,19 +158,23 @@ describe("Tab", () => {
 		const close = () => {};
 		return expect(
 			<Router history={history}>
-				<Tab active href="/Foo/modu/page" close={close} />
+				<IntlProvider locale="en">
+					<Tab active href="/Foo/modu/page" close={close} />
+				</IntlProvider>
 			</Router>,
 			"when mounted",
 			"to satisfy",
 			<Router history={history}>
-				<PageTab active>
-					<TabLink to="/Foo/modu/page">
-						<TabText>
-							<Ignore />
-						</TabText>
-						<CloseIcon onClick={close} />
-					</TabLink>
-				</PageTab>
+				<IntlProvider locale="en">
+					<PageTab active>
+						<TabLink to="/Foo/modu/page">
+							<TabText>
+								<Ignore />
+							</TabText>
+							<CloseIcon onClick={close} />
+						</TabLink>
+					</PageTab>
+				</IntlProvider>
 			</Router>,
 		);
 	});
@@ -148,12 +185,14 @@ describe("Tab", () => {
 			const close = sinon.spy(() => innerClose).named("close");
 			return expect(
 				<Router history={history}>
-					<FullTab
-						label="A page"
-						href="/Foo/modu/page/sub"
-						mappedFrom="/Foo/modu/page"
-						close={close}
-					/>
+					<IntlProvider locale="en">
+						<FullTab
+							label="A page"
+							href="/Foo/modu/page/sub"
+							mappedFrom="/Foo/modu/page"
+							close={close}
+						/>
+					</IntlProvider>
 				</Router>,
 				"when mounted",
 				"with event",

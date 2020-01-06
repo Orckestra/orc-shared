@@ -1,6 +1,6 @@
 import React from "react";
 import pt from "prop-types";
-import styled, { injectGlobal, css } from "styled-components";
+import styled, { css } from "styled-components";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { ifFlag } from "../../utils";
@@ -16,22 +16,6 @@ import Sidebar from "./Sidebar";
 import About from "./About";
 import Preferences from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
-
-injectGlobal`
-	html {
-		height: 100%;
-	}
-
-	body {
-		height: 100%;
-		margin: 0;
-		overflow: hidden;
-	}
-
-	#app {
-		height: 100%;
-	}
-`;
 
 export const Base = styled.div`
 	background-color: #333;

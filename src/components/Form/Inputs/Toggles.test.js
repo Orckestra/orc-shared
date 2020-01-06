@@ -15,7 +15,7 @@ describe("CheckboxInput", () => {
 		update = sinon.spy().named("update");
 	});
 
-	it("renders a text input with change handler", () =>
+	it("renders a checkbox input with change handler", () =>
 		expect(
 			<CheckboxInput id="test-item" update={update} value={false} otherProp />,
 			"when mounted",
@@ -37,7 +37,7 @@ describe("SwitchInput", () => {
 		update = sinon.spy().named("update");
 	});
 
-	it("renders a text input with change handler", () =>
+	it("renders a switch input with change handler", () =>
 		expect(
 			<SwitchInput id="test-item" update={update} value={true} otherProp />,
 			"when mounted",
