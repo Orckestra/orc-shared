@@ -64,7 +64,6 @@ describe("Provision", () => {
 
 	describe("global styles", () => {
 		it("ensures required styling on html element to make IE11 happy", () => {
-			// render AppFrame to ensure jsdom has styles injected
 			mount(
 				<Provision store={fakeStore} theme={fakeTheme}>
 					<div />
@@ -79,7 +78,6 @@ describe("Provision", () => {
 		});
 
 		it("ensures required body styling", () => {
-			// render AppFrame to ensure jsdom has styles injected
 			mount(
 				<Provision store={fakeStore} theme={fakeTheme}>
 					<div />
@@ -94,7 +92,6 @@ describe("Provision", () => {
 		});
 
 		it("ensures required viewport styling", () => {
-			// render AppFrame to ensure jsdom has styles injected
 			mount(
 				<Provision store={fakeStore} theme={fakeTheme}>
 					<div />
