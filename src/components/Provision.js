@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router/immutable";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { getThemeProp } from "../utils";
 import { history } from "../buildStore";
 import DevPages from "./DevPages";
 import Head from "./Head";
@@ -24,6 +25,12 @@ const GlobalStyle = createGlobalStyle`
 	}
 `;
 
+const Fonts = createGlobalStyle`
+	body {
+		font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
+	}
+`;
+
 const Provision = ({ store, theme = {}, children }) => (
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
@@ -32,6 +39,7 @@ const Provision = ({ store, theme = {}, children }) => (
 				<ThemeProvider theme={theme}>
 					<React.Fragment>
 						<GlobalStyle />
+						<Fonts />
 						<DevPages>
 							<I18n>{React.Children.only(children)}</I18n>
 						</DevPages>
