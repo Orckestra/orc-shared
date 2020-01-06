@@ -12,7 +12,7 @@ describe("TextInput", () => {
 	it("renders a text input with change handler", () =>
 		expect(
 			<IntlProvider locale="en">
-				<TextInput update={update} value="foo" otherProp />
+				<TextInput update={update} otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -31,7 +31,7 @@ describe("EmailInput", () => {
 	it("renders a text input with change handler", () =>
 		expect(
 			<IntlProvider locale="en">
-				<EmailInput update={update} value="foo" otherProp />
+				<EmailInput update={update} otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
