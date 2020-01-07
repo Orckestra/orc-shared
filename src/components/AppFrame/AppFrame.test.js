@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { mount } from "react-dom-testing";
 import { getClassName, PropStruct } from "../../utils/testUtils";
 import I18n from "../I18n";
 import {
@@ -127,7 +126,7 @@ describe("AppFrame", () => {
 		document.body.removeChild(modalRoot);
 	});
 
-	it("renders a viewport, top bar and sidebar", () => {
+	it("renders a viewport with scope selector, top bar and sidebar", () => {
 		props.modules = [
 			{ id: "test1", component: TestComp1, route: "/test1" },
 			{ id: "test2", component: TestComp2, route: "/test2" },
@@ -177,6 +176,64 @@ describe("AppFrame", () => {
 							<ScopeBar>
 								<AlignedButton></AlignedButton>
 							</ScopeBar>
+							<TestComp1 key="1" />
+							<TestComp2 key="2" />
+							<TestComp3 key="3" />
+						</ViewPort>
+					</Base>
+				</MemoryRouter>
+			</ThemeProvider>,
+		);
+	});
+
+	it("renders a viewport without scope selector", () => {
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		props.children = [
+			<TestComp1 key="1" />,
+			<TestComp2 key="2" />,
+			<TestComp3 key="3" />,
+		];
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame noScope {...props} {...{ toggle, reset }} />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<ThemeProvider theme={{}}>
+				<MemoryRouter>
+					<Base>
+						<Wrapper>
+							<AppBox>
+								<AppSelWrapper>
+									<MenuIcon />
+								</AppSelWrapper>
+								<AppLabel>
+									<AppLogo />
+								</AppLabel>
+							</AppBox>
+							<MenuWrapper>
+								<Ignore />
+							</MenuWrapper>
+						</Wrapper>
+						<SideBar>
+							<MenuToggle />
+							<Ignore />
+							<Ignore />
+							<Ignore />
+							<Logo />
+						</SideBar>
+						<ViewPort>
+							<ScopeBar />
 							<TestComp1 key="1" />
 							<TestComp2 key="2" />
 							<TestComp3 key="3" />
