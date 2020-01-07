@@ -9,11 +9,12 @@ This code can be used to set up the standard infrastructure of Orckestra apps.
 
 Constructs a state store with support for dev tools (as browser extension), routing, localization, API access and Immutable state.
 
-## `addLocales`
+## `getTheme`
 
-- All parameters should be locale names, specifying only the language portion (i.e. 'en' rather than 'en-US'). An arbitrary number of names can be specified in a single call.
+- `highlight`: A string containing a CSS color.
+- `overrides`: An object containing values to be merged into the returned theme.
 
-Loads in locale data for `react-intl` for the given top-level locales. Usually not needed in the app, used by `localeFactory` to ensure locale data is loaded for the supported locales.
+Builds a theme objedct for use with `styled-components`. This contains lengths, colors, fonts and icon names for use in the application. As a side effect of importing `getTheme.js`, the standard UI fonts (Roboto Condensed and Open Sans) will also be imported.
 
 ## spawnerMiddleware
 
