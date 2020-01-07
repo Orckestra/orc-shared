@@ -10,7 +10,7 @@ import withAuthentication from "../../hocs/withAuthentication";
 import withToggle from "../../hocs/withToggle";
 import { localizedAppSelector } from "../../selectors/applications";
 import { ptLabel } from "../Text";
-import Scope from "../Scope";
+import Scope, { Bar as ScopeBar } from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 import About from "./About";
@@ -59,6 +59,7 @@ export const AppFrame = ({
 	prefMessages,
 	prefActions,
 	scopeFilterPlaceholder,
+	noScope,
 }) => (
 	<Base>
 		<ConnectedToastList />
@@ -71,7 +72,14 @@ export const AppFrame = ({
 			path={location.pathname}
 		/>
 		<ViewPort open={open} onClick={reset}>
-			<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+			{noScope ? (
+				<React.Fragment>
+					<ScopeBar />
+					{children}
+				</React.Fragment>
+			) : (
+				<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+			)}
 		</ViewPort>
 		<About messages={aboutMessages} />
 		<Preferences messages={prefMessages} />
@@ -119,6 +127,7 @@ WiredAppFrame.propTypes = {
 		language: ptLabel.isRequired,
 		defaultApp: ptLabel.isRequired,
 	}).isRequired,
+	noScope: pt.bool,
 };
 
 export default WiredAppFrame;
