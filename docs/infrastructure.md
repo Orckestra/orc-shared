@@ -50,6 +50,8 @@ The `utils` folder contains a number of useful utility functions, for use in var
 
 `flatten(array)` will flatten nested arrays, resulting in a single-level array. Order of elements is maintained.
 
+`flattenObj(object, separator = ".", prefix = "")` will flatten nested objects, prefixing keys to identify them, i.e. `flattenObj({ a: { b: true } })` returns `{ "a.b": true }`. Optional parameters: `separator` is a string that will be used instead of `"."` to separate prefix levels; `prefix` is a string that will be concatenated onto the start of all keys in the resulting object.
+
 `normalizeForSearch(searchStr)` lowercases the search string and strips accents from it to ease comparisons between strings. Note: on IE11, accent stripping does not work.
 
 `setTranslation(locale, immutableMap, path1, path2, ...)` will look in `immutableMap` at the path location (see `safeGet` above), and if found will replace a translation message structure (ex.: `{ 'en-US': 'A hat', 'fr-FR': 'Un chapeau' }`) with the string indicated by `locale`. If no match is found, the first given message string will be used as a default.
