@@ -1,4 +1,4 @@
-import flatten from "./flatten";
+import { flatten } from "./flatten";
 
 describe("flatten", () => {
 	it("flattens nested arrays", () =>

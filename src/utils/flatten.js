@@ -1,5 +1,5 @@
 /* Flattens nested arrays */
-const flatten = array =>
+export const flatten = array =>
 	array.reduce(
 		(flatArray, item) =>
 			Array.isArray(item)
@@ -7,5 +7,3 @@ const flatten = array =>
 				: flatArray.concat([item]),
 		[],
 	);
-
-export default flatten;
