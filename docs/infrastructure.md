@@ -48,7 +48,7 @@ The `utils` folder contains a number of useful utility functions, for use in var
 
 `unwrapImmutable(maybeImmutable)` takes a value, and if it is immutable (as in Immutable.JS), returns the JS value of it, otherwise it returns the value itself.
 
-`flatten(array)` will flatten nested arrays, resulting in a single-level array. Order of elements is maintained.
+`flatten(array)` will flatten nested arrays, resulting in a single-level array, for example, `flatten([1,[2,3],4])` returns `[1,2,3,4]`. Order of elements is maintained.
 
 `flattenObj(object, separator = ".", prefix = "")` will flatten nested objects, prefixing keys to identify them, i.e. `flattenObj({ a: { b: true } })` returns `{ "a.b": true }`. Optional parameters: `separator` is a string that will be used instead of `"."` to separate prefix levels; `prefix` is a string that will be concatenated onto the start of all keys in the resulting object.
 
