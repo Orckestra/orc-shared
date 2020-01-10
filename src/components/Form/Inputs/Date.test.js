@@ -11,7 +11,7 @@ import {
 	LiteralInput,
 	PartInput,
 	getDateUpdater,
-	CrudeDateInput,
+	DateInput,
 	CalendarIcon,
 	CalendarButton,
 	CalendarDropdown,
@@ -34,12 +34,7 @@ describe("DateInput", () => {
 	it("renders a three-part date input", () =>
 		expect(
 			<IntlProvider locale="en">
-				<CrudeDateInput
-					update={update}
-					reset={reset}
-					value="2019-04-15"
-					otherProp
-				/>
+				<DateInput update={update} reset={reset} value="2019-04-15" otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -61,7 +56,7 @@ describe("DateInput", () => {
 	it("renders a date input with a default value", () =>
 		expect(
 			<IntlProvider locale="en-US">
-				<CrudeDateInput update={update} reset={reset} otherProp />
+				<DateInput update={update} reset={reset} otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -77,13 +72,7 @@ describe("DateInput", () => {
 	it("renders a required date input", () =>
 		expect(
 			<IntlProvider locale="en">
-				<CrudeDateInput
-					update={update}
-					reset={reset}
-					value=""
-					required
-					otherProp
-				/>
+				<DateInput update={update} reset={reset} value="" required otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",

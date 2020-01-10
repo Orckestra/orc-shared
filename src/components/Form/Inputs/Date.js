@@ -12,7 +12,7 @@ import { FormattedDate, injectIntl } from "react-intl";
 import Kalendaryo from "kalendaryo";
 import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";
 import withClickOutside from "../../../hocs/withClickOutside";
-import withToggle from "../../../hocs/withToggle";
+import useToggle from "../../../hooks/useToggle";
 import Icon from "../../Icon";
 import { FormInput, getEventUpdater } from "./Text";
 import { ButtonWrapper, InputButton } from "./FieldButtons";
@@ -316,15 +316,8 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 	);
 }
 
-export const CrudeDateInput = ({
-	update,
-	toggle,
-	reset,
-	open,
-	required,
-	value,
-	...props
-}) => {
+export const DateInput = ({ update, initOpen, required, value, ...props }) => {
+	const [open, toggle, reset] = useToggle(initOpen);
 	const safeValue = value || "1970-01-01";
 	const parsedValue = parseISO(safeValue);
 	return (
@@ -349,5 +342,3 @@ export const CrudeDateInput = ({
 		</PositionedWrapper>
 	);
 };
-
-export const DateInput = withToggle("open")(CrudeDateInput);
