@@ -198,7 +198,7 @@ export const CalendarButton = styled(InputButton)`
 	background-color: #fff;
 `;
 
-export let DateInputField, getDateUpdater, LiteralInput, DatePartInput;
+export let DateInputField, getDateUpdater, LiteralInput, PartInput;
 /* istanbul ignore else */
 if (Intl.DateTimeFormat.prototype.formatToParts) {
 	const getFormatter = memoize(locale =>
@@ -230,7 +230,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 		}
 	`;
 
-	DatePartInput = styled(FormInput).attrs(() => ({
+	PartInput = styled(FormInput).attrs(() => ({
 		onFocus: /* istanbul ignore next */ () => event => event.target.select(),
 		type: "number",
 	}))`
@@ -296,7 +296,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 					type === "literal" ? (
 						<LiteralInput key={index} value={partValue} />
 					) : (
-						<DatePartInput
+						<PartInput
 							key={index}
 							{...props}
 							value={partValue}
