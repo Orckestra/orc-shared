@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
+import { mount, simulate } from "react-dom-testing";
 import { getClassName, PropStruct } from "../../utils/testUtils";
 import I18n from "../I18n";
 import {
@@ -42,10 +43,8 @@ const TestComp2 = () => <div id="view2" />;
 const TestComp3 = () => <div id="view3" />;
 
 describe("AppFrame", () => {
-	let props, toggle, reset, state, store, modalRoot;
+	let props, state, store, modalRoot;
 	beforeEach(() => {
-		toggle = sinon.spy().named("toggle");
-		reset = sinon.spy().named("reset");
 		props = {
 			applications: [
 				{
@@ -102,8 +101,6 @@ describe("AppFrame", () => {
 				},
 			},
 			scopeFilterPlaceholder: { id: "scope.filter", defaultMessage: "Filter" },
-			toggle,
-			reset,
 		};
 		state = Immutable.fromJS({
 			applications: { list: [] },
@@ -142,7 +139,7 @@ describe("AppFrame", () => {
 				<MemoryRouter>
 					<ThemeProvider theme={{}}>
 						<I18n>
-							<AppFrame {...props} {...{ toggle, reset }} />
+							<AppFrame {...props} />
 						</I18n>
 					</ThemeProvider>
 				</MemoryRouter>
@@ -202,7 +199,7 @@ describe("AppFrame", () => {
 				<MemoryRouter>
 					<ThemeProvider theme={{}}>
 						<I18n>
-							<AppFrame noScope {...props} {...{ toggle, reset }} />
+							<AppFrame noScope {...props} />
 						</I18n>
 					</ThemeProvider>
 				</MemoryRouter>
@@ -244,24 +241,24 @@ describe("AppFrame", () => {
 		);
 	});
 
-	it("propagates open flag, toggle and reset functions", () =>
-		expect(
+	it("provides open flag, toggle and reset functions", () => {
+		const element = mount(
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
 					<MemoryRouter>
 						<I18n>
-							<AppFrame open {...props} />
+							<AppFrame {...props} />
 						</I18n>
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
-			"when mounted",
-			"with event",
-			{ type: "click", target: "." + getClassName(<Wrapper />) },
-			"with event",
-			{ type: "click", target: "." + getClassName(<BlockWithA />) },
-			"with event",
-			{ type: "click", target: "." + getClassName(<ViewPort />) },
+		);
+		simulate(element, {
+			type: "click",
+			target: "." + getClassName(<BlockWithA />),
+		});
+		expect(
+			element,
 			"to satisfy",
 			<ThemeProvider theme={{}}>
 				<Base>
@@ -278,16 +275,77 @@ describe("AppFrame", () => {
 					</ViewPort>
 				</Base>
 			</ThemeProvider>,
-			/* <Topbar onClick={expect.it("to be", props.reset)} />
-				<Sidebar open toggle={expect.it("to be", props.toggle)} />
-				<ViewPort open onClick={expect.it("to be", props.reset)} /> */
-		).then(() =>
-			expect([reset, toggle], "to have calls satisfying", [
-				{ spy: reset },
-				{ spy: toggle },
-				{ spy: reset },
-			]),
-		));
+		);
+		simulate(element, {
+			type: "click",
+			target: "." + getClassName(<Wrapper />),
+		});
+		expect(
+			element,
+			"to satisfy",
+			<ThemeProvider theme={{}}>
+				<Base>
+					<Wrapper>
+						<Ignore />
+						<Ignore />
+					</Wrapper>
+					<SideBar>
+						<MenuToggle />
+						<Logo />
+					</SideBar>
+					<ViewPort>
+						<Ignore />
+					</ViewPort>
+				</Base>
+			</ThemeProvider>,
+		);
+		simulate(element, {
+			type: "click",
+			target: "." + getClassName(<BlockWithA />),
+		});
+		expect(
+			element,
+			"to satisfy",
+			<ThemeProvider theme={{}}>
+				<Base>
+					<Wrapper>
+						<Ignore />
+						<Ignore />
+					</Wrapper>
+					<SideBar open>
+						<MenuToggle open />
+						<Logo />
+					</SideBar>
+					<ViewPort open>
+						<Ignore />
+					</ViewPort>
+				</Base>
+			</ThemeProvider>,
+		);
+		simulate(element, {
+			type: "click",
+			target: "." + getClassName(<ViewPort />),
+		});
+		expect(
+			element,
+			"to satisfy",
+			<ThemeProvider theme={{}}>
+				<Base>
+					<Wrapper>
+						<Ignore />
+						<Ignore />
+					</Wrapper>
+					<SideBar>
+						<MenuToggle />
+						<Logo />
+					</SideBar>
+					<ViewPort>
+						<Ignore />
+					</ViewPort>
+				</Base>
+			</ThemeProvider>,
+		);
+	});
 
 	describe("with state handling", () => {
 		let store, state, appRoot;
@@ -400,9 +458,6 @@ describe("AppFrame", () => {
 					<MemoryRouter>
 						<I18n>
 							<PropStruct
-								open={false}
-								toggle={expect.it("to be a function")}
-								reset={expect.it("to be a function")}
 								activeModules={["foo"]}
 								applicationId={"3"}
 								applications={[

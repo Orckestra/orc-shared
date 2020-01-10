@@ -7,7 +7,7 @@ import { ifFlag } from "../../utils";
 import { getApplications } from "../../actions/applications";
 import withInitialLoad from "../../hocs/withInitialLoad";
 import withAuthentication from "../../hocs/withAuthentication";
-import withToggle from "../../hocs/withToggle";
+import useToggle from "../../hooks/useToggle";
 import { localizedAppSelector } from "../../selectors/applications";
 import { ptLabel } from "../Text";
 import Scope, { Bar as ScopeBar } from "../Scope";
@@ -44,9 +44,7 @@ export const ViewPort = styled.div`
 `;
 
 export const AppFrame = ({
-	open,
-	toggle,
-	reset,
+	initOpen,
 	applications,
 	applicationId,
 	modules,
@@ -60,31 +58,34 @@ export const AppFrame = ({
 	prefActions,
 	scopeFilterPlaceholder,
 	noScope,
-}) => (
-	<Base>
-		<ConnectedToastList />
-		<Topbar
-			{...{ applications, applicationId, menuLabel, menuMessages }}
-			onClick={reset}
-		/>
-		<Sidebar
-			{...{ open, toggle, modules, activeModules }}
-			path={location.pathname}
-		/>
-		<ViewPort open={open} onClick={reset}>
-			{noScope ? (
-				<React.Fragment>
-					<ScopeBar />
-					{children}
-				</React.Fragment>
-			) : (
-				<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
-			)}
-		</ViewPort>
-		<About messages={aboutMessages} />
-		<Preferences messages={prefMessages} />
-	</Base>
-);
+}) => {
+	const [open, toggle, reset] = useToggle(initOpen);
+	return (
+		<Base>
+			<ConnectedToastList />
+			<Topbar
+				{...{ applications, applicationId, menuLabel, menuMessages }}
+				onClick={reset}
+			/>
+			<Sidebar
+				{...{ open, toggle, modules, activeModules }}
+				path={location.pathname}
+			/>
+			<ViewPort open={open} onClick={reset}>
+				{noScope ? (
+					<React.Fragment>
+						<ScopeBar />
+						{children}
+					</React.Fragment>
+				) : (
+					<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+				)}
+			</ViewPort>
+			<About messages={aboutMessages} />
+			<Preferences messages={prefMessages} />
+		</Base>
+	);
+};
 AppFrame.displayName = "AppFrame";
 
 export const appFrameWiring = compose(
@@ -98,7 +99,6 @@ export const appFrameWiring = compose(
 	),
 	withInitialLoad("loadApplications", props => props.applications.length === 0),
 	withAuthentication,
-	withToggle("open"),
 );
 
 const WiredAppFrame = appFrameWiring(AppFrame);
