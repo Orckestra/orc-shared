@@ -37,7 +37,13 @@ describe("Sidepanel", () => {
 			</RenderSidepanel>,
 			appRoot,
 		);
-		return expect(modalRoot, "queried for", "div#inner", "to be ok");
+		return expect(
+			modalRoot,
+			"queried for first",
+			"div#inner",
+			"to be a",
+			"DOMElement",
+		);
 	});
 
 	describe("PanelDrawer", () => {

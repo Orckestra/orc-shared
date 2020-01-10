@@ -66,7 +66,8 @@ describe("ConnectedToastList", () => {
 				<EnhComp />
 			</Provider>,
 			"when mounted",
-			"to be ok",
+			"to be a",
+			"DOMElement",
 		)
 			.then(() => expect(store.dispatch, "was not called"))
 			.then(() => clock.tick(timeout))
@@ -92,7 +93,8 @@ describe("ConnectedToastList", () => {
 				<EnhComp />
 			</Provider>,
 			"when mounted",
-			"to be ok",
+			"to be a",
+			"DOMElement",
 		)
 			.then(() => expect(store.dispatch, "was not called"))
 			.then(() => clock.tick(timeout))
