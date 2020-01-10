@@ -17,7 +17,7 @@ import {
 	Wrapper as AppSelWrapper,
 	MenuIcon,
 } from "./ApplicationSelector/Header";
-import { Wrapper as MenuWrapper } from "../DropMenu/DropMenu";
+import { Wrapper as MenuWrapper } from "../DropMenu";
 import Topbar, {
 	withUserMenu,
 	Wrapper,

@@ -25,7 +25,7 @@ import {
 	Wrapper as AppSelWrapper,
 	MenuIcon,
 } from "./ApplicationSelector/Header";
-import { Wrapper as MenuWrapper } from "../DropMenu/DropMenu";
+import { Wrapper as MenuWrapper } from "../DropMenu";
 import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
 import { BlockWithA } from "./MenuItem";
