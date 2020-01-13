@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Immutable from "immutable";
 import { ThemeProvider } from "styled-components";
 import { RSAA } from "redux-api-middleware";
@@ -8,7 +7,7 @@ import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
 import { mount, simulate } from "react-dom-testing";
-import { getClassName, PropStruct } from "../../utils/testUtils";
+import { getClassName } from "../../utils/testUtils";
 import I18n from "../I18n";
 import {
 	GET_APPLICATIONS_REQUEST,
@@ -16,12 +15,7 @@ import {
 	GET_APPLICATIONS_FAILURE,
 } from "../../actions/applications";
 import { Bar as ScopeBar, AlignedButton } from "../Scope";
-import FullAppFrame, {
-	appFrameWiring,
-	Base,
-	ViewPort,
-	AppFrame,
-} from "./AppFrame";
+import { Base, ViewPort, AppFrame } from "./AppFrame";
 import {
 	Wrapper as AppSelWrapper,
 	MenuIcon,
@@ -46,17 +40,6 @@ describe("AppFrame", () => {
 	let props, state, store, modalRoot;
 	beforeEach(() => {
 		props = {
-			applications: [
-				{
-					id: 3,
-					name: "Orders",
-					isVisible: true,
-					isAbsoluteUrl: true,
-					url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
-					iconUri: "https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
-					displayName: "Marketing Legacy",
-				},
-			],
 			applicationId: "3",
 			modules: [],
 			activeModules: ["foo"],
@@ -103,16 +86,83 @@ describe("AppFrame", () => {
 			scopeFilterPlaceholder: { id: "scope.filter", defaultMessage: "Filter" },
 		};
 		state = Immutable.fromJS({
-			applications: { list: [] },
-			locale: { cultures: [] },
-			navigation: { route: { match: {} } },
-			scopes: {},
-			settings: { defaultApp: 0 },
+			applications: {
+				list: [
+					{
+						id: "3",
+						name: "Orders",
+						isVisible: true,
+						isAbsoluteUrl: true,
+						url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
+						iconUri:
+							"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
+						displayName: {
+							"en-CA": "Marketing Legacy",
+							"en-US": "Marketing Legacy",
+							"fr-CA": "Marketing Legacy",
+							"fr-FR": "Marketing Legacy",
+							"it-IT": "Marketing Legacy",
+						},
+					},
+				],
+			},
+			authentication: {
+				name: "foo@bar.com",
+			},
+			navigation: {
+				route: {
+					match: {
+						url: "/test1/test",
+						path: "/:scope/test",
+						params: { scope: "test1" },
+					},
+				},
+			},
+			locale: {
+				suportedLocales: [],
+				cultures: {
+					"en-US": {
+						cultureIso: "en-US",
+						cultureName: "English - United States",
+						sortOrder: 0,
+						isDefault: true,
+					},
+				},
+				defaultCulture: "fr-FR",
+			},
+			scopes: {
+				test1: {
+					id: "test1",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+				},
+				test2: {
+					id: "test2",
+					name: { "en-US": "Test 2" },
+					foo: false,
+					bar: true,
+				},
+				test3: {
+					id: "test3",
+					name: { "en-CA": "Test 3" },
+					foo: true,
+					bar: false,
+				},
+				test4: {
+					id: "test4",
+					name: { "en-US": "Test 4" },
+					foo: true,
+					bar: true,
+				},
+			},
+			settings: { defaultApp: "12" },
+			view: { scopeSelector: { filter: "1" } },
 			toasts: { queue: [] },
 		});
 		store = {
 			subscribe: () => {},
-			dispatch: () => {},
+			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
 		modalRoot = document.createElement("div");
@@ -171,7 +221,7 @@ describe("AppFrame", () => {
 						</SideBar>
 						<ViewPort>
 							<ScopeBar>
-								<AlignedButton></AlignedButton>
+								<AlignedButton>Test 1</AlignedButton>
 							</ScopeBar>
 							<TestComp1 key="1" />
 							<TestComp2 key="2" />
@@ -347,184 +397,39 @@ describe("AppFrame", () => {
 		);
 	});
 
-	describe("with state handling", () => {
-		let store, state, appRoot;
-		beforeEach(() => {
-			state = Immutable.fromJS({
-				applications: {
-					list: [
+	it("loads applications if not found", () => {
+		state = state.setIn(["applications", "list"], Immutable.List());
+		return expect(
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter>
+						<I18n>
+							<AppFrame {...props} />
+						</I18n>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+			"when mounted",
+			"to be truthy",
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
 						{
-							id: "3",
-							name: "Orders",
-							isVisible: true,
-							isAbsoluteUrl: true,
-							url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
-							iconUri:
-								"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
-							displayName: {
-								"en-CA": "Marketing Legacy",
-								"en-US": "Marketing Legacy",
-								"fr-CA": "Marketing Legacy",
-								"fr-FR": "Marketing Legacy",
-								"it-IT": "Marketing Legacy",
+							[RSAA]: {
+								types: [
+									GET_APPLICATIONS_REQUEST,
+									GET_APPLICATIONS_SUCCESS,
+									GET_APPLICATIONS_FAILURE,
+								],
+								endpoint: "URL",
+								method: "GET",
 							},
 						},
 					],
 				},
-				authentication: {
-					name: "foo@bar.com",
-				},
-				navigation: {
-					route: {
-						match: {
-							url: "/test1/test",
-							path: "/:scope/test",
-							params: { scope: "test1" },
-						},
-					},
-				},
-				locale: {
-					suportedLocales: [],
-					cultures: {
-						"en-US": {
-							cultureIso: "en-US",
-							cultureName: "English - United States",
-							sortOrder: 0,
-							isDefault: true,
-						},
-					},
-					defaultCulture: "fr-FR",
-				},
-				scopes: {
-					test1: {
-						id: "test1",
-						name: { "en-CA": "Test 1" },
-						foo: false,
-						bar: false,
-					},
-					test2: {
-						id: "test2",
-						name: { "en-US": "Test 2" },
-						foo: false,
-						bar: true,
-					},
-					test3: {
-						id: "test3",
-						name: { "en-CA": "Test 3" },
-						foo: true,
-						bar: false,
-					},
-					test4: {
-						id: "test4",
-						name: { "en-US": "Test 4" },
-						foo: true,
-						bar: true,
-					},
-				},
-				settings: { defaultApp: "12" },
-				view: { scopeSelector: { filter: "1" } },
-				toasts: { queue: [] },
-			});
-			store = {
-				subscribe: () => {},
-				dispatch: sinon.spy().named("dispatch"),
-				getState: () => state,
-			};
-			appRoot = document.createElement("div");
-			appRoot.id = "app";
-			document.body.appendChild(appRoot);
-		});
-		afterEach(() => {
-			try {
-				ReactDOM.unmountComponentAtNode(appRoot);
-			} catch (_) {}
-			document.body.removeChild(appRoot);
-		});
-
-		it("adds toggleable and resettable open flag", () => {
-			const WiredAppFrame = appFrameWiring(PropStruct);
-			return expect(
-				<Provider store={store}>
-					<ThemeProvider theme={{}}>
-						<MemoryRouter>
-							<I18n>
-								<WiredAppFrame {...props} />
-							</I18n>
-						</MemoryRouter>
-					</ThemeProvider>
-				</Provider>,
-				"to satisfy",
-				<Provider store={store}>
-					<MemoryRouter>
-						<I18n>
-							<PropStruct
-								activeModules={["foo"]}
-								applicationId={"3"}
-								applications={[
-									{
-										id: "3",
-										name: "Orders",
-										isVisible: true,
-										isAbsoluteUrl: true,
-										url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
-										iconUri:
-											"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
-										displayName: "Marketing Legacy",
-									},
-								]}
-								dispatch={() => {}}
-								loadApplications={() => {}}
-								location={{ pathname: "/Foo/bar" }}
-								modules={[]}
-								menuLabel="TestLabel"
-								menuMessages={props.menuMessages}
-								aboutMessages={props.aboutMessages}
-								prefMessages={props.prefMessages}
-								scopeFilterPlaceholder={{
-									id: "scope.filter",
-									defaultMessage: "Filter",
-								}}
-							/>
-						</I18n>
-					</MemoryRouter>
-				</Provider>,
-			);
-		});
-
-		it("loads applications if not found", () => {
-			state = state.setIn(["applications", "list"], Immutable.List());
-			return expect(
-				<Provider store={store}>
-					<ThemeProvider theme={{}}>
-						<MemoryRouter>
-							<I18n>
-								<FullAppFrame {...props} />
-							</I18n>
-						</MemoryRouter>
-					</ThemeProvider>
-				</Provider>,
-				"when mounted",
-				"to be truthy",
-			).then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								[RSAA]: {
-									types: [
-										GET_APPLICATIONS_REQUEST,
-										GET_APPLICATIONS_SUCCESS,
-										GET_APPLICATIONS_FAILURE,
-									],
-									endpoint: "URL",
-									method: "GET",
-								},
-							},
-						],
-					},
-				]),
-			);
-		});
+			]),
+		);
 	});
 });
 

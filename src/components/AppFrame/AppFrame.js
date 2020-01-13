@@ -1,13 +1,12 @@
 import React from "react";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
-import { connect } from "react-redux";
-import { compose } from "recompose";
-import { ifFlag } from "../../utils";
+import { useSelector } from "react-redux";
+import { ifFlag, unwrapImmutable } from "../../utils";
 import { getApplications } from "../../actions/applications";
-import withInitialLoad from "../../hocs/withInitialLoad";
 import withAuthentication from "../../hocs/withAuthentication";
 import useToggle from "../../hooks/useToggle";
+import useLoader from "../../hooks/useLoader";
 import { localizedAppSelector } from "../../selectors/applications";
 import { ptLabel } from "../Text";
 import Scope, { Bar as ScopeBar } from "../Scope";
@@ -45,7 +44,6 @@ export const ViewPort = styled.div`
 
 export const AppFrame = ({
 	initOpen,
-	applications,
 	applicationId,
 	modules,
 	activeModules,
@@ -59,6 +57,8 @@ export const AppFrame = ({
 	scopeFilterPlaceholder,
 	noScope,
 }) => {
+	const applications = unwrapImmutable(useSelector(localizedAppSelector));
+	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
 	return (
 		<Base>
@@ -88,20 +88,7 @@ export const AppFrame = ({
 };
 AppFrame.displayName = "AppFrame";
 
-export const appFrameWiring = compose(
-	connect(
-		state => ({
-			applications: localizedAppSelector(state).toJS(),
-		}),
-		dispatch => ({
-			loadApplications: () => dispatch(getApplications()),
-		}),
-	),
-	withInitialLoad("loadApplications", props => props.applications.length === 0),
-	withAuthentication,
-);
-
-const WiredAppFrame = appFrameWiring(AppFrame);
+const WiredAppFrame = withAuthentication(AppFrame);
 WiredAppFrame.propTypes = {
 	menuLabel: ptLabel.isRequired,
 	applicationId: pt.string.isRequired,
