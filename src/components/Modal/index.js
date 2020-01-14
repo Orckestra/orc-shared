@@ -2,18 +2,21 @@ import React, { Fragment } from "react";
 import Wrapper from "./Wrapper";
 import Background from "./Background";
 import Dialog from "./Dialog";
-import withToggle from "../../hocs/withToggle";
+import useToggle from "../../hooks/useToggle";
 
-export const Modal = ({ show, toggle, anchor, content, look }) => (
-	<Fragment>
-		{anchor(toggle)}
-		<Wrapper in={show} timeout={300}>
-			<Background />
-			<Dialog look={look} onClickOutside={toggle}>
-				{content(toggle)}
-			</Dialog>
-		</Wrapper>
-	</Fragment>
-);
+export const Modal = ({ initShow, anchor, content, look }) => {
+	const [show, toggle] = useToggle(initShow);
+	return (
+		<Fragment>
+			{anchor(toggle)}
+			<Wrapper in={show} timeout={300}>
+				<Background />
+				<Dialog look={look} onClickOutside={toggle}>
+					{content(toggle)}
+				</Dialog>
+			</Wrapper>
+		</Fragment>
+	);
+};
 
-export default withToggle("show")(Modal);
+export default Modal;

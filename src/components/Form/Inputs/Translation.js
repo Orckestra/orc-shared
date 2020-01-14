@@ -6,7 +6,7 @@ import routingConnector from "../../../hocs/routingConnector";
 import Icon from "../../Icon";
 import Text from "../../Text";
 import { orderedCultureList } from "../../../selectors/locale";
-import withToggle from "../../../hocs/withToggle";
+import useToggle from "../../../hooks/useToggle";
 import { FormInput } from "./Text";
 import { ButtonWrapper } from "./FieldButtons";
 
@@ -83,12 +83,12 @@ export const TranslationInput = ({
 	handlers,
 	value = {},
 	cultures,
-	showAll,
-	toggle,
+	initShowAll,
 	required,
 	moreLabel = "[more]",
 	...props
 }) => {
+	const [showAll, toggle] = useToggle(initShowAll);
 	return (
 		<TranslationWrapper>
 			{cultures.map((lang, index) =>
@@ -114,7 +114,6 @@ export const TranslationInput = ({
 };
 
 export default compose(
-	withToggle("showAll"),
 	withCultureList,
 	withTranslationUpdater,
 )(TranslationInput);

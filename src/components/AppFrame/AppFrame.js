@@ -1,13 +1,12 @@
 import React from "react";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
-import { connect } from "react-redux";
-import { compose } from "recompose";
-import { ifFlag } from "../../utils";
+import { useSelector } from "react-redux";
+import { ifFlag, unwrapImmutable } from "../../utils";
 import { getApplications } from "../../actions/applications";
-import withInitialLoad from "../../hocs/withInitialLoad";
 import withAuthentication from "../../hocs/withAuthentication";
-import withToggle from "../../hocs/withToggle";
+import useToggle from "../../hooks/useToggle";
+import useLoader from "../../hooks/useLoader";
 import { localizedAppSelector } from "../../selectors/applications";
 import { ptLabel } from "../Text";
 import Scope, { Bar as ScopeBar } from "../Scope";
@@ -44,10 +43,7 @@ export const ViewPort = styled.div`
 `;
 
 export const AppFrame = ({
-	open,
-	toggle,
-	reset,
-	applications,
+	initOpen,
 	applicationId,
 	modules,
 	activeModules,
@@ -60,48 +56,39 @@ export const AppFrame = ({
 	prefActions,
 	scopeFilterPlaceholder,
 	noScope,
-}) => (
-	<Base>
-		<ConnectedToastList />
-		<Topbar
-			{...{ applications, applicationId, menuLabel, menuMessages }}
-			onClick={reset}
-		/>
-		<Sidebar
-			{...{ open, toggle, modules, activeModules }}
-			path={location.pathname}
-		/>
-		<ViewPort open={open} onClick={reset}>
-			{noScope ? (
-				<React.Fragment>
-					<ScopeBar />
-					{children}
-				</React.Fragment>
-			) : (
-				<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
-			)}
-		</ViewPort>
-		<About messages={aboutMessages} />
-		<Preferences messages={prefMessages} />
-	</Base>
-);
+}) => {
+	const applications = unwrapImmutable(useSelector(localizedAppSelector));
+	useLoader(getApplications(), state => localizedAppSelector(state).size);
+	const [open, toggle, reset] = useToggle(initOpen);
+	return (
+		<Base>
+			<ConnectedToastList />
+			<Topbar
+				{...{ applications, applicationId, menuLabel, menuMessages }}
+				onClick={reset}
+			/>
+			<Sidebar
+				{...{ open, toggle, modules, activeModules }}
+				path={location.pathname}
+			/>
+			<ViewPort open={open} onClick={reset}>
+				{noScope ? (
+					<React.Fragment>
+						<ScopeBar />
+						{children}
+					</React.Fragment>
+				) : (
+					<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+				)}
+			</ViewPort>
+			<About messages={aboutMessages} />
+			<Preferences messages={prefMessages} />
+		</Base>
+	);
+};
 AppFrame.displayName = "AppFrame";
 
-export const appFrameWiring = compose(
-	connect(
-		state => ({
-			applications: localizedAppSelector(state).toJS(),
-		}),
-		dispatch => ({
-			loadApplications: () => dispatch(getApplications()),
-		}),
-	),
-	withInitialLoad("loadApplications", props => props.applications.length === 0),
-	withAuthentication,
-	withToggle("open"),
-);
-
-const WiredAppFrame = appFrameWiring(AppFrame);
+const WiredAppFrame = withAuthentication(AppFrame);
 WiredAppFrame.propTypes = {
 	menuLabel: ptLabel.isRequired,
 	applicationId: pt.string.isRequired,

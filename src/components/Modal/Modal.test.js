@@ -30,8 +30,7 @@ describe("Modal", () => {
 	it("renders the structure of a modal dialog", () =>
 		expect(
 			<Modal
-				show={true}
-				toggle={toggle}
+				initShow={true}
 				anchor={toggle => <TestComp1 toggle={toggle} />}
 				content={toggle => <TestComp2 toggle={toggle} />}
 				look="dark"

@@ -1,5 +1,5 @@
 /* Flattens nested arrays */
-const flatten = array =>
+export const flatten = array =>
 	array.reduce(
 		(flatArray, item) =>
 			Array.isArray(item)
@@ -8,4 +8,13 @@ const flatten = array =>
 		[],
 	);
 
-export default flatten;
+export const flattenObj = (obj, separator = ".", prefix = "") =>
+	Object.entries(obj).reduce((flatObj, [key, val]) => {
+		const prefixedKey = prefix + key;
+		if (typeof val === "object") {
+			const flattenedVal = flattenObj(val, separator, prefixedKey + separator);
+			return { ...flatObj, ...flattenedVal };
+		}
+		flatObj[prefixedKey] = val;
+		return flatObj;
+	}, {});

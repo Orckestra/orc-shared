@@ -1,5 +1,6 @@
 import React from "react";
 import { mount, simulate } from "react-dom-testing";
+import { spyOnConsole } from "../utils/testUtils";
 import withToggle from "./withToggle";
 
 const TestComp = ({ id, toggle, toggledOn, reset }) => (
@@ -17,6 +18,15 @@ const TestComp = ({ id, toggle, toggledOn, reset }) => (
 );
 
 describe("withToggle", () => {
+	spyOnConsole(["warn"]);
+
+	it("gives deprecation warning", () =>
+		expect(withToggle, "called with", ["toggledOn"]).then(() =>
+			expect(console.warn, "to have calls satisfying", [
+				{ args: [expect.it("to contain", "withToggle has been deprecated")] },
+			]),
+		));
+
 	it("provides toggle and toggledOn props, handling state", () =>
 		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
 			TestComp,

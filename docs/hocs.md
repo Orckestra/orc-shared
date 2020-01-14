@@ -36,6 +36,8 @@ A `virtual` flag prop will be set on the wrapped component, to signal that it ma
 
 When the wrapped component is mounted, the loader func in the prop named by `loaderName` is called. A `test` function may be included, which takes the props given and should return a boolean - if false, the loader is not called.
 
+Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector)
+
 ## `withLocaleSwitch(Component)`
 
 Provides a click event handler to the component, which will attempt to change the locale to the one given in its `locale` prop.
@@ -60,9 +62,13 @@ The given component will be wrapped in a scrollable `<div>`, and is passed a `he
 
 Sets up a boolean property on the component, toggled with the `toggle` function property.
 
+Deprecated in favor of [`useToggle`](hooks.md#usetoggleinit).
+
 ## `withUpdateHandler(handlerName, test)(Component)`
 
 Whenever the wrapped component is updated, the test is called with the previous properties and the next ones. If it returns true, the function named in the first parameter, which must exist as a property on the component, is called (without parameters). This echoes `withInitialLoad`, above.
+
+Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector)
 
 ## `withViewState(Component)`
 

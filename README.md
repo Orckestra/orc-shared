@@ -6,7 +6,7 @@ A collection of useful, generally applicable pieces of code, used to build Orcke
 
 ## Documentation
 
-This library provides the [infrastructure](docs/infrastructure.md) to construct React/Redux based applications, and to that end provides a number of [components](docs/components.md) and [higher-order components](docs/hocs.md), as well as [actions, reducers and selectors](docs/actionsreducersselectors.md) to support them. The overall application structure is governed by a central [module file](docs/moduleFile.md).
+This library provides the [infrastructure](docs/infrastructure.md) to construct React/Redux based applications, and to that end provides a number of [components](docs/components.md), [hooks](docs/hooks.md), and [higher-order components](docs/hocs.md), as well as [actions, reducers and selectors](docs/actionsreducersselectors.md) to support them. The overall application structure is governed by a central [module file](docs/moduleFile.md).
 
 ## License
 

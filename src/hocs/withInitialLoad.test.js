@@ -22,7 +22,8 @@ describe("withInitialLoad", () => {
 				expect(
 					<EnhComp loader={loader} loadOnMount={true} />,
 					"when mounted",
-					"to be ok",
+					"to satisfy",
+					<div />,
 				),
 			)
 			.then(() => expect(loader, "was called")));
@@ -36,7 +37,12 @@ describe("withInitialLoad", () => {
 			[TestComp],
 		)
 			.then(EnhComp =>
-				expect(<EnhComp loader={loader} />, "when mounted", "to be ok"),
+				expect(
+					<EnhComp loader={loader} />,
+					"when mounted",
+					"to satisfy",
+					<div />,
+				),
 			)
 			.then(() => expect(loader, "was not called")));
 
@@ -49,7 +55,12 @@ describe("withInitialLoad", () => {
 			[TestComp],
 		)
 			.then(EnhComp =>
-				expect(<EnhComp loader={loader} />, "when mounted", "to be ok"),
+				expect(
+					<EnhComp loader={loader} />,
+					"when mounted",
+					"to satisfy",
+					<div />,
+				),
 			)
 			.then(() => expect(loader, "was not called")));
 });

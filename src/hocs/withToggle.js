@@ -1,7 +1,10 @@
 import { withStateHandlers } from "recompose";
 
-const withToggle = propName =>
-	withStateHandlers(
+const withToggle = propName => {
+	console.warn(
+		"Higher order component withToggle has been deprecated in favor of React hook useToggle",
+	);
+	return withStateHandlers(
 		init => ({
 			[propName]: !!init[propName + "Init"],
 		}),
@@ -10,5 +13,5 @@ const withToggle = propName =>
 			reset: () => () => ({ [propName]: false }),
 		},
 	);
-
+};
 export default withToggle;

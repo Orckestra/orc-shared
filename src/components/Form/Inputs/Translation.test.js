@@ -143,7 +143,8 @@ describe("TranslationInput", () => {
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
-			"to be ok",
+			"to be a",
+			"DOMElement",
 		);
 	});
 

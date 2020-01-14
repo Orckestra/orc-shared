@@ -1,7 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
-import { mount } from "react-dom-testing";
 import sinon from "sinon";
 import MockDate from "mockdate";
 import { parseISO } from "date-fns-2";
@@ -10,9 +9,9 @@ import {
 	PositionedWrapper,
 	DateInputField,
 	LiteralInput,
-	DatePartInput,
+	PartInput,
 	getDateUpdater,
-	CrudeDateInput,
+	DateInput,
 	CalendarIcon,
 	CalendarButton,
 	CalendarDropdown,
@@ -35,12 +34,7 @@ describe("DateInput", () => {
 	it("renders a three-part date input", () =>
 		expect(
 			<IntlProvider locale="en">
-				<CrudeDateInput
-					update={update}
-					reset={reset}
-					value="2019-04-15"
-					otherProp
-				/>
+				<DateInput update={update} reset={reset} value="2019-04-15" otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -62,7 +56,7 @@ describe("DateInput", () => {
 	it("renders a date input with a default value", () =>
 		expect(
 			<IntlProvider locale="en-US">
-				<CrudeDateInput update={update} reset={reset} otherProp />
+				<DateInput update={update} reset={reset} otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -78,13 +72,7 @@ describe("DateInput", () => {
 	it("renders a required date input", () =>
 		expect(
 			<IntlProvider locale="en">
-				<CrudeDateInput
-					update={update}
-					reset={reset}
-					value=""
-					required
-					otherProp
-				/>
+				<DateInput update={update} reset={reset} value="" required otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -103,62 +91,44 @@ describe("DateInput", () => {
 describe("DateInputField", () => {
 	it("sets up a date field set according to locale (en-US)", () =>
 		expect(
-			mount(
-				<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US">
+				<div>
 					<DateInputField update={() => {}} value={"2014-05-24"} />
-				</IntlProvider>,
-			).childNodes,
+				</div>
+			</IntlProvider>,
+			"when mounted",
 			"to satisfy",
-			[
-				<IntlProvider locale="en-US">
-					<DatePartInput part="month" value="05" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US">
+				<div>
+					<PartInput part="month" value="05" onChange={() => {}} />
 					<LiteralInput value="/" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
-					<DatePartInput part="day" value="24" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
+					<PartInput part="day" value="24" onChange={() => {}} />
 					<LiteralInput value="/" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
-					<DatePartInput part="year" value="2014" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
+					<PartInput part="year" value="2014" onChange={() => {}} />
 					<LiteralInput value="" onChange={() => {}} />
-				</IntlProvider>,
-			],
+				</div>
+			</IntlProvider>,
 		));
 
 	it("handles empty value", () =>
 		expect(
-			mount(
-				<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US">
+				<div>
 					<DateInputField update={() => {}} />
-				</IntlProvider>,
-			).childNodes,
+				</div>
+			</IntlProvider>,
+			"when mounted",
 			"to satisfy",
-			[
-				<IntlProvider locale="en-US">
-					<DatePartInput part="month" value="01" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US">
+				<div>
+					<PartInput part="month" value="01" onChange={() => {}} />
 					<LiteralInput value="/" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
-					<DatePartInput part="day" value="01" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
+					<PartInput part="day" value="01" onChange={() => {}} />
 					<LiteralInput value="/" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
-					<DatePartInput part="year" value="1970" onChange={() => {}} />
-				</IntlProvider>,
-				<IntlProvider locale="en-US">
+					<PartInput part="year" value="1970" onChange={() => {}} />
 					<LiteralInput value="" onChange={() => {}} />
-				</IntlProvider>,
-			],
+				</div>
+			</IntlProvider>,
 		));
 });
 

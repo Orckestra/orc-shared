@@ -2,7 +2,7 @@ import { spyOnConsole } from "./testUtils";
 import insertIcons from "./insertIcons";
 
 describe("insertIcons", () => {
-	spyOnConsole();
+	spyOnConsole(["error"]);
 	let svgString;
 	beforeEach(() => {
 		svgString = `<svg xmlns="http://www.w3.org/2000/svg">
@@ -20,9 +20,13 @@ describe("insertIcons", () => {
 	it("inserts an SVG icon sheet from a string", () =>
 		expect(insertIcons, "when called with", [svgString]).then(() => {
 			expect(document.querySelectorAll("svg").length, "to be", 1);
-			expect(document.getElementById("icon-abc-book"), "to be ok");
-			expect(document.getElementById("icon-accept-green"), "to be ok");
-			expect(document.getElementById("icon-accept"), "to be ok");
+			expect(document.getElementById("icon-abc-book"), "to be a", "DOMElement");
+			expect(
+				document.getElementById("icon-accept-green"),
+				"to be a",
+				"DOMElement",
+			);
+			expect(document.getElementById("icon-accept"), "to be a", "DOMElement");
 		}));
 
 	it("does not insert an SVG element if the string fails to parse", () =>

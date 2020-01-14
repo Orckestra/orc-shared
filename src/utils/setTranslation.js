@@ -1,4 +1,4 @@
-import flatten from "./flatten";
+import { flatten } from "./flatten";
 
 /* Replaces a locale string structure with the string for the given locale. */
 const setTranslation = (locale, obj, ...field) => {
