@@ -68,8 +68,10 @@ Deprecated in favor of [`useToggle`](hooks.md#usetoggleinit).
 
 Whenever the wrapped component is updated, the test is called with the previous properties and the next ones. If it returns true, the function named in the first parameter, which must exist as a property on the component, is called (without parameters). This echoes `withInitialLoad`, above.
 
-Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector)
+Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector).
 
 ## `withViewState(Component)`
 
 Sets the component up with a view state according to the `name` property provided. This includes all keys found in the `view` segment of the state, provided as an object in the `viewState` prop, and an `updateViewState(key, value)` function, which sets the appropriate key in the component's view state.
+
+Deprecated in favor of [useViewState](hooks.md#useviewstatename).

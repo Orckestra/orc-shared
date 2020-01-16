@@ -6,7 +6,7 @@ import Sidepanel from "../Sidepanel";
 import Button from "../Button";
 import Text from "../Text";
 import FieldElements from "../Form/FieldElements";
-import withViewState from "../../hocs/withViewState";
+import useViewState from "../../hooks/useViewState";
 import { setValue } from "../../actions/view";
 import { setDefaultLanguage } from "../../actions/locale";
 import { setMyApplication } from "../../actions/applications";
@@ -76,54 +76,54 @@ export const getUpdater = memoize(update =>
 export const Preferences = ({
 	save,
 	clear,
-	viewState,
-	updateViewState,
 	language,
 	applications,
 	messages,
-}) => (
-	<PrefPanel in={viewState.show} width="380px" timeout={400}>
-		<Header>
-			<Text message={messages.preferences} />
-		</Header>
-		<PrefForm>
-			<FieldElements
-				fields={[
-					{
-						label: messages.language,
-						type: "Selector",
-						name: "language",
-						options: language.options,
-					},
-					{
-						label: messages.defaultApp,
-						type: "Selector",
-						name: "application",
-						options: applications.options,
-					},
-				]}
-				getUpdater={getUpdater(updateViewState)}
-				values={{
-					language: language.current || "",
-					application: applications.current || "",
-					...viewState,
-				}}
-			/>
-		</PrefForm>
-		<Footer>
-			<PrefButton onClick={clear}>
-				<Text message={messages.cancel} />
-			</PrefButton>
-			<PrefButton primary onClick={() => save(viewState)}>
-				<Text message={messages.save} />
-			</PrefButton>
-		</Footer>
-	</PrefPanel>
-);
+}) => {
+	const [viewState, updateViewState] = useViewState(PREFS_NAME);
+	return (
+		<PrefPanel in={viewState.show} width="380px" timeout={400}>
+			<Header>
+				<Text message={messages.preferences} />
+			</Header>
+			<PrefForm>
+				<FieldElements
+					fields={[
+						{
+							label: messages.language,
+							type: "Selector",
+							name: "language",
+							options: language.options,
+						},
+						{
+							label: messages.defaultApp,
+							type: "Selector",
+							name: "application",
+							options: applications.options,
+						},
+					]}
+					getUpdater={getUpdater(updateViewState)}
+					values={{
+						language: language.current || "",
+						application: applications.current || "",
+						...viewState,
+					}}
+				/>
+			</PrefForm>
+			<Footer>
+				<PrefButton onClick={clear}>
+					<Text message={messages.cancel} />
+				</PrefButton>
+				<PrefButton primary onClick={() => save(viewState)}>
+					<Text message={messages.save} />
+				</PrefButton>
+			</Footer>
+		</PrefPanel>
+	);
+};
 
 export const withPreferences = connect(
 	state => ({
-		name: PREFS_NAME,
 		language: {
 			current: currentLocale(state),
 			options: unwrapImmutable(orderedCultureOptionList(state)),
@@ -149,6 +149,6 @@ export const withPreferences = connect(
 	}),
 );
 
-const WiredPrefs = withPreferences(withViewState(Preferences));
+const WiredPrefs = withPreferences(Preferences);
 
 export default props => <WiredPrefs {...props} />;

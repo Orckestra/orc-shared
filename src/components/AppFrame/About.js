@@ -4,7 +4,7 @@ import styled from "styled-components";
 import transition from "styled-transition-group";
 import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
-import withViewState from "../../hocs/withViewState";
+import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
 
@@ -59,40 +59,40 @@ export const getClickOutsideHandler = ({ show }, updateViewState) =>
 		  }
 		: () => {};
 
-export const About = ({ viewState, updateViewState, messages }) => (
-	<AboutBox
-		in={viewState.show}
-		onClickOutside={getClickOutsideHandler(viewState, updateViewState)}
-	>
-		<img src={logoImage} alt="Orckestra" />
-		<AboutParagraph>
-			<Text
-				message={{
-					...messages.ccVersion,
-					values: { version: window.orcVersion },
-				}}
-			/>
-		</AboutParagraph>
-		<AboutParagraph>
-			<Text message={messages.copyrightTermsNotice} />
-		</AboutParagraph>
-		<AboutParagraph>
-			<AboutLink href="https://www.orckestra.com/">
-				<Text message={messages.ccName} />
-			</AboutLink>
-		</AboutParagraph>
-		<AboutParagraph>
-			<Text message={messages.copyright} />
-			<br />
-			<Text message={messages.allRightsReserved} />
-		</AboutParagraph>
-	</AboutBox>
-);
+export const About = ({ messages }) => {
+	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
+	return (
+		<AboutBox
+			in={viewState.show}
+			onClickOutside={getClickOutsideHandler(viewState, updateViewState)}
+		>
+			<img src={logoImage} alt="Orckestra" />
+			<AboutParagraph>
+				<Text
+					message={{
+						...messages.ccVersion,
+						values: { version: window.orcVersion },
+					}}
+				/>
+			</AboutParagraph>
+			<AboutParagraph>
+				<Text message={messages.copyrightTermsNotice} />
+			</AboutParagraph>
+			<AboutParagraph>
+				<AboutLink href="https://www.orckestra.com/">
+					<Text message={messages.ccName} />
+				</AboutLink>
+			</AboutParagraph>
+			<AboutParagraph>
+				<Text message={messages.copyright} />
+				<br />
+				<Text message={messages.allRightsReserved} />
+			</AboutParagraph>
+		</AboutBox>
+	);
+};
 
-const WiredAbout = withViewState(About);
+const WiredAbout = About;
 
 export default props =>
-	ReactDOM.createPortal(
-		<WiredAbout name={ABOUT_NAME} {...props} />,
-		getModalRoot(),
-	);
+	ReactDOM.createPortal(<WiredAbout {...props} />, getModalRoot());

@@ -6,12 +6,11 @@ import {
 	InnerSelect,
 	Wrapper,
 	SelectBox,
-	SelectedValue,
 	Dropdown,
 	Option,
 	Placeholder,
 } from "./Selector";
-import FullSelector, { MultiSelector } from "./MultiSelector";
+import FullSelector, { MultiSelector, SelectedValue } from "./MultiSelector";
 
 describe("MultiSelector", () => {
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>

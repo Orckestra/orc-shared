@@ -67,14 +67,14 @@ export const ItemIcon = styled(Icon)`
 	font-size: 17px;
 `;
 
-const Menu = ({ open, menuItems, toggle }) => (
+const Menu = ({ open, menuItems, reset }) => (
 	<Drawer in={open}>
-		<List onClickOutside={toggle}>
+		<List onClickOutside={reset}>
 			{menuItems.map(item => (
 				<Item
 					key={item.label + item.icon}
 					onClick={event => {
-						toggle();
+						reset();
 						item.handler(event);
 					}}
 				>
