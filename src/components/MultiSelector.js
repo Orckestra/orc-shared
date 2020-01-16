@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { compose, withHandlers } from "recompose";
 import { memoize } from "../utils";
 import withId from "../hocs/withId";
@@ -7,11 +8,15 @@ import {
 	InnerSelect,
 	Wrapper,
 	SelectBox,
-	SelectedValue,
 	Dropdown,
 	Option,
 	Placeholder,
 } from "./Selector";
+
+export const SelectedValue = styled.span`
+	display: inline-block;
+	width: calc(100% - 20px);
+`;
 
 const arrayToggle = (arr, item) => {
 	const output = arr.filter(val => val !== item);
