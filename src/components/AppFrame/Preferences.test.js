@@ -18,7 +18,7 @@ import {
 	SET_MY_APPLICATION_SUCCESS,
 	SET_MY_APPLICATION_FAILURE,
 } from "../../actions/applications";
-import withViewState from "../../hocs/withViewState";
+import useViewState from "../../hooks/useViewState";
 import { FieldBox, Label } from "../Form/Field";
 import { Wrapper as SelectorWrapper } from "../Selector";
 import {
@@ -41,7 +41,7 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Preferences", () => {
-	let messages, language, applications, clear, save, modalRoot;
+	let messages, language, applications, clear, save, modalRoot, state, store;
 	beforeEach(() => {
 		messages = {
 			preferences: "Preferences",
@@ -66,6 +66,12 @@ describe("Preferences", () => {
 		};
 		clear = () => {};
 		save = sinon.spy().named("save");
+		state = Immutable.fromJS({ view: { [PREFS_NAME]: { show: true } } });
+		store = {
+			subscribe: () => {},
+			getState: () => state,
+			dispatch: sinon.spy().named("dispatch"),
+		};
 		modalRoot = document.createElement("div");
 		modalRoot.id = "modal";
 		document.body.appendChild(modalRoot);
@@ -76,17 +82,17 @@ describe("Preferences", () => {
 
 	it("renders a form dialog", () =>
 		expect(
-			<IntlProvider locale="en">
-				<Preferences
-					viewState={{ show: true }}
-					updateViewState={() => {}}
-					messages={messages}
-					language={language}
-					applications={applications}
-					clear={clear}
-					save={save}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Preferences
+						messages={messages}
+						language={language}
+						applications={applications}
+						clear={clear}
+						save={save}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -139,18 +145,23 @@ describe("Preferences", () => {
 			)
 			.then(() => expect(save, "was called")));
 
-	it("shows view state fields", () =>
+	it("shows view state fields", () => {
+		state = state.setIn(
+			["view", PREFS_NAME],
+			Immutable.fromJS({ show: true, language: "fr", application: 2 }),
+		);
 		expect(
-			<IntlProvider locale="en">
-				<Preferences
-					viewState={{ show: true, language: "fr", application: 2 }}
-					messages={messages}
-					language={language}
-					applications={applications}
-					clear={clear}
-					save={save}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Preferences
+						messages={messages}
+						language={language}
+						applications={applications}
+						clear={clear}
+						save={save}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -189,22 +200,24 @@ describe("Preferences", () => {
 					</div>
 				</div>,
 			),
-		));
+		);
+	});
 
 	it("handles missing current values", () => {
 		delete language.current;
 		delete applications.current;
 		expect(
-			<IntlProvider locale="en">
-				<Preferences
-					viewState={{ show: true }}
-					messages={messages}
-					language={language}
-					applications={applications}
-					clear={clear}
-					save={save}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Preferences
+						messages={messages}
+						language={language}
+						applications={applications}
+						clear={clear}
+						save={save}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -292,7 +305,6 @@ describe("Preferences", () => {
 	});
 
 	describe("withPreferences", () => {
-		let state, store;
 		beforeEach(() => {
 			state = Immutable.fromJS({
 				view: {
@@ -384,23 +396,21 @@ describe("Preferences", () => {
 					],
 				},
 			});
-			store = {
-				subscribe: () => {},
-				getState: () => state,
-				dispatch: sinon.spy().named("dispatch"),
-			};
 		});
 
-		const TestComp = ({ language, applications, ...props }) => (
-			<div>
-				<PropStruct {...{ language, applications }} />
-				<button id="clear" onClick={props.clear}></button>
-				<button id="save" onClick={() => props.save(props.viewState)}></button>
-			</div>
-		);
+		const TestComp = ({ language, applications, ...props }) => {
+			const [viewState] = useViewState(PREFS_NAME);
+			return (
+				<div>
+					<PropStruct {...{ language, applications }} />
+					<button id="clear" onClick={props.clear}></button>
+					<button id="save" onClick={() => props.save(viewState)}></button>
+				</div>
+			);
+		};
 
 		it("provides settings information to the wrapped component", () => {
-			const EnhComp = withPreferences(withViewState(TestComp));
+			const EnhComp = withPreferences(TestComp);
 			return expect(
 				<Provider store={store}>
 					<MemoryRouter>
@@ -409,31 +419,33 @@ describe("Preferences", () => {
 				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<TestComp
-					language={{
-						current: "fr-CA",
-						options: [
-							{ value: "fr-FR", label: "French - France" },
-							{ value: "en-US", label: "English - United States" },
-							{ value: "en-CA", label: "English - Canada" },
-							{ value: "fr-CA", label: "French - Canada" },
-						],
-					}}
-					applications={{
-						current: 4,
-						options: [
-							{ value: 3, label: "Marketing Legacy" },
-							{ value: 4, label: "Informations Produit" },
-						],
-					}}
-					clear={() => {}}
-					save={() => {}}
-				/>,
+				<Provider store={store}>
+					<TestComp
+						language={{
+							current: "fr-CA",
+							options: [
+								{ value: "fr-FR", label: "French - France" },
+								{ value: "en-US", label: "English - United States" },
+								{ value: "en-CA", label: "English - Canada" },
+								{ value: "fr-CA", label: "French - Canada" },
+							],
+						}}
+						applications={{
+							current: 4,
+							options: [
+								{ value: 3, label: "Marketing Legacy" },
+								{ value: 4, label: "Informations Produit" },
+							],
+						}}
+						clear={() => {}}
+						save={() => {}}
+					/>
+				</Provider>,
 			);
 		});
 
 		it("provides a clear handler", () => {
-			const EnhComp = withPreferences(withViewState(TestComp));
+			const EnhComp = withPreferences(TestComp);
 			return expect(
 				<Provider store={store}>
 					<MemoryRouter>
@@ -459,7 +471,7 @@ describe("Preferences", () => {
 
 		it("can save language changes", () => {
 			state = state.setIn(["view", PREFS_NAME, "language"], "en-US");
-			const EnhComp = withPreferences(withViewState(TestComp));
+			const EnhComp = withPreferences(TestComp);
 			return expect(
 				<Provider store={store}>
 					<MemoryRouter>
@@ -525,7 +537,7 @@ describe("Preferences", () => {
 
 		it("can save default application", () => {
 			state = state.setIn(["view", PREFS_NAME, "application"], 3);
-			const EnhComp = withPreferences(withViewState(TestComp));
+			const EnhComp = withPreferences(TestComp);
 			return expect(
 				<Provider store={store}>
 					<MemoryRouter>
