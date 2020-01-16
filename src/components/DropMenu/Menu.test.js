@@ -40,20 +40,20 @@ describe("Menu", () => {
 		));
 
 	it("closes on click outside, or click on item", () => {
-		const toggle = sinon.spy().named("toggle");
+		const reset = sinon.spy().named("reset");
 		const handler = sinon.spy().named("handler");
 		return expect(
 			<Menu
 				open
 				menuItems={[{ label: "Foo", icon: "one", handler }]}
-				toggle={toggle}
+				reset={reset}
 			/>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: "." + getClassName(<Item />) },
 			"to satisfy",
 			<Drawer in>
-				<List onClickOutside={toggle}>
+				<List onClickOutside={reset}>
 					<Item>
 						<svg>
 							<Ignore />
@@ -63,10 +63,7 @@ describe("Menu", () => {
 				</List>
 			</Drawer>,
 		).then(() =>
-			Promise.all([
-				expect(toggle, "was called"),
-				expect(handler, "was called"),
-			]),
+			Promise.all([expect(reset, "was called"), expect(handler, "was called")]),
 		);
 	});
 
