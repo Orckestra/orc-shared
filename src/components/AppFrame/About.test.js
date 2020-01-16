@@ -1,10 +1,13 @@
 import React from "react";
-import sinon from "sinon";
+import Immutable from "immutable";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
+import sinon from "sinon";
 import Text from "../Text";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
 import {
+	ABOUT_NAME,
 	AboutBox,
 	AboutParagraph,
 	AboutLink,
@@ -13,7 +16,7 @@ import {
 } from "./About";
 
 describe("About", () => {
-	let messages;
+	let messages, state, store;
 	beforeEach(() => {
 		window.orcVersion = "x.y.z";
 		messages = {
@@ -23,6 +26,12 @@ describe("About", () => {
 			copyright: "Copyright",
 			allRightsReserved: "All rights reserved",
 		};
+		state = Immutable.fromJS({ view: { [ABOUT_NAME]: { show: true } } });
+		store = {
+			subscribe: () => {},
+			getState: () => state,
+			dispatch: sinon.spy().named("dispatch"),
+		};
 	});
 	afterEach(() => {
 		delete window.orcVersion;
@@ -30,9 +39,11 @@ describe("About", () => {
 
 	it("renders an about box with messages and background images", () =>
 		expect(
-			<IntlProvider locale="en">
-				<About viewState={{ show: true }} messages={messages} />
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<About viewState={{ show: true }} messages={messages} />
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<IntlProvider locale="en">
