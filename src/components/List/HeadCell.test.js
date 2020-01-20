@@ -251,11 +251,11 @@ describe("TableHeader", () => {
 
 	it("sets a width if told to", () =>
 		expect(
-			<TableHeader as="div" width={55} />,
+			<TableHeader as="div" width={"550px"} />,
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
-			"width: 55%;",
+			"width: 550px;",
 		));
 });
 

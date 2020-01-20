@@ -54,6 +54,8 @@ The `fieldName` is the name of a variable found in the row object, the `label` i
 
 The value of `fieldName` can also be an array of field names pointing into a nested object, as [described under Row Identity above](#rowidentity).
 
+Lastly, you can set a `width` for the column. This should be done sparingly, as it can mess with the layout, but can be helpful for known or restricted width column. The value of `width`, if set, should be a valid CSS width, for example "30px" or "15em".
+
 ### Types
 
 A column definition can have a type field, which will show the value formatted in a certain way. Dates can be shown with `type: 'date'` or `type: 'datetime'`, which formates the date and time according to the current user locale.
