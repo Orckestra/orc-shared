@@ -63,7 +63,7 @@ export const TableHeader = styled.th`
 	${ifFlag(
 		"width",
 		css`
-			width: ${props => props.width}%;
+			width: ${props => props.width + ""};
 		`,
 	)};
 `;

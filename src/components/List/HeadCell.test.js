@@ -147,10 +147,10 @@ describe("TableHeader", () => {
 
 	it("sets a width if told to", () =>
 		expect(
-			<SwitchedTableHeader width={55} />,
+			<SwitchedTableHeader width={"550px"} />,
 			"to render style rules",
 			"to contain",
-			"width: 55%;",
+			"width: 550px;",
 		));
 });
 
