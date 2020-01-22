@@ -54,6 +54,8 @@ If the `request` named is currently in progress (i.e. we are between a `<request
 
 Provides the full scope information, including all available scopes and the currently selected scope.
 
+Deprecated, as it is closely tied to the [Scope component](components.md#Scope), where it has been replaced with a hook.
+
 ## `withScrollBox(Component)`
 
 The given component will be wrapped in a scrollable `<div>`, and is passed a `height` and a `width` prop containing the size in pixels of that element as currently rendered, updated on resize.

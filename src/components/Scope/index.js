@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { compose, withHandlers } from "recompose";
 import { Route, Switch, Redirect } from "react-router-dom";
 import useViewState from "../../hooks/useViewState";
-import withScopeData from "../../hocs/withScopeData";
+import useScopeData from "./useScopeData";
 import Button from "../Button";
 import Selector from "./Selector";
 
@@ -33,30 +32,17 @@ export const ScopeBar = ({ show, name, updateViewState }) => (
 );
 ScopeBar.displayName = "ScopeBar";
 
-export const withSelectorHandlers = withHandlers({
-	reset: /* istanbul ignore next */ ({ updateViewState }) => event => {
-		updateViewState("show", false);
-		event.stopPropagation();
-	},
-	updateFilter: /* istanbul ignore next */ ({ updateViewState }) => event =>
-		updateViewState("filter", event.target.value),
-});
-
-export const Scope = ({
-	name,
-	currentScope,
-	getScope,
-	reset,
-	defaultNodeState = {},
-	updateNodeState,
-	updateFilter,
-	children,
-	filterPlaceholder,
-	viewState = {},
-}) => {
+export const Scope = ({ children, filterPlaceholder }) => {
+	const name = "scopeSelector";
+	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(
 		name,
 	);
+	const reset = event => {
+		updateViewState("show", false);
+		event.stopPropagation();
+	};
+	const updateFilter = event => updateViewState("filter", event.target.value);
 	return (
 		<React.Fragment>
 			<ScopeBar
@@ -73,7 +59,6 @@ export const Scope = ({
 				getScope={getScope}
 				nodeState={nodeState}
 				defaultNodeState={defaultNodeState}
-				updateNodeState={updateNodeState}
 				filter={filter}
 				updateFilter={updateFilter}
 				filterPlaceholder={filterPlaceholder}
@@ -84,20 +69,11 @@ export const Scope = ({
 };
 Scope.displayName = "Scope";
 
-const withScopeRoute = WrapScope => props => (
+const RoutedScope = props => (
 	<Switch>
-		<Route
-			path="/:scope"
-			render={() => <WrapScope name="scopeSelector" {...props} />}
-		/>
+		<Route path="/:scope" render={() => <Scope {...props} />} />
 		<Redirect to="/Global" />
 	</Switch>
 );
 
-export const setupScope = compose(
-	withScopeData,
-	withScopeRoute,
-	withSelectorHandlers,
-);
-
-export default setupScope(Scope);
+export default RoutedScope;
