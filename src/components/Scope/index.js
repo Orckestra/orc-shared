@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { compose, withHandlers } from "recompose";
 import { Route, Switch, Redirect } from "react-router-dom";
-import withViewState from "../../hocs/withViewState";
+import useViewState from "../../hooks/useViewState";
 import withScopeData from "../../hocs/withScopeData";
 import Button from "../Button";
 import Selector from "./Selector";
@@ -46,7 +46,6 @@ export const Scope = ({
 	name,
 	currentScope,
 	getScope,
-	updateViewState,
 	reset,
 	defaultNodeState = {},
 	updateNodeState,
@@ -55,7 +54,9 @@ export const Scope = ({
 	filterPlaceholder,
 	viewState = {},
 }) => {
-	const { show = false, nodeState, filter } = viewState;
+	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(
+		name,
+	);
 	return (
 		<React.Fragment>
 			<ScopeBar
@@ -96,7 +97,6 @@ const withScopeRoute = WrapScope => props => (
 export const setupScope = compose(
 	withScopeData,
 	withScopeRoute,
-	withViewState,
 	withSelectorHandlers,
 );
 

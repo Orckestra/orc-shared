@@ -1,5 +1,5 @@
-import { compose, mapProps } from "recompose";
-import withViewState from "../../hocs/withViewState";
+import { mapProps } from "recompose";
+import useViewState from "../../hooks/useViewState";
 
 const toggleInArray = (nameList, name) => {
 	if (nameList.indexOf(name) !== -1) {
@@ -59,21 +59,21 @@ const enhanceColumnDef = ({ sorting, selection, updateViewState }) => def => {
 	return def;
 };
 
-const withLinkHooks = mapProps(
-	({ columnDefs, updateViewState, viewState, ...otherProps }) => {
-		const { selection = [], sorting = {} } = viewState;
-		const enhancedColumnDefs = columnDefs.map(
-			enhanceColumnDef({ sorting, selection, updateViewState }),
-		);
+const withLinkHooks = mapProps(({ columnDefs, name, ...otherProps }) => {
+	const [viewState, updateViewState] = useViewState(name);
+	const { selection = [], sorting = {} } = viewState;
+	const enhancedColumnDefs = columnDefs.map(
+		enhanceColumnDef({ sorting, selection, updateViewState }),
+	);
 
-		return {
-			columnDefs: enhancedColumnDefs,
-			selection,
-			updateViewState,
-			viewState,
-			...otherProps,
-		};
-	},
-);
+	return {
+		columnDefs: enhancedColumnDefs,
+		selection,
+		name,
+		updateViewState,
+		viewState,
+		...otherProps,
+	};
+});
 
-export default compose(withViewState, withLinkHooks);
+export default withLinkHooks;
