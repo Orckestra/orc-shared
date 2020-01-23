@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Loadable from "react-loadable";
+import withErrorBoundary from "../hocs/withErrorBoundary";
 import LoadingIcon from "./LoadingIcon";
 import ErrorPlaceholder from "./ErrorPlaceholder";
 
-export const Loading = ({ error, retry, pastDelay }) => {
+export const Loading = ({ error }) => {
+	const [pastDelay, flagDelay] = useState(false);
+	let timer = useRef(null);
+	useEffect(() => {
+		// Prevent refiring delay timeout
+		if (!timer.current) {
+			timer.current = setTimeout(() => flagDelay(true), 200);
+		}
+		return () => clearTimeout(timer.current);
+	});
 	if (error) {
 		console.error(error);
-		return <ErrorPlaceholder message={error.message} onClick={retry} />;
+		return <ErrorPlaceholder message={error.message} />;
 	} else if (pastDelay) {
 		return <LoadingIcon />;
 	} else {
@@ -16,9 +26,11 @@ export const Loading = ({ error, retry, pastDelay }) => {
 
 /* istanbul ignore next */
 const Loader = compLoader =>
-	Loadable({
-		loader: compLoader,
-		loading: Loading,
-	});
+	withErrorBoundary("Loader")(
+		Loadable({
+			loader: compLoader,
+			loading: Loading,
+		}),
+	);
 
 export default Loader;

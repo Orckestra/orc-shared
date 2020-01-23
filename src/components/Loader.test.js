@@ -1,49 +1,56 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
+import { mount, act } from "react-dom-testing";
+import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
-import LoadingIcon from "./LoadingIcon";
 import ErrorPlaceholder from "./ErrorPlaceholder";
 import { Loading } from "./Loader";
 
 describe("Loader placeholder", () => {
-	it("renders null if no props set", () =>
-		expect(
-			<ThemeProvider theme={{}}>
+	let clock;
+	beforeEach(() => {
+		clock = sinon.useFakeTimers();
+	});
+	afterEach(() => {
+		clock.restore();
+	});
+
+	it("renders null, then load spinner if no props set", () => {
+		const loader = mount(
+			<ThemeProvider theme={{ icons: { loading: "test-loader" } }}>
 				<div>
 					<Loading />
 				</div>
 			</ThemeProvider>,
-			"when mounted",
-			"to satisfy",
-			<div />,
-		));
-
-	it("renders a load spinner is pastDelay flag set", () =>
+		);
+		expect(loader, "to satisfy", <div />);
+		act(() => {
+			clock.tick(200);
+		});
 		expect(
-			<ThemeProvider theme={{}}>
-				<Loading pastDelay />
-			</ThemeProvider>,
-			"when mounted",
+			loader,
+			"queried for first",
+			"svg",
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<LoadingIcon />
-			</ThemeProvider>,
-		));
+			<svg>
+				<use href="#icon-test-loader" />
+			</svg>,
+		);
+	});
 
 	describe("error state", () => {
 		spyOnConsole(["error"]);
 
 		it("renders an error placeholder if error set", () => {
 			const error = new Error("This is a test");
-			const retry = () => {};
 			return expect(
 				<ThemeProvider theme={{}}>
-					<Loading {...{ error, retry }} />
+					<Loading {...{ error }} />
 				</ThemeProvider>,
 				"when mounted",
 				"to satisfy",
 				<ThemeProvider theme={{}}>
-					<ErrorPlaceholder message="This is a test" onClick={retry} />
+					<ErrorPlaceholder message="This is a test" />
 				</ThemeProvider>,
 			).then(() =>
 				expect(console.error, "to have calls satisfying", [
