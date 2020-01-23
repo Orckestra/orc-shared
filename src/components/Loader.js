@@ -15,7 +15,6 @@ export const Loading = ({ error }) => {
 		return () => clearTimeout(timer.current);
 	});
 	if (error) {
-		console.error(error);
 		return <ErrorPlaceholder message={error.message} />;
 	} else if (pastDelay) {
 		return <LoadingIcon />;
@@ -25,12 +24,14 @@ export const Loading = ({ error }) => {
 };
 
 /* istanbul ignore next */
-const Loader = compLoader =>
-	withErrorBoundary("Loader")(
-		Loadable({
-			loader: compLoader,
-			loading: Loading,
-		}),
-	);
+const Loader = compLoader => {
+	const Comp = Loadable({
+		loader: compLoader,
+		loading: Loading,
+	});
+	const BoundedComp = withErrorBoundary("Loader")(Comp);
+	BoundedComp.preload = () => Comp.preload();
+	return BoundedComp;
+};
 
 export default Loader;

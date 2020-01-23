@@ -4,7 +4,7 @@ import { mount, act } from "react-dom-testing";
 import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
 import ErrorPlaceholder from "./ErrorPlaceholder";
-import { Loading } from "./Loader";
+import Loader, { Loading } from "./Loader";
 
 describe("Loader placeholder", () => {
 	let clock;
@@ -52,11 +52,93 @@ describe("Loader placeholder", () => {
 				<ThemeProvider theme={{}}>
 					<ErrorPlaceholder message="This is a test" />
 				</ThemeProvider>,
-			).then(() =>
-				expect(console.error, "to have calls satisfying", [
-					{ args: [new Error("This is a test")] },
-				]),
 			);
 		});
+	});
+});
+
+describe("Loader", () => {
+	let clock, buttonLoader, errorLoader;
+	beforeEach(() => {
+		buttonLoader = () => import("./Button");
+		errorLoader = () => Promise.reject(new Error("This is not right"));
+		clock = sinon.useFakeTimers();
+	});
+	afterEach(() => {
+		clock.restore();
+	});
+
+	it("loads the component", () => {
+		const Comp = Loader(buttonLoader);
+		const loader = mount(
+			<div>
+				<Comp />
+			</div>,
+		);
+		expect(loader, "to satisfy", <div />);
+		act(() => {
+			clock.tick(200);
+		});
+		expect(
+			loader,
+			"queried for first",
+			"svg",
+			"to satisfy",
+			<svg>
+				<use />
+			</svg>,
+		);
+		let preload;
+		act(() => {
+			preload = Comp.preload();
+		});
+		return preload.then(() =>
+			expect(
+				loader,
+				"to satisfy",
+				<div>
+					<button />
+				</div>,
+			),
+		);
+	});
+
+	it("errors out", () => {
+		const Comp = Loader(errorLoader);
+		const loader = mount(
+			<ThemeProvider theme={{}}>
+				<div>
+					<Comp />
+				</div>
+			</ThemeProvider>,
+		);
+		expect(loader, "to satisfy", <div />);
+		act(() => {
+			clock.tick(200);
+		});
+		expect(
+			loader,
+			"queried for first",
+			"svg",
+			"to satisfy",
+			<svg>
+				<use href="#icon-loading" />
+			</svg>,
+		);
+		let preload;
+		act(() => {
+			preload = Comp.preload().catch(() => {});
+		});
+		return preload.then(() =>
+			expect(
+				loader,
+				"to satisfy",
+				<ThemeProvider theme={{}}>
+					<div>
+						<ErrorPlaceholder message="This is not right" />
+					</div>
+				</ThemeProvider>,
+			),
+		);
 	});
 });
