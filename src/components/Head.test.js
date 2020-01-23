@@ -26,7 +26,7 @@ describe("Head", () => {
 		node.remove();
 	});
 
-	it("renders a Helmet setting the language on the <html> element", () => {
+	it("¨sets the language on the <html> element", () => {
 		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter>
