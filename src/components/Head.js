@@ -6,7 +6,6 @@ const Head = () => {
 	const locale = useSelector(currentLocale);
 	useEffect(() => {
 		if (document.documentElement.lang !== locale) {
-			console.log("setting lang", locale);
 			document.documentElement.setAttribute("lang", locale);
 		}
 	});
