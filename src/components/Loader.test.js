@@ -39,8 +39,6 @@ describe("Loader placeholder", () => {
 	});
 
 	describe("error state", () => {
-		spyOnConsole(["error"]);
-
 		it("renders an error placeholder if error set", () => {
 			const error = new Error("This is a test");
 			return expect(
@@ -67,13 +65,16 @@ describe("Loader", () => {
 	afterEach(() => {
 		clock.restore();
 	});
+	spyOnConsole(["error"]);
 
 	it("loads the component", () => {
 		const Comp = Loader(buttonLoader);
 		const loader = mount(
-			<div>
-				<Comp />
-			</div>,
+			<ThemeProvider theme={{}}>
+				<div>
+					<Comp />
+				</div>
+			</ThemeProvider>,
 		);
 		expect(loader, "to satisfy", <div />);
 		act(() => {
@@ -88,18 +89,18 @@ describe("Loader", () => {
 				<use />
 			</svg>,
 		);
-		let preload;
+		let load;
 		act(() => {
-			preload = Comp.preload();
+			load = Comp.load();
 		});
-		return preload.then(() =>
+		return load.then(() =>
 			expect(
 				loader,
 				"to satisfy",
 				<div>
 					<button />
 				</div>,
-			),
+			).then(() => expect(console.error, "was not called")),
 		);
 	});
 
@@ -125,11 +126,11 @@ describe("Loader", () => {
 				<use href="#icon-loading" />
 			</svg>,
 		);
-		let preload;
+		let load;
 		act(() => {
-			preload = Comp.preload().catch(() => {});
+			load = Comp.load().catch(() => {});
 		});
-		return preload.then(() =>
+		return load.then(() =>
 			expect(
 				loader,
 				"to satisfy",
@@ -138,7 +139,7 @@ describe("Loader", () => {
 						<ErrorPlaceholder message="This is not right" />
 					</div>
 				</ThemeProvider>,
-			),
+			).then(() => expect(console.error, "was called")),
 		);
 	});
 });

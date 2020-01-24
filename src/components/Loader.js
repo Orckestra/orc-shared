@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import Loadable from "react-loadable";
+import loadable from "@loadable/component";
+import { compose, branch, renderComponent } from "recompose";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import LoadingIcon from "./LoadingIcon";
 import ErrorPlaceholder from "./ErrorPlaceholder";
@@ -23,14 +24,17 @@ export const Loading = ({ error }) => {
 	}
 };
 
-/* istanbul ignore next */
+const errorBoundary = compose(
+	withErrorBoundary("Loader"),
+	branch(({ error }) => !!error, renderComponent(Loading)),
+);
+
 const Loader = compLoader => {
-	const Comp = Loadable({
-		loader: compLoader,
-		loading: Loading,
+	const Comp = loadable(compLoader, {
+		fallback: <Loading />,
 	});
-	const BoundedComp = withErrorBoundary("Loader")(Comp);
-	BoundedComp.preload = () => Comp.preload();
+	const BoundedComp = errorBoundary(Comp);
+	BoundedComp.load = () => Comp.load();
 	return BoundedComp;
 };
 

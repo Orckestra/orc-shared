@@ -28,16 +28,15 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.8.3"
+		"orc-scripts": "0.8.4"
 	},
 	"peerDependencies": {
-		"orc-scripts": "^0.8.0"
+		"orc-scripts": "^0.8.4"
 	},
 	"sideEffects": false,
 	"lint-staged": {
 		"*.{js,json,md}": [
-			"prettier --write",
-			"git add"
+			"prettier --write"
 		],
 		"*.js": [
 			"eslint"
