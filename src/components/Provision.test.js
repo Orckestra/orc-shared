@@ -8,7 +8,13 @@ import Provision from "./Provision";
 const fakeStore = {
 	subscribe: listener => () => {},
 	dispatch: action => action,
-	getState: () => Immutable.fromJS({ locale: {} }),
+	getState: () =>
+		Immutable.fromJS({
+			locale: {},
+			authentication: {
+				name: "foo@bar.com",
+			},
+		}),
 	replaceReducer: () => {},
 };
 

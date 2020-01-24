@@ -2,8 +2,7 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import withAuthentication from "./withAuthentication";
-import { Wrapper, Loader } from "../components/Authenticate";
+import Authenticate, { Loader, Wrapper } from "./Authenticate";
 import { ERROR, LOGOUT } from "../reducers/request";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 
@@ -11,8 +10,8 @@ const TestComp = () => {
 	return <div className="test"></div>;
 };
 
-describe("withAuthentication", () => {
-	let state, store, AuthedComp;
+describe("Authenticate", () => {
+	let state, store;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			requests: {},
@@ -25,13 +24,14 @@ describe("withAuthentication", () => {
 			getState: () => state,
 			dispatch: () => {},
 		});
-		AuthedComp = withAuthentication(TestComp);
 	});
 
 	it("shows the wrapped component if authenticated", () =>
 		expect(
 			<Provider store={store(state)}>
-				<AuthedComp />
+				<Authenticate>
+					<TestComp />
+				</Authenticate>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
@@ -43,7 +43,9 @@ describe("withAuthentication", () => {
 		return expect(
 			<Provider store={store(state)}>
 				<ThemeProvider theme={{}}>
-					<AuthedComp />
+					<Authenticate>
+						<TestComp />
+					</Authenticate>
 				</ThemeProvider>
 			</Provider>,
 			"when mounted",
@@ -60,7 +62,9 @@ describe("withAuthentication", () => {
 			.setIn(["requests", LOGOUT], true);
 		return expect(
 			<Provider store={store(state)}>
-				<AuthedComp />
+				<Authenticate>
+					<TestComp />
+				</Authenticate>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
@@ -80,7 +84,9 @@ describe("withAuthentication", () => {
 		);
 		return expect(
 			<Provider store={store(state)}>
-				<AuthedComp />
+				<Authenticate>
+					<TestComp />
+				</Authenticate>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
@@ -109,7 +115,9 @@ describe("withAuthentication", () => {
 		);
 		return expect(
 			<Provider store={store(state)}>
-				<AuthedComp />
+				<Authenticate>
+					<TestComp />
+				</Authenticate>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",

@@ -4,6 +4,7 @@ import { ConnectedRouter } from "connected-react-router/immutable";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { getThemeProp } from "../utils";
 import { history } from "../buildStore";
+import Authenticate from "./Authenticate";
 import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
@@ -37,13 +38,15 @@ const Provision = ({ store, theme = {}, children }) => (
 			<React.Fragment>
 				<Head />
 				<ThemeProvider theme={theme}>
-					<React.Fragment>
-						<GlobalStyle />
-						<Fonts />
-						<DevPages>
-							<I18n>{React.Children.only(children)}</I18n>
-						</DevPages>
-					</React.Fragment>
+					<Authenticate>
+						<React.Fragment>
+							<GlobalStyle />
+							<Fonts />
+							<DevPages>
+								<I18n>{React.Children.only(children)}</I18n>
+							</DevPages>
+						</React.Fragment>
+					</Authenticate>
 				</ThemeProvider>
 			</React.Fragment>
 		</ConnectedRouter>
