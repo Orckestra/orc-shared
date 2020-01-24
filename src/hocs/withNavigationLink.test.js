@@ -9,7 +9,7 @@ const TestComp = ({ active, staticContext, ...props }) => (
 	<a {...props}>Anchor{active ? " active" : ""}</a>
 );
 
-describe.only("withNavigationLink", () => {
+describe("withNavigationLink", () => {
 	let fakeStore, mockEvent;
 	beforeEach(() => {
 		fakeStore = {
