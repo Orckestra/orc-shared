@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
 `;
 
 const Header = ({ toggle, ...props }) => (
-	<Wrapper onClick={toggle} {...props}>
+	<Wrapper id="applicationSelectorAnchor" onClick={toggle} {...props}>
 		<MenuIcon />
 	</Wrapper>
 );

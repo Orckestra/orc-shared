@@ -46,14 +46,14 @@ describe("ApplicationDialog", () => {
 			"to satisfy",
 			<List>
 				<Block key="ChosenId">
-					<Link href="/test/url">
+					<Link id="ChosenId" href="/test/url">
 						<Logo src="/url/to/img1.png" />
 					</Link>
 					<Label>Current App</Label>
 					<Indicator />
 				</Block>
 				<Block key="OtherId">
-					<Link href="/test/some/other/url">
+					<Link id="OtherId" href="/test/some/other/url">
 						<Logo src="/url/to/img2.png" />
 					</Link>
 					<Label>Other App</Label>

@@ -32,18 +32,22 @@ export const withUserMenu = compose(
 		}),
 	),
 	withProps(({ intl, menuFuncs, messages }) => ({
+		id: "userMenu",
 		menuItems: [
 			{
+				id: "userMenuSignOut",
 				label: intl.formatMessage(messages.sign_out),
 				handler: menuFuncs.signOut,
 				icon: "logout-1",
 			},
 			{
+				id: "userMenuPrefsMenu",
 				label: intl.formatMessage(messages.preferences),
 				handler: menuFuncs.showPreferences,
 				icon: "settings-cogwheel",
 			},
 			{
+				id: "userMenuAbout",
 				label: intl.formatMessage(messages.about),
 				handler: menuFuncs.showAbout,
 				icon: "infomation-circle",

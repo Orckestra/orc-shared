@@ -134,8 +134,10 @@ describe("Preferences", () => {
 								</FieldBox>
 							</PrefForm>
 							<Footer>
-								<PrefButton onClick={clear}>Cancel</PrefButton>
-								<PrefButton primary onClick={() => {}}>
+								<PrefButton id="cancelPrefs" onClick={clear}>
+									Cancel
+								</PrefButton>
+								<PrefButton id="savePrefs" primary onClick={() => {}}>
 									Save
 								</PrefButton>
 							</Footer>

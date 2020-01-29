@@ -13,13 +13,13 @@ describe("ScopeNode", () => {
 			<ScopeNode
 				name="A scope"
 				type="test"
-				id="scopeId"
+				id="ScopeId"
 				onClick={onClick}
 				isAuthorizedScope
 			/>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel onClick={onClick}>
+			<ContentLabel id="selectorNodeScopeId" onClick={onClick}>
 				<ScopeIcon type="test" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
@@ -27,10 +27,10 @@ describe("ScopeNode", () => {
 
 	it("displays an icon and a label for an unauthorized scope", () =>
 		expect(
-			<ScopeNode name="A scope" type="test" id="scopeId" onClick={onClick} />,
+			<ScopeNode name="A scope" type="test" id="ScopeId" onClick={onClick} />,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel>
+			<ContentLabel id="selectorNodeScopeId">
 				<ScopeIcon type="test" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
@@ -40,15 +40,15 @@ describe("ScopeNode", () => {
 		expect(
 			<ScopeNode
 				type="test"
-				id="scope-Id"
+				id="ScopeId"
 				onClick={onClick}
 				isAuthorizedScope
 			/>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel onClick={onClick}>
+			<ContentLabel id="selectorNodeScopeId" onClick={onClick}>
 				<ScopeIcon type="test" />
-				<ScopeText>scope-Id</ScopeText>
+				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
 		));
 
@@ -57,15 +57,15 @@ describe("ScopeNode", () => {
 			<ScopeNode
 				name={null}
 				type="test"
-				id="scope-Id"
+				id="ScopeId"
 				onClick={onClick}
 				isAuthorizedScope
 			/>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel onClick={onClick}>
+			<ContentLabel id="selectorNodeScopeId" onClick={onClick}>
 				<ScopeIcon type="test" />
-				<ScopeText>scope-Id</ScopeText>
+				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
 		));
 
@@ -74,12 +74,12 @@ describe("ScopeNode", () => {
 			<ScopeNode
 				name="A scope"
 				type="Virtual"
-				id="scopeId"
+				id="ScopeId"
 				onClick={onClick}
 			/>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel type="Virtual">
+			<ContentLabel id="selectorNodeScopeId" type="Virtual">
 				<ScopeIcon type="Virtual" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
@@ -89,7 +89,7 @@ describe("ScopeNode", () => {
 describe("ContentLabel", () => {
 	it("sets css for Global scope", () =>
 		expect(
-			<ContentLabel type="Global" />,
+			<ContentLabel id="selectorNodeScopeId" type="Global" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
@@ -100,7 +100,7 @@ describe("ContentLabel", () => {
 
 	it("sets css for Virtual scopes", () =>
 		expect(
-			<ContentLabel type="Virtual" />,
+			<ContentLabel id="selectorNodeScopeId" type="Virtual" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
@@ -111,7 +111,7 @@ describe("ContentLabel", () => {
 
 	it("sets css for other scopes", () =>
 		expect(
-			<ContentLabel type="someOther" />,
+			<ContentLabel id="selectorNodeScopeId" type="someOther" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect

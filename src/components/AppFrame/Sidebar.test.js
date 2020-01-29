@@ -232,6 +232,7 @@ describe("MenuToggle", () => {
 				"when mounted",
 				"to satisfy",
 				<MenuItem
+					id="sidebarMenuToggle"
 					menuToggle
 					icon="menu"
 					onClick={expect.it("to be a function")}
@@ -248,6 +249,7 @@ describe("MenuToggle", () => {
 				"when mounted",
 				"to satisfy",
 				<MenuItem
+					id="sidebarMenuToggle"
 					menuToggle
 					open
 					icon="layers"

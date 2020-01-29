@@ -46,7 +46,11 @@ export const ContentLabel = styled.div`
 `;
 
 export const ScopeNode = ({ type, name, id, onClick }) => (
-	<ContentLabel type={type} onClick={type === "Virtual" ? undefined : onClick}>
+	<ContentLabel
+		id={"selectorNode" + id}
+		type={type}
+		onClick={type === "Virtual" ? undefined : onClick}
+	>
 		<ScopeIcon type={type} />
 		<ScopeText>{name || id}</ScopeText>
 	</ContentLabel>

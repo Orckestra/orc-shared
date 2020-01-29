@@ -26,7 +26,11 @@ AlignedButton.defaultProps = {
 
 export const ScopeBar = ({ show, name, updateViewState }) => (
 	<Bar>
-		<AlignedButton active={show} onClick={() => updateViewState("show", true)}>
+		<AlignedButton
+			id="showScopeSelector"
+			active={show}
+			onClick={() => updateViewState("show", true)}
+		>
 			{name}
 		</AlignedButton>
 	</Bar>

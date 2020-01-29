@@ -6,29 +6,35 @@ import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 describe("DropMenu", () => {
 	it("renders an anchor and a menu", () =>
 		expect(
-			<DropMenu menuLabel="TestLabel" menuItems={[]} className="test-class" />,
+			<DropMenu
+				id="test"
+				menuLabel="TestLabel"
+				menuItems={[]}
+				className="test-class"
+			/>,
 			"when mounted",
 			"to satisfy",
 			<Wrapper>
-				<Anchor menuLabel="TestLabel" className="test-class" />
-				<Menu menuItems={[]} />
+				<Anchor id="testAnchor" menuLabel="TestLabel" className="test-class" />
+				<Menu id="testDropdown" menuItems={[]} />
 			</Wrapper>,
 		));
 
 	it("flags anchor and menu when open", () =>
 		expect(
-			<DropMenu initOpen menuLabel="TestLabel" menuItems={[]} />,
+			<DropMenu id="test" initOpen menuLabel="TestLabel" menuItems={[]} />,
 			"when mounted",
 			"to satisfy",
 			<Wrapper>
-				<Anchor open menuLabel="TestLabel" className="" />
-				<Menu open menuItems={[]} />
+				<Anchor id="testAnchor" open menuLabel="TestLabel" className="" />
+				<Menu id="testDropdown" open menuItems={[]} />
 			</Wrapper>,
 		));
 
 	it("when clicked renders the menu", () =>
 		expect(
 			<DropMenu
+				id="test"
 				menuLabel="TestLabel"
 				menuItems={[
 					{ label: "First", icon: "one", handler: () => {} },
@@ -41,12 +47,12 @@ describe("DropMenu", () => {
 			{ type: "click", target: ".test-class" },
 			"to satisfy",
 			<Wrapper>
-				<Header open className="test-class">
+				<Header id="testAnchor" open className="test-class">
 					TestLabel
 					<Indicator open={true} />
 				</Header>
 				<Drawer in>
-					<List>
+					<List id="testDropdown">
 						<Item>
 							<ItemIcon id="one" />
 							First

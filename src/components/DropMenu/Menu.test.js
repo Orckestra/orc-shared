@@ -16,22 +16,23 @@ describe("Menu", () => {
 	it("renders an open menu", () =>
 		expect(
 			<Menu
+				id="testMenu"
 				open
 				menuItems={[
-					{ label: "First", icon: "one", handler: () => {} },
-					{ label: "Second", icon: "two", handler: () => {} },
+					{ id: "first", label: "First", icon: "one", handler: () => {} },
+					{ id: "second", label: "Second", icon: "two", handler: () => {} },
 				]}
 				toggle={() => {}}
 			/>,
 			"when mounted",
 			"to satisfy",
 			<Drawer in>
-				<List>
-					<Item>
+				<List id="testMenu">
+					<Item id="first">
 						<ItemIcon id="one" />
 						First
 					</Item>
-					<Item>
+					<Item id="second">
 						<ItemIcon id="two" />
 						Second
 					</Item>
