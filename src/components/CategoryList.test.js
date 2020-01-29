@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
 import {
@@ -15,10 +16,21 @@ import { HeadTableRow } from "./List/HeadRow";
 import { HeadBox, TableHeader } from "./List/HeadCell";
 
 describe("CategoryList", () => {
+	let store, viewState;
+	beforeEach(() => {
+		store = {
+			subscribe: () => {},
+			dispatch: sinon.spy().named("dispatch"),
+			getState: () => ({ getIn: () => viewState }),
+		};
+	});
+
 	it("renders nothing if no columnDefs", () =>
 		expect(
 			<div>
-				<CategoryList rows={[{ id: "foo" }]} />
+				<Provider store={store}>
+					<CategoryList rows={[{ id: "foo" }]} />
+				</Provider>
 			</div>,
 			"when mounted",
 			"to satisfy",
@@ -27,7 +39,9 @@ describe("CategoryList", () => {
 
 	it("renders a table", () =>
 		expect(
-			<CategoryList columnDefs={[{ fieldName: "a" }]} />,
+			<Provider store={store}>
+				<CategoryList columnDefs={[{ fieldName: "a" }]} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Table>
@@ -44,13 +58,15 @@ describe("CategoryList", () => {
 
 	it("renders just a header", () =>
 		expect(
-			<CategoryList
-				columnDefs={[
-					{ fieldName: "a" },
-					{ fieldName: "b" },
-					{ fieldName: "c" },
-				]}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={[
+						{ fieldName: "a" },
+						{ fieldName: "b" },
+						{ fieldName: "c" },
+					]}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -73,15 +89,17 @@ describe("CategoryList", () => {
 
 	it("renders a placeholder if one given and no rows", () =>
 		expect(
-			<CategoryList
-				height={121}
-				columnDefs={[
-					{ fieldName: "a" },
-					{ fieldName: "b" },
-					{ fieldName: "c" },
-				]}
-				placeholder={<div />}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					height={121}
+					columnDefs={[
+						{ fieldName: "a" },
+						{ fieldName: "b" },
+						{ fieldName: "c" },
+					]}
+					placeholder={<div />}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -111,12 +129,14 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }];
 		const rowOnClick = () => {};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -160,12 +180,14 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -232,14 +254,16 @@ describe("CategoryList", () => {
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
+		viewState = { closedCategories: ["Stuff"] };
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				viewState={{ closedCategories: ["Stuff"] }}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -284,7 +308,6 @@ describe("CategoryList", () => {
 	});
 
 	it("toggles a category closed", () => {
-		const updater = sinon.spy().named("updateViewState");
 		const rows = [
 			{ key: "a", category: "Stuff" },
 			{ key: "b", category: "Things" },
@@ -295,27 +318,39 @@ describe("CategoryList", () => {
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
+		viewState = { closedCategories: [] };
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				viewState={{ closedCategories: [] }}
-				updateViewState={updater}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					name="test"
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="category_Stuff"]' },
 		).then(() =>
-			expect(updater, "to have calls satisfying", [
-				{ args: ["closedCategories", ["Stuff"]] },
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "VIEW_STATE_SET_FIELD",
+							payload: {
+								name: "test",
+								field: "closedCategories",
+								value: ["Stuff"],
+							},
+						},
+					],
+				},
 			]),
 		);
 	});
 
 	it("toggles a category open", () => {
-		const updater = sinon.spy().named("updateViewState");
 		const rows = [
 			{ key: "a", category: "Stuff" },
 			{ key: "b", category: "Things" },
@@ -326,21 +361,30 @@ describe("CategoryList", () => {
 		];
 		const columnDefs = [{ fieldName: "a" }, { fieldName: "b" }];
 		const rowOnClick = () => {};
+		viewState = { closedCategories: ["Stuff"] };
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				viewState={{ closedCategories: ["Stuff"] }}
-				updateViewState={updater}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					name="test"
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="category_Stuff"]' },
 		).then(() =>
-			expect(updater, "to have calls satisfying", [
-				{ args: ["closedCategories", []] },
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "VIEW_STATE_SET_FIELD",
+							payload: { name: "test", field: "closedCategories", value: [] },
+						},
+					],
+				},
 			]),
 		);
 	});
@@ -356,13 +400,15 @@ describe("CategoryList", () => {
 		};
 		const colorGetter = row => colorMap[row.key];
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				rowBackgroundGetter={colorGetter}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					rowBackgroundGetter={colorGetter}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -400,13 +446,15 @@ describe("CategoryList", () => {
 		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				rowBackgroundGetter={colorGetter}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					rowBackgroundGetter={colorGetter}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -446,12 +494,14 @@ describe("CategoryList", () => {
 		];
 		const selection = ["a"];
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				selection={selection}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					selection={selection}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -512,14 +562,13 @@ describe("CategoryList", () => {
 			{ type: "select", fieldName: "select" },
 			{ fieldName: "key", label: "Key" },
 		];
-		const selection = ["a", "b", "c"];
+		viewState = {
+			selection: ["a", "b", "c"],
+		};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				selection={selection}
-			/>,
+			<Provider store={store}>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>

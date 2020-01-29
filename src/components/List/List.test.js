@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { Ignore } from "unexpected-reaction";
 import {
 	List,
@@ -20,12 +21,29 @@ const generateRows = count => {
 };
 
 describe("List", () => {
+	let store, selection;
+	beforeEach(() => {
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => ({ getIn: () => ({ selection }) }),
+		};
+	});
+
 	it("renders nothing if no columnDefs", () =>
-		expect(<List rows={[{}]} />, "to satisfy", null));
+		expect(
+			<Provider store={store}>
+				<List rows={[{}]} />
+			</Provider>,
+			"to satisfy",
+			null,
+		));
 
 	it("renders a table with no rows", () =>
 		expect(
-			<List columnDefs={[{ fieldName: "a" }]} />,
+			<Provider store={store}>
+				<List columnDefs={[{ fieldName: "a" }]} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Table>
@@ -42,15 +60,17 @@ describe("List", () => {
 
 	it("renders a placeholder if one given and no rows", () =>
 		expect(
-			<List
-				height={121}
-				columnDefs={[
-					{ fieldName: "a" },
-					{ fieldName: "b" },
-					{ fieldName: "c" },
-				]}
-				placeholder={<div />}
-			/>,
+			<Provider store={store}>
+				<List
+					height={121}
+					columnDefs={[
+						{ fieldName: "a" },
+						{ fieldName: "b" },
+						{ fieldName: "c" },
+					]}
+					placeholder={<div />}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -80,12 +100,14 @@ describe("List", () => {
 		const columnDefs = [{ fieldName: "a" }];
 		const rowOnClick = () => {};
 		return expect(
-			<List
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-			/>,
+			<Provider store={store}>
+				<List
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -122,13 +144,15 @@ describe("List", () => {
 		};
 		const colorGetter = row => colorMap[row.key];
 		return expect(
-			<List
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				rowBackgroundGetter={colorGetter}
-			/>,
+			<Provider store={store}>
+				<List
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					rowBackgroundGetter={colorGetter}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -160,13 +184,15 @@ describe("List", () => {
 		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
-			<List
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				rowBackgroundGetter={colorGetter}
-			/>,
+			<Provider store={store}>
+				<List
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					rowBackgroundGetter={colorGetter}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -200,12 +226,14 @@ describe("List", () => {
 		];
 		const selection = ["a"];
 		return expect(
-			<List
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				selection={selection}
-			/>,
+			<Provider store={store}>
+				<List
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					selection={selection}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -257,14 +285,11 @@ describe("List", () => {
 	it("renders a header when all rows are selected", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
 		const columnDefs = [{ type: "select", fieldName: "select" }];
-		const selection = ["a", "b", "c"];
+		selection = ["a", "b", "c"];
 		return expect(
-			<List
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				selection={selection}
-			/>,
+			<Provider store={store}>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -312,7 +337,7 @@ describe("List", () => {
 		it("renders a header with all rows identified when virtual", () => {
 			const rows = generateRows(15);
 			const columnDefs = [{ type: "select", fieldName: "select" }];
-			const selection = [
+			selection = [
 				"1",
 				"2",
 				"3",
@@ -330,16 +355,18 @@ describe("List", () => {
 				"15",
 			];
 			return expect(
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					selection={selection}
-					virtual
-					scrollTop={350}
-					height={150}
-					scrollBuffer={1}
-				/>,
+				<Provider store={store}>
+					<List
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						selection={selection}
+						virtual
+						scrollTop={350}
+						height={150}
+						scrollBuffer={1}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -390,16 +417,18 @@ describe("List", () => {
 
 		it("renders at top", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={0}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider store={store}>
+					<List
+						virtual
+						scrollTop={0}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -438,16 +467,18 @@ describe("List", () => {
 
 		it("renders near top", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={150}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider store={store}>
+					<List
+						virtual
+						scrollTop={150}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -497,16 +528,18 @@ describe("List", () => {
 
 		it("renders in the middle", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={350}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider store={store}>
+					<List
+						virtual
+						scrollTop={350}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -551,16 +584,18 @@ describe("List", () => {
 
 		it("renders near end", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={550}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider store={store}>
+					<List
+						virtual
+						scrollTop={550}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -610,16 +645,18 @@ describe("List", () => {
 
 		it("renders at end", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={656}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider store={store}>
+					<List
+						virtual
+						scrollTop={656}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>

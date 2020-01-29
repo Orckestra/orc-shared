@@ -9,11 +9,11 @@ import styled from "styled-components";
 import { compose, setDisplayName } from "recompose";
 import { safeGet, ifFlag, getThemeProp } from "../utils";
 import withScrollBox from "../hocs/withScrollBox";
+import useViewState from "../hooks/useViewState";
 import Icon from "./Icon";
 import Row from "./List/Row";
 import HeadRow from "./List/HeadRow";
-import { Table, Placeholder, HEADER_HEIGHT } from "./List/List";
-import withListState from "./List/withListState";
+import { useListState, Table, Placeholder, HEADER_HEIGHT } from "./List/List";
 
 const arrayToggle = (array, item) =>
 	array.includes(item) ? array.filter(x => x !== item) : array.concat(item);
@@ -42,19 +42,18 @@ export const CategoryIndicator = styled(Icon).attrs(props => ({
 `;
 
 export const CategoryList = ({
+	name,
 	columnDefs = [],
 	rows = [],
 	rowOnClick,
 	placeholder,
-	selection = [],
 	keyField = ["id"],
 	categoryField = ["category"],
 	height,
-	viewState = {},
-	updateViewState,
 	rowBackgroundGetter = () => {},
 }) => {
-	const { closedCategories = [] } = viewState;
+	const [enhancedColumnDefs, selection] = useListState(name, columnDefs);
+	const [{ closedCategories = [] }, updateViewState] = useViewState(name);
 	if (columnDefs.length === 0) return null;
 	const rowIds = [],
 		rowCategories = {};
@@ -67,7 +66,7 @@ export const CategoryList = ({
 		}
 		rowCategories[category].push(
 			<Row
-				columnDefs={columnDefs}
+				columnDefs={enhancedColumnDefs}
 				key={id}
 				rowId={id}
 				row={row}
@@ -117,7 +116,7 @@ export const CategoryList = ({
 		<Table>
 			<thead>
 				<HeadRow
-					columnDefs={columnDefs}
+					columnDefs={enhancedColumnDefs}
 					rowIds={rowIds}
 					allSelected={rows.length === selection.length && rows.length !== 0}
 				/>
@@ -130,7 +129,6 @@ export const CategoryList = ({
 const StatefulCategoryList = compose(
 	setDisplayName("CategoryList"),
 	withScrollBox,
-	withListState,
 )(CategoryList);
 
 export default StatefulCategoryList;
