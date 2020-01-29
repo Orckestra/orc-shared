@@ -91,6 +91,7 @@ describe("ScopeBar", () => {
 			"to render as",
 			<Bar>
 				<AlignedButton
+					id="showScopeSelector"
 					onClick={expect
 						.it("to be a function")
 						.and("when called", "to be undefined")}

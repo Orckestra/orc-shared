@@ -15,7 +15,7 @@ describe("Header", () => {
 		expect(
 			<Header open={true} application={application} toggle={toggle} />,
 			"to render as",
-			<Wrapper onClick={toggle}>
+			<Wrapper id="applicationSelectorAnchor" onClick={toggle}>
 				<MenuIcon />
 			</Wrapper>,
 		));

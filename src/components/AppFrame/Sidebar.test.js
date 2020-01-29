@@ -162,6 +162,7 @@ describe("MenuToggle", () => {
 				</ThemeProvider>,
 				"to deeply render as",
 				<MenuItem
+					id="sidebarMenuToggle"
 					menuToggle
 					icon="menu"
 					onClick={expect.it("to be a function")}
@@ -177,6 +178,7 @@ describe("MenuToggle", () => {
 				</ThemeProvider>,
 				"to deeply render as",
 				<MenuItem
+					id="sidebarMenuToggle"
 					menuToggle
 					open
 					icon="layers"

@@ -36,8 +36,8 @@ Indicator.defaultProps = {
 	},
 };
 
-const Anchor = ({ onClick, className, menuLabel, open }) => (
-	<Header {...{ onClick, className, open }}>
+const Anchor = ({ id, onClick, className, menuLabel, open }) => (
+	<Header {...{ id, onClick, className, open }}>
 		{menuLabel}
 		<Indicator open={open} />
 	</Header>

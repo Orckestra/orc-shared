@@ -6,9 +6,9 @@ import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
 describe("MenuItem", () => {
 	it("renders an icon and no label", () =>
 		expect(
-			<MenuItem random="prop" icon="cake" />,
+			<MenuItem id="test" random="prop" icon="cake" />,
 			"to render as",
-			<Block random="prop">
+			<Block id="test" random="prop">
 				<MenuIcon id="cake" />
 				<Label />
 			</Block>,
@@ -16,9 +16,9 @@ describe("MenuItem", () => {
 
 	it("renders an icon and label", () =>
 		expect(
-			<MenuItem icon="cake" label="Test" />,
+			<MenuItem id="test" icon="cake" label="Test" />,
 			"to render as",
-			<Block>
+			<Block id="test">
 				<MenuIcon id="cake" />
 				<Label>
 					<Text message="Test" />
@@ -28,9 +28,9 @@ describe("MenuItem", () => {
 
 	it("renders an open state", () =>
 		expect(
-			<MenuItem icon="cake" open />,
+			<MenuItem id="test" icon="cake" open />,
 			"to render as",
-			<Block>
+			<Block id="test">
 				<MenuIcon id="cake" />
 				<Label show />
 			</Block>,
@@ -38,9 +38,9 @@ describe("MenuItem", () => {
 
 	it("shows activity marker", () =>
 		expect(
-			<MenuItem icon="cake" label="Test" alert />,
+			<MenuItem id="test" icon="cake" label="Test" alert />,
 			"to render as",
-			<Block>
+			<Block id="test">
 				<MenuIcon id="cake" />
 				<Alert />
 				<Label>

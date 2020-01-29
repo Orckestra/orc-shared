@@ -6,12 +6,13 @@ describe("Anchor", () => {
 		const onClick = () => {};
 		expect(
 			<Anchor
+				id="testAnchor"
 				onClick={onClick}
 				menuLabel="A Label"
 				className="propagateThis"
 			/>,
 			"to render as",
-			<Header onClick={onClick} className="propagateThis">
+			<Header id="testAnchor" onClick={onClick} className="propagateThis">
 				A Label
 				<Indicator />
 			</Header>,

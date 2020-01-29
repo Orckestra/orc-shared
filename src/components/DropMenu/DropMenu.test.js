@@ -14,6 +14,7 @@ describe("DropMenu", () => {
 	it("renders an anchor and a menu", () =>
 		expect(
 			<DropMenu
+				id="test"
 				toggle={toggle}
 				menuLabel="TestLabel"
 				menuItems={[]}
@@ -21,18 +22,35 @@ describe("DropMenu", () => {
 			/>,
 			"to exactly render as",
 			<Wrapper>
-				<Anchor onClick={toggle} menuLabel="TestLabel" className="test-class" />
-				<Menu menuItems={[]} toggle={toggle} />
+				<Anchor
+					id="testAnchor"
+					onClick={toggle}
+					menuLabel="TestLabel"
+					className="test-class"
+				/>
+				<Menu id="testDropdown" menuItems={[]} toggle={toggle} />
 			</Wrapper>,
 		));
 
 	it("flags anchor and menu when open", () =>
 		expect(
-			<DropMenu open toggle={toggle} menuLabel="TestLabel" menuItems={[]} />,
+			<DropMenu
+				id="test"
+				open
+				toggle={toggle}
+				menuLabel="TestLabel"
+				menuItems={[]}
+			/>,
 			"to exactly render as",
 			<Wrapper>
-				<Anchor onClick={toggle} open menuLabel="TestLabel" className="" />
-				<Menu open menuItems={[]} toggle={toggle} />
+				<Anchor
+					id="testAnchor"
+					onClick={toggle}
+					open
+					menuLabel="TestLabel"
+					className=""
+				/>
+				<Menu id="testDropdown" open menuItems={[]} toggle={toggle} />
 			</Wrapper>,
 		));
 
@@ -40,12 +58,14 @@ describe("DropMenu", () => {
 		it("adds toggleable open flag", () =>
 			expect(
 				<FullMenu
+					id="test"
 					menuLabel="TestLabel"
 					menuItems={[]}
 					className="test-class"
 				/>,
 				"to render as",
 				<DropMenu
+					id="test"
 					toggle={expect.it("to be a function")}
 					open={false}
 					menuLabel="TestLabel"

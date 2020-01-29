@@ -109,10 +109,11 @@ describe("Preferences", () => {
 					/>
 				</PrefForm>
 				<Footer>
-					<PrefButton onClick={clear}>
+					<PrefButton id="cancelPrefs" onClick={clear}>
 						<Text message="Cancel" />
 					</PrefButton>
 					<PrefButton
+						id="savePrefs"
 						primary
 						onClick={expect.it("when called", "to be undefined")}
 					>

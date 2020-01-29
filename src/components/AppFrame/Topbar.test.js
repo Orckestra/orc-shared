@@ -132,18 +132,22 @@ describe("withUserMenu", () => {
 					"when deeply rendered",
 					"to contain",
 					<TestComp
+						id="userMenu"
 						menuItems={[
 							{
+								id: "userMenuSignOut",
 								label: "Sign out",
 								handler: expect.it("called"),
 								icon: "logout-1",
 							},
 							{
+								id: "userMenuPrefsMenu",
 								label: "Preferences",
 								handler: expect.it("called"),
 								icon: "settings-cogwheel",
 							},
 							{
+								id: "userMenuAbout",
 								label: "About",
 								handler: expect.it("called"),
 								icon: "infomation-circle",

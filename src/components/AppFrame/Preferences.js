@@ -112,10 +112,10 @@ export const Preferences = ({
 			/>
 		</PrefForm>
 		<Footer>
-			<PrefButton onClick={clear}>
+			<PrefButton id="cancelPrefs" onClick={clear}>
 				<Text message={messages.cancel} />
 			</PrefButton>
-			<PrefButton primary onClick={() => save(viewState)}>
+			<PrefButton id="savePrefs" primary onClick={() => save(viewState)}>
 				<Text message={messages.save} />
 			</PrefButton>
 		</Footer>

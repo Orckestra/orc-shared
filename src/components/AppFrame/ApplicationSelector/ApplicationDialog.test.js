@@ -43,6 +43,7 @@ describe("ApplicationDialog", () => {
 			<List>
 				<Block key="ChosenId">
 					<Link
+						id="ChosenId"
 						href="/test/url"
 						onClick={expect.it("when called with", [mockEvent])}
 					>
@@ -53,6 +54,7 @@ describe("ApplicationDialog", () => {
 				</Block>
 				<Block key="OtherId">
 					<Link
+						id="OtherId"
 						href="/test/some/other/url"
 						onClick={expect.it("to be a function")}
 					>
