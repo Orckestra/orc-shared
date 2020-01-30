@@ -189,18 +189,22 @@ describe("withUserMenu", () => {
 					{ type: "click", target: "#infomation-circle" },
 					"to satisfy",
 					<TestComp
+						id="userMenu"
 						menuItems={[
 							{
+								id: "userMenuSignOut",
 								label: "Sign out",
 								handler: () => {},
 								icon: "logout-1",
 							},
 							{
+								id: "userMenuPrefsMenu",
 								label: "Preferences",
 								handler: () => {},
 								icon: "settings-cogwheel",
 							},
 							{
+								id: "userMenuAbout",
 								label: "About",
 								handler: () => {},
 								icon: "infomation-circle",

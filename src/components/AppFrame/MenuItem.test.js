@@ -9,12 +9,12 @@ describe("MenuItem", () => {
 	it("renders an icon and no label", () =>
 		expect(
 			<MemoryRouter>
-				<MenuItem href="/foo/test" data-test-id="test" icon="cake" />
+				<MenuItem id="test" href="/foo/test" data-test-id="test" icon="cake" />
 			</MemoryRouter>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block data-test-id="test" to="/foo/test">
+				<Block id="test" data-test-id="test" to="/foo/test">
 					<MenuIcon id="cake" />
 					<Ignore />
 				</Block>
@@ -24,12 +24,12 @@ describe("MenuItem", () => {
 	it("renders a menu toggle as an <a> tag", () =>
 		expect(
 			<MemoryRouter>
-				<MenuItem icon="cake" menuToggle />
+				<MenuItem id="test" icon="cake" menuToggle />
 			</MemoryRouter>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<BlockWithA menuToggle>
+				<BlockWithA id="test" menuToggle>
 					<MenuIcon id="cake" />
 					<Ignore />
 				</BlockWithA>
@@ -39,12 +39,12 @@ describe("MenuItem", () => {
 	it("renders an icon and label", () =>
 		expect(
 			<MemoryRouter>
-				<MenuItem href="/foo/test" icon="cake" label="Test" />
+				<MenuItem id="test" href="/foo/test" icon="cake" label="Test" />
 			</MemoryRouter>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block to="/foo/test">
+				<Block id="test" to="/foo/test">
 					<MenuIcon id="cake" />
 					<Label>Test</Label>
 				</Block>
@@ -54,12 +54,12 @@ describe("MenuItem", () => {
 	it("renders an open state", () =>
 		expect(
 			<MemoryRouter>
-				<MenuItem href="/foo/test" icon="cake" open />
+				<MenuItem id="test" href="/foo/test" icon="cake" open />
 			</MemoryRouter>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block to="/foo/test">
+				<Block id="test" to="/foo/test">
 					<MenuIcon id="cake" />
 					<Label show>
 						<Ignore />
@@ -71,12 +71,12 @@ describe("MenuItem", () => {
 	it("shows activity marker", () =>
 		expect(
 			<MemoryRouter>
-				<MenuItem href="/foo/test" icon="cake" label="Test" alert />
+				<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert />
 			</MemoryRouter>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block to="/foo/test">
+				<Block id="test" to="/foo/test">
 					<MenuIcon id="cake" />
 					<Alert />
 					<Label>Test</Label>

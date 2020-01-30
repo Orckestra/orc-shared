@@ -68,6 +68,7 @@ const ApplicationDialog = ({
 		{applications.map(app => (
 			<Block key={app.name}>
 				<Link
+					id={app.name}
 					href={app.url}
 					target="_blank"
 					onClick={

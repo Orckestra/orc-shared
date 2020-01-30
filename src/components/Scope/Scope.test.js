@@ -201,7 +201,7 @@ describe("ScopeBar", () => {
 			{ type: "click", target: "." + getClassName(<AlignedButton />) },
 			"to satisfy",
 			<Bar>
-				<AlignedButton>Scope name</AlignedButton>
+				<AlignedButton id="showScopeSelector">Scope name</AlignedButton>
 			</Bar>,
 		).then(() =>
 			Promise.all([
