@@ -25,7 +25,7 @@ export const currentScopeSelector = createSelector(
 	(id, scopes) => scopes.get(id) || Immutable.Map(),
 );
 
-const scopeFilter = state => state.getIn(["input", "scopeNameFilter"]);
+const scopeFilter = state => state.getIn(["view", "scopeSelector", "filter"]);
 
 const filteredScopesSelector = createSelector(
 	scopeFilter,

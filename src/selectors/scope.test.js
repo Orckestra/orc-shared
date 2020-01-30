@@ -5,7 +5,6 @@ import { currentScopeSelector, scopeGetter } from "./scope";
 let state;
 beforeEach(() => {
 	state = Immutable.fromJS({
-		input: {},
 		navigation: {
 			route: { location: {}, match: { params: { scope: "SecondChild" } } },
 		},
@@ -126,7 +125,7 @@ describe("scopeGetter", () => {
 		));
 
 	it("returns a getter function for scopes from a filtered scope index", () => {
-		state = state.setIn(["input", "scopeNameFilter"], "deux");
+		state = state.setIn(["view", "scopeSelector", "filter"], "deux");
 		return expect(scopeGetter, "called with", [state]).then(getter => {
 			expect(getter, "called with", ["FifthGrandchild"], "to equal", null);
 			expect(getter, "called with", ["Global"], "to equal", {
@@ -143,7 +142,7 @@ describe("scopeGetter", () => {
 	});
 
 	it("will reach Global scope even if no scopes match search", () => {
-		state = state.setIn(["input", "scopeNameFilter"], "scaramouche");
+		state = state.setIn(["view", "scopeSelector", "filter"], "scaramouche");
 		return expect(
 			scopeGetter,
 			"called with",
