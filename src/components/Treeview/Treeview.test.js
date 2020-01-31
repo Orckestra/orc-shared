@@ -1,18 +1,20 @@
 import React from "react";
 import Immutable from "immutable";
-import sinon from "sinon";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { Treeview, withNodeState } from "./index";
-import { Root } from "./Leaf";
-import { Label } from "./Label";
+import sinon from "sinon";
+import { getClassName } from "../../utils/testUtils";
+import Treeview from "./index";
+import { Branch, Wrapper } from "./Branch";
+import { Leaf, Root } from "./Leaf";
+import { Label, Indicator, BeforeIndicator, NonIndicator } from "./Label";
 
-const TestNode = ({ id, updateNodeState, testVal }) => (
-	<div id={id} onClick={() => updateNodeState(testVal)} />
+const TestNode = ({ id, updateNodeState, testVal, ...props }) => (
+	<div {...props} id={id} onClick={() => updateNodeState(testVal)} />
 );
 
 describe("TreeView", () => {
-	let getNode, nodes, rootId, openAll, nodeState, updateNodeState, otherProps;
+	let getNode, nodes, store, state, testProps;
 	beforeEach(() => {
 		nodes = {
 			root1: {
@@ -32,42 +34,17 @@ describe("TreeView", () => {
 			testNode5: { id: "testNode5" },
 		};
 		getNode = name => nodes[name];
-		rootId = "root1";
-		openAll = false;
-		nodeState = { testNode1: true, testNode3: false };
-		updateNodeState = () => {};
-		otherProps = { someProp: "A string", otherThing: { isObj: true } };
-	});
-
-	it("shows a tree root", () =>
-		expect(
-			<Treeview
-				rootId={rootId}
-				/* Below props are passed via context */
-				Content={TestNode}
-				getNode={getNode}
-				openAll={openAll}
-				nodeState={nodeState}
-				updateNodeState={updateNodeState}
-				{...otherProps}
-			/>,
-			"when mounted",
-			"to contain",
-			<Root>
-				<Label>
-					<div id="root1" />
-				</Label>
-			</Root>,
-		));
-});
-
-describe("withNodeState", () => {
-	let store, state;
-	beforeEach(() => {
+		testProps = {
+			name: "testTree",
+			rootId: "root1",
+			Content: TestNode,
+			getNode: getNode,
+			openAll: false,
+		};
 		state = Immutable.fromJS({
 			view: {
-				test1: {
-					nodeState: { node1: true, node2: false },
+				testTree: {
+					nodeState: {},
 				},
 			},
 		});
@@ -78,60 +55,349 @@ describe("withNodeState", () => {
 		};
 	});
 
-	it("maps view state to node state", () =>
-		expect(withNodeState, "called with", [TestNode]).then(EnhNode =>
-			expect(
-				<Provider store={store}>
-					<MemoryRouter>
-						<EnhNode
-							name="test1"
-							foo="bar"
-							defaultNodeState={{ node2: true, node3: true }}
-						/>
-					</MemoryRouter>
-				</Provider>,
-				"when mounted",
-				"to satisfy",
-				<TestNode
-					nodeState={{ node1: true, node2: false, node3: true }}
-					updateNodeState={expect.it("to be a function")}
-					foo="bar"
-				/>,
-			),
+	it("shows a tree root and first level of child nodes", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator />
+						<Label>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
 		));
 
-	it("can update node state", () =>
-		expect(withNodeState, "called with", [TestNode])
-			.then(EnhNode =>
-				expect(
-					<Provider store={store}>
-						<MemoryRouter>
-							<EnhNode
-								name="test1"
-								foo="bar"
-								testVal={{ node1: true, node2: true }}
-							/>
-						</MemoryRouter>
-					</Provider>,
-					"when mounted",
-					"with event",
-					{ type: "click" },
-				),
-			)
-			.then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: "VIEW_STATE_SET_FIELD",
-								payload: {
-									name: "test1",
-									field: "nodeState",
-									value: { node1: true, node2: true },
-								},
+	it("shows open nodes according to a default state", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} defaultNodeState={{ testNode1: true }} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator />
+							<Label>
+								<div id="testNode3" />
+							</Label>
+						</Leaf>
+						<Leaf>
+							<NonIndicator />
+							<Label>
+								<div id="testNode4" />
+							</Label>
+						</Leaf>
+					</Branch>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		));
+
+	it("shows an open branch according to view state", () => {
+		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], true);
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator />
+							<Label>
+								<div id="testNode3" />
+							</Label>
+						</Leaf>
+						<Leaf>
+							<NonIndicator />
+							<Label>
+								<div id="testNode4" />
+							</Label>
+						</Leaf>
+					</Branch>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		);
+	});
+
+	it("overrides default node state with view state", () => {
+		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], false);
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} defaultNodeState={{ testNode1: true }} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator />
+						<Label>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		);
+	});
+
+	it("updates view state on indicator click", () => {
+		state = state.setIn(["view", "testTree", "nodeState", "testNode3"], true);
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target:
+					"." +
+					getClassName(<Branch />) +
+					" ." +
+					getClassName(<Leaf />) +
+					" ." +
+					getClassName(<Indicator />),
+			},
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator />
+						<Label>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "VIEW_STATE_SET_FIELD",
+							payload: {
+								name: "testTree",
+								field: "nodeState",
+								value: expect.it("to equal", {
+									testNode1: true,
+									testNode3: true,
+								}),
 							},
-						],
-					},
-				]),
-			));
+						},
+					],
+				},
+			]),
+		);
+	});
+
+	it("shows all nodes if openAll flag is set", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} openAll />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator open />
+							<Label>
+								<div id="testNode3" />
+							</Label>
+						</Leaf>
+						<Branch>
+							<Leaf>
+								<NonIndicator />
+								<Label>
+									<div id="testNode5" />
+								</Label>
+							</Leaf>
+						</Branch>
+						<Leaf>
+							<NonIndicator />
+							<Label>
+								<div id="testNode4" />
+							</Label>
+						</Leaf>
+					</Branch>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		));
+
+	it("passes unknown props to all nodes", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview
+						{...testProps}
+						openAll
+						data-test-info="A test data variable"
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" data-test-info="A test data variable" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label>
+							<div id="testNode1" data-test-info="A test data variable" />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator open />
+							<Label>
+								<div id="testNode3" data-test-info="A test data variable" />
+							</Label>
+						</Leaf>
+						<Branch>
+							<Leaf>
+								<NonIndicator />
+								<Label>
+									<div id="testNode5" data-test-info="A test data variable" />
+								</Label>
+							</Leaf>
+						</Branch>
+						<Leaf>
+							<NonIndicator />
+							<Label>
+								<div id="testNode4" data-test-info="A test data variable" />
+							</Label>
+						</Leaf>
+					</Branch>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" data-test-info="A test data variable" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		));
 });
