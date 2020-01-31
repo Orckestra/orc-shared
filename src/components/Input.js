@@ -1,9 +1,9 @@
+import React from "react";
 import styled from "styled-components";
-import { injectIntl } from "react-intl";
-import { withProps, compose } from "recompose";
+import { useIntl } from "react-intl";
 import { getThemeProp } from "../utils";
 
-const maybeTranslate = ({ /* intl */ formatMessage }, message) =>
+const maybeTranslate = (formatMessage, message) =>
 	message && message.id ? formatMessage(message) : message;
 
 export const InputComponent = styled.input`
@@ -22,11 +22,14 @@ export const InputComponent = styled.input`
 	}
 `;
 
-const Input = compose(
-	injectIntl,
-	withProps(({ intl, placeholder }) => ({
-		placeholder: maybeTranslate(intl, placeholder),
-	})),
-)(InputComponent);
+const Input = ({ placeholder, ...props }) => {
+	const { formatMessage } = useIntl();
+	return (
+		<InputComponent
+			{...props}
+			placeholder={maybeTranslate(formatMessage, placeholder)}
+		/>
+	);
+};
 
 export default Input;
