@@ -65,6 +65,7 @@ export const SubPage = ({
 						{
 							type: "button",
 							key: "subPage_goBack",
+							id: "subPage_goBack",
 							label: {
 								icon: getThemeProp(
 									["icons", "backArrow"],
