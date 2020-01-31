@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { getClassName } from "../../utils/testUtils";
+import { getClassName, spyOnConsole } from "../../utils/testUtils";
 import Treeview from "./index";
 import { Branch, Wrapper } from "./Branch";
 import { Leaf, Root } from "./Leaf";
@@ -53,6 +53,53 @@ describe("TreeView", () => {
 			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 		};
+	});
+
+	describe("warning modes", () => {
+		spyOnConsole(["warn"]);
+
+		it("renders empty node contents if Content prop absent", () => {
+			delete testProps.Content;
+			expect(
+				<Provider store={store}>
+					<MemoryRouter>
+						<Treeview {...testProps} />
+					</MemoryRouter>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Wrapper>
+					<Root>
+						<Label />
+					</Root>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator />
+							<Label />
+						</Leaf>
+						<Leaf>
+							<NonIndicator />
+							<Label />
+						</Leaf>
+					</Branch>
+				</Wrapper>,
+			).then(() => expect(console.warn, "was called"));
+		});
+
+		it("renders an empty wrapper if missing getNode", () => {
+			delete testProps.getNode;
+			return expect(
+				<Provider store={store}>
+					<MemoryRouter>
+						<Treeview {...testProps} />
+					</MemoryRouter>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Wrapper />,
+			).then(() => expect(console.warn, "was called"));
+		});
 	});
 
 	it("shows a tree root and first level of child nodes", () =>
