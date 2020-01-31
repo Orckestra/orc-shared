@@ -2,14 +2,12 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { Router, Route } from "react-router-dom";
-import { IntlProvider } from "react-intl";
 import { createMemoryHistory } from "history";
 import Immutable from "immutable";
-import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
 import { getClassName, PropStruct } from "../../utils/testUtils";
 import { mapHref } from "../../actions/navigation";
-import Toolbar, { Bar, toolComponents } from "../Toolbar";
+import { Bar, toolComponents } from "../Toolbar";
 import SubPage, { Backdrop, Dialog } from "./SubPage";
 
 const { button: ToolbarButton, separator: ToolbarSeparator } = toolComponents;
@@ -179,86 +177,6 @@ describe("SubPage", () => {
 				{ args: [mapHref("/foo", "/foo")] },
 			]);
 		}));
-
-	it("adds toolbar config to the built-in navigation button", () =>
-		expect(
-			<div>
-				<Provider store={store}>
-					<IntlProvider locale="en">
-						<ThemeProvider theme={theme}>
-							<Router history={history}>
-								<Route
-									path="/foo/bar"
-									render={route => (
-										<SubPage
-											config={{
-												component: InnerView,
-												set: true,
-											}}
-											tools={[
-												{
-													type: "button",
-													key: 0,
-													label: { text: "Button" },
-												},
-												{
-													type: "input",
-													key: 1,
-													placeholder: "Text",
-												},
-												{
-													type: "button",
-													key: 2,
-													label: { text: "Button" },
-												},
-											]}
-											root="/foo"
-											path="/foo/bar"
-											{...route}
-										/>
-									)}
-								/>
-							</Router>
-						</ThemeProvider>
-					</IntlProvider>
-				</Provider>
-			</div>,
-			"when mounted",
-			"to satisfy",
-			<div>
-				<Backdrop />
-				<Dialog>
-					<IntlProvider locale="en">
-						<Toolbar
-							tools={[
-								{
-									type: "button",
-									key: "subPage_goBack",
-									label: { icon: "arrow-left" },
-								},
-								{ type: "separator", key: "subpage_sep_nav" },
-								{
-									type: "button",
-									key: 0,
-									label: { text: "Button" },
-								},
-								{
-									type: "input",
-									key: 1,
-									placeholder: "Text",
-								},
-								{
-									type: "button",
-									key: 2,
-									label: { text: "Button" },
-								},
-							]}
-						/>
-					</IntlProvider>
-					<Ignore />
-				</Dialog>
-			</div>,
-		));
 
 	it("calls the tool selector with state to provide a toolbar config", () =>
 		expect(

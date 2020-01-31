@@ -1,10 +1,8 @@
 import React from "react";
-import styled, { withTheme } from "styled-components";
-import { connect } from "react-redux";
-import { compose } from "recompose";
+import styled, { useTheme } from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 import UrlPattern from "url-pattern";
 import { getThemeProp, memoize } from "../../utils";
-import routingConnector from "../../hocs/routingConnector";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { mapHref } from "../../actions/navigation";
 import Toolbar from "../Toolbar";
@@ -38,17 +36,18 @@ export const Dialog = styled.div`
 	z-index: 100;
 `;
 
-export const SubPage = ({
-	config,
-	tools = [],
-	theme,
-	match,
-	location,
-	history,
-	root,
-	dispatch,
-}) => {
-	const { component: View, ...props } = config;
+export const SubPage = ({ config, match, location, history, root }) => {
+	const theme = useTheme();
+	const dispatch = useDispatch();
+	let {
+		component: View,
+		toolStateSelector = () => [],
+		toolFuncSelector = () => ({}),
+		...props
+	} = config;
+	const toolSelector = state =>
+		toolStateSelector(state, toolFuncSelector(dispatch));
+	const tools = useSelector(toolSelector);
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
 	const WrappedView = getWrappedView(location.pathname, View);
@@ -94,25 +93,4 @@ SubPage.defaultProps = {
 	theme: { icons: { backArrow: "arrow-left" } },
 };
 
-const mapToolFuncs = (dispatch, { config }) => {
-	if (typeof config.toolFuncSelector !== "function") return { dispatch };
-	return {
-		funcs: config.toolFuncSelector(dispatch),
-		dispatch,
-	};
-};
-
-const mapToolbar = (state, { config, funcs }) => {
-	if (typeof config.toolStateSelector !== "function") return {};
-	return {
-		tools: config.toolStateSelector(state, funcs),
-	};
-};
-
-export const withToolbar = compose(
-	routingConnector(() => ({}), mapToolFuncs),
-	connect(mapToolbar, () => ({})),
-	withTheme,
-);
-
-export default withToolbar(SubPage);
+export default SubPage;
