@@ -72,6 +72,17 @@ describe("PropStruct", () => {
 			</dl>,
 		));
 
+	it("maintains id attributes for DOM", () =>
+		expect(
+			<PropStruct id="testProps" />,
+			"when mounted",
+			"to satisfy",
+			<dl id="testProps">
+				<dt>id:</dt>
+				<dd>string "testProps"</dd>
+			</dl>,
+		));
+
 	it("handles symbols", () =>
 		expect(
 			<PropStruct symbol={Symbol("foo")} />,
