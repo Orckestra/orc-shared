@@ -67,9 +67,6 @@ describe("withListState", () => {
 							fieldName: "a",
 						},
 					]}
-					history="__ignore"
-					location="__ignore"
-					match="__ignore"
 					name="__ignore"
 					selection="__ignore"
 					updateViewState="__ignore"

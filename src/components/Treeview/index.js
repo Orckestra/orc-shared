@@ -1,26 +1,19 @@
 import React from "react";
-import { compose, mapProps } from "recompose";
-import withViewState from "../../hocs/withViewState";
+import { mapProps } from "recompose";
+import useViewState from "../../hooks/useViewState";
 import { Wrapper } from "./Branch";
 import Node, { TreeContext } from "./Node";
 
-export const withNodeState = compose(
-	withViewState,
+export const withNodeState =
 	/* istanbul ignore next */
-	mapProps(
-		({
-			name,
-			viewState,
-			defaultNodeState = {},
-			updateViewState,
-			...props
-		}) => ({
+	mapProps(({ name, defaultNodeState = {}, ...props }) => {
+		const [viewState, updateViewState] = useViewState(name);
+		return {
 			nodeState: { ...defaultNodeState, ...viewState.nodeState },
 			updateNodeState: update => updateViewState("nodeState", update),
 			...props,
-		}),
-	),
-);
+		};
+	});
 
 /* istanbul ignore next */
 export const Treeview = ({

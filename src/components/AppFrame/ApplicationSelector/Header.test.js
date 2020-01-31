@@ -16,7 +16,7 @@ describe("Header", () => {
 			<Header open={true} application={application} toggle={toggle} />,
 			"when mounted",
 			"to satisfy",
-			<Wrapper onClick={toggle}>
+			<Wrapper id="applicationSelectorAnchor" onClick={toggle}>
 				<MenuIcon />
 			</Wrapper>,
 		));

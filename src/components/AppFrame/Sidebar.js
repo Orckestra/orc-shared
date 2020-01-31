@@ -19,6 +19,7 @@ export const Bar = styled.div`
 
 export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 	<MenuItem
+		id="sidebarMenuToggle"
 		menuToggle
 		open={open}
 		icon={(open

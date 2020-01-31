@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
+import { spyOnConsole } from "../utils/testUtils";
 import withViewState from "./withViewState";
 import { setStateField } from "../actions/view";
 
@@ -30,6 +31,32 @@ describe("withViewState", () => {
 			dispatch: sinon.spy().named("dispatch"),
 		};
 	});
+
+	spyOnConsole(["warn"]);
+
+	it("gives deprecation warning", () =>
+		expect(withViewState, "called with", [TestComp])
+			.then(Comp =>
+				expect(
+					<Provider store={store}>
+						<MemoryRouter>
+							<Comp name="test" />
+						</MemoryRouter>
+					</Provider>,
+					"when mounted",
+					"to satisfy",
+					<input />,
+				),
+			)
+			.then(() =>
+				expect(console.warn, "to have calls satisfying", [
+					{
+						args: [
+							expect.it("to contain", "withViewState has been deprecated"),
+						],
+					},
+				]),
+			));
 
 	it("adds a value prop to an element based on its name prop", () =>
 		expect(withViewState, "when called with", [TestComp]).then(Comp =>

@@ -15,27 +15,33 @@ describe("Scope", () => {
 	let state,
 		store,
 		reset,
-		updateViewState,
 		updateNodeState,
 		updateFilter,
 		getScope,
 		nodeState,
 		modalRoot;
 	beforeEach(() => {
-		state = Immutable.fromJS({});
-		store = {
-			subscribe: () => {},
-			dispatch: () => {},
-			getState: () => state,
-		};
 		reset = sinon.spy().named("reset");
-		updateViewState = sinon.spy().named("updateViewState");
 		updateNodeState = sinon.spy().named("updateNodeState");
 		updateFilter = sinon.spy().named("updateFilter");
 		getScope = () => {};
 		nodeState = { foo: true, bar: false };
 		modalRoot = document.createElement("div");
 		modalRoot.id = "modal";
+		state = Immutable.fromJS({
+			view: {
+				testScope: {
+					nodeState: nodeState,
+					show: true,
+					filter: "",
+				},
+			},
+		});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		document.body.appendChild(modalRoot);
 	});
 	afterEach(() => {
@@ -49,18 +55,13 @@ describe("Scope", () => {
 					<IntlProvider locale="en">
 						<MemoryRouter>
 							<Scope
+								name="testScope"
 								currentScope={{ name: "Test 1" }}
 								getScope={getScope}
 								reset={reset}
-								updateViewState={updateViewState}
 								updateNodeState={updateNodeState}
 								updateFilter={updateFilter}
 								defaultNodeState={{ bar: true, feep: true }}
-								viewState={{
-									nodeState: nodeState,
-									show: true,
-									filter: "",
-								}}
 								filterPlaceholder={{
 									defaultMessage: "Type a scope name",
 									id: "test.placeholder",
@@ -137,7 +138,7 @@ describe("ScopeBar", () => {
 			{ type: "click", target: "." + getClassName(<AlignedButton />) },
 			"to satisfy",
 			<Bar>
-				<AlignedButton>Scope name</AlignedButton>
+				<AlignedButton id="showScopeSelector">Scope name</AlignedButton>
 			</Bar>,
 		).then(() =>
 			Promise.all([
@@ -235,10 +236,8 @@ describe("setupScope", () => {
 					getScope={() => {}}
 					loadScopes={() => {}}
 					defaultNodeState={{}}
-					updateViewState={() => {}}
 					reset={() => {}}
 					updateFilter={() => {}}
-					viewState={{ filter: "Foo", show: true }}
 					match="__ignore"
 					location="__ignore"
 					history="__ignore"

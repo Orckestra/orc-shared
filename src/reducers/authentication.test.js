@@ -93,9 +93,19 @@ describe("authentication", () => {
 	});
 
 	describe("sign out", () => {
+		const { location } = window;
+		beforeAll(() => {
+			delete window.location;
+			window.location = { assign: sinon.spy().named("window.location.assign") };
+		});
+		afterEach(() => {
+			window.location.assign.resetHistory();
+		});
+		afterAll(() => {
+			window.location = location;
+		});
+
 		it("redirects to the sign out page", () => {
-			const assign = window.location.assign;
-			window.location.assign = sinon.spy().named("window.location.assign");
 			const oldState = Immutable.fromJS({
 				upn: null,
 				name: null,
@@ -110,7 +120,6 @@ describe("authentication", () => {
 			expect(window.location.assign, "to have calls satisfying", [
 				{ args: ["https://mock.logout.url/LogOut"] },
 			]);
-			window.location.assign = assign;
 		});
 	});
 });

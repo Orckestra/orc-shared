@@ -1,17 +1,19 @@
-import { withStateHandlers } from "recompose";
+import { withProps } from "recompose";
+import useToggle from "../hooks/useToggle";
 
 const withToggle = propName => {
 	console.warn(
 		"Higher order component withToggle has been deprecated in favor of React hook useToggle",
 	);
-	return withStateHandlers(
-		init => ({
-			[propName]: !!init[propName + "Init"],
-		}),
-		{
-			toggle: state => () => ({ [propName]: !state[propName] }),
-			reset: () => () => ({ [propName]: false }),
-		},
-	);
+	return withProps(props => {
+		const initProp = props[propName + "Init"];
+		const [prop, toggle, reset] = useToggle(initProp);
+		return {
+			[propName]: prop,
+			toggle,
+			reset,
+		};
+	});
 };
+
 export default withToggle;
