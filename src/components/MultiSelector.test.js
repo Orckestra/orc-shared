@@ -10,15 +10,19 @@ import {
 	Option,
 	Placeholder,
 } from "./Selector";
-import FullSelector, { MultiSelector, SelectedValue } from "./MultiSelector";
+import MultiSelector, { SelectedValue } from "./MultiSelector";
 
 describe("MultiSelector", () => {
+	let updater;
+	beforeEach(() => {
+		updater = sinon.spy().named("updater");
+	});
+
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>
 		expect(
 			<MultiSelector
 				id="test"
-				clickOption={() => () => {}}
-				onChange={() => {}}
+				update={updater}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -70,8 +74,7 @@ describe("MultiSelector", () => {
 		expect(
 			<MultiSelector
 				id="test"
-				clickOption={() => () => {}}
-				onChange={() => {}}
+				update={updater}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -91,8 +94,7 @@ describe("MultiSelector", () => {
 		expect(
 			<MultiSelector
 				id="test"
-				clickOption={() => () => {}}
-				onChange={() => {}}
+				update={updater}
 				options={[
 					{ value: "1", label: "Opt 1" },
 					{ value: "2", label: "Opt 2" },
@@ -113,8 +115,7 @@ describe("MultiSelector", () => {
 			<MultiSelector
 				id="test"
 				placeholder="This space for rent"
-				clickOption={() => () => {}}
-				onChange={() => {}}
+				update={updater}
 				required
 				options={[
 					{ value: "1", label: "Opt 1" },
@@ -130,162 +131,155 @@ describe("MultiSelector", () => {
 			<Placeholder>This space for rent</Placeholder>,
 		));
 
-	describe("set up to handle values and state", () => {
-		let updater;
-		beforeEach(() => {
-			updater = sinon.spy().named("updater");
-		});
+	it("can add value when inner selector changes", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+				value={["3"]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "change", value: "2", target: "select" },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [{ args: [["3", "2"]] }]),
+		));
 
-		it("can add value when inner selector changes", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["3"]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "change", value: "2", target: "select" },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [["3", "2"]] }]),
-			));
+	it("can remove value when inner selector changes", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+				value={["2", "3"]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "change", value: "3", target: "select" },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
+		));
 
-		it("can remove value when inner selector changes", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["2", "3"]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "change", value: "3", target: "select" },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
-			));
+	it("can add value when clicking a visual option", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+				value={["3"]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[data-test-id="4"]' },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [{ args: [["3", "4"]] }]),
+		));
 
-		it("can add value when clicking a visual option", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["3"]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "click", target: '[data-test-id="4"]' },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [["3", "4"]] }]),
-			));
+	it("can remove value when clicking a visual option", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+				value={["4", "3"]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[data-test-id="4"]' },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [{ args: [["3"]] }]),
+		));
 
-		it("can remove value when clicking a visual option", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["4", "3"]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "click", target: '[data-test-id="4"]' },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [["3"]] }]),
-			));
+	it("sets empty value when cleared", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+				value={["4", "3"]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[data-test-id="multiselect_clear"]' },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [{ args: [[]] }]),
+		));
 
-		it("sets empty value when cleared", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["4", "3"]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "click", target: '[data-test-id="multiselect_clear"]' },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [[]] }]),
-			));
+	it("sets full value when select all chosen", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+				value={[4, 3]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[data-test-id="multiselect_selectAll"]' },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [
+				{ args: [["1", "2", "3", "4"]] },
+			]),
+		));
 
-		it("sets full value when select all chosen", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={[4, 3]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "click", target: '[data-test-id="multiselect_selectAll"]' },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [
-					{ args: [["1", "2", "3", "4"]] },
-				]),
-			));
+	it("deals with an empty value prop change", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "change", value: "2", target: "select" },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
+		));
 
-		it("deals with an empty value prop change", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "change", value: "2", target: "select" },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
-			));
-
-		it("deals with an empty value prop click", () =>
-			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-				/>,
-				"when mounted",
-				"with event",
-				{ type: "click", target: '[data-test-id="2"]' },
-			).then(() =>
-				expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
-			));
-	});
+	it("deals with an empty value prop click", () =>
+		expect(
+			<MultiSelector
+				update={updater}
+				options={[
+					{ value: "1", label: "Opt 1" },
+					{ value: "2", label: "Opt 2" },
+					{ value: "3", label: "Opt 3" },
+					{ value: "4", label: "Opt 4" },
+				]}
+			/>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[data-test-id="2"]' },
+		).then(() =>
+			expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
+		));
 });

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
-import { compose, withHandlers } from "recompose";
 import { getThemeProp, ifFlag, memoize } from "../utils";
 import withId from "../hocs/withId";
 
@@ -121,62 +120,63 @@ export const Placeholder = styled.span`
 	color: rgb(117, 117, 117);
 `;
 
-const withSelectHandlers = withHandlers({
-	clickOption: ({ update }) => memoize(value => () => update(value)),
-	onChange: ({ update }) => e => update(e.target.value),
-});
-
 export const Selector = ({
 	id,
 	value,
 	options,
-	onChange,
-	clickOption,
+	update,
 	placeholder = "",
 	required,
 	...props
-}) => (
-	<Wrapper>
-		<InnerSelect
-			id={id}
-			onChange={onChange}
-			value={value}
-			required={required}
-			{...props}
-		>
-			{required ? <option></option> : null}
-			{options.map(option => (
-				<option key={option.value} value={option.value}>
-					{option.label}
-				</option>
-			))}
-		</InnerSelect>
-		<SelectBox htmlFor={id}>
-			{value ? (
-				<SelectedValue>
-					{
-						options
-							.filter(option => option.value === value)
-							.map(option => option.label)[0]
-					}
-				</SelectedValue>
-			) : (
-				<Placeholder>{placeholder}</Placeholder>
-			)}
-		</SelectBox>
-		<Dropdown>
-			{options.map(option => (
-				<Option
-					key={option.value}
-					active={option.value === value}
-					onClick={clickOption(option.value)}
-					data-test-id={option.value}
-				>
-					{option.label}
-				</Option>
-			))}
-		</Dropdown>
-	</Wrapper>
-);
+}) => {
+	const clickOption = useCallback(
+		memoize(value => () => update(value)),
+		[update],
+	);
+	const onChange = useCallback(e => update(e.target.value), [update]);
+	return (
+		<Wrapper>
+			<InnerSelect
+				id={id}
+				onChange={onChange}
+				value={value}
+				required={required}
+				{...props}
+			>
+				{required ? <option></option> : null}
+				{options.map(option => (
+					<option key={option.value} value={option.value}>
+						{option.label}
+					</option>
+				))}
+			</InnerSelect>
+			<SelectBox htmlFor={id}>
+				{value ? (
+					<SelectedValue>
+						{
+							options
+								.filter(option => option.value === value)
+								.map(option => option.label)[0]
+						}
+					</SelectedValue>
+				) : (
+					<Placeholder>{placeholder}</Placeholder>
+				)}
+			</SelectBox>
+			<Dropdown>
+				{options.map(option => (
+					<Option
+						key={option.value}
+						active={option.value === value}
+						onClick={clickOption(option.value)}
+						data-test-id={option.value}
+					>
+						{option.label}
+					</Option>
+				))}
+			</Dropdown>
+		</Wrapper>
+	);
+};
 
-export default compose(withSelectHandlers, withId("selector"))(Selector);
+export default withId("selector")(Selector);
