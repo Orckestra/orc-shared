@@ -1,16 +1,9 @@
-import React from "react";
-import { injectIntl } from "react-intl";
-import { withStateHandlers } from "recompose";
+import React, { useState } from "react";
+import { useIntl } from "react-intl";
 import inputs from "./Inputs";
 import Field from "./Field";
 
-/* istanbul ignore next */
-export const withBlurFlag = withStateHandlers(() => ({ wasBlurred: false }), {
-	onBlur: () => () => ({ wasBlurred: true }),
-});
-
 export const InputField = ({
-	intl,
 	name,
 	type = "undefined",
 	label,
@@ -19,10 +12,11 @@ export const InputField = ({
 	listIndex,
 	placeholder,
 	required,
-	wasBlurred,
 	...props
 }) => {
-	const { formatMessage } = intl;
+	const [wasBlurred, setBlurred] = useState(false);
+	props.onBlur = () => setBlurred(true);
+	const { formatMessage } = useIntl();
 	const Input = inputs[type];
 	if (!Input) {
 		console.error(`Unknown type "${type}", cannot render field`);
@@ -59,4 +53,4 @@ export const InputField = ({
 	);
 };
 
-export default injectIntl(withBlurFlag(InputField));
+export default InputField;
