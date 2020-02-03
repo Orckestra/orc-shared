@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
-import { withHandlers } from "recompose";
 import { getThemeProp, ifFlag } from "../../utils";
 import { Link } from "react-router-dom";
 import Text from "../Text";
@@ -89,16 +88,22 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	}
 `;
 
-export const Tab = ({
+const Tab = ({
 	href,
 	label,
 	icon,
 	module,
 	active,
-	close,
+	close = () => {},
+	mappedFrom,
 	outsideScope,
 }) => {
 	const ThisTab = module ? ModuleTab : PageTab;
+	let innerClose = useCallback(close(href, mappedFrom), [
+		close,
+		href,
+		mappedFrom,
+	]);
 	return (
 		<ThisTab active={active} outsideScope={outsideScope}>
 			<TabLink
@@ -117,12 +122,10 @@ export const Tab = ({
 				<TabText>
 					<Text message={label} />
 				</TabText>
-				{module ? null : <CloseIcon onClick={close} />}
+				{module ? null : <CloseIcon onClick={innerClose} />}
 			</TabLink>
 		</ThisTab>
 	);
 };
 
-export default withHandlers({
-	close: ({ close, href, mappedFrom }) => close(href, mappedFrom),
-})(Tab);
+export default Tab;

@@ -42,7 +42,7 @@ export const getPageData = (path, params, module) => {
 const labelDataStore = {};
 
 const withNavigationData = routingConnector(
-	(state, { modules, match, location }) => {
+	(state, { modules, location }) => {
 		const currentHref = location.pathname;
 		const hrefMapper = selectSegmentHrefMapper(state);
 		const [moduleHref = "", moduleName = ""] =

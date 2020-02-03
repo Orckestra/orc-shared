@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
-import { withHandlers } from "recompose";
 import { getThemeProp } from "../../utils";
 import Tab from "./Tab";
 
@@ -18,26 +17,31 @@ export const TabBar = styled.div`
 	text-transform: uppercase;
 `;
 
-export const Bar = ({ pages, close }) => (
-	<TabBar>
-		{pages.map(
-			({ href, mappedFrom, label, active, icon, outsideScope }, index) => (
-				<Tab
-					key={href}
-					module={index === 0}
-					icon={icon}
-					href={href}
-					mappedFrom={mappedFrom}
-					label={label}
-					active={active}
-					close={close}
-					outsideScope={outsideScope}
-				/>
-			),
-		)}
-	</TabBar>
-);
+const Bar = ({ pages, close, moduleName, moduleHref }) => {
+	const innerClose = useCallback(close(moduleName, moduleHref), [
+		close,
+		moduleName,
+		moduleHref,
+	]);
+	return (
+		<TabBar>
+			{pages.map(
+				({ href, mappedFrom, label, active, icon, outsideScope }, index) => (
+					<Tab
+						key={href}
+						module={index === 0}
+						icon={icon}
+						href={href}
+						mappedFrom={mappedFrom}
+						label={label}
+						active={active}
+						close={innerClose}
+						outsideScope={outsideScope}
+					/>
+				),
+			)}
+		</TabBar>
+	);
+};
 
-export default withHandlers({
-	close: ({ close, moduleName, moduleHref }) => close(moduleName, moduleHref),
-})(Bar);
+export default Bar;
