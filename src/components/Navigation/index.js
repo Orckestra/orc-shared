@@ -1,7 +1,7 @@
-import { compose } from "recompose";
+import React from "react";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import Bar from "./Bar";
-import withNavigationData from "./withNavigationData";
+import { useNavigationState } from "./withNavigationData";
 
 // Tab lists stored to localstorage?
 
@@ -9,9 +9,8 @@ import withNavigationData from "./withNavigationData";
 // Grey out other-scoped tabs, change scope when opened?
 // Warn when changing scopes, close out-scope tabs?
 
-const Navigation = compose(
-	withErrorBoundary("Navigation"),
-	withNavigationData,
-)(Bar);
+const Navigation = withErrorBoundary("Navigation")(({ modules }) => (
+	<Bar {...useNavigationState(modules)} />
+));
 
 export default Navigation;

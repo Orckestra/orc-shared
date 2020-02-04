@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { getThemeProp, ifFlag } from "../../utils";
 import { Link } from "react-router-dom";
@@ -99,13 +99,8 @@ const Tab = ({
 	outsideScope,
 }) => {
 	const ThisTab = module ? ModuleTab : PageTab;
-	let innerClose = useCallback(close(href, mappedFrom), [
-		close,
-		href,
-		mappedFrom,
-	]);
 	return (
-		<ThisTab active={active} outsideScope={outsideScope}>
+		<ThisTab active={active} outsideScope={outsideScope} data-test-id={href}>
 			<TabLink
 				to={href}
 				outsideScope={outsideScope}
@@ -122,7 +117,7 @@ const Tab = ({
 				<TabText>
 					<Text message={label} />
 				</TabText>
-				{module ? null : <CloseIcon onClick={innerClose} />}
+				{module ? null : <CloseIcon onClick={close} />}
 			</TabLink>
 		</ThisTab>
 	);

@@ -6,7 +6,6 @@ import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import { Ignore } from "unexpected-reaction";
 import { getClassName } from "../../utils/testUtils";
-import Text from "../Text";
 import Tab, {
 	PageTab,
 	ModuleTab,
@@ -17,11 +16,10 @@ import Tab, {
 } from "./Tab";
 
 describe("Tab", () => {
-	let history, close, innerClose;
+	let history, close;
 	beforeEach(() => {
 		history = createMemoryHistory();
-		innerClose = sinon.spy().named("innerClose");
-		close = sinon.spy(() => innerClose).named("close");
+		close = sinon.spy().named("close");
 	});
 
 	it("renders a module tab with icon and label", () =>
@@ -243,11 +241,5 @@ describe("Tab", () => {
 				type: "click",
 				target: "." + getClassName(<CloseIcon />),
 			},
-		)
-			.then(() =>
-				expect(close, "to have calls satisfying", [
-					{ args: ["/Foo/modu/page/sub", "/Foo/modu/page"] },
-				]),
-			)
-			.then(() => expect(innerClose, "was called")));
+		).then(() => expect(close, "was called")));
 });

@@ -83,7 +83,6 @@ describe("Navigation", () => {
 				<TabBar>
 					<Tab
 						active={true}
-						close={() => {}}
 						href="/TestScope/test"
 						icon="thing"
 						label="Thing"
