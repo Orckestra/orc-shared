@@ -1,9 +1,9 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import DataCell, { TableData } from "./DataCell";
 import Switch from "../Switch";
 import Checkbox from "../Checkbox";
-import Text from "../Text";
 
 const TestComp = () => <div />;
 
@@ -12,21 +12,27 @@ describe("DataCell", () => {
 		const columnDef = { fieldName: "test" };
 		const row = { test: "A text", extraneous: "Don't show" };
 		return expect(
-			<table>
-				<tbody>
-					<tr>
-						<DataCell columnDef={columnDef} row={row} />
-					</tr>
-				</tbody>
-			</table>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
 				<tbody>
 					<tr>
-						<TableData>
-							<Text message="A text" />
-						</TableData>
+						<TableData>A text</TableData>
 					</tr>
 				</tbody>
 			</table>,
@@ -60,21 +66,27 @@ describe("DataCell", () => {
 		const columnDef = { fieldName: ["test", "deep"], defaultValue: "empty" };
 		const row = { extraneous: "Don't show" };
 		return expect(
-			<table>
-				<tbody>
-					<tr>
-						<DataCell columnDef={columnDef} row={row} />
-					</tr>
-				</tbody>
-			</table>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
 				<tbody>
 					<tr>
-						<TableData>
-							<Text message="empty" />
-						</TableData>
+						<TableData>empty</TableData>
 					</tr>
 				</tbody>
 			</table>,
@@ -279,13 +291,21 @@ describe("DataCell", () => {
 		};
 		const row = { test: "text", extraneous: "Don't show" };
 		return expect(
-			<table>
-				<tbody>
-					<tr>
-						<DataCell columnDef={columnDef} row={row} />
-					</tr>
-				</tbody>
-			</table>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>

@@ -1,24 +1,46 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Text, { messageContainsValues, Placeholder } from "./Text";
 
 describe("Text", () => {
+	let state, store;
+	beforeEach(() => {
+		state = { dataVal: { foo: 3 } };
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
+	});
+
 	it("renders a simple message", () =>
 		expect(
-			<Text message="Test message" />,
+			<Provider store={store}>
+				<Text message="Test message" />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			"Test message",
 		));
 
 	it("renders an empty string", () =>
-		expect(<Text message="" />, "when mounted", "to satisfy", ""));
+		expect(
+			<Provider store={store}>
+				<Text message="" />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			"",
+		));
 
 	it("renders a translated message", () =>
 		expect(
-			<IntlProvider locale="en">
-				<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Text message={{ id: "test.msg", defaultMessage: "Test message" }} />
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			"Test message",
@@ -26,15 +48,35 @@ describe("Text", () => {
 
 	it("renders a translated message with values", () =>
 		expect(
-			<IntlProvider locale="en">
-				<Text
-					message={{
-						id: "test.msg",
-						defaultMessage: "Test message {foo}",
-						values: { foo: 3 },
-					}}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Text
+						message={{
+							id: "test.msg",
+							defaultMessage: "Test message {foo}",
+							values: { foo: 3 },
+						}}
+					/>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			"Test message 3",
+		));
+
+	it("renders a translated message with a value selector", () =>
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<Text
+						message={{
+							id: "test.msg",
+							defaultMessage: "Test message {foo}",
+							values: state => state.dataVal,
+						}}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			"Test message 3",
@@ -42,12 +84,14 @@ describe("Text", () => {
 
 	it("renders a translated message missing its values as a placeholder", () =>
 		expect(
-			<Text
-				message={{
-					id: "test.msg",
-					defaultMessage: "Test message {foo}",
-				}}
-			/>,
+			<Provider store={store}>
+				<Text
+					message={{
+						id: "test.msg",
+						defaultMessage: "Test message {foo}",
+					}}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Placeholder />,
@@ -55,7 +99,9 @@ describe("Text", () => {
 
 	it("renders an error", () =>
 		expect(
-			<Text message="Test message" error={{ message: "This failed" }} />,
+			<Provider store={store}>
+				<Text message="Test message" error={{ message: "This failed" }} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<span
@@ -72,7 +118,9 @@ describe("Text", () => {
 
 	it("renders an error if no message given", () =>
 		expect(
-			<Text />,
+			<Provider store={store}>
+				<Text />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<span

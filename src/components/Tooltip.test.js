@@ -1,15 +1,21 @@
 import React from "react";
-import Text from "./Text";
+import { Provider } from "react-redux";
 import Tooltip, { TooltipBubble } from "./Tooltip";
 
 describe("Tooltip", () => {
 	it("renders a small text message in a popup tip bubble", () =>
 		expect(
-			<Tooltip message="A tip" />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Tooltip message="A tip" />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<TooltipBubble>
-				<Text message="A tip" />
-			</TooltipBubble>,
+			<TooltipBubble>A tip</TooltipBubble>,
 		));
 });

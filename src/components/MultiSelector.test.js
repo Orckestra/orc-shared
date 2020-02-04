@@ -1,7 +1,7 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import { getClassName } from "../utils/testUtils";
-import Text from "./Text";
 import {
 	InnerSelect,
 	Wrapper,
@@ -15,18 +15,26 @@ import FullSelector, { MultiSelector, SelectedValue } from "./MultiSelector";
 describe("MultiSelector", () => {
 	it("renders a wrapped, hidden multiple select element, and visual cover elements", () =>
 		expect(
-			<MultiSelector
-				id="test"
-				clickOption={() => () => {}}
-				onChange={() => {}}
-				options={[
-					{ value: "1", label: "Opt 1" },
-					{ value: "2", label: "Opt 2" },
-					{ value: "3", label: "Opt 3" },
-					{ value: "4", label: "Opt 4" },
-				]}
-				value={["1", "3"]}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MultiSelector
+					id="test"
+					clickOption={() => () => {}}
+					onChange={() => {}}
+					options={[
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
+					]}
+					value={["1", "3"]}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Wrapper>
@@ -48,12 +56,8 @@ describe("MultiSelector", () => {
 					<SelectedValue>Opt 1, Opt 3</SelectedValue>
 				</SelectBox>
 				<Dropdown>
-					<Option key="multiselect_clear">
-						<Text message="[Clear]" />
-					</Option>
-					<Option key="multiselect_selectAll">
-						<Text message="[Select all]" />
-					</Option>
+					<Option key="multiselect_clear">[Clear]</Option>
+					<Option key="multiselect_selectAll">[Select all]</Option>
 					<Option key={1} active>
 						Opt 1
 					</Option>
@@ -68,61 +72,81 @@ describe("MultiSelector", () => {
 
 	it("only renders 'Clear' if value not empty", () =>
 		expect(
-			<MultiSelector
-				id="test"
-				clickOption={() => () => {}}
-				onChange={() => {}}
-				options={[
-					{ value: "1", label: "Opt 1" },
-					{ value: "2", label: "Opt 2" },
-					{ value: "3", label: "Opt 3" },
-					{ value: "4", label: "Opt 4" },
-				]}
-				value={[]}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MultiSelector
+					id="test"
+					clickOption={() => () => {}}
+					onChange={() => {}}
+					options={[
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
+					]}
+					value={[]}
+				/>
+			</Provider>,
 			"when mounted",
 			"not to contain",
-			<Option key="multiselect_clear">
-				<Text message="[Clear]" />
-			</Option>,
+			<Option key="multiselect_clear">[Clear]</Option>,
 		));
 
 	it("only renders 'Select all' if value not full", () =>
 		expect(
-			<MultiSelector
-				id="test"
-				clickOption={() => () => {}}
-				onChange={() => {}}
-				options={[
-					{ value: "1", label: "Opt 1" },
-					{ value: "2", label: "Opt 2" },
-					{ value: "3", label: "Opt 3" },
-					{ value: "4", label: "Opt 4" },
-				]}
-				value={["1", "2", "3", "4"]}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MultiSelector
+					id="test"
+					clickOption={() => () => {}}
+					onChange={() => {}}
+					options={[
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
+					]}
+					value={["1", "2", "3", "4"]}
+				/>
+			</Provider>,
 			"when mounted",
 			"not to contain",
-			<Option key="multiselect_selectAll">
-				<Text message="[Select all]" />
-			</Option>,
+			<Option key="multiselect_selectAll">[Select all]</Option>,
 		));
 
 	it("renders a placeholder if no value set", () =>
 		expect(
-			<MultiSelector
-				id="test"
-				placeholder="This space for rent"
-				clickOption={() => () => {}}
-				onChange={() => {}}
-				required
-				options={[
-					{ value: "1", label: "Opt 1" },
-					{ value: "2", label: "Opt 2" },
-					{ value: "3", label: "Opt 3" },
-					{ value: "4", label: "Opt 4" },
-				]}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MultiSelector
+					id="test"
+					placeholder="This space for rent"
+					clickOption={() => () => {}}
+					onChange={() => {}}
+					required
+					options={[
+						{ value: "1", label: "Opt 1" },
+						{ value: "2", label: "Opt 2" },
+						{ value: "3", label: "Opt 3" },
+						{ value: "4", label: "Opt 4" },
+					]}
+				/>
+			</Provider>,
 			"when mounted",
 			"queried for first",
 			"." + getClassName(<Placeholder />),
@@ -138,16 +162,24 @@ describe("MultiSelector", () => {
 
 		it("can add value when inner selector changes", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["3"]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+						value={["3"]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "change", value: "2", target: "select" },
@@ -157,16 +189,24 @@ describe("MultiSelector", () => {
 
 		it("can remove value when inner selector changes", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["2", "3"]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+						value={["2", "3"]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "change", value: "3", target: "select" },
@@ -176,16 +216,24 @@ describe("MultiSelector", () => {
 
 		it("can add value when clicking a visual option", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["3"]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+						value={["3"]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="4"]' },
@@ -195,16 +243,24 @@ describe("MultiSelector", () => {
 
 		it("can remove value when clicking a visual option", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["4", "3"]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+						value={["4", "3"]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="4"]' },
@@ -214,16 +270,24 @@ describe("MultiSelector", () => {
 
 		it("sets empty value when cleared", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={["4", "3"]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+						value={["4", "3"]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="multiselect_clear"]' },
@@ -233,16 +297,24 @@ describe("MultiSelector", () => {
 
 		it("sets full value when select all chosen", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-					value={[4, 3]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+						value={[4, 3]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="multiselect_selectAll"]' },
@@ -254,15 +326,23 @@ describe("MultiSelector", () => {
 
 		it("deals with an empty value prop change", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "change", value: "2", target: "select" },
@@ -272,15 +352,23 @@ describe("MultiSelector", () => {
 
 		it("deals with an empty value prop click", () =>
 			expect(
-				<FullSelector
-					update={updater}
-					options={[
-						{ value: "1", label: "Opt 1" },
-						{ value: "2", label: "Opt 2" },
-						{ value: "3", label: "Opt 3" },
-						{ value: "4", label: "Opt 4" },
-					]}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<FullSelector
+						update={updater}
+						options={[
+							{ value: "1", label: "Opt 1" },
+							{ value: "2", label: "Opt 2" },
+							{ value: "3", label: "Opt 3" },
+							{ value: "4", label: "Opt 4" },
+						]}
+					/>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="2"]' },

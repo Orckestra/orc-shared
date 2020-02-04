@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { Ignore } from "unexpected-reaction";
 import {
 	List,
@@ -200,12 +201,20 @@ describe("List", () => {
 		];
 		const selection = ["a"];
 		return expect(
-			<List
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				selection={selection}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<List
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					selection={selection}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -330,16 +339,24 @@ describe("List", () => {
 				"15",
 			];
 			return expect(
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					selection={selection}
-					virtual
-					scrollTop={350}
-					height={150}
-					scrollBuffer={1}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<List
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						selection={selection}
+						virtual
+						scrollTop={350}
+						height={150}
+						scrollBuffer={1}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -390,16 +407,24 @@ describe("List", () => {
 
 		it("renders at top", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={0}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<List
+						virtual
+						scrollTop={0}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -438,16 +463,24 @@ describe("List", () => {
 
 		it("renders near top", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={150}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<List
+						virtual
+						scrollTop={150}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -497,16 +530,24 @@ describe("List", () => {
 
 		it("renders in the middle", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={350}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<List
+						virtual
+						scrollTop={350}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -551,16 +592,24 @@ describe("List", () => {
 
 		it("renders near end", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={550}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<List
+						virtual
+						scrollTop={550}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>
@@ -610,16 +659,24 @@ describe("List", () => {
 
 		it("renders at end", () =>
 			expect(
-				<List
-					virtual
-					scrollTop={656}
-					height={150}
-					scrollBuffer={1}
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<List
+						virtual
+						scrollTop={656}
+						height={150}
+						scrollBuffer={1}
+						columnDefs={columnDefs}
+						rows={rows}
+						keyField={["key"]}
+						rowBackgroundGetter={colorGetter}
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
 				<table>

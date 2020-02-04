@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import pt from "prop-types";
 import styled, { keyframes } from "styled-components";
 import { FormattedMessage } from "react-intl";
+import { safeGet } from "../utils";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 
 export const messageContainsValues = message => {
@@ -35,6 +37,12 @@ export const Placeholder = styled.span`
 `;
 
 const Text = ({ message, error }) => {
+	let valueSelector = () => {};
+	if (typeof safeGet(message, "values") === "function") {
+		valueSelector = message.values;
+		delete message.values;
+	}
+	const selectValues = useSelector(valueSelector);
 	if (error || (!message && message !== "")) {
 		return (
 			<span
@@ -49,6 +57,9 @@ const Text = ({ message, error }) => {
 		);
 	}
 	if (message.id) {
+		if (message.values || selectValues) {
+			message.values = { ...message.values, ...selectValues };
+		}
 		if (messageContainsValues(message)) {
 			return <FormattedMessage {...message} />;
 		} else {

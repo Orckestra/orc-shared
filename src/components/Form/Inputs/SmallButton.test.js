@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import Tooltip from "../../Tooltip";
 import { SmallButton, RoundButton, ButtonIcon } from "./SmallButton";
 
@@ -10,29 +11,61 @@ describe("SmallButton", () => {
 
 	it("renders a small button showing an icon", () =>
 		expect(
-			<SmallButton
-				id="testId"
-				update={update}
-				icon="test-icon"
-				altText="Alternative"
-				otherProp
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<SmallButton
+					id="testId"
+					update={update}
+					icon="test-icon"
+					altText="Alternative"
+					otherProp
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<RoundButton id="testId" otherProp onClick={update}>
-				<ButtonIcon id="test-icon" />
-				<Tooltip message="Alternative" />
-			</RoundButton>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<RoundButton id="testId" otherProp onClick={update}>
+					<ButtonIcon id="test-icon" />
+					<Tooltip message="Alternative" />
+				</RoundButton>
+			</Provider>,
 		));
 
 	it("adds an ugly default alt text if none given, shaming the dev", () =>
 		expect(
-			<SmallButton id="testId" icon="test-icon" />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<SmallButton id="testId" icon="test-icon" />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<RoundButton id="testId">
-				<ButtonIcon id="test-icon" />
-				<Tooltip message="[altText]" />
-			</RoundButton>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<RoundButton id="testId">
+					<ButtonIcon id="test-icon" />
+					<Tooltip message="[altText]" />
+				</RoundButton>
+			</Provider>,
 		));
 });

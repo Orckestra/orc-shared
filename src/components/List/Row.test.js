@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import { Row, TableRow, withRowClick } from "./Row";
 import DataCell from "./DataCell";
@@ -17,37 +18,53 @@ describe("Row", () => {
 		const row = { a: "foo", b: "bar" };
 		const onClick = () => {};
 		return expect(
-			<table>
-				<tbody>
-					<Row
-						row={row}
-						rowId="rowIdentifier"
-						columnDefs={columnDefs}
-						onClick={onClick}
-						bgColor="#ff0000"
-					/>
-				</tbody>
-			</table>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<tbody>
+						<Row
+							row={row}
+							rowId="rowIdentifier"
+							columnDefs={columnDefs}
+							onClick={onClick}
+							bgColor="#ff0000"
+						/>
+					</tbody>
+				</table>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<table>
-				<tbody>
-					<TableRow onClick={onClick} bgColor="#ff0000">
-						<DataCell
-							key="a"
-							rowId="rowIdentifier"
-							row={row}
-							columnDef={columnDefs[0]}
-						/>
-						<DataCell
-							key="b"
-							rowId="rowIdentifier"
-							row={row}
-							columnDef={columnDefs[1]}
-						/>
-					</TableRow>
-				</tbody>
-			</table>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<tbody>
+						<TableRow onClick={onClick} bgColor="#ff0000">
+							<DataCell
+								key="a"
+								rowId="rowIdentifier"
+								row={row}
+								columnDef={columnDefs[0]}
+							/>
+							<DataCell
+								key="b"
+								rowId="rowIdentifier"
+								row={row}
+								columnDef={columnDefs[1]}
+							/>
+						</TableRow>
+					</tbody>
+				</table>
+			</Provider>,
 		);
 	});
 });

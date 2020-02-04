@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
 import {
@@ -111,12 +112,20 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }];
 		const rowOnClick = () => {};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -160,12 +169,20 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -233,13 +250,21 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				viewState={{ closedCategories: ["Stuff"] }}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					viewState={{ closedCategories: ["Stuff"] }}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -296,14 +321,22 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				viewState={{ closedCategories: [] }}
-				updateViewState={updater}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					viewState={{ closedCategories: [] }}
+					updateViewState={updater}
+				/>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="category_Stuff"]' },
@@ -327,14 +360,22 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "a" }, { fieldName: "b" }];
 		const rowOnClick = () => {};
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				viewState={{ closedCategories: ["Stuff"] }}
-				updateViewState={updater}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					viewState={{ closedCategories: ["Stuff"] }}
+					updateViewState={updater}
+				/>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="category_Stuff"]' },
@@ -356,13 +397,21 @@ describe("CategoryList", () => {
 		};
 		const colorGetter = row => colorMap[row.key];
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				rowBackgroundGetter={colorGetter}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					rowBackgroundGetter={colorGetter}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -400,13 +449,21 @@ describe("CategoryList", () => {
 		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				rowOnClick={rowOnClick}
-				rowBackgroundGetter={colorGetter}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					rowBackgroundGetter={colorGetter}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -446,12 +503,20 @@ describe("CategoryList", () => {
 		];
 		const selection = ["a"];
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				selection={selection}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					selection={selection}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -514,12 +579,20 @@ describe("CategoryList", () => {
 		];
 		const selection = ["a", "b", "c"];
 		return expect(
-			<CategoryList
-				columnDefs={columnDefs}
-				rows={rows}
-				keyField={["key"]}
-				selection={selection}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					selection={selection}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>

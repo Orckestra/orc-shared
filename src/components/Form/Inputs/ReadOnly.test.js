@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import {
 	CenterWrapper,
@@ -11,11 +12,19 @@ import {
 describe("ReadOnly", () => {
 	it("renders a read-only value in a form", () =>
 		expect(
-			<IntlProvider locale="en">
-				<ReadOnly
-					value={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<ReadOnly
+						value={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<CenterWrapper>
@@ -27,7 +36,15 @@ describe("ReadOnly", () => {
 describe("LineLabel", () => {
 	it("renders a text in large font", () =>
 		expect(
-			<LineLabel value="A text value" />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<LineLabel value="A text value" />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<CenterWrapper>

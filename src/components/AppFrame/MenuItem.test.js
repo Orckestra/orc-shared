@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { Ignore } from "unexpected-reaction";
 import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
@@ -6,11 +7,24 @@ import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
 const BlockWithA = Block.withComponent("a");
 
 describe("MenuItem", () => {
+	let store = {
+		subscribe: () => {},
+		dispatch: () => {},
+		getState: () => ({}),
+	};
+
 	it("renders an icon and no label", () =>
 		expect(
-			<MemoryRouter>
-				<MenuItem id="test" href="/foo/test" data-test-id="test" icon="cake" />
-			</MemoryRouter>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						data-test-id="test"
+						icon="cake"
+					/>
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
@@ -23,9 +37,11 @@ describe("MenuItem", () => {
 
 	it("renders a menu toggle as an <a> tag", () =>
 		expect(
-			<MemoryRouter>
-				<MenuItem id="test" icon="cake" menuToggle />
-			</MemoryRouter>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem id="test" icon="cake" menuToggle />
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
@@ -38,9 +54,11 @@ describe("MenuItem", () => {
 
 	it("renders an icon and label", () =>
 		expect(
-			<MemoryRouter>
-				<MenuItem id="test" href="/foo/test" icon="cake" label="Test" />
-			</MemoryRouter>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem id="test" href="/foo/test" icon="cake" label="Test" />
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
@@ -53,9 +71,11 @@ describe("MenuItem", () => {
 
 	it("renders an open state", () =>
 		expect(
-			<MemoryRouter>
-				<MenuItem id="test" href="/foo/test" icon="cake" open />
-			</MemoryRouter>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem id="test" href="/foo/test" icon="cake" open />
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
@@ -70,9 +90,11 @@ describe("MenuItem", () => {
 
 	it("shows activity marker", () =>
 		expect(
-			<MemoryRouter>
-				<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert />
-			</MemoryRouter>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert />
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>

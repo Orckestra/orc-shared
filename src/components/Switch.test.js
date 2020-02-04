@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import FullSwitch, {
 	Switch,
@@ -30,14 +31,22 @@ describe("Switch", () => {
 
 	it("renders captions on the switch", () =>
 		expect(
-			<IntlProvider locale="en">
-				<Switch
-					value={true}
-					onChange={() => {}}
-					onCaption={{ id: "foo", defaultMessage: "Foo!" }}
-					offCaption={{ id: "bar", defaultMessage: "Bar!" }}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Switch
+						value={true}
+						onChange={() => {}}
+						onCaption={{ id: "foo", defaultMessage: "Foo!" }}
+						offCaption={{ id: "bar", defaultMessage: "Bar!" }}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Wrapper value={true}>

@@ -1,18 +1,26 @@
 import React from "react";
-import Text from "../Text";
+import { Provider } from "react-redux";
 import Field, { FieldBox, Label, RequiredNotice } from "./Field";
 
 describe("Field", () => {
 	it("renders a field with a label", () =>
 		expect(
-			<Field id="field" label="A test">
-				<div id="child" />
-			</Field>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Field id="field" label="A test">
+					<div id="child" />
+				</Field>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" id="field_label">
-					<Text message="A test" />
+					A test
 				</Label>
 				<div id="child" />
 			</FieldBox>,
@@ -20,14 +28,22 @@ describe("Field", () => {
 
 	it("renders a required field with a label", () =>
 		expect(
-			<Field id="field" label="A test" required="Required">
-				<div id="child" />
-			</Field>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Field id="field" label="A test" required="Required">
+					<div id="child" />
+				</Field>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" id="field_label" required>
-					<Text message="A test" />
+					A test
 				</Label>
 				<div id="child" />
 			</FieldBox>,
@@ -35,19 +51,25 @@ describe("Field", () => {
 
 	it("renders a missing required field with a label", () =>
 		expect(
-			<Field id="field" label="A test" required="Required" invalid>
-				<div id="child" />
-			</Field>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Field id="field" label="A test" required="Required" invalid>
+					<div id="child" />
+				</Field>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" id="field_label" required invalid>
-					<Text message="A test" />
+					A test
 				</Label>
 				<div id="child" />
-				<RequiredNotice>
-					<Text message="Required" />
-				</RequiredNotice>
+				<RequiredNotice>Required</RequiredNotice>
 			</FieldBox>,
 		));
 
@@ -65,28 +87,44 @@ describe("Field", () => {
 
 	it("renders only its label when flagged", () =>
 		expect(
-			<Field id="field" label="A test" labelOnly required="Required">
-				<div id="child" />
-			</Field>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Field id="field" label="A test" labelOnly required="Required">
+					<div id="child" />
+				</Field>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<FieldBox>
 				<Label labelOnly id="field_label" required>
-					<Text message="A test" />
+					A test
 				</Label>
 			</FieldBox>,
 		));
 
 	it("renders a field with a centered label", () =>
 		expect(
-			<Field id="field" label="A test" center>
-				<div id="child" />
-			</Field>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Field id="field" label="A test" center>
+					<div id="child" />
+				</Field>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<FieldBox>
 				<Label htmlFor="field" center id="field_label">
-					<Text message="A test" />
+					A test
 				</Label>
 				<div id="child" />
 			</FieldBox>,

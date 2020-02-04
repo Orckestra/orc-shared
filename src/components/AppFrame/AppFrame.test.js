@@ -196,40 +196,42 @@ describe("AppFrame", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<MemoryRouter>
-					<Base>
-						<Wrapper>
-							<AppBox>
-								<AppSelWrapper>
-									<MenuIcon />
-								</AppSelWrapper>
-								<AppLabel>
-									<AppLogo />
-								</AppLabel>
-							</AppBox>
-							<MenuWrapper>
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base>
+							<Wrapper>
+								<AppBox>
+									<AppSelWrapper>
+										<MenuIcon />
+									</AppSelWrapper>
+									<AppLabel>
+										<AppLogo />
+									</AppLabel>
+								</AppBox>
+								<MenuWrapper>
+									<Ignore />
+								</MenuWrapper>
+							</Wrapper>
+							<SideBar>
+								<MenuToggle />
 								<Ignore />
-							</MenuWrapper>
-						</Wrapper>
-						<SideBar>
-							<MenuToggle />
-							<Ignore />
-							<Ignore />
-							<Ignore />
-							<Logo />
-						</SideBar>
-						<ViewPort>
-							<ScopeBar>
-								<AlignedButton>Test 1</AlignedButton>
-							</ScopeBar>
-							<TestComp1 key="1" />
-							<TestComp2 key="2" />
-							<TestComp3 key="3" />
-						</ViewPort>
-					</Base>
-				</MemoryRouter>
-			</ThemeProvider>,
+								<Ignore />
+								<Ignore />
+								<Logo />
+							</SideBar>
+							<ViewPort>
+								<ScopeBar>
+									<AlignedButton>Test 1</AlignedButton>
+								</ScopeBar>
+								<TestComp1 key="1" />
+								<TestComp2 key="2" />
+								<TestComp3 key="3" />
+							</ViewPort>
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
 		);
 	});
 
@@ -256,38 +258,40 @@ describe("AppFrame", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<MemoryRouter>
-					<Base>
-						<Wrapper>
-							<AppBox>
-								<AppSelWrapper>
-									<MenuIcon />
-								</AppSelWrapper>
-								<AppLabel>
-									<AppLogo />
-								</AppLabel>
-							</AppBox>
-							<MenuWrapper>
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base>
+							<Wrapper>
+								<AppBox>
+									<AppSelWrapper>
+										<MenuIcon />
+									</AppSelWrapper>
+									<AppLabel>
+										<AppLogo />
+									</AppLabel>
+								</AppBox>
+								<MenuWrapper>
+									<Ignore />
+								</MenuWrapper>
+							</Wrapper>
+							<SideBar>
+								<MenuToggle />
 								<Ignore />
-							</MenuWrapper>
-						</Wrapper>
-						<SideBar>
-							<MenuToggle />
-							<Ignore />
-							<Ignore />
-							<Ignore />
-							<Logo />
-						</SideBar>
-						<ViewPort>
-							<ScopeBar />
-							<TestComp1 key="1" />
-							<TestComp2 key="2" />
-							<TestComp3 key="3" />
-						</ViewPort>
-					</Base>
-				</MemoryRouter>
-			</ThemeProvider>,
+								<Ignore />
+								<Ignore />
+								<Logo />
+							</SideBar>
+							<ViewPort>
+								<ScopeBar />
+								<TestComp1 key="1" />
+								<TestComp2 key="2" />
+								<TestComp3 key="3" />
+							</ViewPort>
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
 		);
 	});
 
@@ -310,21 +314,23 @@ describe("AppFrame", () => {
 		expect(
 			element,
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<Base>
-					<Wrapper>
-						<Ignore />
-						<Ignore />
-					</Wrapper>
-					<SideBar open>
-						<MenuToggle open />
-						<Logo />
-					</SideBar>
-					<ViewPort open>
-						<Ignore />
-					</ViewPort>
-				</Base>
-			</ThemeProvider>,
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<Base>
+						<Wrapper>
+							<Ignore />
+							<Ignore />
+						</Wrapper>
+						<SideBar open>
+							<MenuToggle open />
+							<Logo />
+						</SideBar>
+						<ViewPort open>
+							<Ignore />
+						</ViewPort>
+					</Base>
+				</ThemeProvider>
+			</Provider>,
 		);
 		simulate(element, {
 			type: "click",
@@ -333,21 +339,23 @@ describe("AppFrame", () => {
 		expect(
 			element,
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<Base>
-					<Wrapper>
-						<Ignore />
-						<Ignore />
-					</Wrapper>
-					<SideBar>
-						<MenuToggle />
-						<Logo />
-					</SideBar>
-					<ViewPort>
-						<Ignore />
-					</ViewPort>
-				</Base>
-			</ThemeProvider>,
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<Base>
+						<Wrapper>
+							<Ignore />
+							<Ignore />
+						</Wrapper>
+						<SideBar>
+							<MenuToggle />
+							<Logo />
+						</SideBar>
+						<ViewPort>
+							<Ignore />
+						</ViewPort>
+					</Base>
+				</ThemeProvider>
+			</Provider>,
 		);
 		simulate(element, {
 			type: "click",
@@ -356,21 +364,23 @@ describe("AppFrame", () => {
 		expect(
 			element,
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<Base>
-					<Wrapper>
-						<Ignore />
-						<Ignore />
-					</Wrapper>
-					<SideBar open>
-						<MenuToggle open />
-						<Logo />
-					</SideBar>
-					<ViewPort open>
-						<Ignore />
-					</ViewPort>
-				</Base>
-			</ThemeProvider>,
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<Base>
+						<Wrapper>
+							<Ignore />
+							<Ignore />
+						</Wrapper>
+						<SideBar open>
+							<MenuToggle open />
+							<Logo />
+						</SideBar>
+						<ViewPort open>
+							<Ignore />
+						</ViewPort>
+					</Base>
+				</ThemeProvider>
+			</Provider>,
 		);
 		simulate(element, {
 			type: "click",
@@ -379,21 +389,23 @@ describe("AppFrame", () => {
 		expect(
 			element,
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<Base>
-					<Wrapper>
-						<Ignore />
-						<Ignore />
-					</Wrapper>
-					<SideBar>
-						<MenuToggle />
-						<Logo />
-					</SideBar>
-					<ViewPort>
-						<Ignore />
-					</ViewPort>
-				</Base>
-			</ThemeProvider>,
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<Base>
+						<Wrapper>
+							<Ignore />
+							<Ignore />
+						</Wrapper>
+						<SideBar>
+							<MenuToggle />
+							<Logo />
+						</SideBar>
+						<ViewPort>
+							<Ignore />
+						</ViewPort>
+					</Base>
+				</ThemeProvider>
+			</Provider>,
 		);
 	});
 

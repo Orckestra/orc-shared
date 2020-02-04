@@ -216,33 +216,35 @@ describe("SubPage", () => {
 			<div>
 				<Backdrop />
 				<Dialog>
-					<IntlProvider locale="en">
-						<Toolbar
-							tools={[
-								{
-									type: "button",
-									key: "subPage_goBack",
-									label: { icon: "arrow-left" },
-								},
-								{ type: "separator", key: "subpage_sep_nav" },
-								{
-									type: "button",
-									key: 0,
-									label: { text: "Button" },
-								},
-								{
-									type: "input",
-									key: 1,
-									placeholder: "Text",
-								},
-								{
-									type: "button",
-									key: 2,
-									label: { text: "Button" },
-								},
-							]}
-						/>
-					</IntlProvider>
+					<Provider store={store}>
+						<IntlProvider locale="en">
+							<Toolbar
+								tools={[
+									{
+										type: "button",
+										key: "subPage_goBack",
+										label: { icon: "arrow-left" },
+									},
+									{ type: "separator", key: "subpage_sep_nav" },
+									{
+										type: "button",
+										key: 0,
+										label: { text: "Button" },
+									},
+									{
+										type: "input",
+										key: 1,
+										placeholder: "Text",
+									},
+									{
+										type: "button",
+										key: 2,
+										label: { text: "Button" },
+									},
+								]}
+							/>
+						</IntlProvider>
+					</Provider>
 					<Ignore />
 				</Dialog>
 			</div>,
@@ -390,20 +392,28 @@ describe("withToolbar", () => {
 					"with event",
 					{ type: "click", target: "button:first-child" },
 					"to satisfy",
-					<Toolbar
-						tools={[
-							{
-								type: "button",
-								key: 0,
-								label: { text: "Button" },
-							},
-							{
-								type: "button",
-								key: 2,
-								label: { text: "Button" },
-							},
-						]}
-					/>,
+					<Provider
+						store={{
+							subscribe: () => {},
+							dispatch: () => {},
+							getState: () => ({}),
+						}}
+					>
+						<Toolbar
+							tools={[
+								{
+									type: "button",
+									key: 0,
+									label: { text: "Button" },
+								},
+								{
+									type: "button",
+									key: 2,
+									label: { text: "Button" },
+								},
+							]}
+						/>
+					</Provider>,
 				),
 			)
 			.then(() =>
