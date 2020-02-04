@@ -220,12 +220,20 @@ describe("SubPage", () => {
 			"queried for first",
 			"." + getClassName(<Bar />),
 			"to satisfy",
-			<Bar>
-				<ToolbarButton id="subPage_goBack" label={{ icon: "arrow-left" }} />
-				<ToolbarSeparator />
-				<ToolbarButton id="firstButton" label={{ text: "Button1" }} />
-				<ToolbarButton id="secondButton" label={{ text: "Button2" }} />
-			</Bar>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Bar>
+					<ToolbarButton id="subPage_goBack" label={{ icon: "arrow-left" }} />
+					<ToolbarSeparator />
+					<ToolbarButton id="firstButton" label={{ text: "Button1" }} />
+					<ToolbarButton id="secondButton" label={{ text: "Button2" }} />
+				</Bar>
+			</Provider>,
 		));
 
 	it("calls the tool function selector to generate functions for toolbar", () =>
@@ -279,12 +287,20 @@ describe("SubPage", () => {
 			"queried for first",
 			"." + getClassName(<Bar />),
 			"to satisfy",
-			<Bar>
-				<ToolbarButton id="subPage_goBack" label={{ icon: "arrow-left" }} />
-				<ToolbarSeparator />
-				<ToolbarButton id="firstButton" label={{ text: "Button1" }} />
-				<ToolbarButton id="secondButton" label={{ text: "Button2" }} />
-			</Bar>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Bar>
+					<ToolbarButton id="subPage_goBack" label={{ icon: "arrow-left" }} />
+					<ToolbarSeparator />
+					<ToolbarButton id="firstButton" label={{ text: "Button1" }} />
+					<ToolbarButton id="secondButton" label={{ text: "Button2" }} />
+				</Bar>
+			</Provider>,
 		).then(() =>
 			expect(store.dispatch, "to have calls satisfying", [
 				{ args: [{ isFoo: true }] },

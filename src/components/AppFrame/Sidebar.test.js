@@ -195,9 +195,11 @@ describe("EnhancedMenuItem", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter>
-				<MenuItem href="/Global/route" />
-			</MemoryRouter>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem href="/Global/route" />
+				</MemoryRouter>
+			</Provider>,
 		));
 
 	it("sets the active flag if path matches href", () =>
@@ -209,52 +211,67 @@ describe("EnhancedMenuItem", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter>
-				<MenuItem active href="/Global/route" />
-			</MemoryRouter>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem active href="/Global/route" />
+				</MemoryRouter>
+			</Provider>,
 		));
 });
 
 describe("MenuToggle", () => {
-	let toggle;
+	let toggle, store;
 	beforeEach(() => {
 		toggle = () => {};
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => ({}),
+		};
 	});
 
 	describe("with no theme", () => {
 		it("renders a MenuItem with specific settings", () =>
 			expect(
-				<ThemeProvider theme={{ foo: "bar" }}>
-					<MemoryRouter>
-						<MenuToggle toggle={toggle} />
-					</MemoryRouter>
-				</ThemeProvider>,
+				<Provider store={store}>
+					<ThemeProvider theme={{ foo: "bar" }}>
+						<MemoryRouter>
+							<MenuToggle toggle={toggle} />
+						</MemoryRouter>
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<MenuItem
-					id="sidebarMenuToggle"
-					menuToggle
-					icon="menu"
-					onClick={expect.it("to be a function")}
-				/>,
+				<Provider store={store}>
+					<MenuItem
+						id="sidebarMenuToggle"
+						menuToggle
+						icon="menu"
+						onClick={expect.it("to be a function")}
+					/>
+				</Provider>,
 			));
 
 		it("renders as open", () =>
 			expect(
-				<ThemeProvider theme={{ foo: "bar" }}>
-					<MemoryRouter>
-						<MenuToggle toggle={toggle} open />
-					</MemoryRouter>
-				</ThemeProvider>,
+				<Provider store={store}>
+					<ThemeProvider theme={{ foo: "bar" }}>
+						<MemoryRouter>
+							<MenuToggle toggle={toggle} open />
+						</MemoryRouter>
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<MenuItem
-					id="sidebarMenuToggle"
-					menuToggle
-					open
-					icon="layers"
-					onClick={expect.it("to be a function")}
-				/>,
+				<Provider store={store}>
+					<MenuItem
+						id="sidebarMenuToggle"
+						menuToggle
+						open
+						icon="layers"
+						onClick={expect.it("to be a function")}
+					/>
+				</Provider>,
 			));
 	});
 
@@ -271,35 +288,43 @@ describe("MenuToggle", () => {
 
 		it("renders a MenuItem with specific settings", () =>
 			expect(
-				<ThemeProvider theme={theme}>
-					<MemoryRouter>
-						<MenuToggle toggle={toggle} />
-					</MemoryRouter>
-				</ThemeProvider>,
+				<Provider store={store}>
+					<ThemeProvider theme={theme}>
+						<MemoryRouter>
+							<MenuToggle toggle={toggle} />
+						</MemoryRouter>
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<MenuItem
-					menuToggle
-					icon="closed"
-					onClick={expect.it("to be a function")}
-				/>,
+				<Provider store={store}>
+					<MenuItem
+						menuToggle
+						icon="closed"
+						onClick={expect.it("to be a function")}
+					/>
+				</Provider>,
 			));
 
 		it("renders as open", () =>
 			expect(
-				<ThemeProvider theme={theme}>
-					<MemoryRouter>
-						<MenuToggle toggle={toggle} open />
-					</MemoryRouter>
-				</ThemeProvider>,
+				<Provider store={store}>
+					<ThemeProvider theme={theme}>
+						<MemoryRouter>
+							<MenuToggle toggle={toggle} open />
+						</MemoryRouter>
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<MenuItem
-					menuToggle
-					open
-					icon="open"
-					onClick={expect.it("to be a function")}
-				/>,
+				<Provider store={store}>
+					<MenuItem
+						menuToggle
+						open
+						icon="open"
+						onClick={expect.it("to be a function")}
+					/>
+				</Provider>,
 			));
 	});
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { mount, act } from "react-dom-testing";
 import sinon from "sinon";
@@ -42,14 +43,30 @@ describe("Loader placeholder", () => {
 		it("renders an error placeholder if error set", () => {
 			const error = new Error("This is a test");
 			return expect(
-				<ThemeProvider theme={{}}>
-					<Loading {...{ error }} />
-				</ThemeProvider>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={{}}>
+						<Loading {...{ error }} />
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<ThemeProvider theme={{}}>
-					<ErrorPlaceholder message="This is a test" />
-				</ThemeProvider>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={{}}>
+						<ErrorPlaceholder message="This is a test" />
+					</ThemeProvider>
+				</Provider>,
 			);
 		});
 	});
@@ -107,11 +124,19 @@ describe("Loader", () => {
 	it("errors out", () => {
 		const Comp = Loader(errorLoader);
 		const loader = mount(
-			<ThemeProvider theme={{}}>
-				<div>
-					<Comp />
-				</div>
-			</ThemeProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ThemeProvider theme={{}}>
+					<div>
+						<Comp />
+					</div>
+				</ThemeProvider>
+			</Provider>,
 		);
 		expect(loader, "to satisfy", <div />);
 		act(() => {
@@ -134,11 +159,19 @@ describe("Loader", () => {
 			expect(
 				loader,
 				"to satisfy",
-				<ThemeProvider theme={{}}>
-					<div>
-						<ErrorPlaceholder message="This is not right" />
-					</div>
-				</ThemeProvider>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={{}}>
+						<div>
+							<ErrorPlaceholder message="This is not right" />
+						</div>
+					</ThemeProvider>
+				</Provider>,
 			).then(() => expect(console.error, "was called")),
 		);
 	});

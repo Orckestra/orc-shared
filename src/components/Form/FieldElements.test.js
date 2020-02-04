@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { mount } from "react-dom-testing";
 import Fieldset from "./Fieldset";
@@ -25,118 +26,174 @@ describe("FieldElements", () => {
 		() =>
 			expect(
 				mount(
-					<IntlProvider locale="en">
-						<FieldElements
-							fields={[
-								{
-									type: "ReadOnly",
-									name: "thing",
-									someProp: 12.5,
-								},
-								{
-									type: "Fieldset",
-									name: "set",
-									label: "A field set",
-									fields: [
-										{
-											type: "NumberInput",
-											name: "stuff",
-										},
-									],
-								},
-								{
-									type: "Combination",
-									name: "combo",
-									label: "Combined fields",
-									proportions: ["300px", 100],
-									fields: [
-										{ type: "CheckboxInput", name: "item" },
-										{ type: "EmailInput", name: "otheritem" },
-									],
-								},
-								{
-									type: "List",
-									name: "list",
-									rowCount: 15,
-									someProp: "Is this way",
-									rowField: { name: "listStuff", type: "TextInput" },
-								},
-							]}
-							values={values}
-							getUpdater={getUpdater}
-						/>
-					</IntlProvider>,
-				).childNodes,
-				"to satisfy",
-				[
-					<IntlProvider locale="en">
-						<InputField
-							key="thing"
-							name="thing"
-							type="ReadOnly"
-							update={expect.it("when called", "to equal", "thing")}
-							value="foo"
-							someProp={12.5}
-						/>
-					</IntlProvider>,
-					<IntlProvider locale="en">
-						<Fieldset label="A field set">
+					<Provider
+						store={{
+							subscribe: () => {},
+							dispatch: () => {},
+							getState: () => ({}),
+						}}
+					>
+						<IntlProvider locale="en">
 							<FieldElements
 								fields={[
 									{
-										type: "NumberInput",
-										name: "stuff",
+										type: "ReadOnly",
+										name: "thing",
+										someProp: 12.5,
+									},
+									{
+										type: "Fieldset",
+										name: "set",
+										label: "A field set",
+										fields: [
+											{
+												type: "NumberInput",
+												name: "stuff",
+											},
+										],
+									},
+									{
+										type: "Combination",
+										name: "combo",
+										label: "Combined fields",
+										proportions: ["300px", 100],
+										fields: [
+											{ type: "CheckboxInput", name: "item" },
+											{ type: "EmailInput", name: "otheritem" },
+										],
+									},
+									{
+										type: "List",
+										name: "list",
+										rowCount: 15,
+										someProp: "Is this way",
+										rowField: { name: "listStuff", type: "TextInput" },
 									},
 								]}
 								values={values}
 								getUpdater={getUpdater}
 							/>
-						</Fieldset>
-					</IntlProvider>,
-					<IntlProvider locale="en">
-						<Combination label="Combined fields" proportions={["300px", 100]}>
-							<FieldElements
-								fields={[
-									{ type: "CheckboxInput", name: "item" },
-									{ type: "EmailInput", name: "otheritem" },
-								]}
-								values={values}
-								getUpdater={getUpdater}
+						</IntlProvider>
+					</Provider>,
+				).childNodes,
+				"to satisfy",
+				[
+					<Provider
+						store={{
+							subscribe: () => {},
+							dispatch: () => {},
+							getState: () => ({}),
+						}}
+					>
+						<IntlProvider locale="en">
+							<InputField
+								key="thing"
+								name="thing"
+								type="ReadOnly"
+								update={expect.it("when called", "to equal", "thing")}
+								value="foo"
+								someProp={12.5}
 							/>
-						</Combination>
-					</IntlProvider>,
-					<IntlProvider locale="en">
-						<FieldList
-							name="list"
-							values={values}
-							rowField={{ name: "listStuff", type: "TextInput" }}
-							getUpdater={getUpdater}
-							rowCount={15}
-							someProp="Is this way"
-						/>
-					</IntlProvider>,
+						</IntlProvider>
+					</Provider>,
+					<Provider
+						store={{
+							subscribe: () => {},
+							dispatch: () => {},
+							getState: () => ({}),
+						}}
+					>
+						<IntlProvider locale="en">
+							<Fieldset label="A field set">
+								<FieldElements
+									fields={[
+										{
+											type: "NumberInput",
+											name: "stuff",
+										},
+									]}
+									values={values}
+									getUpdater={getUpdater}
+								/>
+							</Fieldset>
+						</IntlProvider>
+					</Provider>,
+					<Provider
+						store={{
+							subscribe: () => {},
+							dispatch: () => {},
+							getState: () => ({}),
+						}}
+					>
+						<IntlProvider locale="en">
+							<Combination label="Combined fields" proportions={["300px", 100]}>
+								<FieldElements
+									fields={[
+										{ type: "CheckboxInput", name: "item" },
+										{ type: "EmailInput", name: "otheritem" },
+									]}
+									values={values}
+									getUpdater={getUpdater}
+								/>
+							</Combination>
+						</IntlProvider>
+					</Provider>,
+					<Provider
+						store={{
+							subscribe: () => {},
+							dispatch: () => {},
+							getState: () => ({}),
+						}}
+					>
+						<IntlProvider locale="en">
+							<FieldList
+								name="list"
+								values={values}
+								rowField={{ name: "listStuff", type: "TextInput" }}
+								getUpdater={getUpdater}
+								rowCount={15}
+								someProp="Is this way"
+							/>
+						</IntlProvider>
+					</Provider>,
 				],
 			),
 	);
 
 	it("handles absent update function and values", () =>
 		expect(
-			<IntlProvider locale="en">
-				<FieldElements
-					fields={[
-						{
-							type: "ReadOnly",
-							name: "thing",
-						},
-					]}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<FieldElements
+						fields={[
+							{
+								type: "ReadOnly",
+								name: "thing",
+							},
+						]}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<React.Fragment>
-					<InputField update={undefined} value={undefined} type="ReadOnly" />
-				</React.Fragment>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<React.Fragment>
+						<InputField update={undefined} value={undefined} type="ReadOnly" />
+					</React.Fragment>
+				</IntlProvider>
+			</Provider>,
 		));
 });

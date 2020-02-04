@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { ThemeProvider } from "styled-components";
@@ -14,7 +15,17 @@ import FullToastList, {
 
 class RenderToast extends React.Component {
 	render() {
-		return <FullToastList {...this.props} />;
+		return (
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<FullToastList {...this.props} />
+			</Provider>
+		);
 	}
 }
 
@@ -53,7 +64,15 @@ describe("ToastList", () => {
 describe("Toast", () => {
 	it("shows a message", () =>
 		expect(
-			<Toast in message="this is a toast" />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Toast in message="this is a toast" />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<ToastBox in>
@@ -64,12 +83,20 @@ describe("Toast", () => {
 
 	it("shows a translated message", () =>
 		expect(
-			<IntlProvider locale="en">
-				<Toast
-					in
-					message={{ id: "test.toast", defaultMessage: "This is a toast" }}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Toast
+						in
+						message={{ id: "test.toast", defaultMessage: "This is a toast" }}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<ToastBox in>
@@ -80,7 +107,15 @@ describe("Toast", () => {
 
 	it("shows an icon", () =>
 		expect(
-			<Toast in type="confirm" />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Toast in type="confirm" />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<ToastBox in>
@@ -91,7 +126,15 @@ describe("Toast", () => {
 
 	it("shows a close icon if a close function is given", () =>
 		expect(
-			<Toast in closeFunc={() => {}} />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Toast in closeFunc={() => {}} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<ToastBox in>
@@ -118,9 +161,17 @@ describe("Toast", () => {
 
 		it("renders a default type", () =>
 			expect(
-				<ThemeProvider theme={theme}>
-					<Toast in />
-				</ThemeProvider>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={theme}>
+						<Toast in />
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
@@ -129,9 +180,17 @@ describe("Toast", () => {
 
 		it("renders a set type", () =>
 			expect(
-				<ThemeProvider theme={theme}>
-					<Toast in type="test" />
-				</ThemeProvider>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={theme}>
+						<Toast in type="test" />
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",

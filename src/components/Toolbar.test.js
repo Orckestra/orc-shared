@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { spyOnConsole } from "../utils/testUtils";
 import IconButton from "./IconButton";
@@ -105,61 +106,79 @@ describe("Toolbar", () => {
 
 	it("renders tools according to its configuration", () =>
 		expect(
-			<IntlProvider locale="en">
-				<Toolbar tools={toolList} />
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Toolbar tools={toolList} />
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<Bar>
-					<ToolInput
-						type="search"
-						onChange={toolList[0].onChange}
-						value="search"
-					/>
-					<ToolButton
-						onClick={toolList[1].onClick}
-						label={{ icon: "funnel" }}
-					/>
-					<ToolSpacer />
-					<Group
-						tools={[
-							{
-								type: "button",
-								key: 0,
-								label: { text: "Button" },
-								onClick: toolList[3].tools[0].onClick,
-							},
-							{
-								type: "input",
-								key: 1,
-								onChange: toolList[3].tools[1].onChange,
-								placeholder: "Text",
-							},
-							{
-								type: "button",
-								key: 2,
-								label: { text: "Button" },
-								onClick: toolList[3].tools[2].onClick,
-							},
-						]}
-					/>
-					<ToolButton
-						onClick={toolList[4].onClick}
-						label={{ icon: "eye", text: "Button" }}
-						primary
-					/>
-					<ToolSeparator />
-					<ToolLabel
-						label={{ id: "toolbar.label", defaultMessage: "Label message" }}
-					/>
-					<ToolButton
-						onClick={toolList[7].onClick}
-						label={{ text: { id: "toolbar.button", defaultMessage: "Button" } }}
-					/>
-					<ToolLabel label="Label message" />
-				</Bar>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Bar>
+						<ToolInput
+							type="search"
+							onChange={toolList[0].onChange}
+							value="search"
+						/>
+						<ToolButton
+							onClick={toolList[1].onClick}
+							label={{ icon: "funnel" }}
+						/>
+						<ToolSpacer />
+						<Group
+							tools={[
+								{
+									type: "button",
+									key: 0,
+									label: { text: "Button" },
+									onClick: toolList[3].tools[0].onClick,
+								},
+								{
+									type: "input",
+									key: 1,
+									onChange: toolList[3].tools[1].onChange,
+									placeholder: "Text",
+								},
+								{
+									type: "button",
+									key: 2,
+									label: { text: "Button" },
+									onClick: toolList[3].tools[2].onClick,
+								},
+							]}
+						/>
+						<ToolButton
+							onClick={toolList[4].onClick}
+							label={{ icon: "eye", text: "Button" }}
+							primary
+						/>
+						<ToolSeparator />
+						<ToolLabel
+							label={{ id: "toolbar.label", defaultMessage: "Label message" }}
+						/>
+						<ToolButton
+							onClick={toolList[7].onClick}
+							label={{
+								text: { id: "toolbar.button", defaultMessage: "Button" },
+							}}
+						/>
+						<ToolLabel label="Label message" />
+					</Bar>
+				</IntlProvider>
+			</Provider>,
 		).then(() => expect(console.error, "was not called")));
 });
 
@@ -190,58 +209,138 @@ describe("toolComponents.input", () => {
 describe("toolComponents.button", () => {
 	it("renders a styled empty button", () =>
 		expect(
-			<ToolButton random={4} />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolButton random={4} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToolbarButton random={4} />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolbarButton random={4} />
+			</Provider>,
 		));
 
 	it("renders a styled button with icon", () =>
 		expect(
-			<ToolButton oddProp="Test" label={{ icon: "test" }} />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolButton oddProp="Test" label={{ icon: "test" }} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToolbarButton oddProp="Test" icon="test" />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolbarButton oddProp="Test" icon="test" />
+			</Provider>,
 		));
 
 	it("renders a styled button with text", () =>
 		expect(
-			<ToolButton onClick={console.log} label={{ text: "A label" }} />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolButton onClick={console.log} label={{ text: "A label" }} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToolbarButton onClick={console.log} label="A label" />,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolbarButton onClick={console.log} label="A label" />
+			</Provider>,
 		));
 
 	it("renders a styled button with text and icon", () =>
 		expect(
-			<ToolButton
-				things={{ stuff: "nonsense" }}
-				label={{ icon: "test", text: "A label" }}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolButton
+					things={{ stuff: "nonsense" }}
+					label={{ icon: "test", text: "A label" }}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToolbarButton
-				things={{ stuff: "nonsense" }}
-				icon="test"
-				label="A label"
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolbarButton
+					things={{ stuff: "nonsense" }}
+					icon="test"
+					label="A label"
+				/>
+			</Provider>,
 		));
 
 	describe("ToolbarButton", () => {
 		it("renders an IconButton", () =>
 			expect(
-				<ToolbarButton
-					things={{ stuff: "nonsense" }}
-					icon="test"
-					label="A label"
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ToolbarButton
+						things={{ stuff: "nonsense" }}
+						icon="test"
+						label="A label"
+					/>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<IconButton
-					things={{ stuff: "nonsense" }}
-					icon="test"
-					label="A label"
-				/>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<IconButton
+						things={{ stuff: "nonsense" }}
+						icon="test"
+						label="A label"
+					/>
+				</Provider>,
 			));
 	});
 });
@@ -273,18 +372,34 @@ describe("toolComponents.group", () => {
 
 	it("renders a styled group", () =>
 		expect(
-			<IntlProvider locale="en">
-				<Group tools={tools} />
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Group tools={tools} />
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToolGroup>
-				<ToolButton label={{ text: "Button" }} onClick={tools[0].onClick} />
-				<IntlProvider locale="en">
-					<ToolInput onChange={tools[1].onChange} placeholder="Text" />
-				</IntlProvider>
-				<ToolButton label={{ text: "Button" }} onClick={tools[2].onClick} />
-			</ToolGroup>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ToolGroup>
+					<ToolButton label={{ text: "Button" }} onClick={tools[0].onClick} />
+					<IntlProvider locale="en">
+						<ToolInput onChange={tools[1].onChange} placeholder="Text" />
+					</IntlProvider>
+					<ToolButton label={{ text: "Button" }} onClick={tools[2].onClick} />
+				</ToolGroup>
+			</Provider>,
 		));
 });
 
@@ -301,9 +416,19 @@ describe("toolComponents.separator", () => {
 describe("toolComponents.label", () => {
 	it("renders a styled label", () =>
 		expect(
-			<IntlProvider locale="en">
-				<ToolLabel label={{ id: "toolbar.label", defaultMessage: "A label" }} />
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<ToolLabel
+						label={{ id: "toolbar.label", defaultMessage: "A label" }}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<ToolbarLabel>A label</ToolbarLabel>,
