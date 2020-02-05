@@ -1,5 +1,4 @@
-import React from "react";
-import { withHandlers } from "recompose";
+import React, { useCallback } from "react";
 import { FormInput } from "./Text";
 import { ButtonWrapper, Spinners, InputButton } from "./FieldButtons";
 
@@ -22,38 +21,41 @@ const containNumber = (
 	min = -Number.MAX_VALUE,
 ) => (Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : number);
 
-export const withNumberHandlers = withHandlers({
-	onChange: ({ update, step, max, min }) =>
+export const NumberInput = ({
+	update,
+	min,
+	max,
+	value = "",
+	step,
+	required,
+	...props
+}) => {
+	const onChange = useCallback(
 		step
 			? e => update(containNumber(roundToStep(e.target.value, step), max, min))
 			: e =>
 					update(
 						containNumber(nullNaN(parseFloat(e.target.value), ""), max, min),
 					),
-	increment: ({ update, value, step, max }) =>
+		[update, step, min, max],
+	);
+	const increment = useCallback(
 		step
 			? () =>
 					update(containNumber(roundToStep(value + step, step), max, undefined))
 			: () =>
 					update(containNumber(nullNaN(parseFloat(value)) + 1, max, undefined)),
-	decrement: ({ update, value, step, min }) =>
+		[update, value, step, max],
+	);
+	const decrement = useCallback(
 		step
 			? () =>
 					update(containNumber(roundToStep(value - step, step), undefined, min))
 			: () =>
 					update(containNumber(nullNaN(parseFloat(value)) - 1, undefined, min)),
-});
-
-export const NumberInput = withNumberHandlers(
-	({
-		value = "",
-		step,
-		increment,
-		decrement,
-		required,
-		onChange,
-		...props
-	}) => (
+		[update, value, step, min],
+	);
+	return (
 		<ButtonWrapper invalid={required && !value}>
 			<FormInput
 				type="number"
@@ -71,5 +73,5 @@ export const NumberInput = withNumberHandlers(
 				</InputButton>
 			</Spinners>
 		</ButtonWrapper>
-	),
-);
+	);
+};
