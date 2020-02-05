@@ -1,21 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { compose, withHandlers } from "recompose";
 import { getThemeProp, unwrapImmutable } from "../../../utils";
-import routingConnector from "../../../hocs/routingConnector";
 import Icon from "../../Icon";
 import Text from "../../Text";
 import { orderedCultureList } from "../../../selectors/locale";
 import useToggle from "../../../hooks/useToggle";
 import { FormInput } from "./Text";
 import { ButtonWrapper } from "./FieldButtons";
-
-const withCultureList = routingConnector(
-	state => ({
-		cultures: unwrapImmutable(orderedCultureList(state)),
-	}),
-	dispatch => ({}),
-);
 
 export const LanguageLabel = styled.label`
 	flex: 0 0 auto;
@@ -39,18 +31,6 @@ export const TranslationField = ({
 	</ButtonWrapper>
 );
 TranslationField.displayName = "TranslationField";
-
-const withTranslationUpdater = withHandlers({
-	handlers: ({ update, value, cultures }) => {
-		const handlers = {};
-		cultures.forEach(lang => {
-			handlers[lang] = event => {
-				update({ ...value, [lang]: event.target.value });
-			};
-		});
-		return lang => handlers[lang];
-	},
-});
 
 export const TranslationWrapper = styled.div`
 	display: flex;
@@ -80,14 +60,24 @@ export const ShowButtonChevron = styled(Icon).attrs(props => ({
 `;
 
 export const TranslationInput = ({
-	handlers,
+	update,
 	value = {},
-	cultures,
 	initShowAll,
 	required,
 	moreLabel = "[more]",
 	...props
 }) => {
+	const cultures = unwrapImmutable(useSelector(orderedCultureList));
+	const handlers = useMemo(
+		() =>
+			cultures.reduce((handlers, lang) => {
+				handlers[lang] = event => {
+					update({ ...value, [lang]: event.target.value });
+				};
+				return handlers;
+			}, {}),
+		[update, cultures, value],
+	);
 	const [showAll, toggle] = useToggle(initShowAll);
 	return (
 		<TranslationWrapper>
@@ -97,7 +87,7 @@ export const TranslationInput = ({
 						key={lang}
 						lang={lang}
 						message={value[lang]}
-						onChange={handlers(lang)}
+						onChange={handlers[lang]}
 						required={required}
 						{...props}
 					/>
@@ -113,7 +103,4 @@ export const TranslationInput = ({
 	);
 };
 
-export default compose(
-	withCultureList,
-	withTranslationUpdater,
-)(TranslationInput);
+export default TranslationInput;
