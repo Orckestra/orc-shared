@@ -63,8 +63,12 @@ export const NumberInput = withNumberHandlers(
 				{...props}
 			/>
 			<Spinners>
-				<InputButton onClick={increment}>⮝</InputButton>
-				<InputButton onClick={decrement}>⮟</InputButton>
+				<InputButton onClick={increment} data-test-id="up">
+					⮝
+				</InputButton>
+				<InputButton onClick={decrement} data-test-id="down">
+					⮟
+				</InputButton>
 			</Spinners>
 		</ButtonWrapper>
 	),
