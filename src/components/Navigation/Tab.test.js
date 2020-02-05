@@ -33,13 +33,7 @@ describe("Tab", () => {
 			>
 				<Router history={history}>
 					<IntlProvider locale="en">
-						<Tab
-							module
-							icon="test"
-							label="A module"
-							href="/Foo/modu"
-							close={close}
-						/>
+						<Tab module icon="test" label="A module" href="/Foo/modu" />
 					</IntlProvider>
 				</Router>
 			</Provider>,
@@ -85,7 +79,6 @@ describe("Tab", () => {
 							icon="test"
 							label={{ id: "test.module", defaultMessage: "A module" }}
 							href="/Foo/modu"
-							close={close}
 						/>
 					</IntlProvider>
 				</Router>
@@ -121,7 +114,6 @@ describe("Tab", () => {
 							icon="test"
 							label={{ id: "test.module", defaultMessage: "A module" }}
 							href="/Foo/modu"
-							close={close}
 						/>
 					</IntlProvider>
 				</Router>
@@ -195,11 +187,16 @@ describe("Tab", () => {
 			>
 				<Router history={history}>
 					<IntlProvider locale="en">
-						<Tab active href="/Foo/modu/page" close={close} />
+						<Tab active href="/Foo/modu/page" />
 					</IntlProvider>
 				</Router>
 			</Provider>,
 			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: "." + getClassName(<CloseIcon />),
+			},
 			"to satisfy",
 			<Router history={history}>
 				<IntlProvider locale="en">
@@ -208,7 +205,7 @@ describe("Tab", () => {
 							<TabText>
 								<Ignore />
 							</TabText>
-							<CloseIcon onClick={close} />
+							<CloseIcon onClick={expect.it("to be a function")} />
 						</TabLink>
 					</PageTab>
 				</IntlProvider>

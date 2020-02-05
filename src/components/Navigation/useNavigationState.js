@@ -84,6 +84,7 @@ export const useNavigationState = modules => {
 						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
 					);
 					const dataPath = [...pageData.dataPath];
+					/* istanbul ignore else */
 					if (pageData.dataIdParam) {
 						dataPath.push(params[pageData.dataIdParam]);
 					}

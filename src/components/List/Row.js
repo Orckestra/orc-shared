@@ -41,6 +41,7 @@ export const Row = ({
 	const onClick = useCallback(
 		event => {
 			if (formTags.indexOf(event.target.tagName) === -1) {
+				/* istanbul ignore else */
 				if (!event.target.dataset["rowId"]) {
 					event.target.dataset["rowId"] = rowId;
 				}
