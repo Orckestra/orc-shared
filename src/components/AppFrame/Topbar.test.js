@@ -19,12 +19,12 @@ import {
 } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
 import Topbar, {
-	withUserMenu,
 	Wrapper,
 	AppBox,
 	CurrentApp,
 	AppLabel,
 	AppLogo,
+	useMenuProps,
 } from "./Topbar";
 
 jest.mock("../../utils/buildUrl", () => {
@@ -146,16 +146,18 @@ describe("Topbar", () => {
 		));
 });
 
-describe("withUserMenu", () => {
-	const TestComp = ({ menuItems }) => (
-		<div>
-			{menuItems.map(({ handler, icon, label }) => (
-				<button key={label} onClick={handler} id={icon}>
+describe("useMenuProps", () => {
+	const TestComp = ({ id, menuItems }) => (
+		<div id={id}>
+			{menuItems.map(({ id, handler, icon, label }) => (
+				<button key={label} onClick={handler} id={id}>
 					{icon} - {label}
 				</button>
 			))}
 		</div>
 	);
+	const EnhComp = ({ messages }) => <TestComp {...useMenuProps(messages)} />;
+
 	let state, store, messages;
 	beforeEach(() => {
 		state = Immutable.fromJS({});
@@ -172,80 +174,76 @@ describe("withUserMenu", () => {
 	});
 
 	it("sets a menu configuration on the wrapped component", () =>
-		expect(withUserMenu, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<IntlProvider locale="en">
-							<EnhComp messages={messages} />
-						</IntlProvider>
-					</Provider>,
-					"when mounted",
-					"with event",
-					{ type: "click", target: "#logout-1" },
-					"with event",
-					{ type: "click", target: "#settings-cogwheel" },
-					"with event",
-					{ type: "click", target: "#infomation-circle" },
-					"to satisfy",
-					<TestComp
-						id="userMenu"
-						menuItems={[
-							{
-								id: "userMenuSignOut",
-								label: "Sign out",
-								handler: () => {},
-								icon: "logout-1",
-							},
-							{
-								id: "userMenuPrefsMenu",
-								label: "Preferences",
-								handler: () => {},
-								icon: "settings-cogwheel",
-							},
-							{
-								id: "userMenuAbout",
-								label: "About",
-								handler: () => {},
-								icon: "infomation-circle",
-							},
-						]}
-					/>,
-				),
-			)
-			.then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<EnhComp messages={messages} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "#userMenuSignOut" },
+			"with event",
+			{ type: "click", target: "#userMenuPrefsMenu" },
+			"with event",
+			{ type: "click", target: "#userMenuAbout" },
+			"to satisfy",
+			<TestComp
+				id="userMenu"
+				menuItems={[
 					{
-						args: [
-							{
-								[RSAA]: {
-									types: [SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE],
-									endpoint: "URL",
-									method: "POST",
-									body: undefined,
-									credentials: "include",
-								},
-							},
-						],
+						id: "userMenuSignOut",
+						label: "Sign out",
+						handler: () => {},
+						icon: "logout-1",
 					},
 					{
-						args: [
-							{
-								type: VIEW_STATE_SET_FIELD,
-								payload: { name: PREFS_NAME, field: "show", value: true },
-							},
-						],
+						id: "userMenuPrefsMenu",
+						label: "Preferences",
+						handler: () => {},
+						icon: "settings-cogwheel",
 					},
 					{
-						args: [
-							{
-								type: VIEW_STATE_SET_FIELD,
-								payload: { name: ABOUT_NAME, field: "show", value: true },
-							},
-						],
+						id: "userMenuAbout",
+						label: "About",
+						handler: () => {},
+						icon: "infomation-circle",
 					},
-				]),
-			));
+				]}
+			/>,
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							[RSAA]: {
+								types: [SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE],
+								endpoint: "URL",
+								method: "POST",
+								body: undefined,
+								credentials: "include",
+							},
+						},
+					],
+				},
+				{
+					args: [
+						{
+							type: VIEW_STATE_SET_FIELD,
+							payload: { name: PREFS_NAME, field: "show", value: true },
+						},
+					],
+				},
+				{
+					args: [
+						{
+							type: VIEW_STATE_SET_FIELD,
+							payload: { name: ABOUT_NAME, field: "show", value: true },
+						},
+					],
+				},
+			]),
+		));
 });
 
 describe("CurrentApp", () => {
