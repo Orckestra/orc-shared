@@ -522,7 +522,7 @@ describe("FieldList", () => {
 
 	it("will not render inside another list", () =>
 		expect(
-			<FieldList listIndex={0} />,
+			<FieldList listIndex={0} getUpdater={() => () => {}} />,
 			"when mounted",
 			"to satisfy",
 			"Cannot render list inside list",
