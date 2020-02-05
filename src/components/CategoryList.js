@@ -70,7 +70,7 @@ export const CategoryList = ({
 				key={id}
 				rowId={id}
 				row={row}
-				onClick={rowOnClick}
+				rowOnClick={rowOnClick}
 				selected={selection.indexOf(id) !== -1}
 				bgColor={rowBackgroundGetter(row, index)}
 			/>,

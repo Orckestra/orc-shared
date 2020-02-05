@@ -1,11 +1,11 @@
 import React from "react";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { Row, TableRow, withRowClick } from "./Row";
+import { Row, TableRow } from "./Row";
 import DataCell from "./DataCell";
 
-const TestComp = ({ onClick }) => (
-	<div onClick={onClick}>
+const TestComp = () => (
+	<div>
 		<input />
 		<select />
 		<label />
@@ -13,11 +13,19 @@ const TestComp = ({ onClick }) => (
 );
 
 describe("Row", () => {
-	it("it renders a data cell for each column definition", () => {
-		const columnDefs = [{ fieldName: "a" }, { fieldName: "b" }];
-		const row = { a: "foo", b: "bar" };
-		const onClick = () => {};
-		return expect(
+	let rowOnClick, columnDefs, row;
+	beforeEach(() => {
+		rowOnClick = sinon.spy().named("rowOnClick");
+		columnDefs = [
+			{ fieldName: "a" },
+			{ fieldName: "b" },
+			{ fieldName: "test", type: "custom", component: TestComp },
+		];
+		row = { a: "foo", b: "bar" };
+	});
+
+	it("it renders a data cell for each column definition", () =>
+		expect(
 			<Provider
 				store={{
 					subscribe: () => {},
@@ -31,13 +39,15 @@ describe("Row", () => {
 							row={row}
 							rowId="rowIdentifier"
 							columnDefs={columnDefs}
-							onClick={onClick}
+							rowOnClick={rowOnClick}
 							bgColor="#ff0000"
 						/>
 					</tbody>
 				</table>
 			</Provider>,
 			"when mounted",
+			"with event",
+			{ type: "click", target: "tr" },
 			"to satisfy",
 			<Provider
 				store={{
@@ -48,7 +58,7 @@ describe("Row", () => {
 			>
 				<table>
 					<tbody>
-						<TableRow onClick={onClick} bgColor="#ff0000">
+						<TableRow bgColor="#ff0000">
 							<DataCell
 								key="a"
 								rowId="rowIdentifier"
@@ -61,78 +71,78 @@ describe("Row", () => {
 								row={row}
 								columnDef={columnDefs[1]}
 							/>
+							<DataCell
+								key="test"
+								rowId="rowIdentifier"
+								row={row}
+								columnDef={columnDefs[2]}
+							/>
 						</TableRow>
 					</tbody>
 				</table>
 			</Provider>,
-		);
-	});
-});
+		).then(() => expect(rowOnClick, "was called")));
 
-describe("withRowClick", () => {
-	let rowOnClick;
-	beforeEach(() => {
-		rowOnClick = sinon.spy().named("rowOnClick");
-	});
-
-	it("only exists if an onClick handler is given from above", () =>
-		expect(withRowClick, "when called with", [TestComp]).then(EnhComp =>
-			expect(
-				<EnhComp rowId="ident" />,
-				"when mounted",
-				"to satisfy",
-				<TestComp rowId="ident" />,
-			),
-		));
-
-	it("wraps onClick to add rowId to event target, but not if target is form element", () =>
-		expect(withRowClick, "when called with", [TestComp]).then(EnhComp =>
-			expect(
-				<EnhComp onClick={rowOnClick} rowId="ident" />,
-				"when mounted",
-				"with event",
-				"click",
-				"with event",
+	it("wraps row onClick handler to add rowId to event target, and not to fire if target is form element", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<tbody>
+						<Row
+							row={row}
+							rowId="rowIdentifier"
+							columnDefs={columnDefs}
+							rowOnClick={rowOnClick}
+						/>
+					</tbody>
+				</table>
+			</Provider>,
+			"when mounted",
+			"with event",
+			"click",
+			"with event",
+			{
+				type: "click",
+				target: "input",
+				// don't fire
+			},
+			"with event",
+			{
+				type: "click",
+				target: "select",
+				// don't fire
+			},
+			"with event",
+			{
+				type: "click",
+				target: "label",
+				// don't fire
+			},
+			"with event",
+			{
+				type: "click",
+				target: "tr",
+			},
+			"to contain",
+			<TestComp />,
+		).then(() =>
+			expect(rowOnClick, "to have calls satisfying", [
 				{
-					type: "click",
-					target: "input",
+					args: [
+						{
+							target: expect.it("to have attributes", {
+								"data-row-id": "rowIdentifier",
+							}),
+						},
+					],
 				},
-				"with event",
-				{
-					type: "click",
-					target: "select",
-				},
-				"with event",
-				{
-					type: "click",
-					target: "label",
-				},
-				"with event",
-				"click",
-				"to satisfy",
-				<TestComp />,
-			).then(() =>
-				expect(rowOnClick, "to have calls satisfying", [
-					{
-						args: [
-							{
-								target: expect.it("to have attributes", {
-									"data-row-id": "ident",
-								}),
-							},
-						],
-					},
-					{
-						args: [
-							{
-								target: expect.it("to have attributes", {
-									"data-row-id": "ident",
-								}),
-							},
-						],
-					},
-				]),
-			),
+			]),
 		));
 });
 
