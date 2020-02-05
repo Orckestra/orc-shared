@@ -1,7 +1,7 @@
 import React from "react";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import Bar from "./Bar";
-import { useNavigationState } from "./withNavigationData";
+import { useNavigationState } from "./useNavigationState";
 
 // Tab lists stored to localstorage?
 
