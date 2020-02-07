@@ -81,7 +81,7 @@ describe("loadConfig", () => {
 					"called with",
 					[undefined, { lavish: true, people: 15, listThings: ["Foo", "Bar"] }],
 					"to equal",
-					"https://example.com/api/?lavish=true&people=15&listThings[]=Foo&listThings[]=Bar",
+					'https://example.com/api/?lavish=true&people=15&listThings=["Foo","Bar"]',
 				));
 		});
 	});
