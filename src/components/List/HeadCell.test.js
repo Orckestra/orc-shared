@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import Checkbox from "../Checkbox";
@@ -19,24 +20,40 @@ describe("HeadCell", () => {
 			width: 42,
 		};
 		return expect(
-			<table>
-				<thead>
-					<tr>
-						<HeadCell columnDef={columnDef} />
-					</tr>
-				</thead>
-			</table>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<thead>
+						<tr>
+							<HeadCell columnDef={columnDef} />
+						</tr>
+					</thead>
+				</table>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<table>
-				<thead>
-					<tr>
-						<TableHeader width={42}>
-							<HeadBox>Test column</HeadBox>
-						</TableHeader>
-					</tr>
-				</thead>
-			</table>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<table>
+					<thead>
+						<tr>
+							<TableHeader width={42}>
+								<HeadBox>Test column</HeadBox>
+							</TableHeader>
+						</tr>
+					</thead>
+				</table>
+			</Provider>,
 		);
 	});
 
@@ -143,29 +160,45 @@ describe("HeadCell", () => {
 			sort: () => {},
 		};
 		return expect(
-			<IntlProvider locale="en">
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<table>
+						<thead>
+							<tr>
+								<HeadCell columnDef={columnDef} />
+							</tr>
+						</thead>
+					</table>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
 				<table>
 					<thead>
 						<tr>
-							<HeadCell columnDef={columnDef} />
+							<TableHeader onClick={columnDef.sort}>
+								<HeadBox>
+									Test column
+									<SortMark />
+								</HeadBox>
+							</TableHeader>
 						</tr>
 					</thead>
 				</table>
-			</IntlProvider>,
-			"when mounted",
-			"to satisfy",
-			<table>
-				<thead>
-					<tr>
-						<TableHeader onClick={columnDef.sort}>
-							<HeadBox>
-								Test column
-								<SortMark />
-							</HeadBox>
-						</TableHeader>
-					</tr>
-				</thead>
-			</table>,
+			</Provider>,
 		);
 	});
 
@@ -177,29 +210,45 @@ describe("HeadCell", () => {
 			sortDirection: "asc",
 		};
 		return expect(
-			<IntlProvider locale="en">
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<table>
+						<thead>
+							<tr>
+								<HeadCell columnDef={columnDef} />
+							</tr>
+						</thead>
+					</table>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
 				<table>
 					<thead>
 						<tr>
-							<HeadCell columnDef={columnDef} />
+							<TableHeader>
+								<HeadBox>
+									Test column
+									<SortMark direction="asc" />
+								</HeadBox>
+							</TableHeader>
 						</tr>
 					</thead>
 				</table>
-			</IntlProvider>,
-			"when mounted",
-			"to satisfy",
-			<table>
-				<thead>
-					<tr>
-						<TableHeader>
-							<HeadBox>
-								Test column
-								<SortMark direction="asc" />
-							</HeadBox>
-						</TableHeader>
-					</tr>
-				</thead>
-			</table>,
+			</Provider>,
 		);
 	});
 
@@ -211,29 +260,45 @@ describe("HeadCell", () => {
 			sortDirection: "desc",
 		};
 		return expect(
-			<IntlProvider locale="en">
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<table>
+						<thead>
+							<tr>
+								<HeadCell columnDef={columnDef} />
+							</tr>
+						</thead>
+					</table>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
 				<table>
 					<thead>
 						<tr>
-							<HeadCell columnDef={columnDef} />
+							<TableHeader>
+								<HeadBox>
+									Test column
+									<SortMark direction="desc" />
+								</HeadBox>
+							</TableHeader>
 						</tr>
 					</thead>
 				</table>
-			</IntlProvider>,
-			"when mounted",
-			"to satisfy",
-			<table>
-				<thead>
-					<tr>
-						<TableHeader>
-							<HeadBox>
-								Test column
-								<SortMark direction="desc" />
-							</HeadBox>
-						</TableHeader>
-					</tr>
-				</thead>
-			</table>,
+			</Provider>,
 		);
 	});
 });

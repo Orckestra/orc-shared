@@ -1,11 +1,11 @@
 import React from "react";
+import { Provider } from "rreact-redux";
 import { Router, MemoryRouter } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import { Ignore } from "unexpected-reaction";
 import { getClassName } from "../../utils/testUtils";
-import Text from "../Text";
 import FullTab, {
 	Tab,
 	PageTab,
@@ -24,11 +24,19 @@ describe("Tab", () => {
 
 	it("renders a module tab with icon and label", () =>
 		expect(
-			<Router history={history}>
-				<IntlProvider locale="en">
-					<Tab module icon="test" label="A module" href="/Foo/modu" />
-				</IntlProvider>
-			</Router>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Router history={history}>
+					<IntlProvider locale="en">
+						<Tab module icon="test" label="A module" href="/Foo/modu" />
+					</IntlProvider>
+				</Router>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{
@@ -47,9 +55,7 @@ describe("Tab", () => {
 					<ModuleTab>
 						<TabLink to="/Foo/modu">
 							<ModuleIcon id="test" />
-							<TabText>
-								<Text message="A module" />
-							</TabText>
+							<TabText>A module</TabText>
 						</TabLink>
 					</ModuleTab>
 				</IntlProvider>
@@ -58,17 +64,25 @@ describe("Tab", () => {
 
 	it("renders an active module tab", () =>
 		expect(
-			<Router history={history}>
-				<IntlProvider locale="en">
-					<Tab
-						module
-						active
-						icon="test"
-						label={{ id: "test.module", defaultMessage: "A module" }}
-						href="/Foo/modu"
-					/>
-				</IntlProvider>
-			</Router>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Router history={history}>
+					<IntlProvider locale="en">
+						<Tab
+							module
+							active
+							icon="test"
+							label={{ id: "test.module", defaultMessage: "A module" }}
+							href="/Foo/modu"
+						/>
+					</IntlProvider>
+				</Router>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Router history={history}>
@@ -76,11 +90,7 @@ describe("Tab", () => {
 					<ModuleTab active>
 						<TabLink to="/Foo/modu">
 							<ModuleIcon id="test" />
-							<TabText>
-								<Text
-									message={{ id: "test.module", defaultMessage: "A module" }}
-								/>
-							</TabText>
+							<TabText>A module</TabText>
 						</TabLink>
 					</ModuleTab>
 				</IntlProvider>
@@ -89,17 +99,25 @@ describe("Tab", () => {
 
 	it("renders a tab outside the current scope", () =>
 		expect(
-			<Router history={history}>
-				<IntlProvider locale="en">
-					<Tab
-						module
-						outsideScope
-						icon="test"
-						label={{ id: "test.module", defaultMessage: "A module" }}
-						href="/Foo/modu"
-					/>
-				</IntlProvider>
-			</Router>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Router history={history}>
+					<IntlProvider locale="en">
+						<Tab
+							module
+							outsideScope
+							icon="test"
+							label={{ id: "test.module", defaultMessage: "A module" }}
+							href="/Foo/modu"
+						/>
+					</IntlProvider>
+				</Router>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{
@@ -128,24 +146,30 @@ describe("Tab", () => {
 	it("renders a page tab with label and close button", () => {
 		const close = () => {};
 		return expect(
-			<Router history={history}>
-				<IntlProvider locale="en">
-					<Tab
-						label={{ id: "test.page", defaultMessage: "A page" }}
-						href="/Foo/modu/page"
-						close={close}
-					/>
-				</IntlProvider>
-			</Router>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Router history={history}>
+					<IntlProvider locale="en">
+						<Tab
+							label={{ id: "test.page", defaultMessage: "A page" }}
+							href="/Foo/modu/page"
+							close={close}
+						/>
+					</IntlProvider>
+				</Router>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Router history={history}>
 				<IntlProvider locale="en">
 					<PageTab>
 						<TabLink to="/Foo/modu/page">
-							<TabText>
-								<Text message={{ id: "test.page", defaultMessage: "A page" }} />
-							</TabText>
+							<TabText>A page</TabText>
 							<CloseIcon onClick={close} />
 						</TabLink>
 					</PageTab>
@@ -157,11 +181,19 @@ describe("Tab", () => {
 	it("renders an active page tab", () => {
 		const close = () => {};
 		return expect(
-			<Router history={history}>
-				<IntlProvider locale="en">
-					<Tab active href="/Foo/modu/page" close={close} />
-				</IntlProvider>
-			</Router>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Router history={history}>
+					<IntlProvider locale="en">
+						<Tab active href="/Foo/modu/page" close={close} />
+					</IntlProvider>
+				</Router>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Router history={history}>
@@ -184,16 +216,24 @@ describe("Tab", () => {
 			const innerClose = sinon.spy().named("innerClose");
 			const close = sinon.spy(() => innerClose).named("close");
 			return expect(
-				<Router history={history}>
-					<IntlProvider locale="en">
-						<FullTab
-							label="A page"
-							href="/Foo/modu/page/sub"
-							mappedFrom="/Foo/modu/page"
-							close={close}
-						/>
-					</IntlProvider>
-				</Router>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<Router history={history}>
+						<IntlProvider locale="en">
+							<FullTab
+								label="A page"
+								href="/Foo/modu/page/sub"
+								mappedFrom="/Foo/modu/page"
+								close={close}
+							/>
+						</IntlProvider>
+					</Router>
+				</Provider>,
 				"when mounted",
 				"with event",
 				{

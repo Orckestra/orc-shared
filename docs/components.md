@@ -198,6 +198,8 @@ Displays a horizontal toggle switch. This is a wrapper around a `<input type="ch
 
 Will selectively render a plain text string or a translated `react-intl` message. If the message requires values but does not have them along (in `message.values`), will render a placeholder. If it fails (e.g. there is no message or it is faulty) will render the error message in bold bright red.
 
+If `message.value` contains a function, this is interpreted as a Redux selector, and used as such. It is expected to return an object containing values, which will be validated as mentioned above.
+
 ## ToastList
 
 - `toasts`: An array containing prop objects for the toasts to be shown, each as follows:

@@ -1,8 +1,8 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
 import { getClassName, getClassSelector } from "../../utils/testUtils";
-import Text from "../Text";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
 import { RoundButton } from "./Inputs/SmallButton";
@@ -82,55 +82,71 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlistfixedstat"
-					rowField={{ type: "TextInput", name: "data", label: "A label" }}
-					getUpdater={getUpdater}
-					rowCount={3}
-					staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-					values={{
-						testlistfixedstat: [
-							{ id: 4, data: "foo" },
-							{ id: 5, data: "bar" },
-						],
-					}}
-				/>
-			</IntlProvider>,
-			"when mounted",
-			"to satisfy",
-			<List>
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
 				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-						labelOnly
-					/>
-				</IntlProvider>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data" }]}
-						listIndex={0}
-						values={{ id: 4, data: "foo", stat: true }}
-					/>
-				</IntlProvider>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data" }]}
-						listIndex={1}
-						values={{ id: 5, data: "bar", stat: false }}
-					/>
-				</IntlProvider>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data" }]}
-						listIndex={2}
+					<FieldList
+						name="testlistfixedstat"
+						rowField={{ type: "TextInput", name: "data", label: "A label" }}
+						getUpdater={getUpdater}
+						rowCount={3}
+						staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
 						values={{
-							id: expect.it("to be a number").and("to be greater than", 5),
-							stat: true,
+							testlistfixedstat: [
+								{ id: 4, data: "foo" },
+								{ id: 5, data: "bar" },
+							],
 						}}
 					/>
 				</IntlProvider>
-			</List>,
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<List>
+					<IntlProvider locale="en">
+						<FieldElements
+							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+							labelOnly
+						/>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FieldElements
+							fields={[{ type: "TextInput", name: "data" }]}
+							listIndex={0}
+							values={{ id: 4, data: "foo", stat: true }}
+						/>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FieldElements
+							fields={[{ type: "TextInput", name: "data" }]}
+							listIndex={1}
+							values={{ id: 5, data: "bar", stat: false }}
+						/>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FieldElements
+							fields={[{ type: "TextInput", name: "data" }]}
+							listIndex={2}
+							values={{
+								id: expect.it("to be a number").and("to be greater than", 5),
+								stat: true,
+							}}
+						/>
+					</IntlProvider>
+				</List>
+			</Provider>,
 		);
 	});
 
@@ -138,50 +154,66 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlisttallrows"
-					rowField={{ type: "TextInput", name: "data", label: "A label" }}
-					getUpdater={getUpdater}
-					rowCount={3}
-					tallRows
-					staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-					values={{
-						testlisttallrows: [
-							{ id: 4, data: "foo" },
-							{ id: 5, data: "bar" },
-						],
-					}}
-				/>
-			</IntlProvider>,
-			"when mounted",
-			"to satisfy",
-			<List tallRows>
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
 				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-						listIndex={0}
-						values={{ id: 4, data: "foo", stat: true }}
-					/>
-				</IntlProvider>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-						listIndex={1}
-						values={{ id: 5, data: "bar", stat: false }}
-					/>
-				</IntlProvider>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-						listIndex={2}
+					<FieldList
+						name="testlisttallrows"
+						rowField={{ type: "TextInput", name: "data", label: "A label" }}
+						getUpdater={getUpdater}
+						rowCount={3}
+						tallRows
+						staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
 						values={{
-							id: expect.it("to be a number").and("to be greater than", 5),
-							stat: true,
+							testlisttallrows: [
+								{ id: 4, data: "foo" },
+								{ id: 5, data: "bar" },
+							],
 						}}
 					/>
 				</IntlProvider>
-			</List>,
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<List tallRows>
+					<IntlProvider locale="en">
+						<FieldElements
+							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+							listIndex={0}
+							values={{ id: 4, data: "foo", stat: true }}
+						/>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FieldElements
+							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+							listIndex={1}
+							values={{ id: 5, data: "bar", stat: false }}
+						/>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FieldElements
+							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+							listIndex={2}
+							values={{
+								id: expect.it("to be a number").and("to be greater than", 5),
+								stat: true,
+							}}
+						/>
+					</IntlProvider>
+				</List>
+			</Provider>,
 		);
 	});
 
@@ -236,44 +268,58 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlistminvar"
-					rowField={{ type: "TextInput", name: "data" }}
-					getUpdater={getUpdater}
-					values={{}}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<FieldList
+						name="testlistminvar"
+						rowField={{ type: "TextInput", name: "data" }}
+						getUpdater={getUpdater}
+						values={{}}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<List>
-					<FieldElements
-						fields={[
-							{
-								type: "Combination",
-								name: "rowField",
-								proportions: [100, "30px"],
-								fields: [
-									{ type: "TextInput", name: "data" },
-									{
-										type: "SmallButton",
-										name: REMOVE_ROW,
-										primary: true,
-										icon: "cross",
-									},
-								],
-							},
-						]}
-						labelOnly
-					/>
-					<Field>
-						<ListControlButton>
-							<Text message="[add]" />
-						</ListControlButton>
-					</Field>
-				</List>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<List>
+						<FieldElements
+							fields={[
+								{
+									type: "Combination",
+									name: "rowField",
+									proportions: [100, "30px"],
+									fields: [
+										{ type: "TextInput", name: "data" },
+										{
+											type: "SmallButton",
+											name: REMOVE_ROW,
+											primary: true,
+											icon: "cross",
+										},
+									],
+								},
+							]}
+							labelOnly
+						/>
+						<Field>
+							<ListControlButton>[add]</ListControlButton>
+						</Field>
+					</List>
+				</IntlProvider>
+			</Provider>,
 		);
 	});
 
@@ -281,118 +327,132 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlistvaradd"
-					rowField={{
-						type: "Combination",
-						name: "rowField",
-						proportions: [50, 50],
-						fields: [
-							{ type: "TextInput", name: "data" },
-							{
-								type: "NumberInput",
-								name: "num",
-							},
-						],
-					}}
-					getUpdater={getUpdater}
-					values={{
-						testlistvaradd: [
-							{ id: 101, data: "foo", num: 55 },
-							{ id: 102, data: "bar", num: 81 },
-						],
-					}}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<FieldList
+						name="testlistvaradd"
+						rowField={{
+							type: "Combination",
+							name: "rowField",
+							proportions: [50, 50],
+							fields: [
+								{ type: "TextInput", name: "data" },
+								{
+									type: "NumberInput",
+									name: "num",
+								},
+							],
+						}}
+						getUpdater={getUpdater}
+						values={{
+							testlistvaradd: [
+								{ id: 101, data: "foo", num: 55 },
+								{ id: 102, data: "bar", num: 81 },
+							],
+						}}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			expect
 				.it(
 					"to satisfy",
-					<IntlProvider locale="en">
-						<List>
-							<FieldElements
-								fields={[
-									{
-										type: "Combination",
-										name: "rowField",
-										proportions: [50, 50, "30px"],
-										fields: [
-											{ type: "TextInput", name: "data" },
-											{
-												type: "NumberInput",
-												name: "num",
-											},
-											{
-												type: "SmallButton",
-												name: REMOVE_ROW,
-												primary: true,
-												icon: "cross",
-												altText: "[remove]",
-											},
-										],
-									},
-								]}
-								labelOnly
-							/>
-							<FieldElements
-								listIndex={0}
-								fields={[
-									{
-										type: "Combination",
-										name: "rowField",
-										proportions: [50, 50, "30px"],
-										fields: [
-											{ type: "TextInput", name: "data" },
-											{
-												type: "NumberInput",
-												name: "num",
-											},
-											{
-												type: "SmallButton",
-												name: REMOVE_ROW,
-												primary: true,
-												icon: "cross",
-												altText: "[remove]",
-											},
-										],
-									},
-								]}
-								values={{ id: 101, data: "foo", num: 55 }}
-							/>
-							<FieldElements
-								listIndex={1}
-								fields={[
-									{
-										type: "Combination",
-										name: "rowField",
-										proportions: [50, 50, "30px"],
-										fields: [
-											{ type: "TextInput", name: "data" },
-											{
-												type: "NumberInput",
-												name: "num",
-											},
-											{
-												type: "SmallButton",
-												name: REMOVE_ROW,
-												primary: true,
-												icon: "cross",
-												altText: "[remove]",
-											},
-										],
-									},
-								]}
-								values={{ id: 102, data: "bar", num: 81 }}
-							/>
-							<Field>
-								<ListControlButton>
-									<Text message="[add]" />
-								</ListControlButton>
-							</Field>
-						</List>
-					</IntlProvider>,
+					<Provider
+						store={{
+							subscribe: () => {},
+							dispatch: () => {},
+							getState: () => ({}),
+						}}
+					>
+						<IntlProvider locale="en">
+							<List>
+								<FieldElements
+									fields={[
+										{
+											type: "Combination",
+											name: "rowField",
+											proportions: [50, 50, "30px"],
+											fields: [
+												{ type: "TextInput", name: "data" },
+												{
+													type: "NumberInput",
+													name: "num",
+												},
+												{
+													type: "SmallButton",
+													name: REMOVE_ROW,
+													primary: true,
+													icon: "cross",
+													altText: "[remove]",
+												},
+											],
+										},
+									]}
+									labelOnly
+								/>
+								<FieldElements
+									listIndex={0}
+									fields={[
+										{
+											type: "Combination",
+											name: "rowField",
+											proportions: [50, 50, "30px"],
+											fields: [
+												{ type: "TextInput", name: "data" },
+												{
+													type: "NumberInput",
+													name: "num",
+												},
+												{
+													type: "SmallButton",
+													name: REMOVE_ROW,
+													primary: true,
+													icon: "cross",
+													altText: "[remove]",
+												},
+											],
+										},
+									]}
+									values={{ id: 101, data: "foo", num: 55 }}
+								/>
+								<FieldElements
+									listIndex={1}
+									fields={[
+										{
+											type: "Combination",
+											name: "rowField",
+											proportions: [50, 50, "30px"],
+											fields: [
+												{ type: "TextInput", name: "data" },
+												{
+													type: "NumberInput",
+													name: "num",
+												},
+												{
+													type: "SmallButton",
+													name: REMOVE_ROW,
+													primary: true,
+													icon: "cross",
+													altText: "[remove]",
+												},
+											],
+										},
+									]}
+									values={{ id: 102, data: "bar", num: 81 }}
+								/>
+								<Field>
+									<ListControlButton>[add]</ListControlButton>
+								</Field>
+							</List>
+						</IntlProvider>
+					</Provider>,
 				)
 				.and("with event", {
 					type: "click",
@@ -420,19 +480,27 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlistrowdel"
-					rowField={{ type: "TextInput", name: "data" }}
-					getUpdater={getUpdater}
-					values={{
-						testlistrowdel: [
-							{ id: 8, data: "bar" },
-							{ id: 9, data: "foo" },
-						],
-					}}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<FieldList
+						name="testlistrowdel"
+						rowField={{ type: "TextInput", name: "data" }}
+						getUpdater={getUpdater}
+						values={{
+							testlistrowdel: [
+								{ id: 8, data: "bar" },
+								{ id: 9, data: "foo" },
+							],
+						}}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{

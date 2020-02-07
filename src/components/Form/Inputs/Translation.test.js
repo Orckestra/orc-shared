@@ -6,7 +6,6 @@ import { MemoryRouter } from "react-router-dom";
 import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
 import { spyOnConsole, getClassName } from "../../../utils/testUtils";
-import Text from "../../Text";
 import { ButtonWrapper } from "./FieldButtons";
 import { FormInput } from "./Text";
 import TranslationInput, {
@@ -60,7 +59,7 @@ describe("TranslationInput", () => {
 				</IntlProvider>
 				<ShowButton onClick={expect.it("to be a function")}>
 					<ShowButtonChevron />
-					<Text message="Show more things" />
+					Show more things
 				</ShowButton>
 			</TranslationWrapper>,
 		));

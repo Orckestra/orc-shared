@@ -81,9 +81,9 @@ describe("loadConfig", () => {
 				expect(
 					buildUrl,
 					"called with",
-					[undefined, { lavish: true, people: 15 }],
+					[undefined, { lavish: true, people: 15, listThings: ["Foo", "Bar"] }],
 					"to equal",
-					"https://example.com/api/?lavish=true&people=15",
+					"https://example.com/api/?lavish=true&people=15&listThings[]=Foo&listThings[]=Bar",
 				));
 		});
 	});

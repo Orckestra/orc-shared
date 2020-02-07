@@ -28,83 +28,131 @@ describe("FormPage", () => {
 
 	it("renders a form with a single field", () =>
 		expect(
-			<IntlProvider locale="en">
-				<FormPage
-					fields={fields}
-					values={{ text1: "foo" }}
-					getUpdater={getUpdater}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<FormPage
+						fields={fields}
+						values={{ text1: "foo" }}
+						getUpdater={getUpdater}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<Wrapper>
-					<Form spanWidth={1}>
-						<FieldElements
-							getUpdater={getUpdater}
-							fields={fields}
-							values={{ text1: "foo" }}
-						/>
-					</Form>
-				</Wrapper>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Wrapper>
+						<Form spanWidth={1}>
+							<FieldElements
+								getUpdater={getUpdater}
+								fields={fields}
+								values={{ text1: "foo" }}
+							/>
+						</Form>
+					</Wrapper>
+				</IntlProvider>
+			</Provider>,
 		));
 
 	it("still respects 'wide' flag", () =>
 		expect(
-			<IntlProvider locale="en">
-				<FormPage
-					wide
-					fields={fields}
-					values={{ text1: "foo" }}
-					getUpdater={getUpdater}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<FormPage
+						wide
+						fields={fields}
+						values={{ text1: "foo" }}
+						getUpdater={getUpdater}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<Wrapper>
-					<Form spanWidth={1}>
-						<FieldElements
-							getUpdater={getUpdater}
-							fields={fields}
-							values={{ text1: "foo" }}
-						/>
-					</Form>
-				</Wrapper>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Wrapper>
+						<Form spanWidth={1}>
+							<FieldElements
+								getUpdater={getUpdater}
+								fields={fields}
+								values={{ text1: "foo" }}
+							/>
+						</Form>
+					</Wrapper>
+				</IntlProvider>
+			</Provider>,
 		));
 
 	it("renders a form with a multiple fields", () =>
 		expect(
-			<IntlProvider locale="en">
-				<FormPage
-					cols={[2, 1]}
-					fields={manyFields}
-					values={{ text1: "foo" }}
-					getUpdater={getUpdater}
-				/>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<FormPage
+						cols={[2, 1]}
+						fields={manyFields}
+						values={{ text1: "foo" }}
+						getUpdater={getUpdater}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<Wrapper>
-					<Form spanWidth={2}>
-						<FieldElements
-							getUpdater={getUpdater}
-							fields={manyFields.slice(0, 5)}
-							values={{ text1: "foo" }}
-						/>
-					</Form>
-					<Form spanWidth={1}>
-						<FieldElements
-							getUpdater={getUpdater}
-							fields={manyFields.slice(5, 10)}
-							values={{ text1: "foo" }}
-						/>
-					</Form>
-				</Wrapper>
-			</IntlProvider>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<Wrapper>
+						<Form spanWidth={2}>
+							<FieldElements
+								getUpdater={getUpdater}
+								fields={manyFields.slice(0, 5)}
+								values={{ text1: "foo" }}
+							/>
+						</Form>
+						<Form spanWidth={1}>
+							<FieldElements
+								getUpdater={getUpdater}
+								fields={manyFields.slice(5, 10)}
+								values={{ text1: "foo" }}
+							/>
+						</Form>
+					</Wrapper>
+				</IntlProvider>
+			</Provider>,
 		));
 });
 

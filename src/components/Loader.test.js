@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { spyOnConsole } from "../utils/testUtils";
 import LoadingIcon from "./LoadingIcon";
@@ -37,14 +38,30 @@ describe("Loader placeholder", () => {
 			const error = new Error("This is a test");
 			const retry = () => {};
 			return expect(
-				<ThemeProvider theme={{}}>
-					<Loading {...{ error, retry }} />
-				</ThemeProvider>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={{}}>
+						<Loading {...{ error, retry }} />
+					</ThemeProvider>
+				</Provider>,
 				"when mounted",
 				"to satisfy",
-				<ThemeProvider theme={{}}>
-					<ErrorPlaceholder message="This is a test" onClick={retry} />
-				</ThemeProvider>,
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={{}}>
+						<ErrorPlaceholder message="This is a test" onClick={retry} />
+					</ThemeProvider>
+				</Provider>,
 			).then(() =>
 				expect(console.error, "to have calls satisfying", [
 					{ args: [new Error("This is a test")] },

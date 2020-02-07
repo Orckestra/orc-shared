@@ -3,7 +3,6 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import sinon from "sinon";
-import Text from "../Text";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
 import {
@@ -49,27 +48,15 @@ describe("About", () => {
 			<IntlProvider locale="en">
 				<AboutBox in>
 					<img src={logoImage} alt="Orckestra" />
+					<AboutParagraph>Version x.y.z</AboutParagraph>
+					<AboutParagraph>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
-						<Text
-							message={{
-								id: "foo",
-								defaultMessage: "Version {version}",
-								values: { version: "x.y.z" },
-							}}
-						/>
+						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						<Text message="Copyright all rights reserved" />
-					</AboutParagraph>
-					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/">
-							<Text message="Test App" />
-						</AboutLink>
-					</AboutParagraph>
-					<AboutParagraph>
-						<Text message="Copyright" />
+						Copyright
 						<br />
-						<Text message="All rights reserved" />
+						All rights reserved
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,

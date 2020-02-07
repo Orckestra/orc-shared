@@ -1,7 +1,7 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { spyOnConsole } from "../utils/testUtils";
-import Text from "./Text";
 import Placeholder, {
 	PlaceholderBox,
 	PlaceholderIcon,
@@ -13,22 +13,26 @@ describe("Placeholder", () => {
 	spyOnConsole();
 	it("renders a placeholder with icon, title, and subtitle", () =>
 		expect(
-			<Placeholder
-				icon="testIcon"
-				title="A title"
-				subtitle="A subtitle"
-				otherProp={true}
-			/>,
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Placeholder
+					icon="testIcon"
+					title="A title"
+					subtitle="A subtitle"
+					otherProp={true}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<PlaceholderBox otherProp={true}>
 				<PlaceholderIcon id="testIcon" />
-				<PlaceholderTitle>
-					<Text message="A title" />
-				</PlaceholderTitle>
-				<PlaceholderSubtitle>
-					<Text message="A subtitle" />
-				</PlaceholderSubtitle>
+				<PlaceholderTitle>A title</PlaceholderTitle>
+				<PlaceholderSubtitle>A subtitle</PlaceholderSubtitle>
 			</PlaceholderBox>,
 		).then(() => expect(console.error, "was not called")));
 
@@ -52,21 +56,29 @@ describe("Placeholder", () => {
 
 	it("translates title and subtitle if given message descriptors", () =>
 		expect(
-			<IntlProvider
-				locale="en"
-				messages={{
-					"test.title": "The title",
-					"test.subtitle": "The subtitle",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
 				}}
 			>
-				<Placeholder
-					title={{ id: "test.title", defaultMessage: "A default title" }}
-					subtitle={{
-						id: "test.subtitle",
-						defaultMessage: "A default subtitle",
+				<IntlProvider
+					locale="en"
+					messages={{
+						"test.title": "The title",
+						"test.subtitle": "The subtitle",
 					}}
-				/>
-			</IntlProvider>,
+				>
+					<Placeholder
+						title={{ id: "test.title", defaultMessage: "A default title" }}
+						subtitle={{
+							id: "test.subtitle",
+							defaultMessage: "A default subtitle",
+						}}
+					/>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<PlaceholderBox>
