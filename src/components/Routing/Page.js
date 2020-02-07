@@ -1,17 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Switch, Route } from "react-router";
-import { memoize } from "../../utils";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import withWaypointing from "./withWaypointing";
 
-const getWrappedView = memoize((path, View) =>
-	withErrorBoundary(path)(withWaypointing(View)),
-);
-
 const Page = ({ component: View, path, pages = {}, subpages = {} }) => {
-	const WrappedView = getWrappedView(path, View);
+	const WrappedView = useMemo(
+		() => withErrorBoundary(path)(withWaypointing(View)),
+		[path, View],
+	);
 	return (
 		<React.Fragment>
 			<Switch>

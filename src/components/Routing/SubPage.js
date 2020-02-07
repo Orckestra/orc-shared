@@ -1,16 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled, { useTheme } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import UrlPattern from "url-pattern";
-import { getThemeProp, memoize } from "../../utils";
+import { getThemeProp } from "../../utils";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { mapHref } from "../../actions/navigation";
 import Toolbar from "../Toolbar";
 import withWaypointing from "./withWaypointing";
-
-const getWrappedView = memoize((path, View) =>
-	withErrorBoundary(path)(withWaypointing(View)),
-);
 
 export const Backdrop = styled.div`
 	position: absolute;
@@ -50,7 +46,11 @@ export const SubPage = ({ config, match, location, history, root }) => {
 	const tools = useSelector(toolSelector);
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
-	const WrappedView = getWrappedView(location.pathname, View);
+	const path = location.pathname;
+	const WrappedView = useMemo(
+		() => withErrorBoundary(path)(withWaypointing(View)),
+		[path, View],
+	);
 	const closeSubPage = () => {
 		history.push(baseHref);
 		dispatch(mapHref(baseHref, baseHref));
