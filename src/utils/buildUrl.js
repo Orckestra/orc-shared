@@ -1,7 +1,11 @@
 /* Constructs a URL search string from an object with key value pairs */
 const buildParamString = params =>
 	Object.entries(params)
-		.map(([key, value]) => `${key}=${value}`)
+		.map(([key, value]) =>
+			Array.isArray(value)
+				? value.map(val => `${key}[]=${val}`).join("&")
+				: `${key}=${value}`,
+		)
 		.join("&");
 
 /* Placeholder until config loads */
