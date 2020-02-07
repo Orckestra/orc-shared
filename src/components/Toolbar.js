@@ -15,7 +15,7 @@ export const Bar = styled.div`
 `;
 
 export const ToolGroup = styled.div`
-	flex: 0 0;
+	flex: 0 0 auto;
 	display: flex;
 
 	& > *:not(:last-child) {
@@ -31,7 +31,7 @@ export const ToolGroup = styled.div`
 `;
 
 export const ToolbarButton = styled(IconButton)`
-	flex: 0 0;
+	flex: 0 0 auto;
 	margin: 0 5px;
 	min-width: auto;
 
@@ -43,7 +43,7 @@ export const ToolbarButton = styled(IconButton)`
 
 export const ToolbarInput = styled(Input)`
 	height: 30px;
-	flex: 0 0;
+	flex: 0 0 auto;
 	margin: 0 5px;
 
 	&:focus {

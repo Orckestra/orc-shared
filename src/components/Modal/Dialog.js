@@ -17,6 +17,7 @@ const dialogLook = {
 export const Dialog = styled.div`
 	flex: 0 0 auto;
 	margin: auto;
+	align-self: center;
 	z-index: 10000;
 	${props => dialogLook[props.look]};
 `;

@@ -44,6 +44,8 @@ const FilteredLink = ({ outsideScope, ...props }) => <Link {...props} />;
 
 export const TabLink = styled(FilteredLink)`
 	flex: 0 1 100%;
+	min-width: 100px;
+	width: max-content;
 	overflow: hidden;
 	color: inherit;
 	text-decoration: none;
@@ -68,6 +70,7 @@ export const ModuleIcon = styled(Icon)`
 
 export const TabText = styled.span`
 	flex: 0 9999999 100%;
+	min-width: 50px;
 	max-width: 350px;
 	white-space: nowrap;
 	overflow: hidden;
