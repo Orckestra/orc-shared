@@ -16,6 +16,8 @@ export const PlaceholderCell = styled.div`
 `;
 
 export const PlaceholderBox = styled.div`
+	padding-top: 30px;
+	width: 100%;
 	margin: auto;
 `;
 
