@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 let hasWarned = false;
 const noCutout = () => {
@@ -14,7 +14,7 @@ const noCutout = () => {
 
 const useLoader = (loadActions, cutoutSelector = noCutout) => {
 	const dispatch = useDispatch();
-	const cutout = useSelector(cutoutSelector);
+	const cutout = !!useSelector(cutoutSelector, shallowEqual);
 	useEffect(() => {
 		const actions = Array.isArray(loadActions) ? loadActions : [loadActions];
 		if (!cutout) {
