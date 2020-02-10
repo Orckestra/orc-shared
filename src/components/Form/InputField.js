@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useIntl } from "react-intl";
 import inputs from "./Inputs";
 import Field from "./Field";
@@ -15,7 +15,7 @@ export const InputField = ({
 	...props
 }) => {
 	const [wasBlurred, setBlurred] = useState(false);
-	props.onBlur = () => setBlurred(true);
+	props.onBlur = useCallback(() => setBlurred(true), [setBlurred]);
 	const { formatMessage } = useIntl();
 	const Input = inputs[type];
 	if (!Input) {

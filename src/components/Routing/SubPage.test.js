@@ -60,7 +60,7 @@ describe("SubPage", () => {
 		};
 	});
 	afterAll(() => {
-		history.spy.restore();
+		history.push.restore();
 	});
 
 	it("shows a dialog containing the configured view", () =>
@@ -109,7 +109,6 @@ describe("SubPage", () => {
 							pathname: "/foo/bar",
 							search: "",
 						}}
-						routeIsAligned={true}
 					/>
 				</Dialog>
 			</div>,

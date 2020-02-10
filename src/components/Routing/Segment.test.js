@@ -7,12 +7,13 @@ import Segment from "./Segment";
 const View = () => <div id="view" />;
 
 describe("Segment", () => {
-	let state, store;
+	let match, state, store;
 	beforeEach(() => {
+		match = { path: "/foo/bar", url: "/foo/bar", params: {} };
 		state = Immutable.fromJS({
 			navigation: {
 				route: {
-					match: { path: "/foo/bar", url: "/foo/bar", params: {} },
+					match,
 				},
 			},
 		});
@@ -25,8 +26,12 @@ describe("Segment", () => {
 	it("shows the selected view", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<Segment location={{ pathname: "/" }} config={{ component: View }} />
+				<MemoryRouter initialEntries={["/foo/bar"]}>
+					<Segment
+						location={{ pathname: "/" }}
+						config={{ component: View }}
+						match={match}
+					/>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
