@@ -1,12 +1,18 @@
 import React from "react";
 import { injectIntl } from "react-intl";
 import { withStateHandlers } from "recompose";
+import { memoize } from "../../utils";
 import inputs from "./Inputs";
 import Field from "./Field";
 
 /* istanbul ignore next */
 export const withBlurFlag = withStateHandlers(() => ({ wasBlurred: false }), {
-	onBlur: () => () => ({ wasBlurred: true }),
+	setBlurred: () => () => ({ wasBlurred: true }),
+});
+
+/* istanbul ignore next */
+const getOnBlur = memoize(func => () => {
+	window.setTimeout(func, 500);
 });
 
 export const InputField = ({
@@ -20,6 +26,7 @@ export const InputField = ({
 	placeholder,
 	required,
 	wasBlurred,
+	setBlurred,
 	...props
 }) => {
 	const Input = inputs[type];
@@ -52,6 +59,7 @@ export const InputField = ({
 						? intl.formatMessage(placeholder)
 						: undefined
 				}
+				onBlur={getOnBlur(setBlurred)}
 				required={required && wasBlurred}
 			/>
 		</Field>
