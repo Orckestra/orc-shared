@@ -29,7 +29,7 @@ export const SelectBox = styled.label`
 	max-height: 70px;
 	overflow: hidden;
 	padding: 5px 10px;
-	border 1px solid #ccc;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 	background-color: white;
 
@@ -61,7 +61,7 @@ export const SelectBox = styled.label`
 		transform: rotate(0.5turn);
 		transform-origin: center 8px;
 	}
-	
+
 	${InnerSelect}:invalid + & {
 		border-color: ${getThemeProp(["errorColor"], "#ce4844")};
 		box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
