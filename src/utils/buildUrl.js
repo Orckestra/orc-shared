@@ -3,7 +3,7 @@ const buildParamString = params =>
 	Object.entries(params)
 		.map(([key, value]) =>
 			Array.isArray(value)
-				? value.map(val => `${key}[]=${val}`).join("&")
+				? `${key}=${JSON.stringify(value)}`
 				: `${key}=${value}`,
 		)
 		.join("&");
