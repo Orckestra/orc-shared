@@ -11,10 +11,13 @@ export const MenuIcon = styled(Icon).attrs({
 `;
 
 export const Wrapper = styled.div`
+	box-sizing: border-box;
 	width: 50px;
 	height: 100%;
+	padding: 0 13px;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	border-radius: 4px;
 
 	&:hover {
