@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import UrlPattern from "url-pattern";
 import { selectRoutePath, selectRouteParams } from "../../selectors/navigation";
-import { useNavigationHandler } from "../../hocs/withNavigationLink";
+import useNavigationHandler from "../../hooks/useNavigationHandler";
 import { unwrapImmutable } from "../../utils";
 
 const useScopeSelect = (id, closeSelector) => {
