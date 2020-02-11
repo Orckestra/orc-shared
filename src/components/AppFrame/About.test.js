@@ -42,7 +42,7 @@ describe("About", () => {
 						}}
 					/>
 				</AboutParagraph>
-				<AboutParagraph>
+				<AboutParagraph long>
 					<Text message="Copyright all rights reserved" />
 				</AboutParagraph>
 				<AboutParagraph>
