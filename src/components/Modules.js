@@ -1,5 +1,5 @@
 import React from "react";
-import routingConnector from "../hocs/routingConnector";
+import { useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { getCurrentScope } from "../selectors/navigation";
@@ -14,29 +14,27 @@ export const Module = withErrorBoundary("Module")(
 	},
 );
 
-export const Modules = ({ modules, scope }) => (
-	<React.Fragment>
-		<Navigation modules={modules} />
-		<Switch>
-			{Object.entries(modules).map(([name, module]) => {
-				return (
-					<Route
-						key={name}
-						path={"/:scope/" + name}
-						render={route => (
-							<Module config={module} path={"/:scope/" + name} {...route} />
-						)}
-					/>
-				);
-			})}
-			<Redirect to={`/${scope}/${Object.keys(modules)[0]}`} />
-		</Switch>
-	</React.Fragment>
-);
+export const Modules = ({ modules }) => {
+	const scope = useSelector(getCurrentScope);
+	return (
+		<React.Fragment>
+			<Navigation modules={modules} />
+			<Switch>
+				{Object.entries(modules).map(([name, module]) => {
+					return (
+						<Route
+							key={name}
+							path={"/:scope/" + name}
+							render={route => (
+								<Module config={module} path={"/:scope/" + name} {...route} />
+							)}
+						/>
+					);
+				})}
+				<Redirect to={`/${scope}/${Object.keys(modules)[0]}`} />
+			</Switch>
+		</React.Fragment>
+	);
+};
 
-/* istanbul ignore next */
-export default routingConnector(
-	/* istanbul ignore next */ state => ({
-		scope: getCurrentScope(state),
-	}),
-)(Modules);
+export default Modules;
