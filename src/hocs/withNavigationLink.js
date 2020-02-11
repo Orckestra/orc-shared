@@ -1,5 +1,5 @@
-import { push } from "connected-react-router";
-import routingConnector from "./routingConnector";
+import { useHistory } from "react-router-dom";
+import { withProps } from "recompose";
 
 const analyzeHref = href => {
 	const url = new URL(href || "", window.location);
@@ -18,22 +18,26 @@ const isActiveHref = (href, location) => {
 	);
 };
 
-const mapStateToProps = (state, ownProps) => ({
-	active: isActiveHref(ownProps.href),
-});
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-	const props = {};
-	props.onClick = event => {
-		const traits = analyzeHref(ownProps.href);
-		if (traits.local) {
-			event.preventDefault();
-			if (!traits.self) {
-				dispatch(push(ownProps.href));
+export const useNavigationHandler = href => {
+	const history = useHistory();
+	const active = isActiveHref(href);
+	const { local, self } = analyzeHref(href);
+	return [
+		event => {
+			if (local) {
+				event.preventDefault();
+				if (!self) {
+					history.push(href);
+				}
 			}
-		}
-	};
-	return props;
+		},
+		active,
+	];
 };
 
-export default routingConnector(mapStateToProps, mapDispatchToProps);
+const withNavigationLink = withProps(({ href }) => {
+	const [onClick, active] = useNavigationHandler(href);
+	return { active, onClick };
+});
+
+export default withNavigationLink;

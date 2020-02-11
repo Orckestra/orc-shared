@@ -7,7 +7,7 @@ import { Selector, Wrapper, SearchInput, InputBox } from "./Selector";
 import { Wrapper as BranchWrapper } from "../Treeview/Branch";
 import { Root } from "../Treeview/Leaf";
 import { Label } from "../Treeview/Label";
-import { ScopeNode } from "./ScopeNode";
+import { ScopeIcon, ContentLabel, ScopeText } from "./ScopeNode";
 
 describe("Selector", () => {
 	let props, modalRoot, state, store, nodes;
@@ -81,7 +81,10 @@ describe("Selector", () => {
 							<BranchWrapper>
 								<Root>
 									<Label>
-										<ScopeNode name="Global" type="test" id="Global" />
+										<ContentLabel id="selectorNodeGlobal" type="test">
+											<ScopeIcon type="test" />
+											<ScopeText>Global</ScopeText>
+										</ContentLabel>
 									</Label>
 								</Root>
 							</BranchWrapper>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
 import { mount, simulate } from "react-dom-testing";
 import sinon from "sinon";
 import withNavigationLink from "./withNavigationLink";
@@ -10,25 +11,29 @@ const TestComp = ({ active, staticContext, ...props }) => (
 );
 
 describe("withNavigationLink", () => {
-	let fakeStore, mockEvent;
+	let fakeStore, mockEvent, history, preventDefault;
 	beforeEach(() => {
 		fakeStore = {
 			subscribe: () => {},
 			getState: () => {},
-			dispatch: sinon.spy().named("dispatch"),
+			dispatch: () => {},
 		};
+		history = createMemoryHistory();
+		sinon.spy(history, "push");
+		preventDefault = sinon.spy().named("event.preventDefault");
 		mockEvent = {
 			type: "click",
-			data: { preventDefault: sinon.spy().named("event.preventDefault") },
+			data: { preventDefault },
 		};
 	});
+
 	it("sets an active flag if the current path matches the href", () =>
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
-					<MemoryRouter>
+					<Router history={history}>
 						<Comp href="/" />
-					</MemoryRouter>
+					</Router>
 				</Provider>,
 				"when mounted",
 				"to satisfy",
@@ -40,9 +45,9 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
-					<MemoryRouter>
+					<Router history={history}>
 						<Comp href="/foo" />
-					</MemoryRouter>
+					</Router>
 				</Provider>,
 				"when mounted",
 				"to satisfy",
@@ -54,24 +59,15 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
-					<MemoryRouter>
+					<Router history={history}>
 						<Comp href="/foo" />
-					</MemoryRouter>
+					</Router>
 				</Provider>,
 			);
 			simulate(element, mockEvent);
 			return Promise.all([
-				expect(mockEvent.data.preventDefault, "was called"),
-				expect(fakeStore.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: "@@router/CALL_HISTORY_METHOD",
-								payload: { method: "push", args: ["/foo"] },
-							},
-						],
-					},
-				]),
+				expect(preventDefault, "was called"),
+				expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]),
 			]);
 		}));
 
@@ -79,15 +75,15 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
-					<MemoryRouter>
+					<Router history={history}>
 						<Comp href="/" />
-					</MemoryRouter>
+					</Router>
 				</Provider>,
 			);
 			simulate(element, mockEvent);
 			return Promise.all([
-				expect(mockEvent.data.preventDefault, "was called"),
-				expect(fakeStore.dispatch, "was not called"),
+				expect(preventDefault, "was called"),
+				expect(history.push, "was not called"),
 			]);
 		}));
 
@@ -95,15 +91,15 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
-					<MemoryRouter>
+					<Router history={history}>
 						<Comp href="http://google.com/" />
-					</MemoryRouter>
+					</Router>
 				</Provider>,
 			);
 			simulate(element, mockEvent);
 			return Promise.all([
-				expect(mockEvent.data.preventDefault, "was not called"),
-				expect(fakeStore.dispatch, "was not called"),
+				expect(preventDefault, "was not called"),
+				expect(history.push, "was not called"),
 			]);
 		}));
 
@@ -111,15 +107,15 @@ describe("withNavigationLink", () => {
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
-					<MemoryRouter>
+					<Router history={history}>
 						<Comp />
-					</MemoryRouter>
+					</Router>
 				</Provider>,
 			);
 			simulate(element, mockEvent);
 			return Promise.all([
-				expect(mockEvent.data.preventDefault, "was called"),
-				expect(fakeStore.dispatch, "was not called"),
+				expect(preventDefault, "was called"),
+				expect(history.push, "was not called"),
 			]);
 		}));
 });
