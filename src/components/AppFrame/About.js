@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
+import { ifFlag } from "../../utils";
 import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
@@ -44,6 +45,14 @@ AboutBox.defaultProps = { timeout: 800, unmountOnExit: true };
 
 export const AboutParagraph = styled.p`
 	margin-top: 20px;
+	${ifFlag(
+		"long",
+		css`
+			html[lang^="fr"] & {
+				font-size: 10px;
+			}
+		`,
+	)}
 `;
 
 export const AboutLink = styled.a`
@@ -75,7 +84,7 @@ export const About = ({ messages }) => {
 					}}
 				/>
 			</AboutParagraph>
-			<AboutParagraph>
+			<AboutParagraph long>
 				<Text message={messages.copyrightTermsNotice} />
 			</AboutParagraph>
 			<AboutParagraph>
