@@ -4,6 +4,7 @@ import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { mount, simulate } from "react-dom-testing";
 import sinon from "sinon";
+import { spyOnConsole } from "../utils/testUtils";
 import withNavigationLink from "./withNavigationLink";
 
 const TestComp = ({ active, staticContext, ...props }) => (
@@ -26,6 +27,29 @@ describe("withNavigationLink", () => {
 			data: { preventDefault },
 		};
 	});
+
+	spyOnConsole(["warn"]);
+
+	it("provides a deprecation warning on use", () =>
+		expect(withNavigationLink, "when called with", [TestComp])
+			.then(Comp => {
+				mount(
+					<Provider store={fakeStore}>
+						<Router history={history}>
+							<Comp href="/foo" />
+						</Router>
+					</Provider>,
+				);
+			})
+			.then(() =>
+				expect(console.warn, "to have calls satisfying", [
+					{
+						args: [
+							expect.it("to contain", "withNavigationLink has been deprecated"),
+						],
+					},
+				]),
+			));
 
 	it("sets an active flag if the current path matches the href", () =>
 		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>

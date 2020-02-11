@@ -48,6 +48,8 @@ Provides a click event handler to the component, which will attempt to change th
 
 Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via `connected-react-router`. If the path points to the current one, no navigation takes place.
 
+Deprecated in favor of [useNavigationHandler](hooks.md#usenavigationhandlername).
+
 ## `withRequestActivity(request)(Component)`
 
 **Deprecated, was only ever used in boilerplate test site. Easily replaced with `useSelector` hook from `react-redux`, and [`selectActivity(requestName)`](actionsreducersselectors.md#requests).**
