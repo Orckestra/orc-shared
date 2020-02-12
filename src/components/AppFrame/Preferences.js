@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getThemeProp, memoize, unwrapImmutable } from "../../utils";
 import Sidepanel from "../Sidepanel";
 import Button from "../Button";
@@ -69,20 +69,52 @@ export const PrefButton = styled(Button)`
 	min-width: 110px;
 `;
 
-export const getUpdater = memoize(update =>
+export const createGetUpdater = memoize(update =>
 	memoize(name => value => update(name, value)),
 );
 
-export const Preferences = ({
-	save,
-	clear,
-	language,
-	applications,
-	messages,
-}) => {
+const usePreferenceSetup = () => {
+	const dispatch = useDispatch();
 	const [viewState, updateViewState] = useViewState(PREFS_NAME);
+	return {
+		show: viewState.show,
+		values: {
+			language: useSelector(currentLocale),
+			application: useSelector(defaultAppId) || "",
+			...viewState,
+		},
+		getUpdater: createGetUpdater(updateViewState),
+		languageOptions: unwrapImmutable(useSelector(orderedCultureOptionList)),
+		applicationOptions: unwrapImmutable(
+			useSelector(localizedAppOptionSelector),
+		),
+		clear: () => dispatch(setValue(PREFS_NAME, { show: false })),
+		save: () => {
+			if (viewState.language) {
+				dispatch(changeLocale(viewState.language));
+				dispatch(setDefaultLanguage(viewState.language));
+				// TODO: reload any language dependent data?
+			}
+			if (viewState.application) {
+				dispatch(setMyApplication(viewState.application));
+			}
+			dispatch(setValue(PREFS_NAME, { show: false }));
+		},
+	};
+};
+
+export const Preferences = ({ messages }) => {
+	const {
+		show,
+		getUpdater,
+		save,
+		clear,
+		languageOptions,
+		applicationOptions,
+		values,
+	} = usePreferenceSetup();
 	return (
-		<PrefPanel in={viewState.show} width="380px" timeout={400}>
+		<PrefPanel in={show} width="380px" timeout={400}>
 			<Header>
 				<Text message={messages.preferences} />
 			</Header>
@@ -93,28 +125,24 @@ export const Preferences = ({
 							label: messages.language,
 							type: "Selector",
 							name: "language",
-							options: language.options,
+							options: languageOptions,
 						},
 						{
 							label: messages.defaultApp,
 							type: "Selector",
 							name: "application",
-							options: applications.options,
+							options: applicationOptions,
 						},
 					]}
-					getUpdater={getUpdater(updateViewState)}
-					values={{
-						language: language.current,
-						application: applications.current || "",
-						...viewState,
-					}}
+					getUpdater={getUpdater}
+					values={values}
 				/>
 			</PrefForm>
 			<Footer>
 				<PrefButton id="cancelPrefs" onClick={clear}>
 					<Text message={messages.cancel} />
 				</PrefButton>
-				<PrefButton id="savePrefs" primary onClick={() => save(viewState)}>
+				<PrefButton id="savePrefs" primary onClick={save}>
 					<Text message={messages.save} />
 				</PrefButton>
 			</Footer>
@@ -122,33 +150,4 @@ export const Preferences = ({
 	);
 };
 
-const withPreferences = connect(
-	state => ({
-		language: {
-			current: currentLocale(state),
-			options: unwrapImmutable(orderedCultureOptionList(state)),
-		},
-		applications: {
-			current: defaultAppId(state),
-			options: unwrapImmutable(localizedAppOptionSelector(state)),
-		},
-	}),
-	dispatch => ({
-		clear: () => dispatch(setValue(PREFS_NAME, { show: false })),
-		save: ({ language, application }) => {
-			if (language) {
-				dispatch(changeLocale(language));
-				dispatch(setDefaultLanguage(language));
-				// TODO: reload any language dependent data?
-			}
-			if (application) {
-				dispatch(setMyApplication(application));
-			}
-			dispatch(setValue(PREFS_NAME, { show: false }));
-		},
-	}),
-);
-
-const WiredPrefs = withPreferences(Preferences);
-
-export default props => <WiredPrefs {...props} />;
+export default Preferences;

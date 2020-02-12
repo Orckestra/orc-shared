@@ -25,7 +25,7 @@ import Preferences, {
 	PrefForm,
 	Footer,
 	PrefButton,
-	getUpdater,
+	createGetUpdater,
 	PREFS_NAME,
 } from "./Preferences";
 
@@ -548,7 +548,7 @@ describe("Preferences", () => {
 		);
 	});
 
-	describe("getUpdater", () => {
+	describe("createGetUpdater", () => {
 		let update, update2;
 		beforeEach(() => {
 			update = sinon.spy().named("update");
@@ -556,7 +556,7 @@ describe("Preferences", () => {
 		});
 		it("returns an update function", () =>
 			expect(
-				getUpdater,
+				createGetUpdater,
 				"when called with",
 				[update],
 				"called with",
@@ -570,11 +570,11 @@ describe("Preferences", () => {
 			));
 
 		it("memoizes on update function and field name", () => {
-			const update1_1 = getUpdater(update)("111");
-			const update1_2 = getUpdater(update)("222");
-			const update2_1 = getUpdater(update2)("111");
-			const update2_2 = getUpdater(update2)("222");
-			expect(getUpdater, "called with", [update]).then(f =>
+			const update1_1 = createGetUpdater(update)("111");
+			const update1_2 = createGetUpdater(update)("222");
+			const update2_1 = createGetUpdater(update2)("111");
+			const update2_2 = createGetUpdater(update2)("222");
+			expect(createGetUpdater, "called with", [update]).then(f =>
 				expect(f, "called with", ["111"], "to be", update1_1).and(
 					"called with",
 					["222"],
@@ -582,7 +582,7 @@ describe("Preferences", () => {
 					update1_2,
 				),
 			);
-			expect(getUpdater, "called with", [update2]).then(f =>
+			expect(createGetUpdater, "called with", [update2]).then(f =>
 				expect(f, "called with", ["111"], "to be", update2_1).and(
 					"called with",
 					["222"],
