@@ -49,6 +49,7 @@ export const CategoryList = ({
 	placeholder,
 	keyField = ["id"],
 	categoryField = ["category"],
+	openAll = false,
 	height,
 	rowBackgroundGetter = () => {},
 }) => {
@@ -93,7 +94,7 @@ export const CategoryList = ({
 		Object.entries(rowCategories).forEach(([key, rows]) => {
 			const clickHandler = () =>
 				updateViewState("closedCategories", arrayToggle(closedCategories, key));
-			const closed = closedCategories.includes(key);
+			const closed = !openAll && closedCategories.includes(key);
 			rowElements.push(
 				<CategoryRow key={"category_" + key}>
 					<CategoryHeader

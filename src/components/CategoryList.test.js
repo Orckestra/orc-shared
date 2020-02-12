@@ -307,6 +307,83 @@ describe("CategoryList", () => {
 		);
 	});
 
+	it("renders a closed category open when flagged to open all", () => {
+		const rows = [
+			{ key: "a", category: "Stuff" },
+			{ key: "b", category: "Things" },
+			{ key: "c", category: "Stuff" },
+			{ key: "d", category: "Things" },
+			{ key: "e", category: "Things" },
+			{ key: "f", category: "Stuff" },
+		];
+		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
+		const rowOnClick = () => {};
+		viewState = { closedCategories: ["Stuff"] };
+		return expect(
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
+					openAll
+				/>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<CategoryHeader colSpan={2}>
+							<CategoryIndicator />
+							Stuff
+						</CategoryHeader>
+					</CategoryRow>
+					<TableRow>
+						<TableData>a</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>c</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>f</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<CategoryRow>
+						<CategoryHeader colSpan={2}>
+							<CategoryIndicator />
+							Things
+						</CategoryHeader>
+					</CategoryRow>
+					<TableRow>
+						<TableData>b</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>d</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>e</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
+		);
+	});
+
 	it("toggles a category closed", () => {
 		const rows = [
 			{ key: "a", category: "Stuff" },

@@ -49,7 +49,7 @@ describe("About", () => {
 				<AboutBox in>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>Version x.y.z</AboutParagraph>
-					<AboutParagraph>Copyright all rights reserved</AboutParagraph>
+					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
 					</AboutParagraph>
