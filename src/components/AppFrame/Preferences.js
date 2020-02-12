@@ -104,7 +104,7 @@ export const Preferences = ({
 					]}
 					getUpdater={getUpdater(updateViewState)}
 					values={{
-						language: language.current || "",
+						language: language.current,
 						application: applications.current || "",
 						...viewState,
 					}}
@@ -122,7 +122,7 @@ export const Preferences = ({
 	);
 };
 
-export const withPreferences = connect(
+const withPreferences = connect(
 	state => ({
 		language: {
 			current: currentLocale(state),
