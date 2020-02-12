@@ -3,35 +3,9 @@ import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { LOGOUT } from "../reducers/request";
-import { Relogin, withLoggedInStatus } from "./Relogin";
+import Relogin from "./Relogin";
 
 describe("Relogin", () => {
-	let clear;
-	beforeEach(() => {
-		clear = () => {};
-	});
-
-	it("is an iframe pointing to the origin", () =>
-		expect(
-			<Relogin loggedOut clear={clear} />,
-			"when mounted",
-			"to satisfy",
-			<iframe title="relogin" src={window.location.origin} onLoad={clear} />,
-		));
-
-	it("does not render if not needed", () =>
-		expect(
-			<div>
-				<Relogin loggedOut={false} />
-			</div>,
-			"when mounted",
-			"to satisfy",
-			<div />,
-		));
-});
-
-describe("withLoggedInStatus", () => {
-	const TestComp = ({ clear }) => <div onClick={clear} />;
 	let state, store;
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -46,21 +20,41 @@ describe("withLoggedInStatus", () => {
 		};
 	});
 
+	it("is an iframe pointing to the origin", () =>
+		expect(
+			<Provider store={store}>
+				<Relogin loggedOut />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<iframe title="relogin" src={window.location.origin} />,
+		));
+
+	it("does not render if not needed", () => {
+		state = state.setIn(["requests", LOGOUT], false);
+		return expect(
+			<Provider store={store}>
+				<div>
+					<Relogin loggedOut={false} />
+				</div>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<div />,
+		);
+	});
+
 	it("Sets logout status", () =>
-		expect(withLoggedInStatus, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<EnhComp />
-					</Provider>,
-					"when mounted",
-					"with event",
-					"click",
-				),
-			)
-			.then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [{ type: "__LOGIN_SUCCESS" }] },
-				]),
-			));
+		expect(
+			<Provider store={store}>
+				<Relogin />
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "load" },
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{ args: [{ type: "__LOGIN_SUCCESS" }] },
+			]),
+		));
 });
