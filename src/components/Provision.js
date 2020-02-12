@@ -35,20 +35,20 @@ const Fonts = createGlobalStyle`
 const Provision = ({ store, theme = {}, children }) => (
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
-			<React.Fragment>
-				<Head />
-				<ThemeProvider theme={theme}>
+			<ThemeProvider theme={theme}>
+				<React.Fragment>
+					<Head />
+					<GlobalStyle />
 					<Authenticate>
 						<React.Fragment>
-							<GlobalStyle />
 							<Fonts />
 							<DevPages>
 								<I18n>{React.Children.only(children)}</I18n>
 							</DevPages>
 						</React.Fragment>
 					</Authenticate>
-				</ThemeProvider>
-			</React.Fragment>
+				</React.Fragment>
+			</ThemeProvider>
 		</ConnectedRouter>
 		<Relogin />
 	</Provider>
