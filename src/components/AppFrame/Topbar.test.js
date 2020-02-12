@@ -37,7 +37,7 @@ jest.mock("../../utils/buildUrl", () => {
 describe("Topbar", () => {
 	let state, store, applications, props, clicker, menuMessages, modalRoot;
 	beforeEach(() => {
-		state = Immutable.fromJS({});
+		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
 			subscribe: () => {},
 			dispatch: () => {},
@@ -63,7 +63,6 @@ describe("Topbar", () => {
 		};
 		props = {
 			onClick: clicker,
-			menuLabel: "TestLabel",
 			menuMessages,
 			applications,
 			applicationId: "current",
@@ -160,7 +159,7 @@ describe("useMenuProps", () => {
 
 	let state, store, messages;
 	beforeEach(() => {
-		state = Immutable.fromJS({});
+		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
 			getState: () => state,
 			subscribe: () => {},
@@ -190,6 +189,7 @@ describe("useMenuProps", () => {
 			"to satisfy",
 			<TestComp
 				id="userMenu"
+				menuLabel="foo@bar.com"
 				menuItems={[
 					{
 						id: "userMenuSignOut",

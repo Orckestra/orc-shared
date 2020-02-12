@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useIntl } from "react-intl";
 import { getThemeProp } from "../../utils";
+import { selectCurrentUsername } from "../../selectors/authentication";
 import { setStateField } from "../../actions/view";
 import { signOut } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
@@ -21,6 +22,7 @@ export const useMenuProps = messages => {
 	const dispatch = useDispatch();
 	return {
 		id: "userMenu",
+		menuLabel: useSelector(selectCurrentUsername),
 		menuItems: [
 			{
 				id: "userMenuSignOut",

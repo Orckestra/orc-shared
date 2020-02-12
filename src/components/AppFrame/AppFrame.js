@@ -47,7 +47,6 @@ const AppFrame = ({
 	applicationId,
 	modules,
 	activeModules,
-	menuLabel,
 	children,
 	menuMessages,
 	aboutMessages,
@@ -64,7 +63,7 @@ const AppFrame = ({
 		<Base>
 			<ConnectedToastList />
 			<Topbar
-				{...{ applications, applicationId, menuLabel, menuMessages }}
+				{...{ applications, applicationId, menuMessages }}
 				onClick={reset}
 			/>
 			<Sidebar
@@ -88,7 +87,6 @@ const AppFrame = ({
 };
 AppFrame.displayName = "AppFrame";
 AppFrame.propTypes = {
-	menuLabel: ptLabel.isRequired,
 	applicationId: pt.string.isRequired,
 	modules: pt.array.isRequired,
 	activeModules: pt.array,
