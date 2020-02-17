@@ -14,6 +14,10 @@
 
 Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with user menu and help popup. Modules will be rendered as links in the sidebar, and as routes to components in the viewport, along with a scope selector. It also includes showing toasts with a queued [ToastList](#toastlist), as well as About and Preference elements.
 
+## Authenticate
+
+A wrapper component that ensures a user is logged in to the service before rendering anything. Used by [Provision](#provision), (q.v.) thus not to be used directly by app developers.
+
 ## Button
 
 - `primary`: If this flag is set, the button will be highlighted as a primary button.

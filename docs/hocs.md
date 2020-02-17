@@ -6,9 +6,13 @@ Higher order components are useful for providing state to components while keepi
 
 A combination of the redux store connector with the `react-router` router, enabling routing information to be accessed. Is also used when navigation does not cause a view change as expected. Drop in replacement for `react-redux`'s `connect()` HOC.
 
+Deprecated in favor of hooks from the [`react-redux`](https://react-redux.js.org/next/api/hooks) and [`react-router`](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/hooks.md) libraries.
+
 ## `withAuthentication(Component)`
 
 Used to add an authentication check and loader/error message if not authenticated. Not usually used for app building, but is part of the AppFrame component.
+
+Deprecated in favor of the [Authenticate component](components.md#authenticate).
 
 ## `withClickOutside(Component)`
 
@@ -36,7 +40,7 @@ A `virtual` flag prop will be set on the wrapped component, to signal that it ma
 
 When the wrapped component is mounted, the loader func in the prop named by `loaderName` is called. A `test` function may be included, which takes the props given and should return a boolean - if false, the loader is not called.
 
-Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector)
+Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector).
 
 ## `withLocaleSwitch(Component)`
 
