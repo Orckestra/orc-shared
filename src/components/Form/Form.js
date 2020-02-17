@@ -2,16 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import pt from "prop-types";
 import { memoize } from "../../utils";
-import routingConnector from "../../hocs/routingConnector";
 import withScrollBox from "../../hocs/withScrollBox";
-import { cultureList } from "../../selectors/locale";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-
-export const withCultureCount = routingConnector(
-	state => ({ cultureCount: cultureList(state).size }),
-	() => ({}),
-);
 
 const randomName = () =>
 	Math.floor(Math.random() * 16777215)
@@ -57,8 +50,6 @@ export const FormPage = ({
 	getUpdater,
 	fields,
 	values,
-	width = 1000,
-	cultureCount,
 	wide,
 }) => {
 	let colSpans = wide ? [1] : cols;
@@ -81,7 +72,7 @@ export const FormPage = ({
 	);
 };
 
-const WiredForm = withScrollBox(withCultureCount(FormPage));
+const WiredForm = withScrollBox(FormPage);
 
 WiredForm.propTypes = {
 	getUpdater: pt.func.isRequired,
