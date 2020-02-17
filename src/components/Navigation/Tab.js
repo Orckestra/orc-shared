@@ -5,8 +5,13 @@ import { Link } from "react-router-dom";
 import Text from "../Text";
 import Icon from "../Icon";
 
+// XXX: The below contains an IE10/IE11 targeting CSS hack
+
 export const PageTab = styled.div`
 	flex: 0 1 auto;
+	@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+		flex-basis: 170px;
+	}
 	overflow: hidden;
 	height: 38px;
 	border: 1px solid #cccccc;

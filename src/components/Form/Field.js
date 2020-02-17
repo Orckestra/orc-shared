@@ -48,8 +48,8 @@ export const Label = styled.label`
 
 export const RequiredNotice = styled.div`
 	position: absolute;
-	bottom: -1.4em;
-	left: 12px;
+	bottom: -1.6em;
+	right: 0;
 	color: ${getThemeProp(["errorColor"], "#ce4844")};
 `;
 
