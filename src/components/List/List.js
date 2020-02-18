@@ -87,7 +87,6 @@ export const List = ({
 	rows = [],
 	rowOnClick,
 	placeholder,
-	// selection = [],
 	keyField = ["id"],
 	virtual = false,
 	scrollTop = 0,
