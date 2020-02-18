@@ -15,7 +15,7 @@ import {
 	GET_APPLICATIONS_FAILURE,
 } from "../../actions/applications";
 import { Bar as ScopeBar, AlignedButton } from "../Scope";
-import { Base, ViewPort, AppFrame } from "./AppFrame";
+import AppFrame, { Base, ViewPort } from "./AppFrame";
 import {
 	Wrapper as AppSelWrapper,
 	MenuIcon,
@@ -44,7 +44,6 @@ describe("AppFrame", () => {
 			modules: [],
 			activeModules: ["foo"],
 			menuLabel: "TestLabel",
-			location: { pathname: "/Foo/bar" },
 			menuMessages: {
 				sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
 				preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
@@ -186,7 +185,7 @@ describe("AppFrame", () => {
 		];
 		return expect(
 			<Provider store={store}>
-				<MemoryRouter>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
 					<ThemeProvider theme={{}}>
 						<I18n>
 							<AppFrame {...props} />
@@ -248,7 +247,7 @@ describe("AppFrame", () => {
 		];
 		return expect(
 			<Provider store={store}>
-				<MemoryRouter>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
 					<ThemeProvider theme={{}}>
 						<I18n>
 							<AppFrame noScope {...props} />
@@ -299,7 +298,7 @@ describe("AppFrame", () => {
 		const element = mount(
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
 						<I18n>
 							<AppFrame {...props} />
 						</I18n>
@@ -414,7 +413,7 @@ describe("AppFrame", () => {
 		return expect(
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
 						<I18n>
 							<AppFrame {...props} />
 						</I18n>

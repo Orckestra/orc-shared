@@ -1,21 +1,17 @@
 import React from "react";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { getClassName } from "../../utils/testUtils";
+import { getClassName, PropStruct } from "../../utils/testUtils";
 import Node, { RootNode, LeafNode, TreeContext } from "./Node";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
 import { BeforeIndicator, Indicator, NonIndicator, Label } from "./Label";
 
-const TestComp = ({ children, ...props }) => (
-	<div id={props.id}>{JSON.stringify(props)}</div>
-);
-
 describe("RootNode", () => {
 	let contextValue, Wrap;
 	beforeEach(() => {
 		contextValue = {
-			Content: TestComp,
+			Content: PropStruct,
 			otherProps: { foo: true, bar: false },
 		};
 		Wrap = props => (
@@ -34,7 +30,7 @@ describe("RootNode", () => {
 			"to satisfy",
 			<Root>
 				<Label>
-					<TestComp thing="stuff" foo={true} bar={false} />
+					<PropStruct thing="stuff" foo={true} bar={false} />
 				</Label>
 			</Root>,
 		));
@@ -45,7 +41,7 @@ describe("LeafNode", () => {
 	beforeEach(() => {
 		updater = sinon.spy().named("updater");
 		contextValue = {
-			Content: TestComp,
+			Content: PropStruct,
 			openAll: false,
 			nodeState: { otherNode: false },
 			updateNodeState: updater,
@@ -69,13 +65,7 @@ describe("LeafNode", () => {
 				<BeforeIndicator />
 				<Indicator open={undefined} onClick={expect.it("to be a function")} />
 				<Label>
-					<TestComp
-						thing="stuff"
-						id="testNode"
-						children={["foo"]}
-						foo={true}
-						bar={false}
-					/>
+					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
 				</Label>
 			</Leaf>,
 		));
@@ -91,11 +81,10 @@ describe("LeafNode", () => {
 				<BeforeIndicator />
 				<Indicator open={true} onClick={expect.it("to be a function")} />
 				<Label>
-					<TestComp
+					<PropStruct
 						open={true}
 						thing="stuff"
 						id="testNode"
-						children={["foo"]}
 						foo={true}
 						bar={false}
 					/>
@@ -113,7 +102,7 @@ describe("LeafNode", () => {
 			<Leaf>
 				<NonIndicator />
 				<Label>
-					<TestComp thing="stuff" id="testNode" foo={true} bar={false} />
+					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
 				</Label>
 			</Leaf>,
 		));
@@ -156,7 +145,7 @@ describe("Node", () => {
 			isClosed: { id: "isClosed", children: ["hasKids"], other: "stuff" },
 		};
 		contextValue = {
-			Content: TestComp,
+			Content: PropStruct,
 			openAll: false,
 			getNode: id => nodes[id],
 			nodeState: { hasKids: true },
@@ -203,7 +192,7 @@ describe("Node", () => {
 					"queried for first",
 					"#exists",
 					"to satisfy",
-					<TestComp
+					<PropStruct
 						id="exists"
 						other="data"
 						open={false}
@@ -234,7 +223,7 @@ describe("Node", () => {
 					"queried for first",
 					"#exists",
 					"to satisfy",
-					<TestComp id="exists" other="data" foo={true} bar={false} />,
+					<PropStruct id="exists" other="data" foo={true} bar={false} />,
 				)
 				.and("not to contain", <Branch />),
 		));
@@ -269,7 +258,7 @@ describe("Node", () => {
 					"queried for first",
 					"#hasKids",
 					"to satisfy",
-					<TestComp
+					<PropStruct
 						id="hasKids"
 						other="info"
 						open={true}
@@ -281,9 +270,13 @@ describe("Node", () => {
 					"queried for first",
 					"." + getClassName(<Branch />),
 					"to contain",
-					<div id="exists">
-						<Ignore />
-					</div>,
+					<PropStruct
+						id="exists"
+						other="data"
+						open={false}
+						foo={true}
+						bar={false}
+					/>,
 				),
 		));
 
@@ -311,7 +304,7 @@ describe("Node", () => {
 					"queried for first",
 					"#isClosed",
 					"to satisfy",
-					<TestComp
+					<PropStruct
 						id="isClosed"
 						other="stuff"
 						open={false}
@@ -319,12 +312,7 @@ describe("Node", () => {
 						bar={false}
 					/>,
 				)
-				.and(
-					"not to contain",
-					<div id="hasKids">
-						<Ignore />
-					</div>,
-				),
+				.and("not to contain elements matching", "#hasKids"),
 		));
 
 	it("renders a root node with children as leaf and branch", () =>
@@ -359,13 +347,17 @@ describe("Node", () => {
 					"queried for first",
 					"#isClosed",
 					"to satisfy",
-					<TestComp id="isClosed" other="stuff" foo={true} bar={false} />,
+					<PropStruct id="isClosed" other="stuff" foo={true} bar={false} />,
 				)
 				.and(
 					"to contain",
-					<div id="hasKids">
-						<Ignore />
-					</div>,
+					<PropStruct
+						id="hasKids"
+						other="info"
+						open={true}
+						foo={true}
+						bar={false}
+					/>,
 				),
 		));
 
@@ -404,7 +396,7 @@ describe("Node", () => {
 						"queried for first",
 						"#hasKids",
 						"to satisfy",
-						<TestComp
+						<PropStruct
 							id="hasKids"
 							other="info"
 							open={true}
@@ -416,9 +408,13 @@ describe("Node", () => {
 						"queried for first",
 						"." + getClassName(<Branch />),
 						"to contain",
-						<div id="exists">
-							<Ignore />
-						</div>,
+						<PropStruct
+							id="exists"
+							other="data"
+							open={true}
+							foo={true}
+							bar={false}
+						/>,
 					),
 			));
 
@@ -456,7 +452,7 @@ describe("Node", () => {
 						"queried for first",
 						"#isClosed",
 						"to satisfy",
-						<TestComp
+						<PropStruct
 							id="isClosed"
 							other="stuff"
 							open={true}
@@ -468,9 +464,13 @@ describe("Node", () => {
 						"queried for first",
 						"." + getClassName(<Branch />),
 						"to contain",
-						<div id="hasKids">
-							<Ignore />
-						</div>,
+						<PropStruct
+							id="hasKids"
+							other="info"
+							open={true}
+							foo={true}
+							bar={false}
+						/>,
 					),
 			));
 	});

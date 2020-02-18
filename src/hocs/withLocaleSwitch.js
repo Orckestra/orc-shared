@@ -1,11 +1,14 @@
-import routingConnector from "./routingConnector";
+import { useDispatch } from "react-redux";
+import { withProps } from "recompose";
 import { changeLocale } from "../actions/locale";
 
-const withLocaleSwitch = routingConnector(
-	() => ({}),
-	(dispatch, ownProps) => ({
-		onClick: () => dispatch(changeLocale(ownProps.locale)),
-	}),
-);
+console.warn("withLocaleSwitch has been deprecated");
+
+const withLocaleSwitch = withProps(({ locale }) => {
+	const dispatch = useDispatch();
+	return {
+		onClick: () => dispatch(changeLocale(locale)),
+	};
+});
 
 export default withLocaleSwitch;

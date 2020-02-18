@@ -1,42 +1,47 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
+import { mount, act } from "react-dom-testing";
+import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
-import LoadingIcon from "./LoadingIcon";
 import ErrorPlaceholder from "./ErrorPlaceholder";
-import { Loading } from "./Loader";
+import Loader, { Loading } from "./Loader";
 
 describe("Loader placeholder", () => {
-	it("renders null if no props set", () =>
-		expect(
-			<ThemeProvider theme={{}}>
+	let clock;
+	beforeEach(() => {
+		clock = sinon.useFakeTimers();
+	});
+	afterEach(() => {
+		clock.restore();
+	});
+
+	it("renders null, then load spinner if no props set", () => {
+		const loader = mount(
+			<ThemeProvider theme={{ icons: { loading: "test-loader" } }}>
 				<div>
 					<Loading />
 				</div>
 			</ThemeProvider>,
-			"when mounted",
-			"to satisfy",
-			<div />,
-		));
-
-	it("renders a load spinner is pastDelay flag set", () =>
+		);
+		expect(loader, "to satisfy", <div />);
+		act(() => {
+			clock.tick(200);
+		});
 		expect(
-			<ThemeProvider theme={{}}>
-				<Loading pastDelay />
-			</ThemeProvider>,
-			"when mounted",
+			loader,
+			"queried for first",
+			"svg",
 			"to satisfy",
-			<ThemeProvider theme={{}}>
-				<LoadingIcon />
-			</ThemeProvider>,
-		));
+			<svg>
+				<use href="#icon-test-loader" />
+			</svg>,
+		);
+	});
 
 	describe("error state", () => {
-		spyOnConsole(["error"]);
-
 		it("renders an error placeholder if error set", () => {
 			const error = new Error("This is a test");
-			const retry = () => {};
 			return expect(
 				<Provider
 					store={{
@@ -46,7 +51,7 @@ describe("Loader placeholder", () => {
 					}}
 				>
 					<ThemeProvider theme={{}}>
-						<Loading {...{ error, retry }} />
+						<Loading {...{ error }} />
 					</ThemeProvider>
 				</Provider>,
 				"when mounted",
@@ -59,14 +64,115 @@ describe("Loader placeholder", () => {
 					}}
 				>
 					<ThemeProvider theme={{}}>
-						<ErrorPlaceholder message="This is a test" onClick={retry} />
+						<ErrorPlaceholder message="This is a test" />
 					</ThemeProvider>
 				</Provider>,
-			).then(() =>
-				expect(console.error, "to have calls satisfying", [
-					{ args: [new Error("This is a test")] },
-				]),
 			);
 		});
+	});
+});
+
+describe("Loader", () => {
+	let clock, buttonLoader, errorLoader;
+	beforeEach(() => {
+		buttonLoader = () => import("./Button");
+		errorLoader = () => Promise.reject(new Error("This is not right"));
+		clock = sinon.useFakeTimers();
+	});
+	afterEach(() => {
+		clock.restore();
+	});
+	spyOnConsole(["error"]);
+
+	it("loads the component", () => {
+		const Comp = Loader(buttonLoader);
+		const loader = mount(
+			<ThemeProvider theme={{}}>
+				<div>
+					<Comp />
+				</div>
+			</ThemeProvider>,
+		);
+		expect(loader, "to satisfy", <div />);
+		act(() => {
+			clock.tick(200);
+		});
+		expect(
+			loader,
+			"queried for first",
+			"svg",
+			"to satisfy",
+			<svg>
+				<use />
+			</svg>,
+		);
+		let load;
+		act(() => {
+			load = Comp.load();
+		});
+		return load.then(() =>
+			expect(
+				loader,
+				"to satisfy",
+				<div>
+					<button />
+				</div>,
+			).then(() => expect(console.error, "was not called")),
+		);
+	});
+
+	it("errors out", () => {
+		const Comp = Loader(errorLoader);
+		const loader = mount(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ThemeProvider theme={{}}>
+					<div>
+						<Comp />
+					</div>
+				</ThemeProvider>
+			</Provider>,
+		);
+		expect(loader, "to satisfy", <div />);
+		act(() => {
+			clock.tick(200);
+		});
+		expect(
+			loader,
+			"queried for first",
+			"svg",
+			"to satisfy",
+			<svg>
+				<use href="#icon-loading" />
+			</svg>,
+		);
+		let load;
+		act(() => {
+			load = Comp.load().catch(() => {});
+		});
+		return load.then(() =>
+			expect(
+				loader,
+				"to satisfy",
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<ThemeProvider theme={{}}>
+						<div>
+							<ErrorPlaceholder message="This is not right" />
+						</div>
+					</ThemeProvider>
+				</Provider>,
+			).then(() => expect(console.error, "was called")),
+		);
 	});
 });

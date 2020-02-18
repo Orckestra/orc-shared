@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Provider } from "react-redux";
+import { mount, act } from "react-dom-testing";
+import { Provider, useSelector } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
@@ -8,21 +9,40 @@ import useLoader from "./useLoader";
 const TestComp = ({ loader, cutout }) => {
 	useLoader(loader, cutout);
 	const [tick, setTick] = useState(0);
-	return <div onClick={() => setTick(tick + 1)}>{tick}</div>;
+	const live = useSelector(state => state.get("live"));
+	return (
+		<div id="test" onClick={() => setTick(tick + 1)} data-live={live}>
+			{tick}
+		</div>
+	);
 };
 
 describe("useLoader", () => {
 	spyOnConsole(["warn"]);
 
-	let loader, state, store;
+	let loader, state, store, appNode;
 	beforeEach(() => {
 		state = Immutable.fromJS({ cutout: "yes", live: 0 });
+		const subs = [];
 		store = {
-			subscribe: () => {},
+			updateState: () => {
+				subs.forEach((sub, i) => {
+					sub();
+				});
+			},
+			subscribe: sub => {
+				subs.push(sub);
+				return () => {};
+			},
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
 		loader = { type: "TEST_ACTION" };
+		appNode = document.createElement("div");
+		document.body.appendChild(appNode);
+	});
+	afterEach(() => {
+		document.body.removeChild(appNode);
 	});
 
 	it("dispatches the loader action on mount if cutout returns falsy", () =>
@@ -89,7 +109,7 @@ describe("useLoader", () => {
 		);
 	});
 
-	it("Only dispatches once if cutout does not change", () =>
+	it("only dispatches once if cutout does not change", () =>
 		expect(
 			<Provider store={store}>
 				<TestComp loader={loader} cutout={state => state.get("live")} />
@@ -108,4 +128,35 @@ describe("useLoader", () => {
 		).then(() =>
 			expect(store.dispatch, "to have calls satisfying", [{ args: [loader] }]),
 		));
+
+	it("fires loader if cutout is falsy, but not again if it becomes truthy", () => {
+		const selector = state => state.get("live");
+		mount(
+			<Provider store={store}>
+				<TestComp loader={loader} cutout={selector} />
+			</Provider>,
+		);
+		expect(store.dispatch, "to have calls satisfying", [{}]);
+		act(() => {
+			state = state.set("live", 1);
+			store.updateState();
+		});
+		expect(store.dispatch, "was called once");
+	});
+
+	it("fires loader if cutout was truthy, becomes falsy", () => {
+		const selector = state => state.get("live");
+		state = state.set("live", 1);
+		mount(
+			<Provider store={store}>
+				<TestComp loader={loader} cutout={selector} />
+			</Provider>,
+		);
+		expect(store.dispatch, "was not called");
+		act(() => {
+			state = state.set("live", 0);
+			store.updateState();
+		});
+		expect(store.dispatch, "was called");
+	});
 });

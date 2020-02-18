@@ -1,39 +1,12 @@
-import { push } from "connected-react-router";
-import routingConnector from "./routingConnector";
+import { withProps } from "recompose";
+import useNavigationHandler from "../hooks/useNavigationHandler";
 
-const analyzeHref = href => {
-	const url = new URL(href || "", window.location);
-	return {
-		local: url.origin === window.location.origin,
-		self: window.location.href === url.href,
-	};
-};
-
-const isActiveHref = (href, location) => {
-	const url = new URL(href, window.location);
-	return (
-		href &&
-		url.origin === window.location.origin &&
-		window.location.pathname.substr(0, url.pathname.length) === url.pathname
+const withNavigationLink = withProps(({ href }) => {
+	console.warn(
+		"Higher order component withNavigationLink has been deprecated in favor of React hook useNavigationHandler",
 	);
-};
-
-const mapStateToProps = (state, ownProps) => ({
-	active: isActiveHref(ownProps.href),
+	const [onClick, active] = useNavigationHandler(href);
+	return { active, onClick };
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-	const props = {};
-	props.onClick = event => {
-		const traits = analyzeHref(ownProps.href);
-		if (traits.local) {
-			event.preventDefault();
-			if (!traits.self) {
-				dispatch(push(ownProps.href));
-			}
-		}
-	};
-	return props;
-};
-
-export default routingConnector(mapStateToProps, mapDispatchToProps);
+export default withNavigationLink;

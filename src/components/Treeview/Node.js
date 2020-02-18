@@ -2,7 +2,7 @@ import React from "react";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
 import { Indicator, BeforeIndicator, NonIndicator, Label } from "./Label";
-import { safeGet } from "../../utils";
+import { safeGet, stripKey } from "../../utils";
 
 export const TreeContext = React.createContext();
 
@@ -28,7 +28,7 @@ export const LeafNode = ({ dark, ...nodeData }) => (
 							<NonIndicator />
 						)}
 						<Label>
-							<Content {...nodeData} {...otherProps} />
+							<Content {...stripKey("children", nodeData)} {...otherProps} />
 						</Label>
 					</React.Fragment>
 				);
@@ -42,7 +42,9 @@ export const RootNode = nodeData => (
 	<Root>
 		<Label>
 			<TreeContext.Consumer>
-				{({ Content, otherProps }) => <Content {...nodeData} {...otherProps} />}
+				{({ Content, otherProps }) => (
+					<Content {...stripKey("children", nodeData)} {...otherProps} />
+				)}
 			</TreeContext.Consumer>
 		</Label>
 	</Root>

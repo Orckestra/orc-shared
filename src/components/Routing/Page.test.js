@@ -86,7 +86,7 @@ describe("Page", () => {
 				<Backdrop />
 				<Dialog>
 					<Bar>
-						<ToolbarButton label={{ icon: "arrow-left" }} />
+						<ToolbarButton label={{ icon: "back" }} />
 						<ToolbarSeparator />
 					</Bar>
 					<Sub2 />

@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Icon from "../Icon";
-import withScopeSelect from "./withScopeSelect";
+import useScopeSelect from "./useScopeSelect";
 import { getThemeProp, switchEnum } from "../../utils";
 
 export const ScopeIcon = styled(Icon).attrs(props => ({
@@ -45,15 +45,18 @@ export const ContentLabel = styled.div`
 	})};
 `;
 
-export const ScopeNode = ({ type, name, id, onClick }) => (
-	<ContentLabel
-		id={"selectorNode" + id}
-		type={type}
-		onClick={type === "Virtual" ? undefined : onClick}
-	>
-		<ScopeIcon type={type} />
-		<ScopeText>{name || id}</ScopeText>
-	</ContentLabel>
-);
+export const ScopeNode = ({ type, name, id, closeSelector }) => {
+	const [onClick] = useScopeSelect(id, closeSelector);
+	return (
+		<ContentLabel
+			id={"selectorNode" + id}
+			type={type}
+			onClick={type === "Virtual" ? undefined : onClick}
+		>
+			<ScopeIcon type={type} />
+			<ScopeText>{name || id}</ScopeText>
+		</ContentLabel>
+	);
+};
 
-export default withScopeSelect(ScopeNode);
+export default ScopeNode;

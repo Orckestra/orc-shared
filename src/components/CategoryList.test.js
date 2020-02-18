@@ -16,10 +16,21 @@ import { HeadTableRow } from "./List/HeadRow";
 import { HeadBox, TableHeader } from "./List/HeadCell";
 
 describe("CategoryList", () => {
+	let store, viewState;
+	beforeEach(() => {
+		store = {
+			subscribe: () => {},
+			dispatch: sinon.spy().named("dispatch"),
+			getState: () => ({ getIn: () => viewState }),
+		};
+	});
+
 	it("renders nothing if no columnDefs", () =>
 		expect(
 			<div>
-				<CategoryList rows={[{ id: "foo" }]} />
+				<Provider store={store}>
+					<CategoryList rows={[{ id: "foo" }]} />
+				</Provider>
 			</div>,
 			"when mounted",
 			"to satisfy",
@@ -28,7 +39,9 @@ describe("CategoryList", () => {
 
 	it("renders a table", () =>
 		expect(
-			<CategoryList columnDefs={[{ fieldName: "a" }]} />,
+			<Provider store={store}>
+				<CategoryList columnDefs={[{ fieldName: "a" }]} />
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Table>
@@ -45,13 +58,15 @@ describe("CategoryList", () => {
 
 	it("renders just a header", () =>
 		expect(
-			<CategoryList
-				columnDefs={[
-					{ fieldName: "a" },
-					{ fieldName: "b" },
-					{ fieldName: "c" },
-				]}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					columnDefs={[
+						{ fieldName: "a" },
+						{ fieldName: "b" },
+						{ fieldName: "c" },
+					]}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -74,15 +89,17 @@ describe("CategoryList", () => {
 
 	it("renders a placeholder if one given and no rows", () =>
 		expect(
-			<CategoryList
-				height={121}
-				columnDefs={[
-					{ fieldName: "a" },
-					{ fieldName: "b" },
-					{ fieldName: "c" },
-				]}
-				placeholder={<div />}
-			/>,
+			<Provider store={store}>
+				<CategoryList
+					height={121}
+					columnDefs={[
+						{ fieldName: "a" },
+						{ fieldName: "b" },
+						{ fieldName: "c" },
+					]}
+					placeholder={<div />}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<table>
@@ -112,13 +129,7 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }];
 		const rowOnClick = () => {};
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
 					columnDefs={columnDefs}
 					rows={rows}
@@ -169,101 +180,12 @@ describe("CategoryList", () => {
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
 					columnDefs={columnDefs}
 					rows={rows}
 					keyField={["key"]}
 					rowOnClick={rowOnClick}
-				/>
-			</Provider>,
-			"when mounted",
-			"to satisfy",
-			<table>
-				<thead>
-					<tr>
-						<th>
-							<Ignore />
-						</th>
-						<th>
-							<Ignore />
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<CategoryRow>
-						<CategoryHeader colSpan={2}>
-							<CategoryIndicator />
-							Stuff
-						</CategoryHeader>
-					</CategoryRow>
-					<TableRow>
-						<TableData>a</TableData>
-						<TableData>Stuff</TableData>
-					</TableRow>
-					<TableRow>
-						<TableData>c</TableData>
-						<TableData>Stuff</TableData>
-					</TableRow>
-					<TableRow>
-						<TableData>f</TableData>
-						<TableData>Stuff</TableData>
-					</TableRow>
-					<CategoryRow>
-						<CategoryHeader colSpan={2}>
-							<CategoryIndicator />
-							Things
-						</CategoryHeader>
-					</CategoryRow>
-					<TableRow>
-						<TableData>b</TableData>
-						<TableData>Things</TableData>
-					</TableRow>
-					<TableRow>
-						<TableData>d</TableData>
-						<TableData>Things</TableData>
-					</TableRow>
-					<TableRow>
-						<TableData>e</TableData>
-						<TableData>Things</TableData>
-					</TableRow>
-				</tbody>
-			</table>,
-		);
-	});
-
-	it("renders a closed category open when flagged to open all", () => {
-		const rows = [
-			{ key: "a", category: "Stuff" },
-			{ key: "b", category: "Things" },
-			{ key: "c", category: "Stuff" },
-			{ key: "d", category: "Things" },
-			{ key: "e", category: "Things" },
-			{ key: "f", category: "Stuff" },
-		];
-		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
-		const rowOnClick = () => {};
-		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-					viewState={{ closedCategories: ["Stuff"] }}
-					openAll
 				/>
 			</Provider>,
 			"when mounted",
@@ -332,20 +254,14 @@ describe("CategoryList", () => {
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
+		viewState = { closedCategories: ["Stuff"] };
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
 					columnDefs={columnDefs}
 					rows={rows}
 					keyField={["key"]}
 					rowOnClick={rowOnClick}
-					viewState={{ closedCategories: ["Stuff"] }}
 				/>
 			</Provider>,
 			"when mounted",
@@ -391,8 +307,7 @@ describe("CategoryList", () => {
 		);
 	});
 
-	it("toggles a category closed", () => {
-		const updater = sinon.spy().named("updateViewState");
+	it("renders a closed category open when flagged to open all", () => {
 		const rows = [
 			{ key: "a", category: "Stuff" },
 			{ key: "b", category: "Things" },
@@ -403,35 +318,116 @@ describe("CategoryList", () => {
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
 		const rowOnClick = () => {};
+		viewState = { closedCategories: ["Stuff"] };
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
 					columnDefs={columnDefs}
 					rows={rows}
 					keyField={["key"]}
 					rowOnClick={rowOnClick}
-					viewState={{ closedCategories: [] }}
-					updateViewState={updater}
+					openAll
+				/>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<CategoryHeader colSpan={2}>
+							<CategoryIndicator />
+							Stuff
+						</CategoryHeader>
+					</CategoryRow>
+					<TableRow>
+						<TableData>a</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>c</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>f</TableData>
+						<TableData>Stuff</TableData>
+					</TableRow>
+					<CategoryRow>
+						<CategoryHeader colSpan={2}>
+							<CategoryIndicator />
+							Things
+						</CategoryHeader>
+					</CategoryRow>
+					<TableRow>
+						<TableData>b</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>d</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+					<TableRow>
+						<TableData>e</TableData>
+						<TableData>Things</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
+		);
+	});
+
+	it("toggles a category closed", () => {
+		const rows = [
+			{ key: "a", category: "Stuff" },
+			{ key: "b", category: "Things" },
+			{ key: "c", category: "Stuff" },
+			{ key: "d", category: "Things" },
+			{ key: "e", category: "Things" },
+			{ key: "f", category: "Stuff" },
+		];
+		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
+		const rowOnClick = () => {};
+		viewState = { closedCategories: [] };
+		return expect(
+			<Provider store={store}>
+				<CategoryList
+					name="test"
+					columnDefs={columnDefs}
+					rows={rows}
+					keyField={["key"]}
+					rowOnClick={rowOnClick}
 				/>
 			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="category_Stuff"]' },
 		).then(() =>
-			expect(updater, "to have calls satisfying", [
-				{ args: ["closedCategories", ["Stuff"]] },
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "VIEW_STATE_SET_FIELD",
+							payload: {
+								name: "test",
+								field: "closedCategories",
+								value: ["Stuff"],
+							},
+						},
+					],
+				},
 			]),
 		);
 	});
 
 	it("toggles a category open", () => {
-		const updater = sinon.spy().named("updateViewState");
 		const rows = [
 			{ key: "a", category: "Stuff" },
 			{ key: "b", category: "Things" },
@@ -442,29 +438,30 @@ describe("CategoryList", () => {
 		];
 		const columnDefs = [{ fieldName: "a" }, { fieldName: "b" }];
 		const rowOnClick = () => {};
+		viewState = { closedCategories: ["Stuff"] };
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
+					name="test"
 					columnDefs={columnDefs}
 					rows={rows}
 					keyField={["key"]}
 					rowOnClick={rowOnClick}
-					viewState={{ closedCategories: ["Stuff"] }}
-					updateViewState={updater}
 				/>
 			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="category_Stuff"]' },
 		).then(() =>
-			expect(updater, "to have calls satisfying", [
-				{ args: ["closedCategories", []] },
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "VIEW_STATE_SET_FIELD",
+							payload: { name: "test", field: "closedCategories", value: [] },
+						},
+					],
+				},
 			]),
 		);
 	});
@@ -480,13 +477,7 @@ describe("CategoryList", () => {
 		};
 		const colorGetter = row => colorMap[row.key];
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
 					columnDefs={columnDefs}
 					rows={rows}
@@ -532,13 +523,7 @@ describe("CategoryList", () => {
 		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
 					columnDefs={columnDefs}
 					rows={rows}
@@ -586,13 +571,7 @@ describe("CategoryList", () => {
 		];
 		const selection = ["a"];
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<CategoryList
 					columnDefs={columnDefs}
 					rows={rows}
@@ -660,21 +639,12 @@ describe("CategoryList", () => {
 			{ type: "select", fieldName: "select" },
 			{ fieldName: "key", label: "Key" },
 		];
-		const selection = ["a", "b", "c"];
+		viewState = {
+			selection: ["a", "b", "c"],
+		};
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					selection={selection}
-				/>
+			<Provider store={store}>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",

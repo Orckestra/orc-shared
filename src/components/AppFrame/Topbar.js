@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
-import { compose, withProps } from "recompose";
-import { injectIntl } from "react-intl";
+import { useDispatch, useSelector } from "react-redux";
+import { useIntl } from "react-intl";
 import { getThemeProp } from "../../utils";
+import { selectCurrentUsername } from "../../selectors/authentication";
 import { setStateField } from "../../actions/view";
 import { signOut } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
@@ -17,46 +17,36 @@ export const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
-
-export const withUserMenu = compose(
-	injectIntl,
-	connect(
-		() => ({}),
-		dispatch => ({
-			menuFuncs: {
-				signOut: () => dispatch(signOut()),
-				showPreferences: () =>
-					dispatch(setStateField(PREFS_NAME, "show", true)),
-				showAbout: () => dispatch(setStateField(ABOUT_NAME, "show", true)),
-			},
-		}),
-	),
-	withProps(({ intl, menuFuncs, messages }) => ({
+export const useMenuProps = messages => {
+	const intl = useIntl();
+	const dispatch = useDispatch();
+	return {
 		id: "userMenu",
+		menuLabel: useSelector(selectCurrentUsername),
 		menuItems: [
 			{
 				id: "userMenuSignOut",
 				label: intl.formatMessage(messages.sign_out),
-				handler: menuFuncs.signOut,
+				handler: () => dispatch(signOut()),
 				icon: "logout-1",
 			},
 			{
 				id: "userMenuPrefsMenu",
 				label: intl.formatMessage(messages.preferences),
-				handler: menuFuncs.showPreferences,
+				handler: () => dispatch(setStateField(PREFS_NAME, "show", true)),
 				icon: "settings-cogwheel",
 			},
 			{
 				id: "userMenuAbout",
 				label: intl.formatMessage(messages.about),
-				handler: menuFuncs.showAbout,
+				handler: () => dispatch(setStateField(ABOUT_NAME, "show", true)),
 				icon: "infomation-circle",
 			},
 		],
-	})),
-);
+	};
+};
 
-export const Menu = withUserMenu(styled(DropMenu)`
+export const StyledMenu = styled(DropMenu)`
 	box-sizing: border-box;
 	font-family: Roboto Condensed, sans-serif;
 	font-size: 12px;
@@ -65,7 +55,11 @@ export const Menu = withUserMenu(styled(DropMenu)`
 	min-width: 180px;
 	padding-top: 14px;
 	padding-right: 32px;
-`);
+`;
+
+export const Menu = ({ messages }) => (
+	<StyledMenu {...useMenuProps(messages)} />
+);
 
 export const AppBox = styled.div`
 	height: 100%;

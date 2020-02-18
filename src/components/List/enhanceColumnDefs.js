@@ -1,6 +1,3 @@
-import { mapProps } from "recompose";
-import useViewState from "../../hooks/useViewState";
-
 const toggleInArray = (nameList, name) => {
 	if (nameList.indexOf(name) !== -1) {
 		return nameList.filter(n => n !== name);
@@ -49,31 +46,15 @@ const enhanceSortableColumn = (sorting, updateViewState, def) => {
 	return newDef;
 };
 
-const enhanceColumnDef = ({ sorting, selection, updateViewState }) => def => {
-	if (def.type === "select") {
-		return enhanceSelectColumn(selection, updateViewState, def);
-	}
-	if (def.sort) {
-		return enhanceSortableColumn(sorting, updateViewState, def);
-	}
-	return def;
-};
+const enhanceColumnDef = (sorting, selection, updateViewState, columnDefs) =>
+	columnDefs.map(def => {
+		if (def.type === "select") {
+			return enhanceSelectColumn(selection, updateViewState, def);
+		}
+		if (def.sort) {
+			return enhanceSortableColumn(sorting, updateViewState, def);
+		}
+		return def;
+	});
 
-const withLinkHooks = mapProps(({ columnDefs, name, ...otherProps }) => {
-	const [viewState, updateViewState] = useViewState(name);
-	const { selection = [], sorting = {} } = viewState;
-	const enhancedColumnDefs = columnDefs.map(
-		enhanceColumnDef({ sorting, selection, updateViewState }),
-	);
-
-	return {
-		columnDefs: enhancedColumnDefs,
-		selection,
-		name,
-		updateViewState,
-		viewState,
-		...otherProps,
-	};
-});
-
-export default withLinkHooks;
+export default enhanceColumnDef;

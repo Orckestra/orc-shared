@@ -2,7 +2,8 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import withAuthentication, { Loader, Wrapper } from "./withAuthentication";
+import withAuthentication from "./withAuthentication";
+import { Wrapper, Loader } from "../components/Authenticate";
 import { ERROR, LOGOUT } from "../reducers/request";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 

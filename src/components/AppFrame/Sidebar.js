@@ -1,7 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled, { withTheme } from "styled-components";
-import { compose, mapProps } from "recompose";
-import routingConnector from "../../hocs/routingConnector";
 import { getThemeProp } from "../../utils";
 import { getCurrentScope } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
@@ -29,15 +28,18 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 	/>
 ));
 
-export const EnhancedMenuItem = compose(
-	routingConnector(state => ({ scope: getCurrentScope(state) })),
-	mapProps(({ path, scope, id, ...remainder }) => ({
+const useEnhancement = (id, path) => {
+	const scope = useSelector(getCurrentScope);
+	return {
 		href: `/${scope}/${id}`,
 		active: path.startsWith(`/${scope}/${id}`),
 		id,
-		...remainder,
-	})),
-)(MenuItem);
+	};
+};
+
+export const EnhancedMenuItem = ({ path, id, ...props }) => (
+	<MenuItem {...props} {...useEnhancement(id, path)} />
+);
 
 const LogoSvg = styled.svg`
 	flex: 0 0 auto;

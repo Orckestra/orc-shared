@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
-import { compose, withHandlers } from "recompose";
 import { ifFlag, memoize } from "../../utils";
 import Button from "../Button";
 import Text from "../Text";
@@ -105,48 +104,6 @@ const decorateField = (field, remove = "[remove]") => {
 	};
 };
 
-export const FieldList = ({
-	name,
-	getRows,
-	staticValues = [],
-	rowField,
-	listUpdater,
-	rowCount,
-	listIndex,
-	tallRows,
-	...props
-}) => {
-	if (listIndex !== undefined) {
-		return <>Cannot render list inside list</>;
-	}
-	const renderField =
-		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
-	return (
-		<List {...{ tallRows }}>
-			{tallRows ? null : <FieldElements fields={[renderField]} labelOnly />}
-			{getRows().map((row, index) => (
-				<FieldElements
-					key={row.id}
-					fields={[tallRows ? renderField : stripLabelFromTree(renderField)]}
-					listIndex={index}
-					getUpdater={listUpdater(index)}
-					values={{
-						...row,
-						...staticValues[index],
-					}}
-				/>
-			))}
-			{rowCount === undefined ? (
-				<Field>
-					<ListControlButton onClick={listUpdater(-1)}>
-						<Text message={props.add || "[add]"} />
-					</ListControlButton>
-				</Field>
-			) : null}
-		</List>
-	);
-};
-
 const createRowGetter = (valueList = [], rowCount) => {
 	const rows = [];
 	if (rowCount === undefined) {
@@ -170,11 +127,6 @@ const createRowGetter = (valueList = [], rowCount) => {
 	}
 	return () => rows;
 };
-
-const withRowGetter = withHandlers({
-	getRows: ({ values, name, rowCount }) =>
-		createRowGetter(values[name], rowCount),
-});
 
 const getListFieldUpdater = (updateAll, getRows) => {
 	return memoize(index => {
@@ -212,9 +164,55 @@ const getListFieldUpdater = (updateAll, getRows) => {
 	});
 };
 
-const withListUpdater = withHandlers({
-	listUpdater: ({ getUpdater, name, getRows }) =>
+const FieldList = ({
+	name,
+	values = {},
+	staticValues = [],
+	getUpdater,
+	rowField,
+	rowCount,
+	listIndex,
+	tallRows,
+	...props
+}) => {
+	const getRows = useCallback(createRowGetter(values[name], rowCount), [
+		values,
+		name,
+		rowCount,
+	]);
+	const listUpdater = useCallback(
 		getListFieldUpdater(getUpdater(name), getRows),
-});
+		[getUpdater, name, getRows],
+	);
+	if (listIndex !== undefined) {
+		return <>Cannot render list inside list</>;
+	}
+	const renderField =
+		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
+	return (
+		<List {...{ tallRows }}>
+			{tallRows ? null : <FieldElements fields={[renderField]} labelOnly />}
+			{getRows().map((row, index) => (
+				<FieldElements
+					key={row.id}
+					fields={[tallRows ? renderField : stripLabelFromTree(renderField)]}
+					listIndex={index}
+					getUpdater={listUpdater(index)}
+					values={{
+						...row,
+						...staticValues[index],
+					}}
+				/>
+			))}
+			{rowCount === undefined ? (
+				<Field>
+					<ListControlButton onClick={listUpdater(-1)}>
+						<Text message={props.add || "[add]"} />
+					</ListControlButton>
+				</Field>
+			) : null}
+		</List>
+	);
+};
 
-export default compose(withRowGetter, withListUpdater)(FieldList);
+export default FieldList;

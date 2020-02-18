@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
+import { spyOnConsole } from "../utils/testUtils";
 import withUpdateHandler from "./withUpdateHandler";
 
 const TestComp = () => <div />;
@@ -11,6 +12,33 @@ describe("withUpdateHandler", () => {
 		node = document.createElement("div");
 		handler = sinon.spy().named("handler");
 	});
+	spyOnConsole(["warn"]);
+
+	it("issues a deprecation warning", () =>
+		expect(
+			withUpdateHandler,
+			"when called with",
+			["loader", props => props.loadOnMount],
+			"when called with",
+			[TestComp],
+		)
+			.then(EnhComp =>
+				expect(
+					<EnhComp update={handler} set={false} />,
+					"when mounted",
+					"to satisfy",
+					<div />,
+				),
+			)
+			.then(() =>
+				expect(console.warn, "to have calls satisfying", [
+					{
+						args: [
+							expect.it("to contain", "withUpdateHandler has been deprecated"),
+						],
+					},
+				]),
+			));
 
 	it("calls named update handler on wrapped component", () =>
 		expect(

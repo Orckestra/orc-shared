@@ -6,8 +6,7 @@ import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import { Ignore } from "unexpected-reaction";
 import { getClassName } from "../../utils/testUtils";
-import FullTab, {
-	Tab,
+import Tab, {
 	PageTab,
 	ModuleTab,
 	TabLink,
@@ -17,9 +16,10 @@ import FullTab, {
 } from "./Tab";
 
 describe("Tab", () => {
-	let history;
+	let history, close;
 	beforeEach(() => {
 		history = createMemoryHistory();
+		close = sinon.spy().named("close");
 	});
 
 	it("renders a module tab with icon and label", () =>
@@ -143,9 +143,8 @@ describe("Tab", () => {
 			</Router>,
 		));
 
-	it("renders a page tab with label and close button", () => {
-		const close = () => {};
-		return expect(
+	it("renders a page tab with label and close button", () =>
+		expect(
 			<Provider
 				store={{
 					subscribe: () => {},
@@ -175,12 +174,10 @@ describe("Tab", () => {
 					</PageTab>
 				</IntlProvider>
 			</Router>,
-		);
-	});
+		));
 
-	it("renders an active page tab", () => {
-		const close = () => {};
-		return expect(
+	it("renders an active page tab", () =>
+		expect(
 			<Provider
 				store={{
 					subscribe: () => {},
@@ -190,11 +187,16 @@ describe("Tab", () => {
 			>
 				<Router history={history}>
 					<IntlProvider locale="en">
-						<Tab active href="/Foo/modu/page" close={close} />
+						<Tab active href="/Foo/modu/page" />
 					</IntlProvider>
 				</Router>
 			</Provider>,
 			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: "." + getClassName(<CloseIcon />),
+			},
 			"to satisfy",
 			<Router history={history}>
 				<IntlProvider locale="en">
@@ -203,50 +205,38 @@ describe("Tab", () => {
 							<TabText>
 								<Ignore />
 							</TabText>
-							<CloseIcon onClick={close} />
+							<CloseIcon onClick={expect.it("to be a function")} />
 						</TabLink>
 					</PageTab>
 				</IntlProvider>
 			</Router>,
-		);
-	});
+		));
 
-	describe("with close handler", () => {
-		it("curries close handler with tab and mapped href", () => {
-			const innerClose = sinon.spy().named("innerClose");
-			const close = sinon.spy(() => innerClose).named("close");
-			return expect(
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
-					<Router history={history}>
-						<IntlProvider locale="en">
-							<FullTab
-								label="A page"
-								href="/Foo/modu/page/sub"
-								mappedFrom="/Foo/modu/page"
-								close={close}
-							/>
-						</IntlProvider>
-					</Router>
-				</Provider>,
-				"when mounted",
-				"with event",
-				{
-					type: "click",
-					target: "." + getClassName(<CloseIcon />),
-				},
-			)
-				.then(() =>
-					expect(close, "to have calls satisfying", [
-						{ args: ["/Foo/modu/page/sub", "/Foo/modu/page"] },
-					]),
-				)
-				.then(() => expect(innerClose, "was called"));
-		});
-	});
+	it("curries close handler with tab and mapped href", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Router history={history}>
+					<IntlProvider locale="en">
+						<Tab
+							label="A page"
+							href="/Foo/modu/page/sub"
+							mappedFrom="/Foo/modu/page"
+							close={close}
+						/>
+					</IntlProvider>
+				</Router>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: "." + getClassName(<CloseIcon />),
+			},
+		).then(() => expect(close, "was called")));
 });

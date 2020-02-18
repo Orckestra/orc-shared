@@ -1,40 +1,14 @@
-import { compose } from "recompose";
-import routingConnector from "./routingConnector";
-import { unwrapImmutable } from "../utils";
-import withInitialLoad from "./withInitialLoad";
-import { currentScopeSelector, scopeGetter } from "../selectors/scope";
-import { getScopes } from "../actions/scopes";
+import { withProps } from "recompose";
+import useScopeData from "../components/Scope/useScopeData";
 
-const buildDefaultNodeState = (current, getScopes) => {
-	let node = current;
-	let viewState = {};
-	while ((node = getScopes(node.parentScopeId))) {
-		viewState[node.id] = true;
-	}
-	return viewState;
-};
-
-const mapStateToProps = state => {
-	const props = {
-		currentScope: unwrapImmutable(currentScopeSelector(state)),
-		getScope: scopeGetter(state),
+const withScopeData = withProps(() => {
+	console.warn("Higher order component withScopeData has been deprecated");
+	const [currentScope, defaultNodeState, getScope] = useScopeData();
+	return {
+		currentScope,
+		defaultNodeState,
+		getScope,
 	};
-	props.defaultNodeState = buildDefaultNodeState(
-		props.currentScope,
-		props.getScope,
-	);
-	return props;
-};
-const mapDispatchToProps = dispatch => ({
-	loadScopes: () => dispatch(getScopes()),
 });
 
-export const withScopeData = routingConnector(
-	mapStateToProps,
-	mapDispatchToProps,
-);
-
-export default compose(
-	withScopeData,
-	withInitialLoad("loadScopes", props => !props.currentScope.name),
-);
+export default withScopeData;

@@ -1,48 +1,30 @@
-import { connect } from "react-redux";
-import { compose, lifecycle } from "recompose";
+import React, { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { unwrapImmutable } from "../../utils";
 import { shiftToast } from "../../actions/toasts";
 import ToastList from "../ToastList";
 
 export const TOAST_TIMEOUT = 5; // seconds
 
-export const withToastData = connect(
-	state => ({
-		toasts: unwrapImmutable(state.getIn(["toasts", "queue"]).take(3)),
-	}),
-	dispatch => ({
-		clearFirstToast: () => dispatch(shiftToast()),
-	}),
-);
+const selectToasts = state => state.getIn(["toasts", "queue"]).take(3);
 
-export const withTimedDismissal = lifecycle({
-	componentDidMount: function() {
-		if (this.props.toasts.length) {
-			this.dismissalTimer = window.setInterval(
-				this.props.clearFirstToast,
+const ConnectedToastList = () => {
+	const dismissalTimer = useRef();
+	const toasts = unwrapImmutable(useSelector(selectToasts));
+	const dispatch = useDispatch();
+	const dismissToasts = toasts.length > 0;
+	useEffect(() => {
+		if (dismissToasts) {
+			dismissalTimer.current = window.setInterval(
+				() => dispatch(shiftToast()),
 				TOAST_TIMEOUT * 1000,
 			);
 		}
-	},
-	componentDidUpdate: function(prevProps) {
-		if (!prevProps.toasts.length && this.props.toasts.length) {
-			this.dismissalTimer = window.setInterval(
-				this.props.clearFirstToast,
-				TOAST_TIMEOUT * 1000,
-			);
-		}
-		if (prevProps.toasts.length && !this.props.toasts.length) {
-			window.clearInterval(this.dismissalTimer);
-		}
-	},
-	componentWillUnmount: function() {
-		window.clearInterval(this.dismissalTimer);
-	},
-});
-
-export const ConnectedToastList = compose(
-	withToastData,
-	withTimedDismissal,
-)(ToastList);
+		return () => {
+			window.clearInterval(dismissalTimer.current);
+		};
+	}, [dismissalTimer, dismissToasts, dispatch]);
+	return <ToastList toasts={toasts} />;
+};
 
 export default ConnectedToastList;

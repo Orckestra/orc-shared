@@ -3,8 +3,14 @@ import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
-import Bar from "./Bar";
+import { TabBar } from "./Bar";
+import Tab from "./Tab";
 import Navigation from "./index";
+
+jest.mock("./Tab", () => ({
+	__esModule: true,
+	default: require("../../utils/testUtils").PropStruct,
+}));
 
 const TestComp = () => <div />;
 const TestComp1 = () => <div />;
@@ -73,33 +79,35 @@ describe("Navigation", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<MemoryRouter>
-					<Bar
-						pages={[
-							{
-								label: "Thing",
-								icon: "thing",
-								href: "/TestScope/test",
-								mappedFrom: "/TestScope/test",
-								active: true,
-							},
-							{
-								label: "Page 1",
-								href: "/TestScope/test/page1",
-								mappedFrom: "/TestScope/test/page1",
-							},
-							{
-								label: "Page 2",
-								href: "/TestScope/test/page2",
-								mappedFrom: "/TestScope/test/page2",
-							},
-						]}
-						moduleName="test"
-						moduleHref="/TestScope/test"
-						close={expect.it("to be a function")}
+			<MemoryRouter>
+				<TabBar>
+					<Tab
+						active={true}
+						href="/TestScope/test"
+						icon="thing"
+						label="Thing"
+						mappedFrom="/TestScope/test"
+						module={true}
 					/>
-				</MemoryRouter>
-			</Provider>,
+					<Tab
+						active={false}
+						close={() => {}}
+						href="/TestScope/test/page1"
+						label="Page 1"
+						mappedFrom="/TestScope/test/page1"
+						module={false}
+						outsideScope={false}
+					/>
+					<Tab
+						active={false}
+						close={() => {}}
+						href="/TestScope/test/page2"
+						label="Page 2"
+						mappedFrom="/TestScope/test/page2"
+						module={false}
+						outsideScope={false}
+					/>
+				</TabBar>
+			</MemoryRouter>,
 		));
 });

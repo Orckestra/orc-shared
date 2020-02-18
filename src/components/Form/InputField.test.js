@@ -32,12 +32,16 @@ describe("InputField", () => {
 			let Input,
 				val,
 				emptyVal,
+				target,
 				store,
 				state,
 				options,
 				center = false;
 			beforeEach(() => {
 				Input = inputs[type];
+				target = "input";
+				val = "thing";
+				emptyVal = "";
 				if (type === "Selector" || type === "MultiSelector") {
 					options = [
 						{ value: "thing", label: "Thing" },
@@ -49,6 +53,7 @@ describe("InputField", () => {
 					} else {
 						val = "thing";
 					}
+					target = "select";
 				} else if (type === "CheckboxInput" || type === "SwitchInput") {
 					val = true;
 					center = true;
@@ -58,9 +63,8 @@ describe("InputField", () => {
 				} else if (type === "DateInput") {
 					val = "2014-05-22";
 					emptyVal = "";
-				} else {
-					val = "thing";
-					emptyVal = "";
+				} else if (type === "Button" || type === "SmallButton") {
+					target = "button";
 				}
 				state = Immutable.fromJS({
 					locale: {
@@ -135,7 +139,13 @@ describe("InputField", () => {
 				),
 			);
 
-			if (type !== "CheckboxInput" && type !== "SwitchInput") {
+			const cannotRequire = [
+				"CheckboxInput",
+				"SwitchInput",
+				"LineLabel",
+				"ReadOnly",
+			];
+			if (!cannotRequire.includes(type)) {
 				it("renders a required field", () =>
 					expect(
 						<Provider store={store}>
@@ -151,7 +161,6 @@ describe("InputField", () => {
 											defaultMessage: "Placeholder",
 										}}
 										required={`A ${type} field is a required field`}
-										wasBlurred
 										options={options}
 										otherProp
 									/>
@@ -159,6 +168,8 @@ describe("InputField", () => {
 							</IntlProvider>
 						</Provider>,
 						"when mounted",
+						"with event", // Required only takes effect once field is blurred
+						{ type: "blur", target },
 						"to satisfy",
 						<Provider store={store}>
 							<IntlProvider locale="en-US">
@@ -207,6 +218,8 @@ describe("InputField", () => {
 							</IntlProvider>
 						</Provider>,
 						"when mounted",
+						"with event", // Required only takes effect once field is blurred
+						{ type: "blur", target },
 						"to satisfy",
 						<Provider store={store}>
 							<IntlProvider locale="en-US">

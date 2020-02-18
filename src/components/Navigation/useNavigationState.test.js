@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
 import { push } from "connected-react-router";
 import Immutable from "immutable";
@@ -7,30 +8,10 @@ import sinon from "sinon";
 import { spyOnConsole } from "../../utils/testUtils";
 import { REMOVE_TAB } from "../../actions/navigation";
 import { resetLastScope } from "../../selectors/navigation";
-import withNavigationData, { getPageData } from "./withNavigationData";
+import useNavigationState, { getPageData } from "./useNavigationState";
+import Bar from "./Bar";
 import { PropStruct } from "../../utils/testUtils";
 
-const TestComp = ({
-	close = () => () => () => {},
-	history,
-	location,
-	match,
-	modules,
-	staticContext,
-	...props
-}) => (
-	<div
-		data-test-id="comp-0"
-		onChange={event =>
-			close(
-				props.moduleName,
-				props.moduleHref,
-			)(...JSON.parse(event.target.value || "[]"))(event)
-		}
-	>
-		<PropStruct {...props} />
-	</div>
-);
 const TestComp1 = props => (
 	<div data-test-id="comp-1">
 		<PropStruct {...props} />
@@ -67,10 +48,14 @@ const TestComp7 = props => (
 	</div>
 );
 
-describe("withNavigation", () => {
+const makeTestComp = Comp => ({ modules }) => (
+	<Comp {...useNavigationState(modules)} />
+);
+
+describe("useNavigationState", () => {
 	spyOnConsole(["warn"]);
 
-	let state, store, modules;
+	let state, store, modules, TestBar, TestProps;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
@@ -154,109 +139,115 @@ describe("withNavigation", () => {
 				},
 			},
 		};
+		TestBar = makeTestComp(Bar);
+		TestProps = makeTestComp(PropStruct);
 	});
 	afterEach(() => {
 		resetLastScope();
 	});
 
 	it("provides state information about navigation", () =>
-		expect(withNavigationData, "called with", [TestComp])
-			.then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-							<EnhComp modules={modules} />
-						</MemoryRouter>
-					</Provider>,
-					"when mounted",
-					"to satisfy",
-					<TestComp
-						pages={[
-							{
-								icon: "thing",
-								label: "Thing",
-								href: "/TestScope/test",
-								mappedFrom: "/TestScope/test",
-								active: false,
-							},
-							{
-								label: "Page 1",
-								href: "/TestScope/test/page1",
-								mappedFrom: "/TestScope/test/page1",
-								active: true,
-								params: "__ignore",
-								path: "__ignore",
-								outsideScope: false,
-							},
-							{
-								label: {
-									id: "page2",
-									defaultMessage: "Page 2 {someField}",
-									values: {
-										someField: "11",
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modules} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<Bar
+							pages={[
+								{
+									icon: "thing",
+									label: "Thing",
+									href: "/TestScope/test",
+									mappedFrom: "/TestScope/test",
+									active: false,
+								},
+								{
+									label: "Page 1",
+									href: "/TestScope/test/page1",
+									mappedFrom: "/TestScope/test/page1",
+									active: true,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
+								},
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "11",
+										},
 									},
+									href: "/OtherScope/test/foo",
+									mappedFrom: "/OtherScope/test/foo",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: true,
 								},
-								href: "/OtherScope/test/foo",
-								mappedFrom: "/OtherScope/test/foo",
-								active: false,
-								params: "__ignore",
-								path: "__ignore",
-								outsideScope: true,
-							},
-							{
-								label: {
-									id: "page2",
-									defaultMessage: "Page 2 {someField}",
-									values: {
-										someField: "22",
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "22",
+										},
 									},
+									href: "/OtherScope/test/bar",
+									mappedFrom: "/OtherScope/test/bar",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: true,
 								},
-								href: "/OtherScope/test/bar",
-								mappedFrom: "/OtherScope/test/bar",
-								active: false,
-								params: "__ignore",
-								path: "__ignore",
-								outsideScope: true,
-							},
-							{
-								label: {
-									id: "page3",
-									defaultMessage: "Page 3 {someField}",
-									values: { someField: "22" },
+								{
+									label: {
+										id: "page3",
+										defaultMessage: "Page 3 {someField}",
+										values: { someField: "22" },
+									},
+									href: "/TestScope/test/page3",
+									mappedFrom: "/TestScope/test/page3",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
 								},
-								href: "/TestScope/test/page3",
-								mappedFrom: "/TestScope/test/page3",
-								active: false,
-								params: "__ignore",
-								path: "__ignore",
-								outsideScope: false,
-							},
-							{
-								href: "/TestScope/test/notexist",
-								mappedFrom: "/TestScope/test/notexist",
-								label: "[Not found]",
-								active: false,
-							},
-						]}
-						moduleName="test"
-						moduleHref="/TestScope/test"
-					/>,
-				),
-			)
-			.then(() =>
-				expect(console.warn, "to have calls satisfying", [
-					{
-						args: [
-							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-						],
-					},
-					{
-						args: [
-							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-						],
-					},
-				]),
-			));
+								{
+									href: "/TestScope/test/notexist",
+									mappedFrom: "/TestScope/test/notexist",
+									label: "[Not found]",
+									active: false,
+								},
+							]}
+							moduleName="test"
+							moduleHref="/TestScope/test"
+						/>
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+		).then(() =>
+			expect(console.warn, "to have calls satisfying", [
+				{
+					args: [
+						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+					],
+				},
+				{
+					args: [
+						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+					],
+				},
+			]),
+		));
 
 	it("handles incomplete paths", () => {
 		state.setIn(
@@ -267,17 +258,15 @@ describe("withNavigation", () => {
 				params: {},
 			}),
 		);
-		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
-			expect(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/"]}>
-						<EnhComp modules={modules} />
-					</MemoryRouter>
-				</Provider>,
-				"when mounted",
-				"to satisfy",
-				<TestComp moduleName="" moduleHref="" pages="__ignore" />,
-			),
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/"]}>
+					<TestProps modules={modules} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<PropStruct moduleName="" moduleHref="" pages="__ignore" />,
 		);
 	});
 
@@ -340,78 +329,74 @@ describe("withNavigation", () => {
 		});
 
 		it("makes sure segment hrefs are correct", () =>
-			expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
-				expect(
-					<Provider store={store}>
-						<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-							<EnhComp modules={modules} />
-						</MemoryRouter>
-					</Provider>,
-					"when mounted",
-					"to satisfy",
-					<TestComp
-						pages={[
-							{
-								icon: "thing",
-								label: "Thing",
-								href: "/TestScope/test/page1",
-								mappedFrom: "/TestScope/test",
-								active: true,
-							},
-							{
-								label: { id: "page2", defaultMessage: "Page 2" },
-								href: "/TestScope/test/page2/sub",
-								mappedFrom: "/TestScope/test/page2",
-								active: false,
-								outsideScope: false,
-								params: "__ignore",
-							},
-						]}
-						moduleName="test"
-						moduleHref="/TestScope/test/page1"
-					/>,
-				),
+			expect(
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestProps modules={modules} />
+					</MemoryRouter>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<PropStruct
+					pages={[
+						{
+							icon: "thing",
+							label: "Thing",
+							href: "/TestScope/test/page1",
+							mappedFrom: "/TestScope/test",
+							active: true,
+						},
+						{
+							label: { id: "page2", defaultMessage: "Page 2" },
+							href: "/TestScope/test/page2/sub",
+							mappedFrom: "/TestScope/test/page2",
+							active: false,
+							outsideScope: false,
+							params: "__ignore",
+							close: () => {},
+						},
+					]}
+					moduleName="test"
+					moduleHref="/TestScope/test/page1"
+				/>,
 			));
 	});
 
-	it("provides a curryable close handler", () => {
+	it("provides a close handler for tabs", () => {
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
 			preventDefault: sinon.spy().named("preventDefault"),
 		};
-		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
-			expect(
-				<Provider store={store}>
+		return expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<EnhComp modules={modules} />
+						<TestBar modules={modules} />
 					</MemoryRouter>
-				</Provider>,
-				"when mounted",
-				"with event",
-				{
-					type: "change",
-					value: JSON.stringify([
-						"/TestScope/test/page2/info",
-						"/TestScope/test/page2",
-					]),
-					data: fakeEvent,
-				},
-			).then(() =>
-				Promise.all([
-					expect(store.dispatch, "to have calls satisfying", [
-						{
-							args: [
-								{
-									type: REMOVE_TAB,
-									payload: { module: "test", path: "/TestScope/test/page2" },
-								},
-							],
-						},
-					]),
-					expect(fakeEvent.stopPropagation, "was called once"),
-					expect(fakeEvent.preventDefault, "was called once"),
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: '[data-test-id="/TestScope/test/page3"] svg',
+				data: fakeEvent,
+			},
+		).then(() =>
+			Promise.all([
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								type: REMOVE_TAB,
+								payload: { module: "test", path: "/TestScope/test/page3" },
+							},
+						],
+					},
 				]),
-			),
+				expect(fakeEvent.stopPropagation, "was called once"),
+				expect(fakeEvent.preventDefault, "was called once"),
+			]),
 		);
 	});
 
@@ -420,42 +405,39 @@ describe("withNavigation", () => {
 			stopPropagation: sinon.spy().named("stopPropagation"),
 			preventDefault: sinon.spy().named("preventDefault"),
 		};
-		return expect(withNavigationData, "called with", [TestComp]).then(EnhComp =>
-			expect(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/test/page2/info"]}>
-						<EnhComp modules={modules} />
+		return expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page3"]}>
+						<TestBar modules={modules} />
 					</MemoryRouter>
-				</Provider>,
-				"when mounted",
-				"with event",
-				{
-					type: "change",
-					value: JSON.stringify([
-						"/TestScope/test/page2/info",
-						"/TestScope/test/page2",
-					]),
-					data: fakeEvent,
-				},
-			).then(() =>
-				Promise.all([
-					expect(store.dispatch, "to have calls satisfying", [
-						{
-							args: [
-								{
-									type: REMOVE_TAB,
-									payload: { module: "test", path: "/TestScope/test/page2" },
-								},
-							],
-						},
-						{
-							args: [push("/TestScope/test")],
-						},
-					]),
-					expect(fakeEvent.stopPropagation, "was called once"),
-					expect(fakeEvent.preventDefault, "was called once"),
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: '[data-test-id="/TestScope/test/page3"] svg',
+				data: fakeEvent,
+			},
+		).then(() =>
+			Promise.all([
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								type: REMOVE_TAB,
+								payload: { module: "test", path: "/TestScope/test/page3" },
+							},
+						],
+					},
+					{
+						args: [push("/TestScope/test")],
+					},
 				]),
-			),
+				expect(fakeEvent.stopPropagation, "was called once"),
+				expect(fakeEvent.preventDefault, "was called once"),
+			]),
 		);
 	});
 });

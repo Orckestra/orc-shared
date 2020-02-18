@@ -2,9 +2,9 @@ import React from "react";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { ifFlag, unwrapImmutable } from "../../utils";
 import { getApplications } from "../../actions/applications";
-import withAuthentication from "../../hocs/withAuthentication";
 import useToggle from "../../hooks/useToggle";
 import useLoader from "../../hooks/useLoader";
 import { localizedAppSelector } from "../../selectors/applications";
@@ -42,13 +42,11 @@ export const ViewPort = styled.div`
 	)};
 `;
 
-export const AppFrame = ({
+const AppFrame = ({
 	initOpen,
 	applicationId,
 	modules,
 	activeModules,
-	menuLabel,
-	location,
 	children,
 	menuMessages,
 	aboutMessages,
@@ -60,11 +58,12 @@ export const AppFrame = ({
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
+	const location = useLocation();
 	return (
 		<Base>
 			<ConnectedToastList />
 			<Topbar
-				{...{ applications, applicationId, menuLabel, menuMessages }}
+				{...{ applications, applicationId, menuMessages }}
 				onClick={reset}
 			/>
 			<Sidebar
@@ -87,10 +86,7 @@ export const AppFrame = ({
 	);
 };
 AppFrame.displayName = "AppFrame";
-
-const WiredAppFrame = withAuthentication(AppFrame);
-WiredAppFrame.propTypes = {
-	menuLabel: ptLabel.isRequired,
+AppFrame.propTypes = {
 	applicationId: pt.string.isRequired,
 	modules: pt.array.isRequired,
 	activeModules: pt.array,
@@ -117,4 +113,4 @@ WiredAppFrame.propTypes = {
 	noScope: pt.bool,
 };
 
-export default WiredAppFrame;
+export default AppFrame;

@@ -133,6 +133,10 @@ These selectors expect a `buildState` store.
 
 `selectSegmentHrefMapper`: Returns a mapper function that, when given a href will return either the href the input is mapped to, or the input itself. This is useful for ensuring path equality, that links point to the right places, etc.
 
+## Requests
+
+`selectActivity(requestName)`: Get the current activity of the named request.
+
 ## Route
 
 `selectLocation`: Get the location data stored in the state.

@@ -7,7 +7,8 @@ import withScrollBox from "../../hocs/withScrollBox";
 import withInfiniteScroll from "../../hocs/withInfiniteScroll";
 import Row from "./Row";
 import HeadRow from "./HeadRow";
-import withListState from "./withListState";
+import useViewState from "../../hooks/useViewState";
+import enhanceColumnDefs from "./enhanceColumnDefs";
 
 export const PlaceholderCell = styled.div`
 	height: ${/* istanbul ignore next*/ props => props.cssHeight || 100}px;
@@ -67,12 +68,25 @@ const calculateVirtualization = (
 	return { virtualFilter, heightAbove, heightBelow };
 };
 
+export const useListState = (name, columnDefs) => {
+	const [viewState, updateViewState] = useViewState(name);
+	const { selection = [], sorting = {} } = viewState;
+	const enhancedColumnDefs = enhanceColumnDefs(
+		sorting,
+		selection,
+		updateViewState,
+		columnDefs,
+	);
+
+	return [enhancedColumnDefs, selection];
+};
+
 export const List = ({
+	name,
 	columnDefs = [],
 	rows = [],
 	rowOnClick,
 	placeholder,
-	selection = [],
 	keyField = ["id"],
 	virtual = false,
 	scrollTop = 0,
@@ -80,6 +94,7 @@ export const List = ({
 	scrollBuffer = 10,
 	rowBackgroundGetter = () => {},
 }) => {
+	const [enhancedColumnDefs, selection] = useListState(name, columnDefs);
 	if (columnDefs.length === 0) return null;
 	const rowIds = [],
 		rowElements = [];
@@ -96,11 +111,11 @@ export const List = ({
 		if (!virtualFilter(index)) return;
 		rowElements.push(
 			<Row
-				columnDefs={columnDefs}
+				columnDefs={enhancedColumnDefs}
 				key={id}
 				rowId={id}
 				row={row}
-				onClick={rowOnClick}
+				rowOnClick={rowOnClick}
 				selected={selection.indexOf(id) !== -1}
 				bgColor={rowBackgroundGetter(row, index)}
 			/>,
@@ -149,7 +164,6 @@ const StatefulList = compose(
 	setDisplayName("List"),
 	checkInfiniteScroll,
 	withScrollBox,
-	withListState,
 )(List);
 StatefulList.propTypes = {
 	columnDefs: pt.arrayOf(pt.object), // Each object must be a valid column definition

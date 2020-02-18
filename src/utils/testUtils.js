@@ -49,7 +49,7 @@ export const firstItemComparator = (a, b) =>
 	a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0;
 
 export const PropStruct = props => (
-	<dl>
+	<dl id={props.id}>
 		{Object.entries(props)
 			.sort(firstItemComparator)
 			.map(([key, value]) =>
