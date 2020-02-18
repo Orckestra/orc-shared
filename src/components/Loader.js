@@ -10,7 +10,7 @@ export const Loading = ({ error }) => {
 	let timer = useRef(null);
 	useEffect(() => {
 		// Prevent refiring delay timeout
-		if (!timer.current) {
+		if (!pastDelay && !timer.current) {
 			timer.current = setTimeout(() => flagDelay(true), 200);
 		}
 		return () => clearTimeout(timer.current);
