@@ -28,7 +28,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "0.8.7"
+		"orc-scripts": "0.8.8"
 	},
 	"peerDependencies": {
 		"orc-scripts": "^0.8.7"
@@ -46,6 +46,5 @@
 		"hooks": {
 			"pre-commit": "lint-staged"
 		}
-	},
-	"dependencies": {}
+	}
 }

@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { getClassName, PropStruct, firstItemComparator } from "./testUtils";
+import {
+	getClassName,
+	PropStruct,
+	firstItemComparator,
+	spyOnConsole,
+} from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
 	<div id={id} {...props}>
@@ -17,6 +22,8 @@ const TestStyled = styled.div`
 `;
 
 describe("getClassName", () => {
+	spyOnConsole(["error"]);
+
 	it("finds the first class name of the root element given to it", () =>
 		expect(getClassName(<TestComp className="foo bar" />), "to equal", "foo"));
 
@@ -46,6 +53,15 @@ describe("getClassName", () => {
 			"to throw",
 			"Class name not found in <TestComp />",
 		));
+
+	it("can use a custom container element type", () => {
+		expect(
+			getClassName(<td className="foo bar" />, 0, "tr"),
+			"to equal",
+			"foo",
+		);
+		expect(console.error, "was not called");
+	});
 });
 
 describe("PropStruct", () => {
