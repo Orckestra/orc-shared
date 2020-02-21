@@ -22,8 +22,8 @@ export const spyOnConsole = (spyNames = ["log", "warn", "error"]) => {
 	});
 };
 
-const getElmClasses = reactElm => {
-	const domElm = mount(reactElm);
+export const getElmClasses = (reactElm, container) => {
+	const domElm = mount(reactElm, container ? { container } : undefined);
 	const classes = domElm.getAttribute("class");
 	if (!classes) {
 		throw new Error(
@@ -32,17 +32,17 @@ const getElmClasses = reactElm => {
 				" />",
 		);
 	}
-	return classes;
+	return classes.split(" ");
 };
 
-export const getClassName = (elm, index = 0) => {
-	const classes = getElmClasses(elm);
-	return classes.split(" ")[index];
+export const getClassName = (reactElm, index = 0, container) => {
+	const classes = getElmClasses(reactElm, container);
+	return classes[index];
 };
 
 export const getClassSelector = elm => {
 	const classes = getElmClasses(elm);
-	return "." + classes.split(" ").join(".");
+	return "." + classes.join(".");
 };
 
 export const firstItemComparator = (a, b) =>
