@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import styled, { css } from "styled-components";
 import { ifFlag, memoize } from "../../utils";
 import Button from "../Button";
 import Text from "../Text";
+import { FormContext } from "./Form";
 import FieldElements from "./FieldElements";
 import Field, { FieldBox } from "./Field";
 
@@ -166,15 +167,14 @@ const getListFieldUpdater = (updateAll, getRows) => {
 
 const FieldList = ({
 	name,
-	values = {},
 	staticValues = [],
 	getUpdater,
 	rowField,
 	rowCount,
-	listIndex,
 	tallRows,
 	...props
 }) => {
+	const { values, listIndex } = useContext(FormContext);
 	const getRows = useCallback(createRowGetter(values[name], rowCount), [
 		values,
 		name,
@@ -193,16 +193,22 @@ const FieldList = ({
 		<List {...{ tallRows }}>
 			{tallRows ? null : <FieldElements fields={[renderField]} labelOnly />}
 			{getRows().map((row, index) => (
-				<FieldElements
+				<FormContext.Provider
 					key={row.id}
-					fields={[tallRows ? renderField : stripLabelFromTree(renderField)]}
-					listIndex={index}
-					getUpdater={listUpdater(index)}
-					values={{
-						...row,
-						...staticValues[index],
+					value={{
+						values: {
+							...row,
+							...staticValues[index],
+						},
+						listIndex: index,
 					}}
-				/>
+				>
+					<FieldElements
+						fields={[tallRows ? renderField : stripLabelFromTree(renderField)]}
+						listIndex={index}
+						getUpdater={listUpdater(index)}
+					/>
+				</FormContext.Provider>
 			))}
 			{rowCount === undefined ? (
 				<Field>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import styled from "styled-components";
 import pt from "prop-types";
 import { memoize } from "../../utils";
@@ -45,6 +45,9 @@ const splitFields = (fields, cols) => {
 	}, []);
 };
 
+export const FormContext = createContext();
+FormContext.displayName = "FormContext";
+
 export const FormPage = ({
 	cols = [1, 1, 1],
 	getUpdater,
@@ -55,20 +58,25 @@ export const FormPage = ({
 	let colSpans = wide ? [1] : cols;
 	const colFields = splitFields(fields, colSpans.length);
 	return (
-		<Wrapper>
-			{colFields.map((fields, index) => (
-				<Form
-					key={index}
-					spanWidth={colSpans[index] /* istanbul ignore next*/ || 1}
-				>
-					<FieldElements
-						getUpdater={getUpdater}
-						fields={addNamesToFields(fields)}
-						values={values}
-					/>
-				</Form>
-			))}
-		</Wrapper>
+		<FormContext.Provider
+			value={{
+				values,
+			}}
+		>
+			<Wrapper>
+				{colFields.map((fields, index) => (
+					<Form
+						key={index}
+						spanWidth={colSpans[index] /* istanbul ignore next*/ || 1}
+					>
+						<FieldElements
+							getUpdater={getUpdater}
+							fields={addNamesToFields(fields)}
+						/>
+					</Form>
+				))}
+			</Wrapper>
+		</FormContext.Provider>
 	);
 };
 

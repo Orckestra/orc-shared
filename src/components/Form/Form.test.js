@@ -3,10 +3,10 @@ import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-import { addNamesToFields, FormPage, Wrapper } from "./Form";
+import { addNamesToFields, FormPage, Wrapper, FormContext } from "./Form";
 
 describe("FormPage", () => {
-	let getUpdater, fields, manyFields;
+	let getUpdater, fields, manyFields, values;
 	beforeEach(() => {
 		getUpdater = () => {};
 		fields = [{ type: "TextInput", name: "text1", label: "A text" }];
@@ -22,6 +22,7 @@ describe("FormPage", () => {
 			{ type: "TextInput", name: "text8", label: "A text" },
 			{ type: "TextInput", name: "text9", label: "A text" },
 		];
+		values = { text1: "foo" };
 	});
 
 	it("renders a form with a single field", () =>
@@ -34,11 +35,7 @@ describe("FormPage", () => {
 				}}
 			>
 				<IntlProvider locale="en">
-					<FormPage
-						fields={fields}
-						values={{ text1: "foo" }}
-						getUpdater={getUpdater}
-					/>
+					<FormPage fields={fields} getUpdater={getUpdater} values={values} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -51,15 +48,13 @@ describe("FormPage", () => {
 				}}
 			>
 				<IntlProvider locale="en">
-					<Wrapper>
-						<Form spanWidth={1}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={fields}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-					</Wrapper>
+					<FormContext.Provider value={{ values }}>
+						<Wrapper>
+							<Form spanWidth={1}>
+								<FieldElements getUpdater={getUpdater} fields={fields} />
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 		));
@@ -77,8 +72,8 @@ describe("FormPage", () => {
 					<FormPage
 						wide
 						fields={fields}
-						values={{ text1: "foo" }}
 						getUpdater={getUpdater}
+						values={values}
 					/>
 				</IntlProvider>
 			</Provider>,
@@ -92,15 +87,13 @@ describe("FormPage", () => {
 				}}
 			>
 				<IntlProvider locale="en">
-					<Wrapper>
-						<Form spanWidth={1}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={fields}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-					</Wrapper>
+					<FormContext.Provider value={{ values }}>
+						<Wrapper>
+							<Form spanWidth={1}>
+								<FieldElements getUpdater={getUpdater} fields={fields} />
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 		));
@@ -118,8 +111,8 @@ describe("FormPage", () => {
 					<FormPage
 						cols={[2, 1]}
 						fields={manyFields}
-						values={{ text1: "foo" }}
 						getUpdater={getUpdater}
+						values={values}
 					/>
 				</IntlProvider>
 			</Provider>,
@@ -133,22 +126,22 @@ describe("FormPage", () => {
 				}}
 			>
 				<IntlProvider locale="en">
-					<Wrapper>
-						<Form spanWidth={2}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={manyFields.slice(0, 5)}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-						<Form spanWidth={1}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={manyFields.slice(5, 10)}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-					</Wrapper>
+					<FormContext.Provider value={{ values }}>
+						<Wrapper>
+							<Form spanWidth={2}>
+								<FieldElements
+									getUpdater={getUpdater}
+									fields={manyFields.slice(0, 5)}
+								/>
+							</Form>
+							<Form spanWidth={1}>
+								<FieldElements
+									getUpdater={getUpdater}
+									fields={manyFields.slice(5, 10)}
+								/>
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 		));

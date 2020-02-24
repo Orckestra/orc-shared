@@ -10,7 +10,6 @@ const FieldElements = ({
 	fields,
 	labelOnly,
 	getUpdater = () => {},
-	values = {},
 	...elementProps
 }) => (
 	<React.Fragment>
@@ -21,7 +20,6 @@ const FieldElements = ({
 						<Fieldset key={name} label={label}>
 							<FieldElements
 								getUpdater={getUpdater}
-								values={values}
 								{...elementProps}
 								{...props}
 							/>
@@ -37,7 +35,6 @@ const FieldElements = ({
 						>
 							<FieldElements
 								getUpdater={getUpdater}
-								values={values}
 								labelOnly={labelOnly}
 								{...elementProps}
 								{...props}
@@ -51,7 +48,6 @@ const FieldElements = ({
 							key={name}
 							name={name}
 							label={label}
-							values={values}
 							getUpdater={getUpdater}
 							rowCount={props.rowCount}
 							{...elementProps}
@@ -67,7 +63,6 @@ const FieldElements = ({
 							label={label}
 							type={type}
 							update={getUpdater(name)}
-							value={values[name]}
 							labelOnly={labelOnly}
 							{...elementProps}
 							{...props}

@@ -5,6 +5,7 @@ import { getThemeProp, memoize, unwrapImmutable } from "../../utils";
 import Sidepanel from "../Sidepanel";
 import Button from "../Button";
 import Text from "../Text";
+import { FormContext } from "../Form/Form";
 import FieldElements from "../Form/FieldElements";
 import useViewState from "../../hooks/useViewState";
 import { setValue } from "../../actions/view";
@@ -119,24 +120,25 @@ export const Preferences = ({ messages }) => {
 				<Text message={messages.preferences} />
 			</Header>
 			<PrefForm>
-				<FieldElements
-					fields={[
-						{
-							label: messages.language,
-							type: "Selector",
-							name: "language",
-							options: languageOptions,
-						},
-						{
-							label: messages.defaultApp,
-							type: "Selector",
-							name: "application",
-							options: applicationOptions,
-						},
-					]}
-					getUpdater={getUpdater}
-					values={values}
-				/>
+				<FormContext.Provider value={{ values }}>
+					<FieldElements
+						fields={[
+							{
+								label: messages.language,
+								type: "Selector",
+								name: "language",
+								options: languageOptions,
+							},
+							{
+								label: messages.defaultApp,
+								type: "Selector",
+								name: "application",
+								options: applicationOptions,
+							},
+						]}
+						getUpdater={getUpdater}
+					/>
+				</FormContext.Provider>
 			</PrefForm>
 			<Footer>
 				<PrefButton id="cancelPrefs" onClick={clear}>

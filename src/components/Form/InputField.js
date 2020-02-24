@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { useIntl } from "react-intl";
+import { FormContext } from "./Form";
 import inputs from "./Inputs";
 import Field from "./Field";
 
@@ -8,13 +9,13 @@ export const InputField = ({
 	type = "undefined",
 	label,
 	labelOnly,
-	value = "",
-	listIndex,
 	placeholder,
 	required,
 	...props
 }) => {
 	const [wasBlurred, setBlurred] = useState(false);
+	const { values, listIndex } = useContext(FormContext);
+	const { [name]: value = "" } = values;
 	props.onBlur = useCallback(() => setBlurred(true), [setBlurred]);
 	const { formatMessage } = useIntl();
 	const Input = inputs[type];
