@@ -1,31 +1,9 @@
 import React, { createContext } from "react";
 import styled from "styled-components";
 import pt from "prop-types";
-import { memoize } from "../../utils";
 import withScrollBox from "../../hocs/withScrollBox";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-
-const randomName = () =>
-	Math.floor(Math.random() * 16777215)
-		.toString(16)
-		.padStart(6, "0");
-
-export const addNamesToFields = memoize(fields =>
-	fields.map(field => {
-		const outField = {
-			name: randomName(),
-			...field,
-		};
-		if (field.fields) {
-			outField.fields = addNamesToFields(field.fields);
-		}
-		if (field.rowField) {
-			outField.rowField = addNamesToFields([field.rowField])[0];
-		}
-		return outField;
-	}),
-);
 
 export const Wrapper = styled.div`
 	display: flex;
@@ -69,10 +47,7 @@ export const FormPage = ({
 						key={index}
 						spanWidth={colSpans[index] /* istanbul ignore next*/ || 1}
 					>
-						<FieldElements
-							getUpdater={getUpdater}
-							fields={addNamesToFields(fields)}
-						/>
+						<FieldElements getUpdater={getUpdater} fields={fields} />
 					</Form>
 				))}
 			</Wrapper>

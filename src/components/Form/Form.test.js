@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-import { addNamesToFields, FormPage, Wrapper, FormContext } from "./Form";
+import { FormPage, Wrapper, FormContext } from "./Form";
 
 describe("FormPage", () => {
 	let getUpdater, fields, manyFields, values;
@@ -144,43 +144,5 @@ describe("FormPage", () => {
 					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
-		));
-});
-
-describe("addNamesToFields", () => {
-	it("adds a hexadecimal string as a name where names are missing", () =>
-		expect(
-			addNamesToFields,
-			"called with",
-			[
-				[
-					{ type: "Thing" },
-					{ type: "NamedThing", name: "named", rowField: { type: "Thing" } },
-					{
-						type: "HasFields",
-						fields: [{ type: "Thing" }, { type: "NamedThing", name: "named" }],
-					},
-				],
-			],
-			"to satisfy",
-			[
-				{ type: "Thing", name: expect.it("to match", /[0-9a-f]{6}/) },
-				{
-					type: "NamedThing",
-					name: "named",
-					rowField: {
-						type: "Thing",
-						name: expect.it("to match", /[0-9a-f]{6}/),
-					},
-				},
-				{
-					type: "HasFields",
-					name: expect.it("to match", /[0-9a-f]{6}/),
-					fields: [
-						{ type: "Thing", name: expect.it("to match", /[0-9a-f]{6}/) },
-						{ type: "NamedThing", name: "named" },
-					],
-				},
-			],
 		));
 });
