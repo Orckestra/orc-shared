@@ -42,7 +42,6 @@ describe("FieldElements", () => {
 									},
 									{
 										type: "Fieldset",
-										name: "set",
 										label: "A field set",
 										fields: [
 											{
