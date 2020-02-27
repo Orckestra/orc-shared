@@ -42,13 +42,11 @@ describe("withNavigationLink", () => {
 				);
 			})
 			.then(() =>
-				expect(console.warn, "to have calls satisfying", [
-					{
-						args: [
-							expect.it("to contain", "withNavigationLink has been deprecated"),
-						],
-					},
-				]),
+				expect(console.warn, "to have a call satisfying", {
+					args: [
+						expect.it("to contain", "withNavigationLink has been deprecated"),
+					],
+				}),
 			));
 
 	it("sets an active flag if the current path matches the href", () =>

@@ -29,13 +29,11 @@ describe("withInitialLoad", () => {
 				),
 			)
 			.then(() =>
-				expect(console.warn, "to have calls satisfying", [
-					{
-						args: [
-							expect.it("to contain", "withInitialLoad has been deprecated"),
-						],
-					},
-				]),
+				expect(console.warn, "to have a call satisfying", {
+					args: [
+						expect.it("to contain", "withInitialLoad has been deprecated"),
+					],
+				}),
 			));
 
 	it("fires a loader function on component mount, if test returns true", () =>

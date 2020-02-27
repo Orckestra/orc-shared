@@ -31,13 +31,11 @@ describe("withUpdateHandler", () => {
 				),
 			)
 			.then(() =>
-				expect(console.warn, "to have calls satisfying", [
-					{
-						args: [
-							expect.it("to contain", "withUpdateHandler has been deprecated"),
-						],
-					},
-				]),
+				expect(console.warn, "to have a call satisfying", {
+					args: [
+						expect.it("to contain", "withUpdateHandler has been deprecated"),
+					],
+				}),
 			));
 
 	it("calls named update handler on wrapped component", () =>

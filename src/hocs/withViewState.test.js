@@ -49,13 +49,9 @@ describe("withViewState", () => {
 				),
 			)
 			.then(() =>
-				expect(console.warn, "to have calls satisfying", [
-					{
-						args: [
-							expect.it("to contain", "withViewState has been deprecated"),
-						],
-					},
-				]),
+				expect(console.warn, "to have a call satisfying", {
+					args: [expect.it("to contain", "withViewState has been deprecated")],
+				}),
 			));
 
 	it("adds a value prop to an element based on its name prop", () =>

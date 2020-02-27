@@ -38,12 +38,10 @@ describe("routingConnector", () => {
 				),
 			)
 			.then(() =>
-				expect(console.warn, "to have calls satisfying", [
-					{
-						args: [
-							expect.it("to contain", "routingConnector has been deprecated"),
-						],
-					},
-				]),
+				expect(console.warn, "to have a call satisfying", {
+					args: [
+						expect.it("to contain", "routingConnector has been deprecated"),
+					],
+				}),
 			));
 });
