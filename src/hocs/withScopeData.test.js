@@ -93,13 +93,9 @@ describe("withScopeData", () => {
 				),
 			)
 			.then(() =>
-				expect(console.warn, "to have calls satisfying", [
-					{
-						args: [
-							expect.it("to contain", "withScopeData has been deprecated"),
-						],
-					},
-				]),
+				expect(console.warn, "to have a call satisfying", {
+					args: [expect.it("to contain", "withScopeData has been deprecated")],
+				}),
 			));
 
 	it("provides scope data props to the enhanced component", () =>
