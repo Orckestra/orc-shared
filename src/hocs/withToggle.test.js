@@ -22,9 +22,9 @@ describe("withToggle", () => {
 
 	it("gives deprecation warning", () =>
 		expect(withToggle, "called with", ["toggledOn"]).then(() =>
-			expect(console.warn, "to have calls satisfying", [
-				{ args: [expect.it("to contain", "withToggle has been deprecated")] },
-			]),
+			expect(console.warn, "to have a call satisfying", {
+				args: [expect.it("to contain", "withToggle has been deprecated")],
+			}),
 		));
 
 	it("provides toggle and toggledOn props, handling state", () =>
