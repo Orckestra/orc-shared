@@ -17,10 +17,13 @@ const PatternWrapper = ({ store, children }) => (
 	</Provider>
 );
 
-const SubjectWrapper = ({ store, values = {}, index, children }) => {
+const SubjectWrapper = ({ store, values = {}, formName, index, children }) => {
 	const value = { values };
 	if (index) {
 		value.listIndex = index;
+	}
+	if (formName) {
+		value.formName = formName;
 	}
 	return (
 		<PatternWrapper store={store}>
@@ -51,6 +54,10 @@ describe("InputField", () => {
 					},
 				},
 				defaultCulture: "en-US",
+			},
+			view: {
+				field_fieldName: { wasBlurred: true },
+				activeForm_fieldName: { wasBlurred: true },
 			},
 		});
 		store = {
@@ -114,7 +121,7 @@ describe("InputField", () => {
 				}
 			});
 
-			it("renders a " + type + " input as a form field", () =>
+			it("renders the input as a form field", () =>
 				expect(
 					<SubjectWrapper store={store} values={{ fieldName: val }}>
 						<InputField
@@ -132,14 +139,10 @@ describe("InputField", () => {
 					"when mounted",
 					"to satisfy",
 					<PatternWrapper store={store}>
-						<Field
-							wasBlurred
-							center={center}
-							id="fieldName"
-							label={`A ${type} field`}
-						>
+						<Field wasBlurred center={center} id="fieldName" label={`A ${type} field`}>
 							<Input
 								id="fieldName"
+								data-test-id="field_fieldName"
 								value={val}
 								otherProp
 								placeholder="Placeholder"
@@ -147,15 +150,40 @@ describe("InputField", () => {
 							/>
 						</Field>
 					</PatternWrapper>,
-				),
-			);
+				));
 
-			const cannotRequire = [
-				"CheckboxInput",
-				"SwitchInput",
-				"LineLabel",
-				"ReadOnly",
-			];
+			it("identifies fields in named forms", () =>
+				expect(
+					<SubjectWrapper store={store} values={{ fieldName: val }} formName="testForm">
+						<InputField
+							name="fieldName"
+							type={type}
+							label={`A ${type} field`}
+							placeholder={{
+								id: "foo.bar",
+								defaultMessage: "Placeholder",
+							}}
+							options={options}
+							otherProp
+						/>
+					</SubjectWrapper>,
+					"when mounted",
+					"to satisfy",
+					<PatternWrapper store={store}>
+						<Field center={center} id="fieldName" label={`A ${type} field`}>
+							<Input
+								id="fieldName"
+								data-test-id="testForm_fieldName"
+								value={val}
+								otherProp
+								placeholder="Placeholder"
+								options={options}
+							/>
+						</Field>
+					</PatternWrapper>,
+				));
+
+			const cannotRequire = ["CheckboxInput", "SwitchInput", "LineLabel", "ReadOnly"];
 			if (!cannotRequire.includes(type)) {
 				it("renders a required field", () =>
 					expect(
@@ -209,14 +237,11 @@ describe("InputField", () => {
 									defaultMessage: "Placeholder",
 								}}
 								required={`A ${type} field is a required field`}
-								wasBlurred
 								options={options}
 								otherProp
 							/>
 						</SubjectWrapper>,
 						"when mounted",
-						"with event", // Required only takes effect once field is blurred
-						{ type: "blur", target },
 						"to satisfy",
 						<PatternWrapper store={store}>
 							<Field
@@ -229,6 +254,50 @@ describe("InputField", () => {
 							>
 								<Input
 									id="fieldName"
+									value={emptyVal}
+									otherProp
+									placeholder="Placeholder"
+									options={options}
+									required
+								/>
+							</Field>
+						</PatternWrapper>,
+					));
+
+				it("renders a required and empty field in a named form", () =>
+					expect(
+						<SubjectWrapper
+							store={store}
+							values={{ fieldName: emptyVal }}
+							formName="activeForm"
+						>
+							<InputField
+								name="fieldName"
+								type={type}
+								label={`A ${type} field`}
+								placeholder={{
+									id: "foo.bar",
+									defaultMessage: "Placeholder",
+								}}
+								required={`A ${type} field is a required field`}
+								options={options}
+								otherProp
+							/>
+						</SubjectWrapper>,
+						"when mounted",
+						"to satisfy",
+						<PatternWrapper store={store}>
+							<Field
+								wasBlurred
+								center={center}
+								id="fieldName"
+								label={`A ${type} field`}
+								required={`A ${type} field is a required field`}
+								invalid
+							>
+								<Input
+									id="fieldName"
+									data-test-id="activeForm_fieldName"
 									value={emptyVal}
 									otherProp
 									placeholder="Placeholder"
@@ -258,14 +327,10 @@ describe("InputField", () => {
 							wasBlurred
 							center={center}
 							id="fieldName[12]"
+							data-test-id="field_fieldName[12]"
 							label={`A ${type} field`}
 						>
-							<Input
-								id="fieldName[12]"
-								value={val}
-								otherProp
-								options={options}
-							/>
+							<Input id="fieldName[12]" value={val} otherProp options={options} />
 						</Field>
 					</PatternWrapper>,
 				));

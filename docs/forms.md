@@ -8,6 +8,8 @@ To provide the values entered into the form, a `value` prop should be provided (
 
 The actual form fields and layout are defined by an array of data objects in the `fields` prop. The objects all hold at least a `type` string, which defines what further information it can use, and what it will be rendered as. See below for information on the different types of fields. Labels (in the `label` field) can be either plain strings or `react-intl` message descriptors.
 
+The `formName` prop is used to distinguish multiple forms using the same field names from each other. If it isn't set, fields with the same name in different forms may interfere with each other.
+
 ## Structuring your form
 
 The `Fieldset` type provides a way to bundle together form elements, rendering them as a coherent field set with a title. The title is set in the `label` field of the data object, and the contained fields are given as an array of data objects in the `fields` property.

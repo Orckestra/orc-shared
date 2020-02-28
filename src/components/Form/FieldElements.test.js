@@ -1,4 +1,5 @@
 import React from "react";
+import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { mount } from "react-dom-testing";
@@ -10,8 +11,14 @@ import InputField from "./InputField";
 import FieldElements from "./FieldElements";
 
 describe("FieldElements", () => {
-	let getUpdater, values;
+	let state, store, getUpdater, values;
 	beforeEach(() => {
+		state = Immutable.fromJS({});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		getUpdater = name => () => name;
 		values = {
 			thing: "foo",
@@ -24,13 +31,7 @@ describe("FieldElements", () => {
 	it("renders a list of field elements, handling fieldsets, combination fields, and lists", () =>
 		expect(
 			mount(
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
+				<Provider store={store}>
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values }}>
 							<FieldElements
@@ -76,13 +77,7 @@ describe("FieldElements", () => {
 			).childNodes,
 			"to satisfy",
 			[
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
+				<Provider store={store}>
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values }}>
 							<InputField
@@ -95,13 +90,7 @@ describe("FieldElements", () => {
 						</FormContext.Provider>
 					</IntlProvider>
 				</Provider>,
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
+				<Provider store={store}>
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values }}>
 							<Fieldset label="A field set">
@@ -118,13 +107,7 @@ describe("FieldElements", () => {
 						</FormContext.Provider>
 					</IntlProvider>
 				</Provider>,
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
+				<Provider store={store}>
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values }}>
 							<Combination label="Combined fields" proportions={["300px", 100]}>
@@ -139,13 +122,7 @@ describe("FieldElements", () => {
 						</FormContext.Provider>
 					</IntlProvider>
 				</Provider>,
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
+				<Provider store={store}>
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values }}>
 							<FieldList
@@ -163,13 +140,7 @@ describe("FieldElements", () => {
 
 	it("handles absent update function and values", () =>
 		expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values }}>
 						<FieldElements
@@ -185,13 +156,7 @@ describe("FieldElements", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values }}>
 						<React.Fragment>

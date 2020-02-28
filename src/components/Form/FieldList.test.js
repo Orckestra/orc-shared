@@ -1,4 +1,5 @@
 import React from "react";
+import Immutable from "immutable";
 import { Provider } from "react-redux";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
@@ -11,8 +12,14 @@ import { FormContext } from "./Form";
 import FieldList, { List, ListControlButton, REMOVE_ROW } from "./FieldList";
 
 describe("FieldList", () => {
-	let clock;
+	let state, store, clock;
 	beforeEach(() => {
+		state = Immutable.fromJS({});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		clock = sinon.useFakeTimers();
 	});
 	afterEach(() => {
@@ -23,31 +30,32 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FormContext.Provider value={{ values: {} }}>
-					<FieldList
-						name="testlistminfixed"
-						rowField={{ type: "TextInput", name: "data" }}
-						getUpdater={getUpdater}
-						rowCount={1}
-					/>
-				</FormContext.Provider>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormContext.Provider value={{ values: {} }}>
+						<FieldList
+							name="testlistminfixed"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+							rowCount={1}
+						/>
+					</FormContext.Provider>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<FormContext.Provider value={{ values: {} }}>
-				<List>
-					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data" }]}
-							labelOnly
-						/>
-					</IntlProvider>
-					<IntlProvider locale="en">
-						<FieldElements fields={[{ type: "TextInput", name: "data[0]" }]} />
-					</IntlProvider>
-				</List>
-			</FormContext.Provider>,
+			<Provider store={store}>
+				<FormContext.Provider value={{ values: {} }}>
+					<List>
+						<IntlProvider locale="en">
+							<FieldElements fields={[{ type: "TextInput", name: "data" }]} labelOnly />
+						</IntlProvider>
+						<IntlProvider locale="en">
+							<FieldElements fields={[{ type: "TextInput", name: "data[0]" }]} />
+						</IntlProvider>
+					</List>
+				</FormContext.Provider>
+			</Provider>,
 		);
 	});
 
@@ -55,29 +63,30 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FormContext.Provider value={{ values: {} }}>
-					<FieldList
-						name="testlistminfixed"
-						rowField={{ type: "TextInput", name: "data" }}
-						getUpdater={getUpdater}
-						rowCount={0}
-						values={{}}
-					/>
-				</FormContext.Provider>
-			</IntlProvider>,
-			"when mounted",
-			"to satisfy",
-			<List>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values: {} }}>
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data" }]}
-							labelOnly
+						<FieldList
+							name="testlistminfixed"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+							rowCount={0}
+							values={{}}
 						/>
 					</FormContext.Provider>
 				</IntlProvider>
-			</List>,
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<List>
+					<IntlProvider locale="en">
+						<FormContext.Provider value={{ values: {} }}>
+							<FieldElements fields={[{ type: "TextInput", name: "data" }]} labelOnly />
+						</FormContext.Provider>
+					</IntlProvider>
+				</List>
+			</Provider>,
 		);
 	});
 
@@ -85,13 +94,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider
 						value={{
@@ -115,13 +118,7 @@ describe("FieldList", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<List>
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values: {} }}>
@@ -173,13 +170,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider
 						value={{
@@ -204,13 +195,7 @@ describe("FieldList", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<List tallRows>
 					<IntlProvider locale="en">
 						<FormContext.Provider
@@ -260,27 +245,29 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FormContext.Provider
-					value={{
-						values: {
-							testlistedit: [
-								{ id: 4, data: "foo" },
-								{ id: 5, data: "bar" },
-								{ id: 6, data: "feep" },
-							],
-						},
-					}}
-				>
-					<FieldList
-						name="testlistedit"
-						rowField={{ type: "TextInput", name: "data" }}
-						getUpdater={getUpdater}
-						rowCount={3}
-						staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-					/>
-				</FormContext.Provider>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormContext.Provider
+						value={{
+							values: {
+								testlistedit: [
+									{ id: 4, data: "foo" },
+									{ id: 5, data: "bar" },
+									{ id: 6, data: "feep" },
+								],
+							},
+						}}
+					>
+						<FieldList
+							name="testlistedit"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+							rowCount={3}
+							staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
+						/>
+					</FormContext.Provider>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{
@@ -312,13 +299,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values: {} }}>
 						<FieldList
@@ -332,13 +313,7 @@ describe("FieldList", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values: {} }}>
 						<List>
@@ -375,13 +350,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider
 						value={{
@@ -417,13 +386,7 @@ describe("FieldList", () => {
 			expect
 				.it(
 					"to satisfy",
-					<Provider
-						store={{
-							subscribe: () => {},
-							dispatch: () => {},
-							getState: () => ({}),
-						}}
-					>
+					<Provider store={store}>
 						<IntlProvider locale="en">
 							<List>
 								<FormContext.Provider value={{ values: {} }}>
@@ -545,13 +508,7 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider
 						value={{
@@ -607,9 +564,7 @@ describe("List", () => {
 			<List />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "> .Field__FieldBox")
-				.and("to contain", "margin-top: 20px"),
+			expect.it("to contain", "> .Field__FieldBox").and("to contain", "margin-top: 20px"),
 		));
 
 	it("sets layout for fieldboxes under it with tall rows", () =>

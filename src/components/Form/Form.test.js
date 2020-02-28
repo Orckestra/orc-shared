@@ -1,13 +1,21 @@
 import React from "react";
+import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
+import { FieldBox, Label } from "./Field";
 import { FormPage, Wrapper, FormContext } from "./Form";
 
 describe("FormPage", () => {
-	let getUpdater, fields, manyFields, values;
+	let state, store, getUpdater, fields, manyFields, values;
 	beforeEach(() => {
+		state = Immutable.fromJS({});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		getUpdater = () => {};
 		fields = [{ type: "TextInput", name: "text1", label: "A text" }];
 		manyFields = [
@@ -27,31 +35,32 @@ describe("FormPage", () => {
 
 	it("renders a form with a single field", () =>
 		expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormPage fields={fields} getUpdater={getUpdater} values={values} />
+					<FormPage
+						formName="testForm"
+						fields={fields}
+						getUpdater={getUpdater}
+						values={values}
+					/>
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormContext.Provider value={{ values }}>
+					<FormContext.Provider value={{ values, formName: "testForm" }}>
 						<Wrapper>
 							<Form spanWidth={1}>
-								<FieldElements getUpdater={getUpdater} fields={fields} />
+								<FieldBox>
+									<Label>A text</Label>
+									<input
+										value="foo"
+										id="text1"
+										onChange={() => {}}
+										data-test-id="testForm_text1"
+									/>
+								</FieldBox>
 							</Form>
 						</Wrapper>
 					</FormContext.Provider>
@@ -61,31 +70,14 @@ describe("FormPage", () => {
 
 	it("still respects 'wide' flag", () =>
 		expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormPage
-						wide
-						fields={fields}
-						getUpdater={getUpdater}
-						values={values}
-					/>
+					<FormPage wide fields={fields} getUpdater={getUpdater} values={values} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values }}>
 						<Wrapper>
@@ -100,13 +92,7 @@ describe("FormPage", () => {
 
 	it("renders a form with a multiple fields", () =>
 		expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormPage
 						cols={[2, 1]}
@@ -118,27 +104,15 @@ describe("FormPage", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values }}>
 						<Wrapper>
 							<Form spanWidth={2}>
-								<FieldElements
-									getUpdater={getUpdater}
-									fields={manyFields.slice(0, 5)}
-								/>
+								<FieldElements getUpdater={getUpdater} fields={manyFields.slice(0, 5)} />
 							</Form>
 							<Form spanWidth={1}>
-								<FieldElements
-									getUpdater={getUpdater}
-									fields={manyFields.slice(5, 10)}
-								/>
+								<FieldElements getUpdater={getUpdater} fields={manyFields.slice(5, 10)} />
 							</Form>
 						</Wrapper>
 					</FormContext.Provider>

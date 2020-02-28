@@ -58,6 +58,7 @@ A simple menu component that will show a list of items when clicked. Assigning i
 
 ## Form
 
+- `formName`: An optional string identifying this form uniquely. Useful when using the same field data for multiple pages.
 - `getUpdater`: Should be a function that takes a field name as parameter, and returns a function that updates the named value with the new value given as its parameter.
 - `fields`: An array of field definition objects (see below).
 - `values`: A data object containing the values to be shown in the form, typically passed in from application state.

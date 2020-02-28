@@ -27,6 +27,7 @@ export const FormContext = createContext();
 FormContext.displayName = "FormContext";
 
 export const FormPage = ({
+	formName,
 	cols = [1, 1, 1],
 	getUpdater,
 	fields,
@@ -39,14 +40,12 @@ export const FormPage = ({
 		<FormContext.Provider
 			value={{
 				values,
+				formName,
 			}}
 		>
 			<Wrapper>
 				{colFields.map((fields, index) => (
-					<Form
-						key={index}
-						spanWidth={colSpans[index] /* istanbul ignore next*/ || 1}
-					>
+					<Form key={index} spanWidth={colSpans[index] /* istanbul ignore next*/ || 1}>
 						<FieldElements getUpdater={getUpdater} fields={fields} />
 					</Form>
 				))}
