@@ -48,9 +48,7 @@ const TestComp7 = props => (
 	</div>
 );
 
-const makeTestComp = Comp => ({ modules }) => (
-	<Comp {...useNavigationState(modules)} />
-);
+const makeTestComp = Comp => ({ modules }) => <Comp {...useNavigationState(modules)} />;
 
 describe("useNavigationState", () => {
 	spyOnConsole(["warn"]);
@@ -134,7 +132,7 @@ describe("useNavigationState", () => {
 					"/page3": {
 						label: { id: "page3", defaultMessage: "Page 3 {someField}" },
 						component: TestComp4,
-						labelValueSelector: state => state.getIn(["objs", "test", "bar"]),
+						labelValueSelector: () => state => state.getIn(["objs", "test", "bar"]),
 					},
 				},
 			},
@@ -362,6 +360,199 @@ describe("useNavigationState", () => {
 			));
 	});
 
+	describe("tab label values", () => {
+		let page;
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
+				navigation: {
+					tabIndex: {
+						"/TestScope/test": {
+							href: "/TestScope/test",
+							path: "/:scope/test",
+							params: { scope: "TestScope" },
+						},
+						"/TestScope/test/foo": {
+							href: "/TestScope/test/foo",
+							path: "/:scope/test/:pageVar",
+							params: { scope: "TestScope", pageVar: "foo" },
+						},
+						"/TestScope/test/bar": {
+							href: "/TestScope/test/bar",
+							path: "/:scope/test/:pageVar",
+							params: { scope: "TestScope", pageVar: "bar" },
+						},
+					},
+					moduleTabs: {
+						test: ["/TestScope/test/foo", "/TestScope/test/bar"],
+					},
+					mappedHrefs: {},
+					route: {
+						match: {
+							url: "/TestScope/test/page1",
+							path: "/:scope/test/page1",
+							params: { scope: "TestScope", page2: "bar" },
+						},
+					},
+				},
+			});
+			page = {
+				label: { id: "page", defaultMessage: "Page {someField}" },
+				component: TestComp1,
+			};
+			modules = page => ({
+				test: {
+					icon: "thing",
+					label: "Thing",
+					component: TestComp1,
+					pages: {
+						"/:pageVar": page,
+					},
+				},
+			});
+		});
+
+		it("gets a state value for a tab via selector", () => {
+			page.labelValueSelector = (params = {}) => state => {
+				return state.getIn(["objs", "test", params.pageVar]);
+			};
+			return expect(
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<TestBar modules={modules(page)} />
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<Bar
+								pages={[
+									{
+										icon: "thing",
+										label: "Thing",
+										href: "/TestScope/test",
+										mappedFrom: "/TestScope/test",
+										active: false,
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "11",
+											},
+										},
+										href: "/TestScope/test/foo",
+										mappedFrom: "/TestScope/test/foo",
+										active: true,
+										params: { scope: "TestScope", pageVar: "foo" },
+										path: "__ignore",
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "22",
+											},
+										},
+										href: "/TestScope/test/bar",
+										mappedFrom: "/TestScope/test/bar",
+										active: false,
+										params: { scope: "TestScope", pageVar: "bar" },
+										path: "__ignore",
+									},
+								]}
+								moduleName="test"
+								moduleHref="/TestScope/test"
+							/>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+			);
+		});
+
+		it("gets a state value for a tab via data path (deprecated)", () => {
+			page.dataPath = ["objs", "test"];
+			page.dataIdParam = "pageVar";
+			return expect(
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<TestBar modules={modules(page)} />
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<Bar
+								pages={[
+									{
+										icon: "thing",
+										label: "Thing",
+										href: "/TestScope/test",
+										mappedFrom: "/TestScope/test",
+										active: false,
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "11",
+											},
+										},
+										href: "/TestScope/test/foo",
+										mappedFrom: "/TestScope/test/foo",
+										active: true,
+										params: { scope: "TestScope", pageVar: "foo" },
+										path: "__ignore",
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "22",
+											},
+										},
+										href: "/TestScope/test/bar",
+										mappedFrom: "/TestScope/test/bar",
+										active: false,
+										params: { scope: "TestScope", pageVar: "bar" },
+										path: "__ignore",
+									},
+								]}
+								moduleName="test"
+								moduleHref="/TestScope/test"
+							/>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+			).then(() =>
+				expect(console.warn, "to have calls satisfying", [
+					{
+						args: [
+							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+						],
+					},
+					{
+						args: [
+							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+						],
+					},
+				]),
+			);
+		});
+	});
+
 	it("provides a close handler for tabs", () => {
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
@@ -494,27 +685,15 @@ describe("getPageData", () => {
 		}));
 
 	it("extracts the data for a nested segment page", () =>
-		expect(
-			getPageData,
-			"when called with",
-			["/page3/seg2", {}, module],
-			"to satisfy",
-			{
-				label: "Segment 2",
-				component: TestComp5,
-			},
-		));
+		expect(getPageData, "when called with", ["/page3/seg2", {}, module], "to satisfy", {
+			label: "Segment 2",
+			component: TestComp5,
+		}));
 
 	it("extracts the data for a nested subpage", () =>
-		expect(
-			getPageData,
-			"when called with",
-			["/page2/sub1", {}, module],
-			"to satisfy",
-			{
-				component: TestComp7,
-			},
-		));
+		expect(getPageData, "when called with", ["/page2/sub1", {}, module], "to satisfy", {
+			component: TestComp7,
+		}));
 
 	it("handles variable path steps", () =>
 		expect(

@@ -45,8 +45,7 @@ export const useNavigationState = modules => {
 	const location = useLocation();
 	const currentHref = location.pathname;
 	const hrefMapper = useSelector(selectSegmentHrefMapper);
-	const [moduleHref = "", moduleName = ""] =
-		currentHref.match(/^\/[^/]+\/([^/]+)/) || [];
+	const [moduleHref = "", moduleName = ""] = currentHref.match(/^\/[^/]+\/([^/]+)/) || [];
 	const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
 	const module = {
 		icon: moduleData.icon,
@@ -54,20 +53,15 @@ export const useNavigationState = modules => {
 		href: moduleHref,
 	};
 	const currentScope = useSelector(getCurrentScope);
-	const pages = unwrapImmutable(
-		useSelector(selectMappedCurrentModuleList),
-	).filter(
+	const pages = unwrapImmutable(useSelector(selectMappedCurrentModuleList)).filter(
 		page =>
 			page &&
-			page.href !==
-				`/${safeGet(page, "params", "scope") || currentScope}/${moduleName}`,
+			page.href !== `/${safeGet(page, "params", "scope") || currentScope}/${moduleName}`,
 	);
 	return {
 		pages: [module, ...pages].map(page => {
 			const params = page.params || {};
-			const pageBaseHref = params.scope
-				? `/${params.scope}/${moduleName}`
-				: moduleHref;
+			const pageBaseHref = params.scope ? `/${params.scope}/${moduleName}` : moduleHref;
 			const outsideScope = params.scope && params.scope !== currentScope;
 			const pageData = getPageData(
 				page.href.replace(pageBaseHref, ""),
@@ -78,7 +72,10 @@ export const useNavigationState = modules => {
 			if (label && label.id) {
 				label = { ...label };
 				if (pageData.labelValueSelector) {
-					label.values = pageData.labelValueSelector;
+					label.values = pageData.labelValueSelector(params);
+					if (typeof label.values !== "function") {
+						delete label.values;
+					}
 				} else if (Array.isArray(pageData.dataPath)) {
 					console.warn(
 						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
