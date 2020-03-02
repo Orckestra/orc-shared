@@ -1,25 +1,41 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import Immutable from "immutable";
+import sinon from "sinon";
 import Icon from "../Icon";
 import { ScopeIcon, ContentLabel, ScopeNode, ScopeText } from "./ScopeNode";
 
 describe("ScopeNode", () => {
-	let onClick;
+	let closeSelector, store;
 	beforeEach(() => {
-		onClick = () => {};
+		closeSelector = sinon.spy().named("close");
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () =>
+				Immutable.fromJS({
+					navigation: { route: { match: { path: "/", params: {} } } },
+				}),
+		};
 	});
 
 	it("displays an icon and a label for a scope", () =>
 		expect(
-			<ScopeNode
-				name="A scope"
-				type="test"
-				id="ScopeId"
-				onClick={onClick}
-				isAuthorizedScope
-			/>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<ScopeNode
+						name="A scope"
+						type="test"
+						id="ScopeId"
+						closeSelector={closeSelector}
+						isAuthorizedScope
+					/>
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" onClick={onClick}>
+			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
@@ -27,7 +43,16 @@ describe("ScopeNode", () => {
 
 	it("displays an icon and a label for an unauthorized scope", () =>
 		expect(
-			<ScopeNode name="A scope" type="test" id="ScopeId" onClick={onClick} />,
+			<Provider store={store}>
+				<MemoryRouter>
+					<ScopeNode
+						name="A scope"
+						type="test"
+						id="ScopeId"
+						closeSelector={closeSelector}
+					/>
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<ContentLabel id="selectorNodeScopeId">
@@ -38,15 +63,19 @@ describe("ScopeNode", () => {
 
 	it("displays an icon and a the fallback id for a scope when name is undefined", () =>
 		expect(
-			<ScopeNode
-				type="test"
-				id="ScopeId"
-				onClick={onClick}
-				isAuthorizedScope
-			/>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<ScopeNode
+						type="test"
+						id="ScopeId"
+						closeSelector={closeSelector}
+						isAuthorizedScope
+					/>
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" onClick={onClick}>
+			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
@@ -54,16 +83,20 @@ describe("ScopeNode", () => {
 
 	it("displays an icon and a the fallback id for a scope when name is null", () =>
 		expect(
-			<ScopeNode
-				name={null}
-				type="test"
-				id="ScopeId"
-				onClick={onClick}
-				isAuthorizedScope
-			/>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<ScopeNode
+						name={null}
+						type="test"
+						id="ScopeId"
+						closeSelector={closeSelector}
+						isAuthorizedScope
+					/>
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" onClick={onClick}>
+			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
@@ -71,12 +104,16 @@ describe("ScopeNode", () => {
 
 	it("handles virtual scopes", () =>
 		expect(
-			<ScopeNode
-				name="A scope"
-				type="Virtual"
-				id="ScopeId"
-				onClick={onClick}
-			/>,
+			<Provider store={store}>
+				<MemoryRouter>
+					<ScopeNode
+						name="A scope"
+						type="Virtual"
+						id="ScopeId"
+						closeSelector={closeSelector}
+					/>
+				</MemoryRouter>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<ContentLabel id="selectorNodeScopeId" type="Virtual">

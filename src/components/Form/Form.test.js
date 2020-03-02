@@ -1,11 +1,9 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import { MemoryRouter } from "react-router-dom";
-import Immutable from "immutable";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-import { withCultureCount, addNamesToFields, FormPage, Wrapper } from "./Form";
+import { addNamesToFields, FormPage, Wrapper } from "./Form";
 
 describe("FormPage", () => {
 	let getUpdater, fields, manyFields;
@@ -153,42 +151,6 @@ describe("FormPage", () => {
 					</Wrapper>
 				</IntlProvider>
 			</Provider>,
-		));
-});
-
-const TestComp = () => <div />;
-
-describe("withCultureCount", () => {
-	let state, store;
-	beforeEach(() => {
-		state = Immutable.fromJS({
-			locale: {
-				cultures: {
-					"en-US": {},
-					"en-CA": {},
-					"fr-CA": {},
-				},
-			},
-		});
-		store = {
-			dispatch: () => {},
-			subscribe: () => {},
-			getState: () => state,
-		};
-	});
-
-	it("provides a count of the available cultures", () =>
-		expect(withCultureCount, "called with", [TestComp]).then(EnhComp =>
-			expect(
-				<Provider store={store}>
-					<MemoryRouter>
-						<EnhComp />
-					</MemoryRouter>
-				</Provider>,
-				"when mounted",
-				"to satisfy",
-				<TestComp cultureCount={3} />,
-			),
 		));
 });
 

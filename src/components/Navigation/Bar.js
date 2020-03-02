@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { withHandlers } from "recompose";
 import { getThemeProp } from "../../utils";
 import Tab from "./Tab";
 
@@ -18,10 +17,13 @@ export const TabBar = styled.div`
 	text-transform: uppercase;
 `;
 
-export const Bar = ({ pages, close }) => (
+const Bar = ({ pages }) => (
 	<TabBar>
 		{pages.map(
-			({ href, mappedFrom, label, active, icon, outsideScope }, index) => (
+			(
+				{ href, mappedFrom, label, active, icon, outsideScope, close },
+				index,
+			) => (
 				<Tab
 					key={href}
 					module={index === 0}
@@ -38,6 +40,4 @@ export const Bar = ({ pages, close }) => (
 	</TabBar>
 );
 
-export default withHandlers({
-	close: ({ close, moduleName, moduleHref }) => close(moduleName, moduleHref),
-})(Bar);
+export default Bar;

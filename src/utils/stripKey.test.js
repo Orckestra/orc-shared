@@ -6,7 +6,7 @@ describe("stripKey", () => {
 		return expect(stripKey, "called with", ["bar", obj]).then(copy =>
 			expect(copy, "not to be", obj)
 				.and("not to have key", "bar")
-				.and("to satisfy", { foo: 1, moo: 3 }),
+				.and("to exhaustively satisfy", { foo: 1, moo: 3 }),
 		);
 	});
 });

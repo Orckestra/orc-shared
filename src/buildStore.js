@@ -18,6 +18,9 @@ import settingsReducer from "./reducers/settings";
 import toastReducer from "./reducers/toasts";
 import viewReducer from "./reducers/view";
 
+window.BUILD_ID = BUILD_ID;
+window.BUILD_NUMBER = BUILD_NUMBER;
+
 const basename = window.BASE_PATH || "";
 
 export const history = createBrowserHistory({ basename });

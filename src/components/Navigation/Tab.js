@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { withHandlers } from "recompose";
 import { getThemeProp, ifFlag } from "../../utils";
 import { Link } from "react-router-dom";
 import Text from "../Text";
@@ -97,18 +96,19 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	}
 `;
 
-export const Tab = ({
+const Tab = ({
 	href,
 	label,
 	icon,
 	module,
 	active,
-	close,
+	close = () => {},
+	mappedFrom,
 	outsideScope,
 }) => {
 	const ThisTab = module ? ModuleTab : PageTab;
 	return (
-		<ThisTab active={active} outsideScope={outsideScope}>
+		<ThisTab active={active} outsideScope={outsideScope} data-test-id={href}>
 			<TabLink
 				to={href}
 				outsideScope={outsideScope}
@@ -131,6 +131,4 @@ export const Tab = ({
 	);
 };
 
-export default withHandlers({
-	close: ({ close, href, mappedFrom }) => close(href, mappedFrom),
-})(Tab);
+export default Tab;

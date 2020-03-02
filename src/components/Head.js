@@ -1,16 +1,15 @@
-import React from "react";
-import Helmet from "react-helmet";
-import routingConnector from "../hocs/routingConnector";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { currentLocale } from "../selectors/locale";
 
-const Head = ({ locale }) => (
-	<Helmet>
-		<html lang={locale} />
-	</Helmet>
-);
+const Head = () => {
+	const locale = useSelector(currentLocale);
+	useEffect(() => {
+		if (document.documentElement.lang !== locale) {
+			document.documentElement.setAttribute("lang", locale);
+		}
+	});
+	return null;
+};
 
-const withLocale = routingConnector(state => ({
-	locale: currentLocale(state),
-}));
-
-export default withLocale(Head);
+export default Head;

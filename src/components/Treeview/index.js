@@ -1,46 +1,44 @@
 import React from "react";
-import { mapProps } from "recompose";
 import useViewState from "../../hooks/useViewState";
 import { Wrapper } from "./Branch";
 import Node, { TreeContext } from "./Node";
 
-export const withNodeState =
-	/* istanbul ignore next */
-	mapProps(({ name, defaultNodeState = {}, ...props }) => {
-		const [viewState, updateViewState] = useViewState(name);
-		return {
-			nodeState: { ...defaultNodeState, ...viewState.nodeState },
-			updateNodeState: update => updateViewState("nodeState", update),
-			...props,
-		};
-	});
-
-/* istanbul ignore next */
 export const Treeview = ({
 	dark,
-	Content = () => null,
+	Content = () => {
+		console.warn("Treeview is missing a Content prop, will render blank nodes");
+		return null;
+	},
 	rootId,
-	getNode = () => null,
+	getNode = () => {
+		console.warn("Treeview is missing a getNode prop, will render empty");
+		return null;
+	},
 	openAll,
-	nodeState = {},
-	updateNodeState = () => {},
+	name,
+	defaultNodeState = {},
 	...otherProps
-}) => (
-	<Wrapper>
-		<TreeContext.Provider
-			value={{
-				dark,
-				Content,
-				getNode,
-				openAll,
-				nodeState,
-				updateNodeState,
-				otherProps,
-			}}
-		>
-			<Node id={rootId} root />
-		</TreeContext.Provider>
-	</Wrapper>
-);
+}) => {
+	const [viewState, updateViewState] = useViewState(name);
+	const nodeState = { ...defaultNodeState, ...viewState.nodeState };
+	const updateNodeState = update => updateViewState("nodeState", update);
+	return (
+		<Wrapper>
+			<TreeContext.Provider
+				value={{
+					dark,
+					Content,
+					getNode,
+					openAll,
+					nodeState,
+					updateNodeState,
+					otherProps,
+				}}
+			>
+				<Node id={rootId} root />
+			</TreeContext.Provider>
+		</Wrapper>
+	);
+};
 
-export default withNodeState(Treeview);
+export default Treeview;

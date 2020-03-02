@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { withProps } from "recompose";
 import Icon from "./Icon";
 
 export const Wrapper = styled.div`
@@ -19,24 +18,21 @@ export const IconBlock = styled.div`
 	font-size: 24px;
 `;
 
-const SpriteSheetStructure = ({ iconIds }) => (
-	<Wrapper>
-		{iconIds.map(id => (
-			<IconBlock key={id}>
-				<Icon id={id} /> {id}
-			</IconBlock>
-		))}
-	</Wrapper>
-);
-
 const arrify = thing => [].slice.call(thing);
 
-const withAllIconIds = withProps(() => ({
-	iconIds: arrify(document.querySelectorAll('symbol[id^="icon-"]')).map(elm =>
-		elm.id.replace(/^icon-/, ""),
-	),
-}));
-
-const SpriteSheet = withAllIconIds(SpriteSheetStructure);
+const SpriteSheet = () => {
+	const iconIds = arrify(
+		document.querySelectorAll('symbol[id^="icon-"]'),
+	).map(elm => elm.id.replace(/^icon-/, ""));
+	return (
+		<Wrapper>
+			{iconIds.map(id => (
+				<IconBlock key={id}>
+					<Icon id={id} /> {id}
+				</IconBlock>
+			))}
+		</Wrapper>
+	);
+};
 
 export default SpriteSheet;

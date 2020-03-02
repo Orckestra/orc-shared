@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
-import { PropStruct } from "../utils/testUtils";
+import { PropStruct, spyOnConsole } from "../utils/testUtils";
 import withScopeData from "./withScopeData";
 
 jest.mock("../utils/buildUrl", () => {
@@ -76,6 +76,27 @@ describe("withScopeData", () => {
 		};
 		spy = sinon.spy().named("getScopeSpy");
 	});
+	spyOnConsole(["warn"]);
+
+	it("gives deprecation warning", () =>
+		expect(withScopeData, "called with", [TestComp])
+			.then(Comp =>
+				expect(
+					<Provider store={store}>
+						<MemoryRouter>
+							<Comp spy={spy} />
+						</MemoryRouter>
+					</Provider>,
+					"when mounted",
+					"to contain",
+					<input />,
+				),
+			)
+			.then(() =>
+				expect(console.warn, "to have a call satisfying", {
+					args: [expect.it("to contain", "withScopeData has been deprecated")],
+				}),
+			));
 
 	it("provides scope data props to the enhanced component", () =>
 		expect(withScopeData, "when called with", [TestComp])
@@ -91,10 +112,6 @@ describe("withScopeData", () => {
 					{ type: "change", target: "#getScope", value: "test2" },
 					"to satisfy",
 					<TestComp
-						match="__ignore"
-						location="__ignore"
-						history="__ignore"
-						staticContext={undefined}
 						currentScope={{
 							id: "test3",
 							name: "Test 3",
@@ -104,7 +121,6 @@ describe("withScopeData", () => {
 						}}
 						getScope={() => {}}
 						defaultNodeState={{ test1: true, test2: true }}
-						loadScopes={() => {}}
 					/>,
 				).then(() =>
 					expect(spy, "to have calls satisfying", [

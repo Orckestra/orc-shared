@@ -1,13 +1,19 @@
+import React from "react";
+import { useSelector } from "react-redux";
 import { IntlProvider } from "react-intl";
-import routingConnector from "../hocs/routingConnector";
 import { currentLocale } from "../selectors/locale";
 
-const mapStateToProps = state => ({
-	locale: currentLocale(state),
-	key: currentLocale(state), // TODO: Remove this when react-intl suports new React context API
-	messages: require("translations/" + currentLocale(state) + ".json"),
-});
+const I18n = props => {
+	const locale = useSelector(currentLocale);
+	const messages = require("translations/" + locale + ".json");
+	return (
+		<IntlProvider
+			key={locale} // TODO: Remove this when react-intl suports new React context API
+			locale={locale}
+			messages={messages}
+			{...props}
+		/>
+	);
+};
 
-const withLanguageData = routingConnector(mapStateToProps);
-
-export default withLanguageData(IntlProvider);
+export default I18n;

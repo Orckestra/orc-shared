@@ -1,22 +1,9 @@
-import React from "react";
-import { injectIntl } from "react-intl";
-import { withStateHandlers } from "recompose";
-import { memoize } from "../../utils";
+import React, { useState, useCallback } from "react";
+import { useIntl } from "react-intl";
 import inputs from "./Inputs";
 import Field from "./Field";
 
-/* istanbul ignore next */
-export const withBlurFlag = withStateHandlers(() => ({ wasBlurred: false }), {
-	setBlurred: () => () => ({ wasBlurred: true }),
-});
-
-/* istanbul ignore next */
-const getOnBlur = memoize(func => () => {
-	window.setTimeout(func, 500);
-});
-
 export const InputField = ({
-	intl,
 	name,
 	type = "undefined",
 	label,
@@ -25,11 +12,11 @@ export const InputField = ({
 	listIndex,
 	placeholder,
 	required,
-	wasBlurred,
-	setBlurred,
 	...props
 }) => {
-	const { formatMessage } = intl;
+	const [wasBlurred, setBlurred] = useState(false);
+	props.onBlur = useCallback(() => setBlurred(true), [setBlurred]);
+	const { formatMessage } = useIntl();
 	const Input = inputs[type];
 	if (!Input) {
 		console.error(`Unknown type "${type}", cannot render field`);
@@ -60,11 +47,10 @@ export const InputField = ({
 						? formatMessage(placeholder)
 						: undefined
 				}
-				onBlur={getOnBlur(setBlurred)}
 				required={required && wasBlurred}
 			/>
 		</Field>
 	);
 };
 
-export default injectIntl(withBlurFlag(InputField));
+export default InputField;

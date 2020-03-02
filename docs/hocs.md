@@ -6,9 +6,13 @@ Higher order components are useful for providing state to components while keepi
 
 A combination of the redux store connector with the `react-router` router, enabling routing information to be accessed. Is also used when navigation does not cause a view change as expected. Drop in replacement for `react-redux`'s `connect()` HOC.
 
+Deprecated in favor of hooks from the [`react-redux`](https://react-redux.js.org/next/api/hooks) and [`react-router`](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/hooks.md) libraries.
+
 ## `withAuthentication(Component)`
 
 Used to add an authentication check and loader/error message if not authenticated. Not usually used for app building, but is part of the AppFrame component.
+
+Deprecated in favor of the [Authenticate component](components.md#authenticate).
 
 ## `withClickOutside(Component)`
 
@@ -36,9 +40,11 @@ A `virtual` flag prop will be set on the wrapped component, to signal that it ma
 
 When the wrapped component is mounted, the loader func in the prop named by `loaderName` is called. A `test` function may be included, which takes the props given and should return a boolean - if false, the loader is not called.
 
-Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector)
+Deprecated in favor of [useLoader](hooks.md#useloaderloadactions-cutoutselector).
 
 ## `withLocaleSwitch(Component)`
+
+**Deprecated, was only ever used in boilerplate test site. Easily replaced with `useDispatch` hook from `react-redux`.**
 
 Provides a click event handler to the component, which will attempt to change the locale to the one given in its `locale` prop.
 
@@ -46,13 +52,19 @@ Provides a click event handler to the component, which will attempt to change th
 
 Sets an `onClick` prop on the wrapped component that will attempt to navigate to the path given in the `href` prop. If this is a local path, browser navigation is prevented, and navigation is handled via `connected-react-router`. If the path points to the current one, no navigation takes place.
 
+Deprecated in favor of [useNavigationHandler](hooks.md#usenavigationhandlername).
+
 ## `withRequestActivity(request)(Component)`
+
+**Deprecated, was only ever used in boilerplate test site. Easily replaced with `useSelector` hook from `react-redux`, and [`selectActivity(requestName)`](actionsreducersselectors.md#requests).**
 
 If the `request` named is currently in progress (i.e. we are between a `<request>_REQUEST` action and a `<request>_SUCCESS` or `<request>_FAILURE` action being dispatched), the wrapped component will have an `active` prop set to true. This allows the component to indicate loading status to the user.
 
 ## `withScopeData(Component)`
 
 Provides the full scope information, including all available scopes and the currently selected scope.
+
+Deprecated, as it is closely tied to the [Scope component](components.md#Scope), where it has been replaced with a hook.
 
 ## `withScrollBox(Component)`
 

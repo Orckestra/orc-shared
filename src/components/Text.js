@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import pt from "prop-types";
 import styled, { keyframes } from "styled-components";
 import { FormattedMessage } from "react-intl";
-import { safeGet } from "../utils";
+import { safeGet, unwrapImmutable } from "../utils";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 
 export const messageContainsValues = message => {
@@ -42,7 +42,7 @@ const Text = ({ message, error }) => {
 		valueSelector = message.values;
 		delete message.values;
 	}
-	const selectValues = useSelector(valueSelector);
+	const selectValues = unwrapImmutable(useSelector(valueSelector));
 	if (error || (!message && message !== "")) {
 		return (
 			<span
