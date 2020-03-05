@@ -167,8 +167,10 @@ describe("ScopeIcon", () => {
 					Test: "test-icon",
 				},
 			},
-			scopeTypeColors: {
-				Test: "#00ff00",
+			colors: {
+				scopeTypes: {
+					Test: "#00ff00",
+				},
 			},
 		};
 	});

@@ -40,7 +40,7 @@ export const useMenuProps = messages => {
 				id: "userMenuAbout",
 				label: intl.formatMessage(messages.about),
 				handler: () => dispatch(setStateField(ABOUT_NAME, "show", true)),
-				icon: "infomation-circle",
+				icon: "info",
 			},
 		],
 	};
@@ -57,9 +57,7 @@ export const StyledMenu = styled(DropMenu)`
 	padding-right: 32px;
 `;
 
-export const Menu = ({ messages }) => (
-	<StyledMenu {...useMenuProps(messages)} />
-);
+export const Menu = ({ messages }) => <StyledMenu {...useMenuProps(messages)} />;
 
 export const AppBox = styled.div`
 	height: 100%;
@@ -94,13 +92,7 @@ CurrentApp.displayName = "CurrentApp";
 
 const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
 
-const Topbar = ({
-	applications,
-	applicationId,
-	onClick,
-	menuMessages,
-	...config
-}) => (
+const Topbar = ({ applications, applicationId, onClick, menuMessages, ...config }) => (
 	<Wrapper onClick={onClick}>
 		<AppBox>
 			<ApplicationSelector

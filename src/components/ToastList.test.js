@@ -6,12 +6,7 @@ import { Ignore } from "unexpected-reaction";
 import { ThemeProvider } from "styled-components";
 import { shade } from "polished";
 import Icon from "./Icon";
-import FullToastList, {
-	Toast,
-	ToastBox,
-	ToastIcon,
-	CloseIcon,
-} from "./ToastList";
+import FullToastList, { Toast, ToastBox, ToastIcon, CloseIcon } from "./ToastList";
 
 class RenderToast extends React.Component {
 	render() {
@@ -91,10 +86,7 @@ describe("Toast", () => {
 				}}
 			>
 				<IntlProvider locale="en">
-					<Toast
-						in
-						message={{ id: "test.toast", defaultMessage: "This is a toast" }}
-					/>
+					<Toast in message={{ id: "test.toast", defaultMessage: "This is a toast" }} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -148,8 +140,10 @@ describe("Toast", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				toastColors: {
-					test: "#ff0000",
+				colors: {
+					toasts: {
+						test: "#ff0000",
+					},
 				},
 				icons: {
 					toast: {

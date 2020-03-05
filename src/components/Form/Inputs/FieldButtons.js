@@ -32,11 +32,11 @@ export const ButtonWrapper = styled.div`
 	${ifFlag(
 		"invalid",
 		css`
-			border-color: ${getThemeProp(["errorColor"], "#ce4844")};
+			border-color: ${getThemeProp(["colors", "error"], "#ce4844")};
 
 			&:hover,
 			&:active {
-				box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
+				box-shadow: 0 0 4px ${getThemeProp(["colors", "error"], "#ce4844")};
 			}
 		`,
 	)}

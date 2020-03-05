@@ -5,16 +5,13 @@ import useScopeSelect from "./useScopeSelect";
 import { getThemeProp, switchEnum } from "../../utils";
 
 export const ScopeIcon = styled(Icon).attrs(props => ({
-	id: getThemeProp(
-		["icons", "scopeTypes", props => props.type],
-		"cross",
-	)(props),
+	id: getThemeProp(["icons", "scopeTypes", props => props.type], "cross")(props),
 }))`
 	font-size: 20px;
 	vertical-align: middle;
 	padding-right: 8px;
 	flex-shrink: 0;
-	color: ${getThemeProp(["scopeTypeColors", props => props.type], "inherit")};
+	color: ${getThemeProp(["colors", "scopeTypes", props => props.type], "inherit")};
 `;
 
 export const ScopeText = styled.div`

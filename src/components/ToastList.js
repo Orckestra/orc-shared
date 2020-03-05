@@ -8,8 +8,7 @@ import { getThemeProp } from "../utils";
 import Text from "./Text";
 import Icon from "./Icon";
 
-const portal =
-	document.getElementById("toast") || document.createElement("div");
+const portal = document.getElementById("toast") || document.createElement("div");
 /* istanbul ignore else */
 if (!portal.parent) {
 	portal.id = "toast";
@@ -26,7 +25,7 @@ export const ToastBox = transition.div`
 	border-radius: 5px;
 	font-size: 14px;
 	color: white;
-	background-color: ${getThemeProp(["toastColors", props => props.type], "#999")};
+	background-color: ${getThemeProp(["colors", "toasts", props => props.type], "#999")};
 	z-index: 10000;
 
 	& > * {
@@ -63,10 +62,7 @@ ToastBox.defaultProps = {
 };
 
 export const ToastIcon = styled(Icon).attrs(props => ({
-	id: getThemeProp(
-		["icons", "toast", props => props.type],
-		"bubble-chat-2",
-	)(props),
+	id: getThemeProp(["icons", "toast", props => props.type], "bubble-chat-2")(props),
 }))`
 	font-size: 20px;
 	margin-right: 16px;
@@ -86,19 +82,14 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 
 	&:hover {
 		background-color: ${getThemeProp(
-			["toastColors", props => props.type],
+			["colors", "toasts", props => props.type],
 			"#999",
 			color => shade(0.3, color),
 		)};
 	}
 `;
 
-export const Toast = ({
-	message = "[No message]",
-	type = "",
-	closeFunc,
-	...props
-}) => (
+export const Toast = ({ message = "[No message]", type = "", closeFunc, ...props }) => (
 	<ToastBox type={type} in={props.in}>
 		<ToastIcon type={type} />
 		<Text message={message} />

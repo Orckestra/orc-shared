@@ -7,7 +7,9 @@ describe("getTheme", () => {
 	it("gives a theme object containing icon names etc., and an app color", () =>
 		expect(getTheme, "called with", ["#FF0000"], "to satisfy", {
 			appHighlightColor: "#FF0000",
-			errorColor: "#ce4844",
+			colors: {
+				error: "#ce4844",
+			},
 			treeSettings: {},
 			icons: {},
 			fonts: {
@@ -25,10 +27,7 @@ describe("getTheme", () => {
 		expect(
 			getTheme,
 			"called with",
-			[
-				"#FF0000",
-				{ errorColor: "#FF00FF", fonts: { base: "serif", extra: "cursive" } },
-			],
+			["#FF0000", { errorColor: "#FF00FF", fonts: { base: "serif", extra: "cursive" } }],
 			"to satisfy",
 			{
 				appHighlightColor: "#FF0000",

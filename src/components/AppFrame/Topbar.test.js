@@ -13,10 +13,7 @@ import {
 } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
-import {
-	Wrapper as AppSelWrapper,
-	MenuIcon,
-} from "./ApplicationSelector/Header";
+import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
 import Topbar, {
 	Wrapper,
@@ -207,7 +204,7 @@ describe("useMenuProps", () => {
 						id: "userMenuAbout",
 						label: "About",
 						handler: () => {},
-						icon: "infomation-circle",
+						icon: "info",
 					},
 				]}
 			/>,

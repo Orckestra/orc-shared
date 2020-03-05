@@ -12,18 +12,31 @@ const baseTheme = {
 		// How far up from bottom edge of node should horizontal branch sit
 		branchHeight: 20,
 	},
-	scopeTypeColors: {
-		Global: "#fd6b35",
-		Virtual: "#3b6482",
-		Sale: "#7db84c",
-		Dependant: "#999999",
-	},
-	toastColors: {
+	colors: {
+		application: {
+			base: "#cccccc",
+		},
+		icon: "#999999",
+		border: "#999999",
+		borderLight: "#cccccc",
+		text: "#333333",
+		textLight: "#999999",
+		bgLight: "#efefef",
+		bgMedium: "#999999",
+		bgDark: "#333333",
 		error: "#ce4844",
-		warn: "#f5a623",
-		confirm: "#22b980",
+		scopeTypes: {
+			Global: "#fd6b35",
+			Virtual: "#3b6482",
+			Sale: "#7db84c",
+			Dependant: "#999999",
+		},
+		toasts: {
+			error: "#ce4844",
+			warn: "#f5a623",
+			confirm: "#22b980",
+		},
 	},
-	errorColor: "#ce4844",
 	icons: {
 		indicators: {
 			up: "chevron-up",

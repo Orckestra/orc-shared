@@ -15,7 +15,7 @@ export const Label = styled.label`
 	${ifFlag(
 		"invalid",
 		css`
-			color: ${getThemeProp(["errorColor"], "#ce4844")};
+			color: ${getThemeProp(["colors", "error"], "#ce4844")};
 		`,
 		css`
 			color: #999999;
@@ -50,18 +50,10 @@ export const RequiredNotice = styled.div`
 	position: absolute;
 	bottom: -1.6em;
 	right: 0;
-	color: ${getThemeProp(["errorColor"], "#ce4844")};
+	color: ${getThemeProp(["colors", "error"], "#ce4844")};
 `;
 
-const Field = ({
-	id,
-	label,
-	center,
-	labelOnly,
-	required,
-	invalid,
-	children,
-}) => {
+const Field = ({ id, label, center, labelOnly, required, invalid, children }) => {
 	const reqFlag = { invalid };
 	if (required) reqFlag.required = true;
 	return (
