@@ -476,6 +476,64 @@ describe("useNavigationState", () => {
 			);
 		});
 
+		it("handles if selector does not follow required function type", () => {
+			page.labelValueSelector = (params = {}) => ({ stuff: true, params });
+			return expect(
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<TestBar modules={modules(page)} />
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<Bar
+								pages={[
+									{
+										icon: "thing",
+										label: "Thing",
+										href: "/TestScope/test",
+										mappedFrom: "/TestScope/test",
+										active: false,
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {},
+										},
+										href: "/TestScope/test/foo",
+										mappedFrom: "/TestScope/test/foo",
+										active: true,
+										params: { scope: "TestScope", pageVar: "foo" },
+										path: "__ignore",
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {},
+										},
+										href: "/TestScope/test/bar",
+										mappedFrom: "/TestScope/test/bar",
+										active: false,
+										params: { scope: "TestScope", pageVar: "bar" },
+										path: "__ignore",
+									},
+								]}
+								moduleName="test"
+								moduleHref="/TestScope/test"
+							/>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+			);
+		});
+
 		it("gets a state value for a tab via data path (deprecated)", () => {
 			page.dataPath = ["objs", "test"];
 			page.dataIdParam = "pageVar";
