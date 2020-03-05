@@ -3,7 +3,7 @@ import { getThemeProp, ifFlag } from "../utils";
 import { tint } from "polished";
 
 const borderColor = base =>
-	ifFlag("primary", getThemeProp(["appHighlightColor"], base), base);
+	ifFlag("primary", getThemeProp(["colors", "application", "base"], base), base);
 
 const background = ifFlag(
 	"primary",
@@ -12,28 +12,28 @@ const background = ifFlag(
 		css`
 			color: #fff;
 			background-image: linear-gradient(
-				${getThemeProp(["appHighlightColor"], "#333", color =>
+				${getThemeProp(["colors", "application", "base"], "#333", color =>
 					tint(0.05, color),
 				)},
-				${getThemeProp(["appHighlightColor"], "#333")}
+				${getThemeProp(["colors", "application", "base"], "#333")}
 			);
 			&:enabled:active {
 				background-image: none;
 				background-color: #fff;
-				color: ${getThemeProp(["appHighlightColor"], "#333")};
+				color: ${getThemeProp(["colors", "application", "base"], "#333")};
 			}
 		`,
 		css`
-			color: ${getThemeProp(["appHighlightColor"], "#333")};
+			color: ${getThemeProp(["colors", "application", "base"], "#333")};
 			background-image: none;
 			background-color: #fff;
 			&:enabled:active {
 				color: #fff;
 				background-image: linear-gradient(
-					${getThemeProp(["appHighlightColor"], "#333", color =>
+					${getThemeProp(["colors", "application", "base"], "#333", color =>
 						tint(0.05, color),
 					)},
-					${getThemeProp(["appHighlightColor"], "#333")}
+					${getThemeProp(["colors", "application", "base"], "#333")}
 				);
 			}
 		`,

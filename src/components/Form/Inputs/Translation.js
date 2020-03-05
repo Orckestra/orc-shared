@@ -56,7 +56,7 @@ export const ShowButtonChevron = styled(Icon).attrs(props => ({
 }))`
 	font-size: 10px;
 	margin-right: 5px;
-	color: ${getThemeProp(["appHighlightColor"], "#000")};
+	color: ${getThemeProp(["colors", "application", "base"], "#000")};
 `;
 
 export const TranslationInput = ({

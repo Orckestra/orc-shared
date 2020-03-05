@@ -5,18 +5,16 @@ import Icon from "../Icon";
 
 export const Header = styled.div`
 	cursor: pointer;
-	color: ${props => (props.open ? props.theme.appHighlightColor : "#ccc")};
+	color: ${ifFlag(
+		"open",
+		getThemeProp(["colors", "application", "base"], "#ccc"),
+		"#ccc",
+	)};
 
 	&:hover {
-		color: ${props => props.theme.appHighlightColor};
+		color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 	}
 `;
-Header.defaultProps = {
-	// A default value for when no theme is provided.
-	theme: {
-		appHighlightColor: "#ffffff",
-	},
-};
 
 export const Indicator = styled(Icon).attrs(props => ({
 	id: ifFlag(
@@ -27,14 +25,12 @@ export const Indicator = styled(Icon).attrs(props => ({
 }))`
 	font-size: 10px;
 	padding: 0 11px;
-	color: ${props => (props.open ? "#ccc" : props.theme.appHighlightColor)};
+	color: ${ifFlag(
+		"open",
+		"#ccc",
+		getThemeProp(["colors", "application", "base"], "#ccc"),
+	)};
 `;
-Indicator.defaultProps = {
-	// A default value for when no theme is provided.
-	theme: {
-		appHighlightColor: "#ffffff",
-	},
-};
 
 const Anchor = ({ id, onClick, className, menuLabel, open }) => (
 	<Header {...{ id, onClick, className, open }}>

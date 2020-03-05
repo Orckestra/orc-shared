@@ -26,7 +26,7 @@ export const PageTab = styled.div`
 		"active",
 		css`
 			border-bottom-color: white;
-			color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+			color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 		`,
 		css`
 			color: #999999;
@@ -92,7 +92,7 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	color: #999999;
 
 	&:hover {
-		color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+		color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 	}
 `;
 

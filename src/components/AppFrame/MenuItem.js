@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
+import { getThemeProp, ifFlag } from "../../utils";
 import Text from "../Text";
 import Icon from "../Icon";
 
@@ -18,26 +19,24 @@ export const Block = styled(FilteredLink)`
 	position: relative;
 	padding: 0 10px;
 	margin-bottom: 35px;
-	color: ${props => (props.active ? props.theme.appHighlightColor : "#999999")};
+	color: ${ifFlag(
+		"active",
+		getThemeProp(["colors", "application", "base"], "#ffffff"),
+		"#999999",
+	)};
 	text-decoration: none;
 	cursor: pointer;
 
-	${props =>
-		props.menuToggle
-			? ""
-			: css`
-					&:hover {
-						color: ${props.theme.appHighlightColor};
-					}
-			  `};
+	${ifFlag(
+		"menuToggle",
+		"",
+		css`
+			&:hover {
+				color: ${getThemeProp(["colors", "application", "base"], "#ffffff")};
+			}
+		`,
+	)};
 `;
-
-Block.defaultProps = {
-	// A default value for when no theme is provided.
-	theme: {
-		appHighlightColor: "#ffffff",
-	},
-};
 
 export const BlockWithA = Block.withComponent("a");
 
@@ -62,17 +61,10 @@ export const Label = styled.span`
 	padding-left: 10px;
 
 	transition: opacity 0.3s ease-out;
-	opacity: ${props => (props.show ? 1 : 0)};
+	opacity: ${ifFlag("show", 1, 0)};
 `;
 
-const MenuItem = ({
-	open = false,
-	label = "",
-	icon,
-	alert,
-	href,
-	...props
-}) => {
+const MenuItem = ({ open = false, label = "", icon, alert, href, ...props }) => {
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;

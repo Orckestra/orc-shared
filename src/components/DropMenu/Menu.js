@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
+import { getThemeProp } from "../../utils";
 import Icon from "../Icon";
 import withClickOutside from "../../hocs/withClickOutside";
 
@@ -51,16 +52,10 @@ export const Item = styled.li`
 	cursor: pointer;
 
 	&:hover {
-		background-color: ${props => props.theme.appHighlightColor};
+		background-color: ${getThemeProp(["colors", "application", "base"], "#ffffff")};
 		color: white;
 	}
 `;
-Item.defaultProps = {
-	// A default value for when no theme is provided.
-	theme: {
-		appHighlightColor: "#ffffff",
-	},
-};
 
 export const ItemIcon = styled(Icon)`
 	padding-right: 11px;

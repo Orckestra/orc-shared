@@ -1,13 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import {
-	getDate,
-	getDay,
-	isSameMonth,
-	isToday,
-	format,
-	parseISO,
-} from "date-fns-2";
+import { getDate, getDay, isSameMonth, isToday, format, parseISO } from "date-fns-2";
 import { FormattedDate, injectIntl } from "react-intl";
 import Kalendaryo from "kalendaryo";
 import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";
@@ -98,7 +91,7 @@ export const DayCell = styled.td.attrs(() => ({ role: "button" }))`
 		ifFlag(
 			"selected",
 			css`
-				background-color: ${getThemeProp(["appHighlightColor"], "#cccccc")};
+				background-color: ${getThemeProp(["colors", "application", "base"], "#cccccc")};
 				border-radius: 3px;
 			`,
 			css`

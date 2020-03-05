@@ -27,7 +27,7 @@ export const Legend = styled.legend`
 	font-style: italic;
 	font-size: 13px;
 	text-transform: uppercase;
-	color: ${getThemeProp(["appHighlightColor"], "#333")};
+	color: ${getThemeProp(["colors", "application", "base"], "#333")};
 `;
 
 const Fieldset = ({ label, children }) => (

@@ -111,7 +111,7 @@ export const Option = styled.div`
 	)};
 
 	&:hover {
-		background-color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+		background-color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 		color: #ffffff;
 	}
 `;

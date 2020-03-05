@@ -4,20 +4,10 @@ import Icon from "../Icon";
 
 describe("Indicator", () => {
 	it("renders a closed arrow icon", () =>
-		expect(
-			<Indicator />,
-			"when mounted",
-			"to satisfy",
-			<Icon id="chevron-right" />,
-		));
+		expect(<Indicator />, "when mounted", "to satisfy", <Icon id="chevron-right" />));
 
 	it("renders an open arrow icon", () =>
-		expect(
-			<Indicator open />,
-			"when mounted",
-			"to satisfy",
-			<Icon id="chevron-down" />,
-		));
+		expect(<Indicator open />, "when mounted", "to satisfy", <Icon id="chevron-down" />));
 
 	it("renders closed arrows in highlight color", () =>
 		expect(
@@ -50,7 +40,7 @@ describe("Indicator", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				appHighlightColor: "red",
+				colors: { application: { base: "red" } },
 				icons: {
 					indicators: {
 						up: "arrow-up",

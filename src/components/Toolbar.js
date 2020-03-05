@@ -65,7 +65,7 @@ export const Spacer = styled.div`
 export const ToolbarLabel = styled.div`
 	font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
 	font-size: 14px;
-	color: ${getThemeProp(["appHighlightColor"], "#999")};
+	color: ${getThemeProp(["colors", "application", "base"], "#999")};
 `;
 
 // Define the dictionary so we can use it below
@@ -97,9 +97,7 @@ toolComponents.spacer.displayName = "ToolSpacer";
 toolComponents.separator = () => <Separator />;
 toolComponents.separator.displayName = "ToolSeparator";
 
-export const Toolbar = ({ tools }) => (
-	<Bar>{tools.map(renderToolComponent)}</Bar>
-);
+export const Toolbar = ({ tools }) => <Bar>{tools.map(renderToolComponent)}</Bar>;
 
 toolComponents.label = ({ label }) => (
 	<ToolbarLabel>

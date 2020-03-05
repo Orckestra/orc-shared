@@ -44,11 +44,7 @@ describe("Menu", () => {
 		const reset = sinon.spy().named("reset");
 		const handler = sinon.spy().named("handler");
 		return expect(
-			<Menu
-				open
-				menuItems={[{ label: "Foo", icon: "one", handler }]}
-				reset={reset}
-			/>,
+			<Menu open menuItems={[{ label: "Foo", icon: "one", handler }]} reset={reset} />,
 			"when mounted",
 			"with event",
 			{ type: "click", target: "." + getClassName(<Item />) },
@@ -83,7 +79,7 @@ describe("Menu", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				appHighlightColor: "#ff00ff",
+				colors: { application: { base: "#ff00ff" } },
 			};
 		});
 

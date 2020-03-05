@@ -18,12 +18,7 @@ describe("Checkbox", () => {
 
 describe("ContainedInput", () => {
 	it("renders an input of type checkbox", () =>
-		expect(
-			<ContainedInput />,
-			"when mounted",
-			"to satisfy",
-			<input type="checkbox" />,
-		));
+		expect(<ContainedInput />, "when mounted", "to satisfy", <input type="checkbox" />));
 });
 
 describe("Cover", () => {
@@ -81,7 +76,7 @@ describe("Cover", () => {
 	describe("with highlight color from theme", () => {
 		let theme;
 		beforeEach(() => {
-			theme = { appHighlightColor: "#cc0000" };
+			theme = { colors: { application: { base: "#cc0000" } } };
 		});
 
 		it("sets a highlight when input is focused or active", () => {

@@ -13,10 +13,7 @@ import { setDefaultLanguage } from "../../actions/locale";
 import { setMyApplication } from "../../actions/applications";
 import { changeLocale } from "../../actions/locale";
 import { localizedAppOptionSelector } from "../../selectors/applications";
-import {
-	currentLocale,
-	orderedCultureOptionList,
-} from "../../selectors/locale";
+import { currentLocale, orderedCultureOptionList } from "../../selectors/locale";
 import { defaultAppId } from "../../selectors/settings";
 
 export const PREFS_NAME = "__prefsDialog";
@@ -42,7 +39,7 @@ export const Header = styled.div`
 	font-size: 15px;
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	text-transform: uppercase;
-	color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+	color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 	background-color: #ffffff;
 `;
 
@@ -86,9 +83,7 @@ const usePreferenceSetup = () => {
 		},
 		getUpdater: createGetUpdater(updateViewState),
 		languageOptions: unwrapImmutable(useSelector(orderedCultureOptionList)),
-		applicationOptions: unwrapImmutable(
-			useSelector(localizedAppOptionSelector),
-		),
+		applicationOptions: unwrapImmutable(useSelector(localizedAppOptionSelector)),
 		clear: () => dispatch(setValue(PREFS_NAME, { show: false })),
 		save: () => {
 			if (viewState.language) {
