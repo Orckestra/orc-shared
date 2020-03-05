@@ -3,7 +3,7 @@ import pt from "prop-types";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { ifFlag, unwrapImmutable } from "../../utils";
+import { ifFlag, getThemeProp, unwrapImmutable } from "../../utils";
 import { getApplications } from "../../actions/applications";
 import useToggle from "../../hooks/useToggle";
 import useLoader from "../../hooks/useLoader";
@@ -17,7 +17,7 @@ import Preferences from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
 
 export const Base = styled.div`
-	background-color: #333;
+	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
 	height: 100%;
 	overflow: hidden;
 `;
@@ -62,14 +62,8 @@ const AppFrame = ({
 	return (
 		<Base>
 			<ConnectedToastList />
-			<Topbar
-				{...{ applications, applicationId, menuMessages }}
-				onClick={reset}
-			/>
-			<Sidebar
-				{...{ open, toggle, modules, activeModules }}
-				path={location.pathname}
-			/>
+			<Topbar {...{ applications, applicationId, menuMessages }} onClick={reset} />
+			<Sidebar {...{ open, toggle, modules, activeModules }} path={location.pathname} />
 			<ViewPort open={open} onClick={reset}>
 				{noScope ? (
 					<React.Fragment>

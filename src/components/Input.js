@@ -12,7 +12,7 @@ export const InputComponent = styled.input`
 	flex: 0 0 auto;
 	height: 30px;
 	padding: 5px 10px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 5px;
 
 	&:focus {
@@ -25,10 +25,7 @@ export const InputComponent = styled.input`
 const Input = ({ placeholder, ...props }) => {
 	const { formatMessage } = useIntl();
 	return (
-		<InputComponent
-			{...props}
-			placeholder={maybeTranslate(formatMessage, placeholder)}
-		/>
+		<InputComponent {...props} placeholder={maybeTranslate(formatMessage, placeholder)} />
 	);
 };
 

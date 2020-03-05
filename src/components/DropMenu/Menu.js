@@ -31,9 +31,9 @@ Drawer.defaultProps = {
 };
 
 export const List = withClickOutside(styled.ul`
-	color: #333;
+	color: ${getThemeProp(["colors", "text"], "#333333")};
 	background-color: white;
-	border: 1px solid #999999;
+	border: 1px solid ${getThemeProp(["colors", "border"], "#999999")};
 	border-radius: 5px;
 	list-style-type: none;
 	padding: 5px 0;

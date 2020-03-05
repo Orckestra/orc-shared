@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { getThemeProp } from "../../utils";
 import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
 import Button from "../Button";
@@ -8,8 +9,8 @@ import Selector from "./Selector";
 
 export const Bar = styled.div`
 	flex: 0 0 49px;
-	border-bottom: 1px solid #ccc;
-	background-color: #efefef;
+	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
+	background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
@@ -39,9 +40,7 @@ ScopeBar.displayName = "ScopeBar";
 export const Scope = ({ children, filterPlaceholder }) => {
 	const name = "scopeSelector";
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
-	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(
-		name,
-	);
+	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
 	const reset = event => {
 		updateViewState("show", false);
 		event.stopPropagation();

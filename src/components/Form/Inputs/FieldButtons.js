@@ -9,7 +9,7 @@ export const ButtonWrapper = styled.div`
 	height: 30px;
 	flex: 0 1 auto;
 	border-radius: 4px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 
 	& > * {
 		box-sizing: border-box;

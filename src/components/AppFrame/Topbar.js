@@ -13,7 +13,7 @@ import DropMenu from "../DropMenu";
 
 export const Wrapper = styled.div`
 	height: 40px;
-	color: #999999;
+	color: ${getThemeProp(["colors", "textLight"], "#999999")};
 	display: flex;
 	justify-content: space-between;
 `;

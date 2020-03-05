@@ -20,10 +20,12 @@ const baseTheme = {
 		icon: "#999999",
 		border: "#999999",
 		borderLight: "#cccccc",
+		borderDark: "#3333333",
 		text: "#333333",
+		textMedium: "#cccccc",
 		textLight: "#999999",
 		bgLight: "#efefef",
-		bgMedium: "#999999",
+		bgMedium: "#999999", // Not used
 		bgDark: "#333333",
 		error: "#ce4844",
 		scopeTypes: {

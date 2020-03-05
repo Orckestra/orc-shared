@@ -28,7 +28,7 @@ export const SelectBox = styled.label`
 	max-height: 70px;
 	overflow: hidden;
 	padding: 5px 10px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 4px;
 	background-color: white;
 
@@ -79,7 +79,7 @@ export const Dropdown = styled.div`
 	left: 0;
 	top: calc(100% + 1px);
 	z-index: 1;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 4px;
 	padding: 4px 0;
 	width: 100%;

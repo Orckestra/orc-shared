@@ -21,7 +21,7 @@ export const Cover = styled.label`
 	position: relative;
 	height: 14px;
 	width: 14px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 3px;
 
 	${ContainedInput}:active + &,

@@ -28,8 +28,12 @@ export const Wrapper = styled(FilteredLabel)`
 			)};
 		`,
 		css`
-			color: #333;
-			background-color: ${ifFlag("offColor", props => props.offColor, "#cccccc")};
+			color: ${getThemeProp(["colors", "text"], "#333333")};
+			background-color: ${ifFlag(
+				"offColor",
+				props => props.offColor,
+				getThemeProp(["colors", "borderLight"], "#cccccc"),
+			)};
 		`,
 	)};
 	transition: background-color ${switchSpeed}ms ease-in, color ${switchSpeed}ms ease-in;

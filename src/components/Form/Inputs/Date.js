@@ -22,7 +22,7 @@ export const CalendarBox = styled.div`
 	position: absolute;
 	top: 30px;
 	right: 3px;
-	border: 1px solid #cccccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	padding: 8px 15px 15px;
 	background-color: white;
 	z-index: 100;
@@ -86,7 +86,7 @@ export const DayCell = styled.td.attrs(() => ({ role: "button" }))`
 		"outsideMonth",
 		css`
 			background-color: white;
-			color: #cccccc;
+			color: ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 		`,
 		ifFlag(
 			"selected",
@@ -95,7 +95,7 @@ export const DayCell = styled.td.attrs(() => ({ role: "button" }))`
 				border-radius: 3px;
 			`,
 			css`
-				background-color: #efefef;
+				background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
 			`,
 		),
 	)}
@@ -216,7 +216,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 
 		&:focus {
 			box-shadow: none;
-			border-color: #333;
+			border-color: ${getThemeProp(["colors", "borderDark"], "#333333")};
 		}
 		&:last-of-type {
 			flex-grow: 1;

@@ -13,7 +13,7 @@ export const Bar = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	color: #999999;
+	color: ${getThemeProp(["colors", "textLight"], "#999999")};
 `;
 
 export const MenuToggle = withTheme(({ open, toggle, theme }) => (
@@ -66,13 +66,7 @@ export const Logo = () => (
 	</LogoSvg>
 );
 
-const Sidebar = ({
-	open,
-	toggle,
-	modules = [],
-	activeModules = [],
-	path = "",
-}) => {
+const Sidebar = ({ open, toggle, modules = [], activeModules = [], path = "" }) => {
 	return (
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />

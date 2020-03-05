@@ -132,7 +132,8 @@ describe("ContentLabel", () => {
 			expect
 				.it("to contain", "text-transform: uppercase;")
 				.and("to contain", ":hover {background-color: #222;}")
-				.and("not to contain", "color: #999; cursor: default;"),
+				.and("not to contain", "color: #999")
+				.and("not to contain", "cursor: default;"),
 		));
 
 	it("sets css for Virtual scopes", () =>
@@ -141,7 +142,7 @@ describe("ContentLabel", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("to contain", "color: #999; cursor: default;")
+				.it("to contain", "color: #999999; cursor: default;")
 				.and("not to contain", "text-transform: uppercase;")
 				.and("not to contain", ":hover"),
 		));
@@ -152,7 +153,8 @@ describe("ContentLabel", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("not to contain", "color: #999; cursor: default;")
+				.it("not to contain", "color: #999")
+				.and("not to contain", "cursor: default;")
 				.and("not to contain", "text-transform: uppercase;")
 				.and("to contain", ":hover {background-color: #222;}"),
 		));

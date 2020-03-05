@@ -42,7 +42,7 @@ const background = ifFlag(
 		"active",
 		css`
 			background-image: none;
-			background-color: #efefef;
+			background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
 			&:enabled:active {
 				background-color: #f7f7f7;
 			}
@@ -51,7 +51,7 @@ const background = ifFlag(
 			background-image: none;
 			background-color: #f7f7f7;
 			&:enabled:active {
-				background-color: #efefef;
+				background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
 			}
 		`,
 	),
@@ -71,7 +71,7 @@ const Button = styled.button`
 	border-radius: 4px;
 	user-select: none;
 	height: 30px;
-	border: 1px solid ${borderColor("#ccc")};
+	border: 1px solid ${borderColor(getThemeProp(["colors", "borderLight"], "#cccccc"))};
 	outline: none;
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	text-transform: uppercase;

@@ -14,7 +14,7 @@ export const PageTab = styled.div`
 	}
 	overflow: hidden;
 	height: 38px;
-	border: 1px solid #cccccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	display: flex;
 	transform: translateY(-10px);
 	border-top-left-radius: 5px;
@@ -29,7 +29,7 @@ export const PageTab = styled.div`
 			color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 		`,
 		css`
-			color: #999999;
+			color: ${getThemeProp(["colors", "textLight"], "#999999")};
 		`,
 	)};
 
@@ -89,7 +89,7 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	margin-left: 10px;
 	margin-right: -5px;
 	font-size: 14px;
-	color: #999999;
+	color: ${getThemeProp(["colors", "textLight"], "#999999")};
 
 	&:hover {
 		color: ${getThemeProp(["colors", "application", "base"], "#ccc")};

@@ -20,8 +20,8 @@ export const PREFS_NAME = "__prefsDialog";
 
 export const PrefPanel = styled(Sidepanel)`
 	background-color: #f7f7f7;
-	border-left: 1px solid #ccc;
-	border-top: 1px solid #ccc;
+	border-left: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
+	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-top-left-radius: 5px;
 	top: 40px;
 	box-shadow: -3px 2px 5px 0px rgba(0, 0, 0, 0.2);
@@ -32,7 +32,7 @@ export const PrefPanel = styled(Sidepanel)`
 
 export const Header = styled.div`
 	flex: 0 0 auto;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-top-left-radius: 5px;
 	padding: 15px 30px;
 	height: 18px;
@@ -57,7 +57,7 @@ export const Footer = styled.div`
 	align-items: center;
 	justify-content: flex-end;
 	background-color: #ffffff;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	padding-right: 10px;
 	height: 60px;
 `;

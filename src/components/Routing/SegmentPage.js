@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Switch, Route, Redirect, Link } from "react-router-dom";
 import UrlPattern from "url-pattern";
-import { ifFlag } from "../../utils";
+import { ifFlag, getThemeProp } from "../../utils";
 import Text from "../Text";
 import { TabBar } from "../Navigation/Bar";
 import FullPage from "./FullPage";
@@ -12,7 +12,7 @@ import Segment from "./Segment";
 export const Wrapper = styled.div`
 	box-sizing: border-box;
 	display: flex;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	flex: 0 1 100%;
 	height: calc(100% - 90px);
 
@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
 
 export const List = styled.div`
 	flex: 0 0.1 15%;
-	border-right: 1px solid #ccc;
+	border-right: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	display: flex;
 	flex-direction: column;
 `;
@@ -38,7 +38,7 @@ export const Item = styled(FilteredLink)`
 	font-weight: bold;
 	font-size: 13px;
 	text-decoration: none;
-	color: #333;
+	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
 		"active",
@@ -68,11 +68,7 @@ const SegmentPage = ({ path, segments, location, match }) => {
 							key={pagePath}
 							path={path + pagePath}
 							render={route => (
-								<FullPage
-									path={path + pagePath}
-									config={pageConfig}
-									{...route}
-								/>
+								<FullPage path={path + pagePath} config={pageConfig} {...route} />
 							)}
 						/>
 					);
@@ -87,9 +83,7 @@ const SegmentPage = ({ path, segments, location, match }) => {
 						<Route
 							key={pagePath}
 							path={path + pagePath}
-							render={route => (
-								<SubPage root={path} config={config} {...route} />
-							)}
+							render={route => <SubPage root={path} config={config} {...route} />}
 						/>
 					);
 				}),
@@ -100,12 +94,7 @@ const SegmentPage = ({ path, segments, location, match }) => {
 				key={segpath}
 				path={path + segpath}
 				render={route => (
-					<Segment
-						path={path + segpath}
-						config={config}
-						root={baseHref}
-						{...route}
-					/>
+					<Segment path={path + segpath} config={config} root={baseHref} {...route} />
 				)}
 			/>
 		);
@@ -129,11 +118,7 @@ const SegmentPage = ({ path, segments, location, match }) => {
 						</List>
 						<Switch>
 							{segmentElements}
-							<Redirect
-								exact
-								path={path}
-								to={baseHref + Object.keys(segments)[0]}
-							/>
+							<Redirect exact path={path} to={baseHref + Object.keys(segments)[0]} />
 						</Switch>
 						<Switch>{subpages}</Switch>
 					</Wrapper>

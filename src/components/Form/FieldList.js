@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import styled, { css } from "styled-components";
-import { ifFlag, memoize } from "../../utils";
+import { ifFlag, getThemeProp, memoize } from "../../utils";
 import Button from "../Button";
 import Text from "../Text";
 import { FormContext } from "./Form";
@@ -33,7 +33,7 @@ export const List = styled.div`
 			& > ${FieldBox} {
 				margin: 0;
 				padding: 20px 0;
-				border-bottom: 1px solid #ccc;
+				border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 			}
 
 			& > ${FieldBox}:first-child {
@@ -180,10 +180,11 @@ const FieldList = ({
 		name,
 		rowCount,
 	]);
-	const listUpdater = useCallback(
-		getListFieldUpdater(getUpdater(name), getRows),
-		[getUpdater, name, getRows],
-	);
+	const listUpdater = useCallback(getListFieldUpdater(getUpdater(name), getRows), [
+		getUpdater,
+		name,
+		getRows,
+	]);
 	if (listIndex !== undefined) {
 		return <>Cannot render list inside list</>;
 	}

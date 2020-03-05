@@ -22,7 +22,7 @@ export const Block = styled(FilteredLink)`
 	color: ${ifFlag(
 		"active",
 		getThemeProp(["colors", "application", "base"], "#ffffff"),
-		"#999999",
+		getThemeProp(["colors", "textLight"], "#999999"),
 	)};
 	text-decoration: none;
 	cursor: pointer;

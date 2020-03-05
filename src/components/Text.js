@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import pt from "prop-types";
 import styled, { keyframes } from "styled-components";
 import { FormattedMessage } from "react-intl";
-import { safeGet, unwrapImmutable } from "../utils";
+import { safeGet, unwrapImmutable, getThemeProp } from "../utils";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 
 export const messageContainsValues = message => {
@@ -32,7 +32,7 @@ export const Placeholder = styled.span`
 	height: 1em;
 	width: 6em;
 	border-radius: 0.5em;
-	background-color: #999999;
+	background-color: ${getThemeProp(["colors", "textLight"], "#999999")};
 	animation: ${fadeCycle} 3s infinite alternate;
 `;
 

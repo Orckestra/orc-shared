@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
-import { ifFlag } from "../../utils";
+import { ifFlag, getThemeProp } from "../../utils";
 import DataCell from "./DataCell";
 
 export const TableRow = styled.tr`
-	border: 0 solid #cccccc;
+	border: 0 solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-top-width: 1px;
 	border-bottom-width: 1px;
 
@@ -30,14 +30,7 @@ export const TableRow = styled.tr`
 // Clicks on these elements will not be handled by the row onClick
 const formTags = ["INPUT", "SELECT", "LABEL"];
 
-export const Row = ({
-	columnDefs,
-	row,
-	rowId,
-	selected,
-	rowOnClick,
-	bgColor,
-}) => {
+export const Row = ({ columnDefs, row, rowId, selected, rowOnClick, bgColor }) => {
 	const onClick = useCallback(
 		event => {
 			if (formTags.indexOf(event.target.tagName) === -1) {

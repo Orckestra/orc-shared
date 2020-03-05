@@ -24,7 +24,7 @@ describe("Indicator", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
-			"color: #333;",
+			"color: #333333;",
 		));
 
 	it("renders open arrows in light grey when dark", () =>
@@ -33,7 +33,7 @@ describe("Indicator", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
-			"color: #ccc;",
+			"color: #cccccc;",
 		));
 
 	describe("with theme", () => {
@@ -83,7 +83,7 @@ describe("Indicator", () => {
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
-				"color: #333;",
+				"color: #333333;",
 			));
 
 		it("renders open arrows in light grey when dark", () =>
@@ -92,7 +92,7 @@ describe("Indicator", () => {
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
-				"color: #ccc;",
+				"color: #cccccc;",
 			));
 	});
 });

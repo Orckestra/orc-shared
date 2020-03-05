@@ -12,7 +12,7 @@ import { ButtonWrapper } from "./FieldButtons";
 export const LanguageLabel = styled.label`
 	flex: 0 0 auto;
 	min-width: 55px;
-	border-right: 1px solid #ccc;
+	border-right: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	padding: 5px 10px;
 	background-color: #eaeaea;
 	margin-right: 0;

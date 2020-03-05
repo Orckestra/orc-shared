@@ -5,7 +5,7 @@
 	Sortable, within categories
 */
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { compose, setDisplayName } from "recompose";
 import { safeGet, ifFlag, getThemeProp } from "../utils";
 import withScrollBox from "../hocs/withScrollBox";
@@ -24,7 +24,12 @@ export const CategoryHeader = styled.td`
 	position: relative;
 	padding: 11px 45px;
 	background-color: #f1eae0;
-	${ifFlag("closed", "border-bottom: 1px solid #cccccc;")}
+	${ifFlag(
+		"closed",
+		css`
+			border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
+		`,
+	)}
 	cursor: pointer;
 `;
 

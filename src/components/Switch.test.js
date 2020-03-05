@@ -119,7 +119,7 @@ describe("Wrapper", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("to match", /\scolor: #333;.*::after/)
+				.it("to match", /\scolor: #333333;.*::after/)
 				.and("to match", /\sbackground-color: #cccccc;.*::after/),
 		));
 

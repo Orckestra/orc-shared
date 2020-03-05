@@ -8,7 +8,7 @@ import Text, { ptLabel } from "./Text";
 
 export const Bar = styled.div`
 	flex: 0 0 64px;
-	border-bottom: 1px solid #cccccc;
+	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	display: flex;
 	align-items: center;
 	padding: 0 24px;
@@ -55,7 +55,7 @@ export const Separator = styled.div`
 	flex: 0 0 1px;
 	height: 30px;
 	margin: 0 16px;
-	background-color: #cccccc;
+	background-color: ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 `;
 
 export const Spacer = styled.div`
@@ -65,7 +65,7 @@ export const Spacer = styled.div`
 export const ToolbarLabel = styled.div`
 	font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
 	font-size: 14px;
-	color: ${getThemeProp(["colors", "application", "base"], "#999")};
+	color: ${getThemeProp(["colors", "application", "base"], "#999999")};
 `;
 
 // Define the dictionary so we can use it below
