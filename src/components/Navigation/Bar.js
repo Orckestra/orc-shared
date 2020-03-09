@@ -17,16 +17,23 @@ export const TabBar = styled.div`
 	text-transform: uppercase;
 `;
 
-const Bar = ({ pages }) => (
+export const ScrollableBar = styled.div``;
+
+const Bar = ({ module, pages }) => (
 	<TabBar>
+		<Tab
+			module
+			key={module.href}
+			icon={module.icon}
+			href={module.href}
+			mappedFrom={module.mappedFrom}
+			label={module.label}
+			active={module.active}
+		/>
 		{pages.map(
-			(
-				{ href, mappedFrom, label, active, icon, outsideScope, close },
-				index,
-			) => (
+			({ href, mappedFrom, label, active, icon, outsideScope, close }, index) => (
 				<Tab
 					key={href}
-					module={index === 0}
 					icon={icon}
 					href={href}
 					mappedFrom={mappedFrom}

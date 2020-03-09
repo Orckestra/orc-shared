@@ -22,13 +22,13 @@ describe("Bar", () => {
 			>
 				<MemoryRouter>
 					<Bar
+						module={{
+							icon: "test",
+							label: "A module",
+							href: "/Foo/modu",
+							mappedFrom: "/Foo/modu",
+						}}
 						pages={[
-							{
-								icon: "test",
-								label: "A module",
-								href: "/Foo/modu",
-								mappedFrom: "/Foo/modu",
-							},
 							{
 								href: "/Foo/modu/1",
 								mappedFrom: "/Foo/modu/1",

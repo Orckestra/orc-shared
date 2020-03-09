@@ -159,14 +159,14 @@ describe("useNavigationState", () => {
 				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
 						<Bar
+							module={{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test",
+								mappedFrom: "/TestScope/test",
+								active: false,
+							}}
 							pages={[
-								{
-									icon: "thing",
-									label: "Thing",
-									href: "/TestScope/test",
-									mappedFrom: "/TestScope/test",
-									active: false,
-								},
 								{
 									label: "Page 1",
 									href: "/TestScope/test/page1",
@@ -264,7 +264,7 @@ describe("useNavigationState", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<PropStruct moduleName="" moduleHref="" pages="__ignore" />,
+			<PropStruct moduleName="" moduleHref="" module="__ignore" pages="__ignore" />,
 		);
 	});
 
@@ -336,14 +336,14 @@ describe("useNavigationState", () => {
 				"when mounted",
 				"to satisfy",
 				<PropStruct
+					module={{
+						icon: "thing",
+						label: "Thing",
+						href: "/TestScope/test/page1",
+						mappedFrom: "/TestScope/test",
+						active: true,
+					}}
 					pages={[
-						{
-							icon: "thing",
-							label: "Thing",
-							href: "/TestScope/test/page1",
-							mappedFrom: "/TestScope/test",
-							active: true,
-						},
 						{
 							label: { id: "page2", defaultMessage: "Page 2" },
 							href: "/TestScope/test/page2/sub",
@@ -430,14 +430,14 @@ describe("useNavigationState", () => {
 					<IntlProvider locale="en">
 						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
 							<Bar
+								module={{
+									icon: "thing",
+									label: "Thing",
+									href: "/TestScope/test",
+									mappedFrom: "/TestScope/test",
+									active: false,
+								}}
 								pages={[
-									{
-										icon: "thing",
-										label: "Thing",
-										href: "/TestScope/test",
-										mappedFrom: "/TestScope/test",
-										active: false,
-									},
 									{
 										label: {
 											id: "page",
@@ -492,14 +492,14 @@ describe("useNavigationState", () => {
 					<IntlProvider locale="en">
 						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
 							<Bar
+								module={{
+									icon: "thing",
+									label: "Thing",
+									href: "/TestScope/test",
+									mappedFrom: "/TestScope/test",
+									active: false,
+								}}
 								pages={[
-									{
-										icon: "thing",
-										label: "Thing",
-										href: "/TestScope/test",
-										mappedFrom: "/TestScope/test",
-										active: false,
-									},
 									{
 										label: {
 											id: "page",
@@ -551,14 +551,14 @@ describe("useNavigationState", () => {
 					<IntlProvider locale="en">
 						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
 							<Bar
+								module={{
+									icon: "thing",
+									label: "Thing",
+									href: "/TestScope/test",
+									mappedFrom: "/TestScope/test",
+									active: false,
+								}}
 								pages={[
-									{
-										icon: "thing",
-										label: "Thing",
-										href: "/TestScope/test",
-										mappedFrom: "/TestScope/test",
-										active: false,
-									},
 									{
 										label: {
 											id: "page",
