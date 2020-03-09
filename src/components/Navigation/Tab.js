@@ -8,7 +8,7 @@ import Icon from "../Icon";
 // XXX: The below contains an IE10/IE11 targeting CSS hack
 
 export const PageTab = styled.div`
-	flex: 0 1 auto;
+	flex: 0 0 auto;
 	@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
 		flex-basis: 170px;
 	}
@@ -42,7 +42,10 @@ export const PageTab = styled.div`
 `;
 
 export const ModuleTab = styled(PageTab)`
+	flex-grow: 0;
+	flex-shrink: 0;
 	margin-left: 0px;
+	z-index: 1;
 `;
 
 const FilteredLink = ({ outsideScope, ...props }) => <Link {...props} />;

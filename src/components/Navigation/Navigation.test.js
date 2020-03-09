@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { TabBar } from "./Bar";
+import { TabBar, ScrollableBar } from "./Bar";
 import Tab from "./Tab";
 import Navigation from "./index";
 
@@ -89,22 +89,24 @@ describe("Navigation", () => {
 						mappedFrom="/TestScope/test"
 						module
 					/>
-					<Tab
-						active={true}
-						close={() => {}}
-						href="/TestScope/test/page1"
-						label="Page 1"
-						mappedFrom="/TestScope/test/page1"
-						outsideScope={false}
-					/>
-					<Tab
-						active={false}
-						close={() => {}}
-						href="/TestScope/test/page2"
-						label="Page 2"
-						mappedFrom="/TestScope/test/page2"
-						outsideScope={false}
-					/>
+					<ScrollableBar>
+						<Tab
+							active={true}
+							close={() => {}}
+							href="/TestScope/test/page1"
+							label="Page 1"
+							mappedFrom="/TestScope/test/page1"
+							outsideScope={false}
+						/>
+						<Tab
+							active={false}
+							close={() => {}}
+							href="/TestScope/test/page2"
+							label="Page 2"
+							mappedFrom="/TestScope/test/page2"
+							outsideScope={false}
+						/>
+					</ScrollableBar>
 				</TabBar>
 			</MemoryRouter>,
 		));

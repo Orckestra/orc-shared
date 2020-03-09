@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import Tab from "./Tab";
-import Bar, { TabBar } from "./Bar";
+import Bar, { TabBar, ScrollableBar } from "./Bar";
 
 describe("Bar", () => {
 	let closers;
@@ -77,35 +77,37 @@ describe("Bar", () => {
 							mappedFrom="/Foo/modu"
 							label="A module"
 						/>
-						<Tab
-							key="/Foo/modu/1"
-							href="/Foo/modu/1"
-							mappedFrom="/Foo/modu/1"
-							label="Page 1"
-							close={closers[0]}
-						/>
-						<Tab
-							key="/Foo/modu/2"
-							href="/Foo/modu/2"
-							mappedFrom="/Foo/modu/2"
-							label="Page 2"
-							close={closers[1]}
-							active
-						/>
-						<Tab
-							key="/Foo/modu/3"
-							href="/Foo/modu/3"
-							mappedFrom="/Foo/modu/3"
-							label="Page 3"
-							close={closers[2]}
-						/>
-						<Tab
-							key="/Foo/modu/4"
-							href="/Foo/modu/4"
-							mappedFrom="/Foo/modu/4"
-							label="Page 4"
-							close={closers[3]}
-						/>
+						<ScrollableBar>
+							<Tab
+								key="/Foo/modu/1"
+								href="/Foo/modu/1"
+								mappedFrom="/Foo/modu/1"
+								label="Page 1"
+								close={closers[0]}
+							/>
+							<Tab
+								key="/Foo/modu/2"
+								href="/Foo/modu/2"
+								mappedFrom="/Foo/modu/2"
+								label="Page 2"
+								close={closers[1]}
+								active
+							/>
+							<Tab
+								key="/Foo/modu/3"
+								href="/Foo/modu/3"
+								mappedFrom="/Foo/modu/3"
+								label="Page 3"
+								close={closers[2]}
+							/>
+							<Tab
+								key="/Foo/modu/4"
+								href="/Foo/modu/4"
+								mappedFrom="/Foo/modu/4"
+								label="Page 4"
+								close={closers[3]}
+							/>
+						</ScrollableBar>
 					</TabBar>
 				</MemoryRouter>
 			</Provider>,
