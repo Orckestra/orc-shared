@@ -6,6 +6,7 @@ import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
 import Button from "../Button";
 import Selector from "./Selector";
+import usePreviousModified from "../../hooks/usePreviousModified";
 
 export const Bar = styled.div`
 	flex: 0 0 49px;
@@ -41,6 +42,11 @@ export const Scope = ({ children, filterPlaceholder }) => {
 	const name = "scopeSelector";
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
+	const opening = usePreviousModified(
+		show,
+		(prevShow, currentShow) => prevShow === false && currentShow === true,
+	);
+
 	const reset = event => {
 		updateViewState("show", false);
 		event.stopPropagation();
@@ -61,7 +67,7 @@ export const Scope = ({ children, filterPlaceholder }) => {
 				reset={reset}
 				getScope={getScope}
 				nodeState={nodeState}
-				defaultNodeState={defaultNodeState}
+				defaultNodeState={opening ? defaultNodeState : {}}
 				filter={filter}
 				updateFilter={updateFilter}
 				filterPlaceholder={filterPlaceholder}

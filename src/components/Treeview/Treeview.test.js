@@ -233,7 +233,7 @@ describe("TreeView", () => {
 		);
 	});
 
-	it("overrides default node state with view state", () => {
+	it("overrides view state with default node state", () => {
 		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], false);
 		return expect(
 			<Provider store={store}>
@@ -252,11 +252,26 @@ describe("TreeView", () => {
 				<Branch>
 					<Leaf>
 						<BeforeIndicator />
-						<Indicator />
+						<Indicator open />
 						<Label>
 							<div id="testNode1" />
 						</Label>
 					</Leaf>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator />
+							<Label>
+								<div id="testNode3" />
+							</Label>
+						</Leaf>
+						<Leaf>
+							<NonIndicator />
+							<Label>
+								<div id="testNode4" />
+							</Label>
+						</Leaf>
+					</Branch>
 					<Leaf>
 						<NonIndicator />
 						<Label>
@@ -392,11 +407,7 @@ describe("TreeView", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<Treeview
-						{...testProps}
-						openAll
-						data-test-info="A test data variable"
-					/>
+					<Treeview {...testProps} openAll data-test-info="A test data variable" />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
