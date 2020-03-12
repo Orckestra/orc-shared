@@ -96,6 +96,7 @@ describe("Navigation", () => {
 							href="/TestScope/test/page1"
 							label="Page 1"
 							mappedFrom="/TestScope/test/page1"
+							hidden={false}
 							outsideScope={false}
 						/>
 						<Tab
@@ -104,6 +105,7 @@ describe("Navigation", () => {
 							href="/TestScope/test/page2"
 							label="Page 2"
 							mappedFrom="/TestScope/test/page2"
+							hidden={false}
 							outsideScope={false}
 						/>
 					</ScrollableBar>

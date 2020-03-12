@@ -39,6 +39,13 @@ export const PageTab = styled.div`
 			background-color: #eeeeee;
 		`,
 	)}
+
+	${ifFlag(
+		"hidden",
+		css`
+			visibility: hidden;
+		`,
+	)}
 `;
 
 export const ModuleTab = styled(PageTab)`
@@ -99,19 +106,19 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	}
 `;
 
-const Tab = ({
-	href,
-	label,
-	icon,
-	module,
-	active,
-	close = () => {},
-	mappedFrom,
-	outsideScope,
-}) => {
+const Tab = (
+	{ href, label, icon, module, active, close = () => {}, outsideScope, hidden },
+	ref,
+) => {
 	const ThisTab = module ? ModuleTab : PageTab;
 	return (
-		<ThisTab active={active} outsideScope={outsideScope} data-test-id={href}>
+		<ThisTab
+			ref={ref}
+			active={active}
+			outsideScope={outsideScope}
+			hidden={hidden}
+			data-test-id={href}
+		>
 			<TabLink
 				to={href}
 				outsideScope={outsideScope}
@@ -134,4 +141,4 @@ const Tab = ({
 	);
 };
 
-export default Tab;
+export default React.forwardRef(Tab);

@@ -19,6 +19,7 @@ export const Bar = styled.div`
 
 export const AlignedButton = styled(Button)`
 	margin-right: 20px;
+	z-index: 10;
 `;
 AlignedButton.defaultProps = {
 	primary: true,

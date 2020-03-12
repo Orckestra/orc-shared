@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
+import DropMenu from "../DropMenu";
 import Tab from "./Tab";
 import Bar, { TabBar, ScrollableBar } from "./Bar";
 
@@ -84,6 +85,7 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/1"
 								label="Page 1"
 								close={closers[0]}
+								hidden={false}
 							/>
 							<Tab
 								key="/Foo/modu/2"
@@ -91,6 +93,7 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/2"
 								label="Page 2"
 								close={closers[1]}
+								hidden={false}
 								active
 							/>
 							<Tab
@@ -99,6 +102,7 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/3"
 								label="Page 3"
 								close={closers[2]}
+								hidden={false}
 							/>
 							<Tab
 								key="/Foo/modu/4"
@@ -106,8 +110,56 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/4"
 								label="Page 4"
 								close={closers[3]}
+								hidden={false}
 							/>
 						</ScrollableBar>
+					</TabBar>
+				</MemoryRouter>
+			</Provider>,
+		));
+
+	it("renders a bar containing only module", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MemoryRouter>
+					<Bar
+						module={{
+							icon: "test",
+							label: "A module",
+							href: "/Foo/modu",
+							mappedFrom: "/Foo/modu",
+							active: true,
+						}}
+						pages={[]}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MemoryRouter>
+					<TabBar>
+						<Tab
+							key="/Foo/modu"
+							module
+							icon="test"
+							href="/Foo/modu"
+							mappedFrom="/Foo/modu"
+							label="A module"
+							active
+						/>
 					</TabBar>
 				</MemoryRouter>
 			</Provider>,
