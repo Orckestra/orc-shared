@@ -3,6 +3,14 @@ import styled, { css } from "styled-components";
 import { ifFlag, getThemeProp } from "../../utils";
 import DataCell from "./DataCell";
 
+export const stringifyFieldName = name => {
+	if (Array.isArray(name)) {
+		return name.join("_");
+	} else {
+		return name && name.toString();
+	}
+};
+
 export const TableRow = styled.tr`
 	border: 0 solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-top-width: 1px;
@@ -47,7 +55,7 @@ export const Row = ({ columnDefs, row, rowId, selected, rowOnClick, bgColor }) =
 		<TableRow onClick={rowOnClick ? onClick : undefined} bgColor={bgColor}>
 			{columnDefs.map(columnDef => (
 				<DataCell
-					key={columnDef.fieldName}
+					key={stringifyFieldName(columnDef.fieldName)}
 					{...{
 						rowId,
 						row,

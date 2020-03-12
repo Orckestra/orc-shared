@@ -4,11 +4,7 @@ import HeadCell from "./HeadCell";
 
 describe("HeadRow", () => {
 	it("renders a row of headers, one for each defined column", () => {
-		const columnDefs = [
-			{ fieldName: "a" },
-			{ fieldName: "b" },
-			{ fieldName: "c" },
-		];
+		const columnDefs = [{ fieldName: "a" }, { fieldName: "b" }, { fieldName: "c" }];
 		return expect(
 			<table>
 				<thead>

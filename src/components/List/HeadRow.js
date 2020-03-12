@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { TableRow } from "./Row";
+import { TableRow, stringifyFieldName } from "./Row";
 import HeadCell from "./HeadCell";
 
 export const HeadTableRow = styled(TableRow)`
@@ -11,7 +11,9 @@ const HeadRow = ({ columnDefs, rowIds, allSelected }) => (
 	<HeadTableRow>
 		{columnDefs.map(columnDef => (
 			<HeadCell
-				key={columnDef.fieldName}
+				key={
+					columnDef.type === "select" ? "select" : stringifyFieldName(columnDef.fieldName)
+				}
 				{...{ columnDef, rowIds, allSelected }}
 			/>
 		))}

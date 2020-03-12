@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { Row, TableRow } from "./Row";
+import { Row, TableRow, stringifyFieldName } from "./Row";
 import DataCell from "./DataCell";
 
 const TestComp = () => (
@@ -193,4 +193,36 @@ describe("TableRow", () => {
 				.it("not to match", /transition: background-color/)
 				.and("not to match", /:hover \{[^}]*background-color:[^}]*\}/),
 		));
+});
+
+describe("stringifyFieldName", () => {
+	it("does nothing to a string", () =>
+		expect(
+			stringifyFieldName,
+			"when called with",
+			["FieldName"],
+			"to equal",
+			"FieldName",
+		));
+
+	it("converts an array to a string", () =>
+		expect(
+			stringifyFieldName,
+			"when called with",
+			[["fieldA", "foo"]],
+			"to equal",
+			"fieldA_foo",
+		));
+
+	it("handles arrays with non-string types", () =>
+		expect(
+			stringifyFieldName,
+			"when called with",
+			[["fieldA", 0, "foo"]],
+			"to equal",
+			"fieldA_0_foo",
+		));
+
+	it("returns undefined if given undefined", () =>
+		expect(stringifyFieldName, "when called with", [undefined], "to equal", undefined));
 });
