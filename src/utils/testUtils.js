@@ -27,9 +27,7 @@ export const getElmClasses = (reactElm, container) => {
 	const classes = domElm.getAttribute("class");
 	if (!classes) {
 		throw new Error(
-			"Class name not found in <" +
-				(reactElm.type.name || reactElm.type) +
-				" />",
+			"Class name not found in <" + (reactElm.type.name || reactElm.type) + " />",
 		);
 	}
 	return classes.split(" ");
@@ -45,10 +43,10 @@ export const getClassSelector = elm => {
 	return "." + classes.join(".");
 };
 
-export const firstItemComparator = (a, b) =>
-	a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0;
+export const firstItemComparator = (a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0);
 
-export const PropStruct = props => (
+export const PropStruct = React.forwardRef((props, ref) => (
+	// TODO: Handle refs sensibly instead of ignoring?
 	<dl id={props.id}>
 		{Object.entries(props)
 			.sort(firstItemComparator)
@@ -82,4 +80,4 @@ export const PropStruct = props => (
 					  ],
 			)}
 	</dl>
-);
+));
