@@ -1,5 +1,5 @@
 import React from "react";
-import { Provider } from "rreact-redux";
+import { Provider } from "react-redux";
 import { Router, MemoryRouter } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import sinon from "sinon";
