@@ -1,15 +1,23 @@
 import { useEffect, useRef } from "react";
 
-const usePreviousModified = (value, predicate) => {
+const defaultPredicate = (previous, current) => {
+	return previous !== undefined && previous !== null && previous !== current;
+};
+
+const usePreviousModified = (
+	value,
+	effectAction = null,
+	predicate = defaultPredicate,
+) => {
 	const ref = useRef();
 
 	useEffect(() => {
+		if (effectAction != null) effectAction(value);
+
 		ref.current = value;
 	}, [value]);
 
-	return predicate
-		? predicate(ref.current, value)
-		: ref.current !== undefined && ref.current !== null && ref.current !== value;
+	return predicate(ref.current, value);
 };
 
 export default usePreviousModified;

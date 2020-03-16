@@ -233,7 +233,7 @@ describe("TreeView", () => {
 		);
 	});
 
-	it("overrides view state with default node state", () => {
+	it("overrides default node state with view state", () => {
 		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], false);
 		return expect(
 			<Provider store={store}>
@@ -252,26 +252,11 @@ describe("TreeView", () => {
 				<Branch>
 					<Leaf>
 						<BeforeIndicator />
-						<Indicator open />
+						<Indicator />
 						<Label>
 							<div id="testNode1" />
 						</Label>
 					</Leaf>
-					<Branch>
-						<Leaf>
-							<BeforeIndicator />
-							<Indicator />
-							<Label>
-								<div id="testNode3" />
-							</Label>
-						</Leaf>
-						<Leaf>
-							<NonIndicator />
-							<Label>
-								<div id="testNode4" />
-							</Label>
-						</Leaf>
-					</Branch>
 					<Leaf>
 						<NonIndicator />
 						<Label>

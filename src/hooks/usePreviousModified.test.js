@@ -6,9 +6,9 @@ import sinon from "sinon";
 import usePreviousModified from "./usePreviousModified";
 import { useState } from "react";
 
-const TestComp = ({ initCount, value, predicate }) => {
+const TestComp = ({ initCount, value, effectAction, predicate }) => {
 	const [count, setCount] = useState(initCount);
-	const modified = usePreviousModified(count, predicate);
+	const modified = usePreviousModified(count, effectAction, predicate);
 
 	return <div onClick={() => setCount(value)}>{modified.toString()}</div>;
 };
@@ -84,5 +84,26 @@ describe("usePreviousModified", () => {
 			"to satisfy",
 			<div>false</div>,
 		);
+	});
+
+	it("execute effect action when defined", () => {
+		let actionValue = "before";
+
+		const effectAction = () => (actionValue = "after");
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<TestComp initCount={10} value={14} effectAction={effectAction} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"with event",
+			"click",
+			"to satisfy",
+			<div>true</div>,
+		);
+
+		expect(actionValue, "to equal", "after");
 	});
 });

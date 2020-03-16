@@ -20,7 +20,7 @@ export const Treeview = ({
 	...otherProps
 }) => {
 	const [viewState, updateViewState] = useViewState(name);
-	const nodeState = { ...viewState.nodeState, ...defaultNodeState };
+	const nodeState = { ...defaultNodeState, ...viewState.nodeState };
 	const updateNodeState = update => updateViewState("nodeState", update);
 	return (
 		<Wrapper>

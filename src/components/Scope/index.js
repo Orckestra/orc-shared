@@ -42,9 +42,10 @@ export const Scope = ({ children, filterPlaceholder }) => {
 	const name = "scopeSelector";
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
-	const opening = usePreviousModified(
+	usePreviousModified(
 		show,
-		(prevShow, currentShow) => prevShow === false && currentShow === true,
+		current =>
+			current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
 	);
 
 	const reset = event => {
@@ -52,6 +53,7 @@ export const Scope = ({ children, filterPlaceholder }) => {
 		event.stopPropagation();
 	};
 	const updateFilter = event => updateViewState("filter", event.target.value);
+
 	return (
 		<React.Fragment>
 			<ScopeBar
@@ -66,8 +68,6 @@ export const Scope = ({ children, filterPlaceholder }) => {
 				show={show}
 				reset={reset}
 				getScope={getScope}
-				nodeState={nodeState}
-				defaultNodeState={opening ? defaultNodeState : {}}
 				filter={filter}
 				updateFilter={updateFilter}
 				filterPlaceholder={filterPlaceholder}
