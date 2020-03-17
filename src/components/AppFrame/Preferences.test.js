@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { getClassName } from "../../utils/testUtils";
+import { getStyledClassSelector } from "../../utils/testUtils";
 import { CHANGE_LOCALE } from "../../actions/locale";
 import {
 	SET_DEFAULT_LANGUAGE_REQUEST,
@@ -89,8 +89,7 @@ describe("Preferences", () => {
 						isVisible: true,
 						isAbsoluteUrl: true,
 						url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
-						iconUri:
-							"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
+						iconUri: "https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
 						displayName: {
 							"en-CA": "Marketing Legacy",
 							"en-US": "Marketing Legacy",
@@ -105,8 +104,7 @@ describe("Preferences", () => {
 						isVisible: true,
 						isAbsoluteUrl: true,
 						url: "https://orc-env18-oco.develop.orckestra.cloud/pim",
-						iconUri:
-							"https://orc-env18-oco.develop.orckestra.cloud/pim/icon.png",
+						iconUri: "https://orc-env18-oco.develop.orckestra.cloud/pim/icon.png",
 						displayName: {
 							"en-CA": "Product Information",
 							"en-US": "Product Information",
@@ -120,8 +118,7 @@ describe("Preferences", () => {
 						name: "Marketing",
 						isVisible: false,
 						isAbsoluteUrl: true,
-						url:
-							"https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy",
+						url: "https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy",
 						iconUri:
 							"https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy/icon.png",
 						displayName: {
@@ -165,7 +162,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: "." + getClassName(<PrefButton />) + ":last-child",
+						target: getStyledClassSelector(<PrefButton />) + ":last-child",
 					},
 					"to satisfy",
 					<div>
@@ -237,7 +234,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: "." + getClassName(<PrefButton />) + ":last-child",
+						target: getStyledClassSelector(<PrefButton />) + ":last-child",
 					},
 					"to satisfy",
 					<div>
@@ -349,7 +346,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: "." + getClassName(<PrefButton />) + ":last-child",
+						target: getStyledClassSelector(<PrefButton />) + ":last-child",
 					},
 					"to satisfy",
 					<div>
@@ -443,7 +440,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: "." + getClassName(<PrefButton />) + ":first-child",
+						target: getStyledClassSelector(<PrefButton />) + ":first-child",
 					},
 					"to satisfy",
 					<div>

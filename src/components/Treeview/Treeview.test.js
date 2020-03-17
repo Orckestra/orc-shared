@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { getClassName, spyOnConsole } from "../../utils/testUtils";
+import { getStyledClassSelector, spyOnConsole } from "../../utils/testUtils";
 import Treeview from "./index";
 import { Branch, Wrapper } from "./Branch";
 import { Leaf, Root } from "./Leaf";
@@ -281,12 +281,11 @@ describe("TreeView", () => {
 			{
 				type: "click",
 				target:
-					"." +
-					getClassName(<Branch />) +
-					" ." +
-					getClassName(<Leaf />) +
-					" ." +
-					getClassName(<Indicator />),
+					getStyledClassSelector(<Branch />) +
+					" " +
+					getStyledClassSelector(<Leaf />) +
+					" " +
+					getStyledClassSelector(<Indicator />),
 			},
 			"to satisfy",
 			<Wrapper>
@@ -392,11 +391,7 @@ describe("TreeView", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<Treeview
-						{...testProps}
-						openAll
-						data-test-info="A test data variable"
-					/>
+					<Treeview {...testProps} openAll data-test-info="A test data variable" />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",

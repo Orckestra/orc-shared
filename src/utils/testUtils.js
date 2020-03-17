@@ -1,4 +1,5 @@
 import React from "react";
+import { isStyledComponent } from "styled-components";
 import { mount } from "react-dom-testing";
 import { Ignore } from "unexpected-reaction";
 const sinon = require("sinon");
@@ -35,12 +36,31 @@ export const getElmClasses = (reactElm, container) => {
 
 export const getClassName = (reactElm, index = 0, container) => {
 	const classes = getElmClasses(reactElm, container);
-	return classes[index];
+	return classes[index] || "";
 };
 
-export const getClassSelector = elm => {
-	const classes = getElmClasses(elm);
-	return "." + classes.join(".");
+export const getClassSelector = (elm, index, container) => {
+	if (index < 0) {
+		return "." + getElmClasses(elm, container).join(".");
+	} else {
+		const className = getClassName(elm, index, container) || "";
+		return className && "." + className;
+	}
+};
+
+const scClassPattern = /-(?:-?[0-9a-z]){6}/i;
+export const getStyledClassSelector = (reactElm, container) => {
+	if (!isStyledComponent(reactElm.type)) {
+		throw new Error(
+			"<" + (reactElm.type.name || reactElm.type) + " /> is not a styled component",
+		);
+	}
+	const classes = getElmClasses(reactElm, container).filter(cls =>
+		scClassPattern.test(cls),
+	);
+	// Last classname is most specific - subject to change!
+	const className = classes[classes.length - 1];
+	return "." + className;
 };
 
 export const firstItemComparator = (a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0);
