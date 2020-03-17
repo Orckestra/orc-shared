@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
-import { getClassName, getClassSelector } from "../../utils/testUtils";
+import { getStyledClassSelector } from "../../utils/testUtils";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
 import { RoundButton } from "./Inputs/SmallButton";
@@ -273,11 +273,9 @@ describe("FieldList", () => {
 			{
 				type: "change",
 				value: "New Value",
-				target: `.${getClassName(<List />)} > :nth-child(3) .${getClassName(
-					<IntlProvider locale="en">
-						<FormInput />
-					</IntlProvider>,
-				)}`,
+				target: `${getStyledClassSelector(
+					<List />,
+				)} > :nth-child(3) ${getStyledClassSelector(<FormInput />)}`,
 			},
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -484,7 +482,7 @@ describe("FieldList", () => {
 				)
 				.and("with event", {
 					type: "click",
-					target: getClassSelector(<ListControlButton />),
+					target: getStyledClassSelector(<ListControlButton />),
 				}),
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -532,9 +530,9 @@ describe("FieldList", () => {
 			"with event",
 			{
 				type: "click",
-				target: `.${getClassName(<List />)} > :nth-child(2) .${getClassName(
-					<RoundButton />,
-				)}`,
+				target: `${getStyledClassSelector(
+					<List />,
+				)} > :nth-child(2) ${getStyledClassSelector(<RoundButton />)}`,
 			},
 		)
 			.then(() => clock.tick(1))

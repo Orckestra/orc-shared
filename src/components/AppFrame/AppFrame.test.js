@@ -7,7 +7,7 @@ import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
 import { mount, simulate } from "react-dom-testing";
-import { getClassName } from "../../utils/testUtils";
+import { getStyledClassSelector } from "../../utils/testUtils";
 import I18n from "../I18n";
 import {
 	GET_APPLICATIONS_REQUEST,
@@ -16,10 +16,7 @@ import {
 } from "../../actions/applications";
 import { Bar as ScopeBar, AlignedButton } from "../Scope";
 import AppFrame, { Base, ViewPort } from "./AppFrame";
-import {
-	Wrapper as AppSelWrapper,
-	MenuIcon,
-} from "./ApplicationSelector/Header";
+import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
 import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
@@ -93,8 +90,7 @@ describe("AppFrame", () => {
 						isVisible: true,
 						isAbsoluteUrl: true,
 						url: "https://orc-env18-oco.develop.orckestra.cloud/oms",
-						iconUri:
-							"https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
+						iconUri: "https://orc-env18-oco.develop.orckestra.cloud/oms/icon.png",
 						displayName: {
 							"en-CA": "Marketing Legacy",
 							"en-US": "Marketing Legacy",
@@ -308,7 +304,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: "." + getClassName(<BlockWithA />),
+			target: getStyledClassSelector(<BlockWithA />),
 		});
 		expect(
 			element,
@@ -333,7 +329,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: "." + getClassName(<Wrapper />),
+			target: getStyledClassSelector(<Wrapper />),
 		});
 		expect(
 			element,
@@ -358,7 +354,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: "." + getClassName(<BlockWithA />),
+			target: getStyledClassSelector(<BlockWithA />),
 		});
 		expect(
 			element,
@@ -383,7 +379,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: "." + getClassName(<ViewPort />),
+			target: getStyledClassSelector(<ViewPort />),
 		});
 		expect(
 			element,

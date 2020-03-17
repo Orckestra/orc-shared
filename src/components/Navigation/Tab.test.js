@@ -5,15 +5,8 @@ import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import { Ignore } from "unexpected-reaction";
-import { getClassName } from "../../utils/testUtils";
-import Tab, {
-	PageTab,
-	ModuleTab,
-	TabLink,
-	ModuleIcon,
-	TabText,
-	CloseIcon,
-} from "./Tab";
+import { getClassSelector } from "../../utils/testUtils";
+import Tab, { PageTab, ModuleTab, TabLink, ModuleIcon, TabText, CloseIcon } from "./Tab";
 
 describe("Tab", () => {
 	let history, close;
@@ -41,13 +34,11 @@ describe("Tab", () => {
 			"with event",
 			{
 				type: "click",
-				target:
-					"." +
-					getClassName(
-						<MemoryRouter>
-							<TabLink to="/" />
-						</MemoryRouter>,
-					),
+				target: getClassSelector(
+					<MemoryRouter>
+						<TabLink to="/" />
+					</MemoryRouter>,
+				),
 			},
 			"to satisfy",
 			<Router history={history}>
@@ -122,13 +113,11 @@ describe("Tab", () => {
 			"with event",
 			{
 				type: "click",
-				target:
-					"." +
-					getClassName(
-						<MemoryRouter>
-							<TabLink to="/" />
-						</MemoryRouter>,
-					),
+				target: getClassSelector(
+					<MemoryRouter>
+						<TabLink to="/" />
+					</MemoryRouter>,
+				),
 			},
 			"to satisfy",
 			<Router history={history}>
@@ -195,7 +184,7 @@ describe("Tab", () => {
 			"with event",
 			{
 				type: "click",
-				target: "." + getClassName(<CloseIcon />),
+				target: getClassSelector(<CloseIcon />),
 			},
 			"to satisfy",
 			<Router history={history}>
@@ -236,7 +225,7 @@ describe("Tab", () => {
 			"with event",
 			{
 				type: "click",
-				target: "." + getClassName(<CloseIcon />),
+				target: getClassSelector(<CloseIcon />),
 			},
 		).then(() => expect(close, "was called")));
 });

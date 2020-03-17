@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
 import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
-import { spyOnConsole, getClassName } from "../../../utils/testUtils";
+import { spyOnConsole, getStyledClassSelector } from "../../../utils/testUtils";
 import { ButtonWrapper } from "./FieldButtons";
 import { FormInput } from "./Text";
 import TranslationInput, {
@@ -43,11 +43,7 @@ describe("TranslationInput", () => {
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">
-						<TranslationInput
-							name="test"
-							value={{}}
-							moreLabel="Show more things"
-						/>
+						<TranslationInput name="test" value={{}} moreLabel="Show more things" />
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
@@ -79,7 +75,7 @@ describe("TranslationInput", () => {
 			</Provider>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<ShowButton />) },
+			{ type: "click", target: getStyledClassSelector(<ShowButton />) },
 			"to satisfy",
 			<TranslationWrapper>
 				<IntlProvider locale="en">
@@ -89,11 +85,7 @@ describe("TranslationInput", () => {
 					<TranslationField lang="en-US" onChange={() => {}} />
 				</IntlProvider>
 				<IntlProvider locale="en">
-					<TranslationField
-						lang="fr-CA"
-						message="Des mots"
-						onChange={() => {}}
-					/>
+					<TranslationField lang="fr-CA" message="Des mots" onChange={() => {}} />
 				</IntlProvider>
 			</TranslationWrapper>,
 		));
@@ -213,11 +205,7 @@ describe("TranslationField", () => {
 				</IntlProvider>
 			</ButtonWrapper>,
 		).then(() =>
-			expect(
-				[console.log, console.warn, console.error],
-				"to have calls satisfying",
-				[],
-			),
+			expect([console.log, console.warn, console.error], "to have calls satisfying", []),
 		));
 
 	it("handles missing message", () =>
@@ -234,10 +222,6 @@ describe("TranslationField", () => {
 				</IntlProvider>
 			</ButtonWrapper>,
 		).then(() =>
-			expect(
-				[console.log, console.warn, console.error],
-				"to have calls satisfying",
-				[],
-			),
+			expect([console.log, console.warn, console.error], "to have calls satisfying", []),
 		));
 });

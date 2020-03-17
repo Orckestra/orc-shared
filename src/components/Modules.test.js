@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "react-dom-testing";
-import { getClassName } from "../utils/testUtils";
+import { getStyledClassSelector } from "../utils/testUtils";
 import { TabBar } from "./Navigation/Bar";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
 import {
@@ -80,7 +80,7 @@ describe("Modules", () => {
 			</Provider>,
 			"when mounted",
 			"queried for first",
-			"." + getClassName(<TabBar />),
+			getStyledClassSelector(<TabBar />),
 			"to satisfy",
 			<MemoryRouter initialEntries={["/TestScope/demos"]}>
 				<TabBar>

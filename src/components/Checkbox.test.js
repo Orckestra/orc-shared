@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "react-dom-testing";
-import { getClassName } from "../utils/testUtils";
+import { getClassSelector, getStyledClassSelector } from "../utils/testUtils";
 import { Checkbox, Wrapper, ContainedInput, Cover } from "./Checkbox";
 
 describe("Checkbox", () => {
@@ -23,32 +23,32 @@ describe("ContainedInput", () => {
 
 describe("Cover", () => {
 	it("sets a highlight when input is focused or active", () => {
-		const inputClass = getClassName(<ContainedInput />);
-		const coverClass = getClassName(<Cover />, 1); // Get the generated class name
+		const inputSelector = getStyledClassSelector(<ContainedInput />);
+		const coverSelector = getClassSelector(<Cover />, 1); // Get the generated class name
 		mount(<Cover />);
 		return expect(
-			"." + coverClass,
+			coverSelector,
 			"as a selector to have style rules",
 			expect.it(
 				"to contain",
-				`.${inputClass}:active + .${coverClass},` +
-					`.${inputClass}:focus + .${coverClass}` +
+				`${inputSelector}:active + ${coverSelector},` +
+					`${inputSelector}:focus + ${coverSelector}` +
 					" {box-shadow: 0px 0px 1px 0px #7d7d7d; border-color: #777;}",
 			),
 		);
 	});
 
 	it("sets a highlight when input is focused or active, when checked", () => {
-		const inputClass = getClassName(<ContainedInput />);
-		const coverClass = getClassName(<Cover value={true} />, 1); // Get the generated class name
+		const inputSelector = getStyledClassSelector(<ContainedInput />);
+		const coverSelector = getClassSelector(<Cover value={true} />, 1); // Get the generated class name
 		mount(<Cover value={true} />);
 		return expect(
-			"." + coverClass,
+			coverSelector,
 			"as a selector to have style rules",
 			expect.it(
 				"to contain",
-				`.${inputClass}:active + .${coverClass},` +
-					`.${inputClass}:focus + .${coverClass}` +
+				`${inputSelector}:active + ${coverSelector},` +
+					`${inputSelector}:focus + ${coverSelector}` +
 					" {box-shadow: 0px 0px 1px 0px #7d7d7d; border-color: #777;}",
 			),
 		);
@@ -80,32 +80,32 @@ describe("Cover", () => {
 		});
 
 		it("sets a highlight when input is focused or active", () => {
-			const inputClass = getClassName(<ContainedInput />);
-			const coverClass = getClassName(<Cover theme={theme} />, 1); // Get the generated class name
+			const inputSelector = getStyledClassSelector(<ContainedInput />);
+			const coverSelector = getClassSelector(<Cover theme={theme} />, 1); // Get the generated class name
 			mount(<Cover theme={theme} />);
 			return expect(
-				"." + coverClass,
+				coverSelector,
 				"as a selector to have style rules",
 				expect.it(
 					"to contain",
-					`.${inputClass}:active + .${coverClass},` +
-						`.${inputClass}:focus + .${coverClass}` +
+					`${inputSelector}:active + ${coverSelector},` +
+						`${inputSelector}:focus + ${coverSelector}` +
 						" {box-shadow: 0px 0px 1px 0px #ce0c0c; border-color: #cc0000;}",
 				),
 			);
 		});
 
 		it("sets a highlight when input is focused or active, when checked", () => {
-			const inputClass = getClassName(<ContainedInput />);
-			const coverClass = getClassName(<Cover theme={theme} value={true} />, 1); // Get the generated class name
+			const inputSelector = getStyledClassSelector(<ContainedInput />);
+			const coverSelector = getClassSelector(<Cover theme={theme} value={true} />, 1); // Get the generated class name
 			mount(<Cover theme={theme} value={true} />);
 			return expect(
-				"." + coverClass,
+				coverSelector,
 				"as a selector to have style rules",
 				expect.it(
 					"to contain",
-					`.${inputClass}:active + .${coverClass},` +
-						`.${inputClass}:focus + .${coverClass}` +
+					`${inputSelector}:active + ${coverSelector},` +
+						`${inputSelector}:focus + ${coverSelector}` +
 						" {box-shadow: 0px 0px 1px 0px #ce0c0c; border-color: #cc0000;}",
 				),
 			);

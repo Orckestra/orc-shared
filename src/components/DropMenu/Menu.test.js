@@ -1,7 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { getClassName } from "../../utils/testUtils";
+import { getStyledClassSelector } from "../../utils/testUtils";
 import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 
 describe("Menu", () => {
@@ -47,7 +47,7 @@ describe("Menu", () => {
 			<Menu open menuItems={[{ label: "Foo", icon: "one", handler }]} reset={reset} />,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<Item />) },
+			{ type: "click", target: getStyledClassSelector(<Item />) },
 			"to satisfy",
 			<Drawer in>
 				<List onClickOutside={reset}>

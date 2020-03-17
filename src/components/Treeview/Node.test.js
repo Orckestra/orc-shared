@@ -1,7 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { getClassName, PropStruct } from "../../utils/testUtils";
+import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
 import Node, { RootNode, LeafNode, TreeContext } from "./Node";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
@@ -15,9 +15,7 @@ describe("RootNode", () => {
 			otherProps: { foo: true, bar: false },
 		};
 		Wrap = props => (
-			<TreeContext.Provider value={contextValue}>
-				{props.children}
-			</TreeContext.Provider>
+			<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
 		);
 	});
 
@@ -48,9 +46,7 @@ describe("LeafNode", () => {
 			otherProps: { foo: true, bar: false },
 		};
 		Wrap = props => (
-			<TreeContext.Provider value={contextValue}>
-				{props.children}
-			</TreeContext.Provider>
+			<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
 		);
 	});
 
@@ -81,13 +77,7 @@ describe("LeafNode", () => {
 				<BeforeIndicator />
 				<Indicator open={true} onClick={expect.it("to be a function")} />
 				<Label>
-					<PropStruct
-						open={true}
-						thing="stuff"
-						id="testNode"
-						foo={true}
-						bar={false}
-					/>
+					<PropStruct open={true} thing="stuff" id="testNode" foo={true} bar={false} />
 				</Label>
 			</Leaf>,
 		));
@@ -114,7 +104,7 @@ describe("LeafNode", () => {
 			</Wrap>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<Indicator />) },
+			{ type: "click", target: getStyledClassSelector(<Indicator />) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: true }] },
@@ -128,7 +118,7 @@ describe("LeafNode", () => {
 			</Wrap>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<Indicator />) },
+			{ type: "click", target: getStyledClassSelector(<Indicator />) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: false }] },
@@ -154,9 +144,7 @@ describe("Node", () => {
 		};
 		Wrap = props => (
 			<div>
-				<TreeContext.Provider value={contextValue}>
-					{props.children}
-				</TreeContext.Provider>
+				<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
 			</div>
 		);
 	});
@@ -192,13 +180,7 @@ describe("Node", () => {
 					"queried for first",
 					"#exists",
 					"to satisfy",
-					<PropStruct
-						id="exists"
-						other="data"
-						open={false}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="exists" other="data" open={false} foo={true} bar={false} />,
 				)
 				.and("not to contain", <Branch />),
 		));
@@ -258,25 +240,13 @@ describe("Node", () => {
 					"queried for first",
 					"#hasKids",
 					"to satisfy",
-					<PropStruct
-						id="hasKids"
-						other="info"
-						open={true}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 				)
 				.and(
 					"queried for first",
-					"." + getClassName(<Branch />),
+					getStyledClassSelector(<Branch />),
 					"to contain",
-					<PropStruct
-						id="exists"
-						other="data"
-						open={false}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="exists" other="data" open={false} foo={true} bar={false} />,
 				),
 		));
 
@@ -304,13 +274,7 @@ describe("Node", () => {
 					"queried for first",
 					"#isClosed",
 					"to satisfy",
-					<PropStruct
-						id="isClosed"
-						other="stuff"
-						open={false}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="isClosed" other="stuff" open={false} foo={true} bar={false} />,
 				)
 				.and("not to contain elements matching", "#hasKids"),
 		));
@@ -351,13 +315,7 @@ describe("Node", () => {
 				)
 				.and(
 					"to contain",
-					<PropStruct
-						id="hasKids"
-						other="info"
-						open={true}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 				),
 		));
 
@@ -396,25 +354,13 @@ describe("Node", () => {
 						"queried for first",
 						"#hasKids",
 						"to satisfy",
-						<PropStruct
-							id="hasKids"
-							other="info"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 					)
 					.and(
 						"queried for first",
-						"." + getClassName(<Branch />),
+						getStyledClassSelector(<Branch />),
 						"to contain",
-						<PropStruct
-							id="exists"
-							other="data"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="exists" other="data" open={true} foo={true} bar={false} />,
 					),
 			));
 
@@ -452,25 +398,13 @@ describe("Node", () => {
 						"queried for first",
 						"#isClosed",
 						"to satisfy",
-						<PropStruct
-							id="isClosed"
-							other="stuff"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="isClosed" other="stuff" open={true} foo={true} bar={false} />,
 					)
 					.and(
 						"queried for first",
-						"." + getClassName(<Branch />),
+						getStyledClassSelector(<Branch />),
 						"to contain",
-						<PropStruct
-							id="hasKids"
-							other="info"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 					),
 			));
 	});

@@ -6,7 +6,7 @@ import { MemoryRouter, useLocation } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { simulate } from "react-dom-testing";
-import { getClassName, PropStruct } from "../../utils/testUtils";
+import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
 import { VIEW_SET_FIELD } from "../../actions/view";
 import I18n from "../I18n";
 import RoutedScope, { Scope, ScopeBar, Bar, AlignedButton } from "./index";
@@ -198,16 +198,14 @@ describe("ScopeBar", () => {
 			<ScopeBar name="Scope name" updateViewState={updateViewState} />,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<AlignedButton />) },
+			{ type: "click", target: getStyledClassSelector(<AlignedButton />) },
 			"to satisfy",
 			<Bar>
 				<AlignedButton id="showScopeSelector">Scope name</AlignedButton>
 			</Bar>,
 		).then(() =>
 			Promise.all([
-				expect(updateViewState, "to have calls satisfying", [
-					{ args: ["show", true] },
-				]),
+				expect(updateViewState, "to have calls satisfying", [{ args: ["show", true] }]),
 			]),
 		));
 });
@@ -231,11 +229,7 @@ describe("RoutedScope", () => {
 			</Provider>,
 			appRoot,
 		);
-		return expect(
-			appRoot,
-			"to contain",
-			<PropStruct pathname="/test1/foo" itIs="me" />,
-		);
+		return expect(appRoot, "to contain", <PropStruct pathname="/test1/foo" itIs="me" />);
 	});
 
 	it("redirects to Global if route not matched", () => {
@@ -251,10 +245,6 @@ describe("RoutedScope", () => {
 			</Provider>,
 			appRoot,
 		);
-		return expect(
-			appRoot,
-			"to contain",
-			<PropStruct pathname="/Global" itIs="me" />,
-		);
+		return expect(appRoot, "to contain", <PropStruct pathname="/Global" itIs="me" />);
 	});
 });
