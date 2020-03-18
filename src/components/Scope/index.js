@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { getThemeProp } from "../../utils";
@@ -42,6 +42,7 @@ export const Scope = ({ children, filterPlaceholder }) => {
 	const name = "scopeSelector";
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
+
 	usePreviousModified(
 		show,
 		current =>
@@ -70,6 +71,7 @@ export const Scope = ({ children, filterPlaceholder }) => {
 				getScope={getScope}
 				filter={filter}
 				updateFilter={updateFilter}
+				defaultNodeState={{}}
 				filterPlaceholder={filterPlaceholder}
 			/>
 			{children}

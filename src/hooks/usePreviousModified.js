@@ -12,7 +12,9 @@ const usePreviousModified = (
 	const ref = useRef();
 
 	useEffect(() => {
-		if (effectAction != null) effectAction(value);
+		if (effectAction != null && predicate(ref.current, value)) {
+			effectAction(value);
+		}
 
 		ref.current = value;
 	}, [value]);
