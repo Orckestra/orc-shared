@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { ifFlag, getThemeProp, safeGet } from "../../utils";
-import DropMenu from "../DropMenu";
 import Tab from "./Tab";
 
 export const TabBar = styled.div`
@@ -18,7 +17,7 @@ export const TabBar = styled.div`
 	text-transform: uppercase;
 `;
 
-const InnerBar = styled.div`
+export const InnerBar = styled.div`
 	position: relative;
 	flex: 0 1 100%;
 	margin-left: -10px;
@@ -50,30 +49,45 @@ export const ScrollableBar = React.forwardRef(({ children }, ref) => {
 	return (
 		<>
 			<Fade scroll={0} />
-			<InnerBar ref={ref}>{children}</InnerBar>
+			<InnerBar id="navigationPageTabs" ref={ref}>
+				{children}
+			</InnerBar>
 		</>
 	);
 });
 
-const getTabEdges = tabRef => {
+const getTabEdges = (pages, tabRefs) => {
 	let lastWidth = 0;
-	return tabRef.current.map(ref => {
-		const tabWidth = safeGet(ref, "current", "offsetWidth") || 0;
+	return pages.map(({ href }) => {
+		const tabWidth = safeGet(tabRefs, href, "offsetWidth") || 0;
 		lastWidth += tabWidth;
 		return lastWidth;
 	});
 };
 
-const useTabScroll = (pages, barRef, tabRefs) => {
-	tabRefs.current = tabRefs.current.filter(ref => ref.current);
-	pages.forEach((page, index) => {
-		const myIndex = tabRefs.current.findIndex(
-			ref => safeGet(ref, "current", "dataset", "testId") === page.href,
-		);
-		if (myIndex === -1) {
-			tabRefs.current.splice(index, 0, React.createRef());
-		}
-	});
+export const useTabScroll = (pages, barRef, tabRefs, debug = false) => {
+	const getTabRef = useCallback(
+		node => {
+			/* istanbul ignore else */
+			if (node) {
+				const href = safeGet(node, "dataset", "href");
+				tabRefs.current[href] = node;
+			}
+		},
+		[tabRefs],
+	);
+
+	const [barWidth, setBarWidth] = useState(0);
+	const [tabEdges, setTabEdges] = useState([]);
+	const setCurrentWidths = useCallback(
+		pages => {
+			setBarWidth(safeGet(barRef, "current", "offsetWidth") || 0);
+			setTabEdges(getTabEdges(pages, tabRefs.current));
+		},
+		[barRef, tabRefs, setBarWidth, setTabEdges],
+	);
+	useEffect(() => setCurrentWidths(pages), [pages, setCurrentWidths]);
+
 	const lastActiveIndex = useRef(-1);
 	let activeIndex = pages.findIndex(page => page.active);
 	if (activeIndex === -1) {
@@ -85,38 +99,32 @@ const useTabScroll = (pages, barRef, tabRefs) => {
 	useEffect(() => {
 		const barElem = barRef.current;
 		if (!barElem) return;
-		const barWidth = barElem.offsetWidth * 1;
-		const tabEdges = getTabEdges(tabRefs);
-		let scrollEdge = Math.max(
-			(tabEdges[activeIndex + 1] || tabEdges[activeIndex]) - barWidth + 5,
-			0,
-		);
+		const activeEdge = tabEdges[activeIndex + 1] || tabEdges[activeIndex] || 0;
+		let scrollEdge = Math.max(activeEdge - barWidth + 5, 0);
 		barElem.scrollTo({ left: scrollEdge });
-		const edgeIndex = tabEdges.findIndex(
-			edge => edge >= barWidth + barElem.scrollLeft - 10,
-		);
-		console.log(barWidth, tabEdges);
-		if (tabEdges[tabEdges.length - 1] < barWidth) {
-			console.log("last: full length");
+		const edgeIndex =
+			tabEdges.findIndex(edge => edge > barWidth + barElem.scrollLeft - 10) - 1;
+		// if (barWidth) console.log(barWidth, tabEdges, edgeIndex);
+		if (tabEdges[tabEdges.length - 1] <= barWidth) {
 			setLastShown(pages.length);
 		} else if (edgeIndex > activeIndex) {
-			console.log("last: edgeIndex", edgeIndex);
 			setLastShown(edgeIndex);
 		} else {
-			console.log("last: active + 1", activeIndex + 1);
 			setLastShown(activeIndex + 1);
 		}
-	}, [setLastShown, pages, tabRefs, barRef, activeIndex]);
+	}, [setLastShown, pages, barRef, barWidth, tabEdges, activeIndex]);
 	return {
+		...(debug ? { barWidth, tabEdges } : {}),
 		lastShownTab,
+		getTabRef,
 	};
 };
 
 const Bar = ({ module, pages }) => {
 	const barRef = useRef(null);
-	const tabRefs = useRef([]);
-	const { lastShownTab } = useTabScroll(pages, barRef, tabRefs);
-	console.log("last shown", lastShownTab);
+	const tabRefs = useRef({});
+	const { lastShownTab, getTabRef } = useTabScroll(pages, barRef, tabRefs);
+	// console.log("last shown", lastShownTab);
 	return (
 		<TabBar>
 			<Tab
@@ -133,7 +141,7 @@ const Bar = ({ module, pages }) => {
 						({ href, mappedFrom, label, active, icon, outsideScope, close }, index) => {
 							return (
 								<Tab
-									ref={tabRefs.current[index]}
+									ref={getTabRef}
 									key={href}
 									icon={icon}
 									href={href}

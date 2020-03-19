@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "0.8.18-dev.2",
+	"version": "0.8.18",
 	"description": "Shared code for Orckestra applications",
 	"main": "dist/",
 	"scripts": {
@@ -32,7 +32,7 @@
 		"orc-scripts": "1.0.0-pre.2"
 	},
 	"peerDependencies": {
-		"orc-scripts": "^1.0.0-pre.1"
+		"orc-scripts": "^1.0.0-pre.2"
 	},
 	"sideEffects": false,
 	"lint-staged": {

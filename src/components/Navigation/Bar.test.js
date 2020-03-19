@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { mount, act } from "unexpected-reaction";
 import sinon from "sinon";
-import DropMenu from "../DropMenu";
-import Tab from "./Tab";
-import Bar, { TabBar, ScrollableBar } from "./Bar";
+import { getStyledClassSelector } from "../../utils/testUtils";
+import Tab, { PageTab } from "./Tab";
+import Bar, { TabBar, ScrollableBar, InnerBar, useTabScroll } from "./Bar";
 
 describe("Bar", () => {
 	let closers;
@@ -164,4 +165,235 @@ describe("Bar", () => {
 				</MemoryRouter>
 			</Provider>,
 		));
+});
+
+describe("useTabScrolling", () => {
+	// BE ADVISED!
+	// These tests rely on hacking jsdom's representation of layout
+	// jsdom changes may break these!
+	const ScrollTest = ({ pages, bar, tabs }) => {
+		const barRef = useRef(null);
+		const tabRefs = useRef({});
+		useEffect(() => {
+			Object.defineProperty(barRef.current, "offsetWidth", {
+				value: bar || 0,
+				writable: true,
+			});
+			Object.defineProperty(barRef.current, "scrollLeft", {
+				value: 0,
+				writable: true,
+			});
+			barRef.current.scrollTo.callsFake(({ left }) => (barRef.current.scrollLeft = left));
+			if (tabs) {
+				pages.forEach(({ href }, idx) => {
+					Object.defineProperty(tabRefs.current[href], "offsetWidth", {
+						value: tabs[idx] || 0,
+					});
+				});
+			}
+		}, [pages, bar, tabs]);
+		const { barWidth, tabEdges, lastShownTab, getTabRef } = useTabScroll(
+			pages,
+			barRef,
+			tabRefs,
+			true, // Debug flag
+		);
+		return (
+			<div>
+				<InnerBar ref={barRef} data-width={barWidth}>
+					{pages.map(({ href }, idx) => (
+						<PageTab
+							key={href}
+							ref={getTabRef}
+							data-href={href}
+							data-edge={tabEdges[idx]}
+						/>
+					))}
+				</InnerBar>
+				Last shown tab: {lastShownTab}
+			</div>
+		);
+	};
+
+	let setupTest;
+	beforeEach(() => {
+		setupTest = (pages, widths) => {
+			const element = mount(<ScrollTest pages={pages} {...widths} />);
+			const barElement = element.querySelector(getStyledClassSelector(<InnerBar />));
+			const tabElements = barElement.querySelectorAll(
+				getStyledClassSelector(<PageTab />),
+			);
+			const setBarWidth = (width = 0) => {
+				act(() => {
+					barElement.offsetWidth = width;
+					barElement.dispatchEvent(new Event("resize"));
+				});
+			};
+			return { element, barElement, tabElements, setBarWidth };
+		};
+	});
+
+	describe("test functions", () => {
+		it("renders a bar with tabs", () => {
+			const { element } = setupTest([{ href: "foo" }, { href: "bar" }]);
+			expect(
+				element,
+				"to contain",
+				<InnerBar>
+					<PageTab data-href="foo" />
+					<PageTab data-href="bar" />
+				</InnerBar>,
+			).and("to have text", "Last shown tab: 2");
+		});
+
+		it("can set widths", () => {
+			const { barElement, tabElements } = setupTest(
+				[{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp" }],
+				{
+					bar: 100,
+					tabs: [20, 25],
+				},
+			);
+			expect(barElement, "to have property", "offsetWidth", 100);
+			expect(tabElements[0], "to have property", "offsetWidth", 20);
+			expect(tabElements[1], "to have property", "offsetWidth", 25);
+			expect(tabElements[2], "to have property", "offsetWidth", 0);
+			expect(tabElements[3], "to have property", "offsetWidth", 0);
+		});
+
+		it("can reset bar width", () => {
+			const { barElement, setBarWidth } = setupTest(
+				[{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp" }],
+				{
+					bar: 100,
+					tabs: [50, 50, 50, 50],
+				},
+			);
+			expect(barElement, "to have property", "offsetWidth", 100);
+			setBarWidth(170);
+			expect(barElement, "to have property", "offsetWidth", 170);
+		});
+
+		it("fires resize event if bar size reset", () => {
+			const { barElement, setBarWidth } = setupTest(
+				[{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp" }],
+				{
+					bar: 100,
+					tabs: [50, 50, 50, 50],
+				},
+			);
+			const handler = sinon.spy().named("resizeHandler");
+			barElement.addEventListener("resize", handler);
+			setBarWidth(170);
+			expect(handler, "was called once");
+		});
+	});
+
+	it("sets its width state", () => {
+		const { element } = setupTest(
+			[
+				{ href: "foo" },
+				{ href: "bar" },
+				{ href: "bell" },
+				{ href: "lerp", active: true },
+			],
+			{
+				bar: 200,
+				tabs: [75, 52, 65, 35],
+			},
+		);
+		expect(
+			element,
+			"to contain",
+			<InnerBar data-width="200">
+				<PageTab data-href="foo" data-edge={75} />
+				<PageTab data-href="bar" data-edge={75 + 52} />
+				<PageTab data-href="bell" data-edge={75 + 52 + 65} />
+				<PageTab data-href="lerp" data-edge={75 + 52 + 65 + 35} />
+			</InnerBar>,
+		);
+	});
+
+	it("scrolls one tab past the active element if possible", () => {
+		const { barElement } = setupTest(
+			[
+				{ href: "foo" },
+				{ href: "bar" },
+				{ href: "bell", active: true },
+				{ href: "lerp" },
+			],
+			{
+				bar: 150,
+				tabs: [75, 52, 65, 35],
+			},
+		);
+		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 5);
+	});
+
+	it("scrolls to the active element if it is last", () => {
+		const { barElement } = setupTest(
+			[
+				{ href: "foo" },
+				{ href: "bar" },
+				{ href: "bell" },
+				{ href: "lerp", active: true },
+			],
+			{
+				bar: 150,
+				tabs: [75, 52, 65, 35],
+			},
+		);
+		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 5);
+	});
+
+	it("sets last shown tab if bar wide enough to hold all", () => {
+		const { element } = setupTest(
+			[
+				{ href: "foo" },
+				{ href: "bar", active: true },
+				{ href: "bell" },
+				{ href: "lerp" },
+				{ href: "meep" },
+			],
+			{
+				bar: 300,
+				tabs: [50, 50, 50, 50, 50],
+			},
+		);
+		expect(element, "to have text", "Last shown tab: 5");
+	});
+
+	it("sets last shown tab according to how many will fit on screen", () => {
+		const { element } = setupTest(
+			[
+				{ href: "foo", active: true },
+				{ href: "bar" },
+				{ href: "bell" },
+				{ href: "lerp" },
+				{ href: "meep" },
+			],
+			{
+				bar: 400,
+				tabs: [120, 120, 120, 120, 120],
+			},
+		);
+		expect(element, "to have text", "Last shown tab: 2");
+	});
+
+	it("sets last shown tab to make sure active tab + next tab are shown", () => {
+		const { element } = setupTest(
+			[
+				{ href: "foo" },
+				{ href: "bar" },
+				{ href: "bell", active: true },
+				{ href: "lerp" },
+				{ href: "meep" },
+			],
+			{
+				bar: 300,
+				tabs: [120, 120, 120, 120, 120],
+			},
+		);
+		expect(element, "to have text", "Last shown tab: 3");
+	});
 });
