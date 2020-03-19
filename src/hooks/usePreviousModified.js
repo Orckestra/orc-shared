@@ -9,17 +9,19 @@ const usePreviousModified = (
 	effectAction = null,
 	predicate = defaultPredicate,
 ) => {
-	const ref = useRef();
+	const ref = useRef(value);
+
+	const predicateResult = predicate(ref.current, value);
 
 	useEffect(() => {
-		if (effectAction != null && predicate(ref.current, value)) {
-			effectAction(value);
+		if (effectAction != null && predicateResult) {
+			effectAction(value, ref.current);
 		}
 
 		ref.current = value;
 	}, [value]);
 
-	return predicate(ref.current, value);
+	return predicateResult;
 };
 
 export default usePreviousModified;

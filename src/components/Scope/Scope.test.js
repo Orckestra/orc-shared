@@ -147,18 +147,6 @@ describe("Scope", () => {
 				args: [
 					{
 						type: "VIEW_STATE_SET_FIELD",
-						payload: {
-							name: "scopeSelector",
-							field: "nodeState",
-							value: { foo: true, bar: false },
-						},
-					},
-				],
-			},
-			{
-				args: [
-					{
-						type: "VIEW_STATE_SET_FIELD",
 						payload: { name: "scopeSelector", field: "filter", value: "text" },
 					},
 				],
@@ -168,54 +156,6 @@ describe("Scope", () => {
 					{
 						type: VIEW_SET_FIELD,
 						payload: { name: "scopeSelector", field: "show", value: false },
-					},
-				],
-			},
-		]);
-	});
-
-	it("renders with appropriate node state including default node state", () => {
-		state = state.setIn(["view", "scopeSelector", "filter"], "");
-		state = state.setIn(["navigation", "route", "match", "params", "scope"], "test3");
-
-		ReactDOM.render(
-			<div>
-				<Provider store={store}>
-					<IntlProvider locale="en">
-						<MemoryRouter>
-							<Scope
-								filterPlaceholder={{
-									defaultMessage: "Type a scope name",
-									id: "test.placeholder",
-								}}
-							></Scope>
-						</MemoryRouter>
-					</IntlProvider>
-				</Provider>
-			</div>,
-			appRoot,
-		);
-
-		simulate(appRoot, { type: "click", target: "." + getClassName(<AlignedButton />) });
-
-		expect(store.dispatch, "to have calls satisfying", [
-			{
-				args: [
-					{
-						type: "VIEW_STATE_SET_FIELD",
-						payload: {
-							name: "scopeSelector",
-							field: "nodeState",
-							value: { foo: true, bar: false, test1: true },
-						},
-					},
-				],
-			},
-			{
-				args: [
-					{
-						type: VIEW_SET_FIELD,
-						payload: { name: "scopeSelector", field: "show", value: true },
 					},
 				],
 			},

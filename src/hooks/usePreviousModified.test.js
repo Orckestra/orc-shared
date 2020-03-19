@@ -86,7 +86,7 @@ describe("usePreviousModified", () => {
 		);
 	});
 
-	it("execute effect action when defined", () => {
+	it("execute effect action when defined and predicate satisfied", () => {
 		let actionValue = "before";
 
 		const effectAction = () => (actionValue = "after");
@@ -105,5 +105,33 @@ describe("usePreviousModified", () => {
 		);
 
 		expect(actionValue, "to equal", "after");
+	});
+
+	it("do not execute effect action when defined and predicate not satisfied", () => {
+		const predicate = (p, c) => c >= 15;
+
+		let actionValue = "before";
+
+		const effectAction = () => (actionValue = "after");
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<TestComp
+						initCount={10}
+						value={14}
+						effectAction={effectAction}
+						predicate={predicate}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"with event",
+			"click",
+			"to satisfy",
+			<div>false</div>,
+		);
+
+		expect(actionValue, "to equal", "before");
 	});
 });
