@@ -21,6 +21,15 @@ const arrayToggle = (array, item) =>
 export const CategoryRow = styled.tr``;
 
 export const CategoryHeader = styled.td`
+	border: 0 solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
+	border-top-width: 1px;
+	tr:first-child & {
+		border-top-width: 0;
+	}
+	tr:last-child & {
+		border-bottom-width: 1px;
+	}
+
 	position: relative;
 	padding: 11px 45px;
 	background-color: #f1eae0;

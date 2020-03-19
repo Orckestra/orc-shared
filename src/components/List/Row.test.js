@@ -58,7 +58,7 @@ describe("Row", () => {
 			>
 				<table>
 					<tbody>
-						<TableRow bgColor="#ff0000">
+						<TableRow bgColor="#ff0000" onClick={() => {}}>
 							<DataCell
 								key="a"
 								rowId="rowIdentifier"
@@ -192,6 +192,20 @@ describe("TableRow", () => {
 			expect
 				.it("not to match", /transition: background-color/)
 				.and("not to match", /:hover \{[^}]*background-color:[^}]*\}/),
+		));
+
+	it("sets cursor type if given click handler", () =>
+		expect(
+			<table>
+				<tbody>
+					<TableRow onClick={() => {}} />
+				</tbody>
+			</table>,
+			"when mounted",
+			"queried for first",
+			"tr",
+			"to have style rules satisfying",
+			expect.it("to contain", "td {cursor: pointer;}"),
 		));
 });
 
