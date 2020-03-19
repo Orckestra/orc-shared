@@ -12,14 +12,6 @@ export const stringifyFieldName = name => {
 };
 
 export const TableRow = styled.tr`
-	border: 0 solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-
-	&:first-child {
-		border-top-width: 0;
-	}
-
 	${ifFlag(
 		"bgColor",
 		props =>
