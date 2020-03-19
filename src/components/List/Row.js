@@ -33,6 +33,15 @@ export const TableRow = styled.tr`
 			}
 		`,
 	)}
+
+	${ifFlag(
+		"onClick",
+		css`
+			& td {
+				cursor: pointer;
+			}
+		`,
+	)}
 `;
 
 // Clicks on these elements will not be handled by the row onClick
