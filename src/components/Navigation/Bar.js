@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { ifFlag, getThemeProp, safeGet } from "../../utils";
+import DropMenu from "../DropMenu";
+import IconButton from "../IconButton";
 import Tab from "./Tab";
 
 export const TabBar = styled.div`
@@ -65,7 +68,15 @@ const getTabEdges = (pages, tabRefs) => {
 	});
 };
 
+const samePages = (a, b) =>
+	a.length === b.length && a.every((x, i) => x.href === b[i].href);
+
 export const useTabScroll = (pages, debug = false, refs) => {
+	let prevPages = useRef(pages);
+	if (!samePages(pages, prevPages.current)) {
+		// console.log("new");
+		prevPages.current = pages;
+	}
 	let barRef = useRef(null);
 	let tabRefs = useRef({});
 	if (debug) {
@@ -82,7 +93,7 @@ export const useTabScroll = (pages, debug = false, refs) => {
 	}, [pages, tabRefs, setTabEdges]);
 	useEffect(() => {
 		setWidthOfBar();
-	}, [setWidthOfBar]);
+	}, [pages, setWidthOfBar]);
 	useEffect(() => {
 		setEdgesOfTabs(pages);
 	}, [pages, setEdgesOfTabs]);
@@ -99,11 +110,10 @@ export const useTabScroll = (pages, debug = false, refs) => {
 		const barElem = barRef.current;
 		if (!barElem) return;
 		const activeEdge = tabEdges[activeIndex + 1] || tabEdges[activeIndex] || 0;
-		let scrollEdge = Math.max(activeEdge - barWidth + 5, 0);
+		let scrollEdge = Math.max(activeEdge - barWidth + 6, 0);
 		barElem.scrollTo({ left: scrollEdge });
 		const edgeIndex =
 			tabEdges.findIndex(edge => edge > barWidth + barElem.scrollLeft - 10) - 1;
-		// if (barWidth) console.log(barWidth, tabEdges, edgeIndex);
 		if (tabEdges[tabEdges.length - 1] <= barWidth) {
 			setLastShown(pages.length);
 		} else if (edgeIndex > activeIndex) {
@@ -112,9 +122,18 @@ export const useTabScroll = (pages, debug = false, refs) => {
 			setLastShown(activeIndex + 1);
 		}
 	}, [setLastShown, pages, barRef, barWidth, tabEdges, activeIndex]);
+	const history = useHistory();
 	return {
 		...(debug ? { barWidth, tabEdges } : {}),
+		hiddenTabs: barWidth < tabEdges[tabEdges.length - 1],
 		lastShownTab,
+		tabMenuItems: pages.map(({ label, href }) => ({
+			id: href,
+			label,
+			handler: () => {
+				history.push(href);
+			},
+		})),
 		getTabRef: useCallback(
 			node => {
 				/* istanbul ignore else */
@@ -139,9 +158,24 @@ export const useTabScroll = (pages, debug = false, refs) => {
 	};
 };
 
+export const StyledMenu = styled(DropMenu)`
+	position: absolute;
+	top: 10px;
+	right: 140px;
+`;
+
+export const MenuButton = styled(IconButton).attrs(props => ({
+	icon: ifFlag(
+		"open",
+		getThemeProp(["icons", "indicators", "up"], "chevron-up"),
+		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
+	)(props),
+}))``;
+
 const Bar = ({ module, pages }) => {
-	const { lastShownTab, getTabRef, getBarRef } = useTabScroll(pages);
-	// console.log("last shown", lastShownTab);
+	const { hiddenTabs, tabMenuItems, lastShownTab, getTabRef, getBarRef } = useTabScroll(
+		pages,
+	);
 	return (
 		<TabBar>
 			<Tab
@@ -173,6 +207,13 @@ const Bar = ({ module, pages }) => {
 						},
 					)}
 				</ScrollableBar>
+			) : null}
+			{hiddenTabs ? (
+				<StyledMenu
+					id="navigationTabs"
+					menuItems={tabMenuItems}
+					AnchorComponent={MenuButton}
+				/>
 			) : null}
 		</TabBar>
 	);

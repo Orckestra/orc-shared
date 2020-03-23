@@ -1,11 +1,19 @@
 import React, { useRef, useEffect } from "react";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { mount, act } from "unexpected-reaction";
+import { MemoryRouter, Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
+import { mount, act, simulate } from "unexpected-reaction";
 import sinon from "sinon";
-import { getStyledClassSelector, getElmClasses } from "../../utils/testUtils";
+import { getStyledClassSelector } from "../../utils/testUtils";
 import Tab, { PageTab } from "./Tab";
-import Bar, { TabBar, ScrollableBar, InnerBar, useTabScroll } from "./Bar";
+import Bar, {
+	TabBar,
+	ScrollableBar,
+	InnerBar,
+	useTabScroll,
+	StyledMenu,
+	MenuButton,
+} from "./Bar";
 
 describe("Bar", () => {
 	let closers;
@@ -166,7 +174,9 @@ describe("Bar", () => {
 			</Provider>,
 		));
 
-	it("hides tabs when scrollable bar is too narrow to show them all", () => {
+	it("hides tabs and shows dropdown when scrollable bar is too narrow to show them all", () => {
+		const history = createMemoryHistory();
+		sinon.spy(history, "push");
 		const bar = mount(
 			<Provider
 				store={{
@@ -175,7 +185,7 @@ describe("Bar", () => {
 					getState: () => ({}),
 				}}
 			>
-				<MemoryRouter>
+				<Router history={history}>
 					<Bar
 						module={{
 							icon: "test",
@@ -210,7 +220,7 @@ describe("Bar", () => {
 							},
 						]}
 					/>
-				</MemoryRouter>
+				</Router>
 			</Provider>,
 		);
 		const barElement = bar.querySelector(getStyledClassSelector(<InnerBar />));
@@ -227,7 +237,6 @@ describe("Bar", () => {
 			});
 			barElement.dispatchEvent(new Event("resize"));
 		});
-		// Expect dropdown to be present
 		expect(
 			bar,
 			"to satisfy",
@@ -282,10 +291,25 @@ describe("Bar", () => {
 								hide={true}
 							/>
 						</ScrollableBar>
+						<StyledMenu
+							id="navigationTabs"
+							menuItems={[
+								{ label: "Page 1", id: "/Foo/modu/1" },
+								{ label: "Page 2", id: "/Foo/modu/2" },
+								{ label: "Page 3", id: "/Foo/modu/3" },
+								{ label: "Page 4", id: "/Foo/modu/4" },
+							]}
+							AnchorComponent={MenuButton}
+						/>
 					</TabBar>
 				</MemoryRouter>
 			</Provider>,
 		);
+		expect(history.push, "was not called");
+		simulate(bar, { type: "click", target: "#navigationTabsAnchor" });
+		expect(bar, "queried for first", "ul", "to have text", "Page 1Page 2Page 3Page 4"); // Menu is showing
+		simulate(bar, { type: "click", target: "#\\/Foo\\/modu\\/3" });
+		expect(history.push, "to have calls satisfying", [{ args: ["/Foo/modu/3"] }]);
 	});
 });
 
@@ -339,7 +363,11 @@ describe("useTabScroll", () => {
 	let setupTest;
 	beforeEach(() => {
 		setupTest = (pages, widths) => {
-			const element = mount(<ScrollTest pages={pages} {...widths} />);
+			const element = mount(
+				<MemoryRouter>
+					<ScrollTest pages={pages} {...widths} />
+				</MemoryRouter>,
+			);
 			const barElement = element.querySelector(getStyledClassSelector(<InnerBar />));
 			const tabElements = barElement.querySelectorAll(
 				getStyledClassSelector(<PageTab />),
@@ -448,7 +476,7 @@ describe("useTabScroll", () => {
 				tabs: [75, 52, 65, 35],
 			},
 		);
-		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 5);
+		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 6);
 	});
 
 	it("scrolls to the active element if it is last", () => {
@@ -464,7 +492,7 @@ describe("useTabScroll", () => {
 				tabs: [75, 52, 65, 35],
 			},
 		);
-		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 5);
+		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 6);
 	});
 
 	it("sets last shown tab if bar wide enough to hold all", () => {
