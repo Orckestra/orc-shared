@@ -41,7 +41,7 @@ export const PageTab = styled.div`
 	)}
 
 	${ifFlag(
-		"hidden",
+		"hide",
 		css`
 			visibility: hidden;
 		`,
@@ -107,7 +107,7 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 `;
 
 const Tab = (
-	{ href, label, icon, module, active, close = () => {}, outsideScope, hidden },
+	{ href, label, icon, module, active, close = () => {}, outsideScope, hide },
 	ref,
 ) => {
 	const ThisTab = module ? ModuleTab : PageTab;
@@ -116,8 +116,8 @@ const Tab = (
 			ref={ref}
 			active={active}
 			outsideScope={outsideScope}
-			hidden={hidden}
-			data-test-id={href}
+			hide={hide}
+			data-href={href}
 		>
 			<TabLink
 				to={href}

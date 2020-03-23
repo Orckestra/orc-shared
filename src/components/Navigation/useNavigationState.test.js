@@ -628,7 +628,7 @@ describe("useNavigationState", () => {
 			"with event",
 			{
 				type: "click",
-				target: '[data-test-id="/TestScope/test/page3"] svg',
+				target: '[data-href="/TestScope/test/page3"] svg',
 				data: fakeEvent,
 			},
 		).then(() =>
@@ -666,7 +666,7 @@ describe("useNavigationState", () => {
 			"with event",
 			{
 				type: "click",
-				target: '[data-test-id="/TestScope/test/page3"] svg',
+				target: '[data-href="/TestScope/test/page3"] svg',
 				data: fakeEvent,
 			},
 		).then(() =>

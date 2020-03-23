@@ -65,28 +65,27 @@ const getTabEdges = (pages, tabRefs) => {
 	});
 };
 
-export const useTabScroll = (pages, barRef, tabRefs, debug = false) => {
-	const getTabRef = useCallback(
-		node => {
-			/* istanbul ignore else */
-			if (node) {
-				const href = safeGet(node, "dataset", "href");
-				tabRefs.current[href] = node;
-			}
-		},
-		[tabRefs],
-	);
-
+export const useTabScroll = (pages, debug = false, refs) => {
+	let barRef = useRef(null);
+	let tabRefs = useRef({});
+	if (debug) {
+		barRef = refs.barRef;
+		tabRefs = refs.tabRefs;
+	}
 	const [barWidth, setBarWidth] = useState(0);
 	const [tabEdges, setTabEdges] = useState([]);
-	const setCurrentWidths = useCallback(
-		pages => {
-			setBarWidth(safeGet(barRef, "current", "offsetWidth") || 0);
-			setTabEdges(getTabEdges(pages, tabRefs.current));
-		},
-		[barRef, tabRefs, setBarWidth, setTabEdges],
-	);
-	useEffect(() => setCurrentWidths(pages), [pages, setCurrentWidths]);
+	const setWidthOfBar = useCallback(() => {
+		setBarWidth(safeGet(barRef, "current", "offsetWidth") || 0);
+	}, [barRef, setBarWidth]);
+	const setEdgesOfTabs = useCallback(() => {
+		setTabEdges(getTabEdges(pages, tabRefs.current));
+	}, [pages, tabRefs, setTabEdges]);
+	useEffect(() => {
+		setWidthOfBar();
+	}, [setWidthOfBar]);
+	useEffect(() => {
+		setEdgesOfTabs(pages);
+	}, [pages, setEdgesOfTabs]);
 
 	const lastActiveIndex = useRef(-1);
 	let activeIndex = pages.findIndex(page => page.active);
@@ -116,14 +115,32 @@ export const useTabScroll = (pages, barRef, tabRefs, debug = false) => {
 	return {
 		...(debug ? { barWidth, tabEdges } : {}),
 		lastShownTab,
-		getTabRef,
+		getTabRef: useCallback(
+			node => {
+				/* istanbul ignore else */
+				if (node) {
+					const href = safeGet(node, "dataset", "href");
+					tabRefs.current[href] = node;
+				}
+			},
+			[tabRefs],
+		),
+		getBarRef: useCallback(
+			node => {
+				/* istanbul ignore else */
+				if (node && node !== barRef.current) {
+					node.addEventListener("resize", setWidthOfBar);
+					node.addEventListener("resize", setEdgesOfTabs);
+					barRef.current = node;
+				}
+			},
+			[barRef, setWidthOfBar, setEdgesOfTabs],
+		),
 	};
 };
 
 const Bar = ({ module, pages }) => {
-	const barRef = useRef(null);
-	const tabRefs = useRef({});
-	const { lastShownTab, getTabRef } = useTabScroll(pages, barRef, tabRefs);
+	const { lastShownTab, getTabRef, getBarRef } = useTabScroll(pages);
 	// console.log("last shown", lastShownTab);
 	return (
 		<TabBar>
@@ -136,7 +153,7 @@ const Bar = ({ module, pages }) => {
 				active={module.active}
 			/>
 			{pages.length ? (
-				<ScrollableBar ref={barRef}>
+				<ScrollableBar ref={getBarRef}>
 					{pages.map(
 						({ href, mappedFrom, label, active, icon, outsideScope, close }, index) => {
 							return (
@@ -150,7 +167,7 @@ const Bar = ({ module, pages }) => {
 									active={active}
 									close={close}
 									outsideScope={outsideScope}
-									hidden={index > lastShownTab}
+									hide={index > lastShownTab}
 								/>
 							);
 						},

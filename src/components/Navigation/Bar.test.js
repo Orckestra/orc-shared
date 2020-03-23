@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { mount, act } from "unexpected-reaction";
 import sinon from "sinon";
-import { getStyledClassSelector } from "../../utils/testUtils";
+import { getStyledClassSelector, getElmClasses } from "../../utils/testUtils";
 import Tab, { PageTab } from "./Tab";
 import Bar, { TabBar, ScrollableBar, InnerBar, useTabScroll } from "./Bar";
 
@@ -86,7 +86,7 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/1"
 								label="Page 1"
 								close={closers[0]}
-								hidden={false}
+								hide={false}
 							/>
 							<Tab
 								key="/Foo/modu/2"
@@ -94,7 +94,7 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/2"
 								label="Page 2"
 								close={closers[1]}
-								hidden={false}
+								hide={false}
 								active
 							/>
 							<Tab
@@ -103,7 +103,7 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/3"
 								label="Page 3"
 								close={closers[2]}
-								hidden={false}
+								hide={false}
 							/>
 							<Tab
 								key="/Foo/modu/4"
@@ -111,7 +111,7 @@ describe("Bar", () => {
 								mappedFrom="/Foo/modu/4"
 								label="Page 4"
 								close={closers[3]}
-								hidden={false}
+								hide={false}
 							/>
 						</ScrollableBar>
 					</TabBar>
@@ -165,9 +165,131 @@ describe("Bar", () => {
 				</MemoryRouter>
 			</Provider>,
 		));
+
+	it("hides tabs when scrollable bar is too narrow to show them all", () => {
+		const bar = mount(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MemoryRouter>
+					<Bar
+						module={{
+							icon: "test",
+							label: "A module",
+							href: "/Foo/modu",
+							mappedFrom: "/Foo/modu",
+						}}
+						pages={[
+							{
+								href: "/Foo/modu/1",
+								mappedFrom: "/Foo/modu/1",
+								label: "Page 1",
+								close: closers[0],
+							},
+							{
+								href: "/Foo/modu/2",
+								mappedFrom: "/Foo/modu/2",
+								label: "Page 2",
+								close: closers[1],
+							},
+							{
+								href: "/Foo/modu/3",
+								mappedFrom: "/Foo/modu/3",
+								label: "Page 3",
+								close: closers[2],
+							},
+							{
+								href: "/Foo/modu/4",
+								mappedFrom: "/Foo/modu/4",
+								label: "Page 4",
+								close: closers[3],
+							},
+						]}
+					/>
+				</MemoryRouter>
+			</Provider>,
+		);
+		const barElement = bar.querySelector(getStyledClassSelector(<InnerBar />));
+		const tabElements = barElement.querySelectorAll(getStyledClassSelector(<PageTab />));
+		act(() => {
+			Object.defineProperty(barElement, "offsetWidth", {
+				value: 300,
+				writable: true,
+			});
+			tabElements.forEach(tab => {
+				Object.defineProperty(tab, "offsetWidth", {
+					value: 130,
+				});
+			});
+			barElement.dispatchEvent(new Event("resize"));
+		});
+		// Expect dropdown to be present
+		expect(
+			bar,
+			"to satisfy",
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<MemoryRouter>
+					<TabBar>
+						<Tab
+							key="/Foo/modu"
+							module
+							icon="test"
+							href="/Foo/modu"
+							mappedFrom="/Foo/modu"
+							label="A module"
+						/>
+						<ScrollableBar>
+							<Tab
+								key="/Foo/modu/1"
+								href="/Foo/modu/1"
+								mappedFrom="/Foo/modu/1"
+								label="Page 1"
+								close={closers[0]}
+								hide={false}
+							/>
+							<Tab
+								key="/Foo/modu/2"
+								href="/Foo/modu/2"
+								mappedFrom="/Foo/modu/2"
+								label="Page 2"
+								close={closers[1]}
+								hide={false}
+							/>
+							<Tab
+								key="/Foo/modu/3"
+								href="/Foo/modu/3"
+								mappedFrom="/Foo/modu/3"
+								label="Page 3"
+								close={closers[2]}
+								hide={true}
+							/>
+							<Tab
+								key="/Foo/modu/4"
+								href="/Foo/modu/4"
+								mappedFrom="/Foo/modu/4"
+								label="Page 4"
+								close={closers[3]}
+								hide={true}
+							/>
+						</ScrollableBar>
+					</TabBar>
+				</MemoryRouter>
+			</Provider>,
+		);
+	});
 });
 
-describe("useTabScrolling", () => {
+describe("useTabScroll", () => {
 	// BE ADVISED!
 	// These tests rely on hacking jsdom's representation of layout
 	// jsdom changes may break these!
@@ -192,15 +314,14 @@ describe("useTabScrolling", () => {
 				});
 			}
 		}, [pages, bar, tabs]);
-		const { barWidth, tabEdges, lastShownTab, getTabRef } = useTabScroll(
+		const { barWidth, tabEdges, lastShownTab, getTabRef, getBarRef } = useTabScroll(
 			pages,
-			barRef,
-			tabRefs,
 			true, // Debug flag
+			{ barRef, tabRefs },
 		);
 		return (
 			<div>
-				<InnerBar ref={barRef} data-width={barWidth}>
+				<InnerBar ref={getBarRef} data-width={barWidth}>
 					{pages.map(({ href }, idx) => (
 						<PageTab
 							key={href}
@@ -394,6 +515,25 @@ describe("useTabScrolling", () => {
 				tabs: [120, 120, 120, 120, 120],
 			},
 		);
+		expect(element, "to have text", "Last shown tab: 3");
+	});
+
+	it("changes last shown tab if bar is resized", () => {
+		const { element, setBarWidth } = setupTest(
+			[
+				{ href: "foo", active: true },
+				{ href: "bar" },
+				{ href: "bell" },
+				{ href: "lerp" },
+				{ href: "meep" },
+			],
+			{
+				bar: 400,
+				tabs: [120, 120, 120, 120, 120],
+			},
+		);
+		expect(element, "to have text", "Last shown tab: 2");
+		setBarWidth(500);
 		expect(element, "to have text", "Last shown tab: 3");
 	});
 });
