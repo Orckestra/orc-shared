@@ -1,6 +1,6 @@
 import React from "react";
+import { Provider } from "react-redux";
 import sinon from "sinon";
-import { Ignore } from "unexpected-reaction";
 import { getStyledClassSelector } from "../../utils/testUtils";
 import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 
@@ -15,15 +15,17 @@ describe("Menu", () => {
 
 	it("renders an open menu", () =>
 		expect(
-			<Menu
-				id="testMenu"
-				open
-				menuItems={[
-					{ id: "first", label: "First", icon: "one", handler: () => {} },
-					{ id: "second", label: "Second", icon: "two", handler: () => {} },
-				]}
-				toggle={() => {}}
-			/>,
+			<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
+				<Menu
+					id="testMenu"
+					open
+					menuItems={[
+						{ id: "first", label: "First", icon: "one", handler: () => {} },
+						{ id: "second", label: "Second", icon: "two", handler: () => {} },
+					]}
+					toggle={() => {}}
+				/>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Drawer in>
@@ -44,19 +46,16 @@ describe("Menu", () => {
 		const reset = sinon.spy().named("reset");
 		const handler = sinon.spy().named("handler");
 		return expect(
-			<Menu open menuItems={[{ label: "Foo", icon: "one", handler }]} reset={reset} />,
+			<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
+				<Menu open menuItems={[{ label: "Foo", handler }]} reset={reset} />
+			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: getStyledClassSelector(<Item />) },
 			"to satisfy",
 			<Drawer in>
 				<List onClickOutside={reset}>
-					<Item>
-						<svg>
-							<Ignore />
-						</svg>
-						Foo
-					</Item>
+					<Item>Foo</Item>
 				</List>
 			</Drawer>,
 		).then(() =>

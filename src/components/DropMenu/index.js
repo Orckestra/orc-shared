@@ -15,15 +15,18 @@ export const Background = styled.div`
 	z-index: 19998;
 `;
 
-const DropMenu = ({ id, initOpen, menuLabel, menuItems, className = "" }) => {
+const DropMenu = ({
+	id,
+	initOpen,
+	menuLabel,
+	menuItems,
+	className = "",
+	AnchorComponent = Anchor,
+}) => {
 	const [open, toggle, reset] = useToggle(initOpen);
 	return (
-		<Wrapper>
-			<Anchor
-				id={id + "Anchor"}
-				onClick={toggle}
-				{...{ menuLabel, className, open }}
-			/>
+		<Wrapper className={className}>
+			<AnchorComponent id={id + "Anchor"} onClick={toggle} {...{ menuLabel, open }} />
 			<Menu id={id + "Dropdown"} {...{ open, menuItems, reset }} />
 		</Wrapper>
 	);

@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
-import { getThemeProp } from "../../utils";
+import { getThemeProp, safeGet } from "../../utils";
 import Icon from "../Icon";
+import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 
 export const Drawer = transition.div`
@@ -68,14 +69,14 @@ const Menu = ({ id, open, menuItems, reset }) => (
 			{menuItems.map(item => (
 				<Item
 					id={item.id}
-					key={item.label + item.icon}
+					key={item.id || (item.label && safeGet(item.label, "id")) + (item.icon || "")}
 					onClick={event => {
 						reset();
 						item.handler(event);
 					}}
 				>
-					<ItemIcon id={item.icon} />
-					{item.label}
+					{item.icon ? <ItemIcon id={item.icon} /> : null}
+					<Text message={item.label} />
 				</Item>
 			))}
 		</List>
