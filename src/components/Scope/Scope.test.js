@@ -49,6 +49,7 @@ beforeEach(() => {
 				name: { "en-CA": "Test 3" },
 				foo: true,
 				bar: false,
+				parentScopeId: "test1",
 			},
 			test4: {
 				id: "test4",

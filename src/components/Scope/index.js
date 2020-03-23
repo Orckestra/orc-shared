@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { getThemeProp } from "../../utils";
@@ -6,6 +6,7 @@ import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
 import Button from "../Button";
 import Selector from "./Selector";
+import usePreviousModified from "../../hooks/usePreviousModified";
 
 export const Bar = styled.div`
 	flex: 0 0 49px;
@@ -41,11 +42,19 @@ export const Scope = ({ children, filterPlaceholder }) => {
 	const name = "scopeSelector";
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
+
+	usePreviousModified(
+		show,
+		current =>
+			current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
+	);
+
 	const reset = event => {
 		updateViewState("show", false);
 		event.stopPropagation();
 	};
 	const updateFilter = event => updateViewState("filter", event.target.value);
+
 	return (
 		<React.Fragment>
 			<ScopeBar
@@ -60,10 +69,9 @@ export const Scope = ({ children, filterPlaceholder }) => {
 				show={show}
 				reset={reset}
 				getScope={getScope}
-				nodeState={nodeState}
-				defaultNodeState={defaultNodeState}
 				filter={filter}
 				updateFilter={updateFilter}
+				defaultNodeState={{}}
 				filterPlaceholder={filterPlaceholder}
 			/>
 			{children}
