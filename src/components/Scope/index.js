@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { getThemeProp } from "../../utils";
@@ -43,11 +43,12 @@ export const Scope = ({ children, filterPlaceholder }) => {
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
 
-	usePreviousModified(
-		show,
+	const resetNodeState = useCallback(
 		current =>
 			current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
+		[updateViewState, nodeState, defaultNodeState],
 	);
+	usePreviousModified(show, resetNodeState);
 
 	const reset = event => {
 		updateViewState("show", false);

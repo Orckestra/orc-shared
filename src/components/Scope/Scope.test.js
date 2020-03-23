@@ -57,15 +57,31 @@ beforeEach(() => {
 				foo: true,
 				bar: true,
 			},
+			test5: {
+				id: "test5",
+				name: { "en-US": "Test 5" },
+				foo: true,
+				bar: true,
+				parentScopeId: "test4",
+			},
 		},
 		view: {
 			scopeSelector: { filter: "Foo", show: true },
 		},
 	});
+	const subs = [];
 	store = {
-		subscribe: () => {},
-		dispatch: sinon.spy().named("dispatch"),
+		updateState: () => {
+			subs.forEach((sub, i) => {
+				sub();
+			});
+		},
+		subscribe: sub => {
+			subs.push(sub);
+			return () => {};
+		},
 		getState: () => state,
+		dispatch: sinon.spy().named("dispatch"),
 	};
 	appRoot = document.createElement("div");
 	appRoot.id = "app";
@@ -156,6 +172,73 @@ describe("Scope", () => {
 					{
 						type: VIEW_SET_FIELD,
 						payload: { name: "scopeSelector", field: "show", value: false },
+					},
+				],
+			},
+		]);
+	});
+
+	it("resets the scope tree state when closing, to ensure current scope is visible", () => {
+		state = state.withMutations(s => {
+			s.setIn(["navigation", "route", "match", "params", "scope"], "test3");
+			s.setIn(
+				["view", "scopeSelector"],
+				Immutable.fromJS({ show: false, nodeState: { test1: false, test4: true } }),
+			);
+		});
+		ReactDOM.render(
+			<div>
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/test3/stuff"]}>
+							<Scope
+								filterPlaceholder={{
+									defaultMessage: "Type a scope name",
+									id: "test.placeholder",
+								}}
+							>
+								<div id="child" />
+							</Scope>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>
+			</div>,
+			appRoot,
+		);
+		state = state.setIn(["view", "scopeSelector", "show"], true);
+		store.updateState();
+		expect(store.dispatch, "to have calls satisfying", [
+			{
+				args: [
+					{
+						type: VIEW_SET_FIELD,
+						payload: {
+							name: "scopeSelector",
+							field: "nodeState",
+							value: { test1: true, test4: true },
+						},
+					},
+				],
+			},
+		]);
+		state = state.setIn(["view", "scopeSelector", "nodeState", "test4"], false);
+		state = state.setIn(["view", "scopeSelector", "show"], false);
+		store.updateState();
+		state = state.setIn(["view", "scopeSelector", "show"], true);
+		store.updateState();
+		expect(store.dispatch, "to have calls satisfying", [
+			{
+				/* This call is checked above */
+			},
+			{
+				args: [
+					{
+						type: VIEW_SET_FIELD,
+						payload: {
+							name: "scopeSelector",
+							field: "nodeState",
+							value: { test1: true, test4: false },
+						},
 					},
 				],
 			},
