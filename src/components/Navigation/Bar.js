@@ -158,10 +158,11 @@ export const useTabScroll = (pages, debug = false, refs) => {
 	};
 };
 
-export const StyledMenu = styled(DropMenu)`
+export const StyledMenu = styled(DropMenu).attrs(() => ({ alignRight: true }))`
 	position: absolute;
 	top: 10px;
 	right: 140px;
+	text-transform: none;
 `;
 
 export const MenuButton = styled(IconButton).attrs(props => ({

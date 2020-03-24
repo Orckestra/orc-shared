@@ -41,6 +41,7 @@ export const List = styled.ul`
 	margin: 0;
 	font-family: Open Sans, sans-serif;
 	font-size: 12px;
+	width: max-content;
 `;
 
 export const Item = styled.li`
