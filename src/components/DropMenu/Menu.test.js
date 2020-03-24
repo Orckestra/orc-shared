@@ -42,7 +42,37 @@ describe("Menu", () => {
 			</Drawer>,
 		));
 
-	it("closes on click outside, or click on item", () => {
+	it("renders an open right-aligned menu", () =>
+		expect(
+			<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
+				<Menu
+					id="testMenu"
+					open
+					menuItems={[
+						{ id: "first", label: "First", icon: "one", handler: () => {} },
+						{ id: "second", label: "Second", icon: "two", handler: () => {} },
+					]}
+					toggle={() => {}}
+					alignRight
+				/>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Drawer in alignRight>
+				<List id="testMenu">
+					<Item id="first">
+						<ItemIcon id="one" />
+						First
+					</Item>
+					<Item id="second">
+						<ItemIcon id="two" />
+						Second
+					</Item>
+				</List>
+			</Drawer>,
+		));
+
+	it("closes on click on item", () => {
 		const reset = sinon.spy().named("reset");
 		const handler = sinon.spy().named("handler");
 		return expect(
@@ -54,7 +84,7 @@ describe("Menu", () => {
 			{ type: "click", target: getStyledClassSelector(<Item />) },
 			"to satisfy",
 			<Drawer in>
-				<List onClickOutside={reset}>
+				<List>
 					<Item>Foo</Item>
 				</List>
 			</Drawer>,
@@ -71,6 +101,22 @@ describe("Menu", () => {
 				"to have style rules satisfying",
 				"to contain",
 				"transition: opacity 500ms ease-out;",
+			));
+
+		it("defaults to left aligned position", () =>
+			expect(
+				<Drawer in timeout={500} />,
+				"when mounted",
+				"to have style rules satisfying",
+				expect.it("to contain", "left: 0;").and("not to contain", "right: 0"),
+			));
+
+		it("can align right", () =>
+			expect(
+				<Drawer in timeout={500} alignRight />,
+				"when mounted",
+				"to have style rules satisfying",
+				expect.it("to contain", "right: 0;").and("not to contain", "left: 0"),
 			));
 	});
 

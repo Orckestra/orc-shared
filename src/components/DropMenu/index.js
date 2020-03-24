@@ -3,8 +3,11 @@ import styled from "styled-components";
 import Anchor from "./Anchor";
 import Menu from "./Menu";
 import useToggle from "../../hooks/useToggle";
+import withClickOutside from "../../hocs/withClickOutside";
 
-export const Wrapper = styled.div``;
+export const Wrapper = withClickOutside(styled.div`
+	position: relative;
+`);
 
 export const Background = styled.div`
 	position: absolute;
@@ -20,14 +23,19 @@ const DropMenu = ({
 	initOpen,
 	menuLabel,
 	menuItems,
+	alignRight,
 	className = "",
 	AnchorComponent = Anchor,
 }) => {
 	const [open, toggle, reset] = useToggle(initOpen);
 	return (
-		<Wrapper className={className}>
+		<Wrapper className={className} onClickOutside={reset}>
 			<AnchorComponent id={id + "Anchor"} onClick={toggle} {...{ menuLabel, open }} />
-			<Menu id={id + "Dropdown"} {...{ open, menuItems, reset }} />
+			<Menu
+				id={id + "Dropdown"}
+				{...{ open, menuItems, reset }}
+				alignRight={alignRight}
+			/>
 		</Wrapper>
 	);
 };
