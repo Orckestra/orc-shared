@@ -8,7 +8,7 @@ import Icon from "../Icon";
 // XXX: The below contains an IE10/IE11 targeting CSS hack
 
 export const PageTab = styled.div`
-	flex: 0 1 auto;
+	flex: 0 0 auto;
 	@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
 		flex-basis: 170px;
 	}
@@ -39,10 +39,20 @@ export const PageTab = styled.div`
 			background-color: #eeeeee;
 		`,
 	)}
+
+	${ifFlag(
+		"hide",
+		css`
+			visibility: hidden;
+		`,
+	)}
 `;
 
 export const ModuleTab = styled(PageTab)`
+	flex-grow: 0;
+	flex-shrink: 0;
 	margin-left: 0px;
+	z-index: 1;
 `;
 
 const FilteredLink = ({ outsideScope, ...props }) => <Link {...props} />;
@@ -96,19 +106,19 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	}
 `;
 
-const Tab = ({
-	href,
-	label,
-	icon,
-	module,
-	active,
-	close = () => {},
-	mappedFrom,
-	outsideScope,
-}) => {
+const Tab = (
+	{ href, label, icon, module, active, close = () => {}, outsideScope, hide },
+	ref,
+) => {
 	const ThisTab = module ? ModuleTab : PageTab;
 	return (
-		<ThisTab active={active} outsideScope={outsideScope} data-test-id={href}>
+		<ThisTab
+			ref={ref}
+			active={active}
+			outsideScope={outsideScope}
+			hide={hide}
+			data-href={href}
+		>
 			<TabLink
 				to={href}
 				outsideScope={outsideScope}
@@ -131,4 +141,4 @@ const Tab = ({
 	);
 };
 
-export default Tab;
+export default React.forwardRef(Tab);

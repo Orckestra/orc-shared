@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
-import { getThemeProp } from "../../utils";
+import { getThemeProp, ifFlag, safeGet } from "../../utils";
 import Icon from "../Icon";
-import withClickOutside from "../../hocs/withClickOutside";
+import Text from "../Text";
 
 export const Drawer = transition.div`
 	position: absolute;
 	z-index: 19999;
 	margin: 4px 0 0;
+	${ifFlag("alignRight", "right", "left")}: 0;
 
 	transition: opacity ${props => props.timeout}ms ease-out;
 
@@ -30,7 +31,7 @@ Drawer.defaultProps = {
 	timeout: 100,
 };
 
-export const List = withClickOutside(styled.ul`
+export const List = styled.ul`
 	color: ${getThemeProp(["colors", "text"], "#333333")};
 	background-color: white;
 	border: 1px solid ${getThemeProp(["colors", "border"], "#999999")};
@@ -40,7 +41,8 @@ export const List = withClickOutside(styled.ul`
 	margin: 0;
 	font-family: Open Sans, sans-serif;
 	font-size: 12px;
-`);
+	width: max-content;
+`;
 
 export const Item = styled.li`
 	box-sizing: border-box;
@@ -62,20 +64,20 @@ export const ItemIcon = styled(Icon)`
 	font-size: 17px;
 `;
 
-const Menu = ({ id, open, menuItems, reset }) => (
-	<Drawer in={open}>
-		<List id={id} onClickOutside={reset}>
+const Menu = ({ id, open, menuItems, reset, alignRight }) => (
+	<Drawer in={open} alignRight={alignRight}>
+		<List id={id}>
 			{menuItems.map(item => (
 				<Item
 					id={item.id}
-					key={item.label + item.icon}
+					key={item.id || (item.label && safeGet(item.label, "id")) + (item.icon || "")}
 					onClick={event => {
 						reset();
 						item.handler(event);
 					}}
 				>
-					<ItemIcon id={item.icon} />
-					{item.label}
+					{item.icon ? <ItemIcon id={item.icon} /> : null}
+					<Text message={item.label} />
 				</Item>
 			))}
 		</List>

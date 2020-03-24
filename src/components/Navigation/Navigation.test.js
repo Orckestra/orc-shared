@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { TabBar } from "./Bar";
+import { TabBar, ScrollableBar } from "./Bar";
 import Tab from "./Tab";
 import Navigation from "./index";
 
@@ -34,7 +34,7 @@ describe("Navigation", () => {
 					},
 				},
 				moduleTabs: {
-					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
+					test: ["/TestScope/test", "/TestScope/test/page1", "/TestScope/test/page2"],
 				},
 				mappedHrefs: {},
 				route: {
@@ -73,7 +73,7 @@ describe("Navigation", () => {
 	it("renders a navigation tab bar with state-based props", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/test"]}>
+				<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
 					<Navigation modules={modules} />
 				</MemoryRouter>
 			</Provider>,
@@ -82,31 +82,33 @@ describe("Navigation", () => {
 			<MemoryRouter>
 				<TabBar>
 					<Tab
-						active={true}
+						active={false}
 						href="/TestScope/test"
 						icon="thing"
 						label="Thing"
 						mappedFrom="/TestScope/test"
-						module={true}
+						module
 					/>
-					<Tab
-						active={false}
-						close={() => {}}
-						href="/TestScope/test/page1"
-						label="Page 1"
-						mappedFrom="/TestScope/test/page1"
-						module={false}
-						outsideScope={false}
-					/>
-					<Tab
-						active={false}
-						close={() => {}}
-						href="/TestScope/test/page2"
-						label="Page 2"
-						mappedFrom="/TestScope/test/page2"
-						module={false}
-						outsideScope={false}
-					/>
+					<ScrollableBar>
+						<Tab
+							active={true}
+							close={() => {}}
+							href="/TestScope/test/page1"
+							label="Page 1"
+							mappedFrom="/TestScope/test/page1"
+							hide={false}
+							outsideScope={false}
+						/>
+						<Tab
+							active={false}
+							close={() => {}}
+							href="/TestScope/test/page2"
+							label="Page 2"
+							mappedFrom="/TestScope/test/page2"
+							hide={false}
+							outsideScope={false}
+						/>
+					</ScrollableBar>
 				</TabBar>
 			</MemoryRouter>,
 		));

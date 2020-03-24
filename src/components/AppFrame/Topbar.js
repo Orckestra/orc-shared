@@ -10,6 +10,7 @@ import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
 import DropMenu from "../DropMenu";
+import Anchor from "../DropMenu/Anchor";
 
 export const Wrapper = styled.div`
 	height: 40px;
@@ -46,7 +47,7 @@ export const useMenuProps = messages => {
 	};
 };
 
-export const StyledMenu = styled(DropMenu)`
+export const StyledAnchor = styled(Anchor)`
 	box-sizing: border-box;
 	font-family: Roboto Condensed, sans-serif;
 	font-size: 12px;
@@ -57,7 +58,9 @@ export const StyledMenu = styled(DropMenu)`
 	padding-right: 32px;
 `;
 
-export const Menu = ({ messages }) => <StyledMenu {...useMenuProps(messages)} />;
+export const Menu = ({ messages }) => (
+	<DropMenu {...useMenuProps(messages)} AnchorComponent={StyledAnchor} />
+);
 
 export const AppBox = styled.div`
 	height: 100%;
