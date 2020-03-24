@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import { mount, act, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import { getStyledClassSelector } from "../../utils/testUtils";
 import Tab, { PageTab } from "./Tab";
@@ -175,9 +176,12 @@ describe("Bar", () => {
 		));
 
 	it("hides tabs and shows dropdown when scrollable bar is too narrow to show them all", () => {
+		// Needs to be fully rendered to work
+		const root = document.createElement("div");
+		document.body.append(root);
 		const history = createMemoryHistory();
 		sinon.spy(history, "push");
-		const bar = mount(
+		ReactDOM.render(
 			<Provider
 				store={{
 					subscribe: () => {},
@@ -222,10 +226,13 @@ describe("Bar", () => {
 					/>
 				</Router>
 			</Provider>,
+			root,
 		);
+		const bar = root.querySelector("*"); // Get the first child
 		const barElement = bar.querySelector(getStyledClassSelector(<InnerBar />));
 		const tabElements = barElement.querySelectorAll(getStyledClassSelector(<PageTab />));
 		act(() => {
+			// XXX: This is a nasty hack of jsdom, and may break unexpectedly
 			Object.defineProperty(barElement, "offsetWidth", {
 				value: 300,
 				writable: true,
@@ -235,86 +242,91 @@ describe("Bar", () => {
 					value: 130,
 				});
 			});
-			barElement.dispatchEvent(new Event("resize"));
+			window.dispatchEvent(new Event("resize"));
 		});
-		expect(
-			bar,
-			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
-				<MemoryRouter>
-					<TabBar>
-						<Tab
-							key="/Foo/modu"
-							module
-							icon="test"
-							href="/Foo/modu"
-							mappedFrom="/Foo/modu"
-							label="A module"
-						/>
-						<ScrollableBar>
+		try {
+			expect(
+				bar,
+				"to satisfy",
+				<Provider
+					store={{
+						subscribe: () => {},
+						dispatch: () => {},
+						getState: () => ({}),
+					}}
+				>
+					<MemoryRouter>
+						<TabBar>
 							<Tab
-								key="/Foo/modu/1"
-								href="/Foo/modu/1"
-								mappedFrom="/Foo/modu/1"
-								label="Page 1"
-								close={closers[0]}
-								hide={false}
+								key="/Foo/modu"
+								module
+								icon="test"
+								href="/Foo/modu"
+								mappedFrom="/Foo/modu"
+								label="A module"
 							/>
-							<Tab
-								key="/Foo/modu/2"
-								href="/Foo/modu/2"
-								mappedFrom="/Foo/modu/2"
-								label="Page 2"
-								close={closers[1]}
-								hide={false}
+							<ScrollableBar>
+								<Tab
+									key="/Foo/modu/1"
+									href="/Foo/modu/1"
+									mappedFrom="/Foo/modu/1"
+									label="Page 1"
+									close={closers[0]}
+									hide={false}
+								/>
+								<Tab
+									key="/Foo/modu/2"
+									href="/Foo/modu/2"
+									mappedFrom="/Foo/modu/2"
+									label="Page 2"
+									close={closers[1]}
+									hide={false}
+								/>
+								<Tab
+									key="/Foo/modu/3"
+									href="/Foo/modu/3"
+									mappedFrom="/Foo/modu/3"
+									label="Page 3"
+									close={closers[2]}
+									hide={true}
+								/>
+								<Tab
+									key="/Foo/modu/4"
+									href="/Foo/modu/4"
+									mappedFrom="/Foo/modu/4"
+									label="Page 4"
+									close={closers[3]}
+									hide={true}
+								/>
+							</ScrollableBar>
+							<StyledMenu
+								id="navigationTabs"
+								menuItems={[
+									{ label: "Page 1", id: "/Foo/modu/1" },
+									{ label: "Page 2", id: "/Foo/modu/2" },
+									{ label: "Page 3", id: "/Foo/modu/3" },
+									{ label: "Page 4", id: "/Foo/modu/4" },
+								]}
+								AnchorComponent={MenuButton}
 							/>
-							<Tab
-								key="/Foo/modu/3"
-								href="/Foo/modu/3"
-								mappedFrom="/Foo/modu/3"
-								label="Page 3"
-								close={closers[2]}
-								hide={true}
-							/>
-							<Tab
-								key="/Foo/modu/4"
-								href="/Foo/modu/4"
-								mappedFrom="/Foo/modu/4"
-								label="Page 4"
-								close={closers[3]}
-								hide={true}
-							/>
-						</ScrollableBar>
-						<StyledMenu
-							id="navigationTabs"
-							menuItems={[
-								{ label: "Page 1", id: "/Foo/modu/1" },
-								{ label: "Page 2", id: "/Foo/modu/2" },
-								{ label: "Page 3", id: "/Foo/modu/3" },
-								{ label: "Page 4", id: "/Foo/modu/4" },
-							]}
-							AnchorComponent={MenuButton}
-						/>
-					</TabBar>
-				</MemoryRouter>
-			</Provider>,
-		);
-		expect(history.push, "was not called");
-		simulate(bar, { type: "click", target: "#navigationTabsAnchor" });
-		expect(bar, "queried for first", "ul", "to have text", "Page 1Page 2Page 3Page 4"); // Menu is showing
-		simulate(bar, { type: "click", target: "#\\/Foo\\/modu\\/3" });
-		expect(history.push, "to have calls satisfying", [{ args: ["/Foo/modu/3"] }]);
+						</TabBar>
+					</MemoryRouter>
+				</Provider>,
+			);
+			expect(history.push, "was not called");
+			act(() => bar.querySelector("#navigationTabsAnchor").click());
+			expect(bar, "queried for first", "ul", "to have text", "Page 1Page 2Page 3Page 4"); // Menu is showing
+			act(() => bar.querySelector("#\\/Foo\\/modu\\/3").click());
+			expect(history.push, "to have calls satisfying", [{ args: ["/Foo/modu/3"] }]);
+		} finally {
+			ReactDOM.unmountComponentAtNode(root);
+			document.body.removeChild(root);
+		}
 	});
 });
 
 describe("useTabScroll", () => {
-	// BE ADVISED!
+	// XXX: BE ADVISED!
 	// These tests rely on hacking jsdom's representation of layout
 	// jsdom changes may break these!
 	const ScrollTest = ({ pages, bar, tabs }) => {
@@ -344,7 +356,7 @@ describe("useTabScroll", () => {
 			{ barRef, tabRefs },
 		);
 		return (
-			<div>
+			<div id="outerElement">
 				<InnerBar ref={getBarRef} data-width={barWidth}>
 					{pages.map(({ href }, idx) => (
 						<PageTab
@@ -360,14 +372,18 @@ describe("useTabScroll", () => {
 		);
 	};
 
-	let setupTest;
+	let setupTest, root;
 	beforeEach(() => {
+		root = document.createElement("div");
+		document.body.append(root);
 		setupTest = (pages, widths) => {
-			const element = mount(
+			ReactDOM.render(
 				<MemoryRouter>
 					<ScrollTest pages={pages} {...widths} />
 				</MemoryRouter>,
+				root,
 			);
+			const element = root.querySelector("div#outerElement");
 			const barElement = element.querySelector(getStyledClassSelector(<InnerBar />));
 			const tabElements = barElement.querySelectorAll(
 				getStyledClassSelector(<PageTab />),
@@ -375,11 +391,15 @@ describe("useTabScroll", () => {
 			const setBarWidth = (width = 0) => {
 				act(() => {
 					barElement.offsetWidth = width;
-					barElement.dispatchEvent(new Event("resize"));
+					window.dispatchEvent(new Event("resize"));
 				});
 			};
 			return { element, barElement, tabElements, setBarWidth };
 		};
+	});
+	afterEach(() => {
+		ReactDOM.unmountComponentAtNode(root);
+		document.body.removeChild(root);
 	});
 
 	describe("test functions", () => {
@@ -424,7 +444,7 @@ describe("useTabScroll", () => {
 		});
 
 		it("fires resize event if bar size reset", () => {
-			const { barElement, setBarWidth } = setupTest(
+			const { setBarWidth } = setupTest(
 				[{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp" }],
 				{
 					bar: 100,
@@ -432,9 +452,13 @@ describe("useTabScroll", () => {
 				},
 			);
 			const handler = sinon.spy().named("resizeHandler");
-			barElement.addEventListener("resize", handler);
-			setBarWidth(170);
-			expect(handler, "was called once");
+			window.addEventListener("resize", handler);
+			try {
+				setBarWidth(170);
+				expect(handler, "was called once");
+			} finally {
+				window.removeEventListener("resize", handler);
+			}
 		});
 	});
 

@@ -68,15 +68,7 @@ const getTabEdges = (pages, tabRefs) => {
 	});
 };
 
-const samePages = (a, b) =>
-	a.length === b.length && a.every((x, i) => x.href === b[i].href);
-
 export const useTabScroll = (pages, debug = false, refs) => {
-	let prevPages = useRef(pages);
-	if (!samePages(pages, prevPages.current)) {
-		// console.log("new");
-		prevPages.current = pages;
-	}
 	let barRef = useRef(null);
 	let tabRefs = useRef({});
 	if (debug) {
@@ -93,9 +85,13 @@ export const useTabScroll = (pages, debug = false, refs) => {
 	}, [pages, tabRefs, setTabEdges]);
 	useEffect(() => {
 		setWidthOfBar();
+		window.addEventListener("resize", setWidthOfBar);
+		return () => window.removeEventListener("resize", setWidthOfBar);
 	}, [pages, setWidthOfBar]);
 	useEffect(() => {
 		setEdgesOfTabs(pages);
+		window.addEventListener("resize", setEdgesOfTabs);
+		return () => window.removeEventListener("resize", setEdgesOfTabs);
 	}, [pages, setEdgesOfTabs]);
 
 	const lastActiveIndex = useRef(-1);
@@ -148,12 +144,10 @@ export const useTabScroll = (pages, debug = false, refs) => {
 			node => {
 				/* istanbul ignore else */
 				if (node && node !== barRef.current) {
-					node.addEventListener("resize", setWidthOfBar);
-					node.addEventListener("resize", setEdgesOfTabs);
 					barRef.current = node;
 				}
 			},
-			[barRef, setWidthOfBar, setEdgesOfTabs],
+			[barRef],
 		),
 	};
 };
