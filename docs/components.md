@@ -7,7 +7,7 @@
 - `applications`: A list of applications to be made available in the application selector. An application is defined as an object containing `url`, `name`, `iconUri` and `displayName` values.
 - `applicationId`: The `name` of the current application as given in `applications`.
 - `modules`: A list of modules provided by this application, given as objects containing an `id` (used to generate its URL), a `component` to render, and an `icon` and a `label` (`react-intl` message descriptor) to show in the sidebar menu. See [documentation](moduleFile.md).
-- `activeModules`: An array of module `id` to be shown as active (a red dot will appear by the icon).
+- `activeModules`: An object with module names as keys, where the values are either falsy (no notification), or an object. If the object has a `message` key, this will be shown as a notification tooltip. If the object has a `type` key (value should a a string of either `"confirm"`, `"warn"` or `"error"` as the case demands), this will be used to dermine the alert color.
 - `menuLabel`: The label for the topbar menu. Typically the logged-in user's email.
 - `menuItems`: A list of items in the topbar menu, given as objects containing `label` (`react-intl` message descriptor), `handler`function for selecting the item, and an `icon` id to show.
 - `noScope`: A flag. If set, scope selector will not be shown.
