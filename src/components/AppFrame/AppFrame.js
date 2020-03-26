@@ -81,7 +81,9 @@ AppFrame.displayName = "AppFrame";
 AppFrame.propTypes = {
 	applicationId: pt.string.isRequired,
 	modules: pt.array.isRequired,
-	activeModules: pt.array,
+	activeModules: pt.objectOf(
+		pt.oneOfType([pt.bool, pt.shape({ type: pt.string, message: pt.string })]),
+	),
 	menuMessages: pt.shape({
 		sign_out: ptLabel.isRequired,
 		preferences: ptLabel.isRequired,

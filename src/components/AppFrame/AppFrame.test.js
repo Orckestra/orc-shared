@@ -39,7 +39,7 @@ describe("AppFrame", () => {
 		props = {
 			applicationId: "3",
 			modules: [],
-			activeModules: ["foo"],
+			activeModules: { foo: true },
 			menuLabel: "TestLabel",
 			menuMessages: {
 				sign_out: { id: "msg.signout", defaultMessage: "Sign out" },

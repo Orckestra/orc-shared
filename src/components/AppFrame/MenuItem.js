@@ -42,10 +42,15 @@ export const BlockWithA = Block.withComponent("a");
 
 export const Alert = styled.div`
 	border-radius: 50%;
-	border: 4px solid #ff0000;
+	border: 4px solid ${getThemeProp(["colors", "toasts", props => props.type], "red")};
 	position: absolute;
 	top: 0;
 	left: 27px;
+`;
+
+export const AlertMessage = styled.div`
+	position: absolute;
+	background-color: ${getThemeProp(["colors", "toasts", props => props.type], "red")};
 `;
 
 export const MenuIcon = styled(Icon)`
@@ -72,7 +77,15 @@ const MenuItem = ({ open = false, label = "", icon, alert, href, ...props }) => 
 	return (
 		<ItemWrapper to={href} {...props}>
 			<MenuIcon id={icon} />
-			{alert ? <Alert /> : null}
+			{alert ? (
+				<Alert type={alert.type}>
+					{alert.message ? (
+						<AlertMessage type={alert.type}>
+							<Text message={alert.message} />
+						</AlertMessage>
+					) : null}
+				</Alert>
+			) : null}
 			<Label show={open}>
 				<Text message={label} />
 			</Label>

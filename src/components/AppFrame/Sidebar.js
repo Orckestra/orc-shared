@@ -77,7 +77,7 @@ const Sidebar = ({ open, toggle, modules = [], activeModules = [] }) => {
 					key={item.id}
 					{...item}
 					open={open}
-					alert={activeModules.includes(item.id)}
+					alert={activeModules[item.id] || false}
 				/>
 			))}
 			<Logo />

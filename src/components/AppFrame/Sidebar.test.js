@@ -61,7 +61,7 @@ describe("Sidebar", () => {
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
 					<MemoryRouter initialEntries={["/Global/second"]}>
-						<Sidebar modules={modules} activeModules={["first"]} />
+						<Sidebar modules={modules} activeModules={{ first: { type: "confirm" } }} />
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
@@ -72,7 +72,12 @@ describe("Sidebar", () => {
 					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle />
-							<EnhancedMenuItem icon="cars" id="first" label="First page" alert />
+							<EnhancedMenuItem
+								icon="cars"
+								id="first"
+								label="First page"
+								alert={{ type: "confirm" }}
+							/>
 							<EnhancedMenuItem icon="person" id="second" label="Second page" />
 							<Logo />
 						</Bar>
