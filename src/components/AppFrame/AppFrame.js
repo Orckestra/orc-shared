@@ -2,7 +2,6 @@ import React from "react";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import { ifFlag, getThemeProp, unwrapImmutable } from "../../utils";
 import { getApplications } from "../../actions/applications";
 import useToggle from "../../hooks/useToggle";
@@ -58,12 +57,11 @@ const AppFrame = ({
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
-	const location = useLocation();
 	return (
 		<Base>
 			<ConnectedToastList />
 			<Topbar {...{ applications, applicationId, menuMessages }} onClick={reset} />
-			<Sidebar {...{ open, toggle, modules, activeModules }} path={location.pathname} />
+			<Sidebar {...{ open, toggle, modules, activeModules }} />
 			<ViewPort open={open} onClick={reset}>
 				{noScope ? (
 					<React.Fragment>

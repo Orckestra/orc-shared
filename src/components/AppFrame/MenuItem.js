@@ -54,7 +54,7 @@ export const MenuIcon = styled(Icon)`
 `;
 
 export const Label = styled.span`
-	font-family: Roboto Condensed, sans-serif;
+	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	font-size: 13px;
 	vertical-align: middle;
 	text-transform: uppercase;

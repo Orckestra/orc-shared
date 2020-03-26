@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled, { withTheme } from "styled-components";
+import { useLocation } from "react-router-dom";
 import { getThemeProp } from "../../utils";
 import { getCurrentScope } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
@@ -30,15 +31,16 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 
 const useEnhancement = (id, path) => {
 	const scope = useSelector(getCurrentScope);
+	const location = useLocation();
 	return {
 		href: `/${scope}/${id}`,
-		active: path.startsWith(`/${scope}/${id}`),
+		active: location.pathname.startsWith(`/${scope}/${id}`),
 		id,
 	};
 };
 
-export const EnhancedMenuItem = ({ path, id, ...props }) => (
-	<MenuItem {...props} {...useEnhancement(id, path)} />
+export const EnhancedMenuItem = ({ id, ...props }) => (
+	<MenuItem {...props} {...useEnhancement(id)} />
 );
 
 const LogoSvg = styled.svg`
@@ -66,7 +68,7 @@ export const Logo = () => (
 	</LogoSvg>
 );
 
-const Sidebar = ({ open, toggle, modules = [], activeModules = [], path = "" }) => {
+const Sidebar = ({ open, toggle, modules = [], activeModules = [] }) => {
 	return (
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
@@ -75,7 +77,6 @@ const Sidebar = ({ open, toggle, modules = [], activeModules = [], path = "" }) 
 					key={item.id}
 					{...item}
 					open={open}
-					path={path}
 					alert={activeModules.includes(item.id)}
 				/>
 			))}
