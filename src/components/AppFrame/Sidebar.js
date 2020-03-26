@@ -13,7 +13,7 @@ export const Bar = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	color: ${getThemeProp(["colors", "textLight"], "#999999")};
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 `;
 
 export const MenuToggle = withTheme(({ open, toggle, theme }) => (

@@ -23,7 +23,7 @@ export const InputBox = styled.div`
 export const SearchInput = styled(Input)`
 	background-color: transparent;
 	border-color: ${getThemeProp(["colors", "border"], "#999999")};
-	color: ${getThemeProp(["colors", "textLight"], "#999999")};
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 	width: calc(100% - 40px);
 	margin: 20px;
 	font-size: 14px;

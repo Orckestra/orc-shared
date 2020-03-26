@@ -31,7 +31,7 @@ export const ContentLabel = styled.div`
 			}
 		`,
 		Virtual: css`
-			color: ${getThemeProp(["colors", "textLight"], "#999999")};
+			color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 			cursor: default;
 		`,
 		default: css`

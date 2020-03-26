@@ -22,8 +22,9 @@ const baseTheme = {
 		borderLight: "#cccccc",
 		borderDark: "#3333333",
 		text: "#333333",
-		textMedium: "#cccccc",
-		textLight: "#999999",
+		textMedium: "#999999",
+		textLight: "#cccccc",
+		textWhite: "#efefef",
 		bgLight: "#efefef",
 		bgMedium: "#999999", // Not used
 		bgDark: "#333333",

@@ -14,7 +14,7 @@ import Anchor from "../DropMenu/Anchor";
 
 export const Wrapper = styled.div`
 	height: 40px;
-	color: ${getThemeProp(["colors", "textLight"], "#999999")};
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 	display: flex;
 	justify-content: space-between;
 `;

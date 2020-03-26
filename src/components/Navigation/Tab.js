@@ -29,7 +29,7 @@ export const PageTab = styled.div`
 			color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 		`,
 		css`
-			color: ${getThemeProp(["colors", "textLight"], "#999999")};
+			color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 		`,
 	)};
 
@@ -99,7 +99,7 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	margin-left: 10px;
 	margin-right: -5px;
 	font-size: 14px;
-	color: ${getThemeProp(["colors", "textLight"], "#999999")};
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 
 	&:hover {
 		color: ${getThemeProp(["colors", "application", "base"], "#ccc")};

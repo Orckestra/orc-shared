@@ -18,7 +18,7 @@ export const Label = styled.label`
 			color: ${getThemeProp(["colors", "error"], "#ce4844")};
 		`,
 		css`
-			color: ${getThemeProp(["colors", "textLight"], "#999999")};
+			color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 		`,
 	)}
 	min-height: 17px;

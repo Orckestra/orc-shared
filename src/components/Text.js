@@ -32,7 +32,7 @@ export const Placeholder = styled.span`
 	height: 1em;
 	width: 6em;
 	border-radius: 0.5em;
-	background-color: ${getThemeProp(["colors", "textLight"], "#999999")};
+	background-color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 	animation: ${fadeCycle} 3s infinite alternate;
 `;
 
