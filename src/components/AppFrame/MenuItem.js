@@ -50,7 +50,30 @@ export const Alert = styled.div`
 
 export const AlertMessage = styled.div`
 	position: absolute;
+	z-index: 10000;
+	top: -1px;
+	transform: translateY(-50%);
+	left: 22px;
+	width: auto;
+	width: max-content;
+	border-radius: 5px;
+	padding: 10px 15px;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+	color: ${getThemeProp(["colors", "textWhite"], "#efefef")};
 	background-color: ${getThemeProp(["colors", "toasts", props => props.type], "red")};
+	font-size: 11px;
+	font-weight: bold;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: -10px;
+		border: solid transparent;
+		border-width: 5px 10px 5px 0;
+		border-right-color: ${getThemeProp(["colors", "toasts", props => props.type], "red")};
+	}
 `;
 
 export const MenuIcon = styled(Icon)`
