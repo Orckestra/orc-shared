@@ -145,7 +145,7 @@ describe("MenuItem", () => {
 				<Block id="test" to="/foo/test">
 					<MenuIcon id="cake" />
 					<Alert>
-						<AlertMessage>Test message</AlertMessage>
+						<AlertMessage in>Test message</AlertMessage>
 					</Alert>
 					<Label>Test</Label>
 				</Block>
@@ -171,7 +171,9 @@ describe("MenuItem", () => {
 				<Block id="test" to="/foo/test">
 					<MenuIcon id="cake" />
 					<Alert type="warn">
-						<AlertMessage type="warn">Test message</AlertMessage>
+						<AlertMessage in type="warn">
+							Test message
+						</AlertMessage>
 					</Alert>
 					<Label>Test</Label>
 				</Block>
@@ -269,7 +271,7 @@ describe("MenuItem", () => {
 	describe("AlertMessage", () => {
 		it("has a default color (red)", () =>
 			expect(
-				<AlertMessage message="Test" />,
+				<AlertMessage in message="Test" />,
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
@@ -279,7 +281,7 @@ describe("MenuItem", () => {
 		it("has a default color", () =>
 			expect(
 				<ThemeProvider theme={{ colors: { toasts: { test: "blue" } } }}>
-					<AlertMessage message="Test" type="test" />
+					<AlertMessage in message="Test" type="test" />
 				</ThemeProvider>,
 				"when mounted",
 				"to have style rules satisfying",
