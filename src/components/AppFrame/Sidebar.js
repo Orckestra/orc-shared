@@ -29,7 +29,7 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 	/>
 ));
 
-const useEnhancement = (id, path) => {
+const useEnhancement = id => {
 	const scope = useSelector(getCurrentScope);
 	const location = useLocation();
 	return {
