@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import pt from "prop-types";
 import styled, { keyframes } from "styled-components";
 import { FormattedMessage } from "react-intl";
-import { safeGet, unwrapImmutable, getThemeProp } from "../utils";
+import { safeGet, unwrapImmutable, getThemeProp, stripKey } from "../utils";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 
 export const messageContainsValues = message => {
@@ -36,11 +36,12 @@ export const Placeholder = styled.span`
 	animation: ${fadeCycle} 3s infinite alternate;
 `;
 
-const Text = ({ message, error }) => {
+const Text = ({ message: rawMessage, error }) => {
 	let valueSelector = () => {};
+	let message = rawMessage === "object" ? { ...rawMessage } : rawMessage;
 	if (typeof safeGet(message, "values") === "function") {
 		valueSelector = message.values;
-		delete message.values;
+		message = stripKey("values", message);
 	}
 	const selectValues = unwrapImmutable(useSelector(valueSelector));
 	if (error || (!message && message !== "")) {
