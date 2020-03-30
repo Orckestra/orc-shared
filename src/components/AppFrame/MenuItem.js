@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled, { css } from "styled-components";
+import transition from "styled-transition-group";
 import { Link } from "react-router-dom";
 import { getThemeProp, ifFlag } from "../../utils";
 import Text from "../Text";
@@ -48,11 +49,15 @@ export const Alert = styled.div`
 	left: 27px;
 `;
 
-export const AlertMessage = styled.div`
+const transformTime = ({ timeout }) => timeout;
+const opacityTime = ({ timeout }) => Math.round(timeout * 0.5);
+const opacityDelay = ({ timeout }) => Math.round(timeout * 0.25);
+// XXX: The below is a hack to get syntax highlighting in transition styles.
+// Adding the "transition" tag to styled-components tags would solve it.
+const alertStyling = css`
 	position: absolute;
 	z-index: 10000;
-	top: -1px;
-	transform: translateY(-50%);
+	top: calc(-10px - 0.7em);
 	left: 22px;
 	width: auto;
 	width: max-content;
@@ -63,18 +68,44 @@ export const AlertMessage = styled.div`
 	background-color: ${getThemeProp(["colors", "toasts", props => props.type], "red")};
 	font-size: 11px;
 	font-weight: bold;
+	line-height: 1.2;
 
 	&::before {
 		content: "";
 		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		left: -10px;
+		top: calc(10px + 0.2em);
+		left: -0.9em;
 		border: solid transparent;
-		border-width: 5px 10px 5px 0;
+		border-width: 0.4em 0.9em 0.4em 0;
 		border-right-color: ${getThemeProp(["colors", "toasts", props => props.type], "red")};
 	}
 `;
+const transitionStatement = css`
+	transition: transform ${transformTime}ms cubic-bezier(0.68, -0.55, 0.27, 1.55),
+		opacity ${opacityTime}ms ${opacityDelay}ms ease-out;
+`;
+export const AlertMessage = transition.div`
+	${alertStyling}
+	${transitionStatement}
+
+	&:enter {
+		opacity: 0.01;
+		transform: translateX(-50%) scaleX(0);
+	}
+	&:enter-active {
+		opacity: 1;
+		transform: translateX(0) scaleX(1);
+	}
+	&:exit {
+		opacity: 1;
+		transform: translateX(0) scaleX(1);
+	}
+	&:exit-active {
+		opacity: 0.01;
+		transform: translateX(-50%) scaleX(0);
+	}
+`;
+AlertMessage.defaultProps = { timeout: 200, unmountOnExit: true, appear: true };
 
 export const MenuIcon = styled(Icon)`
 	font-size: 24px;
@@ -97,16 +128,18 @@ const MenuItem = ({ open = false, label = "", icon, alert, href, ...props }) => 
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;
 	}
+	const alertMessage = useRef("");
+	if (alert && alert.message) {
+		alertMessage.current = alert.message;
+	}
 	return (
 		<ItemWrapper to={href} {...props}>
 			<MenuIcon id={icon} />
 			{alert ? (
 				<Alert type={alert.type}>
-					{alert.message ? (
-						<AlertMessage type={alert.type}>
-							<Text message={alert.message} />
-						</AlertMessage>
-					) : null}
+					<AlertMessage in={!!alert.message} type={alert.type}>
+						<Text message={alertMessage.current} />
+					</AlertMessage>
 				</Alert>
 			) : null}
 			<Label show={open}>
