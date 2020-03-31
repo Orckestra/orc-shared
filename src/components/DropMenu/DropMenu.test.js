@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { act } from "react-dom/test-utils";
+import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import DropMenu, { Wrapper } from "./index";
 import Anchor, { Header, Indicator } from "./Anchor";
@@ -297,19 +298,46 @@ describe("DropMenu", () => {
 				</div>,
 			));
 
-		it("when clicked renders the menu", () =>
-			expect(
+		it("when clicked renders only the clicked menu", () => {
+			const clock = sinon.useFakeTimers();
+			const menuNode = document.createElement("div");
+			document.body.appendChild(menuNode);
+			ReactDOM.render(
 				<Provider
 					store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}
 				>
-					<div>
+					<>
 						<MakeMenu num="1" />
 						<MakeMenu num="2" />
-					</div>
+					</>
 				</Provider>,
-				"when mounted",
-				"with event",
-				{ type: "click", target: "#menu2Anchor" },
+				menuNode,
+			);
+			const anchor1 = menuNode.querySelector("#menu1Anchor");
+			const anchor2 = menuNode.querySelector("#menu2Anchor");
+			expect(
+				menuNode,
+				"to satisfy",
+				<div>
+					<Wrapper className="test-class-1">
+						<Header>
+							TestLabel 1
+							<Indicator />
+						</Header>
+					</Wrapper>
+					<Wrapper className="test-class-2">
+						<Header>
+							TestLabel 2
+							<Indicator />
+						</Header>
+					</Wrapper>
+				</div>,
+			);
+			act(() => {
+				anchor2.click();
+			});
+			expect(
+				menuNode,
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
@@ -337,6 +365,43 @@ describe("DropMenu", () => {
 						</Drawer>
 					</Wrapper>
 				</div>,
-			));
+			);
+			act(() => {
+				anchor1.click();
+			});
+			act(() => {
+				clock.tick(1000); // Wait for the previous menu to unrender
+			});
+			expect(
+				menuNode,
+				"to satisfy",
+				<div>
+					<Wrapper className="test-class-1">
+						<Header open>
+							TestLabel 1
+							<Indicator open={true} />
+						</Header>
+						<Drawer in>
+							<List>
+								<Item>
+									<ItemIcon id="one" />
+									First
+								</Item>
+								<Item>
+									<ItemIcon id="two" />
+									Second
+								</Item>
+							</List>
+						</Drawer>
+					</Wrapper>
+					<Wrapper className="test-class-2">
+						<Header>
+							TestLabel 2
+							<Indicator />
+						</Header>
+					</Wrapper>
+				</div>,
+			);
+		});
 	});
 });
