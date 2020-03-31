@@ -1,5 +1,5 @@
 import React from "react";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import useToggle from "./useToggle";
 
 const TestComp = ({ id, init }) => {

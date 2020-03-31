@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import { getStyledClassSelector } from "../../utils/testUtils";
 import I18n from "../I18n";
 import {

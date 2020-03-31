@@ -2,7 +2,7 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { FormContext } from "./Form";
 import Fieldset from "./Fieldset";
 import Combination from "./Combination";
@@ -19,7 +19,7 @@ describe("FieldElements", () => {
 			dispatch: () => {},
 			getState: () => state,
 		};
-		getUpdater = name => () => name;
+		getUpdater = (name) => () => name;
 		values = {
 			thing: "foo",
 			stuff: "bar",

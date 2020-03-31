@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { getClassSelector, getStyledClassSelector } from "../utils/testUtils";
 import { Checkbox, Wrapper, ContainedInput, Cover } from "./Checkbox";
 

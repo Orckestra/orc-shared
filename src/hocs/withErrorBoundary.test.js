@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import withErrorBoundary from "./withErrorBoundary";
 

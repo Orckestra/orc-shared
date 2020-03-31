@@ -2,7 +2,7 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { getStyledClassSelector } from "../utils/testUtils";
 import { TabBar } from "./Navigation/Bar";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";

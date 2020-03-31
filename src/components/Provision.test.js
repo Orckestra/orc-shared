@@ -1,13 +1,13 @@
 import React from "react";
 import Immutable from "immutable";
 import { withTheme } from "styled-components";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
 
 const fakeStore = {
-	subscribe: listener => () => {},
-	dispatch: action => action,
+	subscribe: (listener) => () => {},
+	dispatch: (action) => action,
 	getState: () =>
 		Immutable.fromJS({
 			locale: {},
