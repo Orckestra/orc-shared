@@ -42,13 +42,27 @@ describe("getAuthProfile", () => {
 });
 
 describe("signOut", () => {
+	const { location } = window;
+
+	beforeAll(() => {
+		delete window.location;
+
+		window.location = {
+			href: "http://someoriginurl:6543/appname/app",
+			origin: "http://someoriginurl:6543",
+		};
+	});
+	afterAll(() => {
+		window.location = location;
+	});
+
 	it("creates a RSAA to sign out the current user", () =>
 		expect(signOut, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE],
 				endpoint: 'URL: authentication/signout ""',
 				method: "POST",
-				body: undefined,
+				body: '{"returnUrl":"http://someoriginurl:6543"}',
 				credentials: "include",
 				bailout: expect.it("to be a function"),
 				headers: {
