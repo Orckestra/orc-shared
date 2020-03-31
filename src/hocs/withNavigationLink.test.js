@@ -43,9 +43,7 @@ describe("withNavigationLink", () => {
 			})
 			.then(() =>
 				expect(console.warn, "to have a call satisfying", {
-					args: [
-						expect.it("to contain", "withNavigationLink has been deprecated"),
-					],
+					args: [expect.it("to contain", "withNavigationLink has been deprecated")],
 				}),
 			));
 

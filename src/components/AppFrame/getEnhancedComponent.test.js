@@ -1,12 +1,8 @@
 import React from "react";
 import getEnhancedComponent from "./getEnhancedComponent";
 
-const TestComp1 = ({ one = false, two = false }) => (
-	<div id={"1" + one * 1 + two * 1} />
-);
-const TestComp2 = ({ one = false, two = false }) => (
-	<div id={"2" + one * 1 + two * 1} />
-);
+const TestComp1 = ({ one = false, two = false }) => <div id={"1" + one * 1 + two * 1} />;
+const TestComp2 = ({ one = false, two = false }) => <div id={"2" + one * 1 + two * 1} />;
 
 const testHOC1 = Comp => () => <Comp one />;
 const testHOC2 = Comp => () => <Comp two />;
@@ -16,9 +12,7 @@ describe("getEnhancedComponent", () => {
 		expect(getEnhancedComponent, "when called", "when called with", [
 			testHOC1,
 			TestComp1,
-		]).then(Comp =>
-			expect(<Comp />, "when mounted", "to satisfy", <TestComp1 one />),
-		));
+		]).then(Comp => expect(<Comp />, "when mounted", "to satisfy", <TestComp1 one />)));
 
 	it("returns the same component instance on subsequent calls with same parameters", () =>
 		expect(getEnhancedComponent, "when called")

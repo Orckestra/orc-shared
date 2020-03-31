@@ -26,23 +26,22 @@ describe("with id handling", () => {
 		));
 
 	it("sets different ids on different components", () =>
-		expect(withId, "when called with", ["seq"], "when called with", [
-			TestComp,
-		]).then(EnhComp =>
-			expect(
-				<div>
-					<EnhComp />
-					<EnhComp />
-					<EnhComp />
-				</div>,
-				"when mounted",
-				"to satisfy",
-				<div>
-					<div id="seq0" />
-					<div id="seq1" />
-					<div id="seq2" />
-				</div>,
-			),
+		expect(withId, "when called with", ["seq"], "when called with", [TestComp]).then(
+			EnhComp =>
+				expect(
+					<div>
+						<EnhComp />
+						<EnhComp />
+						<EnhComp />
+					</div>,
+					"when mounted",
+					"to satisfy",
+					<div>
+						<div id="seq0" />
+						<div id="seq1" />
+						<div id="seq2" />
+					</div>,
+				),
 		));
 
 	describe("when updated", () => {
@@ -54,20 +53,12 @@ describe("with id handling", () => {
 		it("keeps the same id when updated", () => {
 			const EnhComp = withId("same")(TestComp);
 			ReactDOM.render(<EnhComp />, rootElm);
-			return expect(
-				rootElm.querySelector("div"),
-				"to satisfy",
-				<div id="same0" />,
-			)
+			return expect(rootElm.querySelector("div"), "to satisfy", <div id="same0" />)
 				.then(() => {
 					ReactDOM.render(<EnhComp foo="feep" />, rootElm);
 				})
 				.then(() =>
-					expect(
-						rootElm.querySelector("div"),
-						"to satisfy",
-						<div id="same0" />,
-					),
+					expect(rootElm.querySelector("div"), "to satisfy", <div id="same0" />),
 				);
 		});
 
@@ -83,21 +74,13 @@ describe("with id handling", () => {
 					ReactDOM.render(<EnhComp id="Fixed" />, rootElm);
 				})
 				.then(() =>
-					expect(
-						rootElm.querySelector("div"),
-						"to satisfy",
-						<div id="Fixed" />,
-					),
+					expect(rootElm.querySelector("div"), "to satisfy", <div id="Fixed" />),
 				)
 				.then(() => {
 					ReactDOM.render(<EnhComp />, rootElm);
 				})
 				.then(() =>
-					expect(
-						rootElm.querySelector("div"),
-						"to satisfy",
-						<div id="intermittent1" />,
-					),
+					expect(rootElm.querySelector("div"), "to satisfy", <div id="intermittent1" />),
 				);
 		});
 	});

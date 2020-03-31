@@ -46,11 +46,7 @@ describe("Provision", () => {
 
 	it("fails if no children given", () =>
 		expect(
-			() =>
-				expect(
-					<Provision store={fakeStore} theme={fakeTheme} />,
-					"when mounted",
-				),
+			() => expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted"),
 			"to throw",
 			"React.Children.only expected to receive a single React element child.",
 		).then(() =>

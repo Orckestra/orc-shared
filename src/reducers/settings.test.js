@@ -23,8 +23,7 @@ describe("settings", () => {
 				isVisible: true,
 				isAbsoluteUrl: true,
 				url: "https://orc-env18-oco.develop.orckestra.cloud/marketing",
-				iconUri:
-					"https://orc-env18-oco.develop.orckestra.cloud/marketing/icon.png",
+				iconUri: "https://orc-env18-oco.develop.orckestra.cloud/marketing/icon.png",
 				displayName: {
 					"en-CA": "Product Information Beta",
 					"en-US": "Product Information Beta",

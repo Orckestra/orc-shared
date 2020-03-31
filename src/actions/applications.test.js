@@ -69,29 +69,23 @@ describe("getMyApplication", () => {
 });
 describe("setMyApplication", () => {
 	it("creates a RSAA to set the user's default application", () =>
-		expect(
-			setMyApplication,
-			"when called with",
-			[15],
-			"to exhaustively satisfy",
-			{
-				[RSAA]: {
-					types: [
-						{ type: SET_MY_APPLICATION_REQUEST, meta: { appId: 15 } },
-						{ type: SET_MY_APPLICATION_SUCCESS, meta: { appId: 15 } },
-						{ type: SET_MY_APPLICATION_FAILURE, meta: { appId: 15 } },
-					],
-					endpoint: 'URL: my/application/15 ""',
-					method: "POST",
-					body: undefined,
-					credentials: "include",
-					bailout: expect.it("to be a function"),
-					headers: {
-						Accept: "application/json; charset=utf-8",
-						"Content-Type": "application/json",
-					},
-					options: { redirect: "follow" },
+		expect(setMyApplication, "when called with", [15], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: SET_MY_APPLICATION_REQUEST, meta: { appId: 15 } },
+					{ type: SET_MY_APPLICATION_SUCCESS, meta: { appId: 15 } },
+					{ type: SET_MY_APPLICATION_FAILURE, meta: { appId: 15 } },
+				],
+				endpoint: 'URL: my/application/15 ""',
+				method: "POST",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
 				},
+				options: { redirect: "follow" },
 			},
-		));
+		}));
 });

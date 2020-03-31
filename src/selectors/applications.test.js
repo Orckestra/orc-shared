@@ -1,8 +1,5 @@
 import Immutable from "immutable";
-import {
-	localizedAppSelector,
-	localizedAppOptionSelector,
-} from "./applications";
+import { localizedAppSelector, localizedAppOptionSelector } from "./applications";
 
 let state;
 beforeEach(() => {

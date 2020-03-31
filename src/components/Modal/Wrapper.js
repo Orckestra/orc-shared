@@ -29,5 +29,4 @@ export const Wrapper = transition.div`
 `;
 Wrapper.defaultProps = { timeout: 300, unmountOnExit: true };
 
-export default props =>
-	ReactDOM.createPortal(<Wrapper {...props} />, getModalRoot());
+export default props => ReactDOM.createPortal(<Wrapper {...props} />, getModalRoot());

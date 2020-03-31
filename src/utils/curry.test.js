@@ -40,12 +40,7 @@ describe("curry", () => {
 
 	describe("curried = arity", () => {
 		it("returns a function", () =>
-			expect(
-				curry,
-				"when called with",
-				[testFunc, "foo", "bar"],
-				"to be a function",
-			));
+			expect(curry, "when called with", [testFunc, "foo", "bar"], "to be a function"));
 
 		it("calls wrapped function with curried parameters", () =>
 			expect(

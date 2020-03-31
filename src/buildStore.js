@@ -1,10 +1,7 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import Immutable from "immutable";
 import { apiMiddleware } from "redux-api-middleware";
-import {
-	routerMiddleware,
-	connectRouter,
-} from "connected-react-router/immutable";
+import { routerMiddleware, connectRouter } from "connected-react-router/immutable";
 import { createBrowserHistory } from "history";
 import { combineReducers } from "redux-immutable";
 import { spawnerMiddleware } from "./spawnerMiddleware";
@@ -33,11 +30,7 @@ const buildStore = (reducers, devOptions = {}) => {
 		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(devOptions)
 		: compose;
 	const enhancer = composeEnhancers(
-		applyMiddleware(
-			routerMiddleware(history),
-			apiMiddleware,
-			spawnerMiddleware,
-		),
+		applyMiddleware(routerMiddleware(history), apiMiddleware, spawnerMiddleware),
 	);
 
 	const supportedLocales = SUPPORTED_LOCALES || ["en"];

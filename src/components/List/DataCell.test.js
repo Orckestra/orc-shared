@@ -216,12 +216,7 @@ describe("DataCell", () => {
 			<table>
 				<tbody>
 					<tr>
-						<DataCell
-							columnDef={columnDef}
-							row={row}
-							rowId="rowIdent"
-							selected
-						/>
+						<DataCell columnDef={columnDef} row={row} rowId="rowIdent" selected />
 					</tr>
 				</tbody>
 			</table>,

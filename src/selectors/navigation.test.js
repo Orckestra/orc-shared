@@ -113,10 +113,7 @@ describe("selectMappedCurrentModuleList", () => {
 		));
 
 	it("returns an empty list if there is no list in state", () => {
-		state = state.setIn(
-			["navigation", "route", "match", "path"],
-			"/:scope/other",
-		);
+		state = state.setIn(["navigation", "route", "match", "path"], "/:scope/other");
 		return expect(
 			selectMappedCurrentModuleList,
 			"called with",
@@ -146,12 +143,7 @@ describe("selectSegmentHrefMapper", () => {
 	});
 
 	it("returns a function", () =>
-		expect(
-			selectSegmentHrefMapper,
-			"when called with",
-			[state],
-			"to be a function",
-		));
+		expect(selectSegmentHrefMapper, "when called with", [state], "to be a function"));
 
 	describe("returned function", () => {
 		let mapper;
@@ -169,13 +161,7 @@ describe("selectSegmentHrefMapper", () => {
 			));
 
 		it("passes unmapped hrefs", () =>
-			expect(
-				mapper,
-				"when called with",
-				["/path/to/tab2"],
-				"to equal",
-				"/path/to/tab2",
-			));
+			expect(mapper, "when called with", ["/path/to/tab2"], "to equal", "/path/to/tab2"));
 	});
 });
 
@@ -198,24 +184,12 @@ describe("getCurrentScope", () => {
 	it("gets the last scope, if no scope set and previous scope is known", () => {
 		getCurrentScope(state);
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
-		return expect(
-			getCurrentScope,
-			"when called with",
-			[state],
-			"to be",
-			"thing",
-		);
+		return expect(getCurrentScope, "when called with", [state], "to be", "thing");
 	});
 
 	it("gets the default scope, if no scope set and no previous known", () => {
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
-		return expect(
-			getCurrentScope,
-			"when called with",
-			[state],
-			"to be",
-			"Global",
-		);
+		return expect(getCurrentScope, "when called with", [state], "to be", "Global");
 	});
 });
 
@@ -271,13 +245,12 @@ describe("route selectors", () => {
 			));
 
 		it("handles missing data", () =>
-			expect(
-				selectRouteHref,
+			expect(selectRouteHref, "when called with", [noMatchState], "to equal", "").and(
 				"when called with",
-				[noMatchState],
+				[noHrefState],
 				"to equal",
 				"",
-			).and("when called with", [noHrefState], "to equal", ""));
+			));
 	});
 
 	describe("selectRoutePath", () => {
@@ -291,12 +264,11 @@ describe("route selectors", () => {
 			));
 
 		it("handles missing data", () =>
-			expect(
-				selectRoutePath,
+			expect(selectRoutePath, "when called with", [noMatchState], "to equal", "").and(
 				"when called with",
-				[noMatchState],
+				[noPathState],
 				"to equal",
 				"",
-			).and("when called with", [noPathState], "to equal", ""));
+			));
 	});
 });

@@ -14,11 +14,7 @@ describe("TimeInput", () => {
 			"to satisfy",
 			<ButtonWrapper>
 				<IntlProvider locale="en">
-					<FormInput
-						type="time"
-						onChange={expect.it("to be a function")}
-						otherProp
-					/>
+					<FormInput type="time" onChange={expect.it("to be a function")} otherProp />
 				</IntlProvider>
 				<TimeButton>
 					<TimeIcon />
@@ -35,11 +31,7 @@ describe("TimeInput", () => {
 			"to satisfy",
 			<ButtonWrapper invalid>
 				<IntlProvider locale="en">
-					<FormInput
-						type="time"
-						onChange={expect.it("to be a function")}
-						otherProp
-					/>
+					<FormInput type="time" onChange={expect.it("to be a function")} otherProp />
 				</IntlProvider>
 				<TimeButton>
 					<TimeIcon />

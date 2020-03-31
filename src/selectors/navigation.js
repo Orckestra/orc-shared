@@ -42,22 +42,16 @@ export const getCurrentScope = state => {
 	return lastScope || "Global";
 };
 
-const selectTabs = createSelector(getNavigationState, nav =>
-	nav.get("tabIndex"),
-);
+const selectTabs = createSelector(getNavigationState, nav => nav.get("tabIndex"));
 
-export const selectTabGetter = createSelector(selectTabs, tabs => path =>
-	tabs.get(path),
-);
+export const selectTabGetter = createSelector(selectTabs, tabs => path => tabs.get(path));
 
 const selectModuleLists = createSelector(getNavigationState, nav =>
 	nav.get("moduleTabs"),
 );
 
 export const selectCurrentModuleName = createSelector(selectRoutePath, path =>
-	/^\/:scope\//.test(path)
-		? path.replace(/^\/:scope\/([^/]+)(\/.*)?$/, "$1")
-		: "",
+	/^\/:scope\//.test(path) ? path.replace(/^\/:scope\/([^/]+)(\/.*)?$/, "$1") : "",
 );
 
 const selectCurrentModuleList = createSelector(
@@ -76,7 +70,6 @@ const segmentHrefMap = createSelector(getNavigationState, state =>
 	state.get("mappedHrefs"),
 );
 
-export const selectSegmentHrefMapper = createSelector(
-	segmentHrefMap,
-	map => href => map.get(href) || href,
+export const selectSegmentHrefMapper = createSelector(segmentHrefMap, map => href =>
+	map.get(href) || href,
 );

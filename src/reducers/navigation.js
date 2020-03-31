@@ -23,25 +23,17 @@ const navigationReducer = (state = initialState, action) => {
 						params: match.params,
 					}),
 				);
-				const moduleName = match.path.replace(
-					/^\/:scope\/(\w+)(?:\/.*)?$/,
-					"$1",
-				);
-				const moduleList =
-					s.getIn(["moduleTabs", moduleName]) || Immutable.List();
+				const moduleName = match.path.replace(/^\/:scope\/(\w+)(?:\/.*)?$/, "$1");
+				const moduleList = s.getIn(["moduleTabs", moduleName]) || Immutable.List();
 				if (!moduleList.includes(href)) {
 					s.setIn(["moduleTabs", moduleName], moduleList.push(href));
 				}
 			});
 		case MAP_HREF:
-			return state.setIn(
-				["mappedHrefs", action.payload.from],
-				action.payload.to,
-			);
+			return state.setIn(["mappedHrefs", action.payload.from], action.payload.to);
 		case REMOVE_TAB:
 			return state.withMutations(s => {
-				const list =
-					s.getIn(["moduleTabs", action.payload.module]) || Immutable.List();
+				const list = s.getIn(["moduleTabs", action.payload.module]) || Immutable.List();
 				const index = list.indexOf(action.payload.path);
 				if (index !== -1) {
 					s.deleteIn(["moduleTabs", action.payload.module, index]);

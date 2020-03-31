@@ -33,9 +33,6 @@ export const [
 ] = makeActionTypes(SET_MY_APPLICATION);
 
 export const setMyApplication = appId =>
-	makeOrcApiAction(
-		SET_MY_APPLICATION,
-		buildUrl(["my", "application", appId]),
-		"POST",
-		{ meta: { appId } },
-	);
+	makeOrcApiAction(SET_MY_APPLICATION, buildUrl(["my", "application", appId]), "POST", {
+		meta: { appId },
+	});

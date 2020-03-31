@@ -37,11 +37,7 @@ const filteredScopesSelector = createSelector(
 		);
 		let foundScopes = Immutable.Map();
 		directHitScopes.forEach(scope => {
-			for (
-				let parent = scope;
-				parent;
-				parent = scopes.get(parent.get("parentScopeId"))
-			) {
+			for (let parent = scope; parent; parent = scopes.get(parent.get("parentScopeId"))) {
 				foundScopes = foundScopes.set(parent.get("id"), parent);
 			}
 		});
@@ -52,11 +48,8 @@ const filteredScopesSelector = createSelector(
 	},
 );
 
-export const scopeGetter = createSelector(
-	filteredScopesSelector,
-	scopes => id => {
-		const scope = scopes.get(id);
-		if (!scope) return null;
-		return scope.toJS();
-	},
-);
+export const scopeGetter = createSelector(filteredScopesSelector, scopes => id => {
+	const scope = scopes.get(id);
+	if (!scope) return null;
+	return scope.toJS();
+});

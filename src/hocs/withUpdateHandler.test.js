@@ -32,9 +32,7 @@ describe("withUpdateHandler", () => {
 			)
 			.then(() =>
 				expect(console.warn, "to have a call satisfying", {
-					args: [
-						expect.it("to contain", "withUpdateHandler has been deprecated"),
-					],
+					args: [expect.it("to contain", "withUpdateHandler has been deprecated")],
 				}),
 			));
 
@@ -69,13 +67,9 @@ describe("withUpdateHandler", () => {
 		}));
 
 	it("never calls handler if no test given", () =>
-		expect(
-			withUpdateHandler,
-			"when called with",
-			["update"],
-			"when called with",
-			[TestComp],
-		).then(Comp => {
+		expect(withUpdateHandler, "when called with", ["update"], "when called with", [
+			TestComp,
+		]).then(Comp => {
 			ReactDOM.render(<Comp update={handler} set={false} />, node);
 			expect(handler, "was not called");
 			ReactDOM.render(<Comp update={handler} set={true} />, node);

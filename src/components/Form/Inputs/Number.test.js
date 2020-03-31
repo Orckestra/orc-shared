@@ -122,9 +122,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [4.545444] }])));
 
 		it("increments from zero", () =>
 			expect(
@@ -134,9 +132,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [1] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [1] }])));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(
@@ -146,9 +142,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [2.545444] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [2.545444] }])));
 
 		it("decrements from zero", () =>
 			expect(
@@ -158,9 +152,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [-1] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [-1] }])));
 	});
 
 	describe("with step prop", () => {
@@ -195,9 +187,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3.6] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3.6] }])));
 
 		it("increments from zero", () =>
 			expect(
@@ -207,9 +197,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [0.1] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [0.1] }])));
 
 		it("decrement handler lowers value by step size", () =>
 			expect(
@@ -219,9 +207,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3.4] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3.4] }])));
 
 		it("decrements from zero", () =>
 			expect(
@@ -231,9 +217,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [-0.1] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [-0.1] }])));
 	});
 
 	describe("with min prop", () => {
@@ -268,9 +252,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [4.545444] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [4.545444] }])));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(
@@ -280,9 +262,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3.545444] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3.545444] }])));
 
 		it("respects minimum", () =>
 			expect(
@@ -292,9 +272,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3] }])));
 	});
 
 	describe("with min and step prop", () => {
@@ -329,9 +307,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3.6] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3.6] }])));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(
@@ -341,9 +317,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3.5] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3.5] }])));
 
 		it("respects minimum", () =>
 			expect(
@@ -353,9 +327,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3] }])));
 	});
 
 	describe("with max prop", () => {
@@ -390,9 +362,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [2.545344] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [2.545344] }])));
 
 		it("respects maximum", () =>
 			expect(
@@ -402,9 +372,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3] }])));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(
@@ -414,9 +382,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [1.545] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [1.545] }])));
 	});
 
 	describe("with max and step prop", () => {
@@ -451,9 +417,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [1.6] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [1.6] }])));
 
 		it("respects maximum", () =>
 			expect(
@@ -463,9 +427,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="up"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3] }])));
 
 		it("decrement handler lowers value by 1", () =>
 			expect(
@@ -475,9 +437,7 @@ describe("NumberInput", () => {
 				"when mounted",
 				"with event",
 				{ type: "click", target: '[data-test-id="down"]' },
-			).then(() =>
-				expect(update, "to have calls satisfying", [{ args: [3.5] }]),
-			));
+			).then(() => expect(update, "to have calls satisfying", [{ args: [3.5] }])));
 	});
 });
 

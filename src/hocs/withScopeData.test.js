@@ -16,11 +16,7 @@ jest.mock("../utils/buildUrl", () => {
 
 const TestComp = ({ spy, getScope, ...props }) => (
 	<div>
-		<input
-			id="getScope"
-			value=""
-			onChange={e => spy(getScope(e.target.value))}
-		/>
+		<input id="getScope" value="" onChange={e => spy(getScope(e.target.value))} />
 		<PropStruct {...props} />
 	</div>
 );

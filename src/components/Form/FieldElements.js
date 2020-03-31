@@ -6,12 +6,7 @@ import InputField from "./InputField";
 
 // // Multiple column fields?
 
-const FieldElements = ({
-	fields,
-	labelOnly,
-	getUpdater = () => {},
-	...elementProps
-}) => (
+const FieldElements = ({ fields, labelOnly, getUpdater = () => {}, ...elementProps }) => (
 	<React.Fragment>
 		{fields.map(({ type, name, label, ...props }, index) => {
 			const key = name || index;
@@ -19,21 +14,13 @@ const FieldElements = ({
 				case "Fieldset": {
 					return (
 						<Fieldset key={key} label={label}>
-							<FieldElements
-								getUpdater={getUpdater}
-								{...elementProps}
-								{...props}
-							/>
+							<FieldElements getUpdater={getUpdater} {...elementProps} {...props} />
 						</Fieldset>
 					);
 				}
 				case "Combination": {
 					return (
-						<Combination
-							key={key}
-							label={label}
-							proportions={props.proportions}
-						>
+						<Combination key={key} label={label} proportions={props.proportions}>
 							<FieldElements
 								getUpdater={getUpdater}
 								labelOnly={labelOnly}

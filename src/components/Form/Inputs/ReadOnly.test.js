@@ -1,13 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import {
-	CenterWrapper,
-	ReadOnlyBlock,
-	ReadOnly,
-	Label,
-	LineLabel,
-} from "./ReadOnly";
+import { CenterWrapper, ReadOnlyBlock, ReadOnly, Label, LineLabel } from "./ReadOnly";
 
 describe("ReadOnly", () => {
 	it("renders a read-only value in a form", () =>
@@ -20,9 +14,7 @@ describe("ReadOnly", () => {
 				}}
 			>
 				<IntlProvider locale="en">
-					<ReadOnly
-						value={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }}
-					/>
+					<ReadOnly value={{ id: "test.readOnlyValue", defaultMessage: "Read Only" }} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",

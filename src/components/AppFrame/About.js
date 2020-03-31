@@ -103,5 +103,4 @@ export const About = ({ messages }) => {
 
 const WiredAbout = About;
 
-export default props =>
-	ReactDOM.createPortal(<WiredAbout {...props} />, getModalRoot());
+export default props => ReactDOM.createPortal(<WiredAbout {...props} />, getModalRoot());

@@ -11,9 +11,7 @@ const analyzeHref = (href, location) => {
 		local,
 		self,
 		active:
-			href &&
-			local &&
-			location.pathname.substr(0, url.pathname.length) === url.pathname,
+			href && local && location.pathname.substr(0, url.pathname.length) === url.pathname,
 	};
 };
 

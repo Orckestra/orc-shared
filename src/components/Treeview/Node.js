@@ -17,12 +17,7 @@ export const LeafNode = ({ dark, ...nodeData }) => (
 						{safeGet(nodeData, "children", "length") ? (
 							[
 								<BeforeIndicator key="a" />,
-								<Indicator
-									key="b"
-									open={nodeData.open}
-									onClick={toggle}
-									dark={dark}
-								/>,
+								<Indicator key="b" open={nodeData.open} onClick={toggle} dark={dark} />,
 							]
 						) : (
 							<NonIndicator />

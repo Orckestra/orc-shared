@@ -8,12 +8,7 @@ export const makeActionTypes = name => [
 
 const addMeta = meta => type => ({ type, meta });
 
-export const makeApiAction = (
-	name,
-	endpoint,
-	method = "GET",
-	configuration = {},
-) => {
+export const makeApiAction = (name, endpoint, method = "GET", configuration = {}) => {
 	const { meta, body, ...remainder } = configuration;
 	let types = makeActionTypes(name);
 	if (meta) {

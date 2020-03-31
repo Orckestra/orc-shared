@@ -34,9 +34,7 @@ describe("buildStore", () => {
 			mockReducers,
 			{ options: true },
 		]).then(() =>
-			expect(devTool, "to have calls satisfying", [
-				{ args: [{ options: true }] },
-			]),
+			expect(devTool, "to have calls satisfying", [{ args: [{ options: true }] }]),
 		);
 		delete window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 		return assert;
@@ -89,9 +87,9 @@ describe("buildStore", () => {
 
 		describe("dispatch", () => {
 			it("updates state when called with an action", () =>
-				expect(store.dispatch, "when called with", [
-					{ type: "TEST_TOGGLE" },
-				]).then(() => expect(store.getState(), "to satisfy", { test: true })));
+				expect(store.dispatch, "when called with", [{ type: "TEST_TOGGLE" }]).then(() =>
+					expect(store.getState(), "to satisfy", { test: true }),
+				));
 		});
 
 		describe("subscribe", () => {

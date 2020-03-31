@@ -6,10 +6,7 @@ const initialState = Immutable.Map({});
 const viewStateReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case VIEW_SET: {
-			return state.set(
-				action.payload.name,
-				Immutable.fromJS(action.payload.value),
-			);
+			return state.set(action.payload.name, Immutable.fromJS(action.payload.value));
 		}
 		case VIEW_SET_FIELD: {
 			return state.setIn(
