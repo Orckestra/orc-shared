@@ -22,7 +22,7 @@ export const useNavigationHandler = href => {
 	return [
 		event => {
 			if (local) {
-				event.preventDefault();
+				event && event.preventDefault();
 				if (href && !self) {
 					history.push(href);
 				}

@@ -7,6 +7,8 @@ import useScopeData from "./useScopeData";
 import Button from "../Button";
 import Selector from "./Selector";
 import usePreviousModified from "../../hooks/usePreviousModified";
+import useDefaultScope from "./useDefaultScope";
+import useScopeSelect from "./useScopeSelect";
 
 export const Bar = styled.div`
 	flex: 0 0 49px;
@@ -82,11 +84,44 @@ export const Scope = ({ children, filterPlaceholder }) => {
 };
 Scope.displayName = "Scope";
 
-const RoutedScope = props => (
-	<Switch>
-		<Route path="/:scope" render={() => <Scope {...props} />} />
-		<Redirect to="/Global" />
-	</Switch>
-);
+const RoutedScope = props => {
+	const [currentScope, defaultScope] = useDefaultScope();
+	const [navigate] = useScopeSelect(
+		(defaultScope && defaultScope.id) || "Global",
+		() => {},
+	);
+
+	const defaultScopePredicate = (previous, current) => {
+		if (
+			current &&
+			current.currentScope &&
+			current.defaultScope &&
+			current.currentScope.isAuthorizedScope === false
+		) {
+			return true;
+		}
+
+		return false;
+	};
+
+	const navigateToDefaultScope = useCallback(
+		current => defaultScope && defaultScope.id && navigate(),
+
+		//	current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
+		[currentScope, defaultScope],
+	);
+	usePreviousModified(
+		{ currentScope, defaultScope },
+		navigateToDefaultScope,
+		defaultScopePredicate,
+	);
+
+	return (
+		<Switch>
+			<Route path="/:scope" render={() => <Scope {...props} />} />
+			<Redirect to="/Global" />
+		</Switch>
+	);
+};
 
 export default RoutedScope;

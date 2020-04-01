@@ -5,7 +5,8 @@ import useNavigationHandler from "../../hooks/useNavigationHandler";
 import { unwrapImmutable } from "../../utils";
 
 const useScopeSelect = (id, closeSelector) => {
-	const pattern = new UrlPattern(useSelector(selectRoutePath));
+	const routePath = useSelector(selectRoutePath);
+	const pattern = new UrlPattern(routePath !== "" ? routePath : "ddd/eee");
 	const params = unwrapImmutable(useSelector(selectRouteParams));
 	params.scope = id;
 	const [navigate, active] = useNavigationHandler(pattern.stringify(params));

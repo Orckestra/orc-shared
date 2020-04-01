@@ -29,14 +29,35 @@ describe("ScopeNode", () => {
 						type="test"
 						id="ScopeId"
 						closeSelector={closeSelector}
-						isAuthorizedScope
+						isAuthorizedScope={true}
 					/>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
+			<ContentLabel id="selectorNodeScopeId" onClick={closeSelector}>
 				<ScopeIcon type="test" />
+				<ScopeText>A scope</ScopeText>
+			</ContentLabel>,
+		));
+
+	it("displays an icon and a label for the global scope", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<ScopeNode
+						name="A scope"
+						type="Global"
+						id="ScopeId"
+						closeSelector={closeSelector}
+						isAuthorizedScope={true}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<ContentLabel id="selectorNodeScopeId" onClick={closeSelector} isGlobal={true}>
+				<ScopeIcon type="Global" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
 		));
@@ -69,13 +90,13 @@ describe("ScopeNode", () => {
 						type="test"
 						id="ScopeId"
 						closeSelector={closeSelector}
-						isAuthorizedScope
+						isAuthorizedScope={true}
 					/>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
+			<ContentLabel id="selectorNodeScopeId" onClick={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
@@ -90,13 +111,13 @@ describe("ScopeNode", () => {
 						type="test"
 						id="ScopeId"
 						closeSelector={closeSelector}
-						isAuthorizedScope
+						isAuthorizedScope={true}
 					/>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
+			<ContentLabel id="selectorNodeScopeId" onClick={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
@@ -110,13 +131,14 @@ describe("ScopeNode", () => {
 						name="A scope"
 						type="Virtual"
 						id="ScopeId"
+						isAuthorizedScope={true}
 						closeSelector={closeSelector}
 					/>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" type="Virtual">
+			<ContentLabel id="selectorNodeScopeId">
 				<ScopeIcon type="Virtual" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
@@ -124,39 +146,57 @@ describe("ScopeNode", () => {
 });
 
 describe("ContentLabel", () => {
-	it("sets css for Global scope", () =>
+	let onClick;
+	beforeEach(() => {
+		onClick = () => {};
+	});
+
+	it("sets css for authorized Global scope", () =>
 		expect(
-			<ContentLabel id="selectorNodeScopeId" type="Global" />,
+			<ContentLabel id="selectorNodeScopeId" isGlobal={true} onClick={onClick} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
 				.it("to contain", "text-transform: uppercase;")
 				.and("to contain", ":hover {background-color: #222;}")
-				.and("not to contain", "color: #999")
+				.and("not to contain", "color: #999999")
 				.and("not to contain", "cursor: default;"),
 		));
 
-	it("sets css for Virtual scopes", () =>
+	it("sets css for unauthorized Global scope", () =>
 		expect(
-			<ContentLabel id="selectorNodeScopeId" type="Virtual" />,
+			<ContentLabel id="selectorNodeScopeId" isGlobal={true} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("to contain", "color: #999999; cursor: default;")
-				.and("not to contain", "text-transform: uppercase;")
-				.and("not to contain", ":hover"),
+				.it("to contain", "text-transform: uppercase;")
+				.and("not to contain", ":hover {background-color: #222;}")
+				.and("to contain", "color: #999999")
+				.and("to contain", "cursor: default;"),
 		));
 
-	it("sets css for other scopes", () =>
+	it("sets css for a not-clickable and a non-global scope", () =>
 		expect(
-			<ContentLabel id="selectorNodeScopeId" type="someOther" />,
+			<ContentLabel isGlobal={false} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("not to contain", "color: #999")
-				.and("not to contain", "cursor: default;")
-				.and("not to contain", "text-transform: uppercase;")
-				.and("to contain", ":hover {background-color: #222;}"),
+				.it("not to contain", "text-transform: uppercase;")
+				.and("not to contain", ":hover {background-color: #222;}")
+				.and("to contain", "color: #999999")
+				.and("to contain", "cursor: default;"),
+		));
+
+	it("sets css for a clickable and a non-global scope", () =>
+		expect(
+			<ContentLabel isGlobal={false} onClick={onClick} />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("not to contain", "text-transform: uppercase;")
+				.and("to contain", ":hover {background-color: #222;}")
+				.and("not to contain", "color: #999999")
+				.and("not to contain", "cursor: default;"),
 		));
 });
 

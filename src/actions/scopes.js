@@ -11,10 +11,4 @@ export const [
 ] = makeActionTypes(GET_SCOPES);
 
 export const getScopes = () =>
-	makeOrcApiAction(
-		GET_SCOPES,
-		buildUrl(["scopes", "Global"], {
-			IncludeChildren: true,
-			IncludeCurrency: true,
-		}),
-	);
+	makeOrcApiAction(GET_SCOPES, buildUrl(["my", "scope", "Order", "tree"], {}));
