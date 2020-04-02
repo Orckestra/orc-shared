@@ -31,7 +31,7 @@ describe("getApplications", () => {
 					GET_APPLICATIONS_SUCCESS,
 					GET_APPLICATIONS_FAILURE,
 				],
-				endpoint: 'URL: applications ""',
+				endpoint: 'URL: my/applications ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",
