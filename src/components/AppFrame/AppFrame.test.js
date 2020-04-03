@@ -126,32 +126,34 @@ describe("AppFrame", () => {
 				defaultCulture: "fr-FR",
 			},
 			scopes: {
-				test1: {
-					id: "test1",
-					name: { "en-CA": "Test 1" },
-					foo: false,
-					bar: false,
-				},
-				test2: {
-					id: "test2",
-					name: { "en-US": "Test 2" },
-					foo: false,
-					bar: true,
-				},
-				test3: {
-					id: "test3",
-					name: { "en-CA": "Test 3" },
-					foo: true,
-					bar: false,
-				},
-				test4: {
-					id: "test4",
-					name: { "en-US": "Test 4" },
-					foo: true,
-					bar: true,
+				scopes: {
+					test1: {
+						id: "test1",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+					},
+					test2: {
+						id: "test2",
+						name: { "en-US": "Test 2" },
+						foo: false,
+						bar: true,
+					},
+					test3: {
+						id: "test3",
+						name: { "en-CA": "Test 3" },
+						foo: true,
+						bar: false,
+					},
+					test4: {
+						id: "test4",
+						name: { "en-US": "Test 4" },
+						foo: true,
+						bar: true,
+					},
 				},
 			},
-			settings: { defaultApp: "12" },
+			settings: { defaultScope: "myScope", defaultApp: "12" },
 			view: { scopeSelector: { filter: "1" } },
 			toasts: { queue: [] },
 		});

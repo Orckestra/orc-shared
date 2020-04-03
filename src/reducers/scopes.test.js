@@ -1,13 +1,18 @@
 import Immutable from "immutable";
-import { GET_SCOPES_SUCCESS } from "../actions/scopes";
+import { GET_MY_SCOPE_SUCCESS, GET_SCOPES_SUCCESS } from "../actions/scopes";
 import reducer from "./scopes";
 
 describe("scopes", () => {
 	it("behaves as a reducer should", () =>
-		expect(reducer, "to be a reducer with initial state", {}));
+		expect(reducer, "to be a reducer with initial state", {
+			scopes: {},
+			defaultScope: null,
+		}));
 
 	it("saves a normalized index of scopes with child lists, keys all lower case", () => {
-		const oldState = Immutable.Map({ Global: {} });
+		const oldState = Immutable.fromJS({
+			scopes: Immutable.Map({ Global: {} }),
+		});
 		const action = {
 			type: GET_SCOPES_SUCCESS,
 			payload: {
@@ -30,7 +35,8 @@ describe("scopes", () => {
 		};
 		const newState = reducer(oldState, action);
 		return expect(newState, "not to be", oldState).and(
-			"to satisfy",
+			"to have value at",
+			["scopes"],
 			Immutable.fromJS({
 				Global: {
 					id: "Global",
@@ -51,5 +57,19 @@ describe("scopes", () => {
 				FifthGrandchild: { id: "FifthGrandchild" },
 			}),
 		);
+	});
+
+	it("saves a newly set default scope", () => {
+		const oldState = Immutable.fromJS({
+			defaultScope: null,
+		});
+		const action = {
+			type: GET_MY_SCOPE_SUCCESS,
+			payload: { id: "aScope" },
+		};
+		const newState = reducer(oldState, action);
+		expect(newState, "not to be", oldState).and("to satisfy", {
+			defaultScope: "aScope",
+		});
 	});
 });

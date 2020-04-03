@@ -172,6 +172,9 @@ describe("getCurrentScope", () => {
 			navigation: {
 				route: { location: {}, match: { params: { scope: "thing" } } },
 			},
+			settings: {
+				defaultScope: "myScope",
+			},
 		});
 	});
 	afterEach(() => {
@@ -189,6 +192,13 @@ describe("getCurrentScope", () => {
 
 	it("gets the default scope, if no scope set and no previous known", () => {
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(getCurrentScope, "when called with", [state], "to be", "myScope");
+	});
+
+	it("gets the Global scope, if no scope set, if no default scope and no previous known", () => {
+		state = state
+			.deleteIn(["navigation", "route", "match", "params", "scope"])
+			.setIn(["settings", "defaultScope"], null);
 		return expect(getCurrentScope, "when called with", [state], "to be", "Global");
 	});
 });

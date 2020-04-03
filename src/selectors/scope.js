@@ -8,8 +8,6 @@ const scopeData = state => state.get("scopes");
 
 const scopesSelector = createSelector(scopeData, data => data.get("scopes"));
 
-export const defaultScopeSelector = createSelector(scopeData, data => data.get("def"));
-
 const localizedScopesSelector = createSelector(
 	scopesSelector,
 	currentLocale,
@@ -53,12 +51,6 @@ const filteredScopesSelector = createSelector(
 );
 
 export const scopeGetter = createSelector(filteredScopesSelector, scopes => id => {
-	const scope = scopes.get(id);
-	if (!scope) return null;
-	return scope.toJS();
-});
-
-export const defaultScopeGetter = createSelector(filteredScopesSelector, scopes => id => {
 	const scope = scopes.get(id);
 	if (!scope) return null;
 	return scope.toJS();

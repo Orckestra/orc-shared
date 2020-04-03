@@ -6,13 +6,16 @@ import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
 
 const fakeStore = {
-	subscribe: (listener) => () => {},
-	dispatch: (action) => action,
+	subscribe: listener => () => {},
+	dispatch: action => action,
 	getState: () =>
 		Immutable.fromJS({
 			locale: {},
 			authentication: {
 				name: "foo@bar.com",
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		}),
 	replaceReducer: () => {},

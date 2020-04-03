@@ -13,48 +13,53 @@ beforeEach(() => {
 			supportedLocales: ["en", "fr"],
 		},
 		scopes: {
-			Global: {
-				name: { en: "Global", fr: "Global" },
-				id: "Global",
-				children: ["FirstChild", "SecondChild"],
+			scopes: {
+				Global: {
+					name: { en: "Global", fr: "Global" },
+					id: "Global",
+					children: ["FirstChild", "SecondChild"],
+				},
+				FirstChild: {
+					name: { en: "First child", fr: "Premier fils" },
+					id: "FirstChild",
+					children: ["FirstGrandchild", "SecondGrandchild"],
+					parentScopeId: "Global",
+				},
+				FirstGrandchild: {
+					name: { en: "First grandchild", fr: "Premier petit-fils" },
+					id: "FirstGrandchild",
+					parentScopeId: "FirstChild",
+				},
+				SecondGrandchild: {
+					name: { en: "Second grandchild", fr: "Deuxième petit-fils" },
+					id: "SecondGrandchild",
+					parentScopeId: "FirstChild",
+				},
+				SecondChild: {
+					name: { en: "Second child", fr: "Deuxième fils" },
+					id: "SecondChild",
+					children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
+					parentScopeId: "Global",
+				},
+				ThirdGrandchild: {
+					name: { en: "Third grandchild", fr: "Troisième petit-fils" },
+					id: "ThirdGrandchild",
+					parentScopeId: "SecondChild",
+				},
+				FourthGrandchild: {
+					name: { en: "Fourth grandchild", fr: "Quatrième petit-fils" },
+					id: "FourthGrandchild",
+					parentScopeId: "SecondChild",
+				},
+				FifthGrandchild: {
+					name: { en: "Fifth grandchild", fr: "Cinquième petit-fils" },
+					id: "FifthGrandchild",
+					parentScopeId: "SecondChild",
+				},
 			},
-			FirstChild: {
-				name: { en: "First child", fr: "Premier fils" },
-				id: "FirstChild",
-				children: ["FirstGrandchild", "SecondGrandchild"],
-				parentScopeId: "Global",
-			},
-			FirstGrandchild: {
-				name: { en: "First grandchild", fr: "Premier petit-fils" },
-				id: "FirstGrandchild",
-				parentScopeId: "FirstChild",
-			},
-			SecondGrandchild: {
-				name: { en: "Second grandchild", fr: "Deuxième petit-fils" },
-				id: "SecondGrandchild",
-				parentScopeId: "FirstChild",
-			},
-			SecondChild: {
-				name: { en: "Second child", fr: "Deuxième fils" },
-				id: "SecondChild",
-				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
-				parentScopeId: "Global",
-			},
-			ThirdGrandchild: {
-				name: { en: "Third grandchild", fr: "Troisième petit-fils" },
-				id: "ThirdGrandchild",
-				parentScopeId: "SecondChild",
-			},
-			FourthGrandchild: {
-				name: { en: "Fourth grandchild", fr: "Quatrième petit-fils" },
-				id: "FourthGrandchild",
-				parentScopeId: "SecondChild",
-			},
-			FifthGrandchild: {
-				name: { en: "Fifth grandchild", fr: "Cinquième petit-fils" },
-				id: "FifthGrandchild",
-				parentScopeId: "SecondChild",
-			},
+		},
+		settings: {
+			defaultScope: "FirstChild",
 		},
 	});
 });
@@ -86,9 +91,10 @@ describe("currentScopeSelector", () => {
 			[state],
 			"to equal",
 			Immutable.fromJS({
-				name: "Global",
-				id: "Global",
-				children: ["FirstChild", "SecondChild"],
+				name: "Premier fils",
+				id: "FirstChild",
+				children: ["FirstGrandchild", "SecondGrandchild"],
+				parentScopeId: "Global",
 			}),
 		);
 	});

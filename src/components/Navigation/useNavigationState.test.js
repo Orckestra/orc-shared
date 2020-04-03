@@ -107,6 +107,9 @@ describe("useNavigationState", () => {
 					},
 				},
 			},
+			settings: {
+				defaultScope: "myScope",
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -301,6 +304,9 @@ describe("useNavigationState", () => {
 						},
 					},
 				},
+				settings: {
+					defaultScope: "myScope",
+				},
 			});
 			modules = {
 				test: {
@@ -394,6 +400,9 @@ describe("useNavigationState", () => {
 							params: { scope: "TestScope", page2: "bar" },
 						},
 					},
+				},
+				settings: {
+					defaultScope: "myScope",
 				},
 			});
 			page = {

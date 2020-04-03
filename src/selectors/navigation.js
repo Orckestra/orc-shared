@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import Immutable from "immutable";
+import { defaultScopeSelector } from "./settings";
 
 const getNavigationState = state => state.get("navigation");
 
@@ -34,13 +35,20 @@ let lastScope;
 export const resetLastScope = () => {
 	lastScope = undefined;
 };
-export const getCurrentScope = state => {
+
+const getLastRouteScope = state => {
 	const params = selectRouteParams(state);
 	if (params.get("scope")) {
 		lastScope = params.get("scope");
 	}
-	return lastScope || "Global";
+	return lastScope;
 };
+
+export const getCurrentScope = createSelector(
+	getLastRouteScope,
+	defaultScopeSelector,
+	(id, scopeState) => id || scopeState || "Global",
+);
 
 const selectTabs = createSelector(getNavigationState, nav => nav.get("tabIndex"));
 

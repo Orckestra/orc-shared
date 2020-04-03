@@ -32,38 +32,44 @@ beforeEach(() => {
 			route: { location: {}, match: { params: { scope: "test1" } } },
 		},
 		scopes: {
-			test1: {
-				id: "test1",
-				name: { "en-CA": "Test 1" },
-				foo: false,
-				bar: false,
+			scopes: {
+				test1: {
+					id: "test1",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+				},
+				test2: {
+					id: "test2",
+					name: { "en-US": "Test 2" },
+					foo: false,
+					bar: true,
+				},
+				test3: {
+					id: "test3",
+					name: { "en-CA": "Test 3" },
+					foo: true,
+					bar: false,
+					parentScopeId: "test1",
+				},
+				test4: {
+					id: "test4",
+					name: { "en-US": "Test 4" },
+					foo: true,
+					bar: true,
+				},
+				test5: {
+					id: "test5",
+					name: { "en-US": "Test 5" },
+					foo: true,
+					bar: true,
+					parentScopeId: "test4",
+				},
 			},
-			test2: {
-				id: "test2",
-				name: { "en-US": "Test 2" },
-				foo: false,
-				bar: true,
-			},
-			test3: {
-				id: "test3",
-				name: { "en-CA": "Test 3" },
-				foo: true,
-				bar: false,
-				parentScopeId: "test1",
-			},
-			test4: {
-				id: "test4",
-				name: { "en-US": "Test 4" },
-				foo: true,
-				bar: true,
-			},
-			test5: {
-				id: "test5",
-				name: { "en-US": "Test 5" },
-				foo: true,
-				bar: true,
-				parentScopeId: "test4",
-			},
+			defaultScope: "aDefaultScope",
+		},
+		settings: {
+			defaultScope: "aDefaultScope",
 		},
 		view: {
 			scopeSelector: { filter: "Foo", show: true },
@@ -76,7 +82,7 @@ beforeEach(() => {
 				sub();
 			});
 		},
-		subscribe: (sub) => {
+		subscribe: sub => {
 			subs.push(sub);
 			return () => {};
 		},
@@ -179,7 +185,7 @@ describe("Scope", () => {
 	});
 
 	it("resets the scope tree state when closing, to ensure current scope is visible", () => {
-		state = state.withMutations((s) => {
+		state = state.withMutations(s => {
 			s.setIn(["navigation", "route", "match", "params", "scope"], "test3");
 			s.setIn(
 				["view", "scopeSelector"],
@@ -295,7 +301,7 @@ describe("ScopeBar", () => {
 });
 
 describe("RoutedScope", () => {
-	const TestComp = (props) => {
+	const TestComp = props => {
 		const { pathname } = useLocation();
 		return <PropStruct pathname={pathname} {...props} />;
 	};
@@ -317,6 +323,7 @@ describe("RoutedScope", () => {
 	});
 
 	it("redirects to Global if route not matched", () => {
+		state = state.setIn(["settings", "defaultScope"], null);
 		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={[""]} initialIndex={0}>
@@ -330,5 +337,25 @@ describe("RoutedScope", () => {
 			appRoot,
 		);
 		return expect(appRoot, "to contain", <PropStruct pathname="/Global" itIs="me" />);
+	});
+
+	it("redirects to default scope if route not matched", () => {
+		ReactDOM.render(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={[""]} initialIndex={0}>
+					<I18n>
+						<RoutedScope>
+							<TestComp itIs="me" />
+						</RoutedScope>
+					</I18n>
+				</MemoryRouter>
+			</Provider>,
+			appRoot,
+		);
+		return expect(
+			appRoot,
+			"to contain",
+			<PropStruct pathname="/aDefaultScope" itIs="me" />,
+		);
 	});
 });

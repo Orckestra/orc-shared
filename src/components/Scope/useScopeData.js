@@ -1,11 +1,7 @@
 import { useSelector } from "react-redux";
 import useLoader from "../../hooks/useLoader";
 import { unwrapImmutable } from "../../utils";
-import {
-	currentScopeSelector,
-	defaultScopeSelector,
-	scopeGetter,
-} from "../../selectors/scope";
+import { currentScopeSelector, scopeGetter } from "../../selectors/scope";
 import { getScopes } from "../../actions/scopes";
 
 const buildDefaultNodeState = (current, getScope) => {

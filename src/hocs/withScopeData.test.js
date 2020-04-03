@@ -34,35 +34,40 @@ describe("withScopeData", () => {
 				route: { location: {}, match: { params: { scope: "test3" } } },
 			},
 			scopes: {
-				test1: {
-					id: "test1",
-					name: { "en-CA": "Test 1" },
-					foo: false,
-					bar: false,
-					children: ["test2"],
+				scopes: {
+					test1: {
+						id: "test1",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+					test2: {
+						id: "test2",
+						name: { "en-US": "Test 2" },
+						foo: false,
+						bar: true,
+						parentScopeId: "test1",
+						children: ["test3", "test4"],
+					},
+					test3: {
+						id: "test3",
+						name: { "en-CA": "Test 3" },
+						foo: true,
+						bar: false,
+						parentScopeId: "test2",
+					},
+					test4: {
+						id: "test4",
+						name: { "en-US": "Test 4" },
+						foo: true,
+						bar: true,
+						parentScopeId: "test2",
+					},
 				},
-				test2: {
-					id: "test2",
-					name: { "en-US": "Test 2" },
-					foo: false,
-					bar: true,
-					parentScopeId: "test1",
-					children: ["test3", "test4"],
-				},
-				test3: {
-					id: "test3",
-					name: { "en-CA": "Test 3" },
-					foo: true,
-					bar: false,
-					parentScopeId: "test2",
-				},
-				test4: {
-					id: "test4",
-					name: { "en-US": "Test 4" },
-					foo: true,
-					bar: true,
-					parentScopeId: "test2",
-				},
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		});
 		store = {
@@ -138,7 +143,7 @@ describe("withScopeData", () => {
 			.then(() => expect(store.dispatch, "was not called")));
 
 	it("loads scopes if it has none", () => {
-		state = state.set("scopes", Immutable.Map());
+		state = state.setIn(["scopes", "scopes"], Immutable.Map());
 		return expect(withScopeData, "when called with", [TestComp])
 			.then(Comp =>
 				expect(

@@ -1,12 +1,10 @@
 import { useSelector } from "react-redux";
 import { unwrapImmutable } from "../../utils";
-import { currentScopeSelector, defaultScopeSelector } from "../../selectors/scope";
+import { defaultScopeSelector } from "../../selectors/settings";
 
 const useDefaultScope = () => {
-	const currentScope = unwrapImmutable(useSelector(currentScopeSelector));
 	const defaultScope = unwrapImmutable(useSelector(defaultScopeSelector));
-	console.warn(defaultScope);
-	return [currentScope, defaultScope];
+	return [defaultScope];
 };
 
 export default useDefaultScope;

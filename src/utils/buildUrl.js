@@ -18,7 +18,7 @@ export let buildUrl = placeholder;
 
 /* Loads the local /config.json and sets up a real buildUrl() function 
 from the acquired information */
-export const loadConfig = () =>
+export const loadConfig = overtureModuleName =>
 	fetch("/config.json")
 		.then(response => response.json())
 		.catch(() => {
@@ -35,6 +35,7 @@ export const loadConfig = () =>
 				`${host}/${pathParts.join("/")}` +
 				(parameters ? "?" + buildParamString(parameters) : "");
 			window.orcVersion = config.version;
+			window.overtureModuleName = overtureModuleName;
 		});
 
 /* Reset function for testing, never use this in actual code */
