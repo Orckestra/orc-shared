@@ -35,7 +35,7 @@ describe("ScopeNode", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
+			<ContentLabel id="selectorNodeScopeId" onClick={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
@@ -75,7 +75,7 @@ describe("ScopeNode", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
+			<ContentLabel id="selectorNodeScopeId" onClick={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
@@ -96,7 +96,7 @@ describe("ScopeNode", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ContentLabel id="selectorNodeScopeId" closeSelector={closeSelector}>
+			<ContentLabel id="selectorNodeScopeId" onClick={closeSelector}>
 				<ScopeIcon type="test" />
 				<ScopeText>ScopeId</ScopeText>
 			</ContentLabel>,
