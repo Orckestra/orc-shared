@@ -4,17 +4,20 @@ import { getThemeProp, ifFlag } from "../../utils";
 import Icon from "../Icon";
 
 export const Header = styled.div`
+	display: flex;
 	cursor: pointer;
 	color: ${ifFlag(
 		"open",
-		getThemeProp(["colors", "application", "base"], "#ccc"),
+		getThemeProp(["colors", "application", "primary"], "#ccc"),
 		"#ccc",
 	)};
 
 	&:hover {
-		color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
+		color: ${getThemeProp(["colors", "application", "primary"], "#ccc")};
 	}
 `;
+
+export const IndicatorWrapper = styled.div``;
 
 export const Indicator = styled(Icon).attrs(props => ({
 	id: ifFlag(
@@ -23,19 +26,21 @@ export const Indicator = styled(Icon).attrs(props => ({
 		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
 	)(props),
 }))`
-	font-size: 10px;
+	font-size: 12px;
 	padding: 0 11px;
 	color: ${ifFlag(
 		"open",
 		"#ccc",
-		getThemeProp(["colors", "application", "base"], "#ccc"),
+		getThemeProp(["colors", "application", "primary"], "#ccc"),
 	)};
 `;
 
 const Anchor = ({ id, onClick, className, menuLabel, open }) => (
 	<Header {...{ id, onClick, className, open }}>
 		{menuLabel}
-		<Indicator open={open} />
+		<IndicatorWrapper>
+			<Indicator open={open} />
+		</IndicatorWrapper>
 	</Header>
 );
 

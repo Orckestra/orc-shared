@@ -70,7 +70,7 @@ export const AppBox = styled.div`
 
 export const AppLabel = styled.div`
 	background-color: #000000;
-	color: ${getThemeProp(["colors", "application", "base"], "#ffffff")};
+	color: ${getThemeProp(["colors", "application", "primary"], "#ffffff")};
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	font-size: 14px;
 	text-transform: uppercase;
