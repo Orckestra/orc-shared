@@ -5,7 +5,7 @@ import { act } from "react-dom/test-utils";
 import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import DropMenu, { Wrapper } from "./index";
-import Anchor, { Header, Indicator } from "./Anchor";
+import Anchor, { Header, Indicator, IndicatorWrapper } from "./Anchor";
 import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 import { getStyledClassSelector } from "../../utils/testUtils";
 
@@ -70,7 +70,9 @@ describe("DropMenu", () => {
 			<Wrapper className="test-class">
 				<Header id="testAnchor" open>
 					TestLabel
-					<Indicator open={true} />
+					<IndicatorWrapper>
+						<Indicator open={true} />
+					</IndicatorWrapper>
 				</Header>
 				<Drawer in>
 					<List id="testDropdown">
@@ -286,13 +288,17 @@ describe("DropMenu", () => {
 					<Wrapper className="test-class-1">
 						<Header>
 							TestLabel 1
-							<Indicator />
+							<IndicatorWrapper>
+								<Indicator />
+							</IndicatorWrapper>
 						</Header>
 					</Wrapper>
 					<Wrapper className="test-class-2">
 						<Header>
 							TestLabel 2
-							<Indicator />
+							<IndicatorWrapper>
+								<Indicator />
+							</IndicatorWrapper>
 						</Header>
 					</Wrapper>
 				</div>,
@@ -322,13 +328,17 @@ describe("DropMenu", () => {
 					<Wrapper className="test-class-1">
 						<Header>
 							TestLabel 1
-							<Indicator />
+							<IndicatorWrapper>
+								<Indicator />
+							</IndicatorWrapper>
 						</Header>
 					</Wrapper>
 					<Wrapper className="test-class-2">
 						<Header>
 							TestLabel 2
-							<Indicator />
+							<IndicatorWrapper>
+								<Indicator />
+							</IndicatorWrapper>
 						</Header>
 					</Wrapper>
 				</div>,
@@ -343,13 +353,17 @@ describe("DropMenu", () => {
 					<Wrapper className="test-class-1">
 						<Header>
 							TestLabel 1
-							<Indicator />
+							<IndicatorWrapper>
+								<Indicator />
+							</IndicatorWrapper>
 						</Header>
 					</Wrapper>
 					<Wrapper className="test-class-2">
 						<Header open>
 							TestLabel 2
-							<Indicator open={true} />
+							<IndicatorWrapper>
+								<Indicator open={true} />
+							</IndicatorWrapper>
 						</Header>
 						<Drawer in>
 							<List>
@@ -379,7 +393,9 @@ describe("DropMenu", () => {
 					<Wrapper className="test-class-1">
 						<Header open>
 							TestLabel 1
-							<Indicator open={true} />
+							<IndicatorWrapper>
+								<Indicator open={true} />
+							</IndicatorWrapper>
 						</Header>
 						<Drawer in>
 							<List>
@@ -397,7 +413,9 @@ describe("DropMenu", () => {
 					<Wrapper className="test-class-2">
 						<Header>
 							TestLabel 2
-							<Indicator />
+							<IndicatorWrapper>
+								<Indicator />
+							</IndicatorWrapper>
 						</Header>
 					</Wrapper>
 				</div>,
