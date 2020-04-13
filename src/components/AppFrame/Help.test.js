@@ -3,8 +3,6 @@ import sinon from "sinon";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import { Ignore } from "unexpected-reaction";
-import { VIEW_STATE_SET_FIELD } from "../../actions/view";
 import Help, { HelpWrapper } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {

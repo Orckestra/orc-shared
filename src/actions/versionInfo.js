@@ -1,7 +1,6 @@
 import { makeActionTypes } from "./makeApiAction";
 import makeOrcApiAction from "./makeOrcApiAction";
 import { buildUrl } from "../utils/buildUrl";
-import { VIEW_SET_FIELD } from "./view";
 
 export const GET_VERSION_INFO = "GET_VERSION_INFO";
 

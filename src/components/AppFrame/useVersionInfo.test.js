@@ -2,7 +2,6 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
-import { PropStruct } from "../../utils/testUtils";
 import useVersionInfo from "./useVersionInfo";
 
 const TestComp = ({ appId }) => {
@@ -11,7 +10,7 @@ const TestComp = ({ appId }) => {
 };
 
 describe("useVersionInfo", () => {
-	let state, store, spy;
+	let state, store;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			input: {},

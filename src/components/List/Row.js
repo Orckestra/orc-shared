@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
-import { ifFlag, getThemeProp } from "../../utils";
+import { ifFlag } from "../../utils";
 import DataCell from "./DataCell";
 
 export const stringifyFieldName = name => {
