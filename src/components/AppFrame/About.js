@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { ifFlag } from "../../utils";
@@ -8,6 +9,7 @@ import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
+import { getVersionSelector } from "../../selectors/versionInfo";
 
 export const ABOUT_NAME = "__aboutBox";
 
@@ -70,6 +72,7 @@ export const getClickOutsideHandler = ({ show }, updateViewState) =>
 
 export const About = ({ messages }) => {
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
+	const version = useSelector(getVersionSelector);
 	return (
 		<AboutBox
 			in={viewState.show}
@@ -80,7 +83,7 @@ export const About = ({ messages }) => {
 				<Text
 					message={{
 						...messages.ccVersion,
-						values: { version: window.orcVersion },
+						values: { version: version },
 					}}
 				/>
 			</AboutParagraph>

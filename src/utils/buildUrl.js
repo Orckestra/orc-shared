@@ -34,7 +34,6 @@ export const loadConfig = () =>
 			buildUrl = (pathParts = [], parameters) =>
 				`${host}/${pathParts.join("/")}` +
 				(parameters ? "?" + buildParamString(parameters) : "");
-			window.orcVersion = config.version;
 		});
 
 /* Reset function for testing, never use this in actual code */

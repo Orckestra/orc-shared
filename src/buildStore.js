@@ -14,6 +14,7 @@ import scopesReducer from "./reducers/scopes";
 import settingsReducer from "./reducers/settings";
 import toastReducer from "./reducers/toasts";
 import viewReducer from "./reducers/view";
+import versionInfoReducer from "./reducers/versionInfo";
 
 window.BUILD_ID = BUILD_ID;
 window.BUILD_NUMBER = BUILD_NUMBER;
@@ -50,6 +51,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			scopes: scopesReducer,
 			settings: settingsReducer,
 			toasts: toastReducer,
+			versionInfo: versionInfoReducer,
 			view: viewReducer,
 		});
 	const rootReducer = buildReducer(reducers);
