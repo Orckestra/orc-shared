@@ -40,4 +40,29 @@ describe("versionInfo", () => {
 			}),
 		);
 	});
+
+	it("handles version information with moduleHelpUrls being null", () => {
+		const oldState = Immutable.fromJS({
+			version: null,
+			helpUrlDefault: null,
+			moduleHelpUrls: [],
+		});
+		const action = {
+			type: GET_VERSION_INFO_SUCCESS,
+			payload: {
+				versionOCC: "5.1.2.3",
+				helpUrlDefault: "help_url_default",
+				moduleHelpUrls: null,
+			},
+		};
+		const newState = reducer(oldState, action);
+		return expect(newState, "not to be", oldState).and(
+			"to satisfy",
+			Immutable.fromJS({
+				version: "5.1.2.3",
+				helpUrlDefault: "help_url_default",
+				moduleHelpUrls: [],
+			}),
+		);
+	});
 });
