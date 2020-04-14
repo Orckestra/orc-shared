@@ -170,6 +170,7 @@ describe("Bar", () => {
 							label="A module"
 							active
 						/>
+						<ScrollableBar />
 					</TabBar>
 				</MemoryRouter>
 			</Provider>,
@@ -341,7 +342,6 @@ describe("useTabScroll", () => {
 				value: 0,
 				writable: true,
 			});
-			barRef.current.scrollTo.callsFake(({ left }) => (barRef.current.scrollLeft = left));
 			if (tabs) {
 				pages.forEach(({ href }, idx) => {
 					Object.defineProperty(tabRefs.current[href], "offsetWidth", {
@@ -500,7 +500,7 @@ describe("useTabScroll", () => {
 				tabs: [75, 52, 65, 35],
 			},
 		);
-		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 6);
+		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 7);
 	});
 
 	it("scrolls to the active element if it is last", () => {
@@ -516,7 +516,7 @@ describe("useTabScroll", () => {
 				tabs: [75, 52, 65, 35],
 			},
 		);
-		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 6);
+		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 7);
 	});
 
 	it("sets last shown tab if bar wide enough to hold all", () => {

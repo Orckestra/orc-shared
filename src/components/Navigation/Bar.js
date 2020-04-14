@@ -104,10 +104,11 @@ export const useTabScroll = (pages, debug = false, refs) => {
 	const [lastShownTab, setLastShown] = useState(pages.length);
 	useEffect(() => {
 		const barElem = barRef.current;
+		/* istanbul ignore if */
 		if (!barElem) return;
 		const activeEdge = tabEdges[activeIndex + 1] || tabEdges[activeIndex] || 0;
-		let scrollEdge = Math.max(activeEdge - barWidth + 6, 0);
-		barElem.scrollTo({ left: scrollEdge });
+		let scrollEdge = Math.max(activeEdge - barWidth + 7, 0);
+		barElem.scrollLeft = scrollEdge;
 		const edgeIndex =
 			tabEdges.findIndex(edge => edge > barWidth + barElem.scrollLeft - 10) - 1;
 		if (tabEdges[tabEdges.length - 1] <= barWidth) {
@@ -181,28 +182,26 @@ const Bar = ({ module, pages }) => {
 				label={module.label}
 				active={module.active}
 			/>
-			{pages.length ? (
-				<ScrollableBar ref={getBarRef}>
-					{pages.map(
-						({ href, mappedFrom, label, active, icon, outsideScope, close }, index) => {
-							return (
-								<Tab
-									ref={getTabRef}
-									key={href}
-									icon={icon}
-									href={href}
-									mappedFrom={mappedFrom}
-									label={label}
-									active={active}
-									close={close}
-									outsideScope={outsideScope}
-									hide={index > lastShownTab}
-								/>
-							);
-						},
-					)}
-				</ScrollableBar>
-			) : null}
+			<ScrollableBar ref={getBarRef}>
+				{pages.map(
+					({ href, mappedFrom, label, active, icon, outsideScope, close }, index) => {
+						return (
+							<Tab
+								ref={getTabRef}
+								key={href}
+								icon={icon}
+								href={href}
+								mappedFrom={mappedFrom}
+								label={label}
+								active={active}
+								close={close}
+								outsideScope={outsideScope}
+								hide={index > lastShownTab}
+							/>
+						);
+					},
+				)}
+			</ScrollableBar>
 			{hiddenTabs ? (
 				<StyledMenu
 					id="navigationTabs"

@@ -20,6 +20,7 @@ describe("getTheme", () => {
 			colors: {
 				application: {
 					base: "#cccccc",
+					primary: "#cccccc",
 					highlight: "#d8d8d8",
 					select: "#efefef",
 					dark: "#a3a3a3",
@@ -37,6 +38,7 @@ describe("getTheme", () => {
 				colors: {
 					application: {
 						base: "#cc33cc",
+						primary: "#cc33cc",
 						highlight: "#d866d8",
 						select: "#efc1ef",
 						dark: "#a328a3",
@@ -54,6 +56,7 @@ describe("getTheme", () => {
 					colors: {
 						application: {
 							base: "#cc33cc",
+							primary: "#ff00ff",
 							highlight: "#6666d8",
 							select: "#efc1c1",
 							dark: "#a32828",
@@ -66,6 +69,7 @@ describe("getTheme", () => {
 				colors: {
 					application: {
 						base: "#cc33cc",
+						primary: "#ff00ff",
 						highlight: "#6666d8",
 						select: "#efc1c1",
 						dark: "#a32828",

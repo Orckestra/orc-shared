@@ -5,17 +5,11 @@ import { Link } from "react-router-dom";
 import Text from "../Text";
 import Icon from "../Icon";
 
-// XXX: The below contains an IE10/IE11 targeting CSS hack
-
 export const PageTab = styled.div`
 	flex: 0 0 auto;
-	@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-		flex-basis: 170px;
-	}
 	overflow: hidden;
 	height: 38px;
 	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	display: flex;
 	transform: translateY(-10px);
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
@@ -48,23 +42,27 @@ export const PageTab = styled.div`
 	)}
 `;
 
+// XXX: The below contains an IE10/IE11 targeting CSS hack
+
 export const ModuleTab = styled(PageTab)`
 	flex-grow: 0;
 	flex-shrink: 0;
 	margin-left: 0px;
 	z-index: 1;
+	@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+		flex-grow: 1;
+	}
 `;
 
 const FilteredLink = ({ outsideScope, ...props }) => <Link {...props} />;
 
 export const TabLink = styled(FilteredLink)`
-	flex: 0 1 100%;
 	min-width: 100px;
 	width: max-content;
 	overflow: hidden;
 	color: inherit;
 	text-decoration: none;
-	display: flex;
+	display: block;
 	justify-content: center;
 	padding: 11px 15px;
 
@@ -77,14 +75,13 @@ export const TabLink = styled(FilteredLink)`
 `;
 
 export const ModuleIcon = styled(Icon)`
-	flex: 0 0 auto;
+	vertical-align: middle;
 	font-size: 20px;
 	margin-right: 10px;
 	margin-top: -3px;
 `;
 
 export const TabText = styled.span`
-	flex: 0 9999999 100%;
 	min-width: 50px;
 	max-width: 350px;
 	white-space: nowrap;
