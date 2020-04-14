@@ -74,6 +74,12 @@ These should generally never be used for live code, but are highly useful tools 
 
 `spyOnConsole()` can be called in a `describe()` block, and will set up (and tear down) `console.log()`, `console.warn()` and `console.error()` as sinon spies. This intercepts their normal function (i.e. no messages are output), but alloows asserting on whether they have been called and with what. Highly useful for testing e.g. error display. (This was universally applied prior to `orc-scripts` v0.7.0.)
 
-`getClassName(<StyledComp />, index)` will extract the indexed class name of a React component, and is most useful for querying for styled components in a DOM tree. It does not include the class selector prefix (i.e. it outputs "myClass", not ".myClass"), so if used as a selector, the class name should be prefixed with a period. `index` is zero-based, and defaults to 0. In most cases you will not need this parameter.
+`getElmClasses(element, parentType)` creates an array containing all class names attached to the element given. The `parentType` parameter can be used to suppress nesting validation output for e.g. `<td>` elements and others which cannot legitimally reside under a `<div>`.
+
+`getClassName(element, index, parentType)` will extract the indexed class name of an element, and is most useful for querying for styled components in a DOM tree. It does not include the class selector prefix (i.e. it outputs "myClass", not ".myClass"), so if used as a selector, the class name should be prefixed with a period. `index` is zero-based, and defaults to 0. In most cases you will not need this parameter.
+
+`getClassSelector(element, index, parentType)` will generate a string containing a CSS selector that targets the given element's class. If index is -1, all classes on the element will be used together, otherwise it works as on `getClassName` above.
+
+`getStyledClassSelector(<StyledComponent />, parentType)` discovers the most-specific class targeting elements of the `StyledComponent` type. If the passed element is not a rendered styled component, it will throw an error. In cases where the component needs a specific parent node type, `parentType` allows it to be set.
 
 `<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing higher order components and other cases where the properties passed to a component are important.

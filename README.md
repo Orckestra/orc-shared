@@ -1,4 +1,4 @@
-# Shared code for Orckestra applications
+# Orckestra Client Application Framework shared code
 
 [![Build Status](https://travis-ci.org/Orckestra/orc-shared.svg?branch=master)](https://travis-ci.org/Orckestra/orc-shared) [![Coverage Status](https://coveralls.io/repos/github/Orckestra/orc-shared/badge.svg?branch=master)](https://coveralls.io/github/Orckestra/orc-shared?branch=master)
 
