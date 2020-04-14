@@ -19,7 +19,7 @@ const usePreviousModified = (
 		}
 
 		ref.current = value;
-	}, [value]);
+	}, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return predicateResult;
 };

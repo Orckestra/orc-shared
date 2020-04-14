@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { act } from "react-dom/test-utils";
-import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import DropMenu, { Wrapper } from "./index";
 import Anchor, { Header, Indicator } from "./Anchor";
