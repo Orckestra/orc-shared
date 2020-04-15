@@ -17,8 +17,6 @@ export const Header = styled.div`
 	}
 `;
 
-export const IndicatorWrapper = styled.div``;
-
 export const Indicator = styled(Icon).attrs(props => ({
 	id: ifFlag(
 		"open",
@@ -38,9 +36,7 @@ export const Indicator = styled(Icon).attrs(props => ({
 const Anchor = ({ id, onClick, className, menuLabel, open }) => (
 	<Header {...{ id, onClick, className, open }}>
 		{menuLabel}
-		<IndicatorWrapper>
-			<Indicator open={open} />
-		</IndicatorWrapper>
+		<Indicator open={open} />
 	</Header>
 );
 

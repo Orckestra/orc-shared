@@ -1,5 +1,5 @@
 import React from "react";
-import Anchor, { Header, Indicator, IndicatorWrapper } from "./Anchor";
+import Anchor, { Header, Indicator } from "./Anchor";
 
 describe("Anchor", () => {
 	it("renders a closed menu anchor", () => {
@@ -15,9 +15,7 @@ describe("Anchor", () => {
 			"to satisfy",
 			<Header id="testAnchor" onClick={onClick} className="propagateThis">
 				A Label
-				<IndicatorWrapper>
-					<Indicator />
-				</IndicatorWrapper>
+				<Indicator />
 			</Header>,
 		);
 	});
@@ -29,9 +27,7 @@ describe("Anchor", () => {
 			"to satisfy",
 			<Header open className="propagateThis">
 				A Label
-				<IndicatorWrapper>
-					<Indicator open />
-				</IndicatorWrapper>
+				<Indicator open />
 			</Header>,
 		));
 
