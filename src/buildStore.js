@@ -20,7 +20,13 @@ window.BUILD_NUMBER = BUILD_NUMBER;
 
 const basename = window.BASE_PATH || "";
 
-export const getBaseUrl = () => window.location.origin + basename;
+export const getBaseUrl = () => {
+	const appBasePath = (window.BASE_PATH || "").split("/")[1] || "";
+
+	return appBasePath
+		? window.location.origin.concat("/", appBasePath)
+		: window.location.origin;
+};
 
 export const history = createBrowserHistory({ basename });
 export let buildReducer;
