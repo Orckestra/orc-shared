@@ -5,7 +5,7 @@ import {
 	getApplicationHelpUrlSelector,
 } from "../../selectors/versionInfo";
 
-const useVersionInfo = applicationId => {
+const useApplicationHelpUrl = applicationId => {
 	const defaultHelpUrl = unwrapImmutable(useSelector(getHelpUrlDefaultSelector));
 	const applicationHelpUrls = unwrapImmutable(useSelector(getApplicationHelpUrlSelector));
 	const applicationHelpUrl = applicationHelpUrls.find(
@@ -15,4 +15,4 @@ const useVersionInfo = applicationId => {
 	return [(applicationHelpUrl && applicationHelpUrl.helpUrl) || defaultHelpUrl];
 };
 
-export default useVersionInfo;
+export default useApplicationHelpUrl;

@@ -38,7 +38,7 @@ The `utils` folder contains a number of useful utility functions, for use in var
 
 ### API utilities
 
-`loadConfig()` loads in the `config.json` file (by fetching it at runtime, not as an imported module) in order to gain access to the API location, version number etc. It returns a promise, which when resolved signals the availability the API. This is required to be called first and allowed to complete before dispatching API actions using the `buildUrl()` helper function. <!-- Edit this to generalize if/when we have more API helper funcs
+`loadConfig()` loads in the `config.json` file (by fetching it at runtime, not as an imported module) in order to gain access to the API location, version number etc. It returns a promise, which when resolved signals the availability the API. This is required to be called first and allowed to complete before dispatching API actions using the `buildUrl()` helper function. <!-- Edit this to generalize if/when we have more API helper funcs  -->
 
 `buildUrl(pathParts, queryObject)` constructs an absolute URL for an Orckestra API end point. The `pathParts` parameter is an array of strings defining the path, for example `['my', 'application']` will target the `/api/my/application` endpoint. `queryObject` should be an object of key/value pairs that will become search query parameters, for example `{ IncludeChildren: true, IncludeCurrency: true }` turns into `?IncludeChildren=true&IncludeCurrency=true`. It is best used together with [`makeOrcApiAction()`](actionsreducersselectors.md#api-action-tools), q.v.
 

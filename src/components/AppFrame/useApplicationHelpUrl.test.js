@@ -2,14 +2,14 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
-import useVersionInfo from "./useVersionInfo";
+import useApplicationHelpUrl from "./useApplicationHelpUrl";
 
 const TestComp = ({ appId }) => {
-	const [helpUrl] = useVersionInfo(appId);
+	const [helpUrl] = useApplicationHelpUrl(appId);
 	return <div>{helpUrl}</div>;
 };
 
-describe("useVersionInfo", () => {
+describe("useApplicationHelpUrl", () => {
 	let state, store;
 	beforeEach(() => {
 		state = Immutable.fromJS({

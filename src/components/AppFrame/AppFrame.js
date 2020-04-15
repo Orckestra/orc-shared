@@ -14,7 +14,7 @@ import Sidebar from "./Sidebar";
 import About from "./About";
 import Preferences from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
-import useVersionInfo from "./useVersionInfo";
+import useApplicationHelpUrl from "./useApplicationHelpUrl";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
@@ -57,7 +57,7 @@ const AppFrame = ({
 	noScope,
 }) => {
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
-	const [helpUrl] = useVersionInfo(applicationId);
+	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
 

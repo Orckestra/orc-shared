@@ -11,4 +11,4 @@ export const [
 ] = makeActionTypes(GET_VERSION_INFO);
 
 export const getVersionInfo = () =>
-	makeOrcApiAction(GET_VERSION_INFO, buildUrl(["diagnostic/versioninfo"]));
+	makeOrcApiAction(GET_VERSION_INFO, buildUrl(["diagnostic", "versioninfo"]));
