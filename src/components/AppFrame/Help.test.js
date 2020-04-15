@@ -17,7 +17,7 @@ describe("Help", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			authentication: { name: "foo@bar.com" },
-			versionInfo: { version: "ver4", helpUrlDefault: "help_url", moduleHelpUrls: [] },
+			versionInfo: { version: "ver4", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 		});
 		store = {
 			subscribe: () => {},

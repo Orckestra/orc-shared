@@ -3,7 +3,7 @@ import { GET_VERSION_INFO_SUCCESS } from "../actions/versionInfo";
 
 const initialState = Immutable.fromJS({
 	version: null,
-	helpUrlDefault: null,
+	defaultHelpUrl: null,
 	moduleHelpUrls: [],
 });
 
@@ -12,7 +12,7 @@ const versionInfoReducer = (state = initialState, action) => {
 		case GET_VERSION_INFO_SUCCESS: {
 			return state.withMutations(s => {
 				s.set("moduleHelpUrls", action.payload.moduleHelpUrls || []);
-				s.set("helpUrlDefault", action.payload.helpUrlDefault);
+				s.set("defaultHelpUrl", action.payload.defaultHelpUrl);
 				s.set("version", action.payload.versionOCC);
 			});
 		}

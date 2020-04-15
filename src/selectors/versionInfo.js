@@ -7,7 +7,7 @@ export const getVersionSelector = createSelector(versionInfo, data =>
 );
 
 export const getHelpUrlDefaultSelector = createSelector(versionInfo, data =>
-	data.get("helpUrlDefault"),
+	data.get("defaultHelpUrl"),
 );
 
 export const getApplicationHelpUrlSelector = createSelector(versionInfo, data =>

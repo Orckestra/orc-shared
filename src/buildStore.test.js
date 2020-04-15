@@ -79,7 +79,7 @@ describe("buildStore", () => {
 						},
 						requests: {},
 						settings: { defaultApp: 0 },
-						versionInfo: { version: null, helpUrlDefault: null, moduleHelpUrls: [] },
+						versionInfo: { version: null, defaultHelpUrl: null, moduleHelpUrls: [] },
 						view: {},
 						test: false,
 					}),

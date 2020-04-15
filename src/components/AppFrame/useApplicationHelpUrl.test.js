@@ -23,7 +23,7 @@ describe("useApplicationHelpUrl", () => {
 			},
 			versionInfo: {
 				version: "1.1.2.9",
-				helpUrlDefault: "default_url.com",
+				defaultHelpUrl: "default_url.com",
 				moduleHelpUrls: [
 					{ moduleName: "myApp", helpUrl: "my_app_help_url.com" },
 					{ moduleName: "myOtherApp" },

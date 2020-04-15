@@ -15,7 +15,7 @@ beforeEach(() => {
 		},
 		versionInfo: {
 			version: "4.3.2.1",
-			helpUrlDefault: "the_help_url_default",
+			defaultHelpUrl: "the_help_url_default",
 			moduleHelpUrls: [
 				{ moduleName: "app1", helpUrl: "app1.com" },
 				{ moduleName: "app2", helpUrl: "app2.com" },
