@@ -14,6 +14,7 @@ import Sidebar from "./Sidebar";
 import About from "./About";
 import Preferences from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
+import useApplicationHelpUrl from "./useApplicationHelpUrl";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
@@ -48,6 +49,7 @@ const AppFrame = ({
 	activeModules,
 	children,
 	menuMessages,
+	helpMessages,
 	aboutMessages,
 	prefMessages,
 	prefActions,
@@ -55,12 +57,17 @@ const AppFrame = ({
 	noScope,
 }) => {
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
+	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
+
 	return (
 		<Base>
 			<ConnectedToastList />
-			<Topbar {...{ applications, applicationId, menuMessages }} onClick={reset} />
+			<Topbar
+				{...{ applications, applicationId, menuMessages, helpMessages, helpUrl }}
+				onClick={reset}
+			/>
 			<Sidebar {...{ open, toggle, modules, activeModules }} />
 			<ViewPort open={open} onClick={reset}>
 				{noScope ? (
@@ -84,6 +91,9 @@ AppFrame.propTypes = {
 	activeModules: pt.objectOf(
 		pt.oneOfType([pt.bool, pt.shape({ type: pt.string, message: ptLabel })]),
 	),
+	helpMessages: pt.shape({
+		help: ptLabel.isRequired,
+	}).isRequired,
 	menuMessages: pt.shape({
 		sign_out: ptLabel.isRequired,
 		preferences: ptLabel.isRequired,
