@@ -13,49 +13,47 @@ beforeEach(() => {
 			supportedLocales: ["en", "fr"],
 		},
 		scopes: {
-			scopes: {
-				Global: {
-					name: { en: "Global", fr: "Global" },
-					id: "Global",
-					children: ["FirstChild", "SecondChild"],
-				},
-				FirstChild: {
-					name: { en: "First child", fr: "Premier fils" },
-					id: "FirstChild",
-					children: ["FirstGrandchild", "SecondGrandchild"],
-					parentScopeId: "Global",
-				},
-				FirstGrandchild: {
-					name: { en: "First grandchild", fr: "Premier petit-fils" },
-					id: "FirstGrandchild",
-					parentScopeId: "FirstChild",
-				},
-				SecondGrandchild: {
-					name: { en: "Second grandchild", fr: "Deuxième petit-fils" },
-					id: "SecondGrandchild",
-					parentScopeId: "FirstChild",
-				},
-				SecondChild: {
-					name: { en: "Second child", fr: "Deuxième fils" },
-					id: "SecondChild",
-					children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
-					parentScopeId: "Global",
-				},
-				ThirdGrandchild: {
-					name: { en: "Third grandchild", fr: "Troisième petit-fils" },
-					id: "ThirdGrandchild",
-					parentScopeId: "SecondChild",
-				},
-				FourthGrandchild: {
-					name: { en: "Fourth grandchild", fr: "Quatrième petit-fils" },
-					id: "FourthGrandchild",
-					parentScopeId: "SecondChild",
-				},
-				FifthGrandchild: {
-					name: { en: "Fifth grandchild", fr: "Cinquième petit-fils" },
-					id: "FifthGrandchild",
-					parentScopeId: "SecondChild",
-				},
+			Global: {
+				name: { en: "Global", fr: "Global" },
+				id: "Global",
+				children: ["FirstChild", "SecondChild"],
+			},
+			FirstChild: {
+				name: { en: "First child", fr: "Premier fils" },
+				id: "FirstChild",
+				children: ["FirstGrandchild", "SecondGrandchild"],
+				parentScopeId: "Global",
+			},
+			FirstGrandchild: {
+				name: { en: "First grandchild", fr: "Premier petit-fils" },
+				id: "FirstGrandchild",
+				parentScopeId: "FirstChild",
+			},
+			SecondGrandchild: {
+				name: { en: "Second grandchild", fr: "Deuxième petit-fils" },
+				id: "SecondGrandchild",
+				parentScopeId: "FirstChild",
+			},
+			SecondChild: {
+				name: { en: "Second child", fr: "Deuxième fils" },
+				id: "SecondChild",
+				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
+				parentScopeId: "Global",
+			},
+			ThirdGrandchild: {
+				name: { en: "Third grandchild", fr: "Troisième petit-fils" },
+				id: "ThirdGrandchild",
+				parentScopeId: "SecondChild",
+			},
+			FourthGrandchild: {
+				name: { en: "Fourth grandchild", fr: "Quatrième petit-fils" },
+				id: "FourthGrandchild",
+				parentScopeId: "SecondChild",
+			},
+			FifthGrandchild: {
+				name: { en: "Fifth grandchild", fr: "Cinquième petit-fils" },
+				id: "FifthGrandchild",
+				parentScopeId: "SecondChild",
 			},
 		},
 		settings: {
@@ -83,7 +81,24 @@ describe("currentScopeSelector", () => {
 			}),
 		));
 
-	it("gets global scope if no scope selected", () => {
+	it("gets global scope when there is no current scope, not a default scope", () => {
+		state = state
+			.deleteIn(["navigation", "route", "match", "params", "scope"])
+			.deleteIn(["settings", "defaultScope"]);
+		return expect(
+			currentScopeSelector,
+			"called with",
+			[state],
+			"to equal",
+			Immutable.fromJS({
+				name: "Global",
+				id: "Global",
+				children: ["FirstChild", "SecondChild"],
+			}),
+		);
+	});
+
+	it("gets default scope from settings if no scope selected", () => {
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
 		return expect(
 			currentScopeSelector,
@@ -132,7 +147,7 @@ describe("scopeGetter", () => {
 
 	it("returns a getter function for scopes from a filtered scope index", () => {
 		state = state.setIn(["view", "scopeSelector", "filter"], "deux");
-		return expect(scopeGetter, "called with", [state]).then(getter => {
+		return expect(scopeGetter, "called with", [state]).then((getter) => {
 			expect(getter, "called with", ["FifthGrandchild"], "to equal", null);
 			expect(getter, "called with", ["Global"], "to equal", {
 				name: "Global",

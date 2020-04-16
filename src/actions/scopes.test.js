@@ -19,18 +19,14 @@ jest.mock("../utils/buildUrl", () => {
 });
 
 describe("getScopes", () => {
-	beforeEach(() => {
-		window.overtureModuleName = "moduleXYZ";
-	});
-	afterEach(() => {
-		delete window.overtureModuleName;
-	});
+	beforeEach(() => {});
+	afterEach(() => {});
 
 	it("creates a RSAA to fetch authorized scope tree", () =>
 		expect(getScopes, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [GET_SCOPES_REQUEST, GET_SCOPES_SUCCESS, GET_SCOPES_FAILURE],
-				endpoint: "URL: my/scope/moduleXYZ/tree {}",
+				endpoint: "URL: my/scope/aModule/tree {}",
 				method: "GET",
 				body: undefined,
 				credentials: "include",
@@ -47,7 +43,7 @@ describe("getScopes", () => {
 		expect(getDefaultScope, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [GET_MY_SCOPE_REQUEST, GET_MY_SCOPE_SUCCESS, GET_MY_SCOPE_FAILURE],
-				endpoint: 'URL: my/scope/moduleXYZ ""',
+				endpoint: 'URL: my/scope/aModule ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",

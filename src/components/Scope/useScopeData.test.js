@@ -18,7 +18,7 @@ const TestComp = ({ spy, ...props }) => {
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	return (
 		<div>
-			<input id="getScope" value="" onChange={e => spy(getScope(e.target.value))} />
+			<input id="getScope" value="" onChange={(e) => spy(getScope(e.target.value))} />
 			<PropStruct
 				currentScope={currentScope}
 				defaultNodeState={defaultNodeState}
@@ -41,36 +41,34 @@ describe("useScopeData", () => {
 				route: { location: {}, match: { params: { scope: "test3" } } },
 			},
 			scopes: {
-				scopes: {
-					test1: {
-						id: "test1",
-						name: { "en-CA": "Test 1" },
-						foo: false,
-						bar: false,
-						children: ["test2"],
-					},
-					test2: {
-						id: "test2",
-						name: { "en-US": "Test 2" },
-						foo: false,
-						bar: true,
-						parentScopeId: "test1",
-						children: ["test3", "test4"],
-					},
-					test3: {
-						id: "test3",
-						name: { "en-CA": "Test 3" },
-						foo: true,
-						bar: false,
-						parentScopeId: "test2",
-					},
-					test4: {
-						id: "test4",
-						name: { "en-US": "Test 4" },
-						foo: true,
-						bar: true,
-						parentScopeId: "test2",
-					},
+				test1: {
+					id: "test1",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+				},
+				test2: {
+					id: "test2",
+					name: { "en-US": "Test 2" },
+					foo: false,
+					bar: true,
+					parentScopeId: "test1",
+					children: ["test3", "test4"],
+				},
+				test3: {
+					id: "test3",
+					name: { "en-CA": "Test 3" },
+					foo: true,
+					bar: false,
+					parentScopeId: "test2",
+				},
+				test4: {
+					id: "test4",
+					name: { "en-US": "Test 4" },
+					foo: true,
+					bar: true,
+					parentScopeId: "test2",
 				},
 			},
 			settings: {
@@ -127,7 +125,7 @@ describe("useScopeData", () => {
 			.then(() => expect(store.dispatch, "was not called")));
 
 	it("loads scopes if it has none", () => {
-		state = state.setIn(["scopes", "scopes"], Immutable.Map());
+		state = state.setIn(["scopes"], Immutable.Map());
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter>

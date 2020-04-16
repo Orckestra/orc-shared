@@ -2,16 +2,16 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Icon from "../Icon";
 import useScopeSelect from "./useScopeSelect";
-import { getThemeProp, switchEnum, ifFlag } from "../../utils";
+import { getThemeProp, ifFlag } from "../../utils";
 
-export const ScopeIcon = styled(Icon).attrs(props => ({
-	id: getThemeProp(["icons", "scopeTypes", props => props.type], "cross")(props),
+export const ScopeIcon = styled(Icon).attrs((props) => ({
+	id: getThemeProp(["icons", "scopeTypes", (props) => props.type], "cross")(props),
 }))`
 	font-size: 20px;
 	vertical-align: middle;
 	padding-right: 8px;
 	flex-shrink: 0;
-	color: ${getThemeProp(["colors", "scopeTypes", props => props.type], "inherit")};
+	color: ${getThemeProp(["colors", "scopeTypes", (props) => props.type], "inherit")};
 `;
 
 export const ScopeText = styled.div`

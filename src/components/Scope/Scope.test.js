@@ -32,41 +32,38 @@ beforeEach(() => {
 			route: { location: {}, match: { params: { scope: "test1" } } },
 		},
 		scopes: {
-			scopes: {
-				test1: {
-					id: "test1",
-					name: { "en-CA": "Test 1" },
-					foo: false,
-					bar: false,
-				},
-				test2: {
-					id: "test2",
-					name: { "en-US": "Test 2" },
-					foo: false,
-					bar: true,
-				},
-				test3: {
-					id: "test3",
-					name: { "en-CA": "Test 3" },
-					foo: true,
-					bar: false,
-					parentScopeId: "test1",
-				},
-				test4: {
-					id: "test4",
-					name: { "en-US": "Test 4" },
-					foo: true,
-					bar: true,
-				},
-				test5: {
-					id: "test5",
-					name: { "en-US": "Test 5" },
-					foo: true,
-					bar: true,
-					parentScopeId: "test4",
-				},
+			test1: {
+				id: "test1",
+				name: { "en-CA": "Test 1" },
+				foo: false,
+				bar: false,
 			},
-			defaultScope: "aDefaultScope",
+			test2: {
+				id: "test2",
+				name: { "en-US": "Test 2" },
+				foo: false,
+				bar: true,
+			},
+			test3: {
+				id: "test3",
+				name: { "en-CA": "Test 3" },
+				foo: true,
+				bar: false,
+				parentScopeId: "test1",
+			},
+			test4: {
+				id: "test4",
+				name: { "en-US": "Test 4" },
+				foo: true,
+				bar: true,
+			},
+			test5: {
+				id: "test5",
+				name: { "en-US": "Test 5" },
+				foo: true,
+				bar: true,
+				parentScopeId: "test4",
+			},
 		},
 		settings: {
 			defaultScope: "aDefaultScope",
@@ -82,7 +79,7 @@ beforeEach(() => {
 				sub();
 			});
 		},
-		subscribe: sub => {
+		subscribe: (sub) => {
 			subs.push(sub);
 			return () => {};
 		},
@@ -185,7 +182,7 @@ describe("Scope", () => {
 	});
 
 	it("resets the scope tree state when closing, to ensure current scope is visible", () => {
-		state = state.withMutations(s => {
+		state = state.withMutations((s) => {
 			s.setIn(["navigation", "route", "match", "params", "scope"], "test3");
 			s.setIn(
 				["view", "scopeSelector"],
@@ -301,7 +298,7 @@ describe("ScopeBar", () => {
 });
 
 describe("RoutedScope", () => {
-	const TestComp = props => {
+	const TestComp = (props) => {
 		const { pathname } = useLocation();
 		return <PropStruct pathname={pathname} {...props} />;
 	};

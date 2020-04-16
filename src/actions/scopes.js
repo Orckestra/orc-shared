@@ -2,6 +2,13 @@ import { makeActionTypes } from "./makeApiAction";
 import makeOrcApiAction from "./makeOrcApiAction";
 import { buildUrl } from "../utils/buildUrl";
 
+// TODOJOC : To be removed depending on my PR on "ORC-SCRIPTS"
+global.OVERTURE_MODULE = "aModule";
+
+if (!OVERTURE_MODULE) {
+	throw new Error('"overtureModule.name" is missing in the configuration.');
+}
+
 export const GET_SCOPES = "GET_SCOPES";
 
 export const [
@@ -11,10 +18,7 @@ export const [
 ] = makeActionTypes(GET_SCOPES);
 
 export const getScopes = () =>
-	makeOrcApiAction(
-		GET_SCOPES,
-		buildUrl(["my", "scope", window.overtureModuleName, "tree"], {}),
-	);
+	makeOrcApiAction(GET_SCOPES, buildUrl(["my", "scope", OVERTURE_MODULE, "tree"], {}));
 
 export const GET_MY_SCOPE = "GET_MY_SCOPE";
 
@@ -25,4 +29,4 @@ export const [
 ] = makeActionTypes(GET_MY_SCOPE);
 
 export const getDefaultScope = () =>
-	makeOrcApiAction(GET_MY_SCOPE, buildUrl(["my", "scope", window.overtureModuleName]));
+	makeOrcApiAction(GET_MY_SCOPE, buildUrl(["my", "scope", OVERTURE_MODULE]));
