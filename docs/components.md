@@ -60,11 +60,12 @@ A simple menu component that will show a list of items when clicked. Assigning i
 
 ## Form
 
+- `cols`: An array of numbers, each indicating the relative width of a column of the form.
 - `formName`: An optional string identifying this form uniquely. Useful when using the same field data for multiple pages.
 - `getUpdater`: Should be a function that takes a field name as parameter, and returns a function that updates the named value with the new value given as its parameter.
 - `fields`: An array of field definition objects (see below).
 - `values`: A data object containing the values to be shown in the form, typically passed in from application state.
-- `wide`: A flag that determines if the form should be rendered as fixed-width vertically wrapping columns or a single full width column.
+- `wide`: A flag that determines if the form should be rendered as fixed-width vertically wrapping columns or a single full width column. This will override anything given in `cols`.
 
 A rather intricate component that creates forms. To do this, it receives a field definition, which it then uses to render in a form that fits the information it is given as values. For more details on field definitions and how they relate to values, please refer to the [detailed documentation.](forms.md)
 
@@ -219,7 +220,17 @@ Shows a list of message boxes in the upper right corner, displaying the selected
 
 - `tools`: Array of objects denoting the tools to be shown.
 
-Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `label`, `separator` and `spacer`. The former two will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id, or a `text`. In turn, `group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a cohesive group of controls. the `label` type tajkes a string or message descriptor in its `label` field, and shows it on the toolbar, suitably formatted. Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar. For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
+Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `label`, `separator` and `spacer`, as well as the props to be passed to that tool element.
+
+`input` and `button` will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id and/or a `text`, as per [IconButton](#iconbutton).
+
+`group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a joined group of controls.
+
+The `label` type takes a string or message descriptor in its `label` field, and shows it on the toolbar, suitably formatted.
+
+Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar.
+
+For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
 
 ## Tooltip
 
