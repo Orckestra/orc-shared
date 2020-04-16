@@ -5,9 +5,13 @@ import { buildUrl } from "../utils/buildUrl";
 // TODOJOC : To be removed depending on my PR on "ORC-SCRIPTS"
 global.OVERTURE_MODULE = "aModule";
 
-if (!OVERTURE_MODULE) {
-	throw new Error('"overtureModule.name" is missing in the configuration.');
-}
+export const validateOvertureModule = () => {
+	if (!OVERTURE_MODULE) {
+		throw new Error('"overtureModule.name" is missing in the configuration.');
+	}
+};
+
+validateOvertureModule();
 
 export const GET_SCOPES = "GET_SCOPES";
 

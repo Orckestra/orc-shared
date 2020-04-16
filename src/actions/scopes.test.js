@@ -8,7 +8,9 @@ import {
 	GET_MY_SCOPE_SUCCESS,
 	GET_MY_SCOPE_FAILURE,
 	getDefaultScope,
+	validateOvertureModule,
 } from "./scopes";
+import { getElmClasses } from "../utils/testUtils";
 
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
@@ -55,4 +57,13 @@ describe("getScopes", () => {
 				options: { redirect: "follow" },
 			},
 		}));
+
+	it("throws an error if no class found on DOM element", () => {
+		global.OVERTURE_MODULE = "";
+		expect(
+			() => expect(validateOvertureModule, "when called with", []),
+			"to throw",
+			'"overtureModule.name" is missing in the configuration.',
+		);
+	});
 });
