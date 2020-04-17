@@ -23,6 +23,7 @@ describe("Sidebar", () => {
 		];
 		state = Immutable.fromJS({
 			navigation: { route: { match: { params: { scope: "Global" } } } },
+			settings: { defaultScope: "myScope" },
 		});
 		store = {
 			subscribe: () => {},
@@ -150,6 +151,7 @@ describe("EnhancedMenuItem", () => {
 							},
 						},
 					},
+					settings: { defaultScope: "myScope" },
 				}),
 		};
 	});

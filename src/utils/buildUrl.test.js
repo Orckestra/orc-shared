@@ -25,11 +25,11 @@ describe("loadConfig", () => {
 		resetConfig();
 	});
 
-	it("loads the /config.json file, sets version, and resets dependent functions from placeholders", () => {
+	it("loads the /config.json file, sets version, sets module name and resets dependent functions from placeholders", () => {
 		response = {
 			serviceApiUrl: "https://example.com/api",
 		};
-		return expect(loadConfig, "when called").then(() => {
+		return expect(loadConfig, "when called with", []).then(() => {
 			expect(placeholderBuildUrl, "not to be", buildUrl);
 			expect(console.warn, "was not called");
 		});
@@ -37,7 +37,7 @@ describe("loadConfig", () => {
 
 	it("gets defaults if fetch fails, warns of this", () => {
 		fail = true;
-		return expect(loadConfig, "when called").then(() => {
+		return expect(loadConfig, "when called with", []).then(() => {
 			expect(placeholderBuildUrl, "not to be", buildUrl);
 			expect(
 				console.warn,

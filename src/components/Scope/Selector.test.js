@@ -81,7 +81,7 @@ describe("Selector", () => {
 							<BranchWrapper>
 								<Root>
 									<Label>
-										<ContentLabel id="selectorNodeGlobal" type="test">
+										<ContentLabel id="selectorNodeGlobal">
 											<ScopeIcon type="test" />
 											<ScopeText>Global</ScopeText>
 										</ContentLabel>

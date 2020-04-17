@@ -65,6 +65,9 @@ beforeEach(() => {
 				parentScopeId: "test4",
 			},
 		},
+		settings: {
+			defaultScope: "aDefaultScope",
+		},
 		view: {
 			scopeSelector: { filter: "Foo", show: true },
 		},
@@ -317,6 +320,7 @@ describe("RoutedScope", () => {
 	});
 
 	it("redirects to Global if route not matched", () => {
+		state = state.setIn(["settings", "defaultScope"], null);
 		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={[""]} initialIndex={0}>
@@ -330,5 +334,25 @@ describe("RoutedScope", () => {
 			appRoot,
 		);
 		return expect(appRoot, "to contain", <PropStruct pathname="/Global" itIs="me" />);
+	});
+
+	it("redirects to default scope if route not matched", () => {
+		ReactDOM.render(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={[""]} initialIndex={0}>
+					<I18n>
+						<RoutedScope>
+							<TestComp itIs="me" />
+						</RoutedScope>
+					</I18n>
+				</MemoryRouter>
+			</Provider>,
+			appRoot,
+		);
+		return expect(
+			appRoot,
+			"to contain",
+			<PropStruct pathname="/aDefaultScope" itIs="me" />,
+		);
 	});
 });

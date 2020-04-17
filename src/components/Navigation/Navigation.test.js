@@ -45,6 +45,9 @@ describe("Navigation", () => {
 					},
 				},
 			},
+			settings: {
+				defaultScope: "myScope",
+			},
 		});
 		store = {
 			subscribe: () => {},

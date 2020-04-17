@@ -63,6 +63,9 @@ describe("Modules", () => {
 			router: {
 				location: {},
 			},
+			settings: {
+				defaultScope: "myScope",
+			},
 		});
 		store = {
 			subscribe: () => {},

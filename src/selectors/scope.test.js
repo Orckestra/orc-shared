@@ -56,6 +56,9 @@ beforeEach(() => {
 				parentScopeId: "SecondChild",
 			},
 		},
+		settings: {
+			defaultScope: "FirstChild",
+		},
 	});
 });
 
@@ -78,8 +81,10 @@ describe("currentScopeSelector", () => {
 			}),
 		));
 
-	it("gets global scope if no scope selected", () => {
-		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+	it("gets global scope when there is no current scope, not a default scope", () => {
+		state = state
+			.deleteIn(["navigation", "route", "match", "params", "scope"])
+			.deleteIn(["settings", "defaultScope"]);
 		return expect(
 			currentScopeSelector,
 			"called with",
@@ -89,6 +94,22 @@ describe("currentScopeSelector", () => {
 				name: "Global",
 				id: "Global",
 				children: ["FirstChild", "SecondChild"],
+			}),
+		);
+	});
+
+	it("gets default scope from settings if no scope selected", () => {
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(
+			currentScopeSelector,
+			"called with",
+			[state],
+			"to equal",
+			Immutable.fromJS({
+				name: "Premier fils",
+				id: "FirstChild",
+				children: ["FirstGrandchild", "SecondGrandchild"],
+				parentScopeId: "Global",
 			}),
 		);
 	});
@@ -126,7 +147,7 @@ describe("scopeGetter", () => {
 
 	it("returns a getter function for scopes from a filtered scope index", () => {
 		state = state.setIn(["view", "scopeSelector", "filter"], "deux");
-		return expect(scopeGetter, "called with", [state]).then(getter => {
+		return expect(scopeGetter, "called with", [state]).then((getter) => {
 			expect(getter, "called with", ["FifthGrandchild"], "to equal", null);
 			expect(getter, "called with", ["Global"], "to equal", {
 				name: "Global",

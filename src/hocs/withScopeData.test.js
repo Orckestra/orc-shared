@@ -16,7 +16,7 @@ jest.mock("../utils/buildUrl", () => {
 
 const TestComp = ({ spy, getScope, ...props }) => (
 	<div>
-		<input id="getScope" value="" onChange={e => spy(getScope(e.target.value))} />
+		<input id="getScope" value="" onChange={(e) => spy(getScope(e.target.value))} />
 		<PropStruct {...props} />
 	</div>
 );
@@ -64,6 +64,9 @@ describe("withScopeData", () => {
 					parentScopeId: "test2",
 				},
 			},
+			settings: {
+				defaultScope: "myScope",
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -76,7 +79,7 @@ describe("withScopeData", () => {
 
 	it("gives deprecation warning", () =>
 		expect(withScopeData, "called with", [TestComp])
-			.then(Comp =>
+			.then((Comp) =>
 				expect(
 					<Provider store={store}>
 						<MemoryRouter>
@@ -96,7 +99,7 @@ describe("withScopeData", () => {
 
 	it("provides scope data props to the enhanced component", () =>
 		expect(withScopeData, "when called with", [TestComp])
-			.then(Comp =>
+			.then((Comp) =>
 				expect(
 					<Provider store={store}>
 						<MemoryRouter>
@@ -138,9 +141,9 @@ describe("withScopeData", () => {
 			.then(() => expect(store.dispatch, "was not called")));
 
 	it("loads scopes if it has none", () => {
-		state = state.set("scopes", Immutable.Map());
+		state = state.setIn(["scopes"], Immutable.Map());
 		return expect(withScopeData, "when called with", [TestComp])
-			.then(Comp =>
+			.then((Comp) =>
 				expect(
 					<Provider store={store}>
 						<MemoryRouter>

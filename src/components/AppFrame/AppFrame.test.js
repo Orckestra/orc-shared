@@ -155,7 +155,7 @@ describe("AppFrame", () => {
 					bar: true,
 				},
 			},
-			settings: { defaultApp: "12" },
+			settings: { defaultScope: "myScope", defaultApp: "12" },
 			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 			view: { scopeSelector: { filter: "1" } },
 			toasts: { queue: [] },

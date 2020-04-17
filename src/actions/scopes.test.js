@@ -4,7 +4,13 @@ import {
 	GET_SCOPES_SUCCESS,
 	GET_SCOPES_FAILURE,
 	getScopes,
+	GET_MY_SCOPE_REQUEST,
+	GET_MY_SCOPE_SUCCESS,
+	GET_MY_SCOPE_FAILURE,
+	getDefaultScope,
+	validateOvertureModule,
 } from "./scopes";
+import { getElmClasses } from "../utils/testUtils";
 
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
@@ -15,11 +21,14 @@ jest.mock("../utils/buildUrl", () => {
 });
 
 describe("getScopes", () => {
-	it("creates a RSAA to fetch available cultures", () =>
+	beforeEach(() => {});
+	afterEach(() => {});
+
+	it("creates a RSAA to fetch authorized scope tree", () =>
 		expect(getScopes, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [GET_SCOPES_REQUEST, GET_SCOPES_SUCCESS, GET_SCOPES_FAILURE],
-				endpoint: 'URL: scopes/Global {"IncludeChildren":true,"IncludeCurrency":true}',
+				endpoint: "URL: my/scope/aModule/tree {}",
 				method: "GET",
 				body: undefined,
 				credentials: "include",
@@ -31,4 +40,30 @@ describe("getScopes", () => {
 				options: { redirect: "follow" },
 			},
 		}));
+
+	it("creates a RSAA to fetch default user scope", () =>
+		expect(getDefaultScope, "when called", "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_MY_SCOPE_REQUEST, GET_MY_SCOPE_SUCCESS, GET_MY_SCOPE_FAILURE],
+				endpoint: 'URL: my/scope/aModule ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("throws an error if no class found on DOM element", () => {
+		global.OVERTURE_MODULE = "";
+		expect(
+			() => expect(validateOvertureModule, "when called with", []),
+			"to throw",
+			'"overtureModule.name" is missing in the configuration.',
+		);
+	});
 });
