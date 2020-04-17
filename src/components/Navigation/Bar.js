@@ -203,11 +203,9 @@ const Bar = ({ module, pages }) => {
 				)}
 			</ScrollableBar>
 			{hiddenTabs ? (
-				<StyledMenu
-					id="navigationTabs"
-					menuItems={tabMenuItems}
-					AnchorComponent={MenuButton}
-				/>
+				<StyledMenu id="navigationTabs" menuItems={tabMenuItems}>
+					<MenuButton />
+				</StyledMenu>
 			) : null}
 		</TabBar>
 	);
