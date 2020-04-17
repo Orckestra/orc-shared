@@ -21,7 +21,7 @@ import { Wrapper as MenuWrapper } from "../DropMenu";
 import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
 import { BlockWithA } from "./MenuItem";
-import { HelpWrapper } from "./Help";
+import { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -43,7 +43,7 @@ describe("AppFrame", () => {
 			activeModules: { foo: true },
 			menuLabel: "TestLabel",
 			helpMessages: {
-				help: { id: "msg.help", defaultMessage: "HELP" },
+				help: { id: "msg.help", defaultMessage: "Help" },
 			},
 			menuMessages: {
 				sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
@@ -212,7 +212,7 @@ describe("AppFrame", () => {
 								<MenuWrapper>
 									<Ignore />
 								</MenuWrapper>
-								<HelpWrapper>HELP</HelpWrapper>
+								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
 								<MenuToggle />
@@ -275,7 +275,7 @@ describe("AppFrame", () => {
 								<MenuWrapper>
 									<Ignore />
 								</MenuWrapper>
-								<HelpWrapper>HELP</HelpWrapper>
+								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
 								<MenuToggle />

@@ -50,7 +50,7 @@ export const useMenuProps = messages => {
 
 export const StyledAnchor = styled(Anchor)`
 	box-sizing: border-box;
-	font-family: Roboto Condensed, sans-serif;
+	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	font-size: 12px;
 	text-transform: uppercase;
 	height: 40px;

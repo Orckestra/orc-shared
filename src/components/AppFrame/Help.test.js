@@ -3,7 +3,7 @@ import sinon from "sinon";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import Help, { HelpWrapper } from "./Help";
+import Help, { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -56,7 +56,7 @@ describe("Help", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<HelpWrapper>HELP</HelpWrapper>,
+			<HelpLink href="any_help_url.com">HELP</HelpLink>,
 		));
 
 	it("renders a help button and expect click to open the url", () =>
@@ -86,6 +86,6 @@ describe("Help", () => {
 			"to have style rules satisfying",
 			expect
 				.it("to contain", "cursor: pointer;")
-				.and("to contain", ":hover {color: #ccc;}"),
+				.and("to contain", ":hover {color: #cccccc;}"),
 		));
 });

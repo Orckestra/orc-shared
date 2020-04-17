@@ -23,7 +23,7 @@ import Topbar, {
 	AppLogo,
 	useMenuProps,
 } from "./Topbar";
-import { HelpWrapper } from "./Help";
+import { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -60,7 +60,7 @@ describe("Topbar", () => {
 			about: { id: "msg.about", defaultMessage: "About" },
 		};
 		helpMessages = {
-			help: { id: "msg.help", defaultMessage: "HELP" },
+			help: { id: "msg.help", defaultMessage: "Help" },
 		};
 		props = {
 			onClick: clicker,
@@ -100,7 +100,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
-				<HelpWrapper>HELP</HelpWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 
@@ -123,7 +123,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
-				<HelpWrapper>HELP</HelpWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 
@@ -146,7 +146,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
-				<HelpWrapper>HELP</HelpWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 });
