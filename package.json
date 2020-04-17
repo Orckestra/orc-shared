@@ -1,8 +1,14 @@
 {
 	"name": "orc-shared",
-	"version": "0.8.19-dev.3",
+	"version": "0.9.0-dev.0",
 	"description": "Shared code for Orckestra applications",
-	"main": "dist/",
+	"main": "./src/index.js",
+	"exports": {
+		"./": "./src/",
+		"./src/": "./src/",
+		"./dist/": "./dist/"
+	},
+	"type": "module",
 	"scripts": {
 		"build": "orc-scripts prep && npm run build:source --",
 		"build:source": "orc-scripts build --ignore \"**/*.test.js\",\"src/translations/*\" --no-copy-files",
@@ -16,6 +22,7 @@
 		"prepublishOnly": "npm run build:clean --"
 	},
 	"files": [
+		"src",
 		"dist"
 	],
 	"repository": {
@@ -29,11 +36,10 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"jest": "^25.1.0",
-		"orc-scripts": "1.0.0-pre.3"
+		"orc-scripts": "1.0.0-dev.3"
 	},
 	"peerDependencies": {
-		"orc-scripts": "^1.0.0-pre.2"
+		"orc-scripts": "^1.0.0-dev.3"
 	},
 	"sideEffects": false,
 	"lint-staged": {

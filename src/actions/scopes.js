@@ -2,9 +2,6 @@ import { makeActionTypes } from "./makeApiAction";
 import makeOrcApiAction from "./makeOrcApiAction";
 import { buildUrl } from "../utils/buildUrl";
 
-// TODOJOC : To be removed depending on my PR on "ORC-SCRIPTS"
-global.OVERTURE_MODULE = "aModule";
-
 export const validateOvertureModule = () => {
 	if (!OVERTURE_MODULE) {
 		throw new Error('"overtureModule.name" is missing in the configuration.');

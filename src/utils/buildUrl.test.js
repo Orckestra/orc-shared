@@ -23,19 +23,15 @@ describe("loadConfig", () => {
 	afterEach(() => {
 		window.fetch = oldFetch;
 		resetConfig();
-		delete window.orcVersion;
 	});
 
 	it("loads the /config.json file, sets version, sets module name and resets dependent functions from placeholders", () => {
 		response = {
 			serviceApiUrl: "https://example.com/api",
-			version: "x.y.z",
 		};
-		expect(window.orcVersion, "to be undefined");
 		return expect(loadConfig, "when called with", []).then(() => {
 			expect(placeholderBuildUrl, "not to be", buildUrl);
 			expect(console.warn, "was not called");
-			expect(window.orcVersion, "to equal", "x.y.z");
 		});
 	});
 

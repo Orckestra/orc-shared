@@ -23,6 +23,7 @@ import Topbar, {
 	AppLogo,
 	useMenuProps,
 } from "./Topbar";
+import { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -32,7 +33,7 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Topbar", () => {
-	let state, store, applications, props, clicker, menuMessages, modalRoot;
+	let state, store, applications, props, clicker, menuMessages, helpMessages, modalRoot;
 	beforeEach(() => {
 		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
@@ -58,11 +59,16 @@ describe("Topbar", () => {
 			preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
 			about: { id: "msg.about", defaultMessage: "About" },
 		};
+		helpMessages = {
+			help: { id: "msg.help", defaultMessage: "Help" },
+		};
 		props = {
 			onClick: clicker,
 			menuMessages,
+			helpMessages,
 			applications,
 			applicationId: "current",
+			helpUrl: "an_help_url.com",
 		};
 		modalRoot = document.createElement("div");
 		modalRoot.id = "modal";
@@ -94,6 +100,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 
@@ -116,6 +123,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 
@@ -138,6 +146,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 });

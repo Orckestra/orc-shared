@@ -35,7 +35,7 @@ describe("Anchor", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				colors: { application: { base: "#ff00ff" } },
+				colors: { application: { primary: "#ff00ff" } },
 			};
 		});
 
@@ -62,7 +62,7 @@ describe("Anchor", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				colors: { application: { base: "#ff00ff" } },
+				colors: { application: { primary: "#ff00ff" } },
 			};
 		});
 

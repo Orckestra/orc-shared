@@ -17,7 +17,6 @@ import {
 describe("About", () => {
 	let messages, state, store;
 	beforeEach(() => {
-		window.orcVersion = "x.y.z";
 		messages = {
 			ccName: "Test App",
 			ccVersion: { id: "foo", defaultMessage: "Version {version}" },
@@ -25,15 +24,15 @@ describe("About", () => {
 			copyright: "Copyright",
 			allRightsReserved: "All rights reserved",
 		};
-		state = Immutable.fromJS({ view: { [ABOUT_NAME]: { show: true } } });
+		state = Immutable.fromJS({
+			view: { [ABOUT_NAME]: { show: true } },
+			versionInfo: { version: "5.1.9.5" },
+		});
 		store = {
 			subscribe: () => {},
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
-	});
-	afterEach(() => {
-		delete window.orcVersion;
 	});
 
 	it("renders an about box with messages and background images", () =>
@@ -48,7 +47,7 @@ describe("About", () => {
 			<IntlProvider locale="en">
 				<AboutBox in>
 					<img src={logoImage} alt="Orckestra" />
-					<AboutParagraph>Version x.y.z</AboutParagraph>
+					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
 					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>

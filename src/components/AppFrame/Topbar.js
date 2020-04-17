@@ -11,6 +11,7 @@ import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
 import DropMenu from "../DropMenu";
 import Anchor from "../DropMenu/Anchor";
+import Help from "./Help";
 
 export const Wrapper = styled.div`
 	height: 40px;
@@ -49,13 +50,13 @@ export const useMenuProps = messages => {
 
 export const StyledAnchor = styled(Anchor)`
 	box-sizing: border-box;
-	font-family: Roboto Condensed, sans-serif;
+	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	font-size: 12px;
 	text-transform: uppercase;
 	height: 40px;
 	min-width: 180px;
 	padding-top: 14px;
-	padding-right: 32px;
+	padding-right: 14px;
 `;
 
 export const Menu = ({ messages }) => (
@@ -65,12 +66,13 @@ export const Menu = ({ messages }) => (
 export const AppBox = styled.div`
 	height: 100%;
 	display: flex;
+	flex: 1;
 	align-items: stretch;
 `;
 
 export const AppLabel = styled.div`
 	background-color: #000000;
-	color: ${getThemeProp(["colors", "application", "base"], "#ffffff")};
+	color: ${getThemeProp(["colors", "application", "primary"], "#ffffff")};
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	font-size: 14px;
 	text-transform: uppercase;
@@ -95,7 +97,15 @@ CurrentApp.displayName = "CurrentApp";
 
 const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
 
-const Topbar = ({ applications, applicationId, onClick, menuMessages, ...config }) => (
+const Topbar = ({
+	applications,
+	applicationId,
+	onClick,
+	menuMessages,
+	helpMessages,
+	helpUrl,
+	...config
+}) => (
 	<Wrapper onClick={onClick}>
 		<AppBox>
 			<ApplicationSelector
@@ -107,6 +117,7 @@ const Topbar = ({ applications, applicationId, onClick, menuMessages, ...config 
 			<CurrentApp {...(getApp(applications, applicationId) || {})} />
 		</AppBox>
 		<Menu {...config} messages={menuMessages} />
+		<Help {...{ messages: helpMessages, helpUrl }} />
 	</Wrapper>
 );
 

@@ -21,6 +21,7 @@ import { Wrapper as MenuWrapper } from "../DropMenu";
 import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
 import { BlockWithA } from "./MenuItem";
+import { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -41,6 +42,9 @@ describe("AppFrame", () => {
 			modules: [],
 			activeModules: { foo: true },
 			menuLabel: "TestLabel",
+			helpMessages: {
+				help: { id: "msg.help", defaultMessage: "Help" },
+			},
 			menuMessages: {
 				sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
 				preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
@@ -152,6 +156,7 @@ describe("AppFrame", () => {
 				},
 			},
 			settings: { defaultScope: "myScope", defaultApp: "12" },
+			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 			view: { scopeSelector: { filter: "1" } },
 			toasts: { queue: [] },
 		});
@@ -207,6 +212,7 @@ describe("AppFrame", () => {
 								<MenuWrapper>
 									<Ignore />
 								</MenuWrapper>
+								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
 								<MenuToggle />
@@ -269,6 +275,7 @@ describe("AppFrame", () => {
 								<MenuWrapper>
 									<Ignore />
 								</MenuWrapper>
+								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
 								<MenuToggle />
@@ -315,6 +322,7 @@ describe("AppFrame", () => {
 						<Wrapper>
 							<Ignore />
 							<Ignore />
+							<Ignore />
 						</Wrapper>
 						<SideBar open>
 							<MenuToggle open />
@@ -338,6 +346,7 @@ describe("AppFrame", () => {
 				<ThemeProvider theme={{}}>
 					<Base>
 						<Wrapper>
+							<Ignore />
 							<Ignore />
 							<Ignore />
 						</Wrapper>
@@ -365,6 +374,7 @@ describe("AppFrame", () => {
 						<Wrapper>
 							<Ignore />
 							<Ignore />
+							<Ignore />
 						</Wrapper>
 						<SideBar open>
 							<MenuToggle open />
@@ -388,6 +398,7 @@ describe("AppFrame", () => {
 				<ThemeProvider theme={{}}>
 					<Base>
 						<Wrapper>
+							<Ignore />
 							<Ignore />
 							<Ignore />
 						</Wrapper>

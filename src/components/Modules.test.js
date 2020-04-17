@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "unexpected-reaction";
 import { getStyledClassSelector } from "../utils/testUtils";
-import { TabBar } from "./Navigation/Bar";
+import { TabBar, ScrollableBar } from "./Navigation/Bar";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
 import {
 	Wrapper as SegmentWrapper,
@@ -93,6 +93,7 @@ describe("Modules", () => {
 							<TabText>Module 3</TabText>
 						</TabLink>
 					</ModuleTab>
+					<ScrollableBar />
 				</TabBar>
 			</MemoryRouter>,
 		));
@@ -116,6 +117,7 @@ describe("Modules", () => {
 								<TabText>Module 1</TabText>
 							</TabLink>
 						</ModuleTab>
+						<ScrollableBar />
 					</TabBar>
 				</MemoryRouter>,
 				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
@@ -151,6 +153,7 @@ describe("Modules", () => {
 								<TabText>Module 2</TabText>
 							</TabLink>
 						</ModuleTab>
+						<ScrollableBar />
 					</TabBar>
 				</MemoryRouter>,
 				<Mod2 />,
@@ -176,6 +179,7 @@ describe("Modules", () => {
 								<TabText>Module 3</TabText>
 							</TabLink>
 						</ModuleTab>
+						<ScrollableBar />
 					</TabBar>
 				</MemoryRouter>,
 				<Mod3 />,

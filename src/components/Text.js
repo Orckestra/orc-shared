@@ -6,14 +6,14 @@ import { FormattedMessage } from "react-intl";
 import { safeGet, unwrapImmutable, getThemeProp, stripKey } from "../utils";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 
-export const messageContainsValues = (message) => {
+export const messageContainsValues = message => {
 	const valRefs = message.defaultMessage.match(/(\{\w+\})/g);
 	if (!valRefs) return true;
-	const valNames = valRefs.map((ref) => ref.replace(/[{}]/g, ""));
+	const valNames = valRefs.map(ref => ref.replace(/[{}]/g, ""));
 	return (
 		!!message.values &&
 		valNames.every(
-			(key) => message.values[key] !== undefined && message.values[key] !== null,
+			key => message.values[key] !== undefined && message.values[key] !== null,
 		)
 	);
 };
