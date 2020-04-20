@@ -64,12 +64,10 @@ Inserts a set of developer pages to be found under `/dev/<page>`. In production,
 
 ## DropMenu
 
-- `menuLabel`: The menu anchor label text.
 - `menuItems`: A list of objects with `label` and `handler` properties. The former is the text to show, the latter the function to call on clicking the item.
 - `alignRight`: A flag that when set causes the menu to be rendered to align with the right edge of the anchor element, instead of the default left.
-- `AnchorComponent`: An optional component which will be used to render the menu anchor instead of the default. It will be passed `id`, `menuLabel`, and `open` props, as well as an `onClick` prop that will open the menu.
 
-A simple menu component that will show a list of items when clicked. Assigning it a class will apply it to the wrapper element, allowing it to be positioned if necessary.
+A simple menu component that will show a list of items when clicked. Assigning it a class will apply it to the wrapper element, allowing it to be positioned if necessary. This component will wrap its children with a click handler that opens the menu, and will pass its state as flag prop `open` to child components to enable showing style differences.
 
 ## Form
 
