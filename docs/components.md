@@ -43,6 +43,19 @@ See also the more [detailed documentation for list components](lists.md).
 
 Shows a pretty checkbox. The same props are accepted as for `<input type="checked" />` elements. Use `value` for whether the checkbox is checked or not, rather than `checked`. If no `id` is passed, one will be generated and used.
 
+## ColumnWrapper
+
+This is a default column wrapper (for column layouts) available to be used by the applications. This will ensure all applications experience the same behavior for columns layouts used in lists.
+
+Here is some sample code on usage:
+
+> ```html
+> <ColumnWrapper>
+> 	<Toolbar name="{name}" tools="{[]}" />
+> 	<List {...{ name, columnDefs, rows: locations }} />
+> </ColumnWrapper>
+> ```
+
 ## DevPages
 
 - `children`: Children of the component will be rendered on routes not starting with `/dev`.
