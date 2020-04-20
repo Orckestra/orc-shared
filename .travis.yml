@@ -12,13 +12,13 @@ script:
 after_success: npm run coveralls
 before_deploy: export NPM_TAG=`node_modules/.bin/orc-scripts getDist`
 deploy:
-  - provider: npm
-    edge: true
-    email: gert.sonderby@gmail.com
-    api_token:
-      secure: "j44xRr+6XBjCaGJCqciVKbnv0s78MjRPv1rltBzP8YHWrryGvgiy2G5qxlkuXeOT2y2wJjrrs7eaOGJxVcBWjdxBqOQdWc22GfVaMbusws9PewYT2bhOa1P9ZDxVFelKczG6aaFJelzy5s0qlTarGk9jALTuYRrc6aWCitmoPo0oWv9UZdYjfLr1DD1ZYjiueGp1glyuecFN7V0SEubi1rZcG9x2ot2SCz/0LyE59yqdYRb7X0ggs/Jj+D6cEv7alwbJIINf66uv8NO61lJpKrrwTKz4Is4lOU++SW4f8IyfJgTwUswDsNTLftCqS2ogx3DGHT3EgjzEpoQWaVMdschajKB2Nxamjp4vU+O44MLjZnP6Ng6Eg8YnUoCzzCufEdPni6B1IP9MT1Mz9GIrmE8278ZCeRyacENKBPnAMOG8rwBG/usg0J41scXR0OuhAKSSUE61a26PUaj9VFRGdrZxlBpCeJecapsMW54MarrPslSbsn7oHSC1brQ89ZlKBDc+164VCu3w2Fnm/xhsFRbWLNq/q328hphT5XyBet7kn4IMW3V/o3PuL7+J9dtu0hbKSxwI+NGxuA1XFqW1f7AHMrrW2suY9h9DmeZZRdUTpXr0kMXHGpcfspLr8FLVbVwcAQ8RxZQza7kqmBli06RfOm+e3urqPd+hWdpt7sk="
-    tag: "$NPM_TAG"
-    on:
-      repo: Orckestra/orc-shared
-      tags: true
-      condition: "$TRAVIS_NODE_VERSION = 12"
+  provider: npm
+  edge: true
+  email: gert.sonderby@gmail.com
+  api_token:
+    secure: "j44xRr+6XBjCaGJCqciVKbnv0s78MjRPv1rltBzP8YHWrryGvgiy2G5qxlkuXeOT2y2wJjrrs7eaOGJxVcBWjdxBqOQdWc22GfVaMbusws9PewYT2bhOa1P9ZDxVFelKczG6aaFJelzy5s0qlTarGk9jALTuYRrc6aWCitmoPo0oWv9UZdYjfLr1DD1ZYjiueGp1glyuecFN7V0SEubi1rZcG9x2ot2SCz/0LyE59yqdYRb7X0ggs/Jj+D6cEv7alwbJIINf66uv8NO61lJpKrrwTKz4Is4lOU++SW4f8IyfJgTwUswDsNTLftCqS2ogx3DGHT3EgjzEpoQWaVMdschajKB2Nxamjp4vU+O44MLjZnP6Ng6Eg8YnUoCzzCufEdPni6B1IP9MT1Mz9GIrmE8278ZCeRyacENKBPnAMOG8rwBG/usg0J41scXR0OuhAKSSUE61a26PUaj9VFRGdrZxlBpCeJecapsMW54MarrPslSbsn7oHSC1brQ89ZlKBDc+164VCu3w2Fnm/xhsFRbWLNq/q328hphT5XyBet7kn4IMW3V/o3PuL7+J9dtu0hbKSxwI+NGxuA1XFqW1f7AHMrrW2suY9h9DmeZZRdUTpXr0kMXHGpcfspLr8FLVbVwcAQ8RxZQza7kqmBli06RfOm+e3urqPd+hWdpt7sk="
+  tag: "$NPM_TAG"
+  on:
+    repo: Orckestra/orc-shared
+    tags: true
+    condition: "$TRAVIS_NODE_VERSION = 12"
