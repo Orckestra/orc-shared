@@ -7,8 +7,8 @@ import DropMenu, { AnchorWrapper, Wrapper } from "./index";
 import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 import { getStyledClassSelector } from "../../utils/testUtils";
 
-const TestAnchor = ({ id, onClick, className, open }) => (
-	<div id={id} onClick={onClick} className={className} data-open={open}>
+const TestAnchor = ({ id, open }) => (
+	<div id={id} data-open={open}>
 		Test anchor
 	</div>
 );
@@ -152,7 +152,7 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<Wrapper className="test-class">
 					<AnchorWrapper id="testAnchor">
-						<TestAnchor />
+						<TestAnchor open={false} />
 					</AnchorWrapper>
 					<Menu id="testDropdown" menuItems={[]} />
 				</Wrapper>,

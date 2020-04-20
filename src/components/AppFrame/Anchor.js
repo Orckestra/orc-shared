@@ -6,6 +6,14 @@ import Icon from "../Icon";
 export const Header = styled.div`
 	display: flex;
 	cursor: pointer;
+	box-sizing: border-box;
+	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
+	font-size: 12px;
+	text-transform: uppercase;
+	height: 40px;
+	min-width: 180px;
+	padding-top: 14px;
+	padding-right: 14px;
 	color: ${ifFlag(
 		"open",
 		getThemeProp(["colors", "application", "primary"], "#ccc"),
@@ -33,8 +41,8 @@ export const Indicator = styled(Icon).attrs(props => ({
 	)};
 `;
 
-const Anchor = ({ id, onClick, className, menuLabel, open }) => (
-	<Header {...{ id, onClick, className, open }}>
+const Anchor = ({ menuLabel, open }) => (
+	<Header {...{ open }}>
 		{menuLabel}
 		<Indicator open={open} />
 	</Header>

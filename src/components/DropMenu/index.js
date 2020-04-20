@@ -25,7 +25,7 @@ const DropMenu = ({ id, initOpen, menuItems, alignRight, className = "", childre
 		<Wrapper className={className} onClickOutside={reset}>
 			<AnchorWrapper id={id + "Anchor"} onClick={toggle} open={open}>
 				{React.Children.map(children, child =>
-					typeof child === "object" ? React.cloneElement(child, { open: true }) : child,
+					typeof child === "object" ? React.cloneElement(child, { open }) : child,
 				)}
 			</AnchorWrapper>
 			<Menu
