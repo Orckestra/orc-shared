@@ -147,7 +147,7 @@ describe("scopeGetter", () => {
 
 	it("returns a getter function for scopes from a filtered scope index", () => {
 		state = state.setIn(["view", "scopeSelector", "filter"], "deux");
-		return expect(scopeGetter, "called with", [state]).then((getter) => {
+		return expect(scopeGetter, "called with", [state]).then(getter => {
 			expect(getter, "called with", ["FifthGrandchild"], "to equal", null);
 			expect(getter, "called with", ["Global"], "to equal", {
 				name: "Global",

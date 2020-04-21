@@ -48,17 +48,17 @@ export const Scope = ({ children, filterPlaceholder }) => {
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
 
 	const resetNodeState = useCallback(
-		(current) =>
+		current =>
 			current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
 		[updateViewState, nodeState, defaultNodeState],
 	);
 	usePreviousModified(show, resetNodeState);
 
-	const reset = (event) => {
+	const reset = event => {
 		updateViewState("show", false);
 		event.stopPropagation();
 	};
-	const updateFilter = (event) => updateViewState("filter", event.target.value);
+	const updateFilter = event => updateViewState("filter", event.target.value);
 
 	return (
 		<React.Fragment>
@@ -85,7 +85,7 @@ export const Scope = ({ children, filterPlaceholder }) => {
 };
 Scope.displayName = "Scope";
 
-const RoutedScope = (props) => {
+const RoutedScope = props => {
 	const defaultScope = unwrapImmutable(useSelector(defaultScopeSelector));
 
 	return (

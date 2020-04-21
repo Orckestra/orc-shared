@@ -3,7 +3,7 @@ import { mount } from "unexpected-reaction";
 import sinon from "sinon";
 import { withInfiniteScroll, getOnScroll } from "./withInfiniteScroll";
 
-const getFakeEvent = (scrollTop) => {
+const getFakeEvent = scrollTop => {
 	const elm = {
 		offsetHeight: 200,
 		scrollHeight: 600,
@@ -12,7 +12,7 @@ const getFakeEvent = (scrollTop) => {
 	return { type: "scroll", target: elm };
 };
 
-const TestComp = (props) => (
+const TestComp = props => (
 	<div>
 		{"{\n  " +
 			Object.entries(props)
@@ -33,7 +33,7 @@ const TestComp = (props) => (
 
 describe("withInfiniteScroll", () => {
 	it("enhances a component to have an onScroll handler and a scrollTop prop, and sets `virtual` flag", () =>
-		expect(withInfiniteScroll, "when called with", [TestComp]).then((EnhComp) =>
+		expect(withInfiniteScroll, "when called with", [TestComp]).then(EnhComp =>
 			expect(
 				<EnhComp />,
 				"when mounted",

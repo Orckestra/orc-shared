@@ -9,7 +9,7 @@ import useLoader from "./useLoader";
 const TestComp = ({ loader, cutout }) => {
 	useLoader(loader, cutout);
 	const [tick, setTick] = useState(0);
-	const live = useSelector((state) => state.get("live"));
+	const live = useSelector(state => state.get("live"));
 	return (
 		<div id="test" onClick={() => setTick(tick + 1)} data-live={live}>
 			{tick}
@@ -30,7 +30,7 @@ describe("useLoader", () => {
 					sub();
 				});
 			},
-			subscribe: (sub) => {
+			subscribe: sub => {
 				subs.push(sub);
 				return () => {};
 			},
@@ -48,7 +48,7 @@ describe("useLoader", () => {
 	it("dispatches the loader action on mount if cutout returns falsy", () =>
 		expect(
 			<Provider store={store}>
-				<TestComp loader={loader} cutout={(state) => state.get("live")} />
+				<TestComp loader={loader} cutout={state => state.get("live")} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -60,7 +60,7 @@ describe("useLoader", () => {
 	it("does not dispatch loader if cutout returns truthy", () =>
 		expect(
 			<Provider store={store}>
-				<TestComp loader={loader} cutout={(state) => state.get("cutout")} />
+				<TestComp loader={loader} cutout={state => state.get("cutout")} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -95,7 +95,7 @@ describe("useLoader", () => {
 		];
 		return expect(
 			<Provider store={store}>
-				<TestComp loader={loaderSeries} cutout={(state) => state.get("live")} />
+				<TestComp loader={loaderSeries} cutout={state => state.get("live")} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -112,7 +112,7 @@ describe("useLoader", () => {
 	it("only dispatches once if cutout does not change", () =>
 		expect(
 			<Provider store={store}>
-				<TestComp loader={loader} cutout={(state) => state.get("live")} />
+				<TestComp loader={loader} cutout={state => state.get("live")} />
 			</Provider>,
 			"when mounted",
 			"with event",
@@ -130,7 +130,7 @@ describe("useLoader", () => {
 		));
 
 	it("fires loader if cutout is falsy, but not again if it becomes truthy", () => {
-		const selector = (state) => state.get("live");
+		const selector = state => state.get("live");
 		mount(
 			<Provider store={store}>
 				<TestComp loader={loader} cutout={selector} />
@@ -145,7 +145,7 @@ describe("useLoader", () => {
 	});
 
 	it("fires loader if cutout was truthy, becomes falsy", () => {
-		const selector = (state) => state.get("live");
+		const selector = state => state.get("live");
 		state = state.set("live", 1);
 		mount(
 			<Provider store={store}>

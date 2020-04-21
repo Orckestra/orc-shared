@@ -32,7 +32,7 @@ describe("withNavigationLink", () => {
 
 	it("provides a deprecation warning on use", () =>
 		expect(withNavigationLink, "when called with", [TestComp])
-			.then((Comp) => {
+			.then(Comp => {
 				mount(
 					<Provider store={fakeStore}>
 						<Router history={history}>
@@ -48,7 +48,7 @@ describe("withNavigationLink", () => {
 			));
 
 	it("sets an active flag if the current path matches the href", () =>
-		expect(withNavigationLink, "when called with", [TestComp]).then((Comp) =>
+		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
 					<Router history={history}>
@@ -62,7 +62,7 @@ describe("withNavigationLink", () => {
 		));
 
 	it("omits active flag if the current path does not match the href", () =>
-		expect(withNavigationLink, "when called with", [TestComp]).then((Comp) =>
+		expect(withNavigationLink, "when called with", [TestComp]).then(Comp =>
 			expect(
 				<Provider store={fakeStore}>
 					<Router history={history}>
@@ -76,7 +76,7 @@ describe("withNavigationLink", () => {
 		));
 
 	it("sets onClick handler (navigating via router) on local hrefs", () =>
-		expect(withNavigationLink, "when called with", [TestComp]).then((Comp) => {
+		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
 					<Router history={history}>
@@ -92,7 +92,7 @@ describe("withNavigationLink", () => {
 		}));
 
 	it("does not navigate on self href", () =>
-		expect(withNavigationLink, "when called with", [TestComp]).then((Comp) => {
+		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
 					<Router history={history}>
@@ -108,7 +108,7 @@ describe("withNavigationLink", () => {
 		}));
 
 	it("does navigate to remote hrefs", () =>
-		expect(withNavigationLink, "when called with", [TestComp]).then((Comp) => {
+		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
 					<Router history={history}>
@@ -124,7 +124,7 @@ describe("withNavigationLink", () => {
 		}));
 
 	it("no href does not navigate", () =>
-		expect(withNavigationLink, "when called with", [TestComp]).then((Comp) => {
+		expect(withNavigationLink, "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<Provider store={fakeStore}>
 					<Router history={history}>

@@ -19,7 +19,7 @@ describe("FieldElements", () => {
 			dispatch: () => {},
 			getState: () => state,
 		};
-		getUpdater = (name) => () => name;
+		getUpdater = name => () => name;
 		values = {
 			thing: "foo",
 			stuff: "bar",

@@ -79,7 +79,7 @@ beforeEach(() => {
 				sub();
 			});
 		},
-		subscribe: (sub) => {
+		subscribe: sub => {
 			subs.push(sub);
 			return () => {};
 		},
@@ -182,7 +182,7 @@ describe("Scope", () => {
 	});
 
 	it("resets the scope tree state when closing, to ensure current scope is visible", () => {
-		state = state.withMutations((s) => {
+		state = state.withMutations(s => {
 			s.setIn(["navigation", "route", "match", "params", "scope"], "test3");
 			s.setIn(
 				["view", "scopeSelector"],
@@ -298,7 +298,7 @@ describe("ScopeBar", () => {
 });
 
 describe("RoutedScope", () => {
-	const TestComp = (props) => {
+	const TestComp = props => {
 		const { pathname } = useLocation();
 		return <PropStruct pathname={pathname} {...props} />;
 	};

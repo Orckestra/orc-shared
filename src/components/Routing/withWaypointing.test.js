@@ -27,12 +27,12 @@ describe("withWaypointing", () => {
 		});
 		const subs = [];
 		updateState = () => {
-			subs.forEach((sub) => {
+			subs.forEach(sub => {
 				sub();
 			});
 		};
 		store = {
-			subscribe: (sub) => {
+			subscribe: sub => {
 				subs.push(sub);
 				return () => {};
 			},
@@ -44,7 +44,7 @@ describe("withWaypointing", () => {
 
 	it("wraps a component to tell its route info to Redux on mount", () =>
 		expect(withWaypointing, "called with", [PropStruct])
-			.then((EnhancedView) => {
+			.then(EnhancedView => {
 				history.replace("/foo/bar");
 				return expect(
 					<Provider store={store}>
@@ -77,7 +77,7 @@ describe("withWaypointing", () => {
 
 	it("does not fire action if pathname is already the same", () =>
 		expect(withWaypointing, "called with", [PropStruct])
-			.then((EnhancedView) => {
+			.then(EnhancedView => {
 				return expect(
 					<Provider store={store}>
 						<Router history={history}>
@@ -93,7 +93,7 @@ describe("withWaypointing", () => {
 
 	it("does fire action if path parameters different", () =>
 		expect(withWaypointing, "called with", [PropStruct])
-			.then((EnhancedView) => {
+			.then(EnhancedView => {
 				history.replace("/feep/moof");
 				return expect(
 					<Provider store={store}>
@@ -126,7 +126,7 @@ describe("withWaypointing", () => {
 
 	it("does not fire action if route match is not exact", () =>
 		expect(withWaypointing, "called with", [PropStruct])
-			.then((EnhancedView) => {
+			.then(EnhancedView => {
 				history.replace("/feep/meep/mef");
 				return expect(
 					<Provider store={store}>
@@ -143,14 +143,14 @@ describe("withWaypointing", () => {
 
 	it("maps the href to a root if so directed", () =>
 		expect(withWaypointing, "called with", [PropStruct])
-			.then((EnhancedView) => {
+			.then(EnhancedView => {
 				history.replace("/foo/bar");
 				return expect(
 					<Provider store={store}>
 						<Router history={history}>
 							<Route
 								path="/foo/bar"
-								render={(props) => <EnhancedView {...props} mapFrom="/foo" />}
+								render={props => <EnhancedView {...props} mapFrom="/foo" />}
 							/>
 						</Router>
 					</Provider>,
@@ -186,7 +186,7 @@ describe("withWaypointing", () => {
 			));
 
 	it("fires action on updates where route becomes misaligned", () => {
-		return expect(withWaypointing, "called with", [PropStruct]).then((EnhancedView) => {
+		return expect(withWaypointing, "called with", [PropStruct]).then(EnhancedView => {
 			mount(
 				<Provider store={store}>
 					<Router history={history}>
@@ -224,7 +224,7 @@ describe("withWaypointing", () => {
 
 	it("fires action when location has changed", () => {
 		const node = document.createElement("div");
-		return expect(withWaypointing, "called with", [PropStruct]).then((EnhancedView) => {
+		return expect(withWaypointing, "called with", [PropStruct]).then(EnhancedView => {
 			mount(
 				<Provider store={store}>
 					<Router history={history}>

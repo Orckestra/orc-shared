@@ -8,7 +8,7 @@ const sinon = require("sinon");
 export const spyOnConsole = (spyNames = ["log", "warn", "error"]) => {
 	let spiedFuncs;
 	beforeEach(() => {
-		spiedFuncs = spyNames.map((funcName) => {
+		spiedFuncs = spyNames.map(funcName => {
 			const func = sinon.spy().named("console." + funcName);
 			const oldFunc = console[funcName];
 			console[funcName] = func;
@@ -55,7 +55,7 @@ export const getStyledClassSelector = (reactElm, container) => {
 			"<" + (reactElm.type.name || reactElm.type) + " /> is not a styled component",
 		);
 	}
-	const classes = getElmClasses(reactElm, container).filter((cls) =>
+	const classes = getElmClasses(reactElm, container).filter(cls =>
 		scClassPattern.test(cls),
 	);
 	// Last classname is most specific - subject to change!
