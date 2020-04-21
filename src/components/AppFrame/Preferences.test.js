@@ -51,7 +51,12 @@ describe("Preferences", () => {
 			view: { [PREFS_NAME]: { show: true } },
 			locale: {
 				locale: "en-US",
-				supportedLocales: ["en-US", "en-CA", "fr-FR", "fr-CA"],
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "EnglishCa", cultureIso: "en-CA" },
+					{ language: "Francais", cultureIso: "fr-FR" },
+					{ language: "Francais-Qc", cultureIso: "fr-CA" },
+				],
 				cultures: {
 					"en-US": {
 						cultureIso: "en-US",
@@ -173,10 +178,10 @@ describe("Preferences", () => {
 									<Label id="language_label">Display language</Label>
 									<SelectorWrapper>
 										<select id="language" value="en-US" onChange={() => {}}>
-											<option>French - France</option>
-											<option>English - United States</option>
-											<option>English - Canada</option>
-											<option>French - Canada</option>
+											<option>English</option>
+											<option>EnglishCa</option>
+											<option>Francais</option>
+											<option>Francais-Qc</option>
 										</select>
 										<Ignore />
 										<Ignore />
@@ -245,10 +250,10 @@ describe("Preferences", () => {
 									<Label id="language_label">Display language</Label>
 									<SelectorWrapper>
 										<select id="language" value="fr-CA" onChange={() => {}}>
-											<option>French - France</option>
-											<option>English - United States</option>
-											<option>English - Canada</option>
-											<option>French - Canada</option>
+											<option>English</option>
+											<option>EnglishCa</option>
+											<option>Francais</option>
+											<option>Francais-Qc</option>
 										</select>
 										<Ignore />
 										<Ignore />
@@ -357,10 +362,10 @@ describe("Preferences", () => {
 									<Label id="language_label">Display language</Label>
 									<SelectorWrapper>
 										<select id="language" value="en-US" onChange={() => {}}>
-											<option>French - France</option>
-											<option>English - United States</option>
-											<option>English - Canada</option>
-											<option>French - Canada</option>
+											<option>English</option>
+											<option>EnglishCa</option>
+											<option>Francais</option>
+											<option>Francais-Qc</option>
 										</select>
 										<Ignore />
 										<Ignore />
@@ -451,10 +456,10 @@ describe("Preferences", () => {
 									<Label id="language_label">Display language</Label>
 									<SelectorWrapper>
 										<select id="language" value="fr-CA" onChange={() => {}}>
-											<option>French - France</option>
-											<option>English - United States</option>
-											<option>English - Canada</option>
-											<option>French - Canada</option>
+											<option>English</option>
+											<option>EnglishCa</option>
+											<option>Francais</option>
+											<option>Francais-Qc</option>
 										</select>
 										<Ignore />
 										<Ignore />
@@ -517,10 +522,10 @@ describe("Preferences", () => {
 								<Label id="language_label">Display language</Label>
 								<SelectorWrapper>
 									<select id="language" value="" onChange={() => {}}>
-										<option>English - United States</option>
-										<option>English - Canada</option>
-										<option>French - France</option>
-										<option>French - Canada</option>
+										<option>English</option>
+										<option>EnglishCa</option>
+										<option>Francais</option>
+										<option>Francais-Qc</option>
 									</select>
 									<Ignore />
 									<Ignore />

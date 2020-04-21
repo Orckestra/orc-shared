@@ -10,7 +10,9 @@ const fakeStore = {
 	dispatch: action => action,
 	getState: () =>
 		Immutable.fromJS({
-			locale: {},
+			locale: {
+				locale: "en",
+			},
 			authentication: {
 				name: "foo@bar.com",
 			},

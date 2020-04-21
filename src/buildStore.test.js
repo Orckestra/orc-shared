@@ -43,7 +43,10 @@ describe("buildStore", () => {
 	describe("functionality", () => {
 		let store;
 		beforeEach(() => {
-			global.SUPPORTED_LOCALES = ["en-US", "fr"];
+			global.SUPPORTED_LOCALES = [
+				{ language: "English", cultureIso: "en-US" },
+				{ language: "Francais", cultureIso: "fr" },
+			];
 			store = buildStore(mockReducers);
 		});
 
@@ -71,7 +74,10 @@ describe("buildStore", () => {
 						},
 						locale: {
 							locale: "en-US",
-							supportedLocales: ["en-US", "fr"],
+							supportedLocales: [
+								{ language: "English", cultureIso: "en-US" },
+								{ language: "Francais", cultureIso: "fr" },
+							],
 						},
 						navigation: {
 							tabIndex: {},

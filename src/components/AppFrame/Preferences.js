@@ -13,7 +13,7 @@ import { setDefaultLanguage } from "../../actions/locale";
 import { setMyApplication } from "../../actions/applications";
 import { changeLocale } from "../../actions/locale";
 import { localizedAppOptionSelector } from "../../selectors/applications";
-import { currentLocale, orderedCultureOptionList } from "../../selectors/locale";
+import { currentLocale, cultureOptionList } from "../../selectors/locale";
 import { defaultAppId } from "../../selectors/settings";
 
 export const PREFS_NAME = "__prefsDialog";
@@ -74,6 +74,7 @@ export const createGetUpdater = memoize(update =>
 const usePreferenceSetup = () => {
 	const dispatch = useDispatch();
 	const [viewState, updateViewState] = useViewState(PREFS_NAME);
+
 	return {
 		show: viewState.show,
 		values: {
@@ -82,7 +83,7 @@ const usePreferenceSetup = () => {
 			...viewState,
 		},
 		getUpdater: createGetUpdater(updateViewState),
-		languageOptions: unwrapImmutable(useSelector(orderedCultureOptionList)),
+		languageOptions: unwrapImmutable(useSelector(cultureOptionList)),
 		applicationOptions: unwrapImmutable(useSelector(localizedAppOptionSelector)),
 		clear: () => dispatch(setValue(PREFS_NAME, { show: false })),
 		save: () => {
