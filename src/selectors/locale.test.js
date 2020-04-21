@@ -27,7 +27,7 @@ describe("default locale selector", () => {
 
 	it("returns 'en' if no supported locales", () => {
 		state = state.deleteIn(["locale", "supportedLocales"]);
-		return expect(defaultLocale, "when called with", [state], "to equal", "en");
+		return expect(defaultLocale, "when called with", [state], "to equal", "en-US");
 	});
 });
 
@@ -47,7 +47,7 @@ describe("locale selector", () => {
 
 	it("gets first supported locale if none set", () => {
 		state = state.deleteIn(["locale", "locale"]);
-		return expect(currentLocale, "when called with", [state], "to equal", "en");
+		return expect(currentLocale, "when called with", [state], "to equal", "en-US");
 	});
 });
 

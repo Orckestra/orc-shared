@@ -5,7 +5,7 @@ const localeData = state => state.get("locale");
 
 export const defaultLocale = createSelector(
 	localeData,
-	data => data.getIn(["supportedLocales", 0, "cultureIso"]) || "en",
+	data => data.getIn(["supportedLocales", 0, "cultureIso"]) || "en-US",
 );
 
 const supportedLocales = createSelector(
