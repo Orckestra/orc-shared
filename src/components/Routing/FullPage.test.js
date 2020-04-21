@@ -65,26 +65,31 @@ describe("Fullpage", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/meep/snap"]}>
-					<FullPage
-						path="/meep/snap"
-						config={{
-							component: View1,
-							segments: { "/stuff": { component: View2, label: "Two" } },
-						}}
-						location={{ location: true }}
-						match={{ match: true }}
-					/>
+					<div>
+						<FullPage
+							path="/meep/snap"
+							config={{
+								component: View1,
+								segments: { "/stuff": { component: View2, label: "Two" } },
+							}}
+							location={{ location: true }}
+							match={{ match: true }}
+						/>
+					</div>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Wrapper>
-				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
-					<List>
-						<Item to="/meep/snap/stuff">Two</Item>
-					</List>
-				</MemoryRouter>
-				<View2 />
-			</Wrapper>,
+			<div>
+				<View1 />
+				<Wrapper>
+					<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
+						<List>
+							<Item to="/meep/snap/stuff">Two</Item>
+						</List>
+					</MemoryRouter>
+					<View2 />
+				</Wrapper>
+			</div>,
 		));
 });

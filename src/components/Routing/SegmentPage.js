@@ -53,7 +53,7 @@ export const Item = styled(FilteredLink)`
 	)};
 `;
 
-const SegmentPage = ({ path, segments, location, match }) => {
+const SegmentPage = ({ path, component: View, segments, location, match }) => {
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
@@ -103,8 +103,9 @@ const SegmentPage = ({ path, segments, location, match }) => {
 		<Switch>
 			{pages}
 			<Route
-				render={() => (
-					<Wrapper>
+				render={() => [
+					View ? <View key="View" /> : null,
+					<Wrapper key="Segments">
 						<List>
 							{Object.entries(segments).map(([segpath, config]) => (
 								<Item
@@ -121,8 +122,8 @@ const SegmentPage = ({ path, segments, location, match }) => {
 							<Redirect exact path={path} to={baseHref + Object.keys(segments)[0]} />
 						</Switch>
 						<Switch>{subpages}</Switch>
-					</Wrapper>
-				)}
+					</Wrapper>,
+				]}
 			/>
 		</Switch>
 	);
