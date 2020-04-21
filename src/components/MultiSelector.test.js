@@ -150,7 +150,7 @@ describe("MultiSelector", () => {
 			</Provider>,
 			"when mounted",
 			"queried for first",
-			getStyledClassSelector(<Placeholder />),
+			getStyledClassSelector(Placeholder),
 			"to satisfy",
 			<Placeholder>This space for rent</Placeholder>,
 		));

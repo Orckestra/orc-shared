@@ -75,7 +75,7 @@ describe("TranslationInput", () => {
 			</Provider>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(<ShowButton />) },
+			{ type: "click", target: getStyledClassSelector(ShowButton) },
 			"to satisfy",
 			<TranslationWrapper>
 				<IntlProvider locale="en">

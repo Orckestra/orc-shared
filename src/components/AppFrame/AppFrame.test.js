@@ -311,7 +311,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(<BlockWithA />),
+			target: getStyledClassSelector(BlockWithA),
 		});
 		expect(
 			element,
@@ -337,7 +337,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(<Wrapper />),
+			target: getStyledClassSelector(Wrapper),
 		});
 		expect(
 			element,
@@ -363,7 +363,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(<BlockWithA />),
+			target: getStyledClassSelector(BlockWithA),
 		});
 		expect(
 			element,
@@ -389,7 +389,7 @@ describe("AppFrame", () => {
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(<ViewPort />),
+			target: getStyledClassSelector(ViewPort),
 		});
 		expect(
 			element,

@@ -112,11 +112,11 @@ describe("DropMenu", () => {
 		const anchor = menuNode.querySelector("#testAnchor");
 		const outside = menuNode.querySelector("div#outside");
 		try {
-			expect(menu, "not to contain elements matching", getStyledClassSelector(<List />));
+			expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 			act(() => {
 				anchor.click();
 			});
-			expect(menu, "to contain elements matching", getStyledClassSelector(<List />));
+			expect(menu, "to contain elements matching", getStyledClassSelector(List));
 			act(() => {
 				outside.click();
 			});
@@ -124,7 +124,7 @@ describe("DropMenu", () => {
 			act(() => {
 				clock.tick(1000); // Wait for the menu to unrender
 			});
-			expect(menu, "not to contain elements matching", getStyledClassSelector(<List />));
+			expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 		} finally {
 			ReactDOM.unmountComponentAtNode(menuNode);
 			document.body.removeChild(menuNode);
@@ -231,15 +231,11 @@ describe("DropMenu", () => {
 			const anchor = menuNode.querySelector("#testAnchor");
 			const outside = menuNode.querySelector("div#outside");
 			try {
-				expect(
-					menu,
-					"not to contain elements matching",
-					getStyledClassSelector(<List />),
-				);
+				expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 				act(() => {
 					anchor.click();
 				});
-				expect(menu, "to contain elements matching", getStyledClassSelector(<List />));
+				expect(menu, "to contain elements matching", getStyledClassSelector(List));
 				act(() => {
 					outside.click();
 				});
@@ -247,11 +243,7 @@ describe("DropMenu", () => {
 				act(() => {
 					clock.tick(1000); // Wait for the menu to unrender
 				});
-				expect(
-					menu,
-					"not to contain elements matching",
-					getStyledClassSelector(<List />),
-				);
+				expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 			} finally {
 				ReactDOM.unmountComponentAtNode(menuNode);
 				document.body.removeChild(menuNode);

@@ -104,7 +104,7 @@ describe("LeafNode", () => {
 			</Wrap>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(<Indicator />) },
+			{ type: "click", target: getStyledClassSelector(Indicator) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: true }] },
@@ -118,7 +118,7 @@ describe("LeafNode", () => {
 			</Wrap>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(<Indicator />) },
+			{ type: "click", target: getStyledClassSelector(Indicator) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: false }] },
@@ -244,7 +244,7 @@ describe("Node", () => {
 				)
 				.and(
 					"queried for first",
-					getStyledClassSelector(<Branch />),
+					getStyledClassSelector(Branch),
 					"to contain",
 					<PropStruct id="exists" other="data" open={false} foo={true} bar={false} />,
 				),
@@ -358,7 +358,7 @@ describe("Node", () => {
 					)
 					.and(
 						"queried for first",
-						getStyledClassSelector(<Branch />),
+						getStyledClassSelector(Branch),
 						"to contain",
 						<PropStruct id="exists" other="data" open={true} foo={true} bar={false} />,
 					),
@@ -402,7 +402,7 @@ describe("Node", () => {
 					)
 					.and(
 						"queried for first",
-						getStyledClassSelector(<Branch />),
+						getStyledClassSelector(Branch),
 						"to contain",
 						<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 					),

@@ -167,7 +167,7 @@ describe("SubPage", () => {
 			</div>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(<Backdrop />) },
+			{ type: "click", target: getStyledClassSelector(Backdrop) },
 		).then(() => {
 			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
 			expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
@@ -213,7 +213,7 @@ describe("SubPage", () => {
 			</Provider>,
 			"when mounted",
 			"queried for first",
-			getStyledClassSelector(<Bar />),
+			getStyledClassSelector(Bar),
 			"to satisfy",
 			<Provider
 				store={{
@@ -280,7 +280,7 @@ describe("SubPage", () => {
 			"with event",
 			{ type: "click", target: "#secondButton" },
 			"queried for first",
-			getStyledClassSelector(<Bar />),
+			getStyledClassSelector(Bar),
 			"to satisfy",
 			<Provider
 				store={{

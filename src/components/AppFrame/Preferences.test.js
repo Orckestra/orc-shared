@@ -162,7 +162,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(<PrefButton />) + ":last-child",
+						target: getStyledClassSelector(PrefButton) + ":last-child",
 					},
 					"to satisfy",
 					<div>
@@ -234,7 +234,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(<PrefButton />) + ":last-child",
+						target: getStyledClassSelector(PrefButton) + ":last-child",
 					},
 					"to satisfy",
 					<div>
@@ -346,7 +346,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(<PrefButton />) + ":last-child",
+						target: getStyledClassSelector(PrefButton) + ":last-child",
 					},
 					"to satisfy",
 					<div>
@@ -440,7 +440,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(<PrefButton />) + ":first-child",
+						target: getStyledClassSelector(PrefButton) + ":first-child",
 					},
 					"to satisfy",
 					<div>

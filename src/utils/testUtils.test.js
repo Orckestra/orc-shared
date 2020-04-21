@@ -220,16 +220,14 @@ describe("class name helpers", () => {
 				/^\.\S*__TestStyled-[0-9a-zA-Z]{6}/,
 			));
 
-		it("can use a custom container element type", () => {
+		it("can use the component function without rendering", () =>
 			expect(
 				getStyledClassSelector,
 				"when called with",
-				[<TestStyledTd />, "tr"],
+				[TestStyled],
 				"to match",
-				/^\.\S*__TestStyledTd-[0-9a-zA-Z]{6}/,
-			);
-			expect(console.error, "was not called");
-		});
+				/^\.\S*__TestStyled-[0-9a-zA-Z]{6}/,
+			));
 
 		it("finds the most specific class name", () =>
 			expect(

@@ -230,8 +230,8 @@ describe("Bar", () => {
 			root,
 		);
 		const bar = root.querySelector("*"); // Get the first child
-		const barElement = bar.querySelector(getStyledClassSelector(<InnerBar />));
-		const tabElements = barElement.querySelectorAll(getStyledClassSelector(<PageTab />));
+		const barElement = bar.querySelector(getStyledClassSelector(InnerBar));
+		const tabElements = barElement.querySelectorAll(getStyledClassSelector(PageTab));
 		act(() => {
 			// XXX: This is a nasty hack of jsdom, and may break unexpectedly
 			Object.defineProperty(barElement, "offsetWidth", {
@@ -384,10 +384,8 @@ describe("useTabScroll", () => {
 				root,
 			);
 			const element = root.querySelector("div#outerElement");
-			const barElement = element.querySelector(getStyledClassSelector(<InnerBar />));
-			const tabElements = barElement.querySelectorAll(
-				getStyledClassSelector(<PageTab />),
-			);
+			const barElement = element.querySelector(getStyledClassSelector(InnerBar));
+			const tabElements = barElement.querySelectorAll(getStyledClassSelector(PageTab));
 			const setBarWidth = (width = 0) => {
 				act(() => {
 					barElement.offsetWidth = width;
@@ -423,11 +421,13 @@ describe("useTabScroll", () => {
 					tabs: [20, 25],
 				},
 			);
-			expect(barElement, "to have property", "offsetWidth", 100);
-			expect(tabElements[0], "to have property", "offsetWidth", 20);
-			expect(tabElements[1], "to have property", "offsetWidth", 25);
-			expect(tabElements[2], "to have property", "offsetWidth", 0);
-			expect(tabElements[3], "to have property", "offsetWidth", 0);
+			return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+				expect(barElement, "to have property", "offsetWidth", 100);
+				expect(tabElements[0], "to have property", "offsetWidth", 20);
+				expect(tabElements[1], "to have property", "offsetWidth", 25);
+				expect(tabElements[2], "to have property", "offsetWidth", 0);
+				expect(tabElements[3], "to have property", "offsetWidth", 0);
+			});
 		});
 
 		it("can reset bar width", () => {
@@ -438,9 +438,11 @@ describe("useTabScroll", () => {
 					tabs: [50, 50, 50, 50],
 				},
 			);
-			expect(barElement, "to have property", "offsetWidth", 100);
-			setBarWidth(170);
-			expect(barElement, "to have property", "offsetWidth", 170);
+			return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+				expect(barElement, "to have property", "offsetWidth", 100);
+				setBarWidth(170);
+				expect(barElement, "to have property", "offsetWidth", 170);
+			});
 		});
 
 		it("fires resize event if bar size reset", () => {
@@ -453,12 +455,14 @@ describe("useTabScroll", () => {
 			);
 			const handler = sinon.spy().named("resizeHandler");
 			window.addEventListener("resize", handler);
-			try {
-				setBarWidth(170);
-				expect(handler, "was called once");
-			} finally {
-				window.removeEventListener("resize", handler);
-			}
+			return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+				try {
+					setBarWidth(170);
+					expect(handler, "was called once");
+				} finally {
+					window.removeEventListener("resize", handler);
+				}
+			});
 		});
 	});
 
@@ -500,7 +504,9 @@ describe("useTabScroll", () => {
 				tabs: [75, 52, 65, 35],
 			},
 		);
-		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 7);
+		return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+			expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 7);
+		});
 	});
 
 	it("scrolls to the active element if it is last", () => {
@@ -516,7 +522,9 @@ describe("useTabScroll", () => {
 				tabs: [75, 52, 65, 35],
 			},
 		);
-		expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 7);
+		return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+			expect(barElement.scrollLeft, "to equal", 75 + 52 + 65 + 35 - 150 + 7);
+		});
 	});
 
 	it("sets last shown tab if bar wide enough to hold all", () => {
@@ -533,7 +541,9 @@ describe("useTabScroll", () => {
 				tabs: [50, 50, 50, 50, 50],
 			},
 		);
-		expect(element, "to have text", "Last shown tab: 5");
+		return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+			expect(element, "to have text", "Last shown tab: 5");
+		});
 	});
 
 	it("sets last shown tab according to how many will fit on screen", () => {
@@ -550,7 +560,9 @@ describe("useTabScroll", () => {
 				tabs: [120, 120, 120, 120, 120],
 			},
 		);
-		expect(element, "to have text", "Last shown tab: 2");
+		return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+			expect(element, "to have text", "Last shown tab: 2");
+		});
 	});
 
 	it("sets last shown tab to make sure active tab + next tab are shown", () => {
@@ -567,7 +579,9 @@ describe("useTabScroll", () => {
 				tabs: [120, 120, 120, 120, 120],
 			},
 		);
-		expect(element, "to have text", "Last shown tab: 3");
+		return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+			expect(element, "to have text", "Last shown tab: 3");
+		});
 	});
 
 	it("changes last shown tab if bar is resized", () => {
@@ -584,8 +598,10 @@ describe("useTabScroll", () => {
 				tabs: [120, 120, 120, 120, 120],
 			},
 		);
-		expect(element, "to have text", "Last shown tab: 2");
-		setBarWidth(500);
-		expect(element, "to have text", "Last shown tab: 3");
+		return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+			expect(element, "to have text", "Last shown tab: 2");
+			setBarWidth(500);
+			expect(element, "to have text", "Last shown tab: 3");
+		});
 	});
 });

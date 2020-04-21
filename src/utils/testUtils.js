@@ -48,19 +48,15 @@ export const getClassSelector = (elm, index, container) => {
 	}
 };
 
-const scClassPattern = /-(?:-?[0-9a-z]){6}/i;
-export const getStyledClassSelector = (reactElm, container) => {
-	if (!isStyledComponent(reactElm.type)) {
+export const getStyledClassSelector = elm => {
+	const component = elm.type || elm;
+	if (!isStyledComponent(component)) {
 		throw new Error(
-			"<" + (reactElm.type.name || reactElm.type) + " /> is not a styled component",
+			"<" + (component.name || component) + " /> is not a styled component",
 		);
 	}
-	const classes = getElmClasses(reactElm, container).filter(cls =>
-		scClassPattern.test(cls),
-	);
-	// Last classname is most specific - subject to change!
-	const className = classes[classes.length - 1];
-	return "." + className;
+	// Styled component toString() function returns a stable class name
+	return component.toString();
 };
 
 export const firstItemComparator = (a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0);
