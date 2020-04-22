@@ -42,7 +42,9 @@ const buildStore = (reducers, devOptions = {}) => {
 		applyMiddleware(routerMiddleware(history), apiMiddleware, spawnerMiddleware),
 	);
 
-	const supportedLocales = SUPPORTED_LOCALES || ["en"];
+	const supportedLocales = SUPPORTED_LOCALES || [
+		{ language: "English", cultureIso: "en-US" },
+	];
 	const localeReducer = localeFactory(supportedLocales);
 
 	buildReducer = reducers =>

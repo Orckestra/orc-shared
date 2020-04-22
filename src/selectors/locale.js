@@ -1,10 +1,16 @@
+import Immutable from "immutable";
 import { createSelector } from "reselect";
 
 const localeData = state => state.get("locale");
 
 export const defaultLocale = createSelector(
 	localeData,
-	data => data.getIn(["supportedLocales", 0]) || "en",
+	data => data.getIn(["supportedLocales", 0, "cultureIso"]) || "en-US",
+);
+
+const supportedLocales = createSelector(
+	localeData,
+	data => data.getIn(["supportedLocales"]) || Immutable.fromJS([]),
 );
 
 export const currentLocale = createSelector(
@@ -32,12 +38,9 @@ export const orderedCultureList = createSelector(
 		}),
 );
 
-export const orderedCultureOptionList = createSelector(
-	orderedCultureList,
-	cultures,
-	(list, cultures) =>
-		list.map(iso => ({
-			value: iso,
-			label: cultures.getIn([iso, "cultureName"]),
-		})),
+export const cultureOptionList = createSelector(supportedLocales, locales =>
+	locales.map(iso => ({
+		value: iso.get("cultureIso"),
+		label: iso.get("language"),
+	})),
 );

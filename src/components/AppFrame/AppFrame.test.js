@@ -118,7 +118,8 @@ describe("AppFrame", () => {
 				},
 			},
 			locale: {
-				suportedLocales: [],
+				locale: "en",
+				supportedLocales: [],
 				cultures: {
 					"en-US": {
 						cultureIso: "en-US",

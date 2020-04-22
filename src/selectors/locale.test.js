@@ -6,7 +6,7 @@ import {
 	cultureList,
 	defaultCulture,
 	orderedCultureList,
-	orderedCultureOptionList,
+	cultureOptionList,
 } from "./locale";
 
 describe("default locale selector", () => {
@@ -14,8 +14,10 @@ describe("default locale selector", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
-				locale: "fr",
-				supportedLocales: ["en", "fr"],
+				supportedLocales: [
+					{ language: "English", cultureIso: "en" },
+					{ language: "Français", cultureIso: "fr" },
+				],
 			},
 		});
 	});
@@ -25,7 +27,7 @@ describe("default locale selector", () => {
 
 	it("returns 'en' if no supported locales", () => {
 		state = state.deleteIn(["locale", "supportedLocales"]);
-		return expect(defaultLocale, "when called with", [state], "to equal", "en");
+		return expect(defaultLocale, "when called with", [state], "to equal", "en-US");
 	});
 });
 
@@ -45,7 +47,7 @@ describe("locale selector", () => {
 
 	it("gets first supported locale if none set", () => {
 		state = state.deleteIn(["locale", "locale"]);
-		return expect(currentLocale, "when called with", [state], "to equal", "en");
+		return expect(currentLocale, "when called with", [state], "to equal", "en-US");
 	});
 });
 
@@ -194,53 +196,35 @@ describe("orderedCultureList", () => {
 		));
 });
 
-describe("orderedCultureOptionList", () => {
+describe("cultureOptionList", () => {
 	let state;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
-				cultures: {
-					"en-US": {
-						cultureIso: "en-US",
-						cultureName: "English - United States",
-						sortOrder: 0,
-						isDefault: false,
-					},
-					"en-CA": {
-						cultureIso: "en-CA",
-						cultureName: "English - Canada",
-						sortOrder: 0,
-						isDefault: false,
-					},
-					"fr-FR": {
-						cultureIso: "fr-FR",
-						cultureName: "French - France",
-						sortOrder: 0,
-						isDefault: true,
-					},
-					"fr-CA": {
-						cultureIso: "fr-CA",
-						cultureName: "French - Canada",
-						sortOrder: 0,
-						isDefault: false,
-					},
-				},
-				defaultCulture: "fr-FR",
+				supportedLocales: [
+					{ language: "English", cultureIso: "en" },
+					{ language: "Français", cultureIso: "fr" },
+					{ language: "Italiano", cultureIso: "it" },
+				],
 			},
 		});
 	});
 
 	it("returns a list of label/value pairs with the default culture first", () =>
 		expect(
-			orderedCultureOptionList,
+			cultureOptionList,
 			"called with",
 			[state],
 			"to satisfy",
 			Immutable.List([
-				{ value: "fr-FR", label: "French - France" },
-				{ value: "en-US", label: "English - United States" },
-				{ value: "en-CA", label: "English - Canada" },
-				{ value: "fr-CA", label: "French - Canada" },
+				{ value: "en", label: "English" },
+				{ value: "fr", label: "Français" },
+				{ value: "it", label: "Italiano" },
 			]),
 		));
+
+	it("returns empty list if there is no locales supported", () => {
+		state = state.deleteIn(["locale", "supportedLocales"]);
+		expect(cultureOptionList, "called with", [state], "to satisfy", Immutable.List([]));
+	});
 });
