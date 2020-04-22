@@ -308,8 +308,9 @@ describe("Bar", () => {
 									{ label: "Page 3", id: "/Foo/modu/3" },
 									{ label: "Page 4", id: "/Foo/modu/4" },
 								]}
-								AnchorComponent={MenuButton}
-							/>
+							>
+								<MenuButton />
+							</StyledMenu>
 						</TabBar>
 					</MemoryRouter>
 				</Provider>,
