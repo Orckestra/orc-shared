@@ -80,6 +80,6 @@ These should generally never be used for live code, but are highly useful tools 
 
 `getClassSelector(element, index, parentType)` will generate a string containing a CSS selector that targets the given element's class. If index is -1, all classes on the element will be used together, otherwise it works as on `getClassName` above.
 
-`getStyledClassSelector(<StyledComponent />, parentType)` discovers the most-specific class targeting elements of the `StyledComponent` type. If the passed element is not a rendered styled component, it will throw an error. In cases where the component needs a specific parent node type, `parentType` allows it to be set.
+`getStyledClassSelector(StyledComponent)` discovers the most-specific class targeting elements of the `StyledComponent` type. Either the component itself or an element rendered from it (i.e. `<StyledComponent />`) will work. If the passed element is not a rendered styled component, it will throw an error.
 
 `<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing higher order components and other cases where the properties passed to a component are important.

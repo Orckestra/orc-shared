@@ -3,47 +3,50 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { act } from "react-dom/test-utils";
 import sinon from "sinon";
-import DropMenu, { Wrapper } from "./index";
-import Anchor, { Header, Indicator } from "./Anchor";
+import DropMenu, { AnchorWrapper, Wrapper } from "./index";
 import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 import { getStyledClassSelector } from "../../utils/testUtils";
 
-const TestAnchor = ({ id, onClick, menuLabel, className, open }) => (
-	<div
-		id={id}
-		onClick={onClick}
-		className={className}
-		data-open={open}
-		data-label={menuLabel}
-	/>
+const TestAnchor = ({ id, open }) => (
+	<div id={id} data-open={open}>
+		Test anchor
+	</div>
 );
 
 describe("DropMenu", () => {
 	it("renders an anchor and a menu", () =>
 		expect(
-			<DropMenu id="test" menuLabel="TestLabel" menuItems={[]} className="test-class" />,
+			<DropMenu id="test" menuItems={[]} className="test-class">
+				TestLabel
+			</DropMenu>,
 			"when mounted",
 			"to satisfy",
 			<Wrapper className="test-class">
-				<Anchor id="testAnchor" menuLabel="TestLabel" />
+				<AnchorWrapper id="testAnchor">TestLabel</AnchorWrapper>
 				<Menu id="testDropdown" menuItems={[]} />
 			</Wrapper>,
 		));
 
 	it("flags anchor and menu when open", () =>
 		expect(
-			<DropMenu id="test" initOpen menuLabel="TestLabel" menuItems={[]} />,
+			<DropMenu id="test" initOpen menuItems={[]}>
+				TestLabel
+			</DropMenu>,
 			"when mounted",
 			"to satisfy",
 			<Wrapper>
-				<Anchor id="testAnchor" open menuLabel="TestLabel" />
+				<AnchorWrapper id="testAnchor" open>
+					TestLabel
+				</AnchorWrapper>
 				<Menu id="testDropdown" open menuItems={[]} />
 			</Wrapper>,
 		));
 
 	it("renders a right-aligned menu on demand", () =>
 		expect(
-			<DropMenu id="test" initOpen menuLabel="TestLabel" menuItems={[]} alignRight />,
+			<DropMenu id="test" initOpen menuItems={[]} alignRight>
+				TestLabel
+			</DropMenu>,
 			"when mounted",
 			"to contain",
 			<Menu id="testDropdown" open menuItems={[]} alignRight />,
@@ -54,23 +57,23 @@ describe("DropMenu", () => {
 			<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
 				<DropMenu
 					id="test"
-					menuLabel="TestLabel"
 					menuItems={[
 						{ label: "First", icon: "one", handler: () => {} },
 						{ label: "Second", icon: "two", handler: () => {} },
 					]}
 					className="test-class"
-				/>
+				>
+					TestLabel
+				</DropMenu>
 			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: "#testAnchor" },
 			"to satisfy",
 			<Wrapper className="test-class">
-				<Header id="testAnchor" open>
+				<AnchorWrapper id="testAnchor" open>
 					TestLabel
-					<Indicator open={true} />
-				</Header>
+				</AnchorWrapper>
 				<Drawer in>
 					<List id="testDropdown">
 						<Item>
@@ -98,13 +101,14 @@ describe("DropMenu", () => {
 				>
 					<DropMenu
 						id="test"
-						menuLabel="TestLabel"
 						menuItems={[
 							{ label: "First", icon: "one", handler: () => {} },
 							{ label: "Second", icon: "two", handler: () => {} },
 						]}
 						className="test-class"
-					/>
+					>
+						TestLabel
+					</DropMenu>
 				</Provider>
 			</div>,
 			menuNode,
@@ -112,19 +116,25 @@ describe("DropMenu", () => {
 		const anchor = menuNode.querySelector("#testAnchor");
 		const outside = menuNode.querySelector("div#outside");
 		try {
-			expect(menu, "not to contain elements matching", getStyledClassSelector(<List />));
+			expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 			act(() => {
 				anchor.click();
 			});
-			expect(menu, "to contain elements matching", getStyledClassSelector(<List />));
+			expect(menu, "to contain elements matching", getStyledClassSelector(List));
 			act(() => {
 				outside.click();
 			});
-			expect(menu, "to contain", <Anchor id="testAnchor" menuLabel="TestLabel" />);
+			expect(
+				menu,
+				"to contain",
+				<AnchorWrapper id="testAnchor" open={false}>
+					TestLabel
+				</AnchorWrapper>,
+			);
 			act(() => {
 				clock.tick(1000); // Wait for the menu to unrender
 			});
-			expect(menu, "not to contain elements matching", getStyledClassSelector(<List />));
+			expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 		} finally {
 			ReactDOM.unmountComponentAtNode(menuNode);
 			document.body.removeChild(menuNode);
@@ -132,37 +142,33 @@ describe("DropMenu", () => {
 		}
 	});
 
-	describe("custom anchor", () => {
+	describe("component child", () => {
 		it("renders an anchor and a menu", () =>
 			expect(
-				<DropMenu
-					id="test"
-					menuLabel="TestLabel"
-					menuItems={[]}
-					className="test-class"
-					AnchorComponent={TestAnchor}
-				/>,
+				<DropMenu id="test" menuItems={[]} className="test-class">
+					<TestAnchor />
+				</DropMenu>,
 				"when mounted",
 				"to satisfy",
 				<Wrapper className="test-class">
-					<TestAnchor id="testAnchor" menuLabel="TestLabel" />
+					<AnchorWrapper id="testAnchor">
+						<TestAnchor open={false} />
+					</AnchorWrapper>
 					<Menu id="testDropdown" menuItems={[]} />
 				</Wrapper>,
 			));
 
-		it("flags anchor and menu when open", () =>
+		it("flags children when open", () =>
 			expect(
-				<DropMenu
-					id="test"
-					initOpen
-					menuLabel="TestLabel"
-					menuItems={[]}
-					AnchorComponent={TestAnchor}
-				/>,
+				<DropMenu id="test" initOpen menuItems={[]}>
+					<TestAnchor />
+				</DropMenu>,
 				"when mounted",
 				"to satisfy",
 				<Wrapper>
-					<TestAnchor id="testAnchor" open menuLabel="TestLabel" />
+					<AnchorWrapper id="testAnchor" open>
+						<TestAnchor open />
+					</AnchorWrapper>
 					<Menu id="testDropdown" open menuItems={[]} />
 				</Wrapper>,
 			));
@@ -174,21 +180,23 @@ describe("DropMenu", () => {
 				>
 					<DropMenu
 						id="test"
-						menuLabel="TestLabel"
 						menuItems={[
 							{ label: "First", icon: "one", handler: () => {} },
 							{ label: "Second", icon: "two", handler: () => {} },
 						]}
 						className="test-class"
-						AnchorComponent={TestAnchor}
-					/>
+					>
+						<TestAnchor />
+					</DropMenu>
 				</Provider>,
 				"when mounted",
 				"with event",
 				{ type: "click", target: "#testAnchor" },
 				"to satisfy",
 				<Wrapper>
-					<TestAnchor id="testAnchor" open menuLabel="TestLabel" />
+					<AnchorWrapper id="testAnchor" open>
+						<TestAnchor open />
+					</AnchorWrapper>
 					<Drawer in>
 						<List id="testDropdown">
 							<Item>
@@ -216,14 +224,14 @@ describe("DropMenu", () => {
 					>
 						<DropMenu
 							id="test"
-							menuLabel="TestLabel"
 							menuItems={[
 								{ label: "First", icon: "one", handler: () => {} },
 								{ label: "Second", icon: "two", handler: () => {} },
 							]}
 							className="test-class"
-							AnchorComponent={TestAnchor}
-						/>
+						>
+							<TestAnchor />
+						</DropMenu>
 					</Provider>
 				</div>,
 				menuNode,
@@ -231,27 +239,19 @@ describe("DropMenu", () => {
 			const anchor = menuNode.querySelector("#testAnchor");
 			const outside = menuNode.querySelector("div#outside");
 			try {
-				expect(
-					menu,
-					"not to contain elements matching",
-					getStyledClassSelector(<List />),
-				);
+				expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 				act(() => {
 					anchor.click();
 				});
-				expect(menu, "to contain elements matching", getStyledClassSelector(<List />));
+				expect(menu, "to contain elements matching", getStyledClassSelector(List));
 				act(() => {
 					outside.click();
 				});
-				expect(menu, "to contain", <TestAnchor id="testAnchor" menuLabel="TestLabel" />);
+				expect(menu, "to contain", <TestAnchor />);
 				act(() => {
 					clock.tick(1000); // Wait for the menu to unrender
 				});
-				expect(
-					menu,
-					"not to contain elements matching",
-					getStyledClassSelector(<List />),
-				);
+				expect(menu, "not to contain elements matching", getStyledClassSelector(List));
 			} finally {
 				ReactDOM.unmountComponentAtNode(menuNode);
 				document.body.removeChild(menuNode);
@@ -264,13 +264,14 @@ describe("DropMenu", () => {
 		const MakeMenu = ({ num }) => (
 			<DropMenu
 				id={"menu" + num}
-				menuLabel={"TestLabel " + num}
 				menuItems={[
 					{ label: "First", icon: "one", handler: () => {} },
 					{ label: "Second", icon: "two", handler: () => {} },
 				]}
 				className={"test-class-" + num}
-			/>
+			>
+				{"TestLabel " + num}
+			</DropMenu>
 		);
 
 		it("renders the anchors", () =>
@@ -283,16 +284,10 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<Header>
-							TestLabel 1
-							<Indicator />
-						</Header>
+						<AnchorWrapper>TestLabel 1</AnchorWrapper>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<Header>
-							TestLabel 2
-							<Indicator />
-						</Header>
+						<AnchorWrapper>TestLabel 2</AnchorWrapper>
 					</Wrapper>
 				</div>,
 			));
@@ -319,16 +314,10 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<Header>
-							TestLabel 1
-							<Indicator />
-						</Header>
+						<AnchorWrapper>TestLabel 1</AnchorWrapper>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<Header>
-							TestLabel 2
-							<Indicator />
-						</Header>
+						<AnchorWrapper>TestLabel 2</AnchorWrapper>
 					</Wrapper>
 				</div>,
 			);
@@ -340,16 +329,10 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<Header>
-							TestLabel 1
-							<Indicator />
-						</Header>
+						<AnchorWrapper>TestLabel 1</AnchorWrapper>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<Header open>
-							TestLabel 2
-							<Indicator open={true} />
-						</Header>
+						<AnchorWrapper open>TestLabel 2</AnchorWrapper>
 						<Drawer in>
 							<List>
 								<Item>
@@ -376,10 +359,7 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<Header open>
-							TestLabel 1
-							<Indicator open={true} />
-						</Header>
+						<AnchorWrapper open>TestLabel 1</AnchorWrapper>
 						<Drawer in>
 							<List>
 								<Item>
@@ -394,10 +374,7 @@ describe("DropMenu", () => {
 						</Drawer>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<Header>
-							TestLabel 2
-							<Indicator />
-						</Header>
+						<AnchorWrapper>TestLabel 2</AnchorWrapper>
 					</Wrapper>
 				</div>,
 			);

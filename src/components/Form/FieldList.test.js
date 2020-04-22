@@ -275,7 +275,7 @@ describe("FieldList", () => {
 				value: "New Value",
 				target: `${getStyledClassSelector(
 					<List />,
-				)} > :nth-child(3) ${getStyledClassSelector(<FormInput />)}`,
+				)} > :nth-child(3) ${getStyledClassSelector(FormInput)}`,
 			},
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -482,7 +482,7 @@ describe("FieldList", () => {
 				)
 				.and("with event", {
 					type: "click",
-					target: getStyledClassSelector(<ListControlButton />),
+					target: getStyledClassSelector(ListControlButton),
 				}),
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -532,7 +532,7 @@ describe("FieldList", () => {
 				type: "click",
 				target: `${getStyledClassSelector(
 					<List />,
-				)} > :nth-child(2) ${getStyledClassSelector(<RoundButton />)}`,
+				)} > :nth-child(2) ${getStyledClassSelector(RoundButton)}`,
 			},
 		)
 			.then(() => clock.tick(1))

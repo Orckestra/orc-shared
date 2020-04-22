@@ -285,7 +285,7 @@ describe("ScopeBar", () => {
 			<ScopeBar name="Scope name" updateViewState={updateViewState} />,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(<AlignedButton />) },
+			{ type: "click", target: getStyledClassSelector(AlignedButton) },
 			"to satisfy",
 			<Bar>
 				<AlignedButton id="showScopeSelector">Scope name</AlignedButton>

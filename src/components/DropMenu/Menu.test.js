@@ -81,7 +81,7 @@ describe("Menu", () => {
 			</Provider>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(<Item />) },
+			{ type: "click", target: getStyledClassSelector(Item) },
 			"to satisfy",
 			<Drawer in>
 				<List>

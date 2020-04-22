@@ -23,7 +23,7 @@ describe("ContainedInput", () => {
 
 describe("Cover", () => {
 	it("sets a highlight when input is focused or active", () => {
-		const inputSelector = getStyledClassSelector(<ContainedInput />);
+		const inputSelector = getStyledClassSelector(ContainedInput);
 		const coverSelector = getClassSelector(<Cover />, 1); // Get the generated class name
 		mount(<Cover />);
 		return expect(
@@ -39,7 +39,7 @@ describe("Cover", () => {
 	});
 
 	it("sets a highlight when input is focused or active, when checked", () => {
-		const inputSelector = getStyledClassSelector(<ContainedInput />);
+		const inputSelector = getStyledClassSelector(ContainedInput);
 		const coverSelector = getClassSelector(<Cover value={true} />, 1); // Get the generated class name
 		mount(<Cover value={true} />);
 		return expect(
@@ -80,7 +80,7 @@ describe("Cover", () => {
 		});
 
 		it("sets a highlight when input is focused or active", () => {
-			const inputSelector = getStyledClassSelector(<ContainedInput />);
+			const inputSelector = getStyledClassSelector(ContainedInput);
 			const coverSelector = getClassSelector(<Cover theme={theme} />, 1); // Get the generated class name
 			mount(<Cover theme={theme} />);
 			return expect(
@@ -96,7 +96,7 @@ describe("Cover", () => {
 		});
 
 		it("sets a highlight when input is focused or active, when checked", () => {
-			const inputSelector = getStyledClassSelector(<ContainedInput />);
+			const inputSelector = getStyledClassSelector(ContainedInput);
 			const coverSelector = getClassSelector(<Cover theme={theme} value={true} />, 1); // Get the generated class name
 			mount(<Cover theme={theme} value={true} />);
 			return expect(

@@ -83,7 +83,7 @@ describe("Modules", () => {
 			</Provider>,
 			"when mounted",
 			"queried for first",
-			getStyledClassSelector(<TabBar />),
+			getStyledClassSelector(TabBar),
 			"to satisfy",
 			<MemoryRouter initialEntries={["/TestScope/demos"]}>
 				<TabBar>

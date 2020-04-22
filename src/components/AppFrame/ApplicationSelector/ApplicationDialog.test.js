@@ -41,7 +41,7 @@ describe("ApplicationDialog", () => {
 			"with event",
 			{
 				type: "click",
-				target: getStyledClassSelector(<Link />) + '[href="/test/url"]',
+				target: getStyledClassSelector(Link) + '[href="/test/url"]',
 			},
 			"to satisfy",
 			<List>
