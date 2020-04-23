@@ -33,11 +33,12 @@ export const ViewPort = styled.div`
 	right: 0;
 	display: flex;
 	flex-direction: column;
-	transition: transform 0.3s ease-out;
+	transition: width 0.3s ease-out;
 	${ifFlag(
 		"open",
 		css`
-			transform: translateX(150px);
+			margin-left: 0px;
+			width: calc(100% - 200px);
 		`,
 	)};
 `;
