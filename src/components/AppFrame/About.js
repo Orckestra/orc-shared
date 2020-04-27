@@ -19,10 +19,10 @@ export const AboutBox = withClickOutside(transition.div`
 	box-sizing: border-box;
 	z-index: 9999;
 	position: absolute;
-	top: calc(50% - 190px);
-	left: calc(50% - 190px);
-	height: 380px;
-	width: 380px;
+	top: calc(50% - 210px);
+	left: calc(50% - 210px);
+	height: 420px;
+	width: 420px;
 	padding: 15px 20px;
 	color: #ffffff;
 	font-size: 13px;
@@ -70,9 +70,10 @@ export const getClickOutsideHandler = ({ show }, updateViewState) =>
 		  }
 		: () => {};
 
-export const About = ({ messages }) => {
+export const About = ({ messages, currentApplication }) => {
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
 	const version = useSelector(getVersionSelector);
+
 	return (
 		<AboutBox
 			in={viewState.show}
@@ -86,6 +87,51 @@ export const About = ({ messages }) => {
 						values: { version: version },
 					}}
 				/>
+				{currentApplication && currentApplication.displayName
+					? [
+							<br key="application-br" />,
+							<Text
+								key="application-version"
+								message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
+							/>,
+					  ]
+					: null}
+				{DEPENDENCIES && DEPENDENCIES["orc-shared"]
+					? [
+							<br key="orc-shared-br" />,
+							<Text
+								key="orc-shared-version"
+								message={{
+									...messages.sharedVersion,
+									values: { version: DEPENDENCIES["orc-shared"] },
+								}}
+							/>,
+					  ]
+					: null}
+				{DEPENDENCIES && DEPENDENCIES["orc-scripts"]
+					? [
+							<br key="orc-scripts-br" />,
+							<Text
+								key="orc-scripts-version"
+								message={{
+									...messages.scriptsVersion,
+									values: { version: DEPENDENCIES["orc-scripts"] },
+								}}
+							/>,
+					  ]
+					: null}
+				{DEPENDENCIES && DEPENDENCIES["orc-secret"]
+					? [
+							<br key="orc-secret-br" />,
+							<Text
+								key="orc-secret-version"
+								message={{
+									...messages.secretVersion,
+									values: { version: DEPENDENCIES["orc-secret"] },
+								}}
+							/>,
+					  ]
+					: null}
 			</AboutParagraph>
 			<AboutParagraph long>
 				<Text message={messages.copyrightTermsNotice} />

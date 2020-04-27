@@ -67,6 +67,7 @@ describe("Topbar", () => {
 			menuMessages,
 			helpMessages,
 			applications,
+			currentApplication: applications[0],
 			applicationId: "current",
 			helpUrl: "an_help_url.com",
 		};
@@ -108,7 +109,7 @@ describe("Topbar", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
-					<Topbar {...props} applicationId="wrong" />
+					<Topbar {...props} currentApplication={{}} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -131,7 +132,7 @@ describe("Topbar", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
-					<Topbar {...props} applications={undefined} />
+					<Topbar {...props} currentApplication={undefined} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",

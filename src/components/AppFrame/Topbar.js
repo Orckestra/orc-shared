@@ -89,11 +89,10 @@ export const CurrentApp = ({ displayName, iconUri }) => (
 );
 CurrentApp.displayName = "CurrentApp";
 
-const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
-
 const Topbar = ({
 	applications,
 	applicationId,
+	currentApplication,
 	onClick,
 	menuMessages,
 	helpMessages,
@@ -108,7 +107,7 @@ const Topbar = ({
 					applicationId,
 				}}
 			/>
-			<CurrentApp {...(getApp(applications, applicationId) || {})} />
+			<CurrentApp {...(currentApplication || {})} />
 		</AppBox>
 		<Menu {...config} messages={menuMessages} />
 		<Help {...{ messages: helpMessages, helpUrl }} />
