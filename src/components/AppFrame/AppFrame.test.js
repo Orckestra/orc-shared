@@ -458,8 +458,8 @@ describe("ViewPort", () => {
 			<ViewPort />,
 			"when mounted",
 			"to have style rules satisfying",
-			"not to contain",
-			"translateX",
+			"to contain",
+			"width: calc(100% - 50px)",
 		));
 
 	it("translates to the side when open", () =>
@@ -468,6 +468,6 @@ describe("ViewPort", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
-			"transform: translateX(150px);",
+			"width: calc(100% - 200px);",
 		));
 });
