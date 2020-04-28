@@ -82,4 +82,4 @@ These should generally never be used for live code, but are highly useful tools 
 
 `getStyledClassSelector(StyledComponent)` discovers the most-specific class targeting elements of the `StyledComponent` type. Either the component itself or an element rendered from it (i.e. `<StyledComponent />`) will work. If the passed element is not a rendered styled component, it will throw an error.
 
-`<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing higher order components and other cases where the properties passed to a component are important.
+`<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing hooks, higher order components and other cases where the properties passed to a component are important.
