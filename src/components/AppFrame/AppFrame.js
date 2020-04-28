@@ -37,11 +37,12 @@ export const ViewPort = styled.div`
 	${ifFlag(
 		"open",
 		css`
-			margin-left: 0px;
 			width: calc(100% - 200px);
 		`,
 	)};
 `;
+
+const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
 
 const AppFrame = ({
 	initOpen,
@@ -61,12 +62,20 @@ const AppFrame = ({
 	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
+	const currentApplication = getApp(applications, applicationId);
 
 	return (
 		<Base>
 			<ConnectedToastList />
 			<Topbar
-				{...{ applications, applicationId, menuMessages, helpMessages, helpUrl }}
+				{...{
+					applications,
+					applicationId,
+					currentApplication,
+					menuMessages,
+					helpMessages,
+					helpUrl,
+				}}
 				onClick={reset}
 			/>
 			<Sidebar {...{ open, toggle, modules, activeModules }} />
@@ -80,7 +89,7 @@ const AppFrame = ({
 					<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
 				)}
 			</ViewPort>
-			<About messages={aboutMessages} />
+			<About messages={aboutMessages} currentApplication={currentApplication} />
 			<Preferences messages={prefMessages} />
 		</Base>
 	);
@@ -104,6 +113,9 @@ AppFrame.propTypes = {
 	aboutMessages: pt.shape({
 		ccName: ptLabel.isRequired,
 		ccVersion: ptLabel.isRequired,
+		sharedVersion: ptLabel.isRequired,
+		scriptsVersion: ptLabel.isRequired,
+		secretVersion: ptLabel.isRequired,
 		copyrightTermsNotice: ptLabel.isRequired,
 		copyright: ptLabel.isRequired,
 		allRightsReserved: ptLabel.isRequired,

@@ -20,6 +20,9 @@ describe("About", () => {
 		messages = {
 			ccName: "Test App",
 			ccVersion: { id: "foo", defaultMessage: "Version {version}" },
+			sharedVersion: { id: "foo1", defaultMessage: "Orc-Shared Framework {version}" },
+			scriptsVersion: { id: "foo2", defaultMessage: "Orc-Scripts Framework {version}" },
+			secretVersion: { id: "foo3", defaultMessage: "Orc-Secret Framework {version}" },
 			copyrightTermsNotice: "Copyright all rights reserved",
 			copyright: "Copyright",
 			allRightsReserved: "All rights reserved",
@@ -35,7 +38,56 @@ describe("About", () => {
 		};
 	});
 
-	it("renders an about box with messages and background images", () =>
+	it("renders an about box with messages and background images", () => {
+		global.DEPENDENCIES = {
+			"orc-scripts": "1.2.3",
+			"orc-secret": "5.1.7",
+			"orc-shared": "2.9.0",
+		};
+		global.BUILD_NUMBER = "2.3.2";
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<About
+						viewState={{ show: true }}
+						messages={messages}
+						currentApplication={{ displayName: "An application" }}
+					/>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<AboutBox in>
+					<img src={logoImage} alt="Orckestra" />
+					<AboutParagraph>
+						Version 5.1.9.5
+						<br />
+						An application 2.3.2
+						<br />
+						Orc-Shared Framework 2.9.0
+						<br />
+						Orc-Scripts Framework 1.2.3
+						<br />
+						Orc-Secret Framework 5.1.7
+					</AboutParagraph>
+					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
+					<AboutParagraph>
+						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						Copyright
+						<br />
+						All rights reserved
+					</AboutParagraph>
+				</AboutBox>
+			</IntlProvider>,
+		);
+	});
+
+	it("renders an about box with messages and background images but without versions", () => {
+		global.DEPENDENCIES = {};
+		global.BUILD_NUMBER = null;
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
@@ -59,7 +111,8 @@ describe("About", () => {
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,
-		));
+		);
+	});
 
 	describe("AboutBox", () => {
 		it("has a background image", () =>
