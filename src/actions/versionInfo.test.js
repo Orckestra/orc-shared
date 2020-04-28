@@ -16,14 +16,14 @@ jest.mock("../utils/buildUrl", () => {
 
 describe("getVersionInfo", () => {
 	it("creates a RSAA to get version info", () =>
-		expect(getVersionInfo, "when called", "to exhaustively satisfy", {
+		expect(getVersionInfo, "when called with", ["fr-FR"], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
 					GET_VERSION_INFO_REQUEST,
 					GET_VERSION_INFO_SUCCESS,
 					GET_VERSION_INFO_FAILURE,
 				],
-				endpoint: 'URL: diagnostic/versioninfo ""',
+				endpoint: 'URL: diagnostic/versioninfo {"cultureName":"fr-FR"}',
 				method: "GET",
 				body: undefined,
 				credentials: "include",

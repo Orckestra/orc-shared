@@ -6,7 +6,7 @@ const localeFactory = supportedLocales => {
 		(supportedLocales[0] && supportedLocales[0].cultureIso) || "en-US";
 
 	const initialState = Immutable.fromJS({
-		locale: defaultCulture,
+		locale: null,
 		supportedLocales,
 		cultures: {},
 		defaultCulture: defaultCulture,

@@ -13,11 +13,13 @@ const supportedLocales = createSelector(
 	data => data.getIn(["supportedLocales"]) || Immutable.fromJS([]),
 );
 
-export const currentLocale = createSelector(
+export const currentLocaleOrDefault = createSelector(
 	localeData,
 	defaultLocale,
 	(data, defaultLocale) => data.get("locale") || defaultLocale,
 );
+
+export const currentLocale = createSelector(localeData, data => data.get("locale"));
 
 export const cultures = createSelector(localeData, locale => locale.get("cultures"));
 

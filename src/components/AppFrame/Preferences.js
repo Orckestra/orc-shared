@@ -13,7 +13,7 @@ import { setDefaultLanguage } from "../../actions/locale";
 import { setMyApplication } from "../../actions/applications";
 import { changeLocale } from "../../actions/locale";
 import { localizedAppOptionSelector } from "../../selectors/applications";
-import { currentLocale, cultureOptionList } from "../../selectors/locale";
+import { currentLocaleOrDefault, cultureOptionList } from "../../selectors/locale";
 import { defaultAppId } from "../../selectors/settings";
 
 export const PREFS_NAME = "__prefsDialog";
@@ -78,7 +78,7 @@ const usePreferenceSetup = () => {
 	return {
 		show: viewState.show,
 		values: {
-			language: useSelector(currentLocale),
+			language: useSelector(currentLocaleOrDefault),
 			application: useSelector(defaultAppId) || "",
 			...viewState,
 		},
