@@ -15,10 +15,11 @@ export const ScopeIcon = styled(Icon).attrs(props => ({
 `;
 
 export const ScopeText = styled.div`
-	word-break: break-word;
+	overflow-wrap: break-word;
 `;
 
 export const ContentLabel = styled.div`
+	box-sizing: border-box;
 	display: flex;
 	align-items: center;
 	padding: 10px;
