@@ -47,4 +47,5 @@ export const NonIndicator = styled.div`
 export const Label = styled.div`
 	cursor: pointer;
 	flex-grow: 1;
+	width: 100%;
 `;
