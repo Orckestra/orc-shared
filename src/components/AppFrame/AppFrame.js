@@ -15,6 +15,8 @@ import About from "./About";
 import Preferences from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
 import useApplicationHelpUrl from "./useApplicationHelpUrl";
+import { getVersionInfo } from "../../actions/versionInfo";
+import { currentLocale } from "../../selectors/locale";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
@@ -57,10 +59,12 @@ const AppFrame = ({
 	scopeFilterPlaceholder,
 	noScope,
 }) => {
+	const locale = useSelector(currentLocale);
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
 	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
+	useLoader(getVersionInfo(locale), () => helpUrl !== null);
 
 	return (
 		<Base>

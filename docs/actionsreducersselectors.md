@@ -101,9 +101,11 @@ These selectors expect a `buildState` store.
 
 ## Locale
 
-`currentLocale`: Extracts and returns the currently set locale from the state.
+`currentLocale`: Extracts and returns the currently set locale from the state based on the user preferences.
 
-`defaultLocale`: Finds and returns the default locale for the application. This is the first entry in the supported locales list, or if no such list is given, falls back to `'en'`.
+`currentLocaleOrDefault`: Extracts and returns the currently set locale from the state or the default locale when the user preferences is not yet available.
+
+`defaultLocale`: Finds and returns the default locale for the application. This is the first entry in the supported locales list, or if no such list is given, falls back to `'en-US'`.
 
 `cultures`: Pulls the index of supported cultures.
 

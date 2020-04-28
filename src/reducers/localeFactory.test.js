@@ -15,7 +15,7 @@ describe("locale reducer factory", () => {
 			],
 			"to be a reducer with initial state",
 			{
-				locale: "en-US",
+				locale: null,
 				supportedLocales: [
 					{ language: "English", cultureIso: "en-US" },
 					{ language: "Francais", cultureIso: "fr" },
@@ -32,7 +32,7 @@ describe("locale reducer factory", () => {
 			[[]],
 			"to be a reducer with initial state",
 			{
-				locale: "en-US",
+				locale: null,
 				supportedLocales: [],
 				cultures: {},
 				defaultCulture: "en-US",
@@ -46,7 +46,7 @@ describe("locale reducer factory", () => {
 			[[{ language: "English" }]],
 			"to be a reducer with initial state",
 			{
-				locale: "en-US",
+				locale: null,
 				supportedLocales: [{ language: "English" }],
 				cultures: {},
 				defaultCulture: "en-US",

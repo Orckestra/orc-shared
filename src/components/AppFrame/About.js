@@ -10,6 +10,7 @@ import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
 import { getVersionSelector } from "../../selectors/versionInfo";
+import { currentLocaleOrDefault } from "../../selectors/locale";
 
 export const ABOUT_NAME = "__aboutBox";
 
@@ -73,6 +74,11 @@ export const getClickOutsideHandler = ({ show }, updateViewState) =>
 export const About = ({ messages }) => {
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
 	const version = useSelector(getVersionSelector);
+	const locale = useSelector(currentLocaleOrDefault);
+	const aboutLinkUrl = "https://www.orckestra.com".concat(
+		locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "",
+	);
+
 	return (
 		<AboutBox
 			in={viewState.show}
@@ -91,7 +97,7 @@ export const About = ({ messages }) => {
 				<Text message={messages.copyrightTermsNotice} />
 			</AboutParagraph>
 			<AboutParagraph>
-				<AboutLink href="https://www.orckestra.com/">
+				<AboutLink href={aboutLinkUrl}>
 					<Text message={messages.ccName} />
 				</AboutLink>
 			</AboutParagraph>

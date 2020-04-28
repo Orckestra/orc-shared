@@ -10,5 +10,10 @@ export const [
 	GET_VERSION_INFO_FAILURE,
 ] = makeActionTypes(GET_VERSION_INFO);
 
-export const getVersionInfo = () =>
-	makeOrcApiAction(GET_VERSION_INFO, buildUrl(["diagnostic", "versioninfo"]));
+export const getVersionInfo = locale =>
+	makeOrcApiAction(
+		GET_VERSION_INFO,
+		buildUrl(["diagnostic", "versioninfo"], {
+			cultureName: locale,
+		}),
+	);

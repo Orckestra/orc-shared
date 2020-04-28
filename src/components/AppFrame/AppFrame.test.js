@@ -22,6 +22,11 @@ import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
 import { BlockWithA } from "./MenuItem";
 import { HelpLink } from "./Help";
+import {
+	GET_VERSION_INFO_FAILURE,
+	GET_VERSION_INFO_REQUEST,
+	GET_VERSION_INFO_SUCCESS,
+} from "../../actions/versionInfo";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -440,6 +445,41 @@ describe("AppFrame", () => {
 									GET_APPLICATIONS_REQUEST,
 									GET_APPLICATIONS_SUCCESS,
 									GET_APPLICATIONS_FAILURE,
+								],
+								endpoint: "URL",
+								method: "GET",
+							},
+						},
+					],
+				},
+			]),
+		);
+	});
+
+	it("loads version info if no help url yet", () => {
+		state = state.setIn(["versionInfo", "defaultHelpUrl"], null);
+		return expect(
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<I18n>
+							<AppFrame {...props} />
+						</I18n>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+			"when mounted",
+			"to be truthy",
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							[RSAA]: {
+								types: [
+									GET_VERSION_INFO_REQUEST,
+									GET_VERSION_INFO_SUCCESS,
+									GET_VERSION_INFO_FAILURE,
 								],
 								endpoint: "URL",
 								method: "GET",

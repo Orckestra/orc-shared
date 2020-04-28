@@ -27,6 +27,13 @@ describe("About", () => {
 		state = Immutable.fromJS({
 			view: { [ABOUT_NAME]: { show: true } },
 			versionInfo: { version: "5.1.9.5" },
+			locale: {
+				locale: "en-US",
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -50,7 +57,7 @@ describe("About", () => {
 					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
 					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
+						<AboutLink href="https://www.orckestra.com">Test App</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
 						Copyright
@@ -60,6 +67,34 @@ describe("About", () => {
 				</AboutBox>
 			</IntlProvider>,
 		));
+
+	it("renders an about box with about ling to the french version of the web site.", () => {
+		state = state.setIn(["locale", "locale"], "FR-FR");
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<About viewState={{ show: true }} messages={messages} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<AboutBox in>
+					<img src={logoImage} alt="Orckestra" />
+					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
+					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
+					<AboutParagraph>
+						<AboutLink href="https://www.orckestra.com/fr">Test App</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						Copyright
+						<br />
+						All rights reserved
+					</AboutParagraph>
+				</AboutBox>
+			</IntlProvider>,
+		);
+	});
 
 	describe("AboutBox", () => {
 		it("has a background image", () =>
