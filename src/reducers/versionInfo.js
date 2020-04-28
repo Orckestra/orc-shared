@@ -1,5 +1,5 @@
 import Immutable from "immutable";
-import { GET_VERSION_INFO_SUCCESS } from "../actions/versionInfo";
+import { GET_VERSION_INFO_SUCCESS, RESET_VERSION_INFO } from "../actions/versionInfo";
 
 const initialState = Immutable.fromJS({
 	version: null,
@@ -15,6 +15,15 @@ const versionInfoReducer = (state = initialState, action) => {
 				s.set("defaultHelpUrl", action.payload.defaultHelpUrl);
 				s.set("version", action.payload.versionOCC);
 			});
+		}
+		case RESET_VERSION_INFO: {
+			return state.merge(
+				Immutable.fromJS({
+					version: null,
+					defaultHelpUrl: null,
+					moduleHelpUrls: [],
+				}),
+			);
 		}
 		default:
 			return state;
