@@ -57,12 +57,13 @@ describe("with id handling", () => {
 				.then(() => {
 					ReactDOM.render(<EnhComp foo="feep" />, rootElm);
 				})
+				.then(() => new Promise(resolve => setTimeout(resolve, 10)))
 				.then(() =>
 					expect(rootElm.querySelector("div"), "to satisfy", <div id="same0" />),
 				);
 		});
 
-		it("reverts to a generated id if a fixed id is intermittently provided", () => {
+		it("reverts to generated id if a fixed id is intermittently provided", () => {
 			const EnhComp = withId("intermittent")(TestComp);
 			ReactDOM.render(<EnhComp />, rootElm);
 			return expect(
@@ -80,7 +81,7 @@ describe("with id handling", () => {
 					ReactDOM.render(<EnhComp />, rootElm);
 				})
 				.then(() =>
-					expect(rootElm.querySelector("div"), "to satisfy", <div id="intermittent1" />),
+					expect(rootElm.querySelector("div"), "to satisfy", <div id="intermittent0" />),
 				);
 		});
 	});
