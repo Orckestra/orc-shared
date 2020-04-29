@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import loadable from "@loadable/component";
-import { compose, branch, renderComponent } from "recompose";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import LoadingIcon from "./LoadingIcon";
 import ErrorPlaceholder from "./ErrorPlaceholder";
@@ -24,16 +23,11 @@ export const Loading = ({ error }) => {
 	}
 };
 
-const errorBoundary = compose(
-	withErrorBoundary("Loader"),
-	branch(({ error }) => !!error, renderComponent(Loading)),
-);
-
-const Loader = compLoader => {
-	const Comp = loadable(compLoader, {
-		fallback: <Loading />,
-	});
-	const BoundedComp = errorBoundary(Comp);
+const Loader = loaderFunc => {
+	const Comp = loadable(loaderFunc, { fallback: <Loading /> });
+	const BoundedComp = withErrorBoundary("Loader")(({ error, ...props }) =>
+		error ? <Loading error={error} /> : <Comp {...props} />,
+	);
 	BoundedComp.load = () => Comp.load();
 	return BoundedComp;
 };
