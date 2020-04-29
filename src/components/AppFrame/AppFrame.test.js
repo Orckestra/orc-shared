@@ -22,6 +22,8 @@ import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
 import { BlockWithA } from "./MenuItem";
 import { HelpLink } from "./Help";
+import { About } from "./About";
+import Preferences from "./Preferences";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -37,8 +39,11 @@ const TestComp3 = () => <div id="view3" />;
 describe("AppFrame", () => {
 	let props, state, store, modalRoot;
 	beforeEach(() => {
+		global.DEPENDENCIES = {
+			"orc-shared": "0.9.0",
+		};
 		props = {
-			applicationId: "3",
+			applicationId: "Orders",
 			modules: [],
 			activeModules: { foo: true },
 			menuLabel: "TestLabel",
@@ -58,6 +63,18 @@ describe("AppFrame", () => {
 				ccVersion: {
 					id: "msg.ccVersion",
 					defaultMessage: "Commerce Cloud {version}",
+				},
+				sharedVersion: {
+					id: "msg.sharedVersion",
+					defaultMessage: "shared",
+				},
+				scriptsVersion: {
+					id: "msg.scriptsVersion",
+					defaultMessage: "scripts",
+				},
+				secretVersion: {
+					id: "msg.secretVersion",
+					defaultMessage: "secret",
 				},
 				copyrightTermsNotice: {
 					id: "msg.copyrightTermsNotice",
@@ -208,6 +225,7 @@ describe("AppFrame", () => {
 									</AppSelWrapper>
 									<AppLabel>
 										<AppLogo />
+										Marketing Legacy
 									</AppLabel>
 								</AppBox>
 								<MenuWrapper>
@@ -230,6 +248,136 @@ describe("AppFrame", () => {
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />
 							</ViewPort>
+							<About messages={props.aboutMessages} />
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+		);
+	});
+
+	it("renders a viewport with scope selector, top bar and sidebar when no current application", () => {
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		props.children = [
+			<TestComp1 key="1" />,
+			<TestComp2 key="2" />,
+			<TestComp3 key="3" />,
+		];
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} applicationId="other" />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base>
+							<Wrapper>
+								<AppBox>
+									<AppSelWrapper>
+										<MenuIcon />
+									</AppSelWrapper>
+									<AppLabel>
+										<AppLogo />
+									</AppLabel>
+								</AppBox>
+								<MenuWrapper>
+									<Ignore />
+								</MenuWrapper>
+								<HelpLink>Help</HelpLink>
+							</Wrapper>
+							<SideBar>
+								<MenuToggle />
+								<Ignore />
+								<Ignore />
+								<Ignore />
+								<Logo />
+							</SideBar>
+							<ViewPort>
+								<ScopeBar>
+									<AlignedButton>Test 1</AlignedButton>
+								</ScopeBar>
+								<TestComp1 key="1" />
+								<TestComp2 key="2" />
+								<TestComp3 key="3" />
+							</ViewPort>
+							<About messages={props.aboutMessages} />
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+		);
+	});
+
+	it("renders a viewport with scope selector, top bar and sidebar when no applications at all", () => {
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		props.children = [
+			<TestComp1 key="1" />,
+			<TestComp2 key="2" />,
+			<TestComp3 key="3" />,
+		];
+		state = state.setIn(["applications", "list"], Immutable.fromJS([]));
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} applicationId="other" />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base>
+							<Wrapper>
+								<AppBox>
+									<AppSelWrapper>
+										<MenuIcon />
+									</AppSelWrapper>
+									<AppLabel>
+										<AppLogo />
+									</AppLabel>
+								</AppBox>
+								<MenuWrapper>
+									<Ignore />
+								</MenuWrapper>
+								<HelpLink>Help</HelpLink>
+							</Wrapper>
+							<SideBar>
+								<MenuToggle />
+								<Ignore />
+								<Ignore />
+								<Ignore />
+								<Logo />
+							</SideBar>
+							<ViewPort>
+								<ScopeBar>
+									<AlignedButton>Test 1</AlignedButton>
+								</ScopeBar>
+								<TestComp1 key="1" />
+								<TestComp2 key="2" />
+								<TestComp3 key="3" />
+							</ViewPort>
+							<About messages={props.aboutMessages} />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
@@ -271,6 +419,7 @@ describe("AppFrame", () => {
 									</AppSelWrapper>
 									<AppLabel>
 										<AppLogo />
+										Marketing Legacy
 									</AppLabel>
 								</AppBox>
 								<MenuWrapper>
