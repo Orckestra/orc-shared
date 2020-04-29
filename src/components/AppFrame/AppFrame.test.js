@@ -23,7 +23,6 @@ import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
 import { BlockWithA } from "./MenuItem";
 import { HelpLink } from "./Help";
 import { About } from "./About";
-import Preferences from "./Preferences";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -175,7 +174,7 @@ describe("AppFrame", () => {
 			},
 			settings: { defaultScope: "myScope", defaultApp: "12" },
 			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
-			view: { scopeSelector: { filter: "1" } },
+			view: { scopeSelector: { filter: "1" }, __prefsDialog: { show: false } },
 			toasts: { queue: [] },
 		});
 		store = {
@@ -447,6 +446,44 @@ describe("AppFrame", () => {
 		);
 	});
 
+	it("renders a viewport with cursor pointer event disabled", () => {
+		state = state.setIn(["view", "__prefsDialog", "show"], true);
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		props.children = [
+			<TestComp1 key="1" />,
+			<TestComp2 key="2" />,
+			<TestComp3 key="3" />,
+		];
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base preferencesOpen={true}>
+							<Ignore />
+							<Ignore />
+							<Ignore />
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+		);
+	});
+
 	it("provides open flag, toggle and reset functions", () => {
 		const element = mount(
 			<Provider store={store}>
@@ -618,5 +655,25 @@ describe("ViewPort", () => {
 			"to have style rules satisfying",
 			"to contain",
 			"width: calc(100% - 200px);",
+		));
+});
+
+describe("Base", () => {
+	it("pointer-events should be to default when preferences is hidden", () =>
+		expect(
+			<Base />,
+			"when mounted",
+			"to have style rules satisfying",
+			"not to contain",
+			"pointer-events: none;",
+		));
+
+	it("pointer-events should be none when preferences is shown", () =>
+		expect(
+			<Base preferencesOpen={true} />,
+			"when mounted",
+			"to have style rules satisfying",
+			"to contain",
+			"pointer-events: none;",
 		));
 });

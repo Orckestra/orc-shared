@@ -10,7 +10,6 @@ import {
 	getDefaultScope,
 	validateOvertureModule,
 } from "./scopes";
-import { getElmClasses } from "../utils/testUtils";
 
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
