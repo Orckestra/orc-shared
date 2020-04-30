@@ -13,8 +13,9 @@ import { setDefaultLanguage } from "../../actions/locale";
 import { setMyApplication } from "../../actions/applications";
 import { changeLocale } from "../../actions/locale";
 import { localizedAppOptionSelector } from "../../selectors/applications";
-import { currentLocale, cultureOptionList } from "../../selectors/locale";
+import { currentLocaleOrDefault, cultureOptionList } from "../../selectors/locale";
 import { defaultAppId } from "../../selectors/settings";
+import { resetVersionInfo } from "../../actions/versionInfo";
 
 export const PREFS_NAME = "__prefsDialog";
 
@@ -78,7 +79,7 @@ const usePreferenceSetup = () => {
 	return {
 		show: viewState.show,
 		values: {
-			language: useSelector(currentLocale),
+			language: useSelector(currentLocaleOrDefault),
 			application: useSelector(defaultAppId) || "",
 			...viewState,
 		},
@@ -90,6 +91,7 @@ const usePreferenceSetup = () => {
 			if (viewState.language) {
 				dispatch(changeLocale(viewState.language));
 				dispatch(setDefaultLanguage(viewState.language));
+				dispatch(resetVersionInfo());
 				// TODO: reload any language dependent data?
 			}
 			if (viewState.application) {

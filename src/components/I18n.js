@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { IntlProvider } from "react-intl";
-import { currentLocale } from "../selectors/locale";
+import { currentLocaleOrDefault } from "../selectors/locale";
 
 const I18n = props => {
-	const locale = useSelector(currentLocale);
+	const locale = useSelector(currentLocaleOrDefault);
 	const messages = require("translations/" + locale + ".json");
 	return (
 		<IntlProvider

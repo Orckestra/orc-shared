@@ -1,14 +1,14 @@
 import { createSelector } from "reselect";
 import Immutable from "immutable";
 import { getCurrentScope } from "./navigation";
-import { currentLocale } from "./locale";
+import { currentLocaleOrDefault } from "./locale";
 import { normalizeForSearch, setTranslation } from "../utils";
 
 const scopeData = state => state.get("scopes");
 
 const localizedScopesSelector = createSelector(
 	scopeData,
-	currentLocale,
+	currentLocaleOrDefault,
 	(scopes, locale) =>
 		scopes.map(scope =>
 			scope.withMutations(s => {

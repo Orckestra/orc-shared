@@ -28,6 +28,7 @@ import Preferences, {
 	createGetUpdater,
 	PREFS_NAME,
 } from "./Preferences";
+import { RESET_VERSION_INFO } from "../../actions/versionInfo";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -315,6 +316,13 @@ describe("Preferences", () => {
 									},
 									options: { redirect: "follow" },
 								},
+							}),
+						],
+					},
+					{
+						args: [
+							expect.it("to equal", {
+								type: RESET_VERSION_INFO,
 							}),
 						],
 					},
