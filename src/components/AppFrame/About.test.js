@@ -80,7 +80,7 @@ describe("About", () => {
 					</AboutParagraph>
 					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
+						<AboutLink href="https://www.orckestra.com">Test App</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
 						Copyright
