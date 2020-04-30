@@ -75,6 +75,7 @@ export const Scope = ({ children, filterPlaceholder }) => {
 				reset={reset}
 				getScope={getScope}
 				filter={filter}
+				currentScope={currentScope}
 				updateFilter={updateFilter}
 				defaultNodeState={{}}
 				filterPlaceholder={filterPlaceholder}

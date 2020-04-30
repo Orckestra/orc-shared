@@ -233,6 +233,57 @@ describe("TreeView", () => {
 		);
 	});
 
+	it("shows a selected node", () => {
+		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], true);
+		testProps.selectedNodeId = "testNode1";
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label isSelectedNode={true}>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator />
+							<Label>
+								<div id="testNode3" />
+							</Label>
+						</Leaf>
+						<Leaf>
+							<NonIndicator />
+							<Label>
+								<div id="testNode4" />
+							</Label>
+						</Leaf>
+					</Branch>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		);
+	});
+
 	it("overrides default node state with view state", () => {
 		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], false);
 		return expect(

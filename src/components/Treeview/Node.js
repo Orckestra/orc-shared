@@ -6,7 +6,7 @@ import { safeGet, stripKey } from "../../utils";
 
 export const TreeContext = React.createContext();
 
-export const LeafNode = ({ dark, ...nodeData }) => (
+export const LeafNode = ({ dark, isSelectedNode, ...nodeData }) => (
 	<Leaf dark={dark}>
 		<TreeContext.Consumer>
 			{({ Content, nodeState, updateNodeState, dark, otherProps }) => {
@@ -22,7 +22,7 @@ export const LeafNode = ({ dark, ...nodeData }) => (
 						) : (
 							<NonIndicator />
 						)}
-						<Label>
+						<Label isSelectedNode={isSelectedNode}>
 							<Content {...stripKey("children", nodeData)} {...otherProps} />
 						</Label>
 					</React.Fragment>
@@ -33,9 +33,9 @@ export const LeafNode = ({ dark, ...nodeData }) => (
 );
 LeafNode.displayName = "LeafNode";
 
-export const RootNode = nodeData => (
+export const RootNode = ({ isSelectedNode, ...nodeData }) => (
 	<Root>
-		<Label>
+		<Label isSelectedNode={isSelectedNode}>
 			<TreeContext.Consumer>
 				{({ Content, otherProps }) => (
 					<Content {...stripKey("children", nodeData)} {...otherProps} />
@@ -48,16 +48,22 @@ RootNode.displayName = "RootNode";
 
 export const Node = ({ root, id }) => (
 	<TreeContext.Consumer>
-		{({ openAll, getNode, nodeState, dark }) => {
+		{({ openAll, getNode, selectedNodeId, nodeState, dark }) => {
 			const nodeData = getNode(id);
 			if (!nodeData) return null;
+			const isSelectedNode = selectedNodeId === id;
 			const open = root || openAll || nodeState[id] || false;
 			return (
 				<React.Fragment>
 					{root ? (
-						<RootNode {...nodeData} />
+						<RootNode {...nodeData} isSelectedNode={isSelectedNode} />
 					) : (
-						<LeafNode {...nodeData} open={open} dark={dark} />
+						<LeafNode
+							{...nodeData}
+							open={open}
+							dark={dark}
+							isSelectedNode={isSelectedNode}
+						/>
 					)}
 					{open && safeGet(nodeData, "children", "length") ? (
 						<Branch dark={dark}>
