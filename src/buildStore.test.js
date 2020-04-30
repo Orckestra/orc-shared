@@ -73,7 +73,7 @@ describe("buildStore", () => {
 							action: "POP",
 						},
 						locale: {
-							locale: "en-US",
+							locale: null,
 							supportedLocales: [
 								{ language: "English", cultureIso: "en-US" },
 								{ language: "Francais", cultureIso: "fr" },
