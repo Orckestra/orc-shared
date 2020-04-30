@@ -50,6 +50,11 @@ export const getCurrentScope = createSelector(
 	(id, defaultScope) => id || defaultScope || "Global",
 );
 
+export const getCurrentScopeFromRoute = createSelector(
+	getLastRouteScope,
+	scope => scope || null,
+);
+
 const selectTabs = createSelector(getNavigationState, nav => nav.get("tabIndex"));
 
 export const selectTabGetter = createSelector(selectTabs, tabs => path => tabs.get(path));
