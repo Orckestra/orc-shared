@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "unexpected-reaction";
+import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import { withInfiniteScroll, getOnScroll } from "./withInfiniteScroll";
 
@@ -46,20 +46,25 @@ describe("withInfiniteScroll", () => {
 		));
 
 	describe.skip("scroll prop updates", () => {
-		// jsdom does not appear to support scroll events and values as of 2019-12
-		let ScrollComp;
+		let ScrollComp, onScroll, element;
 		beforeEach(() => {
 			ScrollComp = withInfiniteScroll(TestComp);
+			onScroll = sinon.spy().named("onScroll");
+			element = mount(<ScrollComp onScroll={onScroll} />);
+			Object.defineProperty(element, "scrollTop", {
+				value: 0,
+				writable: true,
+			});
 		});
 
 		it("updates the scrollTop prop", () => {
-			const onScroll = sinon.spy().named("onScroll");
-			const element = mount(<ScrollComp onScroll={onScroll} />);
 			expect(element, "to have text", expect.it("to contain", "scrollTop: 0"));
 			element.scrollTop = 100;
-			element.dispatchEvent(new window.Event("scroll"));
-			expect(onScroll, "was called");
-			expect(element, "to have text", expect.it("to contain", "scrollTop: 100"));
+			element.dispatchEvent(new Event("scroll"));
+			return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
+				expect(onScroll, "was called");
+				expect(element, "to have text", expect.it("to contain", "scrollTop: 100"));
+			});
 		});
 	});
 
@@ -69,7 +74,6 @@ describe("withInfiniteScroll", () => {
 			loader = sinon.spy().named("loader");
 			oldOnScroll = sinon.spy().named("oldOnScroll");
 			onScroll = getOnScroll(
-				{},
 				{
 					onScroll: oldOnScroll,
 					length: 10,
@@ -77,15 +81,16 @@ describe("withInfiniteScroll", () => {
 					pageLength: 10,
 					scrollLoader: loader,
 				},
+				() => {},
 			);
 		});
 
 		it("has default values", () => {
 			onScroll = getOnScroll(
-				{},
 				{
 					scrollLoader: loader,
 				},
+				() => {},
 			);
 			const fakeEvent = getFakeEvent(100);
 			return expect(onScroll, "called with", [fakeEvent]).then(() =>
@@ -113,7 +118,6 @@ describe("withInfiniteScroll", () => {
 
 		it("does not call the loader if the latest page is not loaded", () => {
 			onScroll = getOnScroll(
-				{},
 				{
 					onScroll: oldOnScroll,
 					length: 10,
@@ -121,6 +125,7 @@ describe("withInfiniteScroll", () => {
 					pageLength: 10,
 					scrollLoader: loader,
 				},
+				() => {},
 			);
 			return expect(onScroll, "called with", [getFakeEvent(350)]).then(() =>
 				expect(loader, "was not called"),
@@ -129,7 +134,6 @@ describe("withInfiniteScroll", () => {
 
 		it("does not call the loader if a partial page is loaded", () => {
 			onScroll = getOnScroll(
-				{},
 				{
 					onScroll: oldOnScroll,
 					length: 10,
@@ -137,6 +141,7 @@ describe("withInfiniteScroll", () => {
 					pageLength: 7,
 					scrollLoader: loader,
 				},
+				() => {},
 			);
 			return expect(onScroll, "called with", [getFakeEvent(350)]).then(() =>
 				expect(loader, "was not called"),
