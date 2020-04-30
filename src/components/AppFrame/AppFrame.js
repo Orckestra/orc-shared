@@ -12,14 +12,23 @@ import Scope, { Bar as ScopeBar } from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 import About from "./About";
-import Preferences from "./Preferences";
+import Preferences, { PREFS_NAME } from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
 import useApplicationHelpUrl from "./useApplicationHelpUrl";
+import useViewState from "../../hooks/useViewState";
+import { getVersionInfo } from "../../actions/versionInfo";
+import { currentLocale } from "../../selectors/locale";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
 	height: 100%;
 	overflow: hidden;
+	${ifFlag(
+		"preferencesOpen",
+		css`
+			pointer-events: none;
+		`,
+	)};
 `;
 
 export const ViewPort = styled.div`
@@ -58,14 +67,17 @@ const AppFrame = ({
 	scopeFilterPlaceholder,
 	noScope,
 }) => {
+	const locale = useSelector(currentLocale);
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
 	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
 	const currentApplication = getApp(applications, applicationId);
+	useLoader(getVersionInfo(locale), () => helpUrl !== null);
+	const [prefViewState] = useViewState(PREFS_NAME);
 
 	return (
-		<Base>
+		<Base preferencesOpen={prefViewState.show}>
 			<ConnectedToastList />
 			<Topbar
 				{...{

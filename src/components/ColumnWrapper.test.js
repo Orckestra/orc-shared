@@ -1,5 +1,4 @@
 import React from "react";
-import { getClassSelector, getStyledClassSelector } from "../utils/testUtils";
 import ColumnWrapper from "./ColumnWrapper";
 
 describe("ColumnWrapper", () => {

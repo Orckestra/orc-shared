@@ -13,8 +13,10 @@ import { setDefaultLanguage } from "../../actions/locale";
 import { setMyApplication } from "../../actions/applications";
 import { changeLocale } from "../../actions/locale";
 import { localizedAppOptionSelector } from "../../selectors/applications";
-import { currentLocale, cultureOptionList } from "../../selectors/locale";
+import { currentLocaleOrDefault, cultureOptionList } from "../../selectors/locale";
 import { defaultAppId } from "../../selectors/settings";
+import withClickOutside from "../../hocs/withClickOutside";
+import { resetVersionInfo } from "../../actions/versionInfo";
 
 export const PREFS_NAME = "__prefsDialog";
 
@@ -26,9 +28,13 @@ export const PrefPanel = styled(Sidepanel)`
 	top: 40px;
 	box-shadow: -3px 2px 5px 0px rgba(0, 0, 0, 0.2);
 	z-index: 9998;
+`;
+
+export const Wrapper = withClickOutside(styled.div`
 	display: flex;
 	flex-direction: column;
-`;
+	height: 100%;
+`);
 
 export const Header = styled.div`
 	flex: 0 0 auto;
@@ -78,7 +84,7 @@ const usePreferenceSetup = () => {
 	return {
 		show: viewState.show,
 		values: {
-			language: useSelector(currentLocale),
+			language: useSelector(currentLocaleOrDefault),
 			application: useSelector(defaultAppId) || "",
 			...viewState,
 		},
@@ -90,6 +96,7 @@ const usePreferenceSetup = () => {
 			if (viewState.language) {
 				dispatch(changeLocale(viewState.language));
 				dispatch(setDefaultLanguage(viewState.language));
+				dispatch(resetVersionInfo());
 				// TODO: reload any language dependent data?
 			}
 			if (viewState.application) {
@@ -98,6 +105,11 @@ const usePreferenceSetup = () => {
 			dispatch(setValue(PREFS_NAME, { show: false }));
 		},
 	};
+};
+
+export const clickOutsideHandler = e => {
+	e.preventDefault();
+	e.stopPropagation();
 };
 
 export const Preferences = ({ messages }) => {
@@ -112,38 +124,40 @@ export const Preferences = ({ messages }) => {
 	} = usePreferenceSetup();
 	return (
 		<PrefPanel in={show} width="380px" timeout={400}>
-			<Header>
-				<Text message={messages.preferences} />
-			</Header>
-			<PrefForm>
-				<FormContext.Provider value={{ values }}>
-					<FieldElements
-						fields={[
-							{
-								label: messages.language,
-								type: "Selector",
-								name: "language",
-								options: languageOptions,
-							},
-							{
-								label: messages.defaultApp,
-								type: "Selector",
-								name: "application",
-								options: applicationOptions,
-							},
-						]}
-						getUpdater={getUpdater}
-					/>
-				</FormContext.Provider>
-			</PrefForm>
-			<Footer>
-				<PrefButton id="cancelPrefs" onClick={clear}>
-					<Text message={messages.cancel} />
-				</PrefButton>
-				<PrefButton id="savePrefs" primary onClick={save}>
-					<Text message={messages.save} />
-				</PrefButton>
-			</Footer>
+			<Wrapper onClickOutside={clickOutsideHandler}>
+				<Header>
+					<Text message={messages.preferences} />
+				</Header>
+				<PrefForm>
+					<FormContext.Provider value={{ values }}>
+						<FieldElements
+							fields={[
+								{
+									label: messages.language,
+									type: "Selector",
+									name: "language",
+									options: languageOptions,
+								},
+								{
+									label: messages.defaultApp,
+									type: "Selector",
+									name: "application",
+									options: applicationOptions,
+								},
+							]}
+							getUpdater={getUpdater}
+						/>
+					</FormContext.Provider>
+				</PrefForm>
+				<Footer>
+					<PrefButton id="cancelPrefs" onClick={clear}>
+						<Text message={messages.cancel} />
+					</PrefButton>
+					<PrefButton id="savePrefs" primary onClick={save}>
+						<Text message={messages.save} />
+					</PrefButton>
+				</Footer>
+			</Wrapper>
 		</PrefPanel>
 	);
 };

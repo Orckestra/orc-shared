@@ -26,8 +26,11 @@ import Preferences, {
 	Footer,
 	PrefButton,
 	createGetUpdater,
+	Wrapper,
 	PREFS_NAME,
+	clickOutsideHandler,
 } from "./Preferences";
+import { RESET_VERSION_INFO } from "../../actions/versionInfo";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -172,39 +175,41 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Header>Preferences</Header>
-							<PrefForm>
-								<FieldBox>
-									<Label id="language_label">Display language</Label>
-									<SelectorWrapper>
-										<select id="language" value="en-US" onChange={() => {}}>
-											<option>English</option>
-											<option>EnglishCa</option>
-											<option>Francais</option>
-											<option>Francais-Qc</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-								<FieldBox>
-									<Label id="application_label">Default application</Label>
-									<SelectorWrapper>
-										<select id="application" value={4} onChange={() => {}}>
-											<option>Marketing Legacy</option>
-											<option>Product Information</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-							</PrefForm>
-							<Footer>
-								<PrefButton id="cancelPrefs">Cancel</PrefButton>
-								<PrefButton id="savePrefs" primary>
-									Save
-								</PrefButton>
-							</Footer>
+							<Wrapper>
+								<Header>Preferences</Header>
+								<PrefForm>
+									<FieldBox>
+										<Label id="language_label">Display language</Label>
+										<SelectorWrapper>
+											<select id="language" value="en-US" onChange={() => {}}>
+												<option>English</option>
+												<option>EnglishCa</option>
+												<option>Francais</option>
+												<option>Francais-Qc</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+									<FieldBox>
+										<Label id="application_label">Default application</Label>
+										<SelectorWrapper>
+											<select id="application" value={4} onChange={() => {}}>
+												<option>Marketing Legacy</option>
+												<option>Product Information</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+								</PrefForm>
+								<Footer>
+									<PrefButton id="cancelPrefs">Cancel</PrefButton>
+									<PrefButton id="savePrefs" primary>
+										Save
+									</PrefButton>
+								</Footer>
+							</Wrapper>
 						</div>
 					</div>,
 				),
@@ -244,34 +249,36 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Ignore />
-							<PrefForm>
-								<FieldBox>
-									<Label id="language_label">Display language</Label>
-									<SelectorWrapper>
-										<select id="language" value="fr-CA" onChange={() => {}}>
-											<option>English</option>
-											<option>EnglishCa</option>
-											<option>Francais</option>
-											<option>Francais-Qc</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-								<FieldBox>
-									<Label id="application_label">Default application</Label>
-									<SelectorWrapper>
-										<select id="application" value={4} onChange={() => {}}>
-											<option>Marketing Legacy</option>
-											<option>Product Information</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-							</PrefForm>
-							<Ignore />
+							<Wrapper>
+								<Ignore />
+								<PrefForm>
+									<FieldBox>
+										<Label id="language_label">Display language</Label>
+										<SelectorWrapper>
+											<select id="language" value="fr-CA" onChange={() => {}}>
+												<option>English</option>
+												<option>EnglishCa</option>
+												<option>Francais</option>
+												<option>Francais-Qc</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+									<FieldBox>
+										<Label id="application_label">Default application</Label>
+										<SelectorWrapper>
+											<select id="application" value={4} onChange={() => {}}>
+												<option>Marketing Legacy</option>
+												<option>Product Information</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+								</PrefForm>
+								<Ignore />
+							</Wrapper>
 						</div>
 					</div>,
 				),
@@ -321,6 +328,13 @@ describe("Preferences", () => {
 					{
 						args: [
 							expect.it("to equal", {
+								type: RESET_VERSION_INFO,
+							}),
+						],
+					},
+					{
+						args: [
+							expect.it("to equal", {
 								type: "VIEW_STATE_SET",
 								payload: { name: PREFS_NAME, value: { show: false } },
 							}),
@@ -328,6 +342,17 @@ describe("Preferences", () => {
 					},
 				]),
 			);
+	});
+
+	it("stop events propagation with clickOutsideHandler", () => {
+		const mockEvent = {
+			preventDefault: sinon.spy().named("event.preventDefault"),
+			stopPropagation: sinon.spy().named("event.stopPropagation"),
+		};
+		return expect(clickOutsideHandler, "called with", [mockEvent]).then(() => {
+			expect(mockEvent.preventDefault, "was called");
+			expect(mockEvent.stopPropagation, "was called");
+		});
 	});
 
 	it("shows view state fields, saves application change", () => {
@@ -356,34 +381,36 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Ignore />
-							<PrefForm>
-								<FieldBox>
-									<Label id="language_label">Display language</Label>
-									<SelectorWrapper>
-										<select id="language" value="en-US" onChange={() => {}}>
-											<option>English</option>
-											<option>EnglishCa</option>
-											<option>Francais</option>
-											<option>Francais-Qc</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-								<FieldBox>
-									<Label id="application_label">Default application</Label>
-									<SelectorWrapper>
-										<select id="application" value={3} onChange={() => {}}>
-											<option>Marketing Legacy</option>
-											<option>Product Information</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-							</PrefForm>
-							<Ignore />
+							<Wrapper>
+								<Ignore />
+								<PrefForm>
+									<FieldBox>
+										<Label id="language_label">Display language</Label>
+										<SelectorWrapper>
+											<select id="language" value="en-US" onChange={() => {}}>
+												<option>English</option>
+												<option>EnglishCa</option>
+												<option>Francais</option>
+												<option>Francais-Qc</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+									<FieldBox>
+										<Label id="application_label">Default application</Label>
+										<SelectorWrapper>
+											<select id="application" value={3} onChange={() => {}}>
+												<option>Marketing Legacy</option>
+												<option>Product Information</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+								</PrefForm>
+								<Ignore />
+							</Wrapper>
 						</div>
 					</div>,
 				),
@@ -450,34 +477,36 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Ignore />
-							<PrefForm>
-								<FieldBox>
-									<Label id="language_label">Display language</Label>
-									<SelectorWrapper>
-										<select id="language" value="fr-CA" onChange={() => {}}>
-											<option>English</option>
-											<option>EnglishCa</option>
-											<option>Francais</option>
-											<option>Francais-Qc</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-								<FieldBox>
-									<Label id="application_label">Default application</Label>
-									<SelectorWrapper>
-										<select id="application" value={3} onChange={() => {}}>
-											<option>Marketing Legacy</option>
-											<option>Product Information</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-							</PrefForm>
-							<Ignore />
+							<Wrapper>
+								<Ignore />
+								<PrefForm>
+									<FieldBox>
+										<Label id="language_label">Display language</Label>
+										<SelectorWrapper>
+											<select id="language" value="fr-CA" onChange={() => {}}>
+												<option>English</option>
+												<option>EnglishCa</option>
+												<option>Francais</option>
+												<option>Francais-Qc</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+									<FieldBox>
+										<Label id="application_label">Default application</Label>
+										<SelectorWrapper>
+											<select id="application" value={3} onChange={() => {}}>
+												<option>Marketing Legacy</option>
+												<option>Product Information</option>
+											</select>
+											<Ignore />
+											<Ignore />
+										</SelectorWrapper>
+									</FieldBox>
+								</PrefForm>
+								<Ignore />
+							</Wrapper>
 						</div>
 					</div>,
 				),
@@ -516,34 +545,36 @@ describe("Preferences", () => {
 				"to satisfy",
 				<div>
 					<div>
-						<Ignore />
-						<PrefForm>
-							<FieldBox>
-								<Label id="language_label">Display language</Label>
-								<SelectorWrapper>
-									<select id="language" value="" onChange={() => {}}>
-										<option>English</option>
-										<option>EnglishCa</option>
-										<option>Francais</option>
-										<option>Francais-Qc</option>
-									</select>
-									<Ignore />
-									<Ignore />
-								</SelectorWrapper>
-							</FieldBox>
-							<FieldBox>
-								<Label id="application_label">Default application</Label>
-								<SelectorWrapper>
-									<select id="application" value="" onChange={() => {}}>
-										<option>Marketing Legacy</option>
-										<option>Product Information</option>
-									</select>
-									<Ignore />
-									<Ignore />
-								</SelectorWrapper>
-							</FieldBox>
-						</PrefForm>
-						<Ignore />
+						<Wrapper>
+							<Ignore />
+							<PrefForm>
+								<FieldBox>
+									<Label id="language_label">Display language</Label>
+									<SelectorWrapper>
+										<select id="language" value="" onChange={() => {}}>
+											<option>English</option>
+											<option>EnglishCa</option>
+											<option>Francais</option>
+											<option>Francais-Qc</option>
+										</select>
+										<Ignore />
+										<Ignore />
+									</SelectorWrapper>
+								</FieldBox>
+								<FieldBox>
+									<Label id="application_label">Default application</Label>
+									<SelectorWrapper>
+										<select id="application" value="" onChange={() => {}}>
+											<option>Marketing Legacy</option>
+											<option>Product Information</option>
+										</select>
+										<Ignore />
+										<Ignore />
+									</SelectorWrapper>
+								</FieldBox>
+							</PrefForm>
+							<Ignore />
+						</Wrapper>
 					</div>
 				</div>,
 			),

@@ -26,9 +26,6 @@ describe("class name helpers", () => {
 	const TestStyled = styled.div`
 		color: red;
 	`;
-	const TestStyledTd = styled.td`
-		color: red;
-	`;
 	const DerivedTestStyled = styled(TestStyled)`
 		color: blue;
 	`;
