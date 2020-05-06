@@ -104,6 +104,7 @@ export const useNavigationState = modules => {
 			...page,
 			outsideScope,
 			label,
+			mustTruncate: pageData.mustTruncate,
 			href,
 			mappedFrom: page.href,
 			active: href === currentHref,

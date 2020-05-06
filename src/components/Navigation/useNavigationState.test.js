@@ -130,6 +130,7 @@ describe("useNavigationState", () => {
 						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
 						dataPath: ["objs", "test"],
 						dataIdParam: "page2",
+						mustTruncate: true,
 						component: TestComp3,
 					},
 					"/page3": {
@@ -192,6 +193,7 @@ describe("useNavigationState", () => {
 									active: false,
 									params: "__ignore",
 									path: "__ignore",
+									mustTruncate: true,
 									outsideScope: true,
 								},
 								{
@@ -207,6 +209,7 @@ describe("useNavigationState", () => {
 									active: false,
 									params: "__ignore",
 									path: "__ignore",
+									mustTruncate: true,
 									outsideScope: true,
 								},
 								{
