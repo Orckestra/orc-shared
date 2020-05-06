@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { getThemeProp, ifFlag } from "../../utils";
 import { Link } from "react-router-dom";
-import Text from "../Text";
 import Icon from "../Icon";
+import useLabelMessage from "../../hooks/useLabelMessage";
+import { Placeholder } from "../Text";
+import { useIntl } from "react-intl";
 
 export const PageTab = styled.div`
 	flex: 0 0 auto;
@@ -54,15 +56,14 @@ export const ModuleTab = styled(PageTab)`
 	}
 `;
 
-const FilteredLink = ({ outsideScope, ...props }) => <Link {...props} />;
+const FilteredLink = ({ outsideScope, mustTruncate, ...props }) => <Link {...props} />;
 
 export const TabLink = styled(FilteredLink)`
 	min-width: 100px;
-	width: max-content;
 	overflow: hidden;
 	color: inherit;
 	text-decoration: none;
-	display: block;
+	display: flex;
 	justify-content: center;
 	padding: 11px 15px;
 
@@ -71,7 +72,13 @@ export const TabLink = styled(FilteredLink)`
 		css`
 			cursor: not-allowed;
 		`,
-	)}
+	)};
+	${ifFlag(
+		"mustTruncate",
+		css`
+			max-width: 220px;
+		`,
+	)};
 `;
 
 export const ModuleIcon = styled(Icon)`
@@ -83,7 +90,6 @@ export const ModuleIcon = styled(Icon)`
 
 export const TabText = styled.span`
 	min-width: 50px;
-	max-width: 350px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -104,10 +110,36 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 `;
 
 const Tab = (
-	{ href, label, icon, module, active, close = () => {}, outsideScope, hide },
+	{
+		href,
+		label,
+		mustTruncate,
+		icon,
+		module,
+		active,
+		close = () => {},
+		outsideScope,
+		hide,
+	},
 	ref,
 ) => {
 	const ThisTab = module ? ModuleTab : PageTab;
+
+	const { formatMessage } = useIntl();
+	const tabTextRef = useRef(null);
+	const [aTitle, setTitle] = useState(null);
+	const buildMessage = message => formatMessage(message, message.values);
+	const [labelMessage] = useLabelMessage(label, buildMessage);
+
+	useEffect(() => {
+		if (
+			mustTruncate &&
+			tabTextRef.current &&
+			tabTextRef.current.offsetWidth < tabTextRef.current.scrollWidth
+		)
+			setTitle(labelMessage);
+	}, [tabTextRef, setTitle, labelMessage, mustTruncate]);
+
 	return (
 		<ThisTab
 			ref={ref}
@@ -118,6 +150,7 @@ const Tab = (
 		>
 			<TabLink
 				to={href}
+				mustTruncate={mustTruncate}
 				outsideScope={outsideScope}
 				onClick={
 					outsideScope
@@ -129,8 +162,8 @@ const Tab = (
 				}
 			>
 				{module ? <ModuleIcon id={icon} /> : null}
-				<TabText>
-					<Text message={label} />
+				<TabText ref={tabTextRef} title={aTitle}>
+					{labelMessage ? labelMessage : <Placeholder />}
 				</TabText>
 				{module ? null : <CloseIcon onClick={close} />}
 			</TabLink>
