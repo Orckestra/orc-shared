@@ -17,7 +17,7 @@ jest.mock("../utils/buildUrl", () => {
 });
 
 describe("getVersionInfo", () => {
-	it("creates a RSAA to get version info", () =>
+	it("creates a RSAA to get version info for a french culture", () =>
 		expect(getVersionInfo, "when called with", ["fr-FR"], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
@@ -26,6 +26,27 @@ describe("getVersionInfo", () => {
 					GET_VERSION_INFO_FAILURE,
 				],
 				endpoint: 'URL: diagnostic/versioninfo {"cultureName":"fr-FR"}',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("creates a RSAA to get version info with any other languages", () =>
+		expect(getVersionInfo, "when called with", ["an-ANY"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					GET_VERSION_INFO_REQUEST,
+					GET_VERSION_INFO_SUCCESS,
+					GET_VERSION_INFO_FAILURE,
+				],
+				endpoint: 'URL: diagnostic/versioninfo {"cultureName":"en-US"}',
 				method: "GET",
 				body: undefined,
 				credentials: "include",

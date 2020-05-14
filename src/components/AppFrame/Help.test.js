@@ -1,5 +1,4 @@
 import React from "react";
-import sinon from "sinon";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";

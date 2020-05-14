@@ -1,11 +1,12 @@
 import Immutable from "immutable";
 import { createSelector } from "reselect";
+import { cultureByDefault } from "../reducers/localeFactory";
 
 const localeData = state => state.get("locale");
 
 export const defaultLocale = createSelector(
 	localeData,
-	data => data.getIn(["supportedLocales", 0, "cultureIso"]) || "en-US",
+	data => data.getIn(["supportedLocales", 0, "cultureIso"]) || cultureByDefault,
 );
 
 const supportedLocales = createSelector(

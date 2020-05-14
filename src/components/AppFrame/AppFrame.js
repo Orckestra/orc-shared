@@ -73,7 +73,8 @@ const AppFrame = ({
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
 	const currentApplication = getApp(applications, applicationId);
-	useLoader(getVersionInfo(locale), () => helpUrl !== null);
+	useLoader(getVersionInfo(locale), () => locale === null || helpUrl !== null);
+
 	const [prefViewState] = useViewState(PREFS_NAME);
 
 	return (
