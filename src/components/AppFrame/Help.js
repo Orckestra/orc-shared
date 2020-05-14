@@ -12,20 +12,15 @@ export const HelpLink = styled.a`
 	cursor: pointer;
 	padding-top: 14px;
 	padding-right: 10px;
-
+	text-decoration: none;
 	&:hover {
 		color: ${getThemeProp(["colors", "application", "base"], "#cccccc")};
 	}
 `;
 
 const Help = ({ messages, helpUrl }) => {
-	const openHelp = e => {
-		window.open(helpUrl, "_blank");
-		e.preventDefault();
-	};
-
 	return (
-		<HelpLink href={helpUrl} onClick={openHelp}>
+		<HelpLink href={helpUrl} target="_blank">
 			<Text message={messages.help} />
 		</HelpLink>
 	);
