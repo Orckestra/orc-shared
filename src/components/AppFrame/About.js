@@ -9,6 +9,7 @@ import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
+import close from "../../content/close.png";
 import { getVersionSelector } from "../../selectors/versionInfo";
 import { currentLocaleOrDefault } from "../../selectors/locale";
 
@@ -46,6 +47,21 @@ export const AboutBox = withClickOutside(transition.div`
 `);
 AboutBox.defaultProps = { timeout: 800, unmountOnExit: true };
 
+export const CloseButton = styled.p`
+	z-index: 9999;
+	position: absolute;
+	color: #ffffff;
+	top: 15px;
+	right: 20px;
+	margin: 0;
+	cursor: pointer;
+	opacity: 1;
+
+	&:hover {
+		opacity: 0.75;
+	}
+`;
+
 export const AboutParagraph = styled.p`
 	margin-top: 20px;
 	${ifFlag(
@@ -63,27 +79,29 @@ export const AboutLink = styled.a`
 	text-decoration: none;
 `;
 
-export const getClickOutsideHandler = ({ show }, updateViewState) =>
-	show
+export const getClickOutsideHandler = ({ show }, updateViewState) => {
+	return show
 		? event => {
 				event.stopPropagation();
 				updateViewState("show", false);
 		  }
 		: () => {};
+};
 
 export const About = ({ messages, currentApplication }) => {
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
 	const version = useSelector(getVersionSelector);
 	const locale = useSelector(currentLocaleOrDefault);
+	const closeAboutBox = getClickOutsideHandler(viewState, updateViewState);
 	const aboutLinkUrl = "https://www.orckestra.com".concat(
 		locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "",
 	);
 
 	return (
-		<AboutBox
-			in={viewState.show}
-			onClickOutside={getClickOutsideHandler(viewState, updateViewState)}
-		>
+		<AboutBox in={viewState.show} onClickOutside={closeAboutBox}>
+			<CloseButton onClick={closeAboutBox}>
+				<img src={close} alt="X" />
+			</CloseButton>
 			<img src={logoImage} alt="Orckestra" />
 			<AboutParagraph>
 				<Text

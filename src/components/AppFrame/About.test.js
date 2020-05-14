@@ -5,6 +5,7 @@ import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
+import close from "../../content/close.png";
 import {
 	ABOUT_NAME,
 	AboutBox,
@@ -12,7 +13,9 @@ import {
 	AboutLink,
 	About,
 	getClickOutsideHandler,
+	CloseButton,
 } from "./About";
+import { setStateField } from "../../actions/view";
 
 describe("About", () => {
 	let messages, state, store;
@@ -66,6 +69,9 @@ describe("About", () => {
 			"to satisfy",
 			<IntlProvider locale="en">
 				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
 						Version 5.1.9.5
@@ -92,6 +98,22 @@ describe("About", () => {
 		);
 	});
 
+	it("view state handler update show value when clicking on close button", () =>
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<About viewState={{ show: true }} messages={messages} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[alt="X"]' },
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{ args: [setStateField(ABOUT_NAME, "show", false)] },
+			]),
+		));
+
 	it("renders an about box with messages and background images but without versions", () => {
 		global.DEPENDENCIES = {};
 		global.BUILD_NUMBER = null;
@@ -103,8 +125,12 @@ describe("About", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
+
 			<IntlProvider locale="en">
 				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
 					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
@@ -133,6 +159,9 @@ describe("About", () => {
 			"to satisfy",
 			<IntlProvider locale="en">
 				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
 					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
