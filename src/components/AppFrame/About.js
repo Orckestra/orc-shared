@@ -160,7 +160,7 @@ export const About = ({ messages, currentApplication }) => {
 				<Text message={messages.copyrightTermsNotice} />
 			</AboutParagraph>
 			<AboutParagraph>
-				<AboutLink href={aboutLinkUrl}>
+				<AboutLink href={aboutLinkUrl} target="_blank">
 					<Text message={messages.ccName} />
 				</AboutLink>
 			</AboutParagraph>
