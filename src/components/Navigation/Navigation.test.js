@@ -45,6 +45,22 @@ describe("Navigation", () => {
 					},
 				},
 			},
+			scopes: {
+				TestScope: {
+					id: "TestScope",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+				},
+			},
+			locale: {
+				locale: null,
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
 			settings: {
 				defaultScope: "myScope",
 			},
@@ -101,6 +117,7 @@ describe("Navigation", () => {
 							mappedFrom="/TestScope/test/page1"
 							hide={false}
 							outsideScope={false}
+							scopeNotSupported={false}
 						/>
 						<Tab
 							active={false}
@@ -110,6 +127,7 @@ describe("Navigation", () => {
 							mappedFrom="/TestScope/test/page2"
 							hide={false}
 							outsideScope={false}
+							scopeNotSupported={false}
 						/>
 					</ScrollableBar>
 				</TabBar>

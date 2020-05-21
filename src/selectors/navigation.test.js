@@ -132,12 +132,12 @@ describe("selectSegmentHrefMapper", () => {
 			navigation: {
 				route: { match: { path: "/:scope/thing" } },
 				tabIndex: {
-					"/path/to/tab1": { tab: 1 },
-					"/path/to/tab2": { tab: 2 },
+					"to/tab1": { tab: 1 },
+					"to/tab2": { tab: 2 },
 				},
-				moduleTabs: { thing: ["/path/to/tab1"] },
+				moduleTabs: { thing: ["to/tab1"] },
 				mappedHrefs: {
-					"/path/to/tab1": "/path/to/tab1/subpage",
+					"to/tab1": "to/tab1/subpage",
 				},
 			},
 		});

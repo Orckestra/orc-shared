@@ -119,6 +119,7 @@ const Tab = (
 		active,
 		close = () => {},
 		outsideScope,
+		scopeNotSupported,
 		hide,
 	},
 	ref,
@@ -132,20 +133,23 @@ const Tab = (
 	const [labelMessage] = useLabelMessage(label, buildMessage);
 
 	useEffect(() => {
-		if (
+		if (scopeNotSupported) {
+			close();
+		} else if (
 			mustTruncate &&
 			tabTextRef.current &&
 			tabTextRef.current.offsetWidth < tabTextRef.current.scrollWidth
-		)
+		) {
 			setTitle(labelMessage);
-	}, [tabTextRef, setTitle, labelMessage, mustTruncate]);
+		}
+	}, [scopeNotSupported, tabTextRef, setTitle, labelMessage, mustTruncate, close]);
 
 	return (
 		<ThisTab
 			ref={ref}
 			active={active}
 			outsideScope={outsideScope}
-			hide={hide}
+			hide={hide || scopeNotSupported}
 			data-href={href}
 		>
 			<TabLink

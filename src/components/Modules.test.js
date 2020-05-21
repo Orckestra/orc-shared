@@ -67,6 +67,22 @@ describe("Modules", () => {
 			settings: {
 				defaultScope: "myScope",
 			},
+			scopes: {
+				TestScope: {
+					id: "TestScope",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+				},
+			},
+			locale: {
+				locale: null,
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
 		});
 		store = {
 			subscribe: () => {},

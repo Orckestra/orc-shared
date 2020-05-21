@@ -197,6 +197,40 @@ describe("Tab", () => {
 			</Router>,
 		));
 
+	it("close a tab when scope is not supported", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<Router history={history}>
+					<IntlProvider locale="en">
+						<Tab
+							label={{ id: "test.page", defaultMessage: "A page" }}
+							href="/Foo/modu"
+							close={close}
+							scopeNotSupported
+						/>
+					</IntlProvider>
+				</Router>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Router history={history}>
+				<IntlProvider locale="en">
+					<PageTab hide>
+						<TabLink to="/Foo/modu">
+							<TabText>A page</TabText>
+							<CloseIcon onClick={close} />
+						</TabLink>
+					</PageTab>
+				</IntlProvider>
+			</Router>,
+		).then(() => expect(close, "was called")));
+
 	it("renders a tab outside the current scope", () =>
 		expect(
 			<Provider
