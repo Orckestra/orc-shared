@@ -123,7 +123,15 @@ export const Label = styled.span`
 	opacity: ${ifFlag("show", 1, 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, alert, href, ...props }) => {
+const MenuItem = ({
+	open = false,
+	label = "",
+	icon,
+	alert,
+	pageScopeSelector,
+	href,
+	...props
+}) => {
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;

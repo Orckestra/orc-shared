@@ -185,7 +185,17 @@ const Bar = ({ module, pages }) => {
 			<ScrollableBar ref={getBarRef}>
 				{pages.map(
 					(
-						{ href, mappedFrom, label, mustTruncate, active, icon, outsideScope, close },
+						{
+							href,
+							mappedFrom,
+							label,
+							mustTruncate,
+							active,
+							icon,
+							outsideScope,
+							scopeNotSupported,
+							close,
+						},
 						index,
 					) => {
 						return (
@@ -200,6 +210,7 @@ const Bar = ({ module, pages }) => {
 								active={active}
 								close={close}
 								outsideScope={outsideScope}
+								scopeNotSupported={scopeNotSupported}
 								hide={index > lastShownTab}
 							/>
 						);
