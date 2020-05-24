@@ -4,15 +4,15 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import { makeStyles } from "@material-ui/core/styles";
+import Collapse from "@material-ui/core/Collapse";
 import Icon from "orc-shared/src/components/Icon";
 import classNames from "classnames";
 import {
-	ExpansionPanelStyle,
-	ExpansionPanelActionsStyle,
-	ExpansionPanelDetailsStyle,
-	ExpansionPanelSummaryStyle,
-} from "./expansionPanelStyle";
-import RulesNames from "orc-shared/src/components/MaterialUI/ruleNames";
+	ExpansionPanelProps,
+	ExpansionPanelActionsProps,
+	ExpansionPanelDetailsProps,
+	ExpansionPanelSummaryProps,
+} from "./expansionPanelProps";
 
 const useStyles = makeStyles(theme => ({
 	expansionPanelHeader: {
@@ -28,91 +28,160 @@ const useStyles = makeStyles(theme => ({
 const SectionExpansionPanel = ({
 	header,
 	content,
-	expansionPanelStyle,
-	expansionPanelSummaryStyle,
-	expansionPanelDetailsStyle,
-	expansionPanelActionsStyle,
-	actions = null,
-	keyField = "id",
+	actions,
+	expansionPanelProps,
+	expansionPanelActionsProps,
+	expansionPanelDetailsProps,
+	expansionPanelSummaryProps,
 }) => {
 	if (
-		expansionPanelStyle != null &&
-		expansionPanelStyle instanceof ExpansionPanelStyle == false
+		expansionPanelProps != null &&
+		expansionPanelProps instanceof ExpansionPanelProps === false
 	) {
-		throw "expansionPanelStyle property is not of type ExpansionPanelStyle";
+		throw new Error("expansionPanelProps property is not of type ExpansionPanelProps");
 	}
 
 	if (
-		expansionPanelSummaryStyle != null &&
-		expansionPanelSummaryStyle instanceof ExpansionPanelSummaryStyle == false
+		expansionPanelActionsProps != null &&
+		expansionPanelActionsProps instanceof ExpansionPanelActionsProps === false
 	) {
-		throw "expansionPanelSummaryStyle property is not of type ExpansionPanelSummaryStyle";
+		throw new Error(
+			"expansionPanelActionsProps property is not of type ExpansionPanelActionsProps",
+		);
 	}
 
 	if (
-		expansionPanelDetailsStyle != null &&
-		expansionPanelDetailsStyle instanceof ExpansionPanelDetailsStyle == false
+		expansionPanelDetailsProps != null &&
+		expansionPanelDetailsProps instanceof ExpansionPanelDetailsProps === false
 	) {
-		throw "ExpansionPanelDetailsStyle property is not of type ExpansionPanelDetailsStyle";
+		throw new Error(
+			"expansionPanelDetailsProps property is not of type ExpansionPanelDetailsProps",
+		);
 	}
 
 	if (
-		expansionPanelActionsStyle != null &&
-		expansionPanelActionsStyle instanceof ExpansionPanelActionsStyle == false
+		expansionPanelSummaryProps != null &&
+		expansionPanelSummaryProps instanceof ExpansionPanelSummaryProps === false
 	) {
-		throw "ExpansionPanelActionsStyle property is not of type ExpansionPanelActionsStyle";
+		throw new Error(
+			"expansionPanelSummaryProps property is not of type ExpansionPanelSummaryProps",
+		);
 	}
 
 	const classes = useStyles();
 
-	const [expanded, setExpanded] = React.useState(false);
+	// Expansion panel props
+	var defaultExpanded = expansionPanelProps?.get(
+		ExpansionPanelProps.propNames.defaultExpanded,
+	);
+	var disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
+	var expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
+	var onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
+	var square = expansionPanelProps?.get(ExpansionPanelProps.propNames.square);
+	var transitionComponent = expansionPanelProps?.get(
+		ExpansionPanelProps.propNames.transitionComponent,
+	);
+	var transitionProps = expansionPanelProps?.get(
+		ExpansionPanelProps.propNames.transitionProps,
+	);
 
-	const handleChange = panel => (event, isExpanded) => {
-		setExpanded(isExpanded ? panel : false);
-	};
+	var customStyles = expansionPanelProps?.get(ExpansionPanelProps.propNames.classes);
+
+	// Expansion panel summary props
+	var expandIcon = expansionPanelSummaryProps?.get(
+		ExpansionPanelSummaryProps.propNames.expandIcon,
+	);
+	var iconButtonProps = expansionPanelSummaryProps?.get(
+		ExpansionPanelSummaryProps.propNames.iconButtonProps,
+	);
+
+	var summaryCustomStyles = expansionPanelSummaryProps?.get(
+		ExpansionPanelSummaryProps.propNames.classes,
+	);
+
+	// Expansion panel details props
+	var detailsCustomStyles = expansionPanelDetailsProps?.get(
+		ExpansionPanelDetailsProps.propNames.classes,
+	);
+
+	// Expansion panel actions props
+	var disableSpacing = expansionPanelActionsProps?.get(
+		ExpansionPanelActionsProps.propNames.disableSpacing,
+	);
+
+	var actionsCustomStyles = expansionPanelActionsProps?.get(
+		ExpansionPanelActionsProps.propNames.classes,
+	);
 
 	return (
 		<ExpansionPanel
-			expanded={expanded === "panel" + keyField}
-			onChange={handleChange("panel" + keyField)}
+			defaultExpanded={defaultExpanded == null ? false : defaultExpanded}
+			disabled={disabled == null ? false : disabled}
+			expanded={expanded}
+			onChange={onChange}
+			square={square == null ? false : square}
+			TransitionComponent={transitionComponent == null ? Collapse : transitionComponent}
+			TransitionProps={transitionProps}
 			classes={{
-				root: classNames(expansionPanelStyle?.get(RulesNames.root)),
-				rounded: classNames(expansionPanelStyle?.get(RulesNames.rounded)),
-				expanded: classNames(expansionPanelStyle?.get(RulesNames.expanded)),
-				disabled: classNames(expansionPanelStyle?.get(RulesNames.disabled)),
+				root: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.root)),
+				rounded: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.rounded)),
+				expanded: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.expanded)),
+				disabled: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.disabled)),
 			}}
 		>
 			<ExpansionPanelSummary
+				expandIcon={
+					expandIcon == null ? <Icon {...{ id: "chevron-down" }} /> : expandIcon
+				}
+				IconButtonProps={iconButtonProps}
 				classes={{
 					root: classNames(
 						classes.expansionPanelHeader,
-						expansionPanelSummaryStyle?.get(RulesNames.root),
+						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.root),
 					),
-					expanded: classNames(expansionPanelSummaryStyle?.get(RulesNames.expanded)),
-					focused: classNames(expansionPanelSummaryStyle?.get(RulesNames.focused)),
-					disabled: classNames(expansionPanelSummaryStyle?.get(RulesNames.disabled)),
-					content: classNames(expansionPanelSummaryStyle?.get(RulesNames.content)),
-					expandIcon: classNames(expansionPanelSummaryStyle?.get(RulesNames.expandIcon)),
+					expanded: classNames(
+						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.expanded),
+					),
+					focused: classNames(
+						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.focused),
+					),
+					disabled: classNames(
+						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.disabled),
+					),
+					content: classNames(
+						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.content),
+					),
+					expandIcon: classNames(
+						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.expandIcon),
+					),
 				}}
-				expandIcon={<Icon {...{ id: "chevron-down" }} />}
 			>
 				{header}
 			</ExpansionPanelSummary>
 			<ExpansionPanelDetails
 				classes={{
-					root: classNames(expansionPanelDetailsStyle?.get(RulesNames.root)),
+					root: classNames(
+						detailsCustomStyles?.get(ExpansionPanelDetailsProps.ruleNames.root),
+					),
 				}}
 			>
 				{content}
 			</ExpansionPanelDetails>
-			<ExpansionPanelActions
-				classes={{
-					root: classNames(expansionPanelActionsStyle?.get(RulesNames.root)),
-					spacing: classNames(expansionPanelActionsStyle?.get(RulesNames.spacing)),
-				}}
-			>
-				{actions}
-			</ExpansionPanelActions>
+			{actions != null ? (
+				<ExpansionPanelActions
+					disableSpacing={disableSpacing == null ? false : disableSpacing}
+					classes={{
+						root: classNames(
+							actionsCustomStyles?.get(ExpansionPanelActionsProps.ruleNames.root),
+						),
+						spacing: classNames(
+							actionsCustomStyles?.get(ExpansionPanelActionsProps.ruleNames.spacing),
+						),
+					}}
+				>
+					{actions}
+				</ExpansionPanelActions>
+			) : null}
 		</ExpansionPanel>
 	);
 };
