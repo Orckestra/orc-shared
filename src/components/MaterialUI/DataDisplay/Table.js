@@ -257,77 +257,79 @@ const Table = ({
 					</TableBody>
 				</TableMui>
 			</TableContainer>
-			<TableFooter
-				classes={{
-					root: classNames(tableFooterStyles?.get(TableFooterProps.ruleNames.root)),
-				}}
-			>
-				<TableRow
-					hover={hover == null ? false : hover}
-					selected={selected == null ? false : selected}
+			{tablePaginationProps != null ? (
+				<TableFooter
 					classes={{
-						root: classNames(tableRowStyles?.get(TableRowProps.ruleNames.root)),
-						selected: classNames(tableRowStyles?.get(TableRowProps.ruleNames.selected)),
-						hover: classNames(tableRowStyles?.get(TableRowProps.ruleNames.hover)),
-						footer: classNames(tableRowStyles?.get(TableRowProps.ruleNames.footer)),
+						root: classNames(tableFooterStyles?.get(TableFooterProps.ruleNames.root)),
 					}}
 				>
-					<TablePagination
-						backIconButtonProps={backIconButtonProps}
-						backIconButtonText={
-							backIconButtonText == null ? "Previous page" : backIconButtonText
-						}
-						count={count}
-						labelRowsPerPage={
-							labelRowsPerPage == null ? "Rows per page:" : labelRowsPerPage
-						}
-						nextIconButtonProps={nextIconButtonProps}
-						nextIconButtonText={
-							nextIconButtonText == null ? "Next page" : nextIconButtonText
-						}
-						onChangePage={onChangePage}
-						onChangeRowsPerPage={onChangeRowsPerPage}
-						page={page}
-						rowsPerPage={rowsPerPage}
-						rowsPerPageOptions={
-							rowsPerPageOptions == null ? [10, 25, 50, 100] : rowsPerPageOptions
-						}
-						SelectProps={selectProps}
+					<TableRow
+						hover={hover == null ? false : hover}
+						selected={selected == null ? false : selected}
 						classes={{
-							root: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.root),
-							),
-							toolbar: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.toolbar),
-							),
-							spacer: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.spacer),
-							),
-							caption: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.caption),
-							),
-							selectRoot: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.selectRoot),
-							),
-							select: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.select),
-							),
-							selectIcon: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.selectIcon),
-							),
-							input: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.input),
-							),
-							menuItem: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.menuItem),
-							),
-							actions: classNames(
-								tablePaginationStyles?.get(TablePaginationProps.ruleNames.actions),
-							),
+							root: classNames(tableRowStyles?.get(TableRowProps.ruleNames.root)),
+							selected: classNames(tableRowStyles?.get(TableRowProps.ruleNames.selected)),
+							hover: classNames(tableRowStyles?.get(TableRowProps.ruleNames.hover)),
+							footer: classNames(tableRowStyles?.get(TableRowProps.ruleNames.footer)),
 						}}
-					></TablePagination>
-				</TableRow>
-			</TableFooter>
+					>
+						<TablePagination
+							backIconButtonProps={backIconButtonProps}
+							backIconButtonText={
+								backIconButtonText == null ? "Previous page" : backIconButtonText
+							}
+							count={count}
+							labelRowsPerPage={
+								labelRowsPerPage == null ? "Rows per page:" : labelRowsPerPage
+							}
+							nextIconButtonProps={nextIconButtonProps}
+							nextIconButtonText={
+								nextIconButtonText == null ? "Next page" : nextIconButtonText
+							}
+							onChangePage={onChangePage}
+							onChangeRowsPerPage={onChangeRowsPerPage}
+							page={page}
+							rowsPerPage={rowsPerPage}
+							rowsPerPageOptions={
+								rowsPerPageOptions == null ? [10, 25, 50, 100] : rowsPerPageOptions
+							}
+							SelectProps={selectProps}
+							classes={{
+								root: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.root),
+								),
+								toolbar: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.toolbar),
+								),
+								spacer: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.spacer),
+								),
+								caption: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.caption),
+								),
+								selectRoot: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.selectRoot),
+								),
+								select: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.select),
+								),
+								selectIcon: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.selectIcon),
+								),
+								input: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.input),
+								),
+								menuItem: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.menuItem),
+								),
+								actions: classNames(
+									tablePaginationStyles?.get(TablePaginationProps.ruleNames.actions),
+								),
+							}}
+						></TablePagination>
+					</TableRow>
+				</TableFooter>
+			) : null}
 		</div>
 	);
 };
