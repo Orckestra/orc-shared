@@ -3,7 +3,6 @@ import ComponentProps from "orc-shared/src/components/MaterialUI/componentProps"
 class TableProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-		component: "component",
 		padding: "padding",
 		size: "size",
 		stickyHeader: "stickyHeader",
@@ -30,7 +29,6 @@ class TableProps extends ComponentProps {
 class TableBodyProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-		component: "component",
 	};
 
 	static ruleNames = {
@@ -50,12 +48,10 @@ class TableCellProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
 		align: "align",
-		component: "component",
 		padding: "padding",
 		scope: "scope",
 		size: "size",
 		sortDirection: "sortDirection",
-		variant: "variant",
 	};
 
 	static ruleNames = {
@@ -82,7 +78,6 @@ class TableCellProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.scope, null);
 		this.componentProps.set(this.constructor.propNames.size, null);
 		this.componentProps.set(this.constructor.propNames.sortDirection, null);
-		this.componentProps.set(this.constructor.propNames.variant, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.head, null);
@@ -102,7 +97,6 @@ class TableCellProps extends ComponentProps {
 class TableContainerProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-		component: "component",
 	};
 
 	static ruleNames = {
@@ -121,7 +115,6 @@ class TableContainerProps extends ComponentProps {
 class TableFooterProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-		component: "component",
 	};
 
 	static ruleNames = {
@@ -140,7 +133,6 @@ class TableFooterProps extends ComponentProps {
 class TableHeadProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-		component: "component",
 	};
 
 	static ruleNames = {
@@ -159,10 +151,8 @@ class TableHeadProps extends ComponentProps {
 class TablePaginationProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-		actionsComponent: "ActionsComponent",
 		backIconButtonProps: "backIconButtonProps",
 		backIconButtonText: "backIconButtonText",
-		component: "component",
 		count: "count",
 		labelDisplayedRows: "labelDisplayedRows",
 		labelRowsPerPage: "labelRowsPerPage",
@@ -194,7 +184,6 @@ class TablePaginationProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.classes, this.componentClasses);
 		this.componentProps.set(this.constructor.propNames.backIconButtonProps, null);
 		this.componentProps.set(this.constructor.propNames.backIconButtonText, null);
-		this.componentProps.set(this.constructor.propNames.component, null);
 		this.componentProps.set(this.constructor.propNames.count, null);
 		this.componentProps.set(this.constructor.propNames.labelDisplayedRows, null);
 		this.componentProps.set(this.constructor.propNames.labelRowsPerPage, null);
@@ -223,7 +212,6 @@ class TablePaginationProps extends ComponentProps {
 class TableRowProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-		component: "component",
 		hover: "hover",
 		selected: "selected",
 	};
@@ -239,7 +227,6 @@ class TableRowProps extends ComponentProps {
 	constructor() {
 		super();
 		this.componentProps.set(this.constructor.propNames.classes, this.componentClasses);
-		this.componentProps.set(this.constructor.propNames.component, null);
 		this.componentProps.set(this.constructor.propNames.hover, null);
 		this.componentProps.set(this.constructor.propNames.selected, null);
 
