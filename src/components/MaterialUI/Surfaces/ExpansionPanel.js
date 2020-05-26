@@ -16,7 +16,7 @@ import {
 
 const useStyles = makeStyles(theme => ({
 	summaryRoot: {
-		height: "80px",
+		height: theme.spacing(8),
 		backgroundColor: theme.palette.grey.light,
 		flexDirection: "row-reverse",
 	},
@@ -25,9 +25,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	panelExpanded: {},
 	summaryContent: {
-		marginLeft: "10px",
+		marginLeft: theme.spacing(1),
 		"&$panelExpanded": {
-			marginLeft: "10px",
+			marginLeft: theme.spacing(1),
 		},
 	},
 	panelRoot: {

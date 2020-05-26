@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 	},
 	cellRoot: {
-		maxWidth: "150px",
+		maxWidth: theme.spacing(15),
 		whiteSpace: "nowrap",
 		overflowX: "hidden",
 		textOverflow: "ellipsis",

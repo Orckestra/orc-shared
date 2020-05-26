@@ -15,14 +15,7 @@ import {
 } from "./expansionPanelProps";
 
 const useStyles = makeStyles(theme => ({
-	expansionPanelHeader: {
-		height: "80px",
-		backgroundColor: "#E0E6EB",
-		paddingTop: "16px",
-		paddingBottom: "16px",
-		paddingLeft: "20px",
-		paddingRight: "20px",
-	},
+	expansionPanelHeader: {},
 }));
 
 const SectionExpansionPanel = ({
