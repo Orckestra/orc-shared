@@ -17,7 +17,7 @@ import {
 const useStyles = makeStyles(theme => ({
 	summaryRoot: {
 		height: theme.spacing(8),
-		backgroundColor: theme.palette.grey.light,
+		backgroundColor: theme.palette.primary.lighter,
 		flexDirection: "row-reverse",
 	},
 	resetPadding: {
