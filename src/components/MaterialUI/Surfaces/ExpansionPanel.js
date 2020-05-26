@@ -15,7 +15,36 @@ import {
 } from "./expansionPanelProps";
 
 const useStyles = makeStyles(theme => ({
-	expansionPanelHeader: {},
+	summaryRoot: {
+		height: "80px",
+		backgroundColor: theme.palette.grey.light,
+		flexDirection: "row-reverse",
+	},
+	resetPadding: {
+		padding: "0",
+	},
+	panelExpanded: {},
+	summaryContent: {
+		marginLeft: "10px",
+		"&$panelExpanded": {
+			marginLeft: "10px",
+		},
+	},
+	panelRoot: {
+		"&$panelExpanded": {
+			margin: "0",
+			"&:before": {
+				opacity: "1",
+			},
+		},
+		"&:before": {
+			backgroundColor: theme.palette.secondary.light,
+		},
+	},
+	summaryExpandIconRoot: {
+		color: theme.palette.grey.darker,
+		minWidth: "auto",
+	},
 }));
 
 const ExpansionPanel = ({
@@ -92,6 +121,14 @@ const ExpansionPanel = ({
 		ExpansionPanelSummaryProps.propNames.classes,
 	);
 
+	let defaultSummaryStyles = {
+		edge: false,
+		size: "small",
+		classes: {
+			root: classes.summaryExpandIconRoot,
+			sizeSmall: classes.resetPadding,
+		},
+	};
 	// Expansion panel details props
 	var detailsCustomStyles = expansionPanelDetailsProps?.get(
 		ExpansionPanelDetailsProps.propNames.classes,
@@ -116,21 +153,30 @@ const ExpansionPanel = ({
 			TransitionComponent={transitionComponent == null ? Collapse : transitionComponent}
 			TransitionProps={transitionProps}
 			classes={{
-				root: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.root)),
+				root: classNames(
+					classes.panelRoot,
+					customStyles?.get(ExpansionPanelProps.ruleNames.root),
+				),
 				rounded: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.rounded)),
-				expanded: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.expanded)),
+				expanded: classNames(
+					classes.panelExpanded,
+					customStyles?.get(ExpansionPanelProps.ruleNames.expanded),
+				),
 				disabled: classNames(customStyles?.get(ExpansionPanelProps.ruleNames.disabled)),
 			}}
 		>
 			<ExpansionPanelSummary
-				expandIcon={expandIcon}
-				IconButtonProps={iconButtonProps}
+				expandIcon={
+					expandIcon == null ? <Icon {...{ id: "chevron-down" }} /> : expandIcon
+				}
+				IconButtonProps={defaultSummaryStyles}
 				classes={{
 					root: classNames(
-						classes.expansionPanelHeader,
+						classes.summaryRoot,
 						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.root),
 					),
 					expanded: classNames(
+						classes.panelExpanded,
 						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.expanded),
 					),
 					focused: classNames(
@@ -140,6 +186,7 @@ const ExpansionPanel = ({
 						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.disabled),
 					),
 					content: classNames(
+						classes.summaryContent,
 						summaryCustomStyles?.get(ExpansionPanelSummaryProps.ruleNames.content),
 					),
 					expandIcon: classNames(
@@ -147,16 +194,12 @@ const ExpansionPanel = ({
 					),
 				}}
 			>
-				{expanded ? (
-					<Icon {...{ id: "chevron-up" }} />
-				) : (
-					<Icon {...{ id: "chevron-down" }} />
-				)}
 				{header}
 			</ExpansionPanelSummary>
 			<ExpansionPanelDetails
 				classes={{
 					root: classNames(
+						classes.resetPadding,
 						detailsCustomStyles?.get(ExpansionPanelDetailsProps.ruleNames.root),
 					),
 				}}

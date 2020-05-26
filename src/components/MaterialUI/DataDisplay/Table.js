@@ -7,6 +7,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableFooter from "@material-ui/core/TableFooter";
 import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
+import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import {
@@ -20,7 +21,17 @@ import {
 	TableRowProps,
 } from "./tableProps";
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+	container: {
+		width: "100%",
+	},
+	cellRoot: {
+		maxWidth: "150px",
+		whiteSpace: "nowrap",
+		overflowX: "hidden",
+		textOverflow: "ellipsis",
+	},
+}));
 
 const Table = ({
 	headers,
@@ -151,7 +162,7 @@ const Table = ({
 	var tableRowStyles = tableRowProps?.get(TableRowProps.propNames.classes);
 
 	return (
-		<div>
+		<Box className={classes.container}>
 			<TableContainer
 				classes={{
 					root: classNames(tableContainerStyles?.get(TableContainerProps.ruleNames.root)),
@@ -162,7 +173,10 @@ const Table = ({
 					size={size == null ? "medium" : size}
 					stickyHeader={stickyHeader == null ? false : stickyHeader}
 					classes={{
-						root: classNames(tableStyles?.get(TableProps.ruleNames.root)),
+						root: classNames(
+							classes.tableRoot,
+							tableStyles?.get(TableProps.ruleNames.root),
+						),
 						stickyHeader: classNames(tableStyles?.get(TableProps.ruleNames.stickyHeader)),
 					}}
 				>
@@ -206,7 +220,10 @@ const Table = ({
 									size={size}
 									sortDirection={sortDirection}
 									classes={{
-										root: classNames(tableCellStyles?.get(TableCellProps.ruleNames.root)),
+										root: classNames(
+											classes.cellRoot,
+											tableCellStyles?.get(TableCellProps.ruleNames.root),
+										),
 										head: classNames(tableCellStyles?.get(TableCellProps.ruleNames.head)),
 									}}
 								>
@@ -242,6 +259,7 @@ const Table = ({
 										size={size}
 										classes={{
 											root: classNames(
+												classes.cellRoot,
 												tableCellStyles?.get(TableCellProps.ruleNames.root),
 											),
 											body: classNames(
@@ -330,7 +348,7 @@ const Table = ({
 					</TableRow>
 				</TableFooter>
 			) : null}
-		</div>
+		</Box>
 	);
 };
 
