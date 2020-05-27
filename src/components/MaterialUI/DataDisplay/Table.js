@@ -24,6 +24,7 @@ import {
 const useStyles = makeStyles(theme => ({
 	container: {
 		width: "100%",
+		borderTop: "1px solid" + theme.palette.grey.borders
 	},
 	cellRoot: {
 		maxWidth: theme.spacing(15),
