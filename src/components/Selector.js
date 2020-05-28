@@ -28,7 +28,7 @@ export const SelectBox = styled.label`
 	max-height: 70px;
 	overflow: hidden;
 	padding: 5px 10px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 4px;
 	background-color: white;
 
@@ -62,8 +62,8 @@ export const SelectBox = styled.label`
 	}
 
 	${InnerSelect}:invalid + & {
-		border-color: ${getThemeProp(["errorColor"], "#ce4844")};
-		box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
+		border-color: ${getThemeProp(["colors", "error"], "#ce4844")};
+		box-shadow: 0 0 4px ${getThemeProp(["colors", "error"], "#ce4844")};
 	}
 `;
 
@@ -79,7 +79,7 @@ export const Dropdown = styled.div`
 	left: 0;
 	top: calc(100% + 1px);
 	z-index: 1;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 4px;
 	padding: 4px 0;
 	width: 100%;
@@ -111,7 +111,7 @@ export const Option = styled.div`
 	)};
 
 	&:hover {
-		background-color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+		background-color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 		color: #ffffff;
 	}
 `;

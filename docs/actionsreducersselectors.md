@@ -61,7 +61,7 @@ Stores authentication data for the logged-in user, including name and upn, and r
 
 ## `localeFactory(supportedLocales)`
 
-- `supportedLocales`: An array of IETF language tags, designating which locales are to be supported.
+- `supportedLocales`: An array of object containing supported languages and their corresponding IETF language tags, designating which languages and locales are to be supported.
 
 Usually not used directly, as it is included in state stores created with `buildState`. This factory creates a locale reducer from a list of supported locales. This reducer will initially set the selected locale to the first supported locale, and accepts actions to set it to any other. Actions to set unsupported locales will be ignored. This reducer will also store culture (i.e. customer-facing locale) info, and expects to get this data as an array of objects, each containing a `cultureIso` field with the IETF tag of the culture.
 
@@ -101,9 +101,11 @@ These selectors expect a `buildState` store.
 
 ## Locale
 
-`currentLocale`: Extracts and returns the currently set locale from the state.
+`currentLocale`: Extracts and returns the currently set locale from the state based on the user preferences.
 
-`defaultLocale`: Finds and returns the default locale for the application. This is the first entry in the supported locales list, or if no such list is given, falls back to `'en'`.
+`currentLocaleOrDefault`: Extracts and returns the currently set locale from the state or the default locale when the user preferences is not yet available.
+
+`defaultLocale`: Finds and returns the default locale for the application. This is the first entry in the supported locales list, or if no such list is given, falls back to `'en-US'`.
 
 `cultures`: Pulls the index of supported cultures.
 

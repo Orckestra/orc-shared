@@ -2,8 +2,7 @@ import React from "react";
 import { Branch, Wrapper } from "./Branch";
 
 describe("Branch", () => {
-	it("renders a <ul>", () =>
-		expect(<Branch />, "when mounted", "to satisfy", <ul />));
+	it("renders a <ul>", () => expect(<Branch />, "when mounted", "to satisfy", <ul />));
 
 	it("sets styling for showing a branch structure", () =>
 		expect(
@@ -27,8 +26,7 @@ describe("Branch", () => {
 });
 
 describe("Wrapper", () => {
-	it("renders a <ul>", () =>
-		expect(<Wrapper />, "when mounted", "to satisfy", <ul />));
+	it("renders a <ul>", () => expect(<Wrapper />, "when mounted", "to satisfy", <ul />));
 
 	it("sets styling for showing the root of a tree structure", () =>
 		expect(
@@ -46,9 +44,6 @@ describe("Wrapper", () => {
 			expect
 				.it("to contain", "margin-left: 0;")
 				.and("to contain", "padding: 7px;")
-				.and(
-					"to contain",
-					"> ." + Branch.styledComponentId + " {margin-left: 15px;}",
-				),
+				.and("to contain", "> ." + Branch.styledComponentId + " {margin-left: 15px;}"),
 		));
 });

@@ -28,11 +28,7 @@ describe("getCultures", () => {
 	it("creates a RSAA to fetch available cultures", () =>
 		expect(getCultures, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [
-					GET_CULTURES_REQUEST,
-					GET_CULTURES_SUCCESS,
-					GET_CULTURES_FAILURE,
-				],
+				types: [GET_CULTURES_REQUEST, GET_CULTURES_SUCCESS, GET_CULTURES_FAILURE],
 				endpoint: 'URL: cultures ""',
 				method: "GET",
 				body: undefined,
@@ -51,11 +47,7 @@ describe("getMyCulture", () => {
 	it("creates a RSAA to get currently selected culture", () =>
 		expect(getMyCulture, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [
-					GET_MY_CULTURE_REQUEST,
-					GET_MY_CULTURE_SUCCESS,
-					GET_MY_CULTURE_FAILURE,
-				],
+				types: [GET_MY_CULTURE_REQUEST, GET_MY_CULTURE_SUCCESS, GET_MY_CULTURE_FAILURE],
 				endpoint: 'URL: my/culture ""',
 				method: "GET",
 				body: undefined,
@@ -72,31 +64,25 @@ describe("getMyCulture", () => {
 
 describe("getMyCulture", () => {
 	it("creates a RSAA to set currently selected culture", () =>
-		expect(
-			setDefaultLanguage,
-			"when called with",
-			["en-US"],
-			"to exhaustively satisfy",
-			{
-				[RSAA]: {
-					types: [
-						{ type: SET_DEFAULT_LANGUAGE_REQUEST, meta: { lang: "en-US" } },
-						{ type: SET_DEFAULT_LANGUAGE_SUCCESS, meta: { lang: "en-US" } },
-						{ type: SET_DEFAULT_LANGUAGE_FAILURE, meta: { lang: "en-US" } },
-					],
-					endpoint: 'URL: my/culture/en-US ""',
-					method: "POST",
-					body: undefined,
-					credentials: "include",
-					bailout: expect.it("to be a function"),
-					headers: {
-						Accept: "application/json; charset=utf-8",
-						"Content-Type": "application/json",
-					},
-					options: { redirect: "follow" },
+		expect(setDefaultLanguage, "when called with", ["en-US"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: SET_DEFAULT_LANGUAGE_REQUEST, meta: { lang: "en-US" } },
+					{ type: SET_DEFAULT_LANGUAGE_SUCCESS, meta: { lang: "en-US" } },
+					{ type: SET_DEFAULT_LANGUAGE_FAILURE, meta: { lang: "en-US" } },
+				],
+				endpoint: 'URL: my/culture/en-US ""',
+				method: "POST",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
 				},
+				options: { redirect: "follow" },
 			},
-		));
+		}));
 });
 
 describe("changeLocale", () => {

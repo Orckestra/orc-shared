@@ -42,13 +42,31 @@ describe("getAuthProfile", () => {
 });
 
 describe("signOut", () => {
-	it("creates a RSAA to sign out the current user", () =>
+	const { location } = window;
+
+	beforeAll(() => {
+		delete window.location;
+
+		window.location = {
+			href: "http://someoriginurl:6543/appname/app",
+			origin: "http://someoriginurl:6543",
+		};
+	});
+	afterAll(() => {
+		window.location = location;
+
+		delete window.BASE_PATH;
+	});
+
+	it("creates a RSAA to sign out the current user", () => {
+		window.BASE_PATH = "/anyApp/app";
+
 		expect(signOut, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE],
 				endpoint: 'URL: authentication/signout ""',
 				method: "POST",
-				body: undefined,
+				body: '{"returnUrl":"http://someoriginurl:6543/anyApp"}',
 				credentials: "include",
 				bailout: expect.it("to be a function"),
 				headers: {
@@ -57,5 +75,26 @@ describe("signOut", () => {
 				},
 				options: { redirect: "follow" },
 			},
-		}));
+		});
+	});
+
+	it("creates a RSAA to sign out the current user with unknown application", () => {
+		window.BASE_PATH = "wrongAppPath";
+
+		expect(signOut, "when called", "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE],
+				endpoint: 'URL: authentication/signout ""',
+				method: "POST",
+				body: '{"returnUrl":"http://someoriginurl:6543"}',
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		});
+	});
 });

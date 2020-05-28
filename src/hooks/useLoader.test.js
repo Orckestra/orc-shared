@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { mount, act } from "react-dom-testing";
+import { mount, act } from "unexpected-reaction";
 import { Provider, useSelector } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";

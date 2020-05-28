@@ -30,9 +30,7 @@ describe("withInitialLoad", () => {
 			)
 			.then(() =>
 				expect(console.warn, "to have a call satisfying", {
-					args: [
-						expect.it("to contain", "withInitialLoad has been deprecated"),
-					],
+					args: [expect.it("to contain", "withInitialLoad has been deprecated")],
 				}),
 			));
 
@@ -63,30 +61,16 @@ describe("withInitialLoad", () => {
 			[TestComp],
 		)
 			.then(EnhComp =>
-				expect(
-					<EnhComp loader={loader} />,
-					"when mounted",
-					"to satisfy",
-					<div />,
-				),
+				expect(<EnhComp loader={loader} />, "when mounted", "to satisfy", <div />),
 			)
 			.then(() => expect(loader, "was not called")));
 
 	it("does not fire loader function if no test provided", () =>
-		expect(
-			withInitialLoad,
-			"when called with",
-			["loader"],
-			"when called with",
-			[TestComp],
-		)
+		expect(withInitialLoad, "when called with", ["loader"], "when called with", [
+			TestComp,
+		])
 			.then(EnhComp =>
-				expect(
-					<EnhComp loader={loader} />,
-					"when mounted",
-					"to satisfy",
-					<div />,
-				),
+				expect(<EnhComp loader={loader} />, "when mounted", "to satisfy", <div />),
 			)
 			.then(() => expect(loader, "was not called")));
 });

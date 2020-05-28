@@ -20,11 +20,7 @@ export const getDialog = props => toggle => (
 
 const ApplicationSelector = ({ className, ...props }) => {
 	return (
-		<Modal
-			anchor={getAnchor(className, props)}
-			content={getDialog(props)}
-			look="dark"
-		/>
+		<Modal anchor={getAnchor(className, props)} content={getDialog(props)} look="dark" />
 	);
 };
 

@@ -22,7 +22,8 @@ describe("Sidebar", () => {
 			},
 		];
 		state = Immutable.fromJS({
-			navigation: { route: { match: {} } },
+			navigation: { route: { match: { params: { scope: "Global" } } } },
+			settings: { defaultScope: "myScope" },
 		});
 		store = {
 			subscribe: () => {},
@@ -35,8 +36,8 @@ describe("Sidebar", () => {
 		expect(
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
-						<Sidebar modules={modules} path="/Global/second" />
+					<MemoryRouter initialEntries={["/Global/second"]}>
+						<Sidebar modules={modules} />
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
@@ -44,21 +45,11 @@ describe("Sidebar", () => {
 			"to satisfy",
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
+					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle />
-							<EnhancedMenuItem
-								icon="cars"
-								id="first"
-								label="First page"
-								path="/Global/second"
-							/>
-							<EnhancedMenuItem
-								icon="person"
-								id="second"
-								label="Second page"
-								path="/Global/second"
-							/>
+							<EnhancedMenuItem icon="cars" id="first" label="First page" />
+							<EnhancedMenuItem icon="person" id="second" label="Second page" />
 							<Logo />
 						</Bar>
 					</MemoryRouter>
@@ -70,12 +61,8 @@ describe("Sidebar", () => {
 		expect(
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
-						<Sidebar
-							modules={modules}
-							path="/Global/second"
-							activeModules={["first"]}
-						/>
+					<MemoryRouter initialEntries={["/Global/second"]}>
+						<Sidebar modules={modules} activeModules={{ first: { type: "confirm" } }} />
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
@@ -83,22 +70,16 @@ describe("Sidebar", () => {
 			"to satisfy",
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
+					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle />
 							<EnhancedMenuItem
 								icon="cars"
 								id="first"
 								label="First page"
-								path="/Global/second"
-								alert
+								alert={{ type: "confirm" }}
 							/>
-							<EnhancedMenuItem
-								icon="person"
-								id="second"
-								label="Second page"
-								path="/Global/second"
-							/>
+							<EnhancedMenuItem icon="person" id="second" label="Second page" />
 							<Logo />
 						</Bar>
 					</MemoryRouter>
@@ -110,8 +91,8 @@ describe("Sidebar", () => {
 		expect(
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
-						<Sidebar open modules={modules} path="/Global/second" />
+					<MemoryRouter initialEntries={["/Global/second"]}>
+						<Sidebar open modules={modules} />
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
@@ -119,23 +100,11 @@ describe("Sidebar", () => {
 			"to satisfy",
 			<Provider store={store}>
 				<ThemeProvider theme={{}}>
-					<MemoryRouter>
+					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle open />
-							<EnhancedMenuItem
-								open
-								icon="cars"
-								id="first"
-								label="First page"
-								path="/Global/second"
-							/>
-							<EnhancedMenuItem
-								open
-								icon="person"
-								id="second"
-								label="Second page"
-								path="/Global/second"
-							/>
+							<EnhancedMenuItem open icon="cars" id="first" label="First page" />
+							<EnhancedMenuItem open icon="person" id="second" label="Second page" />
 							<Logo />
 						</Bar>
 					</MemoryRouter>
@@ -182,6 +151,7 @@ describe("EnhancedMenuItem", () => {
 							},
 						},
 					},
+					settings: { defaultScope: "myScope" },
 				}),
 		};
 	});
@@ -205,8 +175,8 @@ describe("EnhancedMenuItem", () => {
 	it("sets the active flag if path matches href", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<EnhancedMenuItem id="route" path="/Global/route/subpath" />
+				<MemoryRouter initialEntries={["/Global/route/subpath"]}>
+					<EnhancedMenuItem id="route" />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -298,11 +268,7 @@ describe("MenuToggle", () => {
 				"when mounted",
 				"to satisfy",
 				<Provider store={store}>
-					<MenuItem
-						menuToggle
-						icon="closed"
-						onClick={expect.it("to be a function")}
-					/>
+					<MenuItem menuToggle icon="closed" onClick={expect.it("to be a function")} />
 				</Provider>,
 			));
 
@@ -318,12 +284,7 @@ describe("MenuToggle", () => {
 				"when mounted",
 				"to satisfy",
 				<Provider store={store}>
-					<MenuItem
-						menuToggle
-						open
-						icon="open"
-						onClick={expect.it("to be a function")}
-					/>
+					<MenuItem menuToggle open icon="open" onClick={expect.it("to be a function")} />
 				</Provider>,
 			));
 	});

@@ -1,5 +1,5 @@
 import React from "react";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import withToggle from "./withToggle";
 
@@ -33,11 +33,7 @@ describe("withToggle", () => {
 		]).then(Comp => {
 			const element = mount(<Comp />);
 			expect(element, "to satisfy", <TestComp toggledOn={false} />);
-			expect(
-				element,
-				"to satisfy",
-				<div onClick={expect.it("to be a function")}>0</div>,
-			);
+			expect(element, "to satisfy", <div onClick={expect.it("to be a function")}>0</div>);
 			simulate(element, "click");
 			expect(element, "to satisfy", <div>1</div>);
 			simulate(element, "click");

@@ -38,7 +38,7 @@ The `utils` folder contains a number of useful utility functions, for use in var
 
 ### API utilities
 
-`loadConfig()` loads in the `config.json` file (by fetching it at runtime, not as an imported module) in order to gain access to the API location, version number etc. It returns a promise, which when resolved signals the availability the API. This is required to be called first and allowed to complete before dispatching API actions using the `buildUrl()` helper function. <!-- Edit this to generalize if/when we have more API helper funcs  --> It also sets `window.orcVersion` to the current Orckestra Commerce Suite version number.
+`loadConfig()` loads in the `config.json` file (by fetching it at runtime, not as an imported module) in order to gain access to the API location, version number etc. It returns a promise, which when resolved signals the availability the API. This is required to be called first and allowed to complete before dispatching API actions using the `buildUrl()` helper function. <!-- Edit this to generalize if/when we have more API helper funcs  -->
 
 `buildUrl(pathParts, queryObject)` constructs an absolute URL for an Orckestra API end point. The `pathParts` parameter is an array of strings defining the path, for example `['my', 'application']` will target the `/api/my/application` endpoint. `queryObject` should be an object of key/value pairs that will become search query parameters, for example `{ IncludeChildren: true, IncludeCurrency: true }` turns into `?IncludeChildren=true&IncludeCurrency=true`. It is best used together with [`makeOrcApiAction()`](actionsreducersselectors.md#api-action-tools), q.v.
 
@@ -74,6 +74,12 @@ These should generally never be used for live code, but are highly useful tools 
 
 `spyOnConsole()` can be called in a `describe()` block, and will set up (and tear down) `console.log()`, `console.warn()` and `console.error()` as sinon spies. This intercepts their normal function (i.e. no messages are output), but alloows asserting on whether they have been called and with what. Highly useful for testing e.g. error display. (This was universally applied prior to `orc-scripts` v0.7.0.)
 
-`getClassName(<StyledComp />, index)` will extract the indexed class name of a React component, and is most useful for querying for styled components in a DOM tree. It does not include the class selector prefix (i.e. it outputs "myClass", not ".myClass"), so if used as a selector, the class name should be prefixed with a period. `index` is zero-based, and defaults to 0. In most cases you will not need this parameter.
+`getElmClasses(element, parentType)` creates an array containing all class names attached to the element given. The `parentType` parameter can be used to suppress nesting validation output for e.g. `<td>` elements and others which cannot legitimally reside under a `<div>`.
 
-`<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing higher order components and other cases where the properties passed to a component are important.
+`getClassName(element, index, parentType)` will extract the indexed class name of an element, and is most useful for querying for styled components in a DOM tree. It does not include the class selector prefix (i.e. it outputs "myClass", not ".myClass"), so if used as a selector, the class name should be prefixed with a period. `index` is zero-based, and defaults to 0. In most cases you will not need this parameter.
+
+`getClassSelector(element, index, parentType)` will generate a string containing a CSS selector that targets the given element's class. If index is -1, all classes on the element will be used together, otherwise it works as on `getClassName` above.
+
+`getStyledClassSelector(StyledComponent)` discovers the most-specific class targeting elements of the `StyledComponent` type. Either the component itself or an element rendered from it (i.e. `<StyledComponent />`) will work. If the passed element is not a rendered styled component, it will throw an error.
+
+`<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing hooks, higher order components and other cases where the properties passed to a component are important.

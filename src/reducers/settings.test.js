@@ -4,11 +4,13 @@ import {
 	GET_MY_APPLICATION_SUCCESS,
 	SET_MY_APPLICATION_SUCCESS,
 } from "../actions/applications";
+import { GET_MY_SCOPE_SUCCESS } from "../actions/scopes";
 
 describe("settings", () => {
 	it("behaves as a reducer should", () =>
 		expect(reducer, "to be a reducer with initial state", {
 			defaultApp: 0,
+			defaultScope: null,
 		}));
 
 	it("stores results of getting your personal default application", () => {
@@ -23,8 +25,7 @@ describe("settings", () => {
 				isVisible: true,
 				isAbsoluteUrl: true,
 				url: "https://orc-env18-oco.develop.orckestra.cloud/marketing",
-				iconUri:
-					"https://orc-env18-oco.develop.orckestra.cloud/marketing/icon.png",
+				iconUri: "https://orc-env18-oco.develop.orckestra.cloud/marketing/icon.png",
 				displayName: {
 					"en-CA": "Product Information Beta",
 					"en-US": "Product Information Beta",
@@ -51,6 +52,20 @@ describe("settings", () => {
 		const newState = reducer(oldState, action);
 		expect(newState, "not to be", oldState).and("to satisfy", {
 			defaultApp: 12,
+		});
+	});
+
+	it("stores a newly set default scope", () => {
+		const oldState = Immutable.fromJS({
+			defaultScope: null,
+		});
+		const action = {
+			type: GET_MY_SCOPE_SUCCESS,
+			payload: { id: "aScope" },
+		};
+		const newState = reducer(oldState, action);
+		expect(newState, "not to be", oldState).and("to satisfy", {
+			defaultScope: "aScope",
 		});
 	});
 });

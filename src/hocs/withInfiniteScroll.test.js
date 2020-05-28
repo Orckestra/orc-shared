@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import sinon from "sinon";
 import { withInfiniteScroll, getOnScroll } from "./withInfiniteScroll";
 
@@ -59,11 +59,7 @@ describe("withInfiniteScroll", () => {
 			element.scrollTop = 100;
 			element.dispatchEvent(new window.Event("scroll"));
 			expect(onScroll, "was called");
-			expect(
-				element,
-				"to have text",
-				expect.it("to contain", "scrollTop: 100"),
-			);
+			expect(element, "to have text", expect.it("to contain", "scrollTop: 100"));
 		});
 	});
 
@@ -102,9 +98,7 @@ describe("withInfiniteScroll", () => {
 			return expect(onScroll, "called with", [fakeEvent])
 				.then(() => expect(loader, "was not called"))
 				.then(() =>
-					expect(oldOnScroll, "to have calls satisfying", [
-						{ args: [fakeEvent] },
-					]),
+					expect(oldOnScroll, "to have calls satisfying", [{ args: [fakeEvent] }]),
 				);
 		});
 
@@ -113,9 +107,7 @@ describe("withInfiniteScroll", () => {
 			return expect(onScroll, "called with", [fakeEvent])
 				.then(() => expect(loader, "to have calls satisfying", [{ args: [2] }]))
 				.then(() =>
-					expect(oldOnScroll, "to have calls satisfying", [
-						{ args: [fakeEvent] },
-					]),
+					expect(oldOnScroll, "to have calls satisfying", [{ args: [fakeEvent] }]),
 				);
 		});
 

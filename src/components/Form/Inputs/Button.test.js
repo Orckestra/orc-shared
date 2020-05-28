@@ -28,12 +28,7 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<PositionedButton
-					id="testId"
-					otherProp
-					onClick={update}
-					icon="test-icon"
-				/>
+				<PositionedButton id="testId" otherProp onClick={update} icon="test-icon" />
 			</Provider>,
 		));
 
@@ -46,12 +41,7 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<FormButton
-					id="testId"
-					update={update}
-					buttonText="Push this"
-					otherProp
-				/>
+				<FormButton id="testId" update={update} buttonText="Push this" otherProp />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -62,12 +52,7 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<PositionedButton
-					id="testId"
-					otherProp
-					onClick={update}
-					label="Push this"
-				/>
+				<PositionedButton id="testId" otherProp onClick={update} label="Push this" />
 			</Provider>,
 		));
 

@@ -1,7 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { withTheme } from "styled-components";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
 
@@ -10,9 +10,14 @@ const fakeStore = {
 	dispatch: action => action,
 	getState: () =>
 		Immutable.fromJS({
-			locale: {},
+			locale: {
+				locale: "en",
+			},
 			authentication: {
 				name: "foo@bar.com",
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		}),
 	replaceReducer: () => {},
@@ -46,11 +51,7 @@ describe("Provision", () => {
 
 	it("fails if no children given", () =>
 		expect(
-			() =>
-				expect(
-					<Provision store={fakeStore} theme={fakeTheme} />,
-					"when mounted",
-				),
+			() => expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted"),
 			"to throw",
 			"React.Children.only expected to receive a single React element child.",
 		).then(() =>

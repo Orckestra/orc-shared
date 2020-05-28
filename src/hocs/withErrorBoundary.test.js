@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import withErrorBoundary from "./withErrorBoundary";
 
@@ -9,6 +9,7 @@ const FailBall = ({ error }) => {
 };
 
 const BoundedFailBall = withErrorBoundary("Failed")(FailBall);
+BoundedFailBall.displayName = "BoundedFailBall";
 
 describe("withErrorBoundary", () => {
 	spyOnConsole();
@@ -40,7 +41,9 @@ describe("withErrorBoundary", () => {
 			{ args: ["Caught an error: Fail, at boundary Failed"] },
 			{
 				args: [
-					"\n    in FailBall (created by lifecycle(FailBall))\n    in lifecycle(FailBall)",
+					"\n    in FailBall (created by ErrorBoundary)\n" +
+						"    in ErrorBoundary (created by BoundedFailBall)\n" +
+						"    in BoundedFailBall",
 				],
 			},
 		]);

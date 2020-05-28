@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { injectIntl } from "react-intl";
+import { getThemeProp } from "../../utils";
 import Input from "../Input";
 import Treeview from "../Treeview";
 import ScopeNode from "./ScopeNode";
@@ -21,8 +22,8 @@ export const InputBox = styled.div`
 
 export const SearchInput = styled(Input)`
 	background-color: transparent;
-	border-color: #999;
-	color: #999;
+	border-color: ${getThemeProp(["colors", "border"], "#999999")};
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 	width: calc(100% - 40px);
 	margin: 20px;
 	font-size: 14px;
@@ -30,7 +31,7 @@ export const SearchInput = styled(Input)`
 
 export const SelectorPanel = styled(Sidepanel)`
 	top: 90px;
-	background-color: #333;
+	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
 	color: #fff;
 	z-index: 1000;
 `;
@@ -41,6 +42,7 @@ export const Selector = ({
 	reset,
 	intl: renamedIntl,
 	getScope,
+	currentScope,
 	defaultNodeState,
 	filter,
 	updateFilter,
@@ -50,9 +52,7 @@ export const Selector = ({
 		<Wrapper onClickOutside={reset}>
 			<InputBox>
 				<SearchInput
-					placeholder={
-						filterPlaceholder && renamedIntl.formatMessage(filterPlaceholder)
-					}
+					placeholder={filterPlaceholder && renamedIntl.formatMessage(filterPlaceholder)}
 					value={filter}
 					onChange={updateFilter}
 				/>
@@ -63,6 +63,7 @@ export const Selector = ({
 					Content: ScopeNode,
 					rootId: "Global",
 					getNode: getScope,
+					selectedNodeId: (currentScope && currentScope.id) || null,
 					openAll: !!filter,
 					closeSelector: reset,
 					dark: true,

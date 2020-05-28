@@ -1,13 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import {
-	getDate,
-	getDay,
-	isSameMonth,
-	isToday,
-	format,
-	parseISO,
-} from "date-fns-2";
+import { getDate, getDay, isSameMonth, isToday, format, parseISO } from "date-fns-2";
 import { FormattedDate, injectIntl } from "react-intl";
 import Kalendaryo from "kalendaryo";
 import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";
@@ -29,7 +22,7 @@ export const CalendarBox = styled.div`
 	position: absolute;
 	top: 30px;
 	right: 3px;
-	border: 1px solid #cccccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	padding: 8px 15px 15px;
 	background-color: white;
 	z-index: 100;
@@ -93,16 +86,16 @@ export const DayCell = styled.td.attrs(() => ({ role: "button" }))`
 		"outsideMonth",
 		css`
 			background-color: white;
-			color: #cccccc;
+			color: ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 		`,
 		ifFlag(
 			"selected",
 			css`
-				background-color: ${getThemeProp(["appHighlightColor"], "#cccccc")};
+				background-color: ${getThemeProp(["colors", "application", "base"], "#cccccc")};
 				border-radius: 3px;
 			`,
 			css`
-				background-color: #efefef;
+				background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
 			`,
 		),
 	)}
@@ -223,7 +216,7 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 
 		&:focus {
 			box-shadow: none;
-			border-color: #333;
+			border-color: ${getThemeProp(["colors", "borderDark"], "#333333")};
 		}
 		&:last-of-type {
 			flex-grow: 1;

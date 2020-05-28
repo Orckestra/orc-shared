@@ -7,11 +7,47 @@ describe("locale reducer factory", () => {
 		expect(
 			reducerFactory,
 			"when called with",
-			[["en-US", "fr"]],
+			[
+				[
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			],
 			"to be a reducer with initial state",
 			{
-				locale: "en-US",
-				supportedLocales: ["en-US", "fr"],
+				locale: null,
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+				cultures: {},
+				defaultCulture: "en-US",
+			},
+		));
+
+	it("falls back to default value after when creating the reducer", () =>
+		expect(
+			reducerFactory,
+			"when called with",
+			[[]],
+			"to be a reducer with initial state",
+			{
+				locale: null,
+				supportedLocales: [],
+				cultures: {},
+				defaultCulture: "en-US",
+			},
+		));
+
+	it("falls back to default value after when creating the reducer with undefined cultureIso", () =>
+		expect(
+			reducerFactory,
+			"when called with",
+			[[{ language: "English" }]],
+			"to be a reducer with initial state",
+			{
+				locale: null,
+				supportedLocales: [{ language: "English" }],
 				cultures: {},
 				defaultCulture: "en-US",
 			},
@@ -20,13 +56,19 @@ describe("locale reducer factory", () => {
 	describe("created reducer", () => {
 		let reducer;
 		beforeEach(() => {
-			reducer = reducerFactory(["en-US", "fr"]);
+			reducer = reducerFactory([
+				{ language: "English", cultureIso: "en-US" },
+				{ language: "Francais", cultureIso: "fr" },
+			]);
 		});
 
 		it("reacts to locale change by updating to the requested locale", () => {
 			const oldState = Immutable.Map({
 				locale: "en-US",
-				supportedLocales: ["en-US", "fr"],
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
 				cultures: {},
 				defaultCulture: "en-US",
 			});
@@ -40,7 +82,10 @@ describe("locale reducer factory", () => {
 		it("does not update the locale if the requested language is not supported", () => {
 			const oldState = Immutable.Map({
 				locale: "en-US",
-				supportedLocales: ["en-US", "fr"],
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
 				cultures: {},
 				defaultCulture: "en-US",
 			});
@@ -54,7 +99,10 @@ describe("locale reducer factory", () => {
 		it("adds cultures fetched from API", () => {
 			const oldState = Immutable.Map({
 				locale: "en-US",
-				supportedLocales: ["en-US", "fr"],
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
 				cultures: {},
 				defaultCulture: "en-US",
 			});

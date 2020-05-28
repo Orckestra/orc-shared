@@ -37,12 +37,9 @@ describe("Placeholder", () => {
 		).then(() => expect(console.error, "was not called")));
 
 	it("renders an empty placeholder", () =>
-		expect(
-			<Placeholder />,
-			"when mounted",
-			"to satisfy",
-			<PlaceholderBox />,
-		).then(() => expect(console.error, "was not called")));
+		expect(<Placeholder />, "when mounted", "to satisfy", <PlaceholderBox />).then(() =>
+			expect(console.error, "was not called"),
+		));
 
 	it("renders an animated icon", () =>
 		expect(

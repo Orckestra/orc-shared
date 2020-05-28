@@ -8,10 +8,7 @@ const toastReducer = (state = initialState, action) => {
 			return state.withMutations(s => {
 				const latestToast = s.get("queue").last() || Immutable.Map({ key: 0 });
 				const latestKey = latestToast.get("key");
-				const toast = Immutable.fromJS(action.payload).set(
-					"key",
-					latestKey + 1,
-				);
+				const toast = Immutable.fromJS(action.payload).set("key", latestKey + 1);
 				s.set("queue", s.get("queue").push(toast));
 			});
 		case SHIFT_TOAST:

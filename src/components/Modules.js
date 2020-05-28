@@ -8,9 +8,7 @@ import FullPage from "./Routing/FullPage";
 
 export const Module = withErrorBoundary("Module")(
 	({ config, path, error, location, match }) => {
-		return (
-			<FullPage path={path} config={config} location={location} match={match} />
-		);
+		return <FullPage path={path} config={config} location={location} match={match} />;
 	},
 );
 

@@ -16,8 +16,7 @@ export const getOnScroll = (
 		event => {
 			if (
 				// Are we scrolled far enough?
-				event.target.scrollHeight -
-					(event.target.scrollTop + event.target.offsetHeight) <
+				event.target.scrollHeight - (event.target.scrollTop + event.target.offsetHeight) <
 					loadTrigger &&
 				// Are we already loading?
 				length === latestPage * pageLength

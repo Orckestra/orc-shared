@@ -118,6 +118,31 @@ describe("DataCell", () => {
 		);
 	});
 
+	it("renders a cell with type currency for 0", () => {
+		const columnDef = { fieldName: "test", type: "currency", currency: "USD" };
+		const row = { test: "0", extraneous: "Don't show" };
+		return expect(
+			<IntlProvider locale="en">
+				<table>
+					<tbody>
+						<tr>
+							<DataCell columnDef={columnDef} row={row} />
+						</tr>
+					</tbody>
+				</table>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<table>
+				<tbody>
+					<tr>
+						<TableData>$0.00</TableData>
+					</tr>
+				</tbody>
+			</table>,
+		);
+	});
+
 	it("renders a cell with type currency and row-based currency code", () => {
 		const columnDef = {
 			fieldName: "test",
@@ -216,12 +241,7 @@ describe("DataCell", () => {
 			<table>
 				<tbody>
 					<tr>
-						<DataCell
-							columnDef={columnDef}
-							row={row}
-							rowId="rowIdent"
-							selected
-						/>
+						<DataCell columnDef={columnDef} row={row} rowId="rowIdent" selected />
 					</tr>
 				</tbody>
 			</table>,

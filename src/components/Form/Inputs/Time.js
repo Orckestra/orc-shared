@@ -24,12 +24,7 @@ export const TimeButton = styled(InputButton)`
 
 export const TimeInput = ({ update, required, value, ...props }) => (
 	<ButtonWrapper invalid={required && !value}>
-		<FormInput
-			type="time"
-			onChange={getEventUpdater(update)}
-			value={value}
-			{...props}
-		/>
+		<FormInput type="time" onChange={getEventUpdater(update)} value={value} {...props} />
 		<TimeButton>
 			<TimeIcon />
 		</TimeButton>

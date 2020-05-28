@@ -8,9 +8,9 @@ export const TooltipBubble = styled.div`
 	top: 50%;
 	right: -10px;
 	transform: translate(-99999px, -50%);
-	color: #333;
+	color: ${getThemeProp(["colors", "text"], "#333333")};
 	background-color: #fff;
-	border: 1px solid #cccccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 3px;
 	padding: 0 3px;
 	transition: transform 0s;
@@ -29,7 +29,7 @@ export const TooltipBubble = styled.div`
 		top: 4px;
 		left: -10px;
 		border: 5px solid transparent;
-		border-right-color: #cccccc;
+		border-right-color: ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	}
 
 	&::after {

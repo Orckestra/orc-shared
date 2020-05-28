@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import Immutable from "immutable";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import useNavigationHandler from "./useNavigationHandler";
 

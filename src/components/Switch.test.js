@@ -1,12 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import FullSwitch, {
-	Switch,
-	Wrapper,
-	ContainedCheckbox,
-	Caption,
-} from "./Switch";
+import FullSwitch, { Switch, Wrapper, ContainedCheckbox, Caption } from "./Switch";
 
 describe("Switch", () => {
 	it("renders a switch in the on position", () =>
@@ -102,7 +97,7 @@ describe("Wrapper", () => {
 
 	it("sets background color according to theme when on", () =>
 		expect(
-			<Wrapper value={true} theme={{ appHighlightColor: "#990099" }} />,
+			<Wrapper value={true} theme={{ colors: { application: { base: "#990099" } } }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			"to match",
@@ -124,7 +119,7 @@ describe("Wrapper", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("to match", /\scolor: #333;.*::after/)
+				.it("to match", /\scolor: #333333;.*::after/)
 				.and("to match", /\sbackground-color: #cccccc;.*::after/),
 		));
 

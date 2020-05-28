@@ -1,5 +1,6 @@
 import React from "react";
-import { mount } from "react-dom-testing";
+import { isStyledComponent } from "styled-components";
+import { mount } from "unexpected-reaction";
 import { Ignore } from "unexpected-reaction";
 const sinon = require("sinon");
 
@@ -27,9 +28,7 @@ export const getElmClasses = (reactElm, container) => {
 	const classes = domElm.getAttribute("class");
 	if (!classes) {
 		throw new Error(
-			"Class name not found in <" +
-				(reactElm.type.name || reactElm.type) +
-				" />",
+			"Class name not found in <" + (reactElm.type.name || reactElm.type) + " />",
 		);
 	}
 	return classes.split(" ");
@@ -37,18 +36,33 @@ export const getElmClasses = (reactElm, container) => {
 
 export const getClassName = (reactElm, index = 0, container) => {
 	const classes = getElmClasses(reactElm, container);
-	return classes[index];
+	return classes[index] || "";
 };
 
-export const getClassSelector = elm => {
-	const classes = getElmClasses(elm);
-	return "." + classes.join(".");
+export const getClassSelector = (elm, index, container) => {
+	if (index < 0) {
+		return "." + getElmClasses(elm, container).join(".");
+	} else {
+		const className = getClassName(elm, index, container) || "";
+		return className && "." + className;
+	}
 };
 
-export const firstItemComparator = (a, b) =>
-	a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0;
+export const getStyledClassSelector = elm => {
+	const component = elm.type || elm;
+	if (!isStyledComponent(component)) {
+		throw new Error(
+			"<" + (component.name || component) + " /> is not a styled component",
+		);
+	}
+	// Styled component toString() function returns a stable class name
+	return component.toString();
+};
 
-export const PropStruct = props => (
+export const firstItemComparator = (a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0);
+
+export const PropStruct = React.forwardRef((props, ref) => (
+	// TODO: Handle refs sensibly instead of ignoring?
 	<dl id={props.id}>
 		{Object.entries(props)
 			.sort(firstItemComparator)
@@ -82,4 +96,4 @@ export const PropStruct = props => (
 					  ],
 			)}
 	</dl>
-);
+));

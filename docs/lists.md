@@ -2,7 +2,7 @@
 
 The `List` and `CategoryList` components are used to show and handle data that consists of an ordered set of objects, each containing a set of fields of the same shape. Configuring a list component, however, can be moderately complex.
 
-A list should always have a `name` property which uniquely identifies it, as it needs to maintain view state (using [the `withViewState` HOC](hocs.md#withviewstatecomponent)).
+A list should always have a `name` property which uniquely identifies it, as it needs to maintain view state (using [the `useViewState` hook](hooks.md#useviewstatename)).
 
 ## Data linkage
 
@@ -86,7 +86,7 @@ Adding a column definition object like `{ type: 'select' }` will insert a select
 
 ### Testing your column definitions
 
-You can use `unexpected` to check the validity of a column definition by using the assertion `"to be a column defintion"` on it. This will verify that the object passed is correct and readable by the component.
+You can use `unexpected` to check the validity of a column definition by using the assertion `"to be a column definition"` on it. This will verify that the object passed is correct and readable by the component.
 
 ## Click handling on rows
 

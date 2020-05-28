@@ -2,9 +2,7 @@
 const buildParamString = params =>
 	Object.entries(params)
 		.map(([key, value]) =>
-			Array.isArray(value)
-				? `${key}=${JSON.stringify(value)}`
-				: `${key}=${value}`,
+			Array.isArray(value) ? `${key}=${JSON.stringify(value)}` : `${key}=${value}`,
 		)
 		.join("&");
 
@@ -36,7 +34,6 @@ export const loadConfig = () =>
 			buildUrl = (pathParts = [], parameters) =>
 				`${host}/${pathParts.join("/")}` +
 				(parameters ? "?" + buildParamString(parameters) : "");
-			window.orcVersion = config.version;
 		});
 
 /* Reset function for testing, never use this in actual code */

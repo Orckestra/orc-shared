@@ -13,9 +13,7 @@ export const spawnerMiddleware = store => next => action => {
 
 const addSpawner = (type, mapper) => {
 	if (spawners[type]) {
-		throw new Error(
-			"Action spawner for type " + type + " was attempted overwritten.",
-		);
+		throw new Error("Action spawner for type " + type + " was attempted overwritten.");
 	}
 	spawners[type] = mapper;
 };

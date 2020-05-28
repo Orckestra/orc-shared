@@ -1,18 +1,23 @@
 import Immutable from "immutable";
 import { CHANGE_LOCALE, GET_CULTURES_SUCCESS } from "../actions/locale";
 
+export const cultureByDefault = "en-US";
+
 const localeFactory = supportedLocales => {
+	const defaultCulture =
+		(supportedLocales[0] && supportedLocales[0].cultureIso) || cultureByDefault;
+
 	const initialState = Immutable.fromJS({
-		locale: supportedLocales[0],
+		locale: null,
 		supportedLocales,
 		cultures: {},
-		defaultCulture: supportedLocales[0],
+		defaultCulture: defaultCulture,
 	});
 
 	const locale = (state = initialState, action) => {
 		switch (action.type) {
 			case CHANGE_LOCALE:
-				if (supportedLocales.indexOf(action.payload) !== -1) {
+				if (supportedLocales.findIndex(l => l.cultureIso === action.payload) !== -1) {
 					return state.set("locale", action.payload);
 				} else {
 					return state;
