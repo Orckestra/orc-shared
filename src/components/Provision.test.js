@@ -4,6 +4,7 @@ import { withTheme } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const fakeStore = {
 	subscribe: listener => () => {},
@@ -25,13 +26,17 @@ const fakeStore = {
 
 const fakeTheme = { value: "styles" };
 
+const fakeMuiTheme = createMuiTheme({
+	direction: "ltr",
+});
+
 const TestComp = withTheme(({ theme }) => <div>{JSON.stringify(theme)}</div>);
 
 describe("Provision", () => {
 	spyOnConsole(["error"]);
 	it("renders", () =>
 		expect(
-			<Provision store={fakeStore} theme={fakeTheme}>
+			<Provision store={fakeStore} theme={fakeTheme} muiTheme={fakeMuiTheme}>
 				<TestComp />
 			</Provision>,
 			"when mounted",
@@ -41,7 +46,7 @@ describe("Provision", () => {
 
 	it("handles getting no theme", () =>
 		expect(
-			<Provision store={fakeStore}>
+			<Provision store={fakeStore} muiTheme={fakeMuiTheme}>
 				<TestComp />
 			</Provision>,
 			"when mounted",
