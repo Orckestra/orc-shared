@@ -52,14 +52,16 @@ const ExpansionPanel = ({
 		expansionPanelProps != null &&
 		expansionPanelProps instanceof ExpansionPanelProps === false
 	) {
-		throw new Error("expansionPanelProps property is not of type ExpansionPanelProps");
+		throw new TypeError(
+			"expansionPanelProps property is not of type ExpansionPanelProps",
+		);
 	}
 
 	if (
 		expansionPanelActionsProps != null &&
 		expansionPanelActionsProps instanceof ExpansionPanelActionsProps === false
 	) {
-		throw new Error(
+		throw new TypeError(
 			"expansionPanelActionsProps property is not of type ExpansionPanelActionsProps",
 		);
 	}
@@ -67,9 +69,9 @@ const ExpansionPanel = ({
 	const classes = useStyles();
 
 	// Expansion panel props
-	var disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
-	var expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
-	var onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
+	let disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
+	let expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
+	let onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
 
 	// Expansion panel summary props
 	let defaultSummaryStyles = {
@@ -82,7 +84,7 @@ const ExpansionPanel = ({
 	};
 
 	// Expansion panel actions props
-	var disableSpacing = expansionPanelActionsProps?.get(
+	let disableSpacing = expansionPanelActionsProps?.get(
 		ExpansionPanelActionsProps.propNames.disableSpacing,
 	);
 

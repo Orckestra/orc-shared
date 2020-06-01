@@ -54,6 +54,13 @@ describe("Provision", () => {
 			<div>{"{}"}</div>,
 		).then(() => expect(console.error, "was not called")));
 
+	it("handles getting no mui theme", () => {
+		let mountedComponent = () =>
+			expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted");
+
+		expect(mountedComponent, "to throw");
+	});
+
 	it("fails if no children given", () =>
 		expect(
 			() => expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted"),

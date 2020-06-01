@@ -12,17 +12,17 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 describe("Table", () => {
 	it("Renders Table", () => {
-		var headers = ["1", "2"];
+		let headers = ["1", "2"];
 
-		var rows = [
+		let rows = [
 			["test11", "test12"],
 			["test21", "test22"],
 		];
 
-		var component = <Table rows={rows} headers={headers} />;
+		let component = <Table rows={rows} headers={headers} />;
 
-		var mountedComponent = mount(component);
-		var expected = (
+		let mountedComponent = mount(component);
+		let expected = (
 			<Box>
 				<TableContainer>
 					<TableMui>
@@ -51,19 +51,19 @@ describe("Table", () => {
 	});
 
 	it("Renders Table with checkbox", () => {
-		var headers = ["1", "2"];
+		let headers = ["1", "2"];
 
-		var checkbox = <Checkbox />;
+		let checkbox = <Checkbox />;
 
-		var rows = [
+		let rows = [
 			["test11", "test12"],
 			["test21", "test22"],
 		];
 
-		var component = <Table rows={rows} headers={headers} checkbox={checkbox} />;
+		let component = <Table rows={rows} headers={headers} checkbox={checkbox} />;
 
-		var mountedComponent = mount(component);
-		var expected = (
+		let mountedComponent = mount(component);
+		let expected = (
 			<Box>
 				<TableContainer>
 					<TableMui>

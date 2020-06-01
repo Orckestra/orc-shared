@@ -9,14 +9,14 @@ import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPane
 
 describe("Expansion Panel", () => {
 	it("Renders Expansion Panel", () => {
-		var header = <p>Header</p>;
-		var content = <p>Content</p>;
-		var actions = <p>Actions</p>;
-		var component = (
+		let header = <p>Header</p>;
+		let content = <p>Content</p>;
+		let actions = <p>Actions</p>;
+		let component = (
 			<ExpansionPanel header={header} content={content} actions={actions} />
 		);
-		var mountedComponent = mount(component);
-		var expected = (
+		let mountedComponent = mount(component);
+		let expected = (
 			<ExpansionPanelMui>
 				<ExpansionPanelSummary>{header}</ExpansionPanelSummary>
 				<ExpansionPanelDetails>{content}</ExpansionPanelDetails>
@@ -28,67 +28,67 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Fails if expansionPanelProps has wrong type", () => {
-		var component = <ExpansionPanel />;
-		var mountedComponent = () => {
+		let component = <ExpansionPanel />;
+		let mountedComponent = () => {
 			component.props.expansionPanelProps = "Wrong type";
 
 			return mount(component);
 		};
-		expect(mountedComponent, "to throw");
+		expect(mountedComponent, "to throw a", TypeError);
 	});
 
 	it("Fails if expansionPanelActionsProps has wrong type", () => {
-		var component = <ExpansionPanel />;
+		let component = <ExpansionPanel />;
 
-		var mountedComponent = () => {
+		let mountedComponent = () => {
 			component.props.expansionPanelActionsProps = "Wrong type";
 
 			return mount(component);
 		};
 
-		expect(mountedComponent, "to throw");
+		expect(mountedComponent, "to throw a", TypeError);
 	});
 
 	it("Uses expansionPanelProps.expanded correctly", () => {
-		var expansionPanelProps = new ExpansionPanelProps();
+		let expansionPanelProps = new ExpansionPanelProps();
 
 		expansionPanelProps.set(ExpansionPanelProps.propNames.expanded, true);
 
-		var component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		let component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
 
-		var mountedComponent = mount(component);
+		let mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".Mui-expanded"), "to be truthy");
 	});
 
 	it("Uses expansionPanelProps.disabled correctly", () => {
-		var expansionPanelProps = new ExpansionPanelProps();
+		let expansionPanelProps = new ExpansionPanelProps();
 
 		expansionPanelProps.set(ExpansionPanelProps.propNames.disabled, true);
 
-		var component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		let component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
 
-		var mountedComponent = mount(component);
+		let mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".Mui-disabled"), "to be truthy");
 	});
 
 	it("Uses expansionPanelProps.onChange correctly", () => {
-		var expanded = false;
+		let expanded = false;
 
-		var onChange = value => {
+		let onChange = value => {
 			expanded = value;
 		};
 
-		var expansionPanelProps = new ExpansionPanelProps();
+		let expansionPanelProps = new ExpansionPanelProps();
 
 		expansionPanelProps.set(ExpansionPanelProps.propNames.onChange, onChange);
 
-		var component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		let component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
 
-		var mountedComponent = mount(component);
+		let mountedComponent = mount(component);
 
-		var exp = mountedComponent.find(ExpansionPanelMui);
+		let exp = mountedComponent.find(ExpansionPanelMui);
 
 		exp.props().onChange(true);
 
@@ -96,18 +96,18 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Uses expansionPanelActionsProps.disableSpacing correctly", () => {
-		var expansionPanelActionsProps = new ExpansionPanelActionsProps();
+		let expansionPanelActionsProps = new ExpansionPanelActionsProps();
 
 		expansionPanelActionsProps.set(
 			ExpansionPanelActionsProps.propNames.disableSpacing,
 			true,
 		);
 
-		var component = (
+		let component = (
 			<ExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} />
 		);
 
-		var mountedComponent = mount(component);
+		let mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be falsy");
 	});
