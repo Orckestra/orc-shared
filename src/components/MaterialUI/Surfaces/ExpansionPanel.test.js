@@ -66,6 +66,14 @@ describe("Expansion Panel", () => {
 		expect(mountedComponent.exists(".Mui-disabled"), "to be truthy");
 	});
 
+	it("Disabled property default value is correct for MUI ExpansionPanel", () => {
+		const component = <ExpansionPanel />;
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".Mui-disabled"), "to be falsy");
+	});
+
 	it("Uses expansionPanelProps.onChange correctly", () => {
 		let expanded = false;
 
@@ -99,6 +107,14 @@ describe("Expansion Panel", () => {
 		const component = (
 			<ExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} />
 		);
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be falsy");
+	});
+
+	it("DisableSpacing property default value is correct for MUI ExpansionPanelActions", () => {
+		const component = <ExpansionPanel />;
 
 		const mountedComponent = mount(component);
 
