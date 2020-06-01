@@ -66,8 +66,18 @@ describe("Section Expansion Panel", () => {
 		expect(mountedComponent.exists(".Mui-disabled"), "to be truthy");
 	});
 
-	it("Disabled property default value is correct for MUI ExpansionPanel", () => {
+	it("Default value for disabled property is correct if expansionPanelProps wasn't passed", () => {
 		const component = <SectionExpansionPanel />;
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".Mui-disabled"), "to be falsy");
+	});
+
+	it("Default value for disabled property is correct if expansionPanelProps was passed without setting that", () => {
+		const expansionPanelProps = new ExpansionPanelProps();
+
+		const component = <SectionExpansionPanel expansionPanelProps={expansionPanelProps} />;
 
 		const mountedComponent = mount(component);
 
@@ -113,8 +123,20 @@ describe("Section Expansion Panel", () => {
 		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be falsy");
 	});
 
-	it("DisableSpacing property default value is correct for MUI ExpansionPanelActions", () => {
+	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps wasn't passed", () => {
 		const component = <SectionExpansionPanel />;
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be falsy");
+	});
+
+	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps was passed without setting that", () => {
+		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
+
+		const component = (
+			<SectionExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} />
+		);
 
 		const mountedComponent = mount(component);
 
