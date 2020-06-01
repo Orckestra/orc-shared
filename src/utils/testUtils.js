@@ -97,3 +97,12 @@ export const PropStruct = React.forwardRef((props, ref) => (
 			)}
 	</dl>
 ));
+
+export const ignoreConsoleError = func => {
+	jest.spyOn(console, "error");
+	console.error.mockImplementation(() => {});
+
+	func();
+
+	console.error.mockRestore();
+};
