@@ -6,6 +6,7 @@ import {
 	selectSegmentHrefMapper,
 	selectRouteParams,
 	getCurrentScope,
+	getCurrentScopeFromRoute,
 	resetLastScope,
 	selectRouteHref,
 	selectRoutePath,
@@ -131,12 +132,12 @@ describe("selectSegmentHrefMapper", () => {
 			navigation: {
 				route: { match: { path: "/:scope/thing" } },
 				tabIndex: {
-					"/path/to/tab1": { tab: 1 },
-					"/path/to/tab2": { tab: 2 },
+					"to/tab1": { tab: 1 },
+					"to/tab2": { tab: 2 },
 				},
-				moduleTabs: { thing: ["/path/to/tab1"] },
+				moduleTabs: { thing: ["to/tab1"] },
 				mappedHrefs: {
-					"/path/to/tab1": "/path/to/tab1/subpage",
+					"to/tab1": "to/tab1/subpage",
 				},
 			},
 		});
@@ -200,6 +201,43 @@ describe("getCurrentScope", () => {
 			.deleteIn(["navigation", "route", "match", "params", "scope"])
 			.setIn(["settings", "defaultScope"], null);
 		return expect(getCurrentScope, "when called with", [state], "to be", "Global");
+	});
+});
+
+describe("getCurrentScopeFromRoute", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: { location: {}, match: { params: { scope: "thing" } } },
+			},
+			settings: {
+				defaultScope: "myScope",
+			},
+		});
+	});
+	afterEach(() => {
+		resetLastScope();
+	});
+
+	it("gets the current scope, if one is set", () =>
+		expect(getCurrentScopeFromRoute, "when called with", [state], "to be", "thing"));
+
+	it("gets the last scope, if no scope set and previous scope is known", () => {
+		getCurrentScope(state);
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(
+			getCurrentScopeFromRoute,
+			"when called with",
+			[state],
+			"to be",
+			"thing",
+		);
+	});
+
+	it("gets null if no scope set and no previous known", () => {
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(getCurrentScopeFromRoute, "when called with", [state], "to be", null);
 	});
 });
 

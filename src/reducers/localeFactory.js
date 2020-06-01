@@ -1,12 +1,14 @@
 import Immutable from "immutable";
 import { CHANGE_LOCALE, GET_CULTURES_SUCCESS } from "../actions/locale";
 
+export const cultureByDefault = "en-US";
+
 const localeFactory = supportedLocales => {
 	const defaultCulture =
-		(supportedLocales[0] && supportedLocales[0].cultureIso) || "en-US";
+		(supportedLocales[0] && supportedLocales[0].cultureIso) || cultureByDefault;
 
 	const initialState = Immutable.fromJS({
-		locale: defaultCulture,
+		locale: null,
 		supportedLocales,
 		cultures: {},
 		defaultCulture: defaultCulture,

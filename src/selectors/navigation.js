@@ -50,6 +50,11 @@ export const getCurrentScope = createSelector(
 	(id, defaultScope) => id || defaultScope || "Global",
 );
 
+export const getCurrentScopeFromRoute = createSelector(
+	getLastRouteScope,
+	scope => scope || null,
+);
+
 const selectTabs = createSelector(getNavigationState, nav => nav.get("tabIndex"));
 
 export const selectTabGetter = createSelector(selectTabs, tabs => path => tabs.get(path));
@@ -78,6 +83,10 @@ const segmentHrefMap = createSelector(getNavigationState, state =>
 	state.get("mappedHrefs"),
 );
 
-export const selectSegmentHrefMapper = createSelector(segmentHrefMap, map => href =>
-	map.get(href) || href,
-);
+export const selectSegmentHrefMapper = createSelector(segmentHrefMap, map => href => {
+	const [global = "", scope = "", remainingSection = ""] =
+		href.match(/^((?:[^\/]*[\/]){2})([^\/]+.*)$/) || [];
+
+	const hrefMap = map.get(remainingSection);
+	return hrefMap ? scope.concat(hrefMap) : global;
+});

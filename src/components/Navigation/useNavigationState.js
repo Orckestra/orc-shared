@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, useStore } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { push } from "connected-react-router";
 import { unwrapImmutable, safeGet } from "../../utils";
@@ -8,6 +8,7 @@ import {
 	selectSegmentHrefMapper,
 	getCurrentScope,
 } from "../../selectors/navigation";
+import { scopeGetter } from "../../selectors/scope";
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	let page = pages[pathStep];
@@ -30,6 +31,45 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	}
 };
 
+const redirectScopeWhenRequired = (
+	isPageTab,
+	pageScopeSelector,
+	rawPage,
+	currentScope,
+	scopeDefinitionGetter,
+) => {
+	const params = rawPage.params || {};
+	const scopeChanged = params.scope && params.scope !== currentScope;
+	const currentScopeDefinition = scopeDefinitionGetter(currentScope);
+	const currentScopePath = currentScopeDefinition ? currentScopeDefinition.scopePath : [];
+	let outsideScope = scopeChanged;
+
+	if (isPageTab && pageScopeSelector) {
+		if (scopeChanged) {
+			rawPage = { ...rawPage, params: { ...params } };
+
+			rawPage.href = rawPage.href.replace(
+				"/".concat(rawPage.params.scope, "/"),
+				"/".concat(currentScope, "/"),
+			);
+			rawPage.params.scope = currentScope;
+		}
+
+		const scopeId = pageScopeSelector(params);
+
+		const scopeFromPageState = scopeId ? scopeDefinitionGetter(scopeId) : null;
+
+		if (scopeFromPageState) {
+			outsideScope =
+				scopeFromPageState.id !== currentScope &&
+				currentScopePath.indexOf(scopeFromPageState.id) < 0 &&
+				scopeFromPageState.scopePath.indexOf(currentScope) < 0;
+		}
+	}
+
+	return [rawPage, outsideScope];
+};
+
 export const getPageData = (path, params, module) => {
 	if (!path) return module;
 	const pathSteps = path.split(/(?=\/)/);
@@ -44,6 +84,7 @@ export const useNavigationState = modules => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const currentHref = location.pathname;
+	const store = useStore();
 	const hrefMapper = useSelector(selectSegmentHrefMapper);
 	const [moduleHref = "", moduleName = ""] = currentHref.match(/^\/[^/]+\/([^/]+)/) || [];
 	const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
@@ -53,15 +94,29 @@ export const useNavigationState = modules => {
 		href: moduleHref,
 	};
 	const currentScope = useSelector(getCurrentScope);
+	const scopeDefinitionGetter = useSelector(scopeGetter);
+
 	const rawPages = unwrapImmutable(useSelector(selectMappedCurrentModuleList)).filter(
 		page =>
 			page &&
 			page.href !== `/${safeGet(page, "params", "scope") || currentScope}/${moduleName}`,
 	);
-	const [module, ...pages] = [rawModule, ...rawPages].map(page => {
+
+	const [module, ...pages] = [rawModule, ...rawPages].map(rawPage => {
+		const isPageTab = !rawPage.icon;
+		const pageScopeSelector = moduleData.pageScopeSelector
+			? params => moduleData.pageScopeSelector(store.getState(), params)
+			: null;
+		const [page, outsideScope] = redirectScopeWhenRequired(
+			isPageTab,
+			pageScopeSelector,
+			rawPage,
+			currentScope,
+			scopeDefinitionGetter,
+		);
 		const params = page.params || {};
 		const pageBaseHref = params.scope ? `/${params.scope}/${moduleName}` : moduleHref;
-		const outsideScope = params.scope && params.scope !== currentScope;
+
 		const pageData = getPageData(
 			page.href.replace(pageBaseHref, ""),
 			params,
@@ -88,28 +143,34 @@ export const useNavigationState = modules => {
 			}
 		}
 		const href = hrefMapper(page.href);
-		let close = event => {
-			dispatch(removeTab(moduleName, page.href));
-			if (location.pathname === href) {
-				dispatch(push(moduleHref));
-			}
-			event.stopPropagation();
-			event.preventDefault();
-		};
-		if (page.icon) {
-			// Modules do not have close functions
-			close = undefined;
-		}
+
+		// Modules do not have close functions
+		const close = isPageTab
+			? event => {
+					dispatch(removeTab(moduleName, page.href));
+					if (location.pathname === href) {
+						dispatch(push(moduleHref));
+					}
+					if (event) {
+						event.stopPropagation();
+						event.preventDefault();
+					}
+			  }
+			: undefined;
+
 		return {
 			...page,
-			outsideScope,
+			outsideScope: isPageTab ? outsideScope : null,
+			scopeNotSupported: isPageTab ? pageScopeSelector != null && outsideScope : null,
 			label,
+			mustTruncate: pageData.mustTruncate,
 			href,
 			mappedFrom: page.href,
 			active: href === currentHref,
 			close,
 		};
 	});
+
 	return {
 		module,
 		pages,

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Icon from "../Icon";
 import { getThemeProp, ifFlag } from "../../utils";
 import { branchLength } from "./settings";
@@ -48,4 +48,11 @@ export const Label = styled.div`
 	cursor: pointer;
 	flex-grow: 1;
 	width: 100%;
+	${ifFlag(
+		"isSelectedNode",
+		css`
+			background-color: #222;
+			border: 1px solid ${getThemeProp(["colors", "application", "base"], "#0F4E66")};
+		`,
+	)};
 `;

@@ -7,7 +7,7 @@ import { combineReducers } from "redux-immutable";
 import { spawnerMiddleware } from "./spawnerMiddleware";
 import applicationReducer from "./reducers/applications";
 import authenticationReducer from "./reducers/authentication";
-import localeFactory from "./reducers/localeFactory";
+import localeFactory, { cultureByDefault } from "./reducers/localeFactory";
 import navigationReducer from "./reducers/navigation";
 import requestReducer from "./reducers/request";
 import scopesReducer from "./reducers/scopes";
@@ -43,7 +43,7 @@ const buildStore = (reducers, devOptions = {}) => {
 	);
 
 	const supportedLocales = SUPPORTED_LOCALES || [
-		{ language: "English", cultureIso: "en-US" },
+		{ language: "English", cultureIso: cultureByDefault },
 	];
 	const localeReducer = localeFactory(supportedLocales);
 

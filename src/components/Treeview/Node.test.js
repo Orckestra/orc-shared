@@ -32,6 +32,20 @@ describe("RootNode", () => {
 				</Label>
 			</Root>,
 		));
+
+	it("renders a selected root node", () =>
+		expect(
+			<Wrap>
+				<RootNode thing="stuff" isSelectedNode={true} />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			<Root>
+				<Label isSelectedNode={true}>
+					<PropStruct thing="stuff" foo={true} bar={false} />
+				</Label>
+			</Root>,
+		));
 });
 
 describe("LeafNode", () => {
@@ -92,6 +106,21 @@ describe("LeafNode", () => {
 			<Leaf>
 				<NonIndicator />
 				<Label>
+					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
+				</Label>
+			</Leaf>,
+		));
+
+	it("renders a selected node", () =>
+		expect(
+			<Wrap>
+				<LeafNode thing="stuff" id="testNode" isSelectedNode={true} />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			<Leaf>
+				<NonIndicator />
+				<Label isSelectedNode={true}>
 					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
 				</Label>
 			</Leaf>,
@@ -250,6 +279,35 @@ describe("Node", () => {
 				),
 		));
 
+	it("renders a selected node", () => {
+		contextValue.selectedNodeId = "hasKids";
+		expect(
+			<Wrap>
+				<Node id="hasKids" />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			expect.it(
+				"to satisfy",
+				<div>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label isSelectedNode={true}>
+							<Ignore />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<Ignore />
+							<Ignore />
+						</Leaf>
+					</Branch>
+				</div>,
+			),
+		);
+	});
+
 	it("renders a closed node with children as only the leaf", () =>
 		expect(
 			<Wrap>
@@ -278,6 +336,37 @@ describe("Node", () => {
 				)
 				.and("not to contain elements matching", "#hasKids"),
 		));
+
+	it("renders a selected root node", () => {
+		contextValue.selectedNodeId = "isClosed";
+		expect(
+			<Wrap>
+				<Node root id="isClosed" />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			expect.it(
+				"to satisfy",
+				<div>
+					<Root>
+						<Label isSelectedNode={true}>
+							<Ignore />
+						</Label>
+					</Root>
+					<Branch>
+						<Leaf>
+							<Ignore />
+							<Ignore />
+							<Ignore />
+						</Leaf>
+						<Branch>
+							<Ignore />
+						</Branch>
+					</Branch>
+				</div>,
+			),
+		);
+	});
 
 	it("renders a root node with children as leaf and branch", () =>
 		expect(

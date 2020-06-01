@@ -54,6 +54,48 @@ describe("Selector", () => {
 		document.body.removeChild(modalRoot);
 	});
 
+	it("shows a side panel with search and tree with a current node", () => {
+		props.currentScope = nodes["Global"];
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<IntlProvider locale="en">
+						<Selector {...props} />
+					</IntlProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			null,
+		).then(() =>
+			expect(
+				modalRoot,
+				"to satisfy",
+				<div>
+					<div>
+						<Wrapper>
+							<InputBox>
+								<IntlProvider locale="en">
+									<SearchInput />
+								</IntlProvider>
+							</InputBox>
+							<BranchWrapper>
+								<Root>
+									<Label isSelectedNode={true}>
+										<ContentLabel id="selectorNodeGlobal">
+											<ScopeIcon type="test" />
+											<ScopeText>Global</ScopeText>
+										</ContentLabel>
+									</Label>
+								</Root>
+							</BranchWrapper>
+						</Wrapper>
+					</div>
+				</div>,
+			),
+		);
+	});
+
 	it("shows a side panel with search and tree", () =>
 		expect(
 			<Provider store={store}>

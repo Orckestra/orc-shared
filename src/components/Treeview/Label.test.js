@@ -122,4 +122,24 @@ describe("NonIndicator", () => {
 describe("Label", () => {
 	it("renders a space for node content", () =>
 		expect(<Label />, "when mounted", "to satisfy", <div />));
+
+	it("renders a label without border", () =>
+		expect(
+			<Label />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("not to contain", "background-color: #222;")
+				.and("not to contain", "border: 1px solid #0F4E66"),
+		));
+
+	it("renders a label with border", () =>
+		expect(
+			<Label isSelectedNode={true} />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect
+				.it("to contain", "background-color: #222;")
+				.and("to contain", "border: 1px solid #0F4E66"),
+		));
 });

@@ -5,6 +5,7 @@ import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
+import close from "../../content/close.png";
 import {
 	ABOUT_NAME,
 	AboutBox,
@@ -12,7 +13,9 @@ import {
 	AboutLink,
 	About,
 	getClickOutsideHandler,
+	CloseButton,
 } from "./About";
+import { setStateField } from "../../actions/view";
 
 describe("About", () => {
 	let messages, state, store;
@@ -30,6 +33,13 @@ describe("About", () => {
 		state = Immutable.fromJS({
 			view: { [ABOUT_NAME]: { show: true } },
 			versionInfo: { version: "5.1.9.5" },
+			locale: {
+				locale: "en-US",
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -59,6 +69,9 @@ describe("About", () => {
 			"to satisfy",
 			<IntlProvider locale="en">
 				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
 						Version 5.1.9.5
@@ -73,7 +86,7 @@ describe("About", () => {
 					</AboutParagraph>
 					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
+						<AboutLink href="https://www.orckestra.com">Test App</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
 						Copyright
@@ -84,6 +97,22 @@ describe("About", () => {
 			</IntlProvider>,
 		);
 	});
+
+	it("view state handler update show value when clicking on close button", () =>
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<About viewState={{ show: true }} messages={messages} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[alt="X"]' },
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{ args: [setStateField(ABOUT_NAME, "show", false)] },
+			]),
+		));
 
 	it("renders an about box with messages and background images but without versions", () => {
 		global.DEPENDENCIES = {};
@@ -96,13 +125,48 @@ describe("About", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
+
 			<IntlProvider locale="en">
 				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
 					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
+						<AboutLink href="https://www.orckestra.com">Test App</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						Copyright
+						<br />
+						All rights reserved
+					</AboutParagraph>
+				</AboutBox>
+			</IntlProvider>,
+		);
+	});
+
+	it("renders an about box with about ling to the french version of the web site.", () => {
+		state = state.setIn(["locale", "locale"], "FR-FR");
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<About viewState={{ show: true }} messages={messages} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
+					<img src={logoImage} alt="Orckestra" />
+					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
+					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
+					<AboutParagraph>
+						<AboutLink href="https://www.orckestra.com/fr">Test App</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
 						Copyright

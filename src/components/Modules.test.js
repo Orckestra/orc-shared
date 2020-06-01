@@ -1,4 +1,5 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -66,6 +67,22 @@ describe("Modules", () => {
 			settings: {
 				defaultScope: "myScope",
 			},
+			scopes: {
+				TestScope: {
+					id: "TestScope",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+				},
+			},
+			locale: {
+				locale: null,
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -78,7 +95,9 @@ describe("Modules", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<Modules modules={modules} scope="TestScope" />
+					<IntlProvider locale="en">
+						<Modules modules={modules} scope="TestScope" />
+					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -86,15 +105,17 @@ describe("Modules", () => {
 			getStyledClassSelector(TabBar),
 			"to satisfy",
 			<MemoryRouter initialEntries={["/TestScope/demos"]}>
-				<TabBar>
-					<ModuleTab active>
-						<TabLink to="/TestScope/demos">
-							<ModuleIcon id="cloud" />
-							<TabText>Module 3</TabText>
-						</TabLink>
-					</ModuleTab>
-					<ScrollableBar />
-				</TabBar>
+				<IntlProvider locale="en">
+					<TabBar>
+						<ModuleTab active>
+							<TabLink to="/TestScope/demos">
+								<ModuleIcon id="cloud" />
+								<TabText>Module 3</TabText>
+							</TabLink>
+						</ModuleTab>
+						<ScrollableBar />
+					</TabBar>
+				</IntlProvider>
 			</MemoryRouter>,
 		));
 
@@ -103,22 +124,26 @@ describe("Modules", () => {
 			mount(
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-						<Modules modules={modules} scope="TestScope" />
+						<IntlProvider locale="en">
+							<Modules modules={modules} scope="TestScope" />
+						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
 			).childNodes,
 			"to satisfy",
 			[
 				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-					<TabBar>
-						<ModuleTab>
-							<TabLink to="/TestScope/users">
-								<ModuleIcon id="user" />
-								<TabText>Module 1</TabText>
-							</TabLink>
-						</ModuleTab>
-						<ScrollableBar />
-					</TabBar>
+					<IntlProvider locale="en">
+						<TabBar>
+							<ModuleTab>
+								<TabLink to="/TestScope/users">
+									<ModuleIcon id="user" />
+									<TabText>Module 1</TabText>
+								</TabLink>
+							</ModuleTab>
+							<ScrollableBar />
+						</TabBar>
+					</IntlProvider>
 				</MemoryRouter>,
 				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
 					<SegmentWrapper>
@@ -139,22 +164,26 @@ describe("Modules", () => {
 			mount(
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/photos"]}>
-						<Modules modules={modules} scope="TestScope" />
+						<IntlProvider locale="en">
+							<Modules modules={modules} scope="TestScope" />
+						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
 			).childNodes,
 			"to satisfy",
 			[
 				<MemoryRouter initialEntries={["/TestScope/photos"]}>
-					<TabBar>
-						<ModuleTab active>
-							<TabLink to="/TestScope/photos">
-								<ModuleIcon id="image" />
-								<TabText>Module 2</TabText>
-							</TabLink>
-						</ModuleTab>
-						<ScrollableBar />
-					</TabBar>
+					<IntlProvider locale="en">
+						<TabBar>
+							<ModuleTab active>
+								<TabLink to="/TestScope/photos">
+									<ModuleIcon id="image" />
+									<TabText>Module 2</TabText>
+								</TabLink>
+							</ModuleTab>
+							<ScrollableBar />
+						</TabBar>
+					</IntlProvider>
 				</MemoryRouter>,
 				<Mod2 />,
 			],
@@ -165,22 +194,26 @@ describe("Modules", () => {
 			mount(
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/demos"]}>
-						<Modules modules={modules} scope="TestScope" />
+						<IntlProvider locale="en">
+							<Modules modules={modules} scope="TestScope" />
+						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
 			).childNodes,
 			"to satisfy",
 			[
 				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<TabBar>
-						<ModuleTab active>
-							<TabLink to="/TestScope/demos">
-								<ModuleIcon id="cloud" />
-								<TabText>Module 3</TabText>
-							</TabLink>
-						</ModuleTab>
-						<ScrollableBar />
-					</TabBar>
+					<IntlProvider locale="en">
+						<TabBar>
+							<ModuleTab active>
+								<TabLink to="/TestScope/demos">
+									<ModuleIcon id="cloud" />
+									<TabText>Module 3</TabText>
+								</TabLink>
+							</ModuleTab>
+							<ScrollableBar />
+						</TabBar>
+					</IntlProvider>
 				</MemoryRouter>,
 				<Mod3 />,
 			],
