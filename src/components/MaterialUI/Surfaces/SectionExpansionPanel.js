@@ -40,14 +40,14 @@ const SectionExpansionPanel = ({
 	const classes = useStyles();
 
 	// Expansion panel props
-	let disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
-	let expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
-	let onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
+	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
+	const expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
+	const onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
 
 	// Expansion panel summary props
 
 	// Expansion panel actions props
-	let disableSpacing = expansionPanelActionsProps?.get(
+	const disableSpacing = expansionPanelActionsProps?.get(
 		ExpansionPanelActionsProps.propNames.disableSpacing,
 	);
 

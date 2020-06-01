@@ -8,6 +8,7 @@ import {
 	PropStruct,
 	firstItemComparator,
 	spyOnConsole,
+	ignoreConsoleError,
 } from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
@@ -429,5 +430,20 @@ describe("PropStruct", () => {
 				"to equal",
 				0,
 			));
+	});
+});
+
+describe("ignoreConsoleError", () => {
+	spyOnConsole(["error"]);
+	it("ignores console error", () => {
+		const setConsoleError = () => {
+			ignoreConsoleError(() => {
+				console.error("Error");
+			});
+		};
+
+		setConsoleError();
+
+		expect(console.error, "was not called");
 	});
 });

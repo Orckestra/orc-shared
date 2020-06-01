@@ -2,7 +2,7 @@ import ComponentProps from "./componentProps";
 
 describe("Component Props", () => {
 	it("Sets the prop value", () => {
-		let componentProps = new ComponentProps();
+		const componentProps = new ComponentProps();
 
 		componentProps.componentProps.set("key1", null);
 
@@ -12,9 +12,9 @@ describe("Component Props", () => {
 	});
 
 	it("Throws if prop key is missing", () => {
-		let componentProps = new ComponentProps();
+		const componentProps = new ComponentProps();
 
-		let missingKey = () => {
+		const missingKey = () => {
 			componentProps.set("key1", "value1");
 		};
 
@@ -22,7 +22,7 @@ describe("Component Props", () => {
 	});
 
 	it("Gets the prop value by key", () => {
-		let componentProps = new ComponentProps();
+		const componentProps = new ComponentProps();
 
 		componentProps.componentProps.set("key1", null);
 
@@ -32,7 +32,7 @@ describe("Component Props", () => {
 	});
 
 	it("Sets the style value", () => {
-		let componentProps = new ComponentProps();
+		const componentProps = new ComponentProps();
 
 		componentProps.componentClasses.set("key1", null);
 
@@ -42,9 +42,9 @@ describe("Component Props", () => {
 	});
 
 	it("Throws if style key is missing", () => {
-		let componentProps = new ComponentProps();
+		const componentProps = new ComponentProps();
 
-		let missingKey = () => {
+		const missingKey = () => {
 			componentProps.setStyle("key1", "value1");
 		};
 
@@ -52,7 +52,7 @@ describe("Component Props", () => {
 	});
 
 	it("Gets the style value by key", () => {
-		let componentProps = new ComponentProps();
+		const componentProps = new ComponentProps();
 
 		componentProps.componentClasses.set("key1", null);
 
