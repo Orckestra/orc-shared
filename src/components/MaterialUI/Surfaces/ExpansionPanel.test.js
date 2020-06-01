@@ -9,7 +9,7 @@ import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPane
 import { ignoreConsoleError } from "./../../../utils/testUtils";
 
 describe("Expansion Panel", () => {
-	it("Renders Expansion Panel", () => {
+	it("Renders Expansion Panel with actions if actions are not null", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
@@ -26,6 +26,27 @@ describe("Expansion Panel", () => {
 		);
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders Expansion Panel Actions if actions are not null", () => {
+		const header = <p>Header</p>;
+		const content = <p>Content</p>;
+		const actions = <p>Actions</p>;
+		const component = (
+			<ExpansionPanel header={header} content={content} actions={actions} />
+		);
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".MuiExpansionPanelActions-root"), "to be truthy");
+	});
+
+	it("Not renders Expansion Panel Actions if actions are null", () => {
+		const header = <p>Header</p>;
+		const content = <p>Content</p>;
+		const component = <ExpansionPanel header={header} content={content} />;
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".MuiExpansionPanelActions-root"), "to be falsy");
 	});
 
 	it("Fails if expansionPanelProps has wrong type", () => {
@@ -107,6 +128,7 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Uses expansionPanelActionsProps.disableSpacing correctly", () => {
+		const actions = <p>Actions</p>;
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
 
 		expansionPanelActionsProps.set(
@@ -115,7 +137,10 @@ describe("Expansion Panel", () => {
 		);
 
 		const component = (
-			<ExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} />
+			<ExpansionPanel
+				expansionPanelActionsProps={expansionPanelActionsProps}
+				actions={actions}
+			/>
 		);
 
 		const mountedComponent = mount(component);
@@ -124,22 +149,27 @@ describe("Expansion Panel", () => {
 	});
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps wasn't passed", () => {
-		const component = <ExpansionPanel />;
+		const actions = <p>Actions</p>;
+		const component = <ExpansionPanel actions={actions} />;
 
 		const mountedComponent = mount(component);
 
-		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be falsy");
+		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be truthy");
 	});
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps was passed without setting that", () => {
+		const actions = <p>Actions</p>;
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
 
 		const component = (
-			<ExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} />
+			<ExpansionPanel
+				expansionPanelActionsProps={expansionPanelActionsProps}
+				actions={actions}
+			/>
 		);
 
 		const mountedComponent = mount(component);
 
-		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be falsy");
+		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be truthy");
 	});
 });
