@@ -90,6 +90,7 @@ const ExpansionPanel = ({
 
 	return (
 		<ExpansionPanelMui
+			defaultExpanded
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
 			onChange={onChange}
