@@ -1,4 +1,3 @@
-import React from "react";
 import * as propertyHelper from "./propertyHelper";
 
 describe("<propertyHelper.getPropertyOrDefault>", () => {

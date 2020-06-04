@@ -5,7 +5,6 @@ import Select from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import sinon from "sinon";
-import * as TestUtils from "react-dom/test-utils";
 
 describe("Select Component", () => {
 	let update, container;

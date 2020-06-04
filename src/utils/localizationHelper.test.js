@@ -1,4 +1,3 @@
-import React from "react";
 import localizationHelper from "./localizationHelper";
 
 const defaultLocalizations = { en: "en text", "fr-Ca": "fr text", "fr-fr": "fr-fr text" };
