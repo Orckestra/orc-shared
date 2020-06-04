@@ -74,11 +74,10 @@ const Select = ({ options, update, value }) => {
 			onChange={handleChange}
 			disableUnderline={true}
 			IconComponent={ChevronDown}
-			data-test-id={"SelectMUI"}
 			MenuProps={{ classes: { paper: classes.select }, ...MenuProps }}
 		>
 			{options.map(option => (
-				<MenuItem key={option.value} value={option.value} data-test-id={option.value}>
+				<MenuItem key={option.value} value={option.value}>
 					{option.label}
 				</MenuItem>
 			))}
