@@ -61,7 +61,9 @@ const ChevronDown = props => (
 	</div>
 );
 
-const Select = ({ options, update, value }) => {
+const Select = selectProps => {
+	const { value, update, options } = selectProps;
+
 	const classes = useStyles();
 
 	const handleChange = event => {
