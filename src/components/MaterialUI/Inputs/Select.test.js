@@ -5,6 +5,9 @@ import Select from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import sinon from "sinon";
+import { ignoreConsoleError } from "../../../utils/testUtils";
+import { ExpansionPanelProps } from "../Surfaces/expansionPanelProps";
+import SelectProps from "./SelectProps";
 
 describe("Select Component", () => {
 	let update, container;
@@ -18,13 +21,25 @@ describe("Select Component", () => {
 		container = null;
 	});
 
+	it("Fails if expansionPanelProps has wrong type", () => {
+		ignoreConsoleError(() => {
+			const component = <Select selectProps="Wrong type" />;
+			expect(() => mount(component), "to throw a", TypeError);
+		});
+	});
+
 	it("Renders Select component without errors", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
 			{ value: "anotherValue", label: "anotherLabel" },
 		];
 
-		const component = <Select options={options} update={update} value={"aValue"} />;
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const component = <Select options={options} selectProps={selectProps} />;
 
 		const mountedComponent = mount(component);
 		const expected = (
@@ -37,16 +52,18 @@ describe("Select Component", () => {
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 
-	it("Select component hanldes change", () => {
+	it("Select component handles change", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
 			{ value: "anotherValue", label: "anotherLabel" },
 		];
 
-		ReactDOM.render(
-			<Select options={options} update={update} value={"aValue"} />,
-			container,
-		);
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		ReactDOM.render(<Select options={options} selectProps={selectProps} />, container);
 
 		const mousedownEvent = document.createEvent("MouseEvents");
 		mousedownEvent.initEvent("mousedown", true, false);

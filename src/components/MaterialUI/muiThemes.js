@@ -4,6 +4,8 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 const drawerWidth = 240;
 
 const commonTheme = {
+	spacing: factor => `${0.625 * factor}rem`,
+	direction: "ltr",
 	shape: {
 		borderRadius: 4,
 	},
@@ -28,6 +30,54 @@ const commonTheme = {
 			letterSpacing: "0.0em",
 			textTransform: "uppercase",
 		},
+	},
+};
+
+const commonPalette = {
+	error: {
+		light: "#FFBBAE",
+		main: "#ED2E0B",
+		dark: "#A13B38",
+		contrastText: "#fff",
+	},
+	warning: {
+		light: "#FEE8A0",
+		main: "#F6C110",
+		dark: "#AD9133",
+		contrastText: "#fff",
+	},
+	success: {
+		light: "#B9F0CB",
+		main: "#10B246",
+		dark: "#278045",
+		contrastText: "#fff",
+	},
+	info: {
+		light: "#93DDF9",
+		main: "#0984B2",
+		dark: "#1E708F",
+		contrastText: "#fff",
+	},
+	grey: {
+		darker: "#2D2D2D",
+		dark: "#333",
+		icon: "#999",
+		borders: "#CCC",
+		light: "#EFEFEF",
+		lighter: "#F7F7F7",
+	},
+	text: {
+		primary: "#333",
+		secondary: "#575757",
+		disabled: "#CCC",
+		hint: "#999",
+	},
+	divider: "#CCCCCC",
+	background: {
+		paper: "#FFF",
+		default: "#FFF",
+		tabs: "#EFEFEF",
+		app: "#333",
 	},
 };
 
@@ -425,24 +475,30 @@ const setThemeOverrides = theme => ({
 	MuiTableSortLabel: {},
 	MuiTableFooter: {},
 	MuiInputBase: {
+		...theme.MuiInputBase,
 		input: {
+			...theme.input,
 			borderRadius: 4,
 			position: "relative",
 			backgroundColor: theme.palette.background.paper,
-			border: "1px solid #ced4da",
-			fontSize: 12,
-			maxWidth: "200px",
-			padding: "6px 6px 6px 6px",
+			border: `1px solid ${theme.palette.grey.borders}`,
+			fontSize: theme.typography.fontSize,
+			maxWidth: theme.spacing(20),
+			padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
 			transition: theme.transitions.create(["border-color", "box-shadow"]),
 		},
 	},
 	MuiSelect: {
+		...theme.MuiSelect,
 		select: {
-			minWidth: "150px",
+			...theme.select,
+			minWidth: theme.spacing(15),
 			borderRadius: 4,
 			"&:focus": {
 				borderRadius: 4,
-				borderColor: "#80bdff",
+				borderColor: "#4fa1f0",
+				boxShadow: "0 0 4px #4fa1f0",
+				outline: "none",
 			},
 		},
 	},
@@ -450,9 +506,14 @@ const setThemeOverrides = theme => ({
 
 const createThemes = (applicationTheme, themeDefinition) => {
 	const applicationMuiTheme = createMuiTheme(applicationTheme);
+
 	const muiTheme = createMuiTheme({
 		...themeDefinition,
 		...commonTheme,
+		palette: {
+			...themeDefinition.palette,
+			...commonPalette,
+		},
 	});
 
 	muiTheme.props = setThemeProps(muiTheme);

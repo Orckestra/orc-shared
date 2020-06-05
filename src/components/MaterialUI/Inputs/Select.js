@@ -2,6 +2,8 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
+import SelectProps from "./SelectProps";
+import { ExpansionPanelProps } from "../Surfaces/expansionPanelProps";
 
 const useStyles = makeStyles(theme => ({
 	select: {
@@ -61,10 +63,15 @@ const ChevronDown = props => (
 	</div>
 );
 
-const Select = selectProps => {
-	const { value, update, options } = selectProps;
+const Select = ({ options, selectProps }) => {
+	if (selectProps != null && selectProps instanceof SelectProps === false) {
+		throw new TypeError("selectProps property is not of type SelectProps");
+	}
 
 	const classes = useStyles();
+
+	const update = selectProps?.get(SelectProps.propNames.update);
+	const value = selectProps?.get(SelectProps.propNames.value);
 
 	const handleChange = event => {
 		update(event.target.value);
