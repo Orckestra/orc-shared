@@ -133,6 +133,9 @@ export const Selector = ({
 		memoize(value => () => update(value)),
 		[update],
 	);
+	console.warn(
+		"Selector component has been deprecated in favor of Material-UI wrapper component Select",
+	);
 	const onChange = useCallback(e => update(e.target.value), [update]);
 	return (
 		<Wrapper>
