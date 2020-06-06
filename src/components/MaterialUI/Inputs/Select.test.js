@@ -6,7 +6,6 @@ import SelectMUI from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
-import { ExpansionPanelProps } from "../Surfaces/expansionPanelProps";
 import SelectProps from "./SelectProps";
 
 describe("Select Component", () => {

@@ -3,7 +3,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps from "./SelectProps";
-import { ExpansionPanelProps } from "../Surfaces/expansionPanelProps";
 
 const useStyles = makeStyles(theme => ({
 	select: {
