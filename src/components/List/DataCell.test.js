@@ -120,7 +120,7 @@ describe("DataCell", () => {
 
 	it("renders a cell with type currency for 0", () => {
 		const columnDef = { fieldName: "test", type: "currency", currency: "USD" };
-		const row = { test: "0", extraneous: "Don't show" };
+		const row = { test: 0, extraneous: "Don't show" };
 		return expect(
 			<IntlProvider locale="en">
 				<table>
