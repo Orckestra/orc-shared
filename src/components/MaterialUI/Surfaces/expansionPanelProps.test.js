@@ -2,13 +2,13 @@ import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPane
 
 describe("Expansion Panel Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["disabled", "expanded", "onChange"];
+		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange"];
 
 		expect(ExpansionPanelProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in compoennt props map", () => {
-		const propNames = ["disabled", "expanded", "onChange"];
+		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange"];
 
 		const expansionPanelProps = new ExpansionPanelProps();
 

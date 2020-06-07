@@ -7,14 +7,31 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import { ignoreConsoleError } from "./../../../utils/testUtils";
+import { Provider } from "react-redux";
+import Immutable from "immutable";
 
 describe("Expansion Panel", () => {
+	let state, store;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			view: {}
+		});
+		store = state => ({
+			subscribe: () => { },
+			getState: () => state,
+			dispatch: () => { },
+		});
+	});
+
+
 	it("Renders Expansion Panel with actions if actions are not null", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<ExpansionPanel header={header} content={content} actions={actions} />
+			<Provider store={store(state)}>
+				<ExpansionPanel header={header} content={content} actions={actions} />
+			</Provider>
 		);
 		const mountedComponent = mount(component);
 		const expected = (
@@ -33,7 +50,9 @@ describe("Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<ExpansionPanel header={header} content={content} actions={actions} />
+			<Provider store={store(state)}>
+				<ExpansionPanel header={header} content={content} actions={actions} />
+			</Provider>
 		);
 		const mountedComponent = mount(component);
 
@@ -43,7 +62,11 @@ describe("Expansion Panel", () => {
 	it("Not renders Expansion Panel Actions if actions are null", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;
-		const component = <ExpansionPanel header={header} content={content} />;
+		const component = (
+			<Provider store={store(state)}>
+				<ExpansionPanel header={header} content={content} />
+			</Provider>
+		);
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".MuiExpansionPanelActions-root"), "to be falsy");
@@ -51,24 +74,36 @@ describe("Expansion Panel", () => {
 
 	it("Fails if expansionPanelProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = <ExpansionPanel expansionPanelProps="Wrong type" />;
+			const component = (
+				<Provider store={store(state)}>
+					<ExpansionPanel expansionPanelProps="Wrong type" />
+				</Provider>
+			);
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
 
 	it("Fails if expansionPanelActionsProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = <ExpansionPanel expansionPanelActionsProps="Wrong type" />;
+			const component = (
+				<Provider store={store(state)}>
+					<ExpansionPanel expansionPanelActionsProps="Wrong type" />
+				</Provider>
+			);
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
 
-	it("Uses expansionPanelProps.expanded correctly", () => {
+	it("Uses expansionPanelProps.defaultExpanded correctly", () => {
 		const expansionPanelProps = new ExpansionPanelProps();
 
-		expansionPanelProps.set(ExpansionPanelProps.propNames.expanded, true);
+		expansionPanelProps.set(ExpansionPanelProps.propNames.defaultExpanded, true);
 
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		const component = (
+			<Provider store={store(state)}>
+				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+			</Provider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -80,7 +115,11 @@ describe("Expansion Panel", () => {
 
 		expansionPanelProps.set(ExpansionPanelProps.propNames.disabled, true);
 
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		const component = (
+			<Provider store={store(state)}>
+				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+			</Provider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -88,7 +127,11 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Default value for disabled property is correct if expansionPanelProps wasn't passed", () => {
-		const component = <ExpansionPanel />;
+		const component = (
+			<Provider store={store(state)}>
+				<ExpansionPanel />
+			</Provider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -98,33 +141,15 @@ describe("Expansion Panel", () => {
 	it("Default value for disabled property is correct if expansionPanelProps was passed without setting that", () => {
 		const expansionPanelProps = new ExpansionPanelProps();
 
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		const component = (
+			<Provider store={store(state)}>
+				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+			</Provider>
+		);
 
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".Mui-disabled"), "to be falsy");
-	});
-
-	it("Uses expansionPanelProps.onChange correctly", () => {
-		let expanded = false;
-
-		const onChange = value => {
-			expanded = value;
-		};
-
-		const expansionPanelProps = new ExpansionPanelProps();
-
-		expansionPanelProps.set(ExpansionPanelProps.propNames.onChange, onChange);
-
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
-
-		const mountedComponent = mount(component);
-
-		const exp = mountedComponent.find(ExpansionPanelMui);
-
-		exp.props().onChange(true);
-
-		expect(expanded, "to be truthy");
 	});
 
 	it("Uses expansionPanelActionsProps.disableSpacing correctly", () => {
@@ -137,10 +162,12 @@ describe("Expansion Panel", () => {
 		);
 
 		const component = (
-			<ExpansionPanel
-				expansionPanelActionsProps={expansionPanelActionsProps}
-				actions={actions}
-			/>
+			<Provider store={store(state)}>
+				<ExpansionPanel
+					expansionPanelActionsProps={expansionPanelActionsProps}
+					actions={actions}
+				/>
+			</Provider>
 		);
 
 		const mountedComponent = mount(component);
@@ -150,7 +177,11 @@ describe("Expansion Panel", () => {
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps wasn't passed", () => {
 		const actions = <p>Actions</p>;
-		const component = <ExpansionPanel actions={actions} />;
+		const component = (
+			<Provider store={store(state)}>
+				<ExpansionPanel actions={actions} />
+			</Provider >
+		);
 
 		const mountedComponent = mount(component);
 
@@ -162,10 +193,12 @@ describe("Expansion Panel", () => {
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
 
 		const component = (
-			<ExpansionPanel
-				expansionPanelActionsProps={expansionPanelActionsProps}
-				actions={actions}
-			/>
+			<Provider store={store(state)}>
+				<ExpansionPanel
+					expansionPanelActionsProps={expansionPanelActionsProps}
+					actions={actions}
+				/>
+			</Provider >
 		);
 
 		const mountedComponent = mount(component);
