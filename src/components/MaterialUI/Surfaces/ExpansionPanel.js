@@ -8,6 +8,7 @@ import classNames from "classnames";
 import Icon from "./../../Icon";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import useViewState from "./../../../hooks/useViewState";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 	summaryRoot: {
@@ -70,9 +71,14 @@ const ExpansionPanel = ({
 
 	const classes = useStyles();
 
+	const state = useSelector(state => state);
+
 	// Expansion panel props
-	const defaultExpanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.defaultExpanded);
 	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
+
+	const viewState = state.getIn(["view", expansionPanelId, "isExpanded"]);
+
+	const defaultExpanded = viewState != null ? viewState : true;
 
 	const [expanded, setExpanded] = React.useState(defaultExpanded);
 	const [internalExpanded, updateViewState] = useViewState(expansionPanelId);
@@ -99,7 +105,7 @@ const ExpansionPanel = ({
 
 	return (
 		<ExpansionPanelMui
-			defaultExpanded={defaultExpanded == null ? true : defaultExpanded}
+			defaultExpanded={defaultExpanded}
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
 			onChange={internalOnChange}
