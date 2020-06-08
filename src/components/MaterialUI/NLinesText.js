@@ -57,8 +57,7 @@ const NLinesText = ({ children, ...props }) => {
 					classes.lineClampWebkit,
 					customStyles?.get(TextProps.ruleNames.root),
 				),
-				body2: classNames(customStyles?.get(TextProps.ruleNames.body2)),
-				body1: classNames(customStyles?.get(TextProps.ruleNames.body1)),
+				body1: classNames(customStyles?.get(TextProps.ruleNames.body1))
 			}}
 		>
 			{children}
