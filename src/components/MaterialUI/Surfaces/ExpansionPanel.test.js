@@ -14,7 +14,11 @@ describe("Expansion Panel", () => {
 	let state, store;
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			view: {}
+			view: {
+				ExpPanel123: {
+					isExpanded: true
+				}
+			}
 		});
 		store = state => ({
 			subscribe: () => { },
@@ -204,5 +208,22 @@ describe("Expansion Panel", () => {
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be truthy");
+	});
+
+	it("handles internal on change function", () => {
+		const header = <p>Header</p>;
+		const content = <p>Content</p>;
+		const actions = <p>Actions</p>;
+		const expansionPanelId = "ExpPanel123";
+		const component = (
+			<Provider store={store(state)}>
+				<ExpansionPanel header={header} content={content} actions={actions} expansionPanelId={expansionPanelId} />
+			</Provider>
+		);
+		const mountedComponent = mount(component);
+
+		mountedComponent.find(ExpansionPanelSummary).simulate('click');
+
+		expect(mountedComponent.exists(".Mui-expanded"), "to be false");
 	});
 });
