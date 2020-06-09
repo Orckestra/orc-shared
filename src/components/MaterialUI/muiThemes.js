@@ -502,6 +502,22 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiTypography: {
+		...theme.MuiTypography,
+		body1: {
+			...theme.body1,
+			fontSize: commonTheme.typography.fontSize,
+		},
+	},
+	MuiCheckbox: {
+		...theme.MuiCheckbox,
+		root: {
+			...theme.root,
+			padding: "5px 5px 5px 0",
+			minWidth: "30px",
+			backgroundColor: "inherit",
+		},
+	},
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {
