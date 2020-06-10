@@ -21,9 +21,6 @@ const useStyles = props =>
 				width: "25%",
 				display: "block",
 				position: "absolute",
-				height: "calc(1em * 1.2)",
-				background:
-					"linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 75 %)",
 			},
 		},
 		"@supports (-webkit-line-clamp: 1)": {
@@ -38,15 +35,16 @@ const useStyles = props =>
 			WebkitLineClamp: props.lineCount,
 			display: "-webkit-box",
 			WebkitBoxOrient: "vertical",
+			wordBreak: "break-word",
 		},
 	}));
 
-const NLinesText = ({ children, ...props }) => {
+const MultipleLinesText = ({ children, ...props }) => {
 	const classes = useStyles(props)();
 	const textProps = props.textProps;
 
 	if (textProps != null && textProps instanceof TextProps === false) {
-		throw new Error("textProps property is not of type TextProps");
+		throw new TypeError("textProps property is not of type TextProps");
 	}
 	var customStyles = textProps?.get(TextProps.propNames.classes);
 	return (
@@ -57,7 +55,7 @@ const NLinesText = ({ children, ...props }) => {
 					classes.lineClampWebkit,
 					customStyles?.get(TextProps.ruleNames.root),
 				),
-				body1: classNames(customStyles?.get(TextProps.ruleNames.body1))
+				body1: classNames(customStyles?.get(TextProps.ruleNames.body1)),
 			}}
 		>
 			{children}
@@ -65,4 +63,4 @@ const NLinesText = ({ children, ...props }) => {
 	);
 };
 
-export default NLinesText;
+export default MultipleLinesText;
