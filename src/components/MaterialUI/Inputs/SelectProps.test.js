@@ -7,7 +7,7 @@ describe("Select Props", () => {
 		expect(SelectProps.propNames, "to have keys", propNames);
 	});
 
-	it("Puts keys in compoennt props map", () => {
+	it("Puts keys in component props map", () => {
 		const propNames = ["update", "value"];
 
 		const selectProps = new SelectProps();

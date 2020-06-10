@@ -20,7 +20,7 @@ describe("Select Component", () => {
 		container = null;
 	});
 
-	it("Fails if expansionPanelProps has wrong type", () => {
+	it("Fails if selectProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = <Select selectProps="Wrong type" />;
 			expect(() => mount(component), "to throw a", TypeError);
