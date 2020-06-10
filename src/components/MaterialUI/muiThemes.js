@@ -572,7 +572,13 @@ const setThemeOverrides = theme => ({
 	MuiTableContainer: {},
 	MuiTablePagination: {},
 	MuiTableSortLabel: {},
-	MuiTableFooter: {},
+	MuiTableFooter: {
+		...theme.MuiTableFooter,
+		root: {
+			...theme.root,
+			backgroundColor: theme.palette.grey.lighter,
+		}
+	},
 	MuiInput: {
 		...theme.MuiInput,
 		underline: {
