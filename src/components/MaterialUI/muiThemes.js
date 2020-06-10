@@ -510,8 +510,18 @@ const setThemeOverrides = theme => ({
 			textTransform: "uppercase",
 			height: theme.spacing(4.8),
 			minHeight: theme.spacing(2.4),
+			flexGrow: 0,
+			[theme.breakpoints.up("sm")]: {
+				minWidth: 0
+			},
 			"& .MuiIconButton-root": {
-				padding: 0,
+				padding: theme.spacing(1),
+				flexGrow: 0,
+				minWidth: 0,
+				border: "none",
+				"&:hover": {
+					backgroundColor: "transparent",
+				}
 			},
 			"&.Mui-selected": {
 				color: theme.palette.primary.main,
@@ -521,12 +531,12 @@ const setThemeOverrides = theme => ({
 				marginBottom: -1,
 			},
 			"&.MuiTab-labelIcon svg": {
-				marginBottom: 0,
-				marginRight: 10,
+				marginBottom: theme.spacing(0),
+				marginRight: theme.spacing(1),
 			},
 			"& .MuiTab-wrapper": {
 				flexDirection: "row",
-			},
+			}
 		},
 		labelIcon: {
 			...theme.labelIcon,
@@ -534,8 +544,8 @@ const setThemeOverrides = theme => ({
 			minHeight: theme.spacing(2.4),
 			"& path:not([fill='none'])": {
 				fill: "currentColor",
-			},
-		},
+			}
+		}
 	},
 	MuiTable: {},
 	MuiTableHead: {
