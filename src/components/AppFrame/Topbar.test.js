@@ -13,10 +13,7 @@ import {
 } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
-import {
-	Wrapper as AppSelWrapper,
-	MenuIcon,
-} from "./ApplicationSelector/Header";
+import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
 import Topbar, {
 	Wrapper,
@@ -26,6 +23,7 @@ import Topbar, {
 	AppLogo,
 	useMenuProps,
 } from "./Topbar";
+import { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -35,7 +33,7 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Topbar", () => {
-	let state, store, applications, props, clicker, menuMessages, modalRoot;
+	let state, store, applications, props, clicker, menuMessages, helpMessages, modalRoot;
 	beforeEach(() => {
 		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
@@ -61,11 +59,17 @@ describe("Topbar", () => {
 			preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
 			about: { id: "msg.about", defaultMessage: "About" },
 		};
+		helpMessages = {
+			help: { id: "msg.help", defaultMessage: "Help" },
+		};
 		props = {
 			onClick: clicker,
 			menuMessages,
+			helpMessages,
 			applications,
+			currentApplication: applications[0],
 			applicationId: "current",
+			helpUrl: "an_help_url.com",
 		};
 		modalRoot = document.createElement("div");
 		modalRoot.id = "modal";
@@ -97,6 +101,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 
@@ -104,7 +109,7 @@ describe("Topbar", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
-					<Topbar {...props} applicationId="wrong" />
+					<Topbar {...props} currentApplication={{}} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -119,6 +124,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 
@@ -126,7 +132,7 @@ describe("Topbar", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
-					<Topbar {...props} applications={undefined} />
+					<Topbar {...props} currentApplication={undefined} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -141,6 +147,7 @@ describe("Topbar", () => {
 				<MenuWrapper>
 					<Ignore />
 				</MenuWrapper>
+				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
 });
@@ -207,7 +214,7 @@ describe("useMenuProps", () => {
 						id: "userMenuAbout",
 						label: "About",
 						handler: () => {},
-						icon: "infomation-circle",
+						icon: "info",
 					},
 				]}
 			/>,

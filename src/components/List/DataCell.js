@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FormattedNumber, FormattedDate, FormattedTime } from "react-intl";
-import { safeGet } from "../../utils";
+import { safeGet, getThemeProp } from "../../utils";
 import Switch from "../Switch";
 import Checkbox from "../Checkbox";
 import Text from "../Text";
@@ -24,7 +24,7 @@ const renderByType = (value, def, rowId, selected, row) => {
 				<FormattedNumber
 					style="currency" // eslint-disable-line react/style-prop-object
 					currency={currency}
-					value={transformedValue}
+					value={transformedValue || "0"}
 				/>
 			);
 		}
@@ -61,6 +61,15 @@ const renderByType = (value, def, rowId, selected, row) => {
 };
 
 export const TableData = styled.td`
+	border: 0 solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
+	border-top-width: 1px;
+	tr:first-child & {
+		border-top-width: 0;
+	}
+	tr:last-child & {
+		border-bottom-width: 1px;
+	}
+
 	height: 20px;
 	padding: 15px 20px;
 	white-space: nowrap;

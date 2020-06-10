@@ -1,10 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import {
+	getElmClasses,
 	getClassName,
+	getStyledClassSelector,
+	getClassSelector,
 	PropStruct,
 	firstItemComparator,
 	spyOnConsole,
+	ignoreConsoleError,
 } from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
@@ -12,55 +16,239 @@ const TestComp = ({ children, id = "tc1", ...props }) => (
 		{children}
 	</div>
 );
+
 class TestComp2 extends React.Component {
 	render() {
 		return <TestComp id="tc2" />;
 	}
 }
-const TestStyled = styled.div`
-	color: red;
-`;
 
-describe("getClassName", () => {
+describe("class name helpers", () => {
+	const TestStyled = styled.div`
+		color: red;
+	`;
+	const DerivedTestStyled = styled(TestStyled)`
+		color: blue;
+	`;
+
 	spyOnConsole(["error"]);
 
-	it("finds the first class name of the root element given to it", () =>
-		expect(getClassName(<TestComp className="foo bar" />), "to equal", "foo"));
+	describe("getElmClasses", () => {
+		it("finds all class names of an element", () =>
+			expect(
+				getElmClasses,
+				"when called with",
+				[<TestComp className="foo bar" />],
+				"to equal",
+				["foo", "bar"],
+			));
 
-	it("can find later-index class names of the root element given to it", () =>
-		expect(
-			getClassName(<TestComp className="foo bar" />, 1),
-			"to equal",
-			"bar",
-		));
+		it("works with svg elements", () =>
+			expect(
+				getElmClasses,
+				"when called with",
+				[<svg className="foo bar" />],
+				"to equal",
+				["foo", "bar"],
+			));
 
-	it("works with svg elements", () =>
-		expect(getClassName(<svg className="foo bar" />), "to equal", "foo"));
+		it("works with styled components", () =>
+			expect(
+				getElmClasses,
+				"when called with",
+				[<TestStyled />],
+				"to have an item satisfying",
+				"to match",
+				/__TestStyled-/,
+			));
 
-	it("works with styled components", () =>
-		expect(getClassName(<TestStyled />), "to match", /__TestStyled-/));
+		it("throws an error if no class found on DOM element", () =>
+			expect(
+				() => expect(getElmClasses, "when called with", [<div />]),
+				"to throw",
+				"Class name not found in <div />",
+			));
 
-	it("throws an error if no class found", () =>
-		expect(
-			() => getClassName(<div />),
-			"to throw",
-			"Class name not found in <div />",
-		));
+		it("throws an error if no class found on component", () =>
+			expect(
+				() => expect(getElmClasses, "when called with", [<TestComp />]),
+				"to throw",
+				"Class name not found in <TestComp />",
+			));
 
-	it("throws an error if no class found", () =>
-		expect(
-			() => getClassName(<TestComp />),
-			"to throw",
-			"Class name not found in <TestComp />",
-		));
+		it("throws an error if no class found on SVG element", () =>
+			expect(
+				() => expect(getElmClasses, "when called with", [<svg />]),
+				"to throw",
+				"Class name not found in <svg />",
+			));
 
-	it("can use a custom container element type", () => {
-		expect(
-			getClassName(<td className="foo bar" />, 0, "tr"),
-			"to equal",
-			"foo",
-		);
-		expect(console.error, "was not called");
+		it("can use a custom container element type", () => {
+			expect(
+				getElmClasses,
+				"when called with",
+				[<td className="foo bar" />, "tr"],
+				"to equal",
+				["foo", "bar"],
+			);
+			expect(console.error, "was not called");
+		});
+	});
+
+	describe("getClassName", () => {
+		it("finds the first class name of the root element given to it", () =>
+			expect(
+				getClassName,
+				"when called with",
+				[<TestComp className="foo bar" />],
+				"to equal",
+				"foo",
+			));
+
+		it("can find later-index class names of the root element given to it", () =>
+			expect(
+				getClassName,
+				"when called with",
+				[<TestComp className="foo bar" />, 1],
+				"to equal",
+				"bar",
+			));
+
+		it("returns empty string if index out of bounds", () =>
+			expect(
+				getClassName,
+				"when called with",
+				[<TestComp className="foo bar" />, 3],
+				"to equal",
+				"",
+			));
+
+		it("works with svg elements", () =>
+			expect(
+				getClassName,
+				"when called with",
+				[<svg className="foo bar" />],
+				"to equal",
+				"foo",
+			));
+
+		it("works with styled components", () =>
+			expect(
+				getClassName,
+				"when called with",
+				[<TestStyled />],
+				"to match",
+				/__TestStyled-/,
+			));
+
+		it("can use a custom container element type", () => {
+			expect(getClassName(<td className="foo bar" />, 0, "tr"), "to equal", "foo");
+			expect(console.error, "was not called");
+		});
+	});
+
+	describe("getClassSelector", () => {
+		it("makes a CSS class selector from the element passed", () =>
+			expect(
+				getClassSelector,
+				"when called with",
+				[<TestComp className="foo bar" />],
+				"to equal",
+				".foo",
+			));
+
+		it("can find later-index class names of the root element given to it", () =>
+			expect(
+				getClassSelector,
+				"when called with",
+				[<TestComp className="foo bar" />, 1],
+				"to equal",
+				".bar",
+			));
+
+		it("returns empty string if index out of bounds", () =>
+			expect(
+				getClassSelector,
+				"when called with",
+				[<TestComp className="foo bar" />, 3],
+				"to equal",
+				"",
+			));
+
+		it("works with svg elements", () =>
+			expect(
+				getClassSelector,
+				"when called with",
+				[<svg className="foo bar" />],
+				"to equal",
+				".foo",
+			));
+
+		it("works with styled components", () =>
+			expect(
+				getClassSelector,
+				"when called with",
+				[<TestStyled />],
+				"to match",
+				/^\.\S*__TestStyled-/,
+			));
+
+		it("can make a selector targeting all classes", () =>
+			expect(
+				getClassSelector,
+				"when called with",
+				[<TestComp className="foo bar" />, -1],
+				"to equal",
+				".foo.bar",
+			));
+
+		it("can use a custom container element type", () => {
+			expect(getClassSelector(<td className="foo bar" />, 0, "tr"), "to equal", ".foo");
+			expect(console.error, "was not called");
+		});
+	});
+
+	describe("getStyledClassSelector", () => {
+		it("creates a selector for a styled component", () =>
+			expect(
+				getStyledClassSelector,
+				"when called with",
+				[<TestStyled />],
+				"to match",
+				/^\.\S*__TestStyled-[0-9a-zA-Z]{6}/,
+			));
+
+		it("can use the component function without rendering", () =>
+			expect(
+				getStyledClassSelector,
+				"when called with",
+				[TestStyled],
+				"to match",
+				/^\.\S*__TestStyled-[0-9a-zA-Z]{6}/,
+			));
+
+		it("finds the most specific class name", () =>
+			expect(
+				getStyledClassSelector,
+				"when called with",
+				[<DerivedTestStyled />],
+				"to match",
+				/^\.\S*__DerivedTestStyled-[0-9a-zA-Z]{6}/,
+			));
+
+		it("throws an error if not given a non-styled component", () =>
+			expect(
+				() => expect(getStyledClassSelector, "when called with", [<TestComp />]),
+				"to throw",
+				"<TestComp /> is not a styled component",
+			));
+
+		it("throws an error if not given a DOM primitive", () =>
+			expect(
+				() => expect(getStyledClassSelector, "when called with", [<div />]),
+				"to throw",
+				"<div /> is not a styled component",
+			));
 	});
 });
 
@@ -242,5 +430,20 @@ describe("PropStruct", () => {
 				"to equal",
 				0,
 			));
+	});
+});
+
+describe("ignoreConsoleError", () => {
+	spyOnConsole(["error"]);
+	it("ignores console error", () => {
+		const setConsoleError = () => {
+			ignoreConsoleError(() => {
+				console.error("Error");
+			});
+		};
+
+		setConsoleError();
+
+		expect(console.error, "was not called");
 	});
 });

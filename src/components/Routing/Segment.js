@@ -5,10 +5,10 @@ import withWaypointing from "./withWaypointing";
 const Segment = ({ location, match, config, root }) => {
 	const { component } = config;
 	const path = location.pathname;
-	const View = useMemo(
-		() => withErrorBoundary(path)(withWaypointing(component)),
-		[path, component],
-	);
+	const View = useMemo(() => withErrorBoundary(path)(withWaypointing(component)), [
+		path,
+		component,
+	]);
 	return <View location={location} match={match} mapFrom={root} />;
 };
 

@@ -36,8 +36,8 @@ describe("Head", () => {
 			node,
 		);
 		expect(document.documentElement.lang, "not to be", "fr-CA");
-		return new Promise(resolve =>
-			window.requestAnimationFrame(resolve),
-		).then(() => expect(document.documentElement.lang, "to be", "fr-CA"));
+		return new Promise(resolve => window.requestAnimationFrame(resolve)).then(() =>
+			expect(document.documentElement.lang, "to be", "fr-CA"),
+		);
 	});
 });

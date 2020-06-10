@@ -9,7 +9,7 @@ export const ButtonWrapper = styled.div`
 	height: 30px;
 	flex: 0 1 auto;
 	border-radius: 4px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 
 	& > * {
 		box-sizing: border-box;
@@ -32,11 +32,11 @@ export const ButtonWrapper = styled.div`
 	${ifFlag(
 		"invalid",
 		css`
-			border-color: ${getThemeProp(["errorColor"], "#ce4844")};
+			border-color: ${getThemeProp(["colors", "error"], "#ce4844")};
 
 			&:hover,
 			&:active {
-				box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
+				box-shadow: 0 0 4px ${getThemeProp(["colors", "error"], "#ce4844")};
 			}
 		`,
 	)}

@@ -50,16 +50,8 @@ describe("getEventUpdater", () => {
 	it("creates a handler for an event and calls update with the value of the target", () =>
 		expect(getEventUpdater, "called with", [update], "called with", [
 			{ target: { value: "foo" } },
-		]).then(() =>
-			expect(update, "to have calls satisfying", [{ args: ["foo"] }]),
-		));
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["foo"] }])));
 
 	it("is memoized", () =>
-		expect(
-			getEventUpdater,
-			"called with",
-			[update],
-			"to be",
-			getEventUpdater(update),
-		));
+		expect(getEventUpdater, "called with", [update], "to be", getEventUpdater(update)));
 });

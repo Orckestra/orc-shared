@@ -5,7 +5,7 @@ import { Router, Route } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { getClassName, PropStruct } from "../../utils/testUtils";
+import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
 import { mapHref } from "../../actions/navigation";
 import { Bar, toolComponents } from "../Toolbar";
 import SubPage, { Backdrop, Dialog } from "./SubPage";
@@ -141,9 +141,7 @@ describe("SubPage", () => {
 			{ type: "click", target: "#subPage_goBack" },
 		).then(() => {
 			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
-			expect(dispatch, "to have calls satisfying", [
-				{ args: [mapHref("/foo", "/foo")] },
-			]);
+			expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 		}));
 
 	it("closes when clicking on backdrop", () =>
@@ -169,12 +167,10 @@ describe("SubPage", () => {
 			</div>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<Backdrop />) },
+			{ type: "click", target: getStyledClassSelector(Backdrop) },
 		).then(() => {
 			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
-			expect(dispatch, "to have calls satisfying", [
-				{ args: [mapHref("/foo", "/foo")] },
-			]);
+			expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 		}));
 
 	it("calls the tool selector with state to provide a toolbar config", () =>
@@ -217,7 +213,7 @@ describe("SubPage", () => {
 			</Provider>,
 			"when mounted",
 			"queried for first",
-			"." + getClassName(<Bar />),
+			getStyledClassSelector(Bar),
 			"to satisfy",
 			<Provider
 				store={{
@@ -284,7 +280,7 @@ describe("SubPage", () => {
 			"with event",
 			{ type: "click", target: "#secondButton" },
 			"queried for first",
-			"." + getClassName(<Bar />),
+			getStyledClassSelector(Bar),
 			"to satisfy",
 			<Provider
 				store={{

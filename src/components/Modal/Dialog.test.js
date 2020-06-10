@@ -16,7 +16,7 @@ describe("Dialog", () => {
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("to contain", "background-color: #333;")
+				.it("to contain", "background-color: #333333;")
 				.and("to contain", "border-radius: 15px;"),
 		));
 });

@@ -5,7 +5,7 @@
 	Sortable, within categories
 */
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { compose, setDisplayName } from "recompose";
 import { safeGet, ifFlag, getThemeProp } from "../utils";
 import withScrollBox from "../hocs/withScrollBox";
@@ -21,10 +21,24 @@ const arrayToggle = (array, item) =>
 export const CategoryRow = styled.tr``;
 
 export const CategoryHeader = styled.td`
+	border: 0 solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
+	border-top-width: 1px;
+	tr:first-child & {
+		border-top-width: 0;
+	}
+	tr:last-child & {
+		border-bottom-width: 1px;
+	}
+
 	position: relative;
 	padding: 11px 45px;
 	background-color: #f1eae0;
-	${ifFlag("closed", "border-bottom: 1px solid #cccccc;")}
+	${ifFlag(
+		"closed",
+		css`
+			border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
+		`,
+	)}
 	cursor: pointer;
 `;
 

@@ -1,21 +1,17 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { getThemeProp, ifFlag } from "../../utils";
 import { Link } from "react-router-dom";
-import Text from "../Text";
 import Icon from "../Icon";
-
-// XXX: The below contains an IE10/IE11 targeting CSS hack
+import useLabelMessage from "../../hooks/useLabelMessage";
+import { Placeholder } from "../Text";
+import { useIntl } from "react-intl";
 
 export const PageTab = styled.div`
-	flex: 0 1 auto;
-	@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-		flex-basis: 170px;
-	}
+	flex: 0 0 auto;
 	overflow: hidden;
 	height: 38px;
-	border: 1px solid #cccccc;
-	display: flex;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	transform: translateY(-10px);
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
@@ -26,10 +22,10 @@ export const PageTab = styled.div`
 		"active",
 		css`
 			border-bottom-color: white;
-			color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+			color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 		`,
 		css`
-			color: #999999;
+			color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 		`,
 	)};
 
@@ -39,18 +35,31 @@ export const PageTab = styled.div`
 			background-color: #eeeeee;
 		`,
 	)}
+
+	${ifFlag(
+		"hide",
+		css`
+			visibility: hidden;
+		`,
+	)}
 `;
+
+// XXX: The below contains an IE10/IE11 targeting CSS hack
 
 export const ModuleTab = styled(PageTab)`
+	flex-grow: 0;
+	flex-shrink: 0;
 	margin-left: 0px;
+	z-index: 1;
+	@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+		flex-grow: 1;
+	}
 `;
 
-const FilteredLink = ({ outsideScope, ...props }) => <Link {...props} />;
+const FilteredLink = ({ outsideScope, mustTruncate, ...props }) => <Link {...props} />;
 
 export const TabLink = styled(FilteredLink)`
-	flex: 0 1 100%;
 	min-width: 100px;
-	width: max-content;
 	overflow: hidden;
 	color: inherit;
 	text-decoration: none;
@@ -63,20 +72,24 @@ export const TabLink = styled(FilteredLink)`
 		css`
 			cursor: not-allowed;
 		`,
-	)}
+	)};
+	${ifFlag(
+		"mustTruncate",
+		css`
+			max-width: 220px;
+		`,
+	)};
 `;
 
 export const ModuleIcon = styled(Icon)`
-	flex: 0 0 auto;
+	vertical-align: middle;
 	font-size: 20px;
 	margin-right: 10px;
 	margin-top: -3px;
 `;
 
 export const TabText = styled.span`
-	flex: 0 9999999 100%;
 	min-width: 50px;
-	max-width: 350px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -89,28 +102,59 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	margin-left: 10px;
 	margin-right: -5px;
 	font-size: 14px;
-	color: #999999;
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 
 	&:hover {
-		color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+		color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 	}
 `;
 
-const Tab = ({
-	href,
-	label,
-	icon,
-	module,
-	active,
-	close = () => {},
-	mappedFrom,
-	outsideScope,
-}) => {
+const Tab = (
+	{
+		href,
+		label,
+		mustTruncate,
+		icon,
+		module,
+		active,
+		close = () => {},
+		outsideScope,
+		scopeNotSupported,
+		hide,
+	},
+	ref,
+) => {
 	const ThisTab = module ? ModuleTab : PageTab;
+
+	const { formatMessage } = useIntl();
+	const tabTextRef = useRef(null);
+	const [aTitle, setTitle] = useState(null);
+	const buildMessage = message => formatMessage(message, message.values);
+	const [labelMessage] = useLabelMessage(label, buildMessage);
+
+	useEffect(() => {
+		if (scopeNotSupported) {
+			close();
+		} else if (
+			mustTruncate &&
+			tabTextRef.current &&
+			tabTextRef.current.offsetWidth < tabTextRef.current.scrollWidth
+		) {
+			setTitle(labelMessage);
+		}
+	}, [scopeNotSupported, tabTextRef, setTitle, labelMessage, mustTruncate, close]);
+
 	return (
-		<ThisTab active={active} outsideScope={outsideScope} data-test-id={href}>
+		<ThisTab
+			ref={ref}
+			active={active}
+			outsideScope={outsideScope}
+			hide={hide || scopeNotSupported}
+			data-href={href}
+		>
 			<TabLink
 				to={href}
+				mustTruncate={mustTruncate}
 				outsideScope={outsideScope}
 				onClick={
 					outsideScope
@@ -122,8 +166,8 @@ const Tab = ({
 				}
 			>
 				{module ? <ModuleIcon id={icon} /> : null}
-				<TabText>
-					<Text message={label} />
+				<TabText ref={tabTextRef} title={aTitle}>
+					{labelMessage ? labelMessage : <Placeholder />}
 				</TabText>
 				{module ? null : <CloseIcon onClick={close} />}
 			</TabLink>
@@ -131,4 +175,4 @@ const Tab = ({
 	);
 };
 
-export default Tab;
+export default React.forwardRef(Tab);

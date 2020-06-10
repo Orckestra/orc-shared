@@ -48,56 +48,54 @@ const TestComp7 = props => (
 	</div>
 );
 
-const makeTestComp = Comp => ({ modules }) => (
-	<Comp {...useNavigationState(modules)} />
-);
+const makeTestComp = Comp => ({ modules }) => <Comp {...useNavigationState(modules)} />;
 
 describe("useNavigationState", () => {
 	spyOnConsole(["warn"]);
 
-	let state, store, modules, TestBar, TestProps;
+	let state, store, modules, TestBar, TestProps, modulesWithSelector;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
 			navigation: {
 				tabIndex: {
-					"/OtherScope/test": {
+					test: {
 						href: "/OtherScope/test",
 						path: "/:scope/test",
 						params: { scope: "OtherScope" },
 					},
-					"/TestScope/test/page1": {
+					"test/page1": {
 						href: "/TestScope/test/page1",
 						path: "/:scope/test/page1",
 						params: { scope: "TestScope" },
 					},
-					"/OtherScope/test/foo": {
+					"test/foo": {
 						href: "/OtherScope/test/foo",
 						path: "/:scope/test/:page2",
 						params: { scope: "OtherScope", page2: "foo" },
 					},
-					"/OtherScope/test/bar": {
+					"test/bar": {
 						href: "/OtherScope/test/bar",
 						path: "/:scope/test/:page2",
 						params: { scope: "OtherScope", page2: "bar" },
 					},
-					"/TestScope/test/page3": {
+					"test/page3": {
 						href: "/TestScope/test/page3",
 						path: "/:scope/test/page3",
 						params: { scope: "TestScope" },
 					},
-					"/TestScope/test/notexist": {
+					"test/notexist": {
 						href: "/TestScope/test/notexist",
 					},
 				},
 				moduleTabs: {
 					test: [
-						"/OtherScope/test",
-						"/TestScope/test/page1",
-						"/OtherScope/test/foo",
-						"/OtherScope/test/bar",
-						"/TestScope/test/page3",
-						"/TestScope/test/notexist",
+						"test",
+						"test/page1",
+						"test/foo",
+						"test/bar",
+						"test/page3",
+						"test/notexist",
 					],
 				},
 				mappedHrefs: {},
@@ -108,6 +106,42 @@ describe("useNavigationState", () => {
 						params: { scope: "TestScope", page2: "bar" },
 					},
 				},
+			},
+			scopes: {
+				Global: {
+					id: "Global",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+					scopePath: ["Global"],
+				},
+				TestScope: {
+					id: "TestScope",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+					scopePath: ["Global", "TestScope"],
+				},
+				OtherScope: {
+					id: "OtherScope",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+					scopePath: ["Global", "OtherScope"],
+				},
+			},
+			locale: {
+				locale: null,
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		});
 		store = {
@@ -129,12 +163,39 @@ describe("useNavigationState", () => {
 						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
 						dataPath: ["objs", "test"],
 						dataIdParam: "page2",
+						mustTruncate: true,
 						component: TestComp3,
 					},
 					"/page3": {
 						label: { id: "page3", defaultMessage: "Page 3 {someField}" },
 						component: TestComp4,
-						labelValueSelector: state => state.getIn(["objs", "test", "bar"]),
+						labelValueSelector: () => state => state.getIn(["objs", "test", "bar"]),
+					},
+				},
+			},
+		};
+		modulesWithSelector = {
+			test: {
+				icon: "thing",
+				label: "Thing",
+				component: TestComp1,
+				pageScopeSelector: (state, obj) => obj.scope,
+				pages: {
+					"/page1": {
+						label: "Page 1",
+						component: TestComp2,
+					},
+					"/:page2": {
+						label: { id: "page2", defaultMessage: "Page 2 {someField}" },
+						dataPath: ["objs", "test"],
+						dataIdParam: "page2",
+						mustTruncate: true,
+						component: TestComp3,
+					},
+					"/page3": {
+						label: { id: "page3", defaultMessage: "Page 3 {someField}" },
+						component: TestComp4,
+						labelValueSelector: () => state => state.getIn(["objs", "test", "bar"]),
 					},
 				},
 			},
@@ -161,14 +222,14 @@ describe("useNavigationState", () => {
 				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
 						<Bar
+							module={{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test",
+								mappedFrom: "/TestScope/test",
+								active: false,
+							}}
 							pages={[
-								{
-									icon: "thing",
-									label: "Thing",
-									href: "/TestScope/test",
-									mappedFrom: "/TestScope/test",
-									active: false,
-								},
 								{
 									label: "Page 1",
 									href: "/TestScope/test/page1",
@@ -177,6 +238,7 @@ describe("useNavigationState", () => {
 									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
+									scopeNotSupported: false,
 								},
 								{
 									label: {
@@ -191,7 +253,9 @@ describe("useNavigationState", () => {
 									active: false,
 									params: "__ignore",
 									path: "__ignore",
+									mustTruncate: true,
 									outsideScope: true,
+									scopeNotSupported: false,
 								},
 								{
 									label: {
@@ -206,7 +270,9 @@ describe("useNavigationState", () => {
 									active: false,
 									params: "__ignore",
 									path: "__ignore",
+									mustTruncate: true,
 									outsideScope: true,
+									scopeNotSupported: false,
 								},
 								{
 									label: {
@@ -220,6 +286,116 @@ describe("useNavigationState", () => {
 									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
+									scopeNotSupported: false,
+								},
+								{
+									href: "/TestScope/test/notexist",
+									mappedFrom: "/TestScope/test/notexist",
+									label: "[Not found]",
+									active: false,
+								},
+							]}
+							moduleName="test"
+							moduleHref="/TestScope/test"
+						/>
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+		).then(() =>
+			expect(console.warn, "to have calls satisfying", [
+				{
+					args: [
+						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+					],
+				},
+				{
+					args: [
+						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+					],
+				},
+			]),
+		));
+
+	it("provides state information about navigation when redirection is needed", () =>
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modulesWithSelector} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<Bar
+							module={{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test",
+								mappedFrom: "/TestScope/test",
+								active: false,
+							}}
+							pages={[
+								{
+									label: "Page 1",
+									href: "/TestScope/test/page1",
+									mappedFrom: "/TestScope/test/page1",
+									active: true,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
+									scopeNotSupported: false,
+								},
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "11",
+										},
+									},
+									href: "/TestScope/test/foo",
+									mappedFrom: "/TestScope/test/foo",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									mustTruncate: true,
+									outsideScope: true,
+									scopeNotSupported: true,
+								},
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "22",
+										},
+									},
+									href: "/TestScope/test/bar",
+									mappedFrom: "/TestScope/test/bar",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									mustTruncate: true,
+									outsideScope: true,
+									scopeNotSupported: true,
+								},
+								{
+									label: {
+										id: "page3",
+										defaultMessage: "Page 3 {someField}",
+										values: { someField: "22" },
+									},
+									href: "/TestScope/test/page3",
+									mappedFrom: "/TestScope/test/page3",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
+									scopeNotSupported: false,
 								},
 								{
 									href: "/TestScope/test/notexist",
@@ -266,7 +442,7 @@ describe("useNavigationState", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<PropStruct moduleName="" moduleHref="" pages="__ignore" />,
+			<PropStruct moduleName="" moduleHref="" module="__ignore" pages="__ignore" />,
 		);
 	});
 
@@ -280,20 +456,20 @@ describe("useNavigationState", () => {
 					},
 				},
 				navigation: {
-					moduleTabs: { test: ["/TestScope/test", "/TestScope/test/page2"] },
+					moduleTabs: { test: ["test", "test/page2"] },
 					tabIndex: {
-						"/TestScope/test": {
+						test: {
 							href: "/TestScope/test",
 							params: { scope: "TestScope" },
 						},
-						"/TestScope/test/page2": {
+						"test/page2": {
 							href: "/TestScope/test/page2",
 							params: { scope: "TestScope" },
 						},
 					},
 					mappedHrefs: {
-						"/TestScope/test": "/TestScope/test/page1",
-						"/TestScope/test/page2": "/TestScope/test/page2/sub",
+						test: "test/page1",
+						"test/page2": "test/page2/sub",
 					},
 					route: {
 						match: {
@@ -302,6 +478,32 @@ describe("useNavigationState", () => {
 							params: { scope: "TestScope" },
 						},
 					},
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+					OtherScope: {
+						id: "OtherScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+				settings: {
+					defaultScope: "myScope",
 				},
 			});
 			modules = {
@@ -338,20 +540,21 @@ describe("useNavigationState", () => {
 				"when mounted",
 				"to satisfy",
 				<PropStruct
+					module={{
+						icon: "thing",
+						label: "Thing",
+						href: "/TestScope/test/page1",
+						mappedFrom: "/TestScope/test",
+						active: true,
+					}}
 					pages={[
-						{
-							icon: "thing",
-							label: "Thing",
-							href: "/TestScope/test/page1",
-							mappedFrom: "/TestScope/test",
-							active: true,
-						},
 						{
 							label: { id: "page2", defaultMessage: "Page 2" },
 							href: "/TestScope/test/page2/sub",
 							mappedFrom: "/TestScope/test/page2",
 							active: false,
 							outsideScope: false,
+							scopeNotSupported: false,
 							params: "__ignore",
 							close: () => {},
 						},
@@ -360,6 +563,283 @@ describe("useNavigationState", () => {
 					moduleHref="/TestScope/test/page1"
 				/>,
 			));
+	});
+
+	describe("tab label values", () => {
+		let page;
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				objs: { test: { foo: { someField: "11" }, bar: { someField: "22" } } },
+				navigation: {
+					tabIndex: {
+						test: {
+							href: "/TestScope/test",
+							path: "/:scope/test",
+							params: { scope: "TestScope" },
+						},
+						"test/foo": {
+							href: "/TestScope/test/foo",
+							path: "/:scope/test/:pageVar",
+							params: { scope: "TestScope", pageVar: "foo" },
+						},
+						"test/bar": {
+							href: "/TestScope/test/bar",
+							path: "/:scope/test/:pageVar",
+							params: { scope: "TestScope", pageVar: "bar" },
+						},
+					},
+					moduleTabs: {
+						test: ["test/foo", "test/bar"],
+					},
+					mappedHrefs: {},
+					route: {
+						match: {
+							url: "/TestScope/test/page1",
+							path: "/:scope/test/page1",
+							params: { scope: "TestScope", page2: "bar" },
+						},
+					},
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+					OtherScope: {
+						id: "OtherScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+				settings: {
+					defaultScope: "myScope",
+				},
+			});
+			page = {
+				label: { id: "page", defaultMessage: "Page {someField}" },
+				component: TestComp1,
+			};
+			modules = page => ({
+				test: {
+					icon: "thing",
+					label: "Thing",
+					component: TestComp1,
+					pages: {
+						"/:pageVar": page,
+					},
+				},
+			});
+		});
+
+		it("gets a state value for a tab via selector", () => {
+			page.labelValueSelector = (params = {}) => state => {
+				return state.getIn(["objs", "test", params.pageVar]);
+			};
+			return expect(
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<TestBar modules={modules(page)} />
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<Bar
+								module={{
+									icon: "thing",
+									label: "Thing",
+									href: "/TestScope/test",
+									mappedFrom: "/TestScope/test",
+									active: false,
+								}}
+								pages={[
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "11",
+											},
+										},
+										href: "/TestScope/test/foo",
+										mappedFrom: "/TestScope/test/foo",
+										active: true,
+										params: { scope: "TestScope", pageVar: "foo" },
+										path: "__ignore",
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "22",
+											},
+										},
+										href: "/TestScope/test/bar",
+										mappedFrom: "/TestScope/test/bar",
+										active: false,
+										params: { scope: "TestScope", pageVar: "bar" },
+										path: "__ignore",
+									},
+								]}
+								moduleName="test"
+								moduleHref="/TestScope/test"
+							/>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+			);
+		});
+
+		it("handles if selector does not follow required function type", () => {
+			page.labelValueSelector = (params = {}) => ({ stuff: true, params });
+			return expect(
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<TestBar modules={modules(page)} />
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<Bar
+								module={{
+									icon: "thing",
+									label: "Thing",
+									href: "/TestScope/test",
+									mappedFrom: "/TestScope/test",
+									active: false,
+								}}
+								pages={[
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {},
+										},
+										href: "/TestScope/test/foo",
+										mappedFrom: "/TestScope/test/foo",
+										active: true,
+										params: { scope: "TestScope", pageVar: "foo" },
+										path: "__ignore",
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {},
+										},
+										href: "/TestScope/test/bar",
+										mappedFrom: "/TestScope/test/bar",
+										active: false,
+										params: { scope: "TestScope", pageVar: "bar" },
+										path: "__ignore",
+									},
+								]}
+								moduleName="test"
+								moduleHref="/TestScope/test"
+							/>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+			);
+		});
+
+		it("gets a state value for a tab via data path (deprecated)", () => {
+			page.dataPath = ["objs", "test"];
+			page.dataIdParam = "pageVar";
+			return expect(
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<TestBar modules={modules(page)} />
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+				"when mounted",
+				"to satisfy",
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
+							<Bar
+								module={{
+									icon: "thing",
+									label: "Thing",
+									href: "/TestScope/test",
+									mappedFrom: "/TestScope/test",
+									active: false,
+								}}
+								pages={[
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "11",
+											},
+										},
+										href: "/TestScope/test/foo",
+										mappedFrom: "/TestScope/test/foo",
+										active: true,
+										params: { scope: "TestScope", pageVar: "foo" },
+										path: "__ignore",
+									},
+									{
+										label: {
+											id: "page",
+											defaultMessage: "Page {someField}",
+											values: {
+												someField: "22",
+											},
+										},
+										href: "/TestScope/test/bar",
+										mappedFrom: "/TestScope/test/bar",
+										active: false,
+										params: { scope: "TestScope", pageVar: "bar" },
+										path: "__ignore",
+									},
+								]}
+								moduleName="test"
+								moduleHref="/TestScope/test"
+							/>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>,
+			).then(() =>
+				expect(console.warn, "to have calls satisfying", [
+					{
+						args: [
+							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+						],
+					},
+					{
+						args: [
+							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
+						],
+					},
+				]),
+			);
+		});
 	});
 
 	it("provides a close handler for tabs", () => {
@@ -379,7 +859,7 @@ describe("useNavigationState", () => {
 			"with event",
 			{
 				type: "click",
-				target: '[data-test-id="/TestScope/test/page3"] svg',
+				target: '[data-href="/TestScope/test/page3"] svg',
 				data: fakeEvent,
 			},
 		).then(() =>
@@ -417,7 +897,7 @@ describe("useNavigationState", () => {
 			"with event",
 			{
 				type: "click",
-				target: '[data-test-id="/TestScope/test/page3"] svg',
+				target: '[data-href="/TestScope/test/page3"] svg',
 				data: fakeEvent,
 			},
 		).then(() =>
@@ -494,27 +974,15 @@ describe("getPageData", () => {
 		}));
 
 	it("extracts the data for a nested segment page", () =>
-		expect(
-			getPageData,
-			"when called with",
-			["/page3/seg2", {}, module],
-			"to satisfy",
-			{
-				label: "Segment 2",
-				component: TestComp5,
-			},
-		));
+		expect(getPageData, "when called with", ["/page3/seg2", {}, module], "to satisfy", {
+			label: "Segment 2",
+			component: TestComp5,
+		}));
 
 	it("extracts the data for a nested subpage", () =>
-		expect(
-			getPageData,
-			"when called with",
-			["/page2/sub1", {}, module],
-			"to satisfy",
-			{
-				component: TestComp7,
-			},
-		));
+		expect(getPageData, "when called with", ["/page2/sub1", {}, module], "to satisfy", {
+			component: TestComp7,
+		}));
 
 	it("handles variable path steps", () =>
 		expect(

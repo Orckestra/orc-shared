@@ -46,4 +46,7 @@ describe("safeGet", () => {
 			],
 			"to be undefined",
 		));
+
+	it("handles null gracefully", () =>
+		expect(safeGet, "when called with", [null, "foo", "bar"], "to be null"));
 });

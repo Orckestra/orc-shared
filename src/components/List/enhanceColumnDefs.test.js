@@ -2,12 +2,7 @@ import sinon from "sinon";
 import enhanceColumnDefs from "./enhanceColumnDefs";
 
 describe("enhanceColumnDefs", () => {
-	let sorting,
-		selection,
-		updateViewState,
-		columnDefs,
-		mockEvent,
-		stopPropagations;
+	let sorting, selection, updateViewState, columnDefs, mockEvent, stopPropagations;
 	beforeEach(() => {
 		sorting = {};
 		selection = [];

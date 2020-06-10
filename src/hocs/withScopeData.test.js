@@ -16,11 +16,7 @@ jest.mock("../utils/buildUrl", () => {
 
 const TestComp = ({ spy, getScope, ...props }) => (
 	<div>
-		<input
-			id="getScope"
-			value=""
-			onChange={e => spy(getScope(e.target.value))}
-		/>
+		<input id="getScope" value="" onChange={e => spy(getScope(e.target.value))} />
 		<PropStruct {...props} />
 	</div>
 );
@@ -67,6 +63,9 @@ describe("withScopeData", () => {
 					bar: true,
 					parentScopeId: "test2",
 				},
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		});
 		store = {
@@ -142,7 +141,7 @@ describe("withScopeData", () => {
 			.then(() => expect(store.dispatch, "was not called")));
 
 	it("loads scopes if it has none", () => {
-		state = state.set("scopes", Immutable.Map());
+		state = state.setIn(["scopes"], Immutable.Map());
 		return expect(withScopeData, "when called with", [TestComp])
 			.then(Comp =>
 				expect(

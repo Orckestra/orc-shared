@@ -21,9 +21,9 @@ export const IconBlock = styled.div`
 const arrify = thing => [].slice.call(thing);
 
 const SpriteSheet = () => {
-	const iconIds = arrify(
-		document.querySelectorAll('symbol[id^="icon-"]'),
-	).map(elm => elm.id.replace(/^icon-/, ""));
+	const iconIds = arrify(document.querySelectorAll('symbol[id^="icon-"]')).map(elm =>
+		elm.id.replace(/^icon-/, ""),
+	);
 	return (
 		<Wrapper>
 			{iconIds.map(id => (

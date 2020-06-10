@@ -3,29 +3,23 @@ import Anchor, { Header, Indicator } from "./Anchor";
 
 describe("Anchor", () => {
 	it("renders a closed menu anchor", () => {
-		const onClick = () => {};
 		expect(
-			<Anchor
-				id="testAnchor"
-				onClick={onClick}
-				menuLabel="A Label"
-				className="propagateThis"
-			/>,
+			<Anchor menuLabel="A Label" />,
 			"when mounted",
 			"to satisfy",
-			<Header id="testAnchor" onClick={onClick} className="propagateThis">
+			<Header open={false}>
 				A Label
-				<Indicator />
+				<Indicator open={false} />
 			</Header>,
 		);
 	});
 
 	it("renders an open menu anchor", () =>
 		expect(
-			<Anchor open menuLabel="A Label" className="propagateThis" />,
+			<Anchor open menuLabel="A Label" />,
 			"when mounted",
 			"to satisfy",
-			<Header open className="propagateThis">
+			<Header open>
 				A Label
 				<Indicator open />
 			</Header>,
@@ -35,7 +29,7 @@ describe("Anchor", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				appHighlightColor: "#ff00ff",
+				colors: { application: { primary: "#ff00ff" } },
 			};
 		});
 
@@ -62,7 +56,7 @@ describe("Anchor", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				appHighlightColor: "#ff00ff",
+				colors: { application: { primary: "#ff00ff" } },
 			};
 		});
 

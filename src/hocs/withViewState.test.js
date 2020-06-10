@@ -8,10 +8,7 @@ import withViewState from "./withViewState";
 import { setStateField } from "../actions/view";
 
 const TestComp = ({ field, updateViewState, viewState }) => (
-	<input
-		onChange={() => updateViewState(field, "new value")}
-		value={viewState[field]}
-	/>
+	<input onChange={() => updateViewState(field, "new value")} value={viewState[field]} />
 );
 
 describe("withViewState", () => {

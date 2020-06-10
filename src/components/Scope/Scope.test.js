@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { simulate } from "react-dom-testing";
-import { getClassName, PropStruct } from "../../utils/testUtils";
+import { simulate } from "unexpected-reaction";
+import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
 import { VIEW_SET_FIELD } from "../../actions/view";
 import I18n from "../I18n";
 import RoutedScope, { Scope, ScopeBar, Bar, AlignedButton } from "./index";
@@ -49,6 +49,7 @@ beforeEach(() => {
 				name: { "en-CA": "Test 3" },
 				foo: true,
 				bar: false,
+				parentScopeId: "test1",
 			},
 			test4: {
 				id: "test4",
@@ -56,15 +57,34 @@ beforeEach(() => {
 				foo: true,
 				bar: true,
 			},
+			test5: {
+				id: "test5",
+				name: { "en-US": "Test 5" },
+				foo: true,
+				bar: true,
+				parentScopeId: "test4",
+			},
+		},
+		settings: {
+			defaultScope: "aDefaultScope",
 		},
 		view: {
 			scopeSelector: { filter: "Foo", show: true },
 		},
 	});
+	const subs = [];
 	store = {
-		subscribe: () => {},
-		dispatch: sinon.spy().named("dispatch"),
+		updateState: () => {
+			subs.forEach((sub, i) => {
+				sub();
+			});
+		},
+		subscribe: sub => {
+			subs.push(sub);
+			return () => {};
+		},
 		getState: () => state,
+		dispatch: sinon.spy().named("dispatch"),
 	};
 	appRoot = document.createElement("div");
 	appRoot.id = "app";
@@ -161,6 +181,73 @@ describe("Scope", () => {
 		]);
 	});
 
+	it("resets the scope tree state when closing, to ensure current scope is visible", () => {
+		state = state.withMutations(s => {
+			s.setIn(["navigation", "route", "match", "params", "scope"], "test3");
+			s.setIn(
+				["view", "scopeSelector"],
+				Immutable.fromJS({ show: false, nodeState: { test1: false, test4: true } }),
+			);
+		});
+		ReactDOM.render(
+			<div>
+				<Provider store={store}>
+					<IntlProvider locale="en">
+						<MemoryRouter initialEntries={["/test3/stuff"]}>
+							<Scope
+								filterPlaceholder={{
+									defaultMessage: "Type a scope name",
+									id: "test.placeholder",
+								}}
+							>
+								<div id="child" />
+							</Scope>
+						</MemoryRouter>
+					</IntlProvider>
+				</Provider>
+			</div>,
+			appRoot,
+		);
+		state = state.setIn(["view", "scopeSelector", "show"], true);
+		store.updateState();
+		expect(store.dispatch, "to have calls satisfying", [
+			{
+				args: [
+					{
+						type: VIEW_SET_FIELD,
+						payload: {
+							name: "scopeSelector",
+							field: "nodeState",
+							value: { test1: true, test4: true },
+						},
+					},
+				],
+			},
+		]);
+		state = state.setIn(["view", "scopeSelector", "nodeState", "test4"], false);
+		state = state.setIn(["view", "scopeSelector", "show"], false);
+		store.updateState();
+		state = state.setIn(["view", "scopeSelector", "show"], true);
+		store.updateState();
+		expect(store.dispatch, "to have calls satisfying", [
+			{
+				/* This call is checked above */
+			},
+			{
+				args: [
+					{
+						type: VIEW_SET_FIELD,
+						payload: {
+							name: "scopeSelector",
+							field: "nodeState",
+							value: { test1: true, test4: false },
+						},
+					},
+				],
+			},
+		]);
+	});
+
 	it("defaults to not showing the selector", () => {
 		state = state.deleteIn(["view", "scopeSelector", "show"]);
 		return expect(
@@ -198,16 +285,14 @@ describe("ScopeBar", () => {
 			<ScopeBar name="Scope name" updateViewState={updateViewState} />,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<AlignedButton />) },
+			{ type: "click", target: getStyledClassSelector(AlignedButton) },
 			"to satisfy",
 			<Bar>
 				<AlignedButton id="showScopeSelector">Scope name</AlignedButton>
 			</Bar>,
 		).then(() =>
 			Promise.all([
-				expect(updateViewState, "to have calls satisfying", [
-					{ args: ["show", true] },
-				]),
+				expect(updateViewState, "to have calls satisfying", [{ args: ["show", true] }]),
 			]),
 		));
 });
@@ -231,14 +316,27 @@ describe("RoutedScope", () => {
 			</Provider>,
 			appRoot,
 		);
-		return expect(
-			appRoot,
-			"to contain",
-			<PropStruct pathname="/test1/foo" itIs="me" />,
-		);
+		return expect(appRoot, "to contain", <PropStruct pathname="/test1/foo" itIs="me" />);
 	});
 
 	it("redirects to Global if route not matched", () => {
+		state = state.setIn(["settings", "defaultScope"], null);
+		ReactDOM.render(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={[""]} initialIndex={0}>
+					<I18n>
+						<RoutedScope>
+							<TestComp itIs="me" />
+						</RoutedScope>
+					</I18n>
+				</MemoryRouter>
+			</Provider>,
+			appRoot,
+		);
+		return expect(appRoot, "to contain", <PropStruct pathname="/Global" itIs="me" />);
+	});
+
+	it("redirects to default scope if route not matched", () => {
 		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={[""]} initialIndex={0}>
@@ -254,7 +352,7 @@ describe("RoutedScope", () => {
 		return expect(
 			appRoot,
 			"to contain",
-			<PropStruct pathname="/Global" itIs="me" />,
+			<PropStruct pathname="/aDefaultScope" itIs="me" />,
 		);
 	});
 });

@@ -6,6 +6,7 @@ import {
 	selectSegmentHrefMapper,
 	selectRouteParams,
 	getCurrentScope,
+	getCurrentScopeFromRoute,
 	resetLastScope,
 	selectRouteHref,
 	selectRoutePath,
@@ -113,10 +114,7 @@ describe("selectMappedCurrentModuleList", () => {
 		));
 
 	it("returns an empty list if there is no list in state", () => {
-		state = state.setIn(
-			["navigation", "route", "match", "path"],
-			"/:scope/other",
-		);
+		state = state.setIn(["navigation", "route", "match", "path"], "/:scope/other");
 		return expect(
 			selectMappedCurrentModuleList,
 			"called with",
@@ -134,24 +132,19 @@ describe("selectSegmentHrefMapper", () => {
 			navigation: {
 				route: { match: { path: "/:scope/thing" } },
 				tabIndex: {
-					"/path/to/tab1": { tab: 1 },
-					"/path/to/tab2": { tab: 2 },
+					"to/tab1": { tab: 1 },
+					"to/tab2": { tab: 2 },
 				},
-				moduleTabs: { thing: ["/path/to/tab1"] },
+				moduleTabs: { thing: ["to/tab1"] },
 				mappedHrefs: {
-					"/path/to/tab1": "/path/to/tab1/subpage",
+					"to/tab1": "to/tab1/subpage",
 				},
 			},
 		});
 	});
 
 	it("returns a function", () =>
-		expect(
-			selectSegmentHrefMapper,
-			"when called with",
-			[state],
-			"to be a function",
-		));
+		expect(selectSegmentHrefMapper, "when called with", [state], "to be a function"));
 
 	describe("returned function", () => {
 		let mapper;
@@ -169,13 +162,7 @@ describe("selectSegmentHrefMapper", () => {
 			));
 
 		it("passes unmapped hrefs", () =>
-			expect(
-				mapper,
-				"when called with",
-				["/path/to/tab2"],
-				"to equal",
-				"/path/to/tab2",
-			));
+			expect(mapper, "when called with", ["/path/to/tab2"], "to equal", "/path/to/tab2"));
 	});
 });
 
@@ -185,6 +172,9 @@ describe("getCurrentScope", () => {
 		state = Immutable.fromJS({
 			navigation: {
 				route: { location: {}, match: { params: { scope: "thing" } } },
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		});
 	});
@@ -198,8 +188,46 @@ describe("getCurrentScope", () => {
 	it("gets the last scope, if no scope set and previous scope is known", () => {
 		getCurrentScope(state);
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(getCurrentScope, "when called with", [state], "to be", "thing");
+	});
+
+	it("gets the default scope, if no scope set and no previous known", () => {
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
+		return expect(getCurrentScope, "when called with", [state], "to be", "myScope");
+	});
+
+	it("gets the Global scope, if no scope set, if no default scope and no previous known", () => {
+		state = state
+			.deleteIn(["navigation", "route", "match", "params", "scope"])
+			.setIn(["settings", "defaultScope"], null);
+		return expect(getCurrentScope, "when called with", [state], "to be", "Global");
+	});
+});
+
+describe("getCurrentScopeFromRoute", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				route: { location: {}, match: { params: { scope: "thing" } } },
+			},
+			settings: {
+				defaultScope: "myScope",
+			},
+		});
+	});
+	afterEach(() => {
+		resetLastScope();
+	});
+
+	it("gets the current scope, if one is set", () =>
+		expect(getCurrentScopeFromRoute, "when called with", [state], "to be", "thing"));
+
+	it("gets the last scope, if no scope set and previous scope is known", () => {
+		getCurrentScope(state);
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
 		return expect(
-			getCurrentScope,
+			getCurrentScopeFromRoute,
 			"when called with",
 			[state],
 			"to be",
@@ -207,15 +235,9 @@ describe("getCurrentScope", () => {
 		);
 	});
 
-	it("gets the default scope, if no scope set and no previous known", () => {
+	it("gets null if no scope set and no previous known", () => {
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
-		return expect(
-			getCurrentScope,
-			"when called with",
-			[state],
-			"to be",
-			"Global",
-		);
+		return expect(getCurrentScopeFromRoute, "when called with", [state], "to be", null);
 	});
 });
 
@@ -271,13 +293,12 @@ describe("route selectors", () => {
 			));
 
 		it("handles missing data", () =>
-			expect(
-				selectRouteHref,
+			expect(selectRouteHref, "when called with", [noMatchState], "to equal", "").and(
 				"when called with",
-				[noMatchState],
+				[noHrefState],
 				"to equal",
 				"",
-			).and("when called with", [noHrefState], "to equal", ""));
+			));
 	});
 
 	describe("selectRoutePath", () => {
@@ -291,12 +312,11 @@ describe("route selectors", () => {
 			));
 
 		it("handles missing data", () =>
-			expect(
-				selectRoutePath,
+			expect(selectRoutePath, "when called with", [noMatchState], "to equal", "").and(
 				"when called with",
-				[noMatchState],
+				[noPathState],
 				"to equal",
 				"",
-			).and("when called with", [noPathState], "to equal", ""));
+			));
 	});
 });

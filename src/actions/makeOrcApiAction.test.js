@@ -20,11 +20,7 @@ describe("makeOrcApiAction", () => {
 			"to exhaustively satisfy",
 			{
 				[RSAA]: {
-					types: [
-						"TEST_ACTION_REQUEST",
-						"TEST_ACTION_SUCCESS",
-						"TEST_ACTION_FAILURE",
-					],
+					types: ["TEST_ACTION_REQUEST", "TEST_ACTION_SUCCESS", "TEST_ACTION_FAILURE"],
 					endpoint: "https://orc-oco.api.test/",
 					method: "GET",
 					headers: {
@@ -59,11 +55,7 @@ describe("makeOrcApiAction", () => {
 			"to exhaustively satisfy",
 			{
 				[RSAA]: {
-					types: [
-						"TEST_ACTION_REQUEST",
-						"TEST_ACTION_SUCCESS",
-						"TEST_ACTION_FAILURE",
-					],
+					types: ["TEST_ACTION_REQUEST", "TEST_ACTION_SUCCESS", "TEST_ACTION_FAILURE"],
 					endpoint: "https://orc-oco.api.test/",
 					method: "POST",
 					body: '{"foo":"bar"}',
@@ -90,10 +82,8 @@ describe("makeOrcApiAction", () => {
 
 	describe("bailout", () => {
 		it("bails out if same request active", () => {
-			const bailout = makeOrcApiAction(
-				"TEST_ACTION",
-				"https://orc-oco.api.test/",
-			)[RSAA].bailout;
+			const bailout = makeOrcApiAction("TEST_ACTION", "https://orc-oco.api.test/")[RSAA]
+				.bailout;
 			return expect(
 				bailout,
 				"when called with",
@@ -103,10 +93,8 @@ describe("makeOrcApiAction", () => {
 		});
 
 		it("does not bail out if same request inactive", () => {
-			const bailout = makeOrcApiAction(
-				"TEST_ACTION",
-				"https://orc-oco.api.test/",
-			)[RSAA].bailout;
+			const bailout = makeOrcApiAction("TEST_ACTION", "https://orc-oco.api.test/")[RSAA]
+				.bailout;
 			return expect(
 				bailout,
 				"when called with",

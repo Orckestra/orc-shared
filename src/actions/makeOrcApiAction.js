@@ -1,11 +1,6 @@
 import { makeApiAction } from "./makeApiAction";
 
-const makeOrcApiAction = (
-	name,
-	endpoint,
-	method = "GET",
-	configuration = {},
-) => {
+const makeOrcApiAction = (name, endpoint, method = "GET", configuration = {}) => {
 	const options = {
 		...(configuration.options || {}),
 		// Ensure any needed redirects work

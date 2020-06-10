@@ -35,8 +35,8 @@ const commonTheme = {
 			lineHeight: 1.0,
 			letterSpacing: "0.0em",
 			textTransform: "uppercase"
-		}
-	}
+		},
+	},
 };
 
 const commonPalette = {
@@ -521,7 +521,7 @@ const setThemeOverrides = theme => ({
 				minWidth: 0
 			},
 			"& .MuiIconButton-root": {
-				padding: theme.spacing(1),
+				padding: theme.spacing(0),
 				flexGrow: 0,
 				minWidth: 0,
 				border: "none",
@@ -550,8 +550,8 @@ const setThemeOverrides = theme => ({
 			minHeight: theme.spacing(2.4),
 			"& path:not([fill='none'])": {
 				fill: "currentColor",
-			}
-		}
+			},
+		},
 	},
 	MuiTable: {},
 	MuiTableHead: {

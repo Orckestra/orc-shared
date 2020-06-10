@@ -18,11 +18,7 @@ const TestComp = ({ spy, ...props }) => {
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	return (
 		<div>
-			<input
-				id="getScope"
-				value=""
-				onChange={e => spy(getScope(e.target.value))}
-			/>
+			<input id="getScope" value="" onChange={e => spy(getScope(e.target.value))} />
 			<PropStruct
 				currentScope={currentScope}
 				defaultNodeState={defaultNodeState}
@@ -75,6 +71,9 @@ describe("useScopeData", () => {
 					parentScopeId: "test2",
 				},
 			},
+			settings: {
+				defaultScope: "ds",
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -126,7 +125,7 @@ describe("useScopeData", () => {
 			.then(() => expect(store.dispatch, "was not called")));
 
 	it("loads scopes if it has none", () => {
-		state = state.set("scopes", Immutable.Map());
+		state = state.setIn(["scopes"], Immutable.Map());
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter>
@@ -142,11 +141,7 @@ describe("useScopeData", () => {
 					args: [
 						{
 							[RSAA]: {
-								types: [
-									"GET_SCOPES_REQUEST",
-									"GET_SCOPES_SUCCESS",
-									"GET_SCOPES_FAILURE",
-								],
+								types: ["GET_SCOPES_REQUEST", "GET_SCOPES_SUCCESS", "GET_SCOPES_FAILURE"],
 							},
 						},
 					],

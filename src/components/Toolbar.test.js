@@ -128,15 +128,8 @@ describe("Toolbar", () => {
 			>
 				<IntlProvider locale="en">
 					<Bar>
-						<ToolInput
-							type="search"
-							onChange={toolList[0].onChange}
-							value="search"
-						/>
-						<ToolButton
-							onClick={toolList[1].onClick}
-							label={{ icon: "funnel" }}
-						/>
+						<ToolInput type="search" onChange={toolList[0].onChange} value="search" />
+						<ToolButton onClick={toolList[1].onClick} label={{ icon: "funnel" }} />
 						<ToolSpacer />
 						<Group
 							tools={[
@@ -166,9 +159,7 @@ describe("Toolbar", () => {
 							primary
 						/>
 						<ToolSeparator />
-						<ToolLabel
-							label={{ id: "toolbar.label", defaultMessage: "Label message" }}
-						/>
+						<ToolLabel label={{ id: "toolbar.label", defaultMessage: "Label message" }} />
 						<ToolButton
 							onClick={toolList[7].onClick}
 							label={{
@@ -302,11 +293,7 @@ describe("toolComponents.button", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ToolbarButton
-					things={{ stuff: "nonsense" }}
-					icon="test"
-					label="A label"
-				/>
+				<ToolbarButton things={{ stuff: "nonsense" }} icon="test" label="A label" />
 			</Provider>,
 		));
 
@@ -320,11 +307,7 @@ describe("toolComponents.button", () => {
 						getState: () => ({}),
 					}}
 				>
-					<ToolbarButton
-						things={{ stuff: "nonsense" }}
-						icon="test"
-						label="A label"
-					/>
+					<ToolbarButton things={{ stuff: "nonsense" }} icon="test" label="A label" />
 				</Provider>,
 				"when mounted",
 				"to satisfy",
@@ -335,11 +318,7 @@ describe("toolComponents.button", () => {
 						getState: () => ({}),
 					}}
 				>
-					<IconButton
-						things={{ stuff: "nonsense" }}
-						icon="test"
-						label="A label"
-					/>
+					<IconButton things={{ stuff: "nonsense" }} icon="test" label="A label" />
 				</Provider>,
 			));
 	});
@@ -424,9 +403,7 @@ describe("toolComponents.label", () => {
 				}}
 			>
 				<IntlProvider locale="en">
-					<ToolLabel
-						label={{ id: "toolbar.label", defaultMessage: "A label" }}
-					/>
+					<ToolLabel label={{ id: "toolbar.label", defaultMessage: "A label" }} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",

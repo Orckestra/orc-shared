@@ -1,11 +1,24 @@
+os: linux
 language: node_js
 node_js:
   - "10"
   - "12"
-cache:
-  directories:
-    - "node_modules"
 env:
-  - BUILD_REACT=true
-script: "npm run coverage"
-after_success: "npm run coveralls"
+  global:
+    - BUILD_REACT=true
+script:
+  - npm run lint
+  - npm run coverage
+after_success: npm run coveralls
+before_deploy: export NPM_TAG=`node_modules/.bin/orc-scripts getDist`
+deploy:
+  provider: npm
+  edge: true
+  email: joclefrancois@gmail.com
+  api_token:
+    secure: nkmiJpfPL3mwAZqAw8+IFPaDjX3n/t96EgOdKECfKkpiamAmjwWfQe4feCtWuK5U1AcLDc3PQcvVmvSq9mXJVUPKQ6n2oqtrBFvgvPbKIHSd2A8/rEARDLfUR2lA0iV2Q6l2LrQtD0za/4NTRqAIU1tlTWrmrVizQWv9WIq/7zSeYlEvRH/1jJ6ORXFPrqf8fTo8LRjgwa6gRu0v84mMhoEq8lbWB871MOIvukMRffvv00PKEA4/2JA7EKfCQVzcaS1uO8r2WDzyGDdxqnFZxDvf4MLcNB21IB/WykBRgF+9MVYTM3u2VHwfTurTHmmER2HPYdi+PLS510IhqFp4WjXy6NwmuswrY4Dvb76lhrfwKW7VHAk3RkrRDLlnosvZ+pmWvCv3wZD9loVhXak8hF/O/683XJiLXhPMDS01kXSt7gCQdzHy7skoQUWc/TxVWA8efypyaINW+Y/HDHRxib3mePE5aSZRdBIU7cuxlEAbR8MBTYOFkZXa/OZy+mSKh/CloPkYFRezGH+gOnVwH4c5huCAfguE/BiJqN45wLPokIic4azKuhyFqKlJhEYiCE3oVHgg3CAqXR/y+DqyWf/uH1X3S//ulaWUItIlzApFUGsi83j1y/RVbTnFe+xlYufEuWffMcjvpiWEA5WRN0q8OY5GqovxDfz6PVUPDIE=
+  tag: "$NPM_TAG"
+  on:
+    repo: Orckestra/orc-shared
+    tags: true
+    condition: "$TRAVIS_NODE_VERSION = 12"

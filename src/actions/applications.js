@@ -11,7 +11,7 @@ export const [
 ] = makeActionTypes(GET_APPLICATIONS);
 
 export const getApplications = () =>
-	makeOrcApiAction(GET_APPLICATIONS, buildUrl(["applications"]));
+	makeOrcApiAction(GET_APPLICATIONS, buildUrl(["my", "applications"]));
 
 export const GET_MY_APPLICATION = "GET_MY_APPLICATION";
 
@@ -33,9 +33,6 @@ export const [
 ] = makeActionTypes(SET_MY_APPLICATION);
 
 export const setMyApplication = appId =>
-	makeOrcApiAction(
-		SET_MY_APPLICATION,
-		buildUrl(["my", "application", appId]),
-		"POST",
-		{ meta: { appId } },
-	);
+	makeOrcApiAction(SET_MY_APPLICATION, buildUrl(["my", "application", appId]), "POST", {
+		meta: { appId },
+	});

@@ -1,7 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { getClassName, PropStruct } from "../../utils/testUtils";
+import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
 import Node, { RootNode, LeafNode, TreeContext } from "./Node";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
@@ -15,9 +15,7 @@ describe("RootNode", () => {
 			otherProps: { foo: true, bar: false },
 		};
 		Wrap = props => (
-			<TreeContext.Provider value={contextValue}>
-				{props.children}
-			</TreeContext.Provider>
+			<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
 		);
 	});
 
@@ -30,6 +28,20 @@ describe("RootNode", () => {
 			"to satisfy",
 			<Root>
 				<Label>
+					<PropStruct thing="stuff" foo={true} bar={false} />
+				</Label>
+			</Root>,
+		));
+
+	it("renders a selected root node", () =>
+		expect(
+			<Wrap>
+				<RootNode thing="stuff" isSelectedNode={true} />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			<Root>
+				<Label isSelectedNode={true}>
 					<PropStruct thing="stuff" foo={true} bar={false} />
 				</Label>
 			</Root>,
@@ -48,9 +60,7 @@ describe("LeafNode", () => {
 			otherProps: { foo: true, bar: false },
 		};
 		Wrap = props => (
-			<TreeContext.Provider value={contextValue}>
-				{props.children}
-			</TreeContext.Provider>
+			<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
 		);
 	});
 
@@ -81,13 +91,7 @@ describe("LeafNode", () => {
 				<BeforeIndicator />
 				<Indicator open={true} onClick={expect.it("to be a function")} />
 				<Label>
-					<PropStruct
-						open={true}
-						thing="stuff"
-						id="testNode"
-						foo={true}
-						bar={false}
-					/>
+					<PropStruct open={true} thing="stuff" id="testNode" foo={true} bar={false} />
 				</Label>
 			</Leaf>,
 		));
@@ -107,6 +111,21 @@ describe("LeafNode", () => {
 			</Leaf>,
 		));
 
+	it("renders a selected node", () =>
+		expect(
+			<Wrap>
+				<LeafNode thing="stuff" id="testNode" isSelectedNode={true} />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			<Leaf>
+				<NonIndicator />
+				<Label isSelectedNode={true}>
+					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
+				</Label>
+			</Leaf>,
+		));
+
 	it("updates nodeState on click on the indicator, opening if closed", () =>
 		expect(
 			<Wrap>
@@ -114,7 +133,7 @@ describe("LeafNode", () => {
 			</Wrap>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<Indicator />) },
+			{ type: "click", target: getStyledClassSelector(Indicator) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: true }] },
@@ -128,7 +147,7 @@ describe("LeafNode", () => {
 			</Wrap>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<Indicator />) },
+			{ type: "click", target: getStyledClassSelector(Indicator) },
 		).then(() =>
 			expect(updater, "to have calls satisfying", [
 				{ args: [{ otherNode: false, testNode: false }] },
@@ -154,9 +173,7 @@ describe("Node", () => {
 		};
 		Wrap = props => (
 			<div>
-				<TreeContext.Provider value={contextValue}>
-					{props.children}
-				</TreeContext.Provider>
+				<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
 			</div>
 		);
 	});
@@ -192,13 +209,7 @@ describe("Node", () => {
 					"queried for first",
 					"#exists",
 					"to satisfy",
-					<PropStruct
-						id="exists"
-						other="data"
-						open={false}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="exists" other="data" open={false} foo={true} bar={false} />,
 				)
 				.and("not to contain", <Branch />),
 		));
@@ -258,27 +269,44 @@ describe("Node", () => {
 					"queried for first",
 					"#hasKids",
 					"to satisfy",
-					<PropStruct
-						id="hasKids"
-						other="info"
-						open={true}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 				)
 				.and(
 					"queried for first",
-					"." + getClassName(<Branch />),
+					getStyledClassSelector(Branch),
 					"to contain",
-					<PropStruct
-						id="exists"
-						other="data"
-						open={false}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="exists" other="data" open={false} foo={true} bar={false} />,
 				),
 		));
+
+	it("renders a selected node", () => {
+		contextValue.selectedNodeId = "hasKids";
+		expect(
+			<Wrap>
+				<Node id="hasKids" />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			expect.it(
+				"to satisfy",
+				<div>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label isSelectedNode={true}>
+							<Ignore />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<Ignore />
+							<Ignore />
+						</Leaf>
+					</Branch>
+				</div>,
+			),
+		);
+	});
 
 	it("renders a closed node with children as only the leaf", () =>
 		expect(
@@ -304,16 +332,41 @@ describe("Node", () => {
 					"queried for first",
 					"#isClosed",
 					"to satisfy",
-					<PropStruct
-						id="isClosed"
-						other="stuff"
-						open={false}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="isClosed" other="stuff" open={false} foo={true} bar={false} />,
 				)
 				.and("not to contain elements matching", "#hasKids"),
 		));
+
+	it("renders a selected root node", () => {
+		contextValue.selectedNodeId = "isClosed";
+		expect(
+			<Wrap>
+				<Node root id="isClosed" />
+			</Wrap>,
+			"when mounted",
+			"to satisfy",
+			expect.it(
+				"to satisfy",
+				<div>
+					<Root>
+						<Label isSelectedNode={true}>
+							<Ignore />
+						</Label>
+					</Root>
+					<Branch>
+						<Leaf>
+							<Ignore />
+							<Ignore />
+							<Ignore />
+						</Leaf>
+						<Branch>
+							<Ignore />
+						</Branch>
+					</Branch>
+				</div>,
+			),
+		);
+	});
 
 	it("renders a root node with children as leaf and branch", () =>
 		expect(
@@ -351,13 +404,7 @@ describe("Node", () => {
 				)
 				.and(
 					"to contain",
-					<PropStruct
-						id="hasKids"
-						other="info"
-						open={true}
-						foo={true}
-						bar={false}
-					/>,
+					<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 				),
 		));
 
@@ -396,25 +443,13 @@ describe("Node", () => {
 						"queried for first",
 						"#hasKids",
 						"to satisfy",
-						<PropStruct
-							id="hasKids"
-							other="info"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 					)
 					.and(
 						"queried for first",
-						"." + getClassName(<Branch />),
+						getStyledClassSelector(Branch),
 						"to contain",
-						<PropStruct
-							id="exists"
-							other="data"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="exists" other="data" open={true} foo={true} bar={false} />,
 					),
 			));
 
@@ -452,25 +487,13 @@ describe("Node", () => {
 						"queried for first",
 						"#isClosed",
 						"to satisfy",
-						<PropStruct
-							id="isClosed"
-							other="stuff"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="isClosed" other="stuff" open={true} foo={true} bar={false} />,
 					)
 					.and(
 						"queried for first",
-						"." + getClassName(<Branch />),
+						getStyledClassSelector(Branch),
 						"to contain",
-						<PropStruct
-							id="hasKids"
-							other="info"
-							open={true}
-							foo={true}
-							bar={false}
-						/>,
+						<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 					),
 			));
 	});

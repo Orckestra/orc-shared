@@ -62,16 +62,8 @@ describe("getCheckUpdater", () => {
 	it("creates a handler for an event and calls update with the 'checked' attribute of the target", () =>
 		expect(getCheckUpdater, "called with", [update], "called with", [
 			{ target: { checked: true } },
-		]).then(() =>
-			expect(update, "to have calls satisfying", [{ args: [true] }]),
-		));
+		]).then(() => expect(update, "to have calls satisfying", [{ args: [true] }])));
 
 	it("is memoized", () =>
-		expect(
-			getCheckUpdater,
-			"called with",
-			[update],
-			"to be",
-			getCheckUpdater(update),
-		));
+		expect(getCheckUpdater, "called with", [update], "to be", getCheckUpdater(update)));
 });

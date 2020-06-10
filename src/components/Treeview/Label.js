@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Icon from "../Icon";
 import { getThemeProp, ifFlag } from "../../utils";
 import { branchLength } from "./settings";
@@ -16,8 +16,12 @@ export const Indicator = styled(Icon).attrs(props => ({
 	flex: 0 0 auto;
 	color: ${ifFlag(
 		"open",
-		ifFlag("dark", "#ccc", "#333"),
-		getThemeProp(["appHighlightColor"], "#ffffff"),
+		ifFlag(
+			"dark",
+			getThemeProp(["colors", "textLight"], "#cccccc"),
+			getThemeProp(["colors", "text"], "#333333"),
+		),
+		getThemeProp(["colors", "application", "base"], "#ffffff"),
 	)};
 `;
 
@@ -43,4 +47,12 @@ export const NonIndicator = styled.div`
 export const Label = styled.div`
 	cursor: pointer;
 	flex-grow: 1;
+	width: 100%;
+	${ifFlag(
+		"isSelectedNode",
+		css`
+			background-color: #222;
+			border: 1px solid ${getThemeProp(["colors", "application", "base"], "#0F4E66")};
+		`,
+	)};
 `;

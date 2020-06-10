@@ -95,6 +95,44 @@ describe("SegmentPage", () => {
 		);
 	});
 
+	it("shows a view over the segment list/view", () => {
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/foo/meep/two"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<div>
+								<SegmentPage
+									path="/:scope/meep"
+									component={View4}
+									segments={segments}
+									match={{ params: { scope: "foo" } }}
+									location={{ pathname: "/foo/meep/two" }}
+								/>
+							</div>
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter initialEntries={["/foo/meep/two"]}>
+				<div>
+					<View4 />
+					<Wrapper>
+						<List>
+							<Item to="/foo/meep/one">Text</Item>
+							<Item to="/foo/meep/two" active>
+								Translated
+							</Item>
+						</List>
+						<View2 />
+					</Wrapper>
+				</div>
+			</MemoryRouter>,
+		);
+	});
+
 	it("shows a subpage under the matched segment", () => {
 		state.setIn(
 			["navigation", "route"],

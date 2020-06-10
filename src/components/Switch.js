@@ -5,13 +5,9 @@ import { getThemeProp, ifFlag } from "../utils";
 import withId from "../hocs/withId";
 
 const switchSpeed = 200;
-const FilteredLabel = ({
-	onColor,
-	offColor,
-	onCaption,
-	offCaption,
-	...props
-}) => <label {...props} />;
+const FilteredLabel = ({ onColor, offColor, onCaption, offCaption, ...props }) => (
+	<label {...props} />
+);
 
 export const Wrapper = styled(FilteredLabel)`
 	display: inline-block;
@@ -28,20 +24,19 @@ export const Wrapper = styled(FilteredLabel)`
 			background-color: ${ifFlag(
 				"onColor",
 				props => props.onColor,
-				getThemeProp(["appHighlightColor"], "#ff0000"),
+				getThemeProp(["colors", "application", "base"], "#ff0000"),
 			)};
 		`,
 		css`
-			color: #333;
+			color: ${getThemeProp(["colors", "text"], "#333333")};
 			background-color: ${ifFlag(
 				"offColor",
 				props => props.offColor,
-				"#cccccc",
+				getThemeProp(["colors", "borderLight"], "#cccccc"),
 			)};
 		`,
 	)};
-	transition: background-color ${switchSpeed}ms ease-in,
-		color ${switchSpeed}ms ease-in;
+	transition: background-color ${switchSpeed}ms ease-in, color ${switchSpeed}ms ease-in;
 
 	&::after {
 		content: "";

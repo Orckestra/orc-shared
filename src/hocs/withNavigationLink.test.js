@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
 import withNavigationLink from "./withNavigationLink";
@@ -43,9 +43,7 @@ describe("withNavigationLink", () => {
 			})
 			.then(() =>
 				expect(console.warn, "to have a call satisfying", {
-					args: [
-						expect.it("to contain", "withNavigationLink has been deprecated"),
-					],
+					args: [expect.it("to contain", "withNavigationLink has been deprecated")],
 				}),
 			));
 

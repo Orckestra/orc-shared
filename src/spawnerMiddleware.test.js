@@ -35,12 +35,8 @@ describe("spawnerMiddleware", () => {
 
 		it("can spawn actions in response to specific actions", () =>
 			expect(() => addSpawner("TEST_ACTION_2", spawnerFunc), "not to throw")
-				.then(() =>
-					expect(() => dispatcher({ type: "TEST_ACTION_2" }), "not to throw"),
-				)
-				.then(() =>
-					expect(() => dispatcher({ type: "OTHER_ACTION" }), "not to throw"),
-				)
+				.then(() => expect(() => dispatcher({ type: "TEST_ACTION_2" }), "not to throw"))
+				.then(() => expect(() => dispatcher({ type: "OTHER_ACTION" }), "not to throw"))
 				.then(() => expect(spawnerFunc, "was called once"))
 				.then(() =>
 					expect(dispatch, "to have calls satisfying", [
@@ -52,12 +48,8 @@ describe("spawnerMiddleware", () => {
 
 		it("handles if spawner does not return an action", () =>
 			expect(() => addSpawner("TEST_ACTION_4", nonSpawnerFunc), "not to throw")
-				.then(() =>
-					expect(() => dispatcher({ type: "TEST_ACTION_4" }), "not to throw"),
-				)
-				.then(() =>
-					expect(() => dispatcher({ type: "OTHER_ACTION" }), "not to throw"),
-				)
+				.then(() => expect(() => dispatcher({ type: "TEST_ACTION_4" }), "not to throw"))
+				.then(() => expect(() => dispatcher({ type: "OTHER_ACTION" }), "not to throw"))
 				.then(() =>
 					expect(nonSpawnerFunc, "to have calls satisfying", [
 						{ args: [{ type: "TEST_ACTION_4" }] },
@@ -71,10 +63,7 @@ describe("spawnerMiddleware", () => {
 				));
 
 		it("throws error if a spawner is overwritten", () =>
-			expect(
-				() => addSpawner("TEST_ACTION_5", spawnerFunc),
-				"not to throw",
-			).then(() =>
+			expect(() => addSpawner("TEST_ACTION_5", spawnerFunc), "not to throw").then(() =>
 				expect(
 					() => addSpawner("TEST_ACTION_5", nonSpawnerFunc),
 					"to throw",

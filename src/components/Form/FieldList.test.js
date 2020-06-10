@@ -1,17 +1,25 @@
 import React from "react";
+import Immutable from "immutable";
 import { Provider } from "react-redux";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
-import { getClassName, getClassSelector } from "../../utils/testUtils";
+import { getStyledClassSelector } from "../../utils/testUtils";
 import FieldElements from "./FieldElements";
 import Field from "./Field";
 import { RoundButton } from "./Inputs/SmallButton";
 import { FormInput } from "./Inputs/Text";
+import { FormContext } from "./Form";
 import FieldList, { List, ListControlButton, REMOVE_ROW } from "./FieldList";
 
 describe("FieldList", () => {
-	let clock;
+	let state, store, clock;
 	beforeEach(() => {
+		state = Immutable.fromJS({});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		clock = sinon.useFakeTimers();
 	});
 	afterEach(() => {
@@ -22,33 +30,32 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlistminfixed"
-					rowField={{ type: "TextInput", name: "data" }}
-					getUpdater={getUpdater}
-					rowCount={1}
-					values={{}}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormContext.Provider value={{ values: {} }}>
+						<FieldList
+							name="testlistminfixed"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+							rowCount={1}
+						/>
+					</FormContext.Provider>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<List>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data" }]}
-						labelOnly
-					/>
-				</IntlProvider>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data[0]" }]}
-						values={{
-							id: expect.it("to be a number"),
-						}}
-					/>
-				</IntlProvider>
-			</List>,
+			<Provider store={store}>
+				<FormContext.Provider value={{ values: {} }}>
+					<List>
+						<IntlProvider locale="en">
+							<FieldElements fields={[{ type: "TextInput", name: "data" }]} labelOnly />
+						</IntlProvider>
+						<IntlProvider locale="en">
+							<FieldElements fields={[{ type: "TextInput", name: "data[0]" }]} />
+						</IntlProvider>
+					</List>
+				</FormContext.Provider>
+			</Provider>,
 		);
 	});
 
@@ -56,25 +63,30 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlistminfixed"
-					rowField={{ type: "TextInput", name: "data" }}
-					getUpdater={getUpdater}
-					rowCount={0}
-					values={{}}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormContext.Provider value={{ values: {} }}>
+						<FieldList
+							name="testlistminfixed"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+							rowCount={0}
+							values={{}}
+						/>
+					</FormContext.Provider>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<List>
-				<IntlProvider locale="en">
-					<FieldElements
-						fields={[{ type: "TextInput", name: "data" }]}
-						labelOnly
-					/>
-				</IntlProvider>
-			</List>,
+			<Provider store={store}>
+				<List>
+					<IntlProvider locale="en">
+						<FormContext.Provider value={{ values: {} }}>
+							<FieldElements fields={[{ type: "TextInput", name: "data" }]} labelOnly />
+						</FormContext.Provider>
+					</IntlProvider>
+				</List>
+			</Provider>,
 		);
 	});
 
@@ -82,68 +94,72 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FieldList
-						name="testlistfixedstat"
-						rowField={{ type: "TextInput", name: "data", label: "A label" }}
-						getUpdater={getUpdater}
-						rowCount={3}
-						staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-						values={{
-							testlistfixedstat: [
-								{ id: 4, data: "foo" },
-								{ id: 5, data: "bar" },
-							],
+					<FormContext.Provider
+						value={{
+							values: {
+								testlistfixedstat: [
+									{ id: 4, data: "foo" },
+									{ id: 5, data: "bar" },
+								],
+							},
 						}}
-					/>
+					>
+						<FieldList
+							name="testlistfixedstat"
+							rowField={{ type: "TextInput", name: "data", label: "A label" }}
+							getUpdater={getUpdater}
+							rowCount={3}
+							staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
+						/>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<List>
 					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-							labelOnly
-						/>
+						<FormContext.Provider value={{ values: {} }}>
+							<FieldElements
+								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+								labelOnly
+							/>
+						</FormContext.Provider>
 					</IntlProvider>
 					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data" }]}
-							listIndex={0}
-							values={{ id: 4, data: "foo", stat: true }}
-						/>
-					</IntlProvider>
-					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data" }]}
-							listIndex={1}
-							values={{ id: 5, data: "bar", stat: false }}
-						/>
-					</IntlProvider>
-					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data" }]}
-							listIndex={2}
-							values={{
-								id: expect.it("to be a number").and("to be greater than", 5),
-								stat: true,
+						<FormContext.Provider
+							value={{
+								values: { id: 4, data: "foo", stat: true },
+								listIndex: 0,
 							}}
-						/>
+						>
+							<FieldElements fields={[{ type: "TextInput", name: "data" }]} />
+						</FormContext.Provider>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FormContext.Provider
+							value={{
+								values: { id: 5, data: "bar", stat: false },
+								listIndex: 1,
+							}}
+						>
+							<FieldElements fields={[{ type: "TextInput", name: "data" }]} />
+						</FormContext.Provider>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FormContext.Provider
+							value={{
+								values: {
+									id: expect.it("to be a number").and("to be greater than", 5),
+									stat: true,
+								},
+								listIndex: 2,
+							}}
+						>
+							<FieldElements fields={[{ type: "TextInput", name: "data" }]} />
+						</FormContext.Provider>
 					</IntlProvider>
 				</List>
 			</Provider>,
@@ -154,63 +170,71 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FieldList
-						name="testlisttallrows"
-						rowField={{ type: "TextInput", name: "data", label: "A label" }}
-						getUpdater={getUpdater}
-						rowCount={3}
-						tallRows
-						staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-						values={{
-							testlisttallrows: [
-								{ id: 4, data: "foo" },
-								{ id: 5, data: "bar" },
-							],
+					<FormContext.Provider
+						value={{
+							values: {
+								testlisttallrows: [
+									{ id: 4, data: "foo" },
+									{ id: 5, data: "bar" },
+								],
+							},
 						}}
-					/>
+					>
+						<FieldList
+							name="testlisttallrows"
+							rowField={{ type: "TextInput", name: "data", label: "A label" }}
+							getUpdater={getUpdater}
+							rowCount={3}
+							tallRows
+							staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
+						/>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<List tallRows>
 					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-							listIndex={0}
-							values={{ id: 4, data: "foo", stat: true }}
-						/>
-					</IntlProvider>
-					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-							listIndex={1}
-							values={{ id: 5, data: "bar", stat: false }}
-						/>
-					</IntlProvider>
-					<IntlProvider locale="en">
-						<FieldElements
-							fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-							listIndex={2}
-							values={{
-								id: expect.it("to be a number").and("to be greater than", 5),
-								stat: true,
+						<FormContext.Provider
+							value={{
+								values: { id: 4, data: "foo", stat: true },
+								listIndex: 0,
 							}}
-						/>
+						>
+							<FieldElements
+								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+							/>
+						</FormContext.Provider>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FormContext.Provider
+							value={{
+								values: { id: 5, data: "bar", stat: false },
+								listIndex: 1,
+							}}
+						>
+							<FieldElements
+								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+							/>
+						</FormContext.Provider>
+					</IntlProvider>
+					<IntlProvider locale="en">
+						<FormContext.Provider
+							value={{
+								values: {
+									id: expect.it("to be a number").and("to be greater than", 5),
+									stat: true,
+								},
+								listIndex: 2,
+							}}
+						>
+							<FieldElements
+								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
+							/>
+						</FormContext.Provider>
 					</IntlProvider>
 				</List>
 			</Provider>,
@@ -221,32 +245,37 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<IntlProvider locale="en">
-				<FieldList
-					name="testlistedit"
-					rowField={{ type: "TextInput", name: "data" }}
-					getUpdater={getUpdater}
-					rowCount={3}
-					staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
-					values={{
-						testlistedit: [
-							{ id: 4, data: "foo" },
-							{ id: 5, data: "bar" },
-							{ id: 6, data: "feep" },
-						],
-					}}
-				/>
-			</IntlProvider>,
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormContext.Provider
+						value={{
+							values: {
+								testlistedit: [
+									{ id: 4, data: "foo" },
+									{ id: 5, data: "bar" },
+									{ id: 6, data: "feep" },
+								],
+							},
+						}}
+					>
+						<FieldList
+							name="testlistedit"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+							rowCount={3}
+							staticValues={[{ stat: true }, { stat: false }, { stat: true }]}
+						/>
+					</FormContext.Provider>
+				</IntlProvider>
+			</Provider>,
 			"when mounted",
 			"with event",
 			{
 				type: "change",
 				value: "New Value",
-				target: `.${getClassName(<List />)} > :nth-child(3) .${getClassName(
-					<IntlProvider locale="en">
-						<FormInput />
-					</IntlProvider>,
-				)}`,
+				target: `${getStyledClassSelector(
+					<List />,
+				)} > :nth-child(3) ${getStyledClassSelector(FormInput)}`,
 			},
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -268,56 +297,48 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FieldList
-						name="testlistminvar"
-						rowField={{ type: "TextInput", name: "data" }}
-						getUpdater={getUpdater}
-						values={{}}
-					/>
+					<FormContext.Provider value={{ values: {} }}>
+						<FieldList
+							name="testlistminvar"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+							values={{}}
+						/>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<List>
-						<FieldElements
-							fields={[
-								{
-									type: "Combination",
-									name: "rowField",
-									proportions: [100, "30px"],
-									fields: [
-										{ type: "TextInput", name: "data" },
-										{
-											type: "SmallButton",
-											name: REMOVE_ROW,
-											primary: true,
-											icon: "cross",
-										},
-									],
-								},
-							]}
-							labelOnly
-						/>
-						<Field>
-							<ListControlButton>[add]</ListControlButton>
-						</Field>
-					</List>
+					<FormContext.Provider value={{ values: {} }}>
+						<List>
+							<FieldElements
+								fields={[
+									{
+										type: "Combination",
+										name: "rowField",
+										proportions: [100, "30px"],
+										fields: [
+											{ type: "TextInput", name: "data" },
+											{
+												type: "SmallButton",
+												name: REMOVE_ROW,
+												primary: true,
+												icon: "cross",
+											},
+										],
+									},
+								]}
+								labelOnly
+							/>
+							<Field>
+								<ListControlButton>[add]</ListControlButton>
+							</Field>
+						</List>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 		);
@@ -327,36 +348,35 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FieldList
-						name="testlistvaradd"
-						rowField={{
-							type: "Combination",
-							name: "rowField",
-							proportions: [50, 50],
-							fields: [
-								{ type: "TextInput", name: "data" },
-								{
-									type: "NumberInput",
-									name: "num",
-								},
-							],
+					<FormContext.Provider
+						value={{
+							values: {
+								testlistvaradd: [
+									{ id: 101, data: "foo", num: 55 },
+									{ id: 102, data: "bar", num: 81 },
+								],
+							},
 						}}
-						getUpdater={getUpdater}
-						values={{
-							testlistvaradd: [
-								{ id: 101, data: "foo", num: 55 },
-								{ id: 102, data: "bar", num: 81 },
-							],
-						}}
-					/>
+					>
+						<FieldList
+							name="testlistvaradd"
+							rowField={{
+								type: "Combination",
+								name: "rowField",
+								proportions: [50, 50],
+								fields: [
+									{ type: "TextInput", name: "data" },
+									{
+										type: "NumberInput",
+										name: "num",
+									},
+								],
+							}}
+							getUpdater={getUpdater}
+						/>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -364,89 +384,95 @@ describe("FieldList", () => {
 			expect
 				.it(
 					"to satisfy",
-					<Provider
-						store={{
-							subscribe: () => {},
-							dispatch: () => {},
-							getState: () => ({}),
-						}}
-					>
+					<Provider store={store}>
 						<IntlProvider locale="en">
 							<List>
-								<FieldElements
-									fields={[
-										{
-											type: "Combination",
-											name: "rowField",
-											proportions: [50, 50, "30px"],
-											fields: [
-												{ type: "TextInput", name: "data" },
-												{
-													type: "NumberInput",
-													name: "num",
-												},
-												{
-													type: "SmallButton",
-													name: REMOVE_ROW,
-													primary: true,
-													icon: "cross",
-													altText: "[remove]",
-												},
-											],
-										},
-									]}
-									labelOnly
-								/>
-								<FieldElements
-									listIndex={0}
-									fields={[
-										{
-											type: "Combination",
-											name: "rowField",
-											proportions: [50, 50, "30px"],
-											fields: [
-												{ type: "TextInput", name: "data" },
-												{
-													type: "NumberInput",
-													name: "num",
-												},
-												{
-													type: "SmallButton",
-													name: REMOVE_ROW,
-													primary: true,
-													icon: "cross",
-													altText: "[remove]",
-												},
-											],
-										},
-									]}
-									values={{ id: 101, data: "foo", num: 55 }}
-								/>
-								<FieldElements
-									listIndex={1}
-									fields={[
-										{
-											type: "Combination",
-											name: "rowField",
-											proportions: [50, 50, "30px"],
-											fields: [
-												{ type: "TextInput", name: "data" },
-												{
-													type: "NumberInput",
-													name: "num",
-												},
-												{
-													type: "SmallButton",
-													name: REMOVE_ROW,
-													primary: true,
-													icon: "cross",
-													altText: "[remove]",
-												},
-											],
-										},
-									]}
-									values={{ id: 102, data: "bar", num: 81 }}
-								/>
+								<FormContext.Provider value={{ values: {} }}>
+									<FieldElements
+										fields={[
+											{
+												type: "Combination",
+												name: "rowField",
+												proportions: [50, 50, "30px"],
+												fields: [
+													{ type: "TextInput", name: "data" },
+													{
+														type: "NumberInput",
+														name: "num",
+													},
+													{
+														type: "SmallButton",
+														name: REMOVE_ROW,
+														primary: true,
+														icon: "cross",
+														altText: "[remove]",
+													},
+												],
+											},
+										]}
+										labelOnly
+									/>
+								</FormContext.Provider>
+								<FormContext.Provider
+									value={{
+										values: { id: 101, data: "foo", num: 55 },
+										listIndex: 0,
+									}}
+								>
+									<FieldElements
+										fields={[
+											{
+												type: "Combination",
+												name: "rowField",
+												proportions: [50, 50, "30px"],
+												fields: [
+													{ type: "TextInput", name: "data" },
+													{
+														type: "NumberInput",
+														name: "num",
+													},
+													{
+														type: "SmallButton",
+														name: REMOVE_ROW,
+														primary: true,
+														icon: "cross",
+														altText: "[remove]",
+													},
+												],
+											},
+										]}
+									/>
+								</FormContext.Provider>
+								<FormContext.Provider
+									value={{
+										values: { id: 102, data: "bar", num: 81 },
+										listIndex: 1,
+									}}
+								>
+									<FieldElements
+										fields={[
+											{
+												type: "Combination",
+												name: "rowField",
+												proportions: [50, 50, "30px"],
+												fields: [
+													{ type: "TextInput", name: "data" },
+													{
+														type: "NumberInput",
+														name: "num",
+													},
+													{
+														type: "SmallButton",
+														name: REMOVE_ROW,
+														primary: true,
+														icon: "cross",
+														altText: "[remove]",
+													},
+												],
+											},
+										]}
+									/>
+								</FormContext.Provider>
 								<Field>
 									<ListControlButton>[add]</ListControlButton>
 								</Field>
@@ -456,7 +482,7 @@ describe("FieldList", () => {
 				)
 				.and("with event", {
 					type: "click",
-					target: getClassSelector(<ListControlButton />),
+					target: getStyledClassSelector(ListControlButton),
 				}),
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -480,34 +506,33 @@ describe("FieldList", () => {
 		const update = sinon.spy().named("update");
 		const getUpdater = name => value => update(name, value);
 		return expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FieldList
-						name="testlistrowdel"
-						rowField={{ type: "TextInput", name: "data" }}
-						getUpdater={getUpdater}
-						values={{
-							testlistrowdel: [
-								{ id: 8, data: "bar" },
-								{ id: 9, data: "foo" },
-							],
+					<FormContext.Provider
+						value={{
+							values: {
+								testlistrowdel: [
+									{ id: 8, data: "bar" },
+									{ id: 9, data: "foo" },
+								],
+							},
 						}}
-					/>
+					>
+						<FieldList
+							name="testlistrowdel"
+							rowField={{ type: "TextInput", name: "data" }}
+							getUpdater={getUpdater}
+						/>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"with event",
 			{
 				type: "click",
-				target: `.${getClassName(<List />)} > :nth-child(2) .${getClassName(
-					<RoundButton />,
-				)}`,
+				target: `${getStyledClassSelector(
+					<List />,
+				)} > :nth-child(2) ${getStyledClassSelector(RoundButton)}`,
 			},
 		)
 			.then(() => clock.tick(1))
@@ -522,7 +547,9 @@ describe("FieldList", () => {
 
 	it("will not render inside another list", () =>
 		expect(
-			<FieldList listIndex={0} getUpdater={() => () => {}} />,
+			<FormContext.Provider value={{ values: {}, listIndex: 0 }}>
+				<FieldList listIndex={0} getUpdater={() => () => {}} />
+			</FormContext.Provider>,
 			"when mounted",
 			"to satisfy",
 			"Cannot render list inside list",
@@ -535,9 +562,7 @@ describe("List", () => {
 			<List />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "> .Field__FieldBox")
-				.and("to contain", "margin-top: 20px"),
+			expect.it("to contain", "> .Field__FieldBox").and("to contain", "margin-top: 20px"),
 		));
 
 	it("sets layout for fieldboxes under it with tall rows", () =>

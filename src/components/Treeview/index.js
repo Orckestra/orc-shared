@@ -10,6 +10,7 @@ export const Treeview = ({
 		return null;
 	},
 	rootId,
+	selectedNodeId,
 	getNode = () => {
 		console.warn("Treeview is missing a getNode prop, will render empty");
 		return null;
@@ -30,6 +31,7 @@ export const Treeview = ({
 					Content,
 					getNode,
 					openAll,
+					selectedNodeId,
 					nodeState,
 					updateNodeState,
 					otherProps,

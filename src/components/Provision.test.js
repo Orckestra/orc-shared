@@ -1,18 +1,24 @@
 import React from "react";
 import Immutable from "immutable";
 import { withTheme } from "styled-components";
-import { mount } from "react-dom-testing";
+import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const fakeStore = {
 	subscribe: listener => () => {},
 	dispatch: action => action,
 	getState: () =>
 		Immutable.fromJS({
-			locale: {},
+			locale: {
+				locale: "en",
+			},
 			authentication: {
 				name: "foo@bar.com",
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		}),
 	replaceReducer: () => {},
@@ -20,13 +26,17 @@ const fakeStore = {
 
 const fakeTheme = { value: "styles" };
 
+const fakeMuiTheme = createMuiTheme({
+	direction: "ltr",
+});
+
 const TestComp = withTheme(({ theme }) => <div>{JSON.stringify(theme)}</div>);
 
 describe("Provision", () => {
 	spyOnConsole(["error"]);
 	it("renders", () =>
 		expect(
-			<Provision store={fakeStore} theme={fakeTheme}>
+			<Provision store={fakeStore} theme={fakeTheme} muiTheme={fakeMuiTheme}>
 				<TestComp />
 			</Provision>,
 			"when mounted",
@@ -36,7 +46,7 @@ describe("Provision", () => {
 
 	it("handles getting no theme", () =>
 		expect(
-			<Provision store={fakeStore}>
+			<Provision store={fakeStore} muiTheme={fakeMuiTheme}>
 				<TestComp />
 			</Provision>,
 			"when mounted",
@@ -44,13 +54,16 @@ describe("Provision", () => {
 			<div>{"{}"}</div>,
 		).then(() => expect(console.error, "was not called")));
 
+	it("handles getting no mui theme", () => {
+		let mountedComponent = () =>
+			expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted");
+
+		expect(mountedComponent, "to throw");
+	});
+
 	it("fails if no children given", () =>
 		expect(
-			() =>
-				expect(
-					<Provision store={fakeStore} theme={fakeTheme} />,
-					"when mounted",
-				),
+			() => expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted"),
 			"to throw",
 			"React.Children.only expected to receive a single React element child.",
 		).then(() =>

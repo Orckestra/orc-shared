@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { getClassName } from "../utils/testUtils";
+import { getStyledClassSelector } from "../utils/testUtils";
 import {
 	InnerSelect,
 	Wrapper,
@@ -150,7 +150,7 @@ describe("MultiSelector", () => {
 			</Provider>,
 			"when mounted",
 			"queried for first",
-			"." + getClassName(<Placeholder />),
+			getStyledClassSelector(Placeholder),
 			"to satisfy",
 			<Placeholder>This space for rent</Placeholder>,
 		));
@@ -178,9 +178,7 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "change", value: "2", target: "select" },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [["3", "2"]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [["3", "2"]] }])));
 
 	it("can remove value when inner selector changes", () =>
 		expect(
@@ -205,9 +203,7 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "change", value: "3", target: "select" },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [["2"]] }])));
 
 	it("can add value when clicking a visual option", () =>
 		expect(
@@ -232,9 +228,7 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="4"]' },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [["3", "4"]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [["3", "4"]] }])));
 
 	it("can remove value when clicking a visual option", () =>
 		expect(
@@ -259,9 +253,7 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="4"]' },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [["3"]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [["3"]] }])));
 
 	it("sets empty value when cleared", () =>
 		expect(
@@ -286,9 +278,7 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="multiselect_clear"]' },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [[]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [[]] }])));
 
 	it("sets full value when select all chosen", () =>
 		expect(
@@ -314,9 +304,7 @@ describe("MultiSelector", () => {
 			"with event",
 			{ type: "click", target: '[data-test-id="multiselect_selectAll"]' },
 		).then(() =>
-			expect(updater, "to have calls satisfying", [
-				{ args: [["1", "2", "3", "4"]] },
-			]),
+			expect(updater, "to have calls satisfying", [{ args: [["1", "2", "3", "4"]] }]),
 		));
 
 	it("deals with an empty value prop change", () =>
@@ -341,9 +329,7 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "change", value: "2", target: "select" },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [["2"]] }])));
 
 	it("deals with an empty value prop click", () =>
 		expect(
@@ -367,7 +353,5 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="2"]' },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [["2"]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [["2"]] }])));
 });

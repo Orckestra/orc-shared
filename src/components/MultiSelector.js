@@ -26,8 +26,7 @@ const arrayToggle = (arr, item) => {
 	return output;
 };
 
-const labelFromOptions = options =>
-	options.map(option => option.label).join(", ");
+const labelFromOptions = options => options.map(option => option.label).join(", ");
 
 export const MultiSelector = ({
 	id,
@@ -49,10 +48,10 @@ export const MultiSelector = ({
 		memoize(clickValue => () => update(arrayToggle(value, clickValue))),
 		[update, value],
 	);
-	const onChange = useCallback(
-		e => update(arrayToggle(value, e.target.value)),
-		[update, value],
-	);
+	const onChange = useCallback(e => update(arrayToggle(value, e.target.value)), [
+		update,
+		value,
+	]);
 	return (
 		<Wrapper>
 			<InnerSelect

@@ -1,10 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import Anchor from "./Anchor";
 import Menu from "./Menu";
 import useToggle from "../../hooks/useToggle";
+import withClickOutside from "../../hocs/withClickOutside";
 
-export const Wrapper = styled.div``;
+export const Wrapper = withClickOutside(styled.div`
+	position: relative;
+`);
+
+export const AnchorWrapper = styled.div``;
 
 export const Background = styled.div`
 	position: absolute;
@@ -15,16 +19,20 @@ export const Background = styled.div`
 	z-index: 19998;
 `;
 
-const DropMenu = ({ id, initOpen, menuLabel, menuItems, className = "" }) => {
+const DropMenu = ({ id, initOpen, menuItems, alignRight, className = "", children }) => {
 	const [open, toggle, reset] = useToggle(initOpen);
 	return (
-		<Wrapper>
-			<Anchor
-				id={id + "Anchor"}
-				onClick={toggle}
-				{...{ menuLabel, className, open }}
+		<Wrapper className={className} onClickOutside={reset}>
+			<AnchorWrapper id={id + "Anchor"} onClick={toggle} open={open}>
+				{React.Children.map(children, child =>
+					typeof child === "object" ? React.cloneElement(child, { open }) : child,
+				)}
+			</AnchorWrapper>
+			<Menu
+				id={id + "Dropdown"}
+				{...{ open, menuItems, reset }}
+				alignRight={alignRight}
 			/>
-			<Menu id={id + "Dropdown"} {...{ open, menuItems, reset }} />
 		</Wrapper>
 	);
 };

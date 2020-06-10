@@ -10,7 +10,7 @@ export const FieldsetBox = styled.fieldset`
 	align-self: stretch;
 	flex-direction: column;
 	flex-wrap: wrap;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 5px;
 	margin-top: 45px;
 	margin-left: 0;
@@ -27,7 +27,7 @@ export const Legend = styled.legend`
 	font-style: italic;
 	font-size: 13px;
 	text-transform: uppercase;
-	color: ${getThemeProp(["appHighlightColor"], "#333")};
+	color: ${getThemeProp(["colors", "application", "base"], "#333333")};
 `;
 
 const Fieldset = ({ label, children }) => (

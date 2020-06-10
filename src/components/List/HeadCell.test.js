@@ -113,9 +113,7 @@ describe("HeadCell", () => {
 				</thead>
 			</table>,
 		).then(() =>
-			expect(columnDef.onChange, "to have calls satisfying", [
-				{ args: [rowIds] },
-			]),
+			expect(columnDef.onChange, "to have calls satisfying", [{ args: [rowIds] }]),
 		);
 	});
 
@@ -326,20 +324,10 @@ describe("TableHeader", () => {
 
 describe("SortMark", () => {
 	it("renders a downwards arrow when ascending", () =>
-		expect(
-			<SortMark direction="asc" />,
-			"when mounted",
-			"to satisfy",
-			<UpMark />,
-		));
+		expect(<SortMark direction="asc" />, "when mounted", "to satisfy", <UpMark />));
 
 	it("renders an upwards arrow when descending", () =>
-		expect(
-			<SortMark direction="desc" />,
-			"when mounted",
-			"to satisfy",
-			<DownMark />,
-		));
+		expect(<SortMark direction="desc" />, "when mounted", "to satisfy", <DownMark />));
 
 	it("renders bidirectional arrows when no direction set", () =>
 		expect(

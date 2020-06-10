@@ -10,10 +10,12 @@ import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
 import DropMenu from "../DropMenu";
+import Anchor from "./Anchor";
+import Help from "./Help";
 
 export const Wrapper = styled.div`
 	height: 40px;
-	color: #999999;
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 	display: flex;
 	justify-content: space-between;
 `;
@@ -40,36 +42,31 @@ export const useMenuProps = messages => {
 				id: "userMenuAbout",
 				label: intl.formatMessage(messages.about),
 				handler: () => dispatch(setStateField(ABOUT_NAME, "show", true)),
-				icon: "infomation-circle",
+				icon: "info",
 			},
 		],
 	};
 };
 
-export const StyledMenu = styled(DropMenu)`
-	box-sizing: border-box;
-	font-family: Roboto Condensed, sans-serif;
-	font-size: 12px;
-	text-transform: uppercase;
-	height: 40px;
-	min-width: 180px;
-	padding-top: 14px;
-	padding-right: 32px;
-`;
-
-export const Menu = ({ messages }) => (
-	<StyledMenu {...useMenuProps(messages)} />
-);
+export const Menu = ({ messages }) => {
+	const { menuLabel, ...menuProps } = useMenuProps(messages);
+	return (
+		<DropMenu {...menuProps}>
+			<Anchor menuLabel={menuLabel} />
+		</DropMenu>
+	);
+};
 
 export const AppBox = styled.div`
 	height: 100%;
 	display: flex;
+	flex: 1;
 	align-items: stretch;
 `;
 
 export const AppLabel = styled.div`
 	background-color: #000000;
-	color: ${getThemeProp(["appHighlightColor"], "#ffffff")};
+	color: ${getThemeProp(["colors", "application", "primary"], "#ffffff")};
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	font-size: 14px;
 	text-transform: uppercase;
@@ -92,13 +89,14 @@ export const CurrentApp = ({ displayName, iconUri }) => (
 );
 CurrentApp.displayName = "CurrentApp";
 
-const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
-
 const Topbar = ({
 	applications,
 	applicationId,
+	currentApplication,
 	onClick,
 	menuMessages,
+	helpMessages,
+	helpUrl,
 	...config
 }) => (
 	<Wrapper onClick={onClick}>
@@ -109,9 +107,10 @@ const Topbar = ({
 					applicationId,
 				}}
 			/>
-			<CurrentApp {...(getApp(applications, applicationId) || {})} />
+			<CurrentApp {...(currentApplication || {})} />
 		</AppBox>
 		<Menu {...config} messages={menuMessages} />
+		<Help {...{ messages: helpMessages, helpUrl }} />
 	</Wrapper>
 );
 

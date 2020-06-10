@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { currentLocale } from "./locale";
+import { currentLocaleOrDefault } from "./locale";
 import { setTranslation } from "../utils";
 
 const appData = state => state.get("applications");
@@ -12,15 +12,10 @@ const visibleApps = createSelector(appList, apps =>
 
 export const localizedAppSelector = createSelector(
 	visibleApps,
-	currentLocale,
-	(apps, locale) =>
-		apps.map(app => setTranslation(locale, app, ["displayName"])),
+	currentLocaleOrDefault,
+	(apps, locale) => apps.map(app => setTranslation(locale, app, ["displayName"])),
 );
 
-export const localizedAppOptionSelector = createSelector(
-	localizedAppSelector,
-	apps =>
-		apps
-			.map(app => ({ value: app.get("id"), label: app.get("displayName") }))
-			.toArray(),
+export const localizedAppOptionSelector = createSelector(localizedAppSelector, apps =>
+	apps.map(app => ({ value: app.get("id"), label: app.get("displayName") })).toArray(),
 );

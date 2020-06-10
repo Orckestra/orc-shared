@@ -34,7 +34,7 @@ export const Placeholder = ({ width, height, children }) => (
 Placeholder.displayName = "Placeholder";
 
 export const Table = styled.table`
-	border-collapse: collapse;
+	border-spacing: 0;
 	table-layout: fixed;
 	width: 100%;
 	font-size: 13px;
@@ -43,13 +43,7 @@ export const Table = styled.table`
 export const HEADER_HEIGHT = 41;
 export const ROW_HEIGHT = 51;
 
-const calculateVirtualization = (
-	virtual,
-	scrollTop,
-	scrollBuffer,
-	height,
-	rows,
-) => {
+const calculateVirtualization = (virtual, scrollTop, scrollBuffer, height, rows) => {
 	let virtualFilter, heightAbove, heightBelow;
 	if (virtual) {
 		const correctedScrollTop = scrollTop - HEADER_HEIGHT; // Subtract header height
@@ -122,9 +116,7 @@ export const List = ({
 		);
 	});
 	if (virtual && heightAbove) {
-		rowElements.unshift(
-			<tr key="virtualAbove" style={{ height: heightAbove }} />,
-		);
+		rowElements.unshift(<tr key="virtualAbove" style={{ height: heightAbove }} />);
 	}
 	if (virtual && heightBelow) {
 		rowElements.push(<tr key="virtualBelow" style={{ height: heightBelow }} />);

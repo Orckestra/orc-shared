@@ -18,6 +18,9 @@ describe("Authenticate", () => {
 			authentication: {
 				name: "foo@bar.com",
 			},
+			settings: {
+				defaultScope: "aDefaultScope",
+			},
 		});
 		store = state => ({
 			subscribe: () => {},
@@ -26,7 +29,7 @@ describe("Authenticate", () => {
 		});
 	});
 
-	it("shows the wrapped component if authenticated", () =>
+	it("shows the wrapped component if authenticated and default scope is known", () =>
 		expect(
 			<Provider store={store(state)}>
 				<Authenticate>
@@ -56,10 +59,26 @@ describe("Authenticate", () => {
 		);
 	});
 
+	it("shows a load indicator component if default scope is unknown", () => {
+		state = state.setIn(["settings", "defaultScope"], null);
+		return expect(
+			<Provider store={store(state)}>
+				<ThemeProvider theme={{}}>
+					<Authenticate>
+						<TestComp />
+					</Authenticate>
+				</ThemeProvider>
+			</Provider>,
+			"when mounted",
+			"to exhaustively satisfy",
+			<ThemeProvider theme={{}}>
+				<Loader />
+			</ThemeProvider>,
+		);
+	});
+
 	it("shows an error screen if not logged in", () => {
-		state = state
-			.deleteIn(["authentication", "name"])
-			.setIn(["requests", LOGOUT], true);
+		state = state.deleteIn(["authentication", "name"]).setIn(["requests", LOGOUT], true);
 		return expect(
 			<Provider store={store(state)}>
 				<Authenticate>

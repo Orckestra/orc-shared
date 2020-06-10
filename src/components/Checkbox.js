@@ -21,20 +21,20 @@ export const Cover = styled.label`
 	position: relative;
 	height: 14px;
 	width: 14px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 3px;
 
 	${ContainedInput}:active + &,
 	${ContainedInput}:focus + & {
 		box-shadow: 0px 0px 1px 0px
-			${getThemeProp(["appHighlightColor"], "#777", color => tint(0.05, color))};
-		border-color: ${getThemeProp(["appHighlightColor"], "#777")};
+			${getThemeProp(["colors", "application", "base"], "#777", color => tint(0.05, color))};
+		border-color: ${getThemeProp(["colors", "application", "base"], "#777")};
 	}
 
 	${ifFlag(
 		"value",
 		css`
-			background-color: ${getThemeProp(["appHighlightColor"], "#777", color =>
+			background-color: ${getThemeProp(["colors", "application", "base"], "#777", color =>
 				tint(0.05, color),
 			)};
 			&::after {

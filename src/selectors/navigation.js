@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import Immutable from "immutable";
+import { defaultScopeSelector } from "./settings";
 
 const getNavigationState = state => state.get("navigation");
 
@@ -34,30 +35,36 @@ let lastScope;
 export const resetLastScope = () => {
 	lastScope = undefined;
 };
-export const getCurrentScope = state => {
+
+const getLastRouteScope = state => {
 	const params = selectRouteParams(state);
 	if (params.get("scope")) {
 		lastScope = params.get("scope");
 	}
-	return lastScope || "Global";
+	return lastScope;
 };
 
-const selectTabs = createSelector(getNavigationState, nav =>
-	nav.get("tabIndex"),
+export const getCurrentScope = createSelector(
+	getLastRouteScope,
+	defaultScopeSelector,
+	(id, defaultScope) => id || defaultScope || "Global",
 );
 
-export const selectTabGetter = createSelector(selectTabs, tabs => path =>
-	tabs.get(path),
+export const getCurrentScopeFromRoute = createSelector(
+	getLastRouteScope,
+	scope => scope || null,
 );
+
+const selectTabs = createSelector(getNavigationState, nav => nav.get("tabIndex"));
+
+export const selectTabGetter = createSelector(selectTabs, tabs => path => tabs.get(path));
 
 const selectModuleLists = createSelector(getNavigationState, nav =>
 	nav.get("moduleTabs"),
 );
 
 export const selectCurrentModuleName = createSelector(selectRoutePath, path =>
-	/^\/:scope\//.test(path)
-		? path.replace(/^\/:scope\/([^/]+)(\/.*)?$/, "$1")
-		: "",
+	/^\/:scope\//.test(path) ? path.replace(/^\/:scope\/([^/]+)(\/.*)?$/, "$1") : "",
 );
 
 const selectCurrentModuleList = createSelector(
@@ -76,7 +83,10 @@ const segmentHrefMap = createSelector(getNavigationState, state =>
 	state.get("mappedHrefs"),
 );
 
-export const selectSegmentHrefMapper = createSelector(
-	segmentHrefMap,
-	map => href => map.get(href) || href,
-);
+export const selectSegmentHrefMapper = createSelector(segmentHrefMap, map => href => {
+	const [global = "", scope = "", remainingSection = ""] =
+		href.match(/^((?:[^/]*[/]){2})([^/]+.*)$/) || [];
+
+	const hrefMap = map.get(remainingSection);
+	return hrefMap ? scope.concat(hrefMap) : global;
+});

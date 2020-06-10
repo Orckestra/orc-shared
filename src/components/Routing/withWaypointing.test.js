@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { createMemoryHistory } from "history";
 import { Router, Route } from "react-router-dom";
-import { mount, act } from "react-dom-testing";
+import { mount, act } from "unexpected-reaction";
 import sinon from "sinon";
 import { PropStruct } from "../../utils/testUtils";
 import { setRoute, mapHref } from "../../actions/navigation";
@@ -54,11 +54,7 @@ describe("withWaypointing", () => {
 					</Provider>,
 					"when mounted",
 					"to satisfy",
-					<PropStruct
-						history="__ignore"
-						location="__ignore"
-						match="__ignore"
-					/>,
+					<PropStruct history="__ignore" location="__ignore" match="__ignore" />,
 				);
 			})
 			.then(() =>
@@ -90,11 +86,7 @@ describe("withWaypointing", () => {
 					</Provider>,
 					"when mounted",
 					"to satisfy",
-					<PropStruct
-						history="__ignore"
-						location="__ignore"
-						match="__ignore"
-					/>,
+					<PropStruct history="__ignore" location="__ignore" match="__ignore" />,
 				);
 			})
 			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
@@ -111,11 +103,7 @@ describe("withWaypointing", () => {
 					</Provider>,
 					"when mounted",
 					"to satisfy",
-					<PropStruct
-						history="__ignore"
-						location="__ignore"
-						match="__ignore"
-					/>,
+					<PropStruct history="__ignore" location="__ignore" match="__ignore" />,
 				);
 			})
 			.then(() =>
@@ -148,11 +136,7 @@ describe("withWaypointing", () => {
 					</Provider>,
 					"when mounted",
 					"to satisfy",
-					<PropStruct
-						history="__ignore"
-						location="__ignore"
-						match="__ignore"
-					/>,
+					<PropStruct history="__ignore" location="__ignore" match="__ignore" />,
 				);
 			})
 			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
@@ -202,79 +186,75 @@ describe("withWaypointing", () => {
 			));
 
 	it("fires action on updates where route becomes misaligned", () => {
-		return expect(withWaypointing, "called with", [PropStruct]).then(
-			EnhancedView => {
-				mount(
-					<Provider store={store}>
-						<Router history={history}>
-							<Route path="/feep/:some" component={EnhancedView} />
-						</Router>
-					</Provider>,
-				);
-				expect(store.dispatch, "was not called");
-				state = state
-					.setIn(["navigation", "route", "location", "pathname"], "/feep/murl")
-					.setIn(["navigation", "route", "match", "url"], "/feep/murl");
-				act(() => updateState());
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: "SET_ROUTE",
-								payload: {
-									location: {
-										pathname: "/feep/meep",
-									},
-									match: {
-										path: "/feep/:some",
-										url: "/feep/meep",
-										isExact: true,
-										params: { some: "meep" },
-									},
+		return expect(withWaypointing, "called with", [PropStruct]).then(EnhancedView => {
+			mount(
+				<Provider store={store}>
+					<Router history={history}>
+						<Route path="/feep/:some" component={EnhancedView} />
+					</Router>
+				</Provider>,
+			);
+			expect(store.dispatch, "was not called");
+			state = state
+				.setIn(["navigation", "route", "location", "pathname"], "/feep/murl")
+				.setIn(["navigation", "route", "match", "url"], "/feep/murl");
+			act(() => updateState());
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "SET_ROUTE",
+							payload: {
+								location: {
+									pathname: "/feep/meep",
+								},
+								match: {
+									path: "/feep/:some",
+									url: "/feep/meep",
+									isExact: true,
+									params: { some: "meep" },
 								},
 							},
-						],
-					},
-				]);
-			},
-		);
+						},
+					],
+				},
+			]);
+		});
 	});
 
 	it("fires action when location has changed", () => {
 		const node = document.createElement("div");
-		return expect(withWaypointing, "called with", [PropStruct]).then(
-			EnhancedView => {
-				mount(
-					<Provider store={store}>
-						<Router history={history}>
-							<Route path="/feep/:some" component={EnhancedView} />
-						</Router>
-					</Provider>,
-					node,
-				);
-				expect(store.dispatch, "was not called");
-				act(() => history.push("/feep/murl"));
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: "SET_ROUTE",
-								payload: {
-									location: {
-										pathname: "/feep/murl",
-									},
-									match: {
-										path: "/feep/:some",
-										url: "/feep/murl",
-										isExact: true,
-										params: { some: "murl" },
-									},
+		return expect(withWaypointing, "called with", [PropStruct]).then(EnhancedView => {
+			mount(
+				<Provider store={store}>
+					<Router history={history}>
+						<Route path="/feep/:some" component={EnhancedView} />
+					</Router>
+				</Provider>,
+				node,
+			);
+			expect(store.dispatch, "was not called");
+			act(() => history.push("/feep/murl"));
+			expect(store.dispatch, "to have calls satisfying", [
+				{
+					args: [
+						{
+							type: "SET_ROUTE",
+							payload: {
+								location: {
+									pathname: "/feep/murl",
+								},
+								match: {
+									path: "/feep/:some",
+									url: "/feep/murl",
+									isExact: true,
+									params: { some: "murl" },
 								},
 							},
-						],
-					},
-				]);
-			},
-		);
+						},
+					],
+				},
+			]);
+		});
 	});
 });

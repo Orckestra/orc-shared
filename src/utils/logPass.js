@@ -6,10 +6,7 @@ import unwrapImmutable from "./unwrapImmutable";
 const logPass =
 	/* istanbul ignore next */
 	x => {
-		console.log(
-			Immutable.isImmutable(x) ? "Immutable" : "Object",
-			unwrapImmutable(x),
-		);
+		console.log(Immutable.isImmutable(x) ? "Immutable" : "Object", unwrapImmutable(x));
 		return x;
 	};
 

@@ -55,9 +55,7 @@ describe("withAuthentication", () => {
 	});
 
 	it("shows an error screen if not logged in", () => {
-		state = state
-			.deleteIn(["authentication", "name"])
-			.setIn(["requests", LOGOUT], true);
+		state = state.deleteIn(["authentication", "name"]).setIn(["requests", LOGOUT], true);
 		return expect(
 			<Provider store={store(state)}>
 				<AuthedComp />

@@ -1,6 +1,6 @@
 import React from "react";
 import sinon from "sinon";
-import { getClassName } from "../../../utils/testUtils";
+import { getStyledClassSelector } from "../../../utils/testUtils";
 import ApplicationDialog, {
 	List,
 	Block,
@@ -41,7 +41,7 @@ describe("ApplicationDialog", () => {
 			"with event",
 			{
 				type: "click",
-				target: "." + getClassName(<Link />) + '[href="/test/url"]',
+				target: getStyledClassSelector(Link) + '[href="/test/url"]',
 			},
 			"to satisfy",
 			<List>
