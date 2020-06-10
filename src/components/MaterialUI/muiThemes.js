@@ -7,9 +7,15 @@ const commonTheme = {
 	spacing: factor => `${0.625 * factor}rem`,
 	direction: "ltr",
 	shape: {
-		borderRadius: 4,
+		borderRadius: 4
 	},
 	typography: {
+		h1Size: 24,
+		h2Size: 18,
+		h3Size: 16,
+		h4Size: 14,
+		h5Size: 13,
+		h6Size: 13,
 		htmlFontSize: 14,
 		fontFamily: '"Open Sans", sans-serif',
 		fontSize: 13,
@@ -25,12 +31,12 @@ const commonTheme = {
 		button: {
 			fontFamily: '"Roboto Condensed", sans-serif',
 			fontWeight: 500,
-			fontSize: 12,
-			lineHeight: 1.43,
+			fontSize: 13,
+			lineHeight: 1.0,
 			letterSpacing: "0.0em",
-			textTransform: "uppercase",
-		},
-	},
+			textTransform: "uppercase"
+		}
+	}
 };
 
 const commonPalette = {
