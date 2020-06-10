@@ -7,6 +7,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import Icon from "./../../Icon";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
+import useViewState from "./../../../hooks/useViewState";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 	summaryRoot: {
@@ -45,6 +47,7 @@ const ExpansionPanel = ({
 	header,
 	content,
 	actions,
+	expansionPanelId,
 	expansionPanelProps,
 	expansionPanelActionsProps,
 }) => {
@@ -68,10 +71,22 @@ const ExpansionPanel = ({
 
 	const classes = useStyles();
 
+	const state = useSelector(state => state);
+
 	// Expansion panel props
 	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
-	const expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
-	const onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
+
+	const viewState = state.getIn(["view", expansionPanelId, "isExpanded"]);
+
+	const defaultExpanded = viewState != null ? viewState : true;
+
+	const [expanded, setExpanded] = React.useState(defaultExpanded);
+	const [internalExpanded, updateViewState] = useViewState(expansionPanelId);
+
+	const internalOnChange = (evt, isExpanded) => {
+		setExpanded(isExpanded);
+		updateViewState("isExpanded", isExpanded);
+	};
 
 	// Expansion panel summary props
 	const defaultSummaryStyles = {
@@ -90,9 +105,10 @@ const ExpansionPanel = ({
 
 	return (
 		<ExpansionPanelMui
+			defaultExpanded={defaultExpanded}
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
-			onChange={onChange}
+			onChange={internalOnChange}
 			classes={{
 				root: classNames(classes.panelRoot),
 				expanded: classNames(classes.panelExpanded),
