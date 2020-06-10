@@ -7,7 +7,6 @@ import SelectProps from "./SelectProps";
 const useStyles = makeStyles(theme => ({
 	select: {
 		"& ul": {
-			//top: '20px',
 			minWidth: "175px",
 			maxHeight: "300px",
 		},
