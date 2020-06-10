@@ -384,6 +384,16 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiSvgIcon: {
+		...theme.MuiSvgIcon,
+		root: {
+			...theme.root,
+			color: theme.palette.grey.icon,
+			"& path:not([fill='none'])": {
+			fill: "currentColor"
+			}
+		}
+	},
 	MuiIconButton: {
 		...theme.MuiIconButton,
 		root: {
