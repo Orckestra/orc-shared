@@ -3,7 +3,8 @@ import { mount } from "enzyme";
 import Table from "./Table";
 import TableMui from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
+import TableCellMui from "@material-ui/core/TableCell";
+import TableCell from "./TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -28,18 +29,18 @@ describe("Table", () => {
 					<TableMui>
 						<TableHead>
 							<TableRow>
-								<TableCell>1</TableCell>
-								<TableCell>2</TableCell>
+								<TableCell cell="1" />
+								<TableCell cell="2" />
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							<TableRow>
-								<TableCell>test11</TableCell>
-								<TableCell>test12</TableCell>
+								<TableCell cell="test11" />
+								<TableCell cell="test12" />
 							</TableRow>
 							<TableRow>
-								<TableCell>test21</TableCell>
-								<TableCell>test22</TableCell>
+								<TableCell cell="test21" />
+								<TableCell cell="test22" />
 							</TableRow>
 						</TableBody>
 					</TableMui>
@@ -69,21 +70,21 @@ describe("Table", () => {
 					<TableMui>
 						<TableHead>
 							<TableRow>
-								<TableCell>
+								<TableCellMui>
 									<Checkbox />
-								</TableCell>
-								<TableCell>1</TableCell>
-								<TableCell>2</TableCell>
+								</TableCellMui>
+								<TableCell cell="1" />
+								<TableCell cell="2" />
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							<TableRow>
-								<TableCell>test11</TableCell>
-								<TableCell>test12</TableCell>
+								<TableCell cell="test11" />
+								<TableCell cell="test12" />
 							</TableRow>
 							<TableRow>
-								<TableCell>test21</TableCell>
-								<TableCell>test22</TableCell>
+								<TableCell cell="test21" />
+								<TableCell cell="test22" />
 							</TableRow>
 						</TableBody>
 					</TableMui>
