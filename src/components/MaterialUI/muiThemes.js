@@ -432,6 +432,40 @@ const setThemeOverrides = theme => ({
 			borderRight: "none",
 		}
 	},
+	MuiListItem: {
+		...theme.MuiListItem,
+		button: {
+			...theme.button,
+			color: theme.palette.grey.icon,
+			"&:hover, &:hover .MuiListItemIcon-root, &hover .MuiListItemText-root": {
+			color: theme.palette.primary.light
+			}
+		}
+	},
+	MuiMenuItem: {
+		...theme.MuiMenuItem,
+		root: {
+			...theme.root,
+			...theme.typography.button,
+			color: theme.palette.grey.icon,
+			"&:hover, &:hover .MuiListItemIcon-root, &hover .MuiListItemText-root": {
+			color: theme.palette.primary.light
+			}
+		}
+	},
+	MuiListItemIcon: {
+		...theme.MuiListItemIcon,
+		root: {
+			...theme.root,
+			color: theme.palette.grey.icon,
+			minWidth: 0,
+			padding: theme.spacing(0.5),
+			marginRight: theme.spacing(0.5),
+			"& path:not([fill='none'])": {
+			fill: "currentColor"
+			}
+		}
+	},
 	MuiTabs: {
 		...theme.MuiTabs,
 		root: {
