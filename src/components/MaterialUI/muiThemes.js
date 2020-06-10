@@ -411,10 +411,26 @@ const setThemeOverrides = theme => ({
 			width: drawerWidth,
 			flexShrink: 0,
 			whiteSpace: "nowrap",
-			"& *": {
-				color: theme.palette.grey.icon,
+			"& .MuiListItemText-root" : {
+				opacity: 0,
+				transition: theme.transitions.create("opacity", {
+					easing: theme.transitions.easing.sharp,
+					duration: theme.transitions.duration.enteringScreen
+				})
 			},
+			/* To update with actual classnames if we change the side nav to use the MuiDrawer */
+			"&[class*='drawerOpen'] .MuiListItemText-root" : {
+				opacity: 1,
+				transition: theme.transitions.create("opacity", {
+					easing: theme.transitions.easing.sharp,
+					duration: theme.transitions.duration.enteringScreen
+				})
+			}
 		},
+		paperAnchorDockedLeft : {
+			...theme.paperAnchorDockedLeft,
+			borderRight: "none",
+		}
 	},
 	MuiTabs: {
 		...theme.MuiTabs,
