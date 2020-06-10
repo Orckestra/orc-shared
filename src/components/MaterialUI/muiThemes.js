@@ -73,6 +73,7 @@ const commonPalette = {
 		hint: "#999",
 	},
 	divider: "#CCCCCC",
+	focus: "#4fa1f0",
 	background: {
 		paper: "#FFF",
 		default: "#FFF",
@@ -89,6 +90,9 @@ const setThemeProps = theme => ({
 	MuiTab: {
 		disableRipple: true,
 	},
+	MuiListItemText: {
+		disableTypography: true
+	}
 });
 
 const setThemeOverrides = theme => ({
@@ -125,6 +129,12 @@ const setThemeOverrides = theme => ({
 			},
 			"&$disabled": {
 				color: theme.palette.action.disabled,
+			},
+			"&:focus, &:active": {
+				borderRadius: theme.shape.borderRadius,
+				borderColor: theme.palette.focus,
+				boxShadow: `0 0 4px ${theme.palette.focus}`,
+				outline: "none",
 			},
 		},
 	},
@@ -474,18 +484,66 @@ const setThemeOverrides = theme => ({
 	MuiTablePagination: {},
 	MuiTableSortLabel: {},
 	MuiTableFooter: {},
+	MuiInput: {
+		...theme.MuiInput,
+		underline: {
+			border: "none",
+			"&:before" : {
+				content: "none"
+			},
+		}
+	},
 	MuiInputBase: {
 		...theme.MuiInputBase,
+		root: {
+			...theme.root,
+			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root" : {
+				marginLeft: theme.spacing(1)
+			}
+		},
 		input: {
 			...theme.input,
-			borderRadius: 4,
+			borderRadius: theme.shape.borderRadius,
 			position: "relative",
 			backgroundColor: theme.palette.background.paper,
 			border: `1px solid ${theme.palette.grey.borders}`,
 			fontSize: theme.typography.fontSize,
 			maxWidth: theme.spacing(20),
+			minWidth: theme.spacing(14),
 			padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
 			transition: theme.transitions.create(["border-color", "box-shadow"]),
+			"&:focus, &:active": {
+				borderRadius: theme.shape.borderRadius,
+				borderColor: theme.palette.focus,
+				boxShadow: `0 0 4px ${theme.palette.focus}`,
+				outline: "none",
+			},
+		},
+		adornedStart : {
+			"& > .MuiOutlinedInput-root:first-child, & > .MuiButtonBase-root:first-child": {
+				borderTopRightRadius: 0,
+				borderBottomRightRadius: 0,
+			},
+		},
+		adornedEnd : {
+
+		},
+		inputAdornedStart: {
+			...theme.inputAdornedStart,
+			borderRight: "none",
+			borderTopLeftRadius: 0,
+			borderBottomLeftRadius:0,
+
+		},
+		inputAdornedEnd: {
+			...theme.inputAdornedEnd,
+			borderLeft: "none",
+			borderTopRightRadius: 0,
+			borderBottomRightRadius:0,
+			"& + .MuiOutlinedInput-root, & + .MuiButtonBase-root": {
+				borderTopLeftRadius: 0,
+				borderBottomLeftRadius:0,
+			},
 		},
 	},
 	MuiSelect: {
