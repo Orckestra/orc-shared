@@ -384,7 +384,26 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
-	MuiIconButton: {},
+	MuiIconButton: {
+		...theme.MuiIconButton,
+		root: {
+			...theme.root,
+			padding: theme.spacing(.4, 1, .3, 1),
+			color: theme.palette.grey.icon,
+			borderRadius: theme.shape.borderRadius,
+			border: `1px solid ${theme.palette.grey.borders}`,
+			minWidth: "auto",
+			"& g:not([id*='Close']) path:not([fill='none'])": {
+				fill: "currentColor"
+			},
+			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root" : {
+				marginLeft: theme.spacing(1)
+			}
+		},
+		label: {
+			...theme.label
+		}
+	},
 	MuiDrawer: {
 		...theme.MuiDrawer,
 		root: {
