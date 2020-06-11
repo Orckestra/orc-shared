@@ -12,12 +12,6 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-  },
-  tooltip: {
-    maxWidth: "100%",
-    "& p": {
-      fontSize: theme.typography.fontSize
-    }
   }
 }));
 
@@ -28,7 +22,6 @@ const Tooltip = ({ value, maxWidth = 0 }) => {
 
   const [isDisplayed, setIsDisplayed] = React.useState(false);
 
-
   useEffect(() => {
     setIsDisplayed(ref.current.clientWidth >= maxWidth);
   }, [maxWidth, ref]);
@@ -38,7 +31,6 @@ const Tooltip = ({ value, maxWidth = 0 }) => {
       arrow
       title={value}
       disableHoverListener={!isDisplayed}
-      classes={{ tooltip: classes.tooltip }}
     >
       <div className={classNames(classes.noWrap, classes.container)} ref={ref}>
         {value}
