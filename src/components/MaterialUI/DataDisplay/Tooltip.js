@@ -31,7 +31,7 @@ const Tooltip = ({ value, maxWidth = 0 }) => {
 
   useEffect(() => {
     setIsDisplayed(ref.current.clientWidth >= maxWidth);
-  }, [maxWidth]);
+  }, [maxWidth, ref]);
 
   return (
     <MuiTooltip

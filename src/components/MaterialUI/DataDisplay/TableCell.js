@@ -22,7 +22,7 @@ const TableCell = ({ cell }) => {
 
   useEffect(() => {
     setWidth(ref.current.clientWidth - 2 * cellPaddingInPixels); // left and right padding
-  }, []);
+  }, [cellPaddingInPixels, ref]);
 
   return (
     <TableCellMui
