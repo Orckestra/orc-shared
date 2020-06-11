@@ -16,6 +16,7 @@ const commonTheme = {
 		h4Size: 14,
 		h5Size: 13,
 		h6Size: 13,
+		fieldLabelSize: 12,
 		htmlFontSize: 14,
 		fontFamily: '"Open Sans", sans-serif',
 		fontSize: 13,
