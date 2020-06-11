@@ -7,11 +7,13 @@ import Input from "./Input";
 import Text, { ptLabel } from "./Text";
 
 export const Bar = styled.div`
-	flex: 0 0 64px;
+	flex: 0 0 auto;
+	min-height: 64px;
 	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	display: flex;
 	align-items: center;
-	padding: 0 24px;
+	padding: 5px 24px;
+	box-sizing: border-box;
 `;
 
 export const ToolGroup = styled.div`

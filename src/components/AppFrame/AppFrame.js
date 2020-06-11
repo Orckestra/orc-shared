@@ -18,6 +18,7 @@ import useApplicationHelpUrl from "./useApplicationHelpUrl";
 import useViewState from "../../hooks/useViewState";
 import { getVersionInfo } from "../../actions/versionInfo";
 import { currentLocale } from "../../selectors/locale";
+import { cultureByDefault } from "../../reducers/localeFactory";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
@@ -73,7 +74,10 @@ const AppFrame = ({
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
 	const currentApplication = getApp(applications, applicationId);
-	useLoader(getVersionInfo(locale), () => locale === null || helpUrl !== null);
+	useLoader(
+		getVersionInfo(locale || cultureByDefault),
+		() => locale === null || helpUrl !== null,
+	);
 
 	const [prefViewState] = useViewState(PREFS_NAME);
 
