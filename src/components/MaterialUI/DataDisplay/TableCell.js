@@ -36,7 +36,7 @@ const TableCell = ({ cell }) => {
   );
 };
 
-const shouldWrapComponentInTooltip = function (component) {
+export const shouldWrapComponentInTooltip = function (component) {
   if (React.isValidElement(component)) {
     if (componentTypeNamesToBeWrapped.includes(component.type.displayName) === false) {
       return false;

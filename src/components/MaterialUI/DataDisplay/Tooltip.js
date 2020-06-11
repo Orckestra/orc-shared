@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     textOverflow: "ellipsis",
   },
   tooltip: {
+    maxWidth: "100%",
     "& p": {
       fontSize: theme.typography.fontSize
     }
@@ -29,12 +30,7 @@ const Tooltip = ({ value, maxWidth = 0 }) => {
 
 
   useEffect(() => {
-    if (ref.current.clientWidth >= maxWidth) {
-      setIsDisplayed(true);
-    }
-    else {
-      setIsDisplayed(false);
-    }
+    setIsDisplayed(ref.current.clientWidth >= maxWidth);
   }, [maxWidth]);
 
   return (
@@ -42,6 +38,7 @@ const Tooltip = ({ value, maxWidth = 0 }) => {
       arrow
       title={value}
       disableHoverListener={!isDisplayed}
+      classes={{ tooltip: classes.tooltip }}
     >
       <div className={classNames(classes.noWrap, classes.container)} ref={ref}>
         {value}

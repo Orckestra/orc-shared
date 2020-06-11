@@ -1,13 +1,12 @@
 import React from "react";
 import { mount } from "enzyme";
-import TableCell from "./TableCell";
+import TableCell, { shouldWrapComponentInTooltip } from "./TableCell";
 import Tooltip from "./Tooltip";
 import TableCellMui from "@material-ui/core/TableCell";
 import {
   ignoreConsoleError
 } from "./../../../utils/testUtils";
 import { FormattedNumber, FormattedMessage } from "react-intl";
-import { IntlProvider } from "react-intl";
 
 describe("TableCell", () => {
 
@@ -48,5 +47,19 @@ describe("TableCell", () => {
 
       expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
     });
+  });
+});
+
+describe("ShouldWrapComponentInTooltip", () => {
+  it("Returns correct values", () => {
+    const text = "text";
+
+    expect(shouldWrapComponentInTooltip(text), "to be", true);
+
+    expect(shouldWrapComponentInTooltip(<FormattedMessage />), "to be", true);
+
+    expect(shouldWrapComponentInTooltip(<FormattedNumber />), "to be", true);
+
+    expect(shouldWrapComponentInTooltip(<div>{text}</div>), "to be", false);
   });
 });
