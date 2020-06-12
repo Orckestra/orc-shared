@@ -679,9 +679,22 @@ const setThemeOverrides = theme => ({
 		...theme.MuiTooltip,
 		tooltip: {
 			...theme.tooltip,
-			maxWidth: "100%",
+			color: theme.palette.grey.dark,
 			fontFamily: theme.typography.fontFamily,
 			fontSize: theme.typography.fontSize,
+			backgroundColor: theme.palette.background.paper,
+			border: "1px solid",
+			borderRadius: "3px",
+			borderColor: theme.palette.grey.icon,
+			boxShadow: "0 0 4px rgba(0,0,0,0.22)"
+		},
+		arrow: {
+			...theme.arrow,
+			color: theme.palette.background.paper,
+			"&:before": {
+				border: "1px solid",
+				borderColor: theme.palette.grey.icon
+			}
 		}
 	}
 });
