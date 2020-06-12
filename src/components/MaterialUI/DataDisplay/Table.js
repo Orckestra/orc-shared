@@ -13,10 +13,10 @@ const useStyles = makeStyles(theme => ({
 	container: {
 		width: "100%",
 		borderTop: "1px solid" + theme.palette.grey.borders,
-	}
+	},
 }));
 
-const Table = ({ headers, rows, checkbox }) => {
+const Table = ({ headers, rows, checkbox, placeholder }) => {
 	const classes = useStyles();
 
 	// Table props
@@ -41,10 +41,7 @@ const Table = ({ headers, rows, checkbox }) => {
 						<TableRow>
 							{checkbox != null ? <TableCellMui>{checkbox}</TableCellMui> : null}
 							{headers.map((header, index) => (
-								<TableCell
-									key={index}
-									cell={header}
-								/>
+								<TableCell key={index} cell={header} />
 							))}
 						</TableRow>
 					</TableHead>
@@ -52,15 +49,13 @@ const Table = ({ headers, rows, checkbox }) => {
 						{rows.map((row, index) => (
 							<TableRow key={index}>
 								{row.map((cell, cellIndex) => (
-									<TableCell
-										key={cellIndex}
-										cell={cell}
-									/>
+									<TableCell key={cellIndex} cell={cell} />
 								))}
 							</TableRow>
 						))}
 					</TableBody>
 				</TableMui>
+				{rows.length > 0 ? null : placeholder}
 			</TableContainer>
 		</Box>
 	);
