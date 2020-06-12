@@ -195,7 +195,7 @@ const setThemeOverrides = theme => ({
 				theme.palette.type === "light"
 					? "rgba(0, 0, 0, 0.23)"
 					: "rgba(255, 255, 255, 0.23)"
-			}`,
+				}`,
 			"&$disabled": {
 				border: `1px solid ${theme.palette.action.disabledBackground}`,
 			},
@@ -397,7 +397,7 @@ const setThemeOverrides = theme => ({
 			...theme.root,
 			color: theme.palette.grey.icon,
 			"& path:not([fill='none'])": {
-			fill: "currentColor"
+				fill: "currentColor"
 			}
 		}
 	},
@@ -413,7 +413,7 @@ const setThemeOverrides = theme => ({
 			"& g:not([id*='Close']) path:not([fill='none'])": {
 				fill: "currentColor"
 			},
-			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root" : {
+			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root": {
 				marginLeft: theme.spacing(1)
 			}
 		},
@@ -428,7 +428,7 @@ const setThemeOverrides = theme => ({
 			width: drawerWidth,
 			flexShrink: 0,
 			whiteSpace: "nowrap",
-			"& .MuiListItemText-root" : {
+			"& .MuiListItemText-root": {
 				opacity: 0,
 				transition: theme.transitions.create("opacity", {
 					easing: theme.transitions.easing.sharp,
@@ -436,7 +436,7 @@ const setThemeOverrides = theme => ({
 				})
 			},
 			/* To update with actual classnames if we change the side nav to use the MuiDrawer */
-			"&[class*='drawerOpen'] .MuiListItemText-root" : {
+			"&[class*='drawerOpen'] .MuiListItemText-root": {
 				opacity: 1,
 				transition: theme.transitions.create("opacity", {
 					easing: theme.transitions.easing.sharp,
@@ -444,7 +444,7 @@ const setThemeOverrides = theme => ({
 				})
 			}
 		},
-		paperAnchorDockedLeft : {
+		paperAnchorDockedLeft: {
 			...theme.paperAnchorDockedLeft,
 			borderRight: "none",
 		}
@@ -455,7 +455,7 @@ const setThemeOverrides = theme => ({
 			...theme.button,
 			color: theme.palette.grey.icon,
 			"&:hover, &:hover .MuiListItemIcon-root, &hover .MuiListItemText-root": {
-			color: theme.palette.primary.light
+				color: theme.palette.primary.light
 			}
 		}
 	},
@@ -466,7 +466,7 @@ const setThemeOverrides = theme => ({
 			...theme.typography.button,
 			color: theme.palette.grey.icon,
 			"&:hover, &:hover .MuiListItemIcon-root, &hover .MuiListItemText-root": {
-			color: theme.palette.primary.light
+				color: theme.palette.primary.light
 			}
 		}
 	},
@@ -479,7 +479,7 @@ const setThemeOverrides = theme => ({
 			padding: theme.spacing(0.5),
 			marginRight: theme.spacing(0.5),
 			"& path:not([fill='none'])": {
-			fill: "currentColor"
+				fill: "currentColor"
 			}
 		}
 	},
@@ -590,7 +590,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiInput,
 		underline: {
 			border: "none",
-			"&:before" : {
+			"&:before": {
 				content: "none"
 			},
 		}
@@ -599,7 +599,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiInputBase,
 		root: {
 			...theme.root,
-			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root" : {
+			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root": {
 				marginLeft: theme.spacing(1)
 			}
 		},
@@ -621,30 +621,30 @@ const setThemeOverrides = theme => ({
 				outline: "none",
 			},
 		},
-		adornedStart : {
+		adornedStart: {
 			"& > .MuiOutlinedInput-root:first-child, & > .MuiButtonBase-root:first-child": {
 				borderTopRightRadius: 0,
 				borderBottomRightRadius: 0,
 			},
 		},
-		adornedEnd : {
+		adornedEnd: {
 
 		},
 		inputAdornedStart: {
 			...theme.inputAdornedStart,
 			borderRight: "none",
 			borderTopLeftRadius: 0,
-			borderBottomLeftRadius:0,
+			borderBottomLeftRadius: 0,
 
 		},
 		inputAdornedEnd: {
 			...theme.inputAdornedEnd,
 			borderLeft: "none",
 			borderTopRightRadius: 0,
-			borderBottomRightRadius:0,
+			borderBottomRightRadius: 0,
 			"& + .MuiOutlinedInput-root, & + .MuiButtonBase-root": {
 				borderTopLeftRadius: 0,
-				borderBottomLeftRadius:0,
+				borderBottomLeftRadius: 0,
 			},
 		},
 	},
@@ -673,8 +673,38 @@ const setThemeOverrides = theme => ({
 			padding: "5px 5px 5px 0",
 			minWidth: "30px",
 			backgroundColor: "inherit",
+			border: "none",
 		},
 	},
+	MuiExpansionPanelSummary: {
+		...theme.MuiExpansionPanelSummary,
+		expandIcon: {
+			...theme.expandIcon,
+			border: "none",
+		},
+	},
+	MuiTooltip: {
+		...theme.MuiTooltip,
+		tooltip: {
+			...theme.tooltip,
+			color: theme.palette.grey.dark,
+			fontFamily: theme.typography.fontFamily,
+			fontSize: theme.typography.fontSize,
+			backgroundColor: theme.palette.background.paper,
+			border: "1px solid",
+			borderRadius: "3px",
+			borderColor: theme.palette.grey.icon,
+			boxShadow: "0 0 4px rgba(0,0,0,0.22)"
+		},
+		arrow: {
+			...theme.arrow,
+			color: theme.palette.background.paper,
+			"&:before": {
+				border: "1px solid",
+				borderColor: theme.palette.grey.icon
+			}
+		}
+	}
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {
