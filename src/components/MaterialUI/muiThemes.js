@@ -673,6 +673,7 @@ const setThemeOverrides = theme => ({
 			padding: "5px 5px 5px 0",
 			minWidth: "30px",
 			backgroundColor: "inherit",
+			border: "none",
 		},
 	},
 });
