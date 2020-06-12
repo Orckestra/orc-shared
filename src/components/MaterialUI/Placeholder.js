@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
 	placeholder: {
-		margin: "50px auto 50px auto",
+		margin: `${theme.spacing(5)} auto`,
 	},
 	placeholderImage: {
 		fontSize: theme.spacing(14),
