@@ -676,6 +676,13 @@ const setThemeOverrides = theme => ({
 			border: "none",
 		},
 	},
+	MuiExpansionPanelSummary: {
+		...theme.MuiExpansionPanelSummary,
+		expandIcon: {
+			...theme.expandIcon,
+			border: "none",
+		},
+	},
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {
