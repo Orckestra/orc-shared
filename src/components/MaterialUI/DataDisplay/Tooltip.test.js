@@ -20,4 +20,22 @@ describe("Tooltip", () => {
 
     expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
   });
+
+  it("Renders Tooltip correctly if no value was passed", () => {
+    const component = <Tooltip />;
+
+    const empty = "";
+
+    const expected = (
+      <MuiTooltip title={empty} arrow>
+        <div>
+          {empty}
+        </div>
+      </MuiTooltip>
+    );
+
+    const mountedComponent = mount(component);
+
+    expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+  });
 });
