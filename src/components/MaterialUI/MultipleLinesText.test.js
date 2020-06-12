@@ -4,9 +4,7 @@ import MultipleLinesText from "./MultipleLinesText";
 import TextProps from "./textProps";
 import Typography from "@material-ui/core/Typography";
 import {
-	ignoreConsoleError,
-	getClassSelector,
-	getStyledClassSelector,
+	ignoreConsoleError
 } from "./../../utils/testUtils";
 
 describe("MultipleLinesText", () => {
@@ -69,8 +67,8 @@ describe("MultipleLinesText", () => {
 			"to have style rules satisfying",
 			"to contain",
 			"{display: -webkit-box; word-break: break-word; -webkit-box-orient: vertical; -webkit-line-clamp: " +
-				lineCount +
-				";}",
+			lineCount +
+			";}",
 		);
 	});
 });
