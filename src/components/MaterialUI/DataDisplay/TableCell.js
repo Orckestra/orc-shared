@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TableCell = ({ cell }) => {
+const TableCell = ({ cell = null }) => {
   const classes = useStyles();
 
   return (
@@ -25,6 +25,10 @@ const TableCell = ({ cell }) => {
 };
 
 export const shouldWrapComponentInTooltip = function (component) {
+  if (component === null) {
+    return false;
+  }
+
   if (React.isValidElement(component)) {
     if (componentTypeNamesToBeWrapped.includes(component.type.displayName) === false) {
       return false;

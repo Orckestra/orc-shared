@@ -28,6 +28,22 @@ describe("TableCell", () => {
     });
   });
 
+  it("Renders Table Cell correctly when no cell was passed", () => {
+    ignoreConsoleError(() => {
+      const component = <TableCell />;
+
+      const expected = (
+        <TableCellMui>
+        </TableCellMui>
+      );
+
+      const mountedComponent = mount(component);
+
+      expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+    });
+  });
+
+
   it("Renders Table Cell correctly when non primitive component was passed", () => {
     ignoreConsoleError(() => {
       const comp = (
@@ -61,5 +77,7 @@ describe("ShouldWrapComponentInTooltip", () => {
     expect(shouldWrapComponentInTooltip(<FormattedNumber />), "to be", true);
 
     expect(shouldWrapComponentInTooltip(<div>{text}</div>), "to be", false);
+
+    expect(shouldWrapComponentInTooltip(null), "to be", false);
   });
 });
