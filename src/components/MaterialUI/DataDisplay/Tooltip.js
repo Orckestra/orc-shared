@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Tooltip = ({ value, maxWidth = 0 }) => {
+const Tooltip = ({ value = "", maxWidth = 0 }) => {
   const classes = useStyles({ maxWidth });
 
   const ref = useRef(null);
