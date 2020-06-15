@@ -85,7 +85,7 @@ const segmentHrefMap = createSelector(getNavigationState, state =>
 
 export const selectSegmentHrefMapper = createSelector(segmentHrefMap, map => href => {
 	const [global = "", scope = "", remainingSection = ""] =
-		href.match(/^((?:[^\/]*[\/]){2})([^\/]+.*)$/) || [];
+		href.match(/^((?:[^/]*[/]){2})([^/]+.*)$/) || [];
 
 	const hrefMap = map.get(remainingSection);
 	return hrefMap ? scope.concat(hrefMap) : global;

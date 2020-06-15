@@ -38,6 +38,27 @@ describe("getVersionInfo", () => {
 			},
 		}));
 
+	it("creates a RSAA to get version info with default culture when null", () =>
+		expect(getVersionInfo, "when called with", [null], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					GET_VERSION_INFO_REQUEST,
+					GET_VERSION_INFO_SUCCESS,
+					GET_VERSION_INFO_FAILURE,
+				],
+				endpoint: 'URL: diagnostic/versioninfo {"cultureName":"en-US"}',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
 	it("creates a RSAA to get version info with any other languages", () =>
 		expect(getVersionInfo, "when called with", ["an-ANY"], "to exhaustively satisfy", {
 			[RSAA]: {

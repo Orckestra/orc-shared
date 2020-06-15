@@ -53,6 +53,7 @@ const SectionExpansionPanel = ({
 
 	return (
 		<ExpansionPanel
+			defaultExpanded
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
 			onChange={onChange}
