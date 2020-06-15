@@ -10,6 +10,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
+import Placeholder from "../Placeholder";
 
 describe("Table", () => {
 	it("Renders Table", () => {
@@ -88,6 +89,36 @@ describe("Table", () => {
 							</TableRow>
 						</TableBody>
 					</TableMui>
+				</TableContainer>
+			</Box>
+		);
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders Table with placeholder if rows are empty", () => {
+		const headers = ["1", "2"];
+
+		const rows = [];
+
+		const placeholder = <Placeholder />;
+
+		const component = <Table rows={rows} headers={headers} placeholder={placeholder} />;
+
+		const mountedComponent = mount(component);
+		const expected = (
+			<Box>
+				<TableContainer>
+					<TableMui>
+						<TableHead>
+							<TableRow>
+								<TableCell cell="1" />
+								<TableCell cell="2" />
+							</TableRow>
+						</TableHead>
+						<TableBody></TableBody>
+					</TableMui>
+					<Placeholder />
 				</TableContainer>
 			</Box>
 		);
