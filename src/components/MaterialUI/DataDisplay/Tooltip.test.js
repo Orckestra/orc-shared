@@ -5,13 +5,14 @@ import MuiTooltip from "@material-ui/core/Tooltip";
 
 describe("Tooltip", () => {
   it("Renders Tooltip correctly", () => {
-    const value = "123";
-    const component = <Tooltip value={value} />;
+    const value = <p>123</p>;
+    const title = "123";
+    const component = <Tooltip value={value} title={title} />;
 
     const expected = (
-      <MuiTooltip title={value} arrow>
+      <MuiTooltip title={title} arrow>
         <div>
-          123
+          {value}
         </div>
       </MuiTooltip>
     );
