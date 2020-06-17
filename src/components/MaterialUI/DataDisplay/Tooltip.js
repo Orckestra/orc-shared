@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Tooltip = ({ value = "", maxWidth = 0 }) => {
+const Tooltip = ({ value = "", title = "", maxWidth = 0 }) => {
   const classes = useStyles({ maxWidth });
 
   const ref = useRef(null);
@@ -29,7 +29,7 @@ const Tooltip = ({ value = "", maxWidth = 0 }) => {
   return (
     <MuiTooltip
       arrow
-      title={value}
+      title={title}
       disableHoverListener={!isDisplayed}
     >
       <div className={classNames(classes.noWrap, classes.container)} ref={ref}>

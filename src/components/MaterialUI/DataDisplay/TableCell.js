@@ -19,7 +19,7 @@ const TableCell = ({ cell = null }) => {
         root: classNames(classes.cellRoot),
       }}
     >
-      {shouldWrapComponentInTooltip(cell) === true ? <Tooltip value={cell} maxWidth={150} /> : cell}
+      {shouldWrapComponentInTooltip(cell) === true ? <Tooltip value={cell} title={cell} maxWidth={150} /> : cell}
     </TableCellMui>
   );
 };

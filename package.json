@@ -36,7 +36,6 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"jest": "^25.1.0",
 		"orc-scripts": "1.0.0-dev.17"
 	},
 	"peerDependencies": {
