@@ -1,28 +1,22 @@
 import React from "react";
 import TableMui from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
+import TableCell from "./TableCell";
+import TableCellMui from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
-import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	container: {
 		width: "100%",
 		borderTop: "1px solid" + theme.palette.grey.borders,
 	},
-	cellRoot: {
-		maxWidth: theme.spacing(15),
-		whiteSpace: "nowrap",
-		overflowX: "hidden",
-		textOverflow: "ellipsis",
-	},
 }));
 
-const Table = ({ headers, rows, checkbox }) => {
+const Table = ({ headers, rows, checkbox, placeholder }) => {
 	const classes = useStyles();
 
 	// Table props
@@ -45,16 +39,9 @@ const Table = ({ headers, rows, checkbox }) => {
 				<TableMui>
 					<TableHead>
 						<TableRow>
-							{checkbox != null ? <TableCell>{checkbox}</TableCell> : null}
+							{checkbox != null ? <TableCellMui>{checkbox}</TableCellMui> : null}
 							{headers.map((header, index) => (
-								<TableCell
-									key={index}
-									classes={{
-										root: classNames(classes.cellRoot),
-									}}
-								>
-									{header}
-								</TableCell>
+								<TableCell key={index} cell={header} />
 							))}
 						</TableRow>
 					</TableHead>
@@ -62,19 +49,13 @@ const Table = ({ headers, rows, checkbox }) => {
 						{rows.map((row, index) => (
 							<TableRow key={index}>
 								{row.map((cell, cellIndex) => (
-									<TableCell
-										key={cellIndex}
-										classes={{
-											root: classNames(classes.cellRoot),
-										}}
-									>
-										{cell}
-									</TableCell>
+									<TableCell key={cellIndex} cell={cell} />
 								))}
 							</TableRow>
 						))}
 					</TableBody>
 				</TableMui>
+				{rows.length > 0 ? null : placeholder}
 			</TableContainer>
 		</Box>
 	);
