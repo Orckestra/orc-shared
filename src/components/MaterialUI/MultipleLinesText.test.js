@@ -3,9 +3,10 @@ import { mount } from "enzyme";
 import MultipleLinesText from "./MultipleLinesText";
 import TextProps from "./textProps";
 import Typography from "@material-ui/core/Typography";
-import {
-	ignoreConsoleError
-} from "./../../utils/testUtils";
+import { ignoreConsoleError } from "./../../utils/testUtils";
+import sinon from "sinon";
+
+import lineClamp from "clamp-js";
 
 describe("MultipleLinesText", () => {
 	const text =
@@ -61,14 +62,13 @@ describe("MultipleLinesText", () => {
 
 	it("Check if MultipleLinesText has style props to display in expected count of lines and truncated", () => {
 		const lineCount = 2;
-		expect(
-			<MultipleLinesText lineCount={lineCount} />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"{display: -webkit-box; word-break: break-word; -webkit-box-orient: vertical; -webkit-line-clamp: " +
-			lineCount +
-			";}",
+
+		const spy = sinon.spy(React, "useEffect");
+
+		const component = mount(
+			<MultipleLinesText lineCount={lineCount}>{text}</MultipleLinesText>,
 		);
+
+		expect(spy, "was called");
 	});
 });
