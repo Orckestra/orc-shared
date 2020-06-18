@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import classNames from "classnames";
 import { TextProps } from "./textProps";
-
 import lineClamp from "clamp-js";
 
 const useStyles = makeStyles(theme => ({}));
