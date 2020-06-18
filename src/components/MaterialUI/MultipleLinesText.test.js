@@ -4,9 +4,6 @@ import MultipleLinesText from "./MultipleLinesText";
 import TextProps from "./textProps";
 import Typography from "@material-ui/core/Typography";
 import { ignoreConsoleError } from "./../../utils/testUtils";
-import sinon from "sinon";
-
-import lineClamp from "clamp-js";
 
 describe("MultipleLinesText", () => {
 	const text =
@@ -58,17 +55,5 @@ describe("MultipleLinesText", () => {
 			);
 			expect(() => mount(component), "to throw a", TypeError);
 		});
-	});
-
-	it("Check if MultipleLinesText has style props to display in expected count of lines and truncated", () => {
-		const lineCount = 2;
-
-		const spy = sinon.spy(React, "useEffect");
-
-		const component = mount(
-			<MultipleLinesText lineCount={lineCount}>{text}</MultipleLinesText>,
-		);
-
-		expect(spy, "was called");
 	});
 });

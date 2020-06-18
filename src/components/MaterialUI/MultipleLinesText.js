@@ -18,9 +18,7 @@ const MultipleLinesText = ({ children, ...props }) => {
 
 	let elem = useRef(null);
 	useEffect(() => {
-		if (elem.current !== null) {
-			lineClamp(elem.current, { clamp: props.lineCount });
-		}
+		lineClamp(elem.current, { clamp: props.lineCount });
 	});
 
 	return (
