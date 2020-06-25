@@ -1,21 +1,52 @@
 import React from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelMui from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
+import Icon from "../../Icon";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
-import Icon from "./../../Icon";
+import useViewState from "../../../hooks/useViewState";
 
 const useStyles = makeStyles(theme => ({
-	expansionPanelHeader: {},
+	summaryRoot: {
+		height: theme.spacing(8),
+		backgroundColor: theme.palette.primary.lighter,
+		flexDirection: "row-reverse",
+	},
+	resetPadding: {
+		padding: "0",
+	},
+	panelExpanded: {},
+	summaryContent: {
+		marginLeft: theme.spacing(1),
+		"&$panelExpanded": {
+			marginLeft: theme.spacing(1),
+		},
+	},
+	panelRoot: {
+		"&$panelExpanded": {
+			margin: "0",
+			"&:before": {
+				opacity: "1",
+			},
+		},
+		"&:before": {
+			backgroundColor: theme.palette.secondary.light,
+		},
+	},
+	summaryExpandIconRoot: {
+		color: theme.palette.grey.darker,
+		minWidth: "auto",
+	},
 }));
 
-const SectionExpansionPanel = ({
+const ExpansionPanel = ({
 	header,
 	content,
 	actions,
+	expansionPanelId,
 	expansionPanelProps,
 	expansionPanelActionsProps,
 }) => {
@@ -41,10 +72,25 @@ const SectionExpansionPanel = ({
 
 	// Expansion panel props
 	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
-	const expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
-	const onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
+
+	const [panelState, updateViewState] = useViewState(expansionPanelId);
+	const defaultExpanded = panelState["isExpanded"] ?? true;
+	const [expanded, setExpanded] = React.useState(defaultExpanded);
+
+	const internalOnChange = (evt, isExpanded) => {
+		setExpanded(isExpanded);
+		updateViewState("isExpanded", isExpanded);
+	};
 
 	// Expansion panel summary props
+	const defaultSummaryStyles = {
+		edge: false,
+		size: "small",
+		classes: {
+			root: classes.summaryExpandIconRoot,
+			sizeSmall: classes.resetPadding,
+		},
+	};
 
 	// Expansion panel actions props
 	const disableSpacing = expansionPanelActionsProps?.get(
@@ -52,21 +98,34 @@ const SectionExpansionPanel = ({
 	);
 
 	return (
-		<ExpansionPanel
-			defaultExpanded
+		<ExpansionPanelMui
+			defaultExpanded={defaultExpanded}
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
-			onChange={onChange}
+			onChange={internalOnChange}
+			classes={{
+				root: classNames(classes.panelRoot),
+				expanded: classNames(classes.panelExpanded),
+			}}
 		>
 			<ExpansionPanelSummary
 				expandIcon={<Icon {...{ id: "chevron-down" }} />}
+				IconButtonProps={defaultSummaryStyles}
 				classes={{
-					root: classNames(classes.expansionPanelHeader),
+					root: classNames(classes.summaryRoot),
+					expanded: classNames(classes.panelExpanded),
+					content: classNames(classes.summaryContent),
 				}}
 			>
 				{header}
 			</ExpansionPanelSummary>
-			<ExpansionPanelDetails>{content}</ExpansionPanelDetails>
+			<ExpansionPanelDetails
+				classes={{
+					root: classNames(classes.resetPadding),
+				}}
+			>
+				{content}
+			</ExpansionPanelDetails>
 			{actions != null ? (
 				<ExpansionPanelActions
 					disableSpacing={disableSpacing == null ? false : disableSpacing}
@@ -74,8 +133,8 @@ const SectionExpansionPanel = ({
 					{actions}
 				</ExpansionPanelActions>
 			) : null}
-		</ExpansionPanel>
+		</ExpansionPanelMui>
 	);
 };
 
-export default SectionExpansionPanel;
+export default ExpansionPanel;

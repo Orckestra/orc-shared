@@ -1,41 +1,20 @@
 import React from "react";
 import { mount } from "enzyme";
-import ExpansionPanel from "./ExpansionPanel";
+import SectionExpansionPanel from "./SectionExpansionPanel";
 import ExpansionPanelMui from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
-import { ignoreConsoleError } from "./../../../utils/testUtils";
-import { Provider } from "react-redux";
-import Immutable from "immutable";
+import { ignoreConsoleError } from "../../../utils/testUtils";
 
-describe("Expansion Panel", () => {
-	let state, store;
-	beforeEach(() => {
-		state = Immutable.fromJS({
-			view: {
-				ExpPanel123: {
-					isExpanded: true
-				}
-			}
-		});
-		store = state => ({
-			subscribe: () => { },
-			getState: () => state,
-			dispatch: () => { },
-		});
-	});
-
-
-	it("Renders Expansion Panel with actions if actions are not null", () => {
+describe("Section Expansion Panel", () => {
+	it("Renders Section Expansion Panel with actions if actions are not null", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel header={header} content={content} actions={actions} />
-			</Provider>
+			<SectionExpansionPanel header={header} content={content} actions={actions} />
 		);
 		const mountedComponent = mount(component);
 		const expected = (
@@ -54,9 +33,7 @@ describe("Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel header={header} content={content} actions={actions} />
-			</Provider>
+			<SectionExpansionPanel header={header} content={content} actions={actions} />
 		);
 		const mountedComponent = mount(component);
 
@@ -66,11 +43,7 @@ describe("Expansion Panel", () => {
 	it("Not renders Expansion Panel Actions if actions are null", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;
-		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel header={header} content={content} />
-			</Provider>
-		);
+		const component = <SectionExpansionPanel header={header} content={content} />;
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".MuiExpansionPanelActions-root"), "to be falsy");
@@ -78,36 +51,24 @@ describe("Expansion Panel", () => {
 
 	it("Fails if expansionPanelProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = (
-				<Provider store={store(state)}>
-					<ExpansionPanel expansionPanelProps="Wrong type" />
-				</Provider>
-			);
+			const component = <SectionExpansionPanel expansionPanelProps="Wrong type" />;
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
 
 	it("Fails if expansionPanelActionsProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = (
-				<Provider store={store(state)}>
-					<ExpansionPanel expansionPanelActionsProps="Wrong type" />
-				</Provider>
-			);
+			const component = <SectionExpansionPanel expansionPanelActionsProps="Wrong type" />;
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
 
-	it("Uses expansionPanelProps.defaultExpanded correctly", () => {
+	it("Uses expansionPanelProps.expanded correctly", () => {
 		const expansionPanelProps = new ExpansionPanelProps();
 
-		expansionPanelProps.set(ExpansionPanelProps.propNames.defaultExpanded, true);
+		expansionPanelProps.set(ExpansionPanelProps.propNames.expanded, true);
 
-		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
-			</Provider>
-		);
+		const component = <SectionExpansionPanel expansionPanelProps={expansionPanelProps} />;
 
 		const mountedComponent = mount(component);
 
@@ -119,11 +80,7 @@ describe("Expansion Panel", () => {
 
 		expansionPanelProps.set(ExpansionPanelProps.propNames.disabled, true);
 
-		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
-			</Provider>
-		);
+		const component = <SectionExpansionPanel expansionPanelProps={expansionPanelProps} />;
 
 		const mountedComponent = mount(component);
 
@@ -131,11 +88,7 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Default value for disabled property is correct if expansionPanelProps wasn't passed", () => {
-		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel />
-			</Provider>
-		);
+		const component = <SectionExpansionPanel />;
 
 		const mountedComponent = mount(component);
 
@@ -145,15 +98,33 @@ describe("Expansion Panel", () => {
 	it("Default value for disabled property is correct if expansionPanelProps was passed without setting that", () => {
 		const expansionPanelProps = new ExpansionPanelProps();
 
-		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
-			</Provider>
-		);
+		const component = <SectionExpansionPanel expansionPanelProps={expansionPanelProps} />;
 
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".Mui-disabled"), "to be falsy");
+	});
+
+	it("Uses expansionPanelProps.onChange correctly", () => {
+		let expanded = false;
+
+		const onChange = value => {
+			expanded = value;
+		};
+
+		const expansionPanelProps = new ExpansionPanelProps();
+
+		expansionPanelProps.set(ExpansionPanelProps.propNames.onChange, onChange);
+
+		const component = <SectionExpansionPanel expansionPanelProps={expansionPanelProps} />;
+
+		const mountedComponent = mount(component);
+
+		const exp = mountedComponent.find(ExpansionPanelMui);
+
+		exp.props().onChange(true);
+
+		expect(expanded, "to be truthy");
 	});
 
 	it("Uses expansionPanelActionsProps.disableSpacing correctly", () => {
@@ -166,12 +137,10 @@ describe("Expansion Panel", () => {
 		);
 
 		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel
-					expansionPanelActionsProps={expansionPanelActionsProps}
-					actions={actions}
-				/>
-			</Provider>
+			<SectionExpansionPanel
+				actions={actions}
+				expansionPanelActionsProps={expansionPanelActionsProps}
+			/>
 		);
 
 		const mountedComponent = mount(component);
@@ -181,11 +150,8 @@ describe("Expansion Panel", () => {
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps wasn't passed", () => {
 		const actions = <p>Actions</p>;
-		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel actions={actions} />
-			</Provider >
-		);
+
+		const component = <SectionExpansionPanel actions={actions} />;
 
 		const mountedComponent = mount(component);
 
@@ -197,33 +163,14 @@ describe("Expansion Panel", () => {
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
 
 		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel
-					expansionPanelActionsProps={expansionPanelActionsProps}
-					actions={actions}
-				/>
-			</Provider >
+			<SectionExpansionPanel
+				actions={actions}
+				expansionPanelActionsProps={expansionPanelActionsProps}
+			/>
 		);
 
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be truthy");
-	});
-
-	it("handles internal on change function", () => {
-		const header = <p>Header</p>;
-		const content = <p>Content</p>;
-		const actions = <p>Actions</p>;
-		const expansionPanelId = "ExpPanel123";
-		const component = (
-			<Provider store={store(state)}>
-				<ExpansionPanel header={header} content={content} actions={actions} expansionPanelId={expansionPanelId} />
-			</Provider>
-		);
-		const mountedComponent = mount(component);
-
-		mountedComponent.find(ExpansionPanelSummary).simulate('click');
-
-		expect(mountedComponent.exists(".Mui-expanded"), "to be false");
 	});
 });
