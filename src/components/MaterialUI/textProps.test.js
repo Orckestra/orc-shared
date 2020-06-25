@@ -1,21 +1,21 @@
 import TextProps from "./textProps";
 
 describe("Text Props", () => {
-	it("Sets the style value to body1 ruleName", () => {
+	it("Sets the classes property", () => {
 		const textProps = new TextProps();
 
 		const test = "testBody1";
-		textProps.setStyle(TextProps.ruleNames.body1, test);
+		textProps.set(TextProps.propNames.classes, test);
 
-		expect(textProps.componentClasses.get("body1"), "to equal", test);
+		expect(textProps.componentProps.get("classes"), "to equal", test);
 	});
 
-	it("Sets the style value to root ruleName", () => {
+	it("Sets the lineCount property", () => {
 		const textProps = new TextProps();
 
-		const test = "testRoot";
-		textProps.setStyle(TextProps.ruleNames.root, test);
+		const lineCount = 2;
+		textProps.set(TextProps.propNames.lineCount, lineCount);
 
-		expect(textProps.componentClasses.get("root"), "to equal", test);
+		expect(textProps.componentProps.get("lineCount"), "to equal", lineCount);
 	});
 });

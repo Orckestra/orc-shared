@@ -1,8 +1,8 @@
 import React from "react";
-import { mount } from "enzyme";
+import { mount, shallow } from "enzyme";
 import MultipleLinesText from "./MultipleLinesText";
 import TextProps from "./textProps";
-import Typography from "@material-ui/core/Typography";
+import TextClamp from "react-multi-clamp";
 import { ignoreConsoleError } from "./../../utils/testUtils";
 
 describe("MultipleLinesText", () => {
@@ -10,42 +10,42 @@ describe("MultipleLinesText", () => {
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas purus non augue tempor.";
 
 	it("Renders text", () => {
-		const component = <MultipleLinesText lineCount="2">{text}</MultipleLinesText>;
+		const lineCount = 2;
+		const multipleLinesTextProps = new TextProps();
+		multipleLinesTextProps.set(TextProps.propNames.lineCount, lineCount);
+
+		const component = (
+			<MultipleLinesText textProps={multipleLinesTextProps}>{text}</MultipleLinesText>
+		);
 
 		const mountedComponent = mount(component);
-		const expected = <Typography>{text}</Typography>;
+		const expected = (
+			<TextClamp disableCssClamp={true} clamp={lineCount}>
+				{text}
+			</TextClamp>
+		);
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 
-	it("Add style to body1 ruleName", () => {
-		const multipleLinesTextProps = new TextProps();
-		const test = "testBody1";
-		multipleLinesTextProps.setStyle(TextProps.ruleNames.body1, test);
-		const component = (
-			<MultipleLinesText lineCount="2" textProps={multipleLinesTextProps}>
-				{text}
-			</MultipleLinesText>
-		);
-
-		const mountedComponent = mount(component);
-
-		expect(mountedComponent.exists(".testBody1"), "to be true");
-	});
-
-	it("Add style to root ruleName", () => {
+	it("Use style passed to component", () => {
 		const multipleLinesTextProps = new TextProps();
 		const test = "testRoot";
-		multipleLinesTextProps.setStyle(TextProps.ruleNames.body1, test);
+		multipleLinesTextProps.set(TextProps.propNames.classes, test);
 		const component = (
-			<MultipleLinesText lineCount="2" textProps={multipleLinesTextProps}>
-				{text}
-			</MultipleLinesText>
+			<MultipleLinesText textProps={multipleLinesTextProps}>{text}</MultipleLinesText>
 		);
 
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".testRoot"), "to be true");
+	});
+
+	it("Shoud not throw an error if lineCount is not passed and use fallback value", () => {
+		const component = <MultipleLinesText>{text}</MultipleLinesText>;
+		const mountedComponent = shallow(component);
+
+		expect(mountedComponent.find(TextClamp).get(0).props.clamp, "to equal", "auto");
 	});
 
 	it("Fails if textProps has wrong type", () => {

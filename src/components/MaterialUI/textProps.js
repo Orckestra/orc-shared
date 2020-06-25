@@ -3,19 +3,13 @@ import ComponentProps from "./componentProps";
 export default class TextProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
-	};
-
-	static ruleNames = {
-		root: "root",
-		body1: "body1",
+		lineCount: "lineCount",
 	};
 
 	constructor() {
 		super();
-		this.componentProps.set(this.constructor.propNames.classes, this.componentClasses);
-
-		this.componentClasses.set(this.constructor.ruleNames.root, null);
-		this.componentClasses.set(this.constructor.ruleNames.body1, null);
+		this.componentProps.set(this.constructor.propNames.classes, null);
+		this.componentProps.set(this.constructor.propNames.lineCount, null);
 	}
 }
 
