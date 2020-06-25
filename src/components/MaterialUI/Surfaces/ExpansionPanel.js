@@ -1,5 +1,5 @@
 import React from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 	expansionPanelHeader: {},
 }));
 
-const SectionExpansionPanel = ({
+const ExpansionPanel = ({
 	header,
 	content,
 	actions,
@@ -52,7 +52,7 @@ const SectionExpansionPanel = ({
 	);
 
 	return (
-		<ExpansionPanel
+		<MuiExpansionPanel
 			defaultExpanded
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
@@ -74,8 +74,8 @@ const SectionExpansionPanel = ({
 					{actions}
 				</ExpansionPanelActions>
 			) : null}
-		</ExpansionPanel>
+		</MuiExpansionPanel>
 	);
 };
 
-export default SectionExpansionPanel;
+export default ExpansionPanel;
