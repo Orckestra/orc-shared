@@ -1,35 +1,32 @@
 import React, { useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import classNames from "classnames";
 import { TextProps } from "./textProps";
-import lineClamp from "clamp-js";
+import TextClamp from "react-multi-clamp";
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+	clampedText: {
+		wordBreak: "break-word",
+	},
+}));
 
-const MultipleLinesText = ({ children, ...props }) => {
+const MultipleLinesText = ({ children, textProps }) => {
 	const classes = useStyles();
-	const textProps = props.textProps;
+
 	if (textProps != null && textProps instanceof TextProps === false) {
 		throw new TypeError("textProps property is not of type TextProps");
 	}
-	var customStyles = textProps?.get(TextProps.propNames.classes);
-
-	let elem = useRef(null);
-	useEffect(() => {
-		lineClamp(elem.current, { clamp: props.lineCount });
-	});
+	const customStyles = textProps?.get(TextProps.propNames.classes);
+	const lineCount = textProps?.get(TextProps.propNames.lineCount) || "auto";
 
 	return (
-		<Typography
-			ref={elem}
-			classes={{
-				root: classNames(customStyles?.get(TextProps.ruleNames.root)),
-				body1: classNames(customStyles?.get(TextProps.ruleNames.body1)),
-			}}
+		<TextClamp
+			disableCssClamp={true}
+			clamp={lineCount}
+			className={classNames(classes.clampedText, customStyles)}
 		>
 			{children}
-		</Typography>
+		</TextClamp>
 	);
 };
 
