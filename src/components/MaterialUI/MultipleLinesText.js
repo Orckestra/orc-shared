@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import { TextProps } from "./textProps";
