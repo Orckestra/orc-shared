@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SectionExpansionPanel = ({
+const ExpansionPanel = ({
 	header,
 	content,
 	actions,
@@ -137,4 +137,4 @@ const SectionExpansionPanel = ({
 	);
 };
 
-export default SectionExpansionPanel;
+export default ExpansionPanel;
