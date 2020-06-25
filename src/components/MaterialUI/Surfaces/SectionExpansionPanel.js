@@ -1,5 +1,5 @@
 import React from "react";
-import ExpansionPanelMui from "@material-ui/core/ExpansionPanel";
+import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
@@ -98,7 +98,7 @@ const SectionExpansionPanel = ({
 	);
 
 	return (
-		<ExpansionPanelMui
+		<MuiExpansionPanel
 			defaultExpanded={defaultExpanded}
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
@@ -133,7 +133,7 @@ const SectionExpansionPanel = ({
 					{actions}
 				</ExpansionPanelActions>
 			) : null}
-		</ExpansionPanelMui>
+		</MuiExpansionPanel>
 	);
 };
 
