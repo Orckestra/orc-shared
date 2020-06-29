@@ -8,15 +8,23 @@ import classNames from "classnames";
 import Icon from "../../Icon";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import useViewState from "../../../hooks/useViewState";
+import { darken } from "@material-ui/core/styles/colorManipulator";
 
 const useStyles = makeStyles(theme => ({
 	summaryRoot: {
 		height: theme.spacing(8),
 		backgroundColor: theme.palette.primary.lighter,
 		flexDirection: "row-reverse",
+		borderRadius: 0,
+		"&:hover" : {
+			backgroundColor: darken(theme.palette.primary.lighter,0.05),
+		},
+		"&:focus" : {
+			borderRadius: 0,
+		}
 	},
 	resetPadding: {
-		padding: "0",
+		padding: "0 !important",
 	},
 	panelExpanded: {},
 	summaryContent: {
@@ -115,6 +123,7 @@ const SectionExpansionPanel = ({
 					root: classNames(classes.summaryRoot),
 					expanded: classNames(classes.panelExpanded),
 					content: classNames(classes.summaryContent),
+					expandIcon: classNames(classes.summaryExpandIconRoot),
 				}}
 			>
 				{header}

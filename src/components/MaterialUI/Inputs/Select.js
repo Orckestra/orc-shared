@@ -2,35 +2,54 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
+import { darken } from "@material-ui/core/styles/colorManipulator";
 import SelectProps from "./SelectProps";
 
 const useStyles = makeStyles(theme => ({
 	select: {
+		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
-			minWidth: "175px",
-			maxHeight: "300px",
+			minWidth: theme.spacing(17.5),
+			maxHeight: theme.spacing(30),
+			paddingTop: 0,
+			paddingBottom: 0,
 		},
 		"& li": {
-			fontSize: 12,
+			fontSize: theme.typography.fontSize,
+			fontFamily: theme.typography.fontFamily,
+			textTransform: "none",
+			color: theme.palette.grey.dark,
+			paddingTop: theme.spacing(1),
+			paddingBottom: theme.spacing(1),
+			borderRadius: 0,
 			"&:hover": {
-				backgroundColor: theme.palette.primary.main,
+				backgroundColor: theme.palette.grey.light,
+				color: theme.palette.grey.dark,
+			},
+			"&:focus, &:active": {
+				borderRadius: 0,
+				"&:hover": {
+					color: theme.palette.grey.dark,
+					backgroundColor: darken(theme.palette.grey.light,0.05),
+				},
 			},
 		},
 	},
 	input: {
-		borderRadius: 4,
+		borderRadius: theme.shape.borderRadius,
 		position: "relative",
 		backgroundColor: theme.palette.background.paper,
-		border: "1px solid #ced4da",
-		fontSize: 12,
-		minWidth: "150px",
-		maxWidth: "200px",
-		padding: "6px 6px 6px 6px",
+		border: `1px solid ${theme.palette.grey.borders}`,
+		fontSize: theme.typography.fontSize,
+		minWidth: theme.spacing(15),
+		maxWidth: theme.spacing(20),
+		padding: theme.spacing(0.6 ,0.6, 0.6, 0.6),
 		transition: theme.transitions.create(["border-color", "box-shadow"]),
 		"&:focus": {
-			borderRadius: 4,
-			borderColor: "#80bdff",
-			boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
+			borderRadius: theme.shape.borderRadius,
+			borderColor: theme.palette.focus,
+			boxShadow: `0 0 4px ${theme.palette.focus}`,
+			outline: "none",
 		},
 	},
 }));
@@ -39,7 +58,11 @@ const MenuProps = {
 	getContentAnchorEl: null,
 	anchorOrigin: {
 		vertical: "bottom",
-		horizontal: "left",
+		horizontal: "right"
+	},
+	transformOrigin: {
+		vertical: "top",
+		horizontal: "right"
 	},
 };
 

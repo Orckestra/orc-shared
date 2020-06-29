@@ -664,6 +664,44 @@ const setThemeOverrides = theme => ({
 		body1: {
 			...theme.body1,
 			fontSize: commonTheme.typography.fontSize,
+			lineHeight: 1.3,
+		},
+		h1: {
+			...theme.h1,
+			fontSize: theme.typography.h1Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+			color: theme.palette.grey.icon,
+		},
+		h2: {
+			...theme.h2,
+			fontSize: theme.typography.h2Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+		},
+		h3: {
+			...theme.h3,
+			fontSize: theme.typography.h3Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+		},
+		h4: {
+			...theme.h4,
+			fontSize: theme.typography.h4Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+		},
+		h5: {
+			...theme.h5,
+			fontSize: theme.typography.h5Size,
+			fontWeight: theme.typography.fontWeightBold,
+			lineHeight: 1.3,
+		},
+		h6: {
+			...theme.h6,
+			fontSize: theme.typography.h6Size,
+			fontWeight: theme.typography.fontWeightSemiBold,
+			lineHeight: 1.3,
 		},
 	},
 	MuiCheckbox: {
@@ -674,6 +712,20 @@ const setThemeOverrides = theme => ({
 			minWidth: "30px",
 			backgroundColor: "inherit",
 			border: "none",
+			"&.Mui-checked": {
+				"& .MuiSvgIcon-root": {
+					color: "inherit",
+				},
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&:focus, &:active": {
+				boxShadow: "none",
+			},
 		},
 	},
 	MuiExpansionPanelSummary: {
@@ -704,7 +756,61 @@ const setThemeOverrides = theme => ({
 				borderColor: theme.palette.grey.icon
 			}
 		}
-	}
+	},
+	MuiRadio: {
+		...theme.MuiRadio,
+		root: {
+			...theme.root,
+			border: "none",
+			"&.Mui-checked": {
+				"& .MuiSvgIcon-root": {
+					color: "inherit",
+				},
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&:focus, &:active": {
+				boxShadow: "none",
+			},
+		},
+		colorPrimary: {
+			...theme.colorPrimary,
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&.Mui-checked": {
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+		},
+		colorSecondary: {
+			...theme.colorSecondary,
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&.Mui-checked": {
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+		},
+	},
+	MuiFormLabel: {
+		...theme.MuiFormLabel,
+		root: {
+			...theme.root,
+			fontSize: theme.typography.fieldLabelSize,
+			color: theme.palette.grey.icon,
+			"&.Mui-focused": {
+				color: theme.palette.grey.icon,
+			},
+		}
+	},
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {
