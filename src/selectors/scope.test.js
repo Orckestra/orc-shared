@@ -1,6 +1,6 @@
 import Immutable from "immutable";
 import { resetLastScope } from "./navigation";
-import { currentScopeSelector, scopeGetter } from "./scope";
+import { currentScopeSelector, scopeGetter, scopeDetailsSelector } from "./scope";
 
 let state;
 beforeEach(() => {
@@ -176,6 +176,36 @@ describe("scopeGetter", () => {
 				id: "Global",
 				children: ["FirstChild", "SecondChild"],
 			},
+		);
+	});
+
+	it("scopeDetailsSelector returns scope by id", () => {
+		const scopeId = "Global";
+		expect(
+			scopeDetailsSelector,
+			"when called with",
+			[scopeId],
+			"called with",
+			[state],
+			"to equal",
+			Immutable.fromJS({
+				name: { en: "Global", fr: "Global" },
+				id: "Global",
+				children: ["FirstChild", "SecondChild"],
+			}),
+		);
+	});
+
+	it("scopeDetailsSelector returns null when scope id is not found", () => {
+		const wrongScopeId = "TestWrongScope";
+		expect(
+			scopeDetailsSelector,
+			"when called with",
+			[wrongScopeId],
+			"called with",
+			[state],
+			"to equal",
+			null,
 		);
 	});
 });
