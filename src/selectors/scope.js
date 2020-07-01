@@ -53,3 +53,6 @@ export const scopeGetter = createSelector(filteredScopesSelector, scopes => id =
 	if (!scope) return null;
 	return scope.toJS();
 });
+
+export const scopeDetailsSelector = scopeId =>
+	createSelector(scopeData, scopes => scopes.get(scopeId) || null);
