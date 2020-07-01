@@ -1,6 +1,6 @@
 import Immutable from "immutable";
 import { resetLastScope } from "./navigation";
-import { currentScopeSelector, scopeGetter, scopeDetailsSelector } from "./scope";
+import { currentScopeSelector, scopeGetter, localizedScopeSelector } from "./scope";
 
 let state;
 beforeEach(() => {
@@ -53,6 +53,11 @@ beforeEach(() => {
 			FifthGrandchild: {
 				name: { en: "Fifth grandchild", fr: "Cinquième petit-fils" },
 				id: "FifthGrandchild",
+				parentScopeId: "SecondChild",
+			},
+			SixthGrandchild: {
+				name: { en: "Sixth grandchild" },
+				id: "SixthGrandchild",
 				parentScopeId: "SecondChild",
 			},
 		},
@@ -178,28 +183,39 @@ describe("scopeGetter", () => {
 			},
 		);
 	});
+});
 
-	it("scopeDetailsSelector returns scope by id", () => {
-		const scopeId = "Global";
+describe("localizedScopeSelector", () => {
+	it("returns localized scope name by id", () => {
+		const scopeId = "FirstGrandchild";
 		expect(
-			scopeDetailsSelector,
+			localizedScopeSelector,
 			"when called with",
 			[scopeId],
 			"called with",
 			[state],
 			"to equal",
-			Immutable.fromJS({
-				name: { en: "Global", fr: "Global" },
-				id: "Global",
-				children: ["FirstChild", "SecondChild"],
-			}),
+			"Premier petit-fils",
 		);
 	});
 
-	it("scopeDetailsSelector returns null when scope id is not found", () => {
+	it("returns default value if scope name doesn't contain value for current locale", () => {
+		const scopeId = "SixthGrandchild";
+		expect(
+			localizedScopeSelector,
+			"when called with",
+			[scopeId],
+			"called with",
+			[state],
+			"to equal",
+			"[SixthGrandchild]",
+		);
+	});
+
+	it("returns null when scope id is not found", () => {
 		const wrongScopeId = "TestWrongScope";
 		expect(
-			scopeDetailsSelector,
+			localizedScopeSelector,
 			"when called with",
 			[wrongScopeId],
 			"called with",

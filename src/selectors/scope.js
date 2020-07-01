@@ -2,7 +2,8 @@ import { createSelector } from "reselect";
 import Immutable from "immutable";
 import { getCurrentScope } from "./navigation";
 import { currentLocaleOrDefault } from "./locale";
-import { normalizeForSearch, setTranslation } from "../utils";
+import { normalizeForSearch, setTranslation, memoize } from "../utils";
+import { getLocalization } from "../utils/localizationHelper";
 
 const scopeData = state => state.get("scopes");
 
@@ -54,5 +55,12 @@ export const scopeGetter = createSelector(filteredScopesSelector, scopes => id =
 	return scope.toJS();
 });
 
-export const scopeDetailsSelector = scopeId =>
-	createSelector(scopeData, scopes => scopes.get(scopeId) || null);
+export const localizedScopeSelector = memoize(key =>
+	createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) => {
+		const name = scopes.getIn([key, "name"]);
+
+		if (name == null) return null;
+
+		return getLocalization(name.toJS(), locale, key);
+	}),
+);
