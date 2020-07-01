@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { getCurrentScope } from "./navigation";
 import { currentLocaleOrDefault } from "./locale";
 import { normalizeForSearch, setTranslation, memoize } from "../utils";
-import { getLocalization } from "./../utils/localizationHelper";
+import { getLocalization } from "../utils/localizationHelper";
 
 const scopeData = state => state.get("scopes");
 
@@ -55,18 +55,12 @@ export const scopeGetter = createSelector(filteredScopesSelector, scopes => id =
 	return scope.toJS();
 });
 
-// TODO create unit test for it
+export const localizedScopeSelector = memoize(key =>
+	createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) => {
+		const name = scopes.getIn([key, "name"]);
 
-export const localizedScopeSelector = memoize((key) =>
-	createSelector(
-		scopeData,
-		currentLocaleOrDefault,
-		(scopes, locale) => {
-			const name = scopes.getIn([key, "name"]);
+		if (name == null) return null;
 
-			if (name == null) return null;
-
-			return getLocalization(name.toJS(), locale, key);
-		}
-	)
+		return getLocalization(name.toJS(), locale, key);
+	}),
 );
