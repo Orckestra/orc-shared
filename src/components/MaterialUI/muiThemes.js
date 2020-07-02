@@ -41,6 +41,12 @@ const commonTheme = {
 };
 
 const commonPalette = {
+	primary: {
+		light: "#CCC",
+		main: "#232323",
+		dark: "#000",
+		contrastText: "#fff",
+	},
 	error: {
 		light: "#FFBBAE",
 		main: "#ED2E0B",
