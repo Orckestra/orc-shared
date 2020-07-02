@@ -4,17 +4,15 @@ import { shallow } from "enzyme"
 import MuiTooltip from "@material-ui/core/Tooltip";
 
 describe("withDeferredTooltip", () => {
-  const componentContent = (
-    <div>
-      <p>Test</p>
-    </div>
-  );
-
   const ComponentToBeTooltipped = (title) => {
-    return (componentContent)
+    return (
+      <div>
+        <p>Test</p>
+      </div>
+    )
   }
 
-  it("Rendenrs passed component if mouse enter event wasn't triggered", () => {
+  it("Renders passed component if mouse enter event wasn't triggered", () => {
     const Wrapper = (props) => <ComponentToBeTooltipped {...props} />;
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
@@ -41,7 +39,7 @@ describe("withDeferredTooltip", () => {
     mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
 
     let expected = (
-      <MuiTooltip title="test">
+      <MuiTooltip>
         <Wrapper />
       </MuiTooltip>
     );
@@ -66,5 +64,55 @@ describe("withDeferredTooltip", () => {
     mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
 
     expect(mountedTooltippedComponent.containsMatchingElement(<Wrapper />), "to be true");
+  });
+
+  it("Displays passed title in tooltip", () => {
+    const Wrapper = (props) => <ComponentToBeTooltipped {...props} />;
+
+    const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent title="test" />);
+
+    const event = {
+      target: {
+        offsetWidth: 100,
+        scrollWidth: 110
+      }
+    }
+
+    mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
+
+    let expected = (
+      <MuiTooltip title="test">
+        <Wrapper />
+      </MuiTooltip>
+    );
+
+    expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
+  });
+
+  it("Displays empty title in tooltip if no title was passed", () => {
+    const Wrapper = (props) => <ComponentToBeTooltipped {...props} />;
+
+    const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent />);
+
+    const event = {
+      target: {
+        offsetWidth: 100,
+        scrollWidth: 110
+      }
+    }
+
+    mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
+
+    let expected = (
+      <MuiTooltip title="">
+        <Wrapper />
+      </MuiTooltip>
+    );
+
+    expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
   });
 });

@@ -22,7 +22,7 @@ const withDeferredTooltip = Comp => ({ title = "", ...props }) => {
     <MuiTooltip
       arrow
       title={title}
-      disableHoverListener={!shouldDisplay}
+      disableHoverListener={false}
       disableFocusListener={true}
       disableTouchListener={true}
     >
