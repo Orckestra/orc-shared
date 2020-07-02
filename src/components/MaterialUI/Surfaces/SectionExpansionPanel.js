@@ -8,7 +8,6 @@ import classNames from "classnames";
 import Icon from "../../Icon";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import useViewState from "../../../hooks/useViewState";
-import { darken } from "@material-ui/core/styles/colorManipulator";
 
 const useStyles = makeStyles(theme => ({
 	summaryRoot: {
@@ -17,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: "row-reverse",
 		borderRadius: 0,
 		"&:hover" : {
-			backgroundColor: darken(theme.palette.primary.lighter,0.05),
+			backgroundColor: theme.palette.hoverprimary.lighter,
 		},
 		"&:focus" : {
 			borderRadius: 0,

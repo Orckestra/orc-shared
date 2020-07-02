@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { fade, darken } from "@material-ui/core/styles/colorManipulator";
 
 const drawerWidth = 240;
 
@@ -110,6 +110,7 @@ const setThemeProps = theme => ({
 
 const setThemeOverrides = theme => ({
 	...theme.overrides,
+
 	MuiButtonBase: {
 		...theme.MuiButtonBase,
 		root: {
@@ -823,17 +824,53 @@ const createThemes = (applicationTheme, themeDefinition) => {
 	const applicationMuiTheme = createMuiTheme(applicationTheme);
 
 	const muiTheme = createMuiTheme({
-		...themeDefinition,
 		...commonTheme,
+		...themeDefinition,
 		palette: {
-			...themeDefinition.palette,
 			...commonPalette,
+			...themeDefinition.palette,
+			hoverprimary: {
+				lighter: darken(themeDefinition.palette.primary.lighter, 0.05),
+				light: darken(themeDefinition.palette.primary.light, 0.05),
+				main: darken(themeDefinition.palette.primary.main, 0.05),
+				dark: darken(themeDefinition.palette.primary.dark, 0.05),
+			},
+			hovererror: {
+				light: darken(commonPalette.error.light, 0.05),
+				main: darken(commonPalette.error.main, 0.05),
+				dark: darken(commonPalette.error.dark, 0.05),
+			},
+			hoverwarning: {
+				light: darken(commonPalette.warning.light, 0.05),
+				main: darken(commonPalette.warning.main, 0.05),
+				dark: darken(commonPalette.warning.dark, 0.05),
+			},
+			hoversuccess: {
+				light: darken(commonPalette.success.light, 0.05),
+				main: darken(commonPalette.success.main, 0.05),
+				dark: darken(commonPalette.success.dark, 0.05),
+			},
+			hoverinfo: {
+				light: darken(commonPalette.info.light, 0.05),
+				main: darken(commonPalette.info.main, 0.05),
+				dark: darken(commonPalette.info.dark, 0.05),
+			},
+			hovergrey: {
+				darker: darken(commonPalette.grey.darker, 0.05),
+				dark: darken(commonPalette.grey.dark, 0.05),
+				icon: darken(commonPalette.grey.icon, 0.05),
+				borders: darken(commonPalette.grey.borders, 0.05),
+				light: darken(commonPalette.grey.light, 0.05),
+				lighter: darken(commonPalette.grey.lighter, 0.05),
+			},
 		},
 	});
 
 	muiTheme.props = setThemeProps(muiTheme);
 	muiTheme.overrides = setThemeOverrides(muiTheme);
-
+	console.log("***************************** muiTheme definition *************************************");
+	console.log(muiTheme);
+	console.log("***************************************************************************************");
 	return {
 		applicationMuiTheme: applicationMuiTheme,
 		muiTheme: muiTheme,

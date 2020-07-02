@@ -2,7 +2,6 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
-import { darken } from "@material-ui/core/styles/colorManipulator";
 import SelectProps from "./SelectProps";
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 				borderRadius: 0,
 				"&:hover": {
 					color: theme.palette.grey.dark,
-					backgroundColor: darken(theme.palette.grey.light,0.05),
+					backgroundColor: theme.palette.hovergrey.light,
 				},
 			},
 		},
