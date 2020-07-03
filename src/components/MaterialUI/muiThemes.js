@@ -42,6 +42,7 @@ const commonTheme = {
 
 const commonPalette = {
 	primary: {
+		lighter: "#f5f5f5",
 		light: "#CCC",
 		main: "#232323",
 		dark: "#000",
