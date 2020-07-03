@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import MuiTooltip from "@material-ui/core/Tooltip";
+import { isStringNullOrWhitespace } from "../../../utils/propertyValidator";
 
 const withDeferredTooltip = Comp => ({ title = "", ...props }) => {
 
@@ -15,6 +16,8 @@ const withDeferredTooltip = Comp => ({ title = "", ...props }) => {
   const makeComponentTooltipped = function (event) {
     setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
   }
+
+  if (title == null || isStringNullOrWhitespace(title)) return <Comp {...props} />
 
   if (shouldBeTooltipped === false) return defaultComponent;
 

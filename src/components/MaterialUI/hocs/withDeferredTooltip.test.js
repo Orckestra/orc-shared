@@ -91,28 +91,29 @@ describe("withDeferredTooltip", () => {
     expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
   });
 
-  it("Displays empty title in tooltip if no title was passed", () => {
+  it("Retrieves passed component without any changes if title is undefined", () => {
     const Wrapper = (props) => <ComponentToBeTooltipped {...props} />;
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
     const mountedTooltippedComponent = shallow(<TooltippedCompponent />);
 
-    const event = {
-      target: {
-        offsetWidth: 100,
-        scrollWidth: 110
-      }
-    }
+    const wrapper = mountedTooltippedComponent.find(Wrapper);
 
-    mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
+    expect(wrapper.prop("onMouseEnter"), "to be", undefined);
+  });
 
-    let expected = (
-      <MuiTooltip title="">
-        <Wrapper />
-      </MuiTooltip>
-    );
+  it("Retrieves passed component without any changes if title is whitespace", () => {
+    const Wrapper = (props) => <ComponentToBeTooltipped {...props} />;
 
-    expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
+    const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+    const whitespace = "                   ";
+
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent title={whitespace} />);
+
+    const wrapper = mountedTooltippedComponent.find(Wrapper);
+
+    expect(wrapper.prop("onMouseEnter"), "to be", undefined);
   });
 });
