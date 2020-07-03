@@ -868,9 +868,6 @@ const createThemes = (applicationTheme, themeDefinition) => {
 
 	muiTheme.props = setThemeProps(muiTheme);
 	muiTheme.overrides = setThemeOverrides(muiTheme);
-	console.log("***************************** muiTheme definition *************************************");
-	console.log(muiTheme);
-	console.log("***************************************************************************************");
 	return {
 		applicationMuiTheme: applicationMuiTheme,
 		muiTheme: muiTheme,
