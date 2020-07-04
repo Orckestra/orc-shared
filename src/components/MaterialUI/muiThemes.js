@@ -676,8 +676,8 @@ const setThemeOverrides = theme => ({
 			border: "none",
 		},
 	},
-	MuiExpansionPanelSummary: {
-		...theme.MuiExpansionPanelSummary,
+	MuiAccordionSummary: {
+		...theme.MuiAccordionSummary,
 		expandIcon: {
 			...theme.expandIcon,
 			border: "none",

@@ -1,7 +1,7 @@
 import React from "react";
-import { mount } from "enzyme";
+import { shallow } from "enzyme";
 import TableCell, { shouldWrapComponentInTooltip } from "./TableCell";
-import Tooltip from "./Tooltip";
+import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 import TableCellMui from "@material-ui/core/TableCell";
 import {
   ignoreConsoleError
@@ -18,11 +18,11 @@ describe("TableCell", () => {
 
       const expected = (
         <TableCellMui>
-          <Tooltip value={value} />
+          <TooltippedTypography value={value} children={value} />
         </TableCellMui>
       );
 
-      const mountedComponent = mount(component);
+      const mountedComponent = shallow(component);
 
       expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
     });
@@ -37,7 +37,7 @@ describe("TableCell", () => {
         </TableCellMui>
       );
 
-      const mountedComponent = mount(component);
+      const mountedComponent = shallow(component);
 
       expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
     });
@@ -59,7 +59,7 @@ describe("TableCell", () => {
         </div>
       );
 
-      const mountedComponent = mount(component);
+      const mountedComponent = shallow(component);
 
       expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
     });

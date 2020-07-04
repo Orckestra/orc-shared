@@ -1,8 +1,8 @@
 import React from "react";
-import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionActions from "@material-ui/core/AccordionActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
@@ -52,29 +52,29 @@ const ExpansionPanel = ({
 	);
 
 	return (
-		<MuiExpansionPanel
+		<Accordion
 			defaultExpanded
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
 			onChange={onChange}
 		>
-			<ExpansionPanelSummary
+			<AccordionSummary
 				expandIcon={<Icon {...{ id: "chevron-down" }} />}
 				classes={{
 					root: classNames(classes.expansionPanelHeader),
 				}}
 			>
 				{header}
-			</ExpansionPanelSummary>
-			<ExpansionPanelDetails>{content}</ExpansionPanelDetails>
+			</AccordionSummary>
+			<AccordionDetails>{content}</AccordionDetails>
 			{actions != null ? (
-				<ExpansionPanelActions
+				<AccordionActions
 					disableSpacing={disableSpacing == null ? false : disableSpacing}
 				>
 					{actions}
-				</ExpansionPanelActions>
+				</AccordionActions>
 			) : null}
-		</MuiExpansionPanel>
+		</Accordion>
 	);
 };
 

@@ -4,7 +4,7 @@ import { shallow } from "enzyme"
 import MuiTooltip from "@material-ui/core/Tooltip";
 
 describe("withDeferredTooltip", () => {
-  const ComponentToBeTooltipped = (title) => {
+  const ComponentToBeTooltipped = () => {
     return (
       <div>
         <p>Test</p>
@@ -17,7 +17,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent title="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
 
     expect(mountedTooltippedComponent.containsMatchingElement(<Wrapper />), "to be true");
   });
@@ -27,7 +27,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent title="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
 
     const event = {
       target: {
@@ -52,7 +52,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent title="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
 
     const event = {
       target: {
@@ -71,7 +71,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent title="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
 
     const event = {
       target: {
@@ -103,14 +103,28 @@ describe("withDeferredTooltip", () => {
     expect(wrapper.prop("onMouseEnter"), "to be", undefined);
   });
 
-  it("Retrieves passed component without any changes if title is whitespace", () => {
+  it("Retrieves passed component without any changes if title is whitespace string", () => {
     const Wrapper = (props) => <ComponentToBeTooltipped {...props} />;
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
     const whitespace = "                   ";
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent title={whitespace} />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent value={whitespace} />);
+
+    const wrapper = mountedTooltippedComponent.find(Wrapper);
+
+    expect(wrapper.prop("onMouseEnter"), "to be", undefined);
+  });
+
+  it("Retrieves passed component without any changes if title is not react component", () => {
+    const Wrapper = (props) => <ComponentToBeTooltipped {...props} />;
+
+    const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+    const notReactComponent = { key: "value" };
+
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent value={notReactComponent} />);
 
     const wrapper = mountedTooltippedComponent.find(Wrapper);
 

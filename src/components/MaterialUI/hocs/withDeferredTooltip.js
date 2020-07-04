@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import MuiTooltip from "@material-ui/core/Tooltip";
-import { isStringNullOrWhitespace } from "../../../utils/propertyValidator";
+import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "../../../utils/propertyValidator";
 
-const withDeferredTooltip = Comp => ({ title = "", ...props }) => {
+const withDeferredTooltip = Comp => ({ value, ...props }) => {
 
   const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
 
@@ -17,14 +17,18 @@ const withDeferredTooltip = Comp => ({ title = "", ...props }) => {
     setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
   }
 
-  if (title == null || isStringNullOrWhitespace(title)) return <Comp {...props} />
+  if (value == null) return <Comp {...props} />;
+
+  if (isString(value) && isStringNullOrWhitespace(value)) return <Comp {...props} />;
+
+  if (isObject(value) && isReactComponent(value) === false) return <Comp {...props} />;
 
   if (shouldBeTooltipped === false) return defaultComponent;
 
   return (
     <MuiTooltip
       arrow
-      title={title}
+      title={value}
       disableHoverListener={false}
       disableFocusListener={true}
       disableTouchListener={true}
