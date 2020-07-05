@@ -2,6 +2,14 @@ import React from "react";
 import MuiPaper from '@material-ui/core/Paper';
 import PaperProps from "./paperProps";
 import classNames from "classnames";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyle = makeStyles(theme => ({
+  container: {
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.grey.lighter
+  }
+}));
 
 const Paper = ({ content, paperProps }) => {
   if (
@@ -13,10 +21,12 @@ const Paper = ({ content, paperProps }) => {
     );
   }
 
+  const classes = useStyle();
+
   const rootStyle = paperProps?.getStyle(PaperProps.ruleNames.root);
 
   return (
-    <MuiPaper classes={{ root: classNames(rootStyle) }} variant="outlined">
+    <MuiPaper classes={{ root: classNames(classes.container, rootStyle) }} variant="outlined">
       {content}
     </MuiPaper>
   );

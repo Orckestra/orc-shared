@@ -707,11 +707,6 @@ const setThemeOverrides = theme => ({
 	},
 	MuiPaper: {
 		...theme.MuiPaper,
-		root: {
-			...theme.root,
-			backgroundColor: theme.palette.grey.lighter,
-			padding: theme.spacing(2)
-		},
 		rounded: {
 			...theme.rounded,
 			borderRadius: "3px",
