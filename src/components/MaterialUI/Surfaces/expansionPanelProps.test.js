@@ -7,7 +7,7 @@ describe("Expansion Panel Props", () => {
 		expect(ExpansionPanelProps.propNames, "to have keys", propNames);
 	});
 
-	it("Puts keys in compoennt props map", () => {
+	it("Puts keys in component props map", () => {
 		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange"];
 
 		const expansionPanelProps = new ExpansionPanelProps();
@@ -25,7 +25,7 @@ describe("Expansion Panel Actions Props", () => {
 		expect(ExpansionPanelActionsProps.propNames, "to have keys", propNames);
 	});
 
-	it("Puts keys in compoennt props map", () => {
+	it("Puts keys in component props map", () => {
 		const propNames = ["disableSpacing"];
 
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();

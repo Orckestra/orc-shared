@@ -25,7 +25,7 @@ const MultipleLinesText = ({ children, textProps }) => {
 			clamp={lineCount}
 			className={classNames(classes.clampedText, customStyles)}
 		>
-			{children}
+			{children.toString()}
 		</TextClamp>
 	);
 };
