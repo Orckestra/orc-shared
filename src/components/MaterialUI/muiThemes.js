@@ -704,6 +704,17 @@ const setThemeOverrides = theme => ({
 				borderColor: theme.palette.grey.icon
 			}
 		}
+	},
+	MuiPaper: {
+		...theme.MuiPaper,
+		rounded: {
+			...theme.rounded,
+			borderRadius: "3px",
+		},
+		outlined: {
+			...theme.outlined,
+			border: `1px solid ${theme.palette.grey.borders}`
+		}
 	}
 });
 
