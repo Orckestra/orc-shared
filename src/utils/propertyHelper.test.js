@@ -1,6 +1,9 @@
 import * as propertyHelper from "./propertyHelper";
+const { Map } = require("immutable");
 
-describe("<propertyHelper.getPropertyOrDefault>", () => {
+const immutableMap = Map({ prop1: 123 });
+
+describe("<propertyHelper.getPropertyOrDefault> for object", () => {
 	it("get property value", () => {
 		expect(
 			propertyHelper.getPropertyOrDefault({ prop1: 123 }, "prop1", "XYZ"),
@@ -72,6 +75,56 @@ describe("<propertyHelper.getPropertyOrDefault>", () => {
 	it("get property default value starting with", () => {
 		expect(
 			propertyHelper.getPropertyOrDefault(undefined, "pR1", "XYZ", false, true),
+			"to equal",
+			"XYZ",
+		);
+	});
+});
+
+describe("<propertyHelper.getPropertyOrDefault> for Map", () => {
+	it("get property value", () => {
+		expect(
+			propertyHelper.getPropertyOrDefault(immutableMap, "prop1", "XYZ"),
+			"to equal",
+			123,
+		);
+	});
+
+	it("get default property value", () => {
+		expect(
+			propertyHelper.getPropertyOrDefault(immutableMap, "prop2", "XYZ"),
+			"to equal",
+			"XYZ",
+		);
+	});
+
+	it("get property value ignoring case", () => {
+		expect(
+			propertyHelper.getPropertyOrDefault(immutableMap, "pRoP1", "XYZ", true),
+			"to equal",
+			123,
+		);
+	});
+
+	it("get property default value ignoring case", () => {
+		expect(
+			propertyHelper.getPropertyOrDefault(immutableMap, "pRoP2", "XYZ", true),
+			"to equal",
+			"XYZ",
+		);
+	});
+
+	it("get property value starting with", () => {
+		expect(
+			propertyHelper.getPropertyOrDefault(immutableMap, "pRo", "XYZ", false, true),
+			"to equal",
+			123,
+		);
+	});
+
+	it("get property default value starting with", () => {
+		expect(
+			propertyHelper.getPropertyOrDefault(immutableMap, "pR1", "XYZ", false, true),
 			"to equal",
 			"XYZ",
 		);

@@ -36,6 +36,7 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
+		"jest": "^25.1.0",
 		"orc-scripts": "1.0.0-dev.20"
 	},
 	"peerDependencies": {
@@ -54,5 +55,9 @@
 		"hooks": {
 			"pre-commit": "lint-staged"
 		}
+	},
+	"dependencies": {
+		"@material-ui/core": "^4.11.0",
+		"@welldone-software/why-did-you-render": "^4.2.5"
 	}
 }

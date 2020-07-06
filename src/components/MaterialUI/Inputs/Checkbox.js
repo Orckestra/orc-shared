@@ -16,12 +16,16 @@ const Checkbox = ({ checkboxProps }) => {
 		update(event.target.checked);
 	};
 
+	if (label === null) {
+		return <CheckboxMUI checked={value} onChange={handleChange} />;
+	}
+
 	return (
 		<FormControlLabel
 			control={<CheckboxMUI checked={value} onChange={handleChange} />}
 			label={label}
-		></FormControlLabel>
+		/>
 	);
 };
 
-export default Checkbox;
+export default React.memo(Checkbox);
