@@ -2,7 +2,7 @@ import React from "react";
 import TableCellMui from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import Tooltip from "./Tooltip";
+import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 
 const useStyles = makeStyles(theme => ({
   cellRoot: {
@@ -19,7 +19,7 @@ const TableCell = ({ cell = null }) => {
         root: classNames(classes.cellRoot),
       }}
     >
-      {shouldWrapComponentInTooltip(cell) === true ? <Tooltip value={cell} title={cell} maxWidth={150} /> : cell}
+      {shouldWrapComponentInTooltip(cell) === true ? <TooltippedTypography value={cell} children={cell} /> : cell}
     </TableCellMui>
   );
 };
