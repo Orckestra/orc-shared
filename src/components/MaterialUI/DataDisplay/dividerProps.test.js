@@ -2,7 +2,7 @@ import DividerProps from "./dividerProps";
 
 describe("Divider Props", () => {
 	it("Puts keys in component props map", () => {
-		const propNames = ["orientation", "light", "variant", "classes"];
+		const propNames = ["orientation", "light", "variant"];
 
 		const dividerProps = new DividerProps();
 
