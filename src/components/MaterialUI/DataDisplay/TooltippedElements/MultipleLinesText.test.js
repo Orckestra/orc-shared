@@ -62,6 +62,32 @@ describe("MultipleLinesText", () => {
 		expect(mountedComponent.prop("clamp"), "to equal", "auto");
 	});
 
+	it("Passes true for alwaysDisplay property if text is clamped", () => {
+		const component = <MultipleLinesText>{text}</MultipleLinesText>;
+		const mountedComponent = shallow(component);
+
+		const event = {
+			needClamp: true
+		}
+
+		mountedComponent.invoke("onClampStart")(event);
+
+		expect(mountedComponent.prop("alwaysDisplay"), "to be true");
+	});
+
+	it("Passes false for alwaysDisplay property if text is not clamped", () => {
+		const component = <MultipleLinesText>{text}</MultipleLinesText>;
+		const mountedComponent = shallow(component);
+
+		const event = {
+			needClamp: false
+		}
+
+		mountedComponent.invoke("onClampStart")(event);
+
+		expect(mountedComponent.prop("alwaysDisplay"), "to be false");
+	});
+
 	it("Fails if textProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = (
