@@ -19,7 +19,7 @@ const TableCell = ({ cell = null }) => {
         root: classNames(classes.cellRoot),
       }}
     >
-      {shouldWrapComponentInTooltip(cell) === true ? <TooltippedTypography value={cell} children={cell} /> : cell}
+      {shouldWrapComponentInTooltip(cell) === true ? <TooltippedTypography titleValue={cell} children={cell} /> : cell}
     </TableCellMui>
   );
 };
