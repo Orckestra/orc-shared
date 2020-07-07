@@ -1,5 +1,5 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import Divider from "./Divider";
 import DividerProps from "./dividerProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
