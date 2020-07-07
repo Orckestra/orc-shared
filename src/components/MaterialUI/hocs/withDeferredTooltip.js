@@ -12,7 +12,6 @@ const withDeferredTooltip = Comp => ({ titleValue, alwaysDisplay, ...props }) =>
   const defaultComponent = (
     <Comp
       onMouseEnter={(event) => makeComponentTooltipped(event)}
-      onClick={() => console.log(titleValue)}
       {...props}
     />
   );
