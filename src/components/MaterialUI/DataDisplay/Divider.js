@@ -28,8 +28,6 @@ const Divider = ({ dividerProps }) => {
 	const light = dividerProps?.get(DividerProps.propNames.light);
 	const variant = dividerProps?.get(DividerProps.propNames.variant);
 
-	var customStyles = dividerProps?.get(DividerProps.propNames.classes);
-
 	return (
 		<DividerMui
 			orientation={orientation}
@@ -38,18 +36,18 @@ const Divider = ({ dividerProps }) => {
 			classes={{
 				root: classNames(
 					classes.dividerRoot,
-					customStyles?.get(DividerProps.ruleNames.root),
+					dividerProps?.getStyle(DividerProps.ruleNames.root),
 				),
 				light: classNames(
 					classes.dividerLight,
-					customStyles?.get(DividerProps.ruleNames.light),
+					dividerProps?.getStyle(DividerProps.ruleNames.light),
 				),
 				vertical: classNames(
 					classes.dividerVertical,
-					customStyles?.get(DividerProps.ruleNames.vertical),
+					dividerProps?.getStyle(DividerProps.ruleNames.vertical),
 				),
-				middle: classNames(customStyles?.get(DividerProps.ruleNames.middle)),
-				inset: classNames(customStyles?.get(DividerProps.ruleNames.inset)),
+				middle: classNames(dividerProps?.getStyle(DividerProps.ruleNames.middle)),
+				inset: classNames(dividerProps?.getStyle(DividerProps.ruleNames.inset)),
 			}}
 		/>
 	);

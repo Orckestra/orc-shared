@@ -2,7 +2,6 @@ import ComponentProps from "../componentProps";
 
 class DividerProps extends ComponentProps {
 	static propNames = {
-		classes: "classes",
 		orientation: "orientation",
 		light: "light",
 		variant: "variant",
@@ -21,7 +20,6 @@ class DividerProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.orientation, null);
 		this.componentProps.set(this.constructor.propNames.light, null);
 		this.componentProps.set(this.constructor.propNames.variant, null);
-		this.componentProps.set(this.constructor.propNames.classes, this.componentClasses);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.light, null);
