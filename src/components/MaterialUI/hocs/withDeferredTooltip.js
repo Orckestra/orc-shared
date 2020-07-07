@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import MuiTooltip from "@material-ui/core/Tooltip";
 import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "../../../utils/propertyValidator";
 
-const withDeferredTooltip = Comp => ({ value, ...props }) => {
+// Pay attention that if component you are passed to this HOC contains titleValue property
+// by itself then that property will be disappeared after using that HOC.
+// To fix it rename that property and pass titleValue just as a title for tooltip.
+
+const withDeferredTooltip = Comp => ({ titleValue, ...props }) => {
 
   const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
 
@@ -17,18 +21,18 @@ const withDeferredTooltip = Comp => ({ value, ...props }) => {
     setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
   }
 
-  if (value == null) return <Comp {...props} />;
+  if (titleValue == null) return <Comp {...props} />;
 
-  if (isString(value) && isStringNullOrWhitespace(value)) return <Comp {...props} />;
+  if (isString(titleValue) && isStringNullOrWhitespace(titleValue)) return <Comp {...props} />;
 
-  if (isObject(value) && isReactComponent(value) === false) return <Comp {...props} />;
+  if (isObject(titleValue) && isReactComponent(titleValue) === false) return <Comp {...props} />;
 
   if (shouldBeTooltipped === false) return defaultComponent;
 
   return (
     <MuiTooltip
       arrow
-      title={value}
+      title={titleValue}
       disableHoverListener={false}
       disableFocusListener={true}
       disableTouchListener={true}

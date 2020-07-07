@@ -17,7 +17,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent titleValue="test" />);
 
     expect(mountedTooltippedComponent.containsMatchingElement(<Wrapper />), "to be true");
   });
@@ -27,7 +27,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent titleValue="test" />);
 
     const event = {
       target: {
@@ -52,7 +52,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent titleValue="test" />);
 
     const event = {
       target: {
@@ -71,7 +71,7 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent value="test" />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent titleValue="test" />);
 
     const event = {
       target: {
@@ -110,7 +110,7 @@ describe("withDeferredTooltip", () => {
 
     const whitespace = "                   ";
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent value={whitespace} />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent titleValue={whitespace} />);
 
     const wrapper = mountedTooltippedComponent.find(Wrapper);
 
@@ -122,9 +122,9 @@ describe("withDeferredTooltip", () => {
 
     const TooltippedCompponent = withDeferredTooltip(Wrapper);
 
-    const notReactComponent = { key: "value" };
+    const notReactComponent = { key: "titleValue" };
 
-    const mountedTooltippedComponent = shallow(<TooltippedCompponent value={notReactComponent} />);
+    const mountedTooltippedComponent = shallow(<TooltippedCompponent titleValue={notReactComponent} />);
 
     const wrapper = mountedTooltippedComponent.find(Wrapper);
 

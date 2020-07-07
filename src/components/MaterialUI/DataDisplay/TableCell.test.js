@@ -18,7 +18,7 @@ describe("TableCell", () => {
 
       const expected = (
         <TableCellMui>
-          <TooltippedTypography value={value} children={value} />
+          <TooltippedTypography titleValue={value} children={value} />
         </TableCellMui>
       );
 
