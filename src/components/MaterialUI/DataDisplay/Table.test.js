@@ -10,7 +10,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
-import Placeholder from "../Placeholder";
+import Placeholder from "./../DataDisplay/PredefinedElements/Placeholder";
 
 describe("Table", () => {
 	it("Renders Table", () => {
