@@ -5,29 +5,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { makeStyles } from "@material-ui/core/styles";
 import CheckboxMui from "@material-ui/core/Checkbox";
-import ComponentProps from "../componentProps";
 import { logProfiler } from "../../../utils/profilerHelper";
 import withDeferredTooltip from "../hocs/withDeferredTooltip";
+import { tableSelectionMode, useTableSelection } from "./useTableSelection";
+import { TableProps } from "./TableProps";
 
-export class TableProps extends ComponentProps {
-	static propNames = {
-		withoutTopBorder: "withoutTopBorder",
-		stickyHeader: "stickyHeader",
-		selectMode: "selectMode",
-		onRowClick: "onRowClick",
-	};
-
-	constructor() {
-		super();
-
-		this.componentProps.set(this.constructor.propNames.withoutTopBorder, null);
-		this.componentProps.set(this.constructor.propNames.stickyHeader, null);
-		this.componentProps.set(this.constructor.propNames.selectMode, null);
-		this.componentProps.set(this.constructor.propNames.onRowClick, null);
-	}
-}
-
-const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
 	container: {
 		flex: "0 1 100%",
 		fontSize: theme.typography.fontSize,
@@ -39,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 		overflowY: "auto",
 	},
 	table: {
-		marginTop: props => "-" + (props.stickyHeader ? props.tableHeight : 0) + "px",
+		tableLayout: "fixed",
 	},
 	stickyHeaderHead: {
 		borderTop: props =>
@@ -51,11 +34,12 @@ const useStyles = makeStyles(theme => ({
 		cursor: "default",
 	},
 	stickyHeaderTable: {
-		width: props => "calc(100% - " + props.scrolled + "px)",
+		tableLayout: "fixed",
+		width: props => "calc(100% - " + (props.scrolled || "0") + "px)",
 	},
 	stickyHeaderTableScroll: {
-		width: props => props.scrolled + "px",
-		backgroundColor: "red", // TODOJOC : Change it at the end for ----->   theme.palette.grey.lighter
+		width: props => (props.scrolled || "0") + "px",
+		backgroundColor: theme.palette.grey.lighter,
 		display: props => (props.scrolled > 0 ? "block" : "none"),
 	},
 	tableHeader: {
@@ -63,11 +47,10 @@ const useStyles = makeStyles(theme => ({
 			props.withoutTopBorder ? "none" : "1px solid " + theme.palette.grey.borders,
 		borderBottom: props =>
 			props.stickyHeader ? "none" : "1px solid " + theme.palette.grey.borders,
+		display: props => (props.stickyHeader ? "none" : "table-header-group"),
 		backgroundColor: theme.palette.grey.lighter,
-		display: props => (props.stickyHeader ? "table-header-group" : "table-header-group"),
 		overflow: "hidden",
 		cursor: "default",
-		//marginTop: props => "-" + (props.stickyHeader ? props.tableHeight : 0) + "px",
 	},
 	tableBody: {
 		overflowX: "hidden",
@@ -76,6 +59,7 @@ const useStyles = makeStyles(theme => ({
 	tableRow: {
 		borderBottom: "1px solid " + theme.palette.grey.borders,
 		cursor: props => (props.onRowClick ? "pointer" : "default"),
+		backgroundColor: theme.palette.background.paper + "!important",
 		"&:hover": {
 			backgroundColor: props =>
 				props.onRowClick ? theme.palette.grey.lighter : theme.palette.background.paper,
@@ -111,11 +95,7 @@ function propsAreEqualRow(prev, next) {
 	return prev.selected === next.selected;
 }
 
-const MemoTableRow = React.memo(TableRow, propsAreEqualRow);
-
-const TableBody = props => {
-	return <tbody className={props.className}>{props.rows}</tbody>;
-};
+export const MemoTableRow = React.memo(TableRow, propsAreEqualRow);
 
 function propsAreEqualBody(prev, next) {
 	return (
@@ -125,88 +105,47 @@ function propsAreEqualBody(prev, next) {
 	);
 }
 
-const MemoTableBody = React.memo(TableBody, propsAreEqualBody);
-
-// TODOJOC : Move that to a different file
-const staticSelectionHandlers = {
-	selectionHandler: null,
-	isSelected: null,
+const TableBody = props => {
+	return <tbody className={props.className}>{props.rows}</tbody>;
 };
 
-const tableSelectionMode = Object.freeze({ none: 1, indeterminate: 2, all: 3 });
+export const MemoTableBody = React.memo(TableBody, propsAreEqualBody);
 
-const useTableSelection = rows => {
-	const [selected, setSelected] = useState({});
-	const selectedNumber = Object.keys(selected).length;
-
-	staticSelectionHandlers.selectionHandler = (event, key) => {
-		console.log(
-			"useTableSelection useTableSelection useTableSelection useTableSelection",
-		);
-
-		const newSelection = {
-			...(key === null ? {} : selected),
-		};
-
-		if (key === null) {
-			if (event.target.checked) {
-				rows.forEach(r => (newSelection[r.key] = true));
-			}
-		} else {
-			if (event.target.checked) newSelection[key] = event.target.checked;
-			else delete newSelection[key];
-		}
-
-		setSelected(newSelection);
-	};
-
-	staticSelectionHandlers.isSelected = key => selected[key] === true;
-
-	const tableSelectionStatus =
-		selectedNumber === 0
-			? tableSelectionMode.none
-			: selectedNumber === rows.length
-			? tableSelectionMode.all
-			: tableSelectionMode.indeterminate;
-
-	return [selectedNumber, tableSelectionStatus];
-};
-
-const TempCell = withDeferredTooltip(
+const TableCell = withDeferredTooltip(
 	React.forwardRef((props, ref) => {
 		return (
 			<td className={props.className} ref={ref} {...props}>
-				{props.cellValue}
+				{props.value}
 			</td>
 		);
 	}),
 );
 
 // We assume cell will never change value so we want to avoid rerendering as much as possible
-const MemoTableCell = React.memo(TempCell, () => true);
+export const MemoTableCell = React.memo(TableCell, () => true);
 
-const buildRowCheckbox = (classes, key) => {
-	const rowSelected = staticSelectionHandlers.isSelected(key);
+const buildRowCheckbox = (classes, key, selectionHandlers) => {
+	const rowSelected = selectionHandlers.isSelected(key);
 
 	return (
 		<td className={classes.tableCellSelect} selected={rowSelected}>
 			<CheckboxMui
 				className={classes.rowSelectCheckbox}
 				checked={rowSelected}
-				onChange={event => staticSelectionHandlers.selectionHandler(event, key)}
+				onChange={event => selectionHandlers.selectionHandler(event, key)}
 			/>
 		</td>
 	);
 };
 
-const buildTableCheckbox = (classes, tableSelectionStatus) => {
+const buildTableCheckbox = (classes, tableSelectionStatus, selectionMethods) => {
 	return (
 		<th key="tableSelector" className={classes.headerCellSelect}>
 			<CheckboxMui
 				className={classes.rowSelectCheckbox}
 				checked={tableSelectionStatus === tableSelectionMode.all}
 				indeterminate={tableSelectionStatus === tableSelectionMode.indeterminate}
-				onChange={event => staticSelectionHandlers.selectionHandler(event, null)}
+				onChange={event => selectionMethods.selectionHandler(event, null)}
 			/>
 		</th>
 	);
@@ -223,9 +162,17 @@ const StickerTableHeader = React.forwardRef((props, refHeader) => (
 	</div>
 ));
 
-const buildTableHeaders = (headers, classes, selectMode, tableSelectionStatus) => {
+const buildTableHeaders = (
+	headers,
+	classes,
+	selectMode,
+	tableSelectionStatus,
+	selectionMethods,
+) => {
 	const tableCheckbox =
-		selectMode === true ? [buildTableCheckbox(classes, tableSelectionStatus)] : [];
+		selectMode === true
+			? [buildTableCheckbox(classes, tableSelectionStatus, selectionMethods)]
+			: [];
 
 	return tableCheckbox.concat(
 		headers.map((header, index) => (
@@ -236,7 +183,7 @@ const buildTableHeaders = (headers, classes, selectMode, tableSelectionStatus) =
 	);
 };
 
-const buildTableRows = (rows, classes, selectMode, onRowClick) => {
+const buildTableRows = (rows, classes, selectMode, onRowClick, selectionHandlers) => {
 	const onClick = (evt, row) => {
 		if (evt.target.tagName !== "INPUT") {
 			onRowClick(evt, row.element);
@@ -247,16 +194,16 @@ const buildTableRows = (rows, classes, selectMode, onRowClick) => {
 		<MemoTableRow
 			className={classes.tableRow}
 			key={row.key}
-			selected={staticSelectionHandlers.isSelected(row.key)}
 			onClick={evt => onClick(evt, row)}
+			selected={selectionHandlers.isSelected(row.key)}
 		>
-			{selectMode === true ? buildRowCheckbox(classes, row.key) : null}
+			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
 			{row.columns.map((cell, cellIndex) => (
 				<MemoTableCell
 					className={classes.tableCell}
 					key={cellIndex}
-					cellValue={cell.cellElement}
-					value={cell.title}
+					value={cell.cellElement}
+					titleValue={cell.title}
 					style={cell.cellStyle}
 				/>
 			))}
@@ -302,7 +249,6 @@ const FullTable = React.forwardRef((props, ref) => {
 	);
 });
 
-// TODOJOC : Each row in the rows array requires a "key"
 const Table = ({
 	contentTimestamp,
 	headers,
@@ -310,6 +256,7 @@ const Table = ({
 	scrollLoader,
 	latestPage,
 	pageLength,
+	placeholder,
 	tableProps,
 }) => {
 	if (tableProps != null && tableProps instanceof TableProps === false) {
@@ -328,7 +275,9 @@ const Table = ({
 	const [tableHeight, setHeight] = useState(41);
 	const [scrolled, setScrolled] = useState(0);
 
-	const [selectedNumber, tableSelectionStatus] = useTableSelection(rows);
+	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(
+		rows,
+	);
 
 	const classes = useStyles({
 		withoutTopBorder,
@@ -348,23 +297,32 @@ const Table = ({
 
 		handleResize();
 
+		window.addEventListener("resize", handleResize);
+
 		return () => window.removeEventListener("resize", handleResize);
 	}, [refScrolled, contentTimestamp]);
 
 	useEffect(() => {
-		if (stickyHeader) setHeight(refHeader.current.clientHeight);
+		if (stickyHeader) {
+			setHeight(refHeader.current.clientHeight);
+		}
 	}, [refHeader, stickyHeader]);
-
-	// TODOJOC CREATE onClick for MemoTableRow
 
 	const tableHeaders = buildTableHeaders(
 		headers,
 		classes,
 		selectMode,
 		tableSelectionStatus,
+		selectionMethods,
 	);
 
-	const tableRows = buildTableRows(rows, classes, selectMode, onRowClick);
+	const tableRows = buildTableRows(
+		rows,
+		classes,
+		selectMode,
+		onRowClick,
+		selectionMethods,
+	);
 
 	const stickerTableHeader =
 		stickyHeader === true ? (
@@ -392,15 +350,14 @@ const Table = ({
 				latestPage={latestPage}
 				pageLength={pageLength}
 			/>
+			{tableRows.length > 0 ? null : placeholder}
 		</TableContainer>
 	);
 };
 
 function tablePropsAreEqual(prev, next) {
 	return (
-		next.contentTimestamp !== undefined &&
-		prev.contentTimestamp === next.contentTimestamp &&
-		prev.latestPage === next.latestPage
+		next.contentTimestamp !== undefined && prev.contentTimestamp === next.contentTimestamp
 	);
 }
 

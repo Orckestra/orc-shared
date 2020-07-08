@@ -79,7 +79,8 @@ export const buildHeaderAndRowFromConfig = (
 	keyField = "id",
 ) => {
 	const headers = columnDefinitions.map(def => ({
-		cellElement: <FormattedMessage {...def.label} />,
+		cellElement:
+			typeof def.label === "object" ? <FormattedMessage {...def.label} /> : def.label,
 		cellStyle: def.cellStyle,
 	}));
 

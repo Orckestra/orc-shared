@@ -556,65 +556,12 @@ const setThemeOverrides = theme => ({
 	},
 	MuiTable: {
 		...theme.MuiTable,
-		root: {
-			...theme.root,
-			tableLayout: "fixed",
-			display: "table",
-			width: "100%",
-			maxWidth: "100%",
-		},
 	},
 	MuiTableHead: {
 		...theme.MuiTableHead,
-		root: {
-			...theme.root,
-			maxWidth: "100%",
-			//display: 'block', // TODOJOC and looks for everything related to TABLE, cell, row.......
-			display: "table-header-group",
-			verticalAlign: "middle",
-			backgroundColor: theme.palette.grey.lighter,
-		},
-	},
-	MuiTableBody: {},
-	MuiTableCell: {
-		...theme.MuiTableCell,
-		root: {
-			...theme.root,
-			display: "table-cell",
-			textAlign: "left",
-			//padding: 0,
-			whiteSpace: "nowrap",
-			overflow: "hidden",
-			textOverflow: "ellipsis",
-			fontFamily: theme.typography.fontFamily,
-			fontSize: theme.typography.fontSize,
-			lineHeight: theme.typography.fontSize + 4 + "px",
-			borderBottomColor: theme.palette.secondary.light,
-		},
-		head: {
-			...theme.head,
-			position: "sticky",
-			display: "table-cell",
-			//padding: 0,
-			backgroundColor: theme.palette.grey.lighter,
-			fontWeight: theme.typography.fontWeightBold,
-			lineHeight: theme.typography.fontSize + "px",
-		},
 	},
 	MuiTableRow: {
 		...theme.MuiTableRow,
-		root: {
-			...theme.root,
-			display: "table-row",
-		},
-	},
-	MuiTableContainer: {
-		...theme.MuiTableContainer,
-		root: {
-			...theme.root,
-			overflowX: "hidden",
-			overflowY: "auto",
-		},
 	},
 	MuiTablePagination: {},
 	MuiTableSortLabel: {},

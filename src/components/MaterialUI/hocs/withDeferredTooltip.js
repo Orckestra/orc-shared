@@ -7,10 +7,12 @@ import {
 	isReactComponent,
 } from "../../../utils/propertyValidator";
 
-const withDeferredTooltip = Comp => ({ value, ...props }) => {
-	const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
+// Pay attention that if component you are passed to this HOC contains titleValue property
+// by itself then that property will be disappeared after using that HOC.
+// To fix it rename that property and pass titleValue just as a title for tooltip.
 
-	props.value = value;
+const withDeferredTooltip = Comp => ({ titleValue, ...props }) => {
+	const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
 
 	const defaultComponent = (
 		<Comp onMouseEnter={event => makeComponentTooltipped(event)} {...props} />
@@ -20,18 +22,20 @@ const withDeferredTooltip = Comp => ({ value, ...props }) => {
 		setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
 	};
 
-	if (value == null) return <Comp {...props} />;
+	if (titleValue == null) return <Comp {...props} />;
 
-	if (isString(value) && isStringNullOrWhitespace(value)) return <Comp {...props} />;
+	if (isString(titleValue) && isStringNullOrWhitespace(titleValue))
+		return <Comp {...props} />;
 
-	if (isObject(value) && isReactComponent(value) === false) return <Comp {...props} />;
+	if (isObject(titleValue) && isReactComponent(titleValue) === false)
+		return <Comp {...props} />;
 
 	if (shouldBeTooltipped === false) return defaultComponent;
 
 	return (
 		<MuiTooltip
 			arrow
-			title={value}
+			title={titleValue}
 			disableHoverListener={false}
 			disableFocusListener={true}
 			disableTouchListener={true}

@@ -12,6 +12,35 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		captionOff: { id: "captionOff", defaultMessage: "is Off" },
 	};
 
+	it("build simple table headers", () => {
+		const columnDef = [
+			{ fieldName: "test", label: "simple header", cellStyle: { someStyle: "a style" } },
+			{ fieldName: "another", label: "another simple header" },
+		];
+		const elements = [
+			{
+				id: "an_id1",
+				test: "A text row 1",
+				another: "another 1",
+				extraneous: "Don't show 1",
+			},
+			{
+				id: "an_id2",
+				test: "A text row 2",
+				another: "another 2",
+				extraneous: "Don't show 2",
+			},
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		expect(headers.length, "to equal", 2);
+		expect(headers[0].cellElement, "to equal", "simple header");
+		expect(headers[0].cellStyle, "to equal", columnDef[0].cellStyle);
+		expect(headers[1].cellElement, "to equal", "another simple header");
+		expect(headers[1].cellStyle, "to be undefined");
+	});
+
 	it("build table headers and rows as expected", () => {
 		const columnDef = [
 			{ fieldName: "test", label: messages.a_label, cellStyle: { someStyle: "a style" } },
