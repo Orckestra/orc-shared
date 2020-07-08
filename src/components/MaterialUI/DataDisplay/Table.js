@@ -235,15 +235,12 @@ const FullTable = React.forwardRef((props, ref) => {
 				>
 					<TableRow>{props.tableHeaders}</TableRow>
 				</TableHead>
-				{/* TODOJOC : Remove the Profiler*/}
-				<Profiler id="TableBodyTable" onRender={logProfiler}>
-					<MemoTableBody
-						className={props.classes.tableBody}
-						contentTimestamp={props.contentTimestamp}
-						rows={props.rows}
-						selectedNumber={props.selectedNumber}
-					/>
-				</Profiler>
+				<MemoTableBody
+					className={props.classes.tableBody}
+					contentTimestamp={props.contentTimestamp}
+					rows={props.rows}
+					selectedNumber={props.selectedNumber}
+				/>
 			</TableMui>
 		</div>
 	);
