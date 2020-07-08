@@ -173,6 +173,33 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].title, "to equal", "another 2_transformation");
 	});
 
+	it("build table rows as expected with a custom builder", () => {
+		const columnDef = [
+			{
+				type: "custom",
+				builder: e => e.test + " a value from builder",
+				label: messages.a_label,
+			},
+		];
+		const elements = [
+			{ id: "an_id1", test: 123, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: 44, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+		expect(rows[0].columns[0].cellElement, "to equal", "123 a value from builder");
+		expect(rows[0].columns[0].title, "to equal", "123 a value from builder");
+
+		expect(rows[1].columns[0].cellElement, "to equal", "44 a value from builder");
+		expect(rows[1].columns[0].title, "to equal", "44 a value from builder");
+	});
+
 	it("build table rows as expected with currency", () => {
 		const columnDef = [
 			{ fieldName: "test", label: messages.a_label, type: "currency", currency: "USD" },

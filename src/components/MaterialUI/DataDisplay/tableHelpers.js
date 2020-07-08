@@ -16,6 +16,10 @@ const renderByType = (e, def, rowId) => {
 		: e[def.fieldName];
 
 	switch (def.type) {
+		case "custom": {
+			return [def.builder(e)];
+		}
+
 		case "currency": {
 			const currency = Array.isArray(def.currency)
 				? safeGet(e, ...def.currency)
