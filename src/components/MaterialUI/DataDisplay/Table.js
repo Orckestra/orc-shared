@@ -121,7 +121,7 @@ const TableCell = withDeferredTooltip(
 	}),
 );
 
-// We assume cell will never change value so we want to avoid rerendering as much as possible
+// We will assume for now that cell will never change value so we want to avoid rerendering as much as possible
 export const MemoTableCell = React.memo(TableCell, () => true);
 
 const buildRowCheckbox = (classes, key, selectionHandlers) => {

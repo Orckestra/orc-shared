@@ -1,9 +1,9 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
 import MultipleLinesText from "./MultipleLinesText";
-import TextProps from "./textProps";
+import TextProps from "../../textProps";
 import TextClamp from "react-multi-clamp";
-import { ignoreConsoleError } from "./../../utils/testUtils";
+import { ignoreConsoleError } from "../../../../utils/testUtils";
 
 describe("MultipleLinesText", () => {
 	const text =
@@ -28,6 +28,26 @@ describe("MultipleLinesText", () => {
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 
+	it("Shoud use children property for titleValue by default", () => {
+		const component = <MultipleLinesText>{text}</MultipleLinesText>;
+		const mountedComponent = shallow(component);
+		expect(
+			mountedComponent.prop("titleValue"),
+			"to equal",
+			mountedComponent.prop("children"),
+		);
+	});
+
+	it("Shoud use passed titleValue if it's defined", () => {
+		const titleValue = "test";
+
+		const component = (
+			<MultipleLinesText titleValue={titleValue}>{text}</MultipleLinesText>
+		);
+		const mountedComponent = shallow(component);
+		expect(mountedComponent.prop("titleValue"), "to equal", titleValue);
+	});
+
 	it("Use style passed to component", () => {
 		const multipleLinesTextProps = new TextProps();
 		const test = "testRoot";
@@ -45,7 +65,33 @@ describe("MultipleLinesText", () => {
 		const component = <MultipleLinesText>{text}</MultipleLinesText>;
 		const mountedComponent = shallow(component);
 
-		expect(mountedComponent.find(TextClamp).get(0).props.clamp, "to equal", "auto");
+		expect(mountedComponent.prop("clamp"), "to equal", "auto");
+	});
+
+	it("Passes true for alwaysDisplay property if text is clamped", () => {
+		const component = <MultipleLinesText>{text}</MultipleLinesText>;
+		const mountedComponent = shallow(component);
+
+		const event = {
+			needClamp: true,
+		};
+
+		mountedComponent.invoke("onClampStart")(event);
+
+		expect(mountedComponent.prop("alwaysDisplay"), "to be true");
+	});
+
+	it("Passes false for alwaysDisplay property if text is not clamped", () => {
+		const component = <MultipleLinesText>{text}</MultipleLinesText>;
+		const mountedComponent = shallow(component);
+
+		const event = {
+			needClamp: false,
+		};
+
+		mountedComponent.invoke("onClampStart")(event);
+
+		expect(mountedComponent.prop("alwaysDisplay"), "to be false");
 	});
 
 	it("Fails if textProps has wrong type", () => {

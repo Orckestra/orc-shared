@@ -99,6 +99,33 @@ describe("withDeferredTooltip", () => {
 		expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
 	});
 
+	it("Always displayes passed title in tooltip if always display is set", () => {
+		const Wrapper = props => <ComponentToBeTooltipped {...props} />;
+
+		const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+		const mountedTooltippedComponent = shallow(
+			<TooltippedCompponent alwaysDisplay titleValue="test" />,
+		);
+
+		const event = {
+			target: {
+				offsetWidth: 100,
+				scrollWidth: 100,
+			},
+		};
+
+		mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
+
+		let expected = (
+			<MuiTooltip title="test">
+				<Wrapper />
+			</MuiTooltip>
+		);
+
+		expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
+	});
+
 	it("Retrieves passed component without any changes if title is undefined", () => {
 		const Wrapper = props => <ComponentToBeTooltipped {...props} />;
 
