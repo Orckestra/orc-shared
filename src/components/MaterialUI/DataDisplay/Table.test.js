@@ -2,14 +2,8 @@ import React, { cloneElement } from "react";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import sinon from "sinon";
-import { mount, shallow } from "enzyme";
-import Table, {
-	MemoTableBody,
-	MemoTableCell,
-	MemoTableRow,
-	TempCell,
-	useStyles,
-} from "./Table";
+import { mount } from "enzyme";
+import Table, { MemoTableBody, MemoTableCell, MemoTableRow, useStyles } from "./Table";
 import TableMui from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";

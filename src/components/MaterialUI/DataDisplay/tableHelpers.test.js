@@ -1,8 +1,5 @@
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
-import sinon from "sinon";
-import * as React from "react";
 import CheckboxProps from "../Inputs/CheckboxProps";
-import Switch from "../../Switch";
 
 describe("table helpers buildHeaderAndRowFromConfig", () => {
 	const messages = {
@@ -32,7 +29,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			},
 		];
 
-		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+		const { headers } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 2);
 		expect(headers[0].cellElement, "to equal", "simple header");
