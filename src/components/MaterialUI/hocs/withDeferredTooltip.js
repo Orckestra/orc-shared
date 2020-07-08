@@ -6,8 +6,7 @@ import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "
 // by itself then that property will be disappeared after using that HOC.
 // To fix it rename that property and pass titleValue just as a title for tooltip.
 
-const withDeferredTooltip = Comp => ({ titleValue, ...props }) => {
-
+const withDeferredTooltip = Comp => ({ titleValue, alwaysDisplay, ...props }) => {
   const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
 
   const defaultComponent = (
@@ -18,7 +17,12 @@ const withDeferredTooltip = Comp => ({ titleValue, ...props }) => {
   );
 
   const makeComponentTooltipped = function (event) {
-    setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
+    if (alwaysDisplay) {
+      setShouldBeTooltipped(true);
+    }
+    else {
+      setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
+    }
   }
 
   if (titleValue == null) return <Comp {...props} />;
