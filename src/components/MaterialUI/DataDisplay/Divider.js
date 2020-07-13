@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
 		height: theme.spacing(3),
 		margin: `0 ${theme.spacing(1)}`,
 	},
+	inheritedWidth: {
+		width: "inherit",
+	},
 }));
 
 const Divider = ({ dividerProps }) => {
@@ -24,9 +27,15 @@ const Divider = ({ dividerProps }) => {
 		throw new TypeError("dividerProps property is not of type DividerProps");
 	}
 
-	const orientation = dividerProps?.get(DividerProps.propNames.orientation);
-	const light = dividerProps?.get(DividerProps.propNames.light);
-	const variant = dividerProps?.get(DividerProps.propNames.variant);
+	const orientation =
+		dividerProps?.get(DividerProps.propNames.orientation) || "horizontal";
+	const light = dividerProps?.get(DividerProps.propNames.light) || false;
+	const variant = dividerProps?.get(DividerProps.propNames.variant) || "fullWidth";
+
+	const fullWidthHorizontalStyle =
+		variant === "fullWidth" && orientation === "horizontal"
+			? classes.inheritedWidth
+			: null;
 
 	return (
 		<DividerMui
@@ -36,6 +45,7 @@ const Divider = ({ dividerProps }) => {
 			classes={{
 				root: classNames(
 					classes.dividerRoot,
+					fullWidthHorizontalStyle,
 					dividerProps?.getStyle(DividerProps.ruleNames.root),
 				),
 				light: classNames(

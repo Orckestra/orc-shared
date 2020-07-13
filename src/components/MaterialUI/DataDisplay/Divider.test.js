@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "enzyme";
+import { mount, shallow } from "enzyme";
 import Divider from "./Divider";
 import DividerProps from "./dividerProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
@@ -110,5 +110,14 @@ describe("Divider", () => {
 			const component = <Divider dividerProps="Wrong Type" />;
 			expect(() => mount(component), "to throw a", TypeError);
 		});
+	});
+
+	it("Shoud use fallback values if poperties are not passed", () => {
+		const component = <Divider />;
+		const mountedComponent = shallow(component);
+
+		expect(mountedComponent.prop("light"), "to equal", false);
+		expect(mountedComponent.prop("orientation"), "to equal", "horizontal");
+		expect(mountedComponent.prop("variant"), "to equal", "fullWidth");
 	});
 });
