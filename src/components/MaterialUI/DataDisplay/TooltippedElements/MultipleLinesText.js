@@ -24,24 +24,32 @@ const MultipleLinesText = ({ children, titleValue, textProps }) => {
 
 	const title = titleValue == null ? children : titleValue;
 
-	const TooltippedTextClamp = withDeferredTooltip(React.forwardRef((props, ref) => {
-		return <TextClamp ref={ref} {...props} />
-	}));
+	const TooltippedTextClamp = withDeferredTooltip(
+		React.forwardRef((props, ref) => {
+			return <TextClamp ref={ref} {...props} />;
+		}),
+	);
 
-	const clampHandler = useCallback((event) => {
-		if (isClamped === false && event.needClamp) {
-			setIsClamped(true);
-		}
-	}, [isClamped, setIsClamped]);
+	const clampHandler = useCallback(
+		event => {
+			if (isClamped === false && event.needClamp) {
+				setIsClamped(true);
+			}
+		},
+		[isClamped, setIsClamped],
+	);
 
-	return <TooltippedTextClamp disableCssClamp={true}
-		clamp={lineCount}
-		className={classNames(classes.clampedText, customStyles)}
-		children={children.toString()}
-		titleValue={title}
-		alwaysDisplay={isClamped}
-		onClampStart={(event) => clampHandler(event)}
-	/>
+	return (
+		<TooltippedTextClamp
+			disableCssClamp={true}
+			clamp={lineCount}
+			className={classNames(classes.clampedText, customStyles)}
+			children={children.toString()}
+			titleValue={title}
+			alwaysDisplay={isClamped}
+			onClampStart={event => clampHandler(event)}
+		/>
+	);
 };
 
 export default MultipleLinesText;

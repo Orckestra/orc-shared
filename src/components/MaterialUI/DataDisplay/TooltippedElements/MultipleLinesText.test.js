@@ -31,13 +31,19 @@ describe("MultipleLinesText", () => {
 	it("Shoud use children property for titleValue by default", () => {
 		const component = <MultipleLinesText>{text}</MultipleLinesText>;
 		const mountedComponent = shallow(component);
-		expect(mountedComponent.prop("titleValue"), "to equal", mountedComponent.prop("children"));
+		expect(
+			mountedComponent.prop("titleValue"),
+			"to equal",
+			mountedComponent.prop("children"),
+		);
 	});
 
 	it("Shoud use passed titleValue if it's defined", () => {
 		const titleValue = "test";
 
-		const component = <MultipleLinesText titleValue={titleValue}>{text}</MultipleLinesText>;
+		const component = (
+			<MultipleLinesText titleValue={titleValue}>{text}</MultipleLinesText>
+		);
 		const mountedComponent = shallow(component);
 		expect(mountedComponent.prop("titleValue"), "to equal", titleValue);
 	});
@@ -67,8 +73,8 @@ describe("MultipleLinesText", () => {
 		const mountedComponent = shallow(component);
 
 		const event = {
-			needClamp: true
-		}
+			needClamp: true,
+		};
 
 		mountedComponent.invoke("onClampStart")(event);
 
@@ -80,8 +86,8 @@ describe("MultipleLinesText", () => {
 		const mountedComponent = shallow(component);
 
 		const event = {
-			needClamp: false
-		}
+			needClamp: false,
+		};
 
 		mountedComponent.invoke("onClampStart")(event);
 
