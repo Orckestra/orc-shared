@@ -1,9 +1,9 @@
-import React, { cloneElement } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import sinon from "sinon";
 import { mount } from "enzyme";
-import Table, { MemoTableBody, MemoTableCell, MemoTableRow, useStyles } from "./Table";
+import Table, { MemoTableBody, MemoTableRow, useStyles } from "./Table";
 import TableMui from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -14,7 +14,6 @@ import { MuiThemeProvider } from "@material-ui/core";
 import Placeholder from "../../Placeholder";
 import { staticTableSelectionMethods } from "./useTableSelection";
 import { ignoreConsoleError } from "../../../utils/testUtils";
-import TableMUI from "@material-ui/core/Table/Table";
 import { TableProps } from "./TableProps";
 
 const TestComp = ({ classToTest, styleProps }) => {
@@ -81,7 +80,7 @@ describe("useStyles", () => {
 		expect(
 			<MuiThemeContainer
 				classToTest="tableContainer"
-				styleProps={{ tableHeight: 17, stickyHeader: true }}
+				styleProps={{ headerHeight: 17, stickyHeader: true }}
 				muiTheme={muiTheme}
 			/>,
 			"when mounted",
@@ -99,11 +98,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="container"
-				styleProps={{ stickyHeader: true }}
-				muiTheme={muiTheme}
-			/>,
+			<MuiThemeContainer classToTest="container" styleProps={{ stickyHeader: true }} muiTheme={muiTheme} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "overflow: hidden"),
@@ -119,11 +114,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="stickyHeaderHead"
-				styleProps={{ withoutTopBorder: true }}
-				muiTheme={muiTheme}
-			/>,
+			<MuiThemeContainer classToTest="stickyHeaderHead" styleProps={{ withoutTopBorder: true }} muiTheme={muiTheme} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "border-top: none"),
@@ -139,11 +130,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="stickyHeaderTable"
-				styleProps={{ scrolled: 21 }}
-				muiTheme={muiTheme}
-			/>,
+			<MuiThemeContainer classToTest="stickyHeaderTable" styleProps={{ scrolled: 21 }} muiTheme={muiTheme} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: calc(100% - 21px)"),
@@ -159,11 +146,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="stickyHeaderTableScroll"
-				styleProps={{ scrolled: 13 }}
-				muiTheme={muiTheme}
-			/>,
+			<MuiThemeContainer classToTest="stickyHeaderTableScroll" styleProps={{ scrolled: 13 }} muiTheme={muiTheme} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: 13px").and("to contain", "display: block"),
@@ -179,11 +162,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="stickyHeaderTableScroll"
-				styleProps={{ scrolled: 13 }}
-				muiTheme={muiTheme}
-			/>,
+			<MuiThemeContainer classToTest="stickyHeaderTableScroll" styleProps={{ scrolled: 13 }} muiTheme={muiTheme} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: 13px").and("to contain", "display: block"),
@@ -195,39 +174,19 @@ describe("useStyles", () => {
 			<MuiThemeContainer classToTest="tableRow" muiTheme={muiTheme} />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "cursor: default")
-				.and("to contain", ":hover {background-color: #FFF;}"),
+			expect.it("to contain", "cursor: default").and("to contain", ":hover {background-color: #FFF;}"),
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="tableRow"
-				styleProps={{ onRowClick: () => {} }}
-				muiTheme={muiTheme}
-			/>,
+			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => {} }} muiTheme={muiTheme} />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "cursor: pointer")
-				.and("to contain", ":hover {background-color: #F7F7F7;}"),
+			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),
 		);
 	});
 });
 
 describe("Memoize components", () => {
-	it("Updates table cell props", () => {
-		ignoreConsoleError(() => {
-			const mountedComponent = mount(<MemoTableCell selected={true} />);
-
-			expect(mountedComponent.prop("selected"), "to be truthy");
-
-			mountedComponent.setProps({ selected: false });
-
-			expect(mountedComponent.prop("selected"), "to be falsy");
-		});
-	});
-
 	it("Updates table row props", () => {
 		ignoreConsoleError(() => {
 			const mountedComponent = mount(<MemoTableRow selected={true} />);
@@ -241,52 +200,27 @@ describe("Memoize components", () => {
 	});
 
 	it("Updates table body props", () => {
-		const mountedComponent = mount(
-			<TableMUI>
-				<MemoTableBody selectedNumber={4} />
-			</TableMUI>,
-		);
+		ignoreConsoleError(() => {
+			const mountedComponent = mount(<MemoTableBody selectedNumber={4} rows={[]} />);
 
-		const tableBody = mountedComponent.find(MemoTableBody);
+			expect(mountedComponent.prop("selectedNumber"), "to equal", 4);
+			expect(mountedComponent.prop("rows").length, "to equal", 0);
 
-		expect(tableBody.prop("selectedNumber"), "to equal", 4);
-		expect(tableBody.prop("contentTimestamp"), "to equal", undefined);
+			mountedComponent.setProps({ selectedNumber: 5, rows: [{ key: "1", columns: [] }] });
 
-		const timestamp = Date.now();
-
-		mountedComponent.setProps({
-			children: cloneElement(mountedComponent.props().children, {
-				selectedNumber: 5,
-				contentTimestamp: timestamp,
-			}),
+			expect(mountedComponent.prop("selectedNumber"), "to equal", 5);
+			expect(mountedComponent.prop("rows").length, "to equal", 1);
 		});
-
-		let newTableBody = mountedComponent.find(MemoTableBody);
-
-		expect(newTableBody.prop("selectedNumber"), "to equal", 5);
-		expect(newTableBody.prop("contentTimestamp"), "not to equal", undefined);
-
-		mountedComponent.setProps({
-			children: cloneElement(mountedComponent.props().children, {
-				selectedNumber: 6,
-				contentTimestamp: timestamp,
-			}),
-		});
-
-		newTableBody = mountedComponent.find(MemoTableBody);
-
-		expect(newTableBody.prop("selectedNumber"), "to equal", 6);
-		expect(newTableBody.prop("contentTimestamp"), "not to equal", undefined);
 	});
 
 	it("Updates table props", () => {
 		const mountedComponent = mount(<Table headers={[]} rows={[]} />);
 
-		expect(mountedComponent.prop("contentTimestamp"), "to equal", undefined);
+		expect(mountedComponent.prop("rows").length, "to equal", 0);
 
-		mountedComponent.setProps({ contentTimestamp: Date.now() });
+		mountedComponent.setProps({ rows: [{ key: "1", columns: [] }] });
 
-		expect(mountedComponent.prop("contentTimestamp"), "not to equal", undefined);
+		expect(mountedComponent.prop("rows").length, "to equal", 1);
 	});
 });
 
@@ -678,5 +612,54 @@ describe("Table", () => {
 
 		const placeHolder = mountedComponent.find(Placeholder);
 		expect(placeHolder.length, "to equal", 1);
+	});
+
+	it("handle onresize event TODOJOC", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.stickyHeader, true);
+
+		const root = document.createElement("div");
+
+		document.body.append(root);
+		const element = <Table rows={rows} headers={headers} tableProps={tableProps} />;
+		ReactDOM.render(element, root);
+
+		const tables = root.querySelectorAll("table");
+		expect(tables.length, "to equal", 2);
+
+		const scrollDiv = tables[0].parentElement.querySelectorAll("div")[0];
+		expect(getComputedStyle(scrollDiv).getPropertyValue("display"), "to equal", "none");
+
+		act(() => {
+			// XXX: This is a nasty hack of jsdom, and may break unexpectedly
+			Object.defineProperty(tables[1].parentElement, "clientHeight", {
+				value: 10,
+				writable: true,
+			});
+			Object.defineProperty(tables[1].parentElement, "clientWidth", {
+				value: 11,
+				writable: true,
+			});
+			window.dispatchEvent(new Event("resize"));
+		});
+
+		act(() => {
+			// XXX: This is a nasty hack of jsdom, and may break unexpectedly
+			Object.defineProperty(tables[1].parentElement, "clientHeight", {
+				value: 110,
+				writable: true,
+			});
+			Object.defineProperty(tables[1].parentElement, "clientWidth", {
+				value: 111,
+				writable: true,
+			});
+			window.dispatchEvent(new Event("resize"));
+		});
+
+		//expect(getComputedStyle(scrollDiv).getPropertyValue("display"), "to equal", "block");
 	});
 });

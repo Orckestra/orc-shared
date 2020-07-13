@@ -6,6 +6,7 @@ export class TableProps extends ComponentProps {
 		stickyHeader: "stickyHeader",
 		selectMode: "selectMode",
 		onRowClick: "onRowClick",
+		classes: "classes",
 	};
 
 	constructor() {
@@ -15,5 +16,6 @@ export class TableProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.stickyHeader, null);
 		this.componentProps.set(this.constructor.propNames.selectMode, null);
 		this.componentProps.set(this.constructor.propNames.onRowClick, null);
+		this.componentProps.set(this.constructor.propNames.classes, null);
 	}
 }
