@@ -3,36 +3,49 @@ import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps from "./SelectProps";
+import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
+import Icon from "../../Icon";
 
 const useStyles = makeStyles(theme => ({
 	select: {
 		"& ul": {
-			minWidth: "175px",
-			maxHeight: "300px",
+			minWidth: theme.spacing(17.5),
+			maxHeight: theme.spacing(30)
 		},
 		"& li": {
-			fontSize: 12,
+			fontSize: theme.typography.fieldLabelSize,
 			"&:hover": {
 				backgroundColor: theme.palette.primary.main,
 			},
 		},
 	},
 	input: {
-		borderRadius: 4,
+		borderRadius: "4px",
 		position: "relative",
 		backgroundColor: theme.palette.background.paper,
-		border: "1px solid #ced4da",
-		fontSize: 12,
-		minWidth: "150px",
-		maxWidth: "200px",
-		padding: "6px 6px 6px 6px",
+		border: `1px solid ${theme.palette.grey.borders}`,
+		fontSize: theme.typography.fieldLabelSize,
+		minWidth: theme.spacing(15),
+		maxWidth: theme.spacing(20),
+		padding: theme.spacing(0.6),
 		transition: theme.transitions.create(["border-color", "box-shadow"]),
 		"&:focus": {
-			borderRadius: 4,
-			borderColor: "#80bdff",
-			boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
+			borderRadius: "4px",
+			borderColor: theme.palette.primary.light,
+			boxShadow: `0 0 0 0.2rem rgba(${theme.palette.primary.main},.25)`,
 		},
 	},
+	label: {
+		fontFamily: theme.typography.button.fontFamily,
+		fontWeight: theme.typography.button.fontWeight,
+		fontSize: theme.typography.button.fontSize
+	},
+	icon: {
+		right: theme.spacing(1),
+		width: theme.spacing(1.2),
+		padding: `${theme.spacing(0.5)} 0`,
+		color: theme.palette.primary.main,
+	}
 }));
 
 const MenuProps = {
@@ -43,23 +56,9 @@ const MenuProps = {
 	},
 };
 
-const ChevronDown = props => (
-	<div
-		{...props}
-		style={{
-			fontSize: "32px",
-			fontFamily: "courier,monospace",
-			//fontWeight: 'bold',
-			color: "black",
-			height: "10px",
-			width: "20px",
-			marginRight: "5px",
-			padding: "12px 0 0",
-		}}
-	>
-		ˇ
-	</div>
-);
+const ChevronDown = props => {
+	return <Icon id="chevron-down" {...props} />;
+};
 
 const Select = ({ options, selectProps }) => {
 	if (selectProps != null && selectProps instanceof SelectProps === false) {
@@ -82,10 +81,11 @@ const Select = ({ options, selectProps }) => {
 			disableUnderline={true}
 			IconComponent={ChevronDown}
 			MenuProps={{ classes: { paper: classes.select }, ...MenuProps }}
+			classes={{ icon: classes.icon }}
 		>
 			{options.map(option => (
 				<MenuItem key={option.value} value={option.value}>
-					{option.label}
+					<TooltippedTypography children={option.label} noWrap titleValue={option.label} classes={{ body1: classes.label }} />
 				</MenuItem>
 			))}
 		</SelectMUI>
