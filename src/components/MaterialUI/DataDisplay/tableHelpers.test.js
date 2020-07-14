@@ -507,4 +507,57 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			offCaption: messages.captionOff,
 		});
 	});
+
+	it("build table rows as expected without tooltip as required", () => {
+		const columnDef = [
+			{ fieldName: "test", label: messages.a_label, className: "aClassXYZ", tooltipable: false },
+			{ fieldName: "another", label: messages.another },
+		];
+
+		const elements = [
+			{
+				id: "an_id1",
+				test: "A text row 1",
+				another: "another 1",
+				extraneous: "Don't show 1",
+			},
+			{
+				id: "an_id2",
+				test: "A text row 2",
+				another: "another 2",
+				extraneous: "Don't show 2",
+			},
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		expect(headers.length, "to equal", 2);
+		expect(headers[0].cellElement.props, "to equal", messages.a_label);
+		expect(headers[0].className, "to equal", columnDef[0].className);
+		expect(headers[1].cellElement.props, "to equal", messages.another);
+		expect(headers[1].className, "to be undefined");
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 2);
+
+		expect(rows[0].key, "to equal", "an_id1");
+		expect(rows[0].element, "to equal", elements[0]);
+		expect(rows[0].columns[0].cellElement, "to equal", "A text row 1");
+		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
+		expect(rows[0].columns[0].title, "to be null");
+		expect(rows[0].columns[1].cellElement, "to equal", "another 1");
+		expect(rows[0].columns[1].className, "to be undefined");
+		expect(rows[0].columns[1].title, "to equal", "another 1");
+
+		expect(rows[1].columns.length, "to equal", 2);
+
+		expect(rows[1].key, "to equal", "an_id2");
+		expect(rows[1].element, "to equal", elements[1]);
+		expect(rows[1].columns[0].cellElement, "to equal", "A text row 2");
+		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
+		expect(rows[1].columns[0].title, "to be null");
+		expect(rows[1].columns[1].cellElement, "to equal", "another 2");
+		expect(rows[1].columns[1].className, "to be undefined");
+		expect(rows[1].columns[1].title, "to equal", "another 2");
+	});
 });
