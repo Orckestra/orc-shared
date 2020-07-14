@@ -7,6 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import SelectProps from "./SelectProps";
+import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 
 describe("Select Component", () => {
 	let update, container;
@@ -43,8 +44,8 @@ describe("Select Component", () => {
 		const mountedComponent = mount(component);
 		const expected = (
 			<SelectMUI>
-				<MenuItem>aLabel</MenuItem>
-				<MenuItem>anotherLabel</MenuItem>
+				<MenuItem><TooltippedTypography children="aLabel" noWrap titleValue="aLabel" /></MenuItem>
+				<MenuItem><TooltippedTypography children="anotherLabel" noWrap titleValue="anotherLabel" /></MenuItem>
 			</SelectMUI>
 		);
 
