@@ -73,7 +73,7 @@ export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, keyFiel
 				const [cellElement, title] = renderByType(e, def, rowId);
 
 				return {
-					title: title === undefined ? cellElement : title,
+					title: def.tooltipable !== false ? (title === undefined ? cellElement : title) : null,
 					cellElement: cellElement,
 					className: def.className,
 				};
