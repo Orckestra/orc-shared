@@ -41,16 +41,16 @@ export const Item = styled(FilteredLink)`
 	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
-		"active",
-		css`
+	"active",
+	css`
 			background-color: #b4cfe3;
 		`,
-		css`
+	css`
 			&:hover {
 				background-color: #f7f7f7;
 			}
 		`,
-	)};
+)};
 `;
 
 const SegmentPage = ({ path, component: View, segments, location, match }) => {
@@ -113,7 +113,7 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 									to={baseHref + segpath}
 									active={location.pathname === baseHref + segpath}
 								>
-									<Text message={config.label} />
+									{React.isValidElement(config.label) === true ? config.label : <Text message={config.label} />}
 								</Item>
 							))}
 						</List>
