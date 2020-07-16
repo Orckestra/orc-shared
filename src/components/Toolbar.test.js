@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { spyOnConsole } from "../utils/testUtils";
 import IconButton from "./IconButton";
+import RadioProps from "./MaterialUI/Inputs/RadioProps";
 import {
 	Bar,
 	ToolGroup,
@@ -11,6 +12,8 @@ import {
 	Separator,
 	Spacer,
 	ToolbarLabel,
+	ToolbarRadio,
+	ToolbarRadioWrapper,
 	toolComponents,
 	Toolbar,
 } from "./Toolbar";
@@ -22,6 +25,7 @@ const {
 	spacer: ToolSpacer,
 	separator: ToolSeparator,
 	label: ToolLabel,
+	radio: ToolRadio,
 } = toolComponents;
 
 describe("Toolbar", () => {
@@ -91,6 +95,20 @@ describe("Toolbar", () => {
 				key: 8,
 				label: "Label message",
 			},
+			{
+				type: "radio",
+				key: 9,
+				label: { id: "toolbar.radio", defaultMessage: "Radio" },
+				value: "option1",
+				defaultVal: "option1",
+				update: () => {},
+				radios: [
+					{ label: { id: "radio.option1", defaultMessage: "Option 1" }, value: "option1" },
+					{ label: { id: "radio.option2", defaultMessage: "Option 2" }, value: "option2" },
+					{ label: { id: "radio.option3", defaultMessage: "Option 3" }, value: "option3" },
+				],
+				row: true,
+			},
 		];
 	});
 
@@ -153,11 +171,7 @@ describe("Toolbar", () => {
 								},
 							]}
 						/>
-						<ToolButton
-							onClick={toolList[4].onClick}
-							label={{ icon: "eye", text: "Button" }}
-							primary
-						/>
+						<ToolButton onClick={toolList[4].onClick} label={{ icon: "eye", text: "Button" }} primary />
 						<ToolSeparator />
 						<ToolLabel label={{ id: "toolbar.label", defaultMessage: "Label message" }} />
 						<ToolButton
@@ -167,6 +181,18 @@ describe("Toolbar", () => {
 							}}
 						/>
 						<ToolLabel label="Label message" />
+						<ToolRadio
+							label={{ id: "toolbar.radio", defaultMessage: "Radio" }}
+							value="option1"
+							defaultVal="option1"
+							update={toolList[9].update}
+							radios={[
+								{ label: { id: "radio.option1", defaultMessage: "Option 1" }, value: "option1", name: "option1" },
+								{ label: { id: "radio.option2", defaultMessage: "Option 2" }, value: "option2", name: "option2" },
+								{ label: { id: "radio.option3", defaultMessage: "Option 3" }, value: "option3", name: "option3" },
+							]}
+							row={true}
+						/>
 					</Bar>
 				</IntlProvider>
 			</Provider>,
@@ -177,22 +203,12 @@ describe("toolComponents.input", () => {
 	it("renders a styled input", () =>
 		expect(
 			<IntlProvider locale="en">
-				<ToolInput
-					random={4}
-					oddProp="Test"
-					onChange={console.log}
-					things={{ stuff: "nonsense" }}
-				/>
+				<ToolInput random={4} oddProp="Test" onChange={console.log} things={{ stuff: "nonsense" }} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<IntlProvider locale="en">
-				<ToolbarInput
-					random={4}
-					oddProp="Test"
-					onChange={console.log}
-					things={{ stuff: "nonsense" }}
-				/>
+				<ToolbarInput random={4} oddProp="Test" onChange={console.log} things={{ stuff: "nonsense" }} />
 			</IntlProvider>,
 		));
 });
@@ -279,10 +295,7 @@ describe("toolComponents.button", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ToolButton
-					things={{ stuff: "nonsense" }}
-					label={{ icon: "test", text: "A label" }}
-				/>
+				<ToolButton things={{ stuff: "nonsense" }} label={{ icon: "test", text: "A label" }} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -383,13 +396,11 @@ describe("toolComponents.group", () => {
 });
 
 describe("toolComponents.spacer", () => {
-	it("renders a styled spacer", () =>
-		expect(<ToolSpacer />, "when mounted", "to satisfy", <Spacer />));
+	it("renders a styled spacer", () => expect(<ToolSpacer />, "when mounted", "to satisfy", <Spacer />));
 });
 
 describe("toolComponents.separator", () => {
-	it("renders a styled separator", () =>
-		expect(<ToolSeparator />, "when mounted", "to satisfy", <Separator />));
+	it("renders a styled separator", () => expect(<ToolSeparator />, "when mounted", "to satisfy", <Separator />));
 });
 
 describe("toolComponents.label", () => {
@@ -409,5 +420,51 @@ describe("toolComponents.label", () => {
 			"when mounted",
 			"to satisfy",
 			<ToolbarLabel>A label</ToolbarLabel>,
+		));
+});
+
+describe("toolComponents.radio", () => {
+	let radios = [
+		{ label: { id: "radio.option1", defaultMessage: "Option 1" }, value: "option1", name: "option1" },
+		{ label: { id: "radio.option2", defaultMessage: "Option 2" }, value: "option2", name: "option2" },
+		{ label: { id: "radio.option3", defaultMessage: "Option 3" }, value: "option3", name: "option3" },
+	];
+	let radioProps = new RadioProps();
+	beforeEach(() => {
+		radioProps.set(RadioProps.propNames.label, { id: "toolbar.radio", defaultMessage: "Radio" });
+		radioProps.set(RadioProps.propNames.defaultVal, "option1");
+		radioProps.set(RadioProps.propNames.value, "option1");
+		radioProps.set(RadioProps.propNames.update, console.log);
+		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.row, true);
+	});
+
+	it("renders a styled radio", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<ToolRadio
+						label={{ id: "toolbar.radio", defaultMessage: "Radio" }}
+						value="option1"
+						defaultVal="option1"
+						update={console.log}
+						radios={radios}
+						row={true}
+					/>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en">
+				<ToolbarRadioWrapper>
+					<ToolbarRadio radioProps={radioProps} />
+				</ToolbarRadioWrapper>
+			</IntlProvider>,
 		));
 });
