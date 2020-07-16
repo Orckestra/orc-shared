@@ -85,6 +85,12 @@ export const useStyles = makeStyles(theme => ({
 	rowSelectCheckbox: {
 		padding: 0,
 	},
+	placeholder: {
+		position: "absolute",
+		left: "50%",
+		top: "50%",
+		transform: "translate(-50%, -50%)",
+	},
 }));
 
 function rowAreIdentical(prevRows, nextRows) {
@@ -221,8 +227,8 @@ const FullTable = React.forwardRef((props, ref) => {
 					selectedNumber={props.selectedNumber}
 				/>
 			</TableMui>
+			{props.tableRows.length > 0 ? null : <div className={props.classes.placeholder}>{props.placeholder}</div>}
 		</div>
-		//)};
 	);
 });
 
@@ -311,8 +317,8 @@ const Table = ({ headers, rows, scrollLoader, latestPage, pageLength, placeholde
 				headerHeight={headerHeight}
 				latestPage={latestPage}
 				pageLength={pageLength}
+				placeholder={placeholder}
 			/>
-			{tableRows.length > 0 ? null : placeholder}
 		</TableContainer>
 	);
 };
