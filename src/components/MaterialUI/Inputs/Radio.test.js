@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
 import { mount } from "enzyme";
-import { ignoreConsoleError } from "../../../utils/testUtils";
+import { spyOnConsole } from "../../../utils/testUtils";
 import RadioGroupMui from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -78,64 +78,68 @@ const ExpectEventToBeFiredWithOptionValue = (radioProps, event, option) => {
 };
 
 describe("Radio Component", () => {
+	spyOnConsole(["error"]);
 	let radios, radioProps;
+
 	beforeEach(() => {
 		radios = [
 			{ label: "Option 1", value: "option1" },
 			{ label: "Option 2", value: "option2" },
 			{ label: "Option 3", value: "option3" },
+			{ label: "Option 4", value: "option4" },
 		];
 
 		radioProps = new RadioProps();
 		radioProps.set(RadioProps.propNames.name, "aRadioName");
-		radioProps.set(RadioProps.propNames.defaultVal, "option1");
-		radioProps.set(RadioProps.propNames.value, "option2");
+		radioProps.set(RadioProps.propNames.defaultVal, "option3");
+		radioProps.set(RadioProps.propNames.value, "option4");
 		radioProps.set(RadioProps.propNames.radios, radios);
 		radioProps.set(RadioProps.propNames.row, true);
 	});
 
 	it("Fails if radioProps has wrong type", () => {
-		ignoreConsoleError(() => {
-			const component = <Radio radioProps="Wrong type" />;
-			expect(() => mount(component), "to throw a", TypeError);
-		});
+		expect(() => mount(<Radio radioProps="Wrong type" />), "to throw", "radioProps property is not of type RadioProps");
 	});
 
 	it("Fails if less than two options", () => {
-		ignoreConsoleError(() => {
-			radioProps.set(RadioProps.propNames.radios, [{ label: "Option 1", value: "option1" }]);
+		radioProps.set(RadioProps.propNames.radios, [{ label: "Option 1", value: "option1" }]);
 
-			const component = <Radio radioProps={radioProps} />;
-			expect(() => mount(component), "to throw a", Error);
-		});
+		expect(
+			() => mount(<Radio radioProps={radioProps} />),
+			"to throw",
+			"Radio component must have at least two options",
+		);
 	});
 
 	it("Fails if no corresponding option for value", () => {
-		ignoreConsoleError(() => {
-			radioProps.set(RadioProps.propNames.value, "option9");
+		radioProps.set(RadioProps.propNames.value, "option9");
 
-			const component = <Radio radioProps={radioProps} />;
-			expect(() => mount(component), "to throw a", Error);
-		});
+		expect(
+			() => mount(<Radio radioProps={radioProps} />),
+			"to throw",
+			"Radio component must have a matching option for it's value",
+		);
 	});
 
 	it("Fails if no corresponding option for default value", () => {
-		ignoreConsoleError(() => {
-			radioProps.set(RadioProps.propNames.defaultVal, "option9");
+		radioProps.set(RadioProps.propNames.defaultVal, "option9");
 
-			const component = <Radio radioProps={radioProps} />;
-			expect(() => mount(component), "to throw a", Error);
-		});
+		expect(
+			() => mount(<Radio radioProps={radioProps} />),
+			"to throw",
+			"Radio component must have a matching option for it's default value",
+		);
 	});
 
 	it("Fails if two options with same value", () => {
-		ignoreConsoleError(() => {
-			radios[1].value = "option1";
-			radioProps.set(RadioProps.propNames.radios, radios);
+		radios[1].value = "option1";
+		radioProps.set(RadioProps.propNames.radios, radios);
 
-			const component = <Radio radioProps={radioProps} />;
-			expect(() => mount(component), "to throw a", Error);
-		});
+		expect(
+			() => mount(<Radio radioProps={radioProps} />),
+			"to throw",
+			"Radio component must not have duplicated radio values",
+		);
 	});
 
 	it("Renders Radio component properly with label", () => {

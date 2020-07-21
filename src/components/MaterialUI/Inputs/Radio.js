@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import clsx from "clsx";
 import RadioGroupMui from "@material-ui/core/RadioGroup";
 import RadioMui from "@material-ui/core/Radio";
@@ -54,12 +54,12 @@ const extractAndValidateProps = radioProps => {
 		throw new Error("Radio component must have at least two options");
 	}
 
-	if (defaultVal && !radios.some(radio => radio.value === defaultVal)) {
-		throw new Error("Radio component must have a matching option for it's default value");
-	}
-
 	if (value && !radios.some(radio => radio.value === value)) {
 		throw new Error("Radio component must have a matching option for it's value");
+	}
+
+	if (defaultVal && !radios.some(radio => radio.value === defaultVal)) {
+		throw new Error("Radio component must have a matching option for it's default value");
 	}
 
 	if (radios.some(radio => radios.some(x => x !== radio && x.value === radio.value))) {
