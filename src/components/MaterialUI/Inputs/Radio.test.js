@@ -93,8 +93,9 @@ describe("Radio Component", () => {
 		radioProps.set(RadioProps.propNames.name, "aRadioName");
 	});
 
-	it("Fails if radioProps has wrong type", () => {
-		expect(() => mount(<Radio radioProps="Wrong type" />), "to throw", "radioProps property is not of type RadioProps");
+	it("Fails if radioProps is missing or wrong type", () => {
+		expect(() => mount(<Radio />), "to throw", "radioProps is missing or wrong type");
+		expect(() => mount(<Radio radioProps="Wrong type" />), "to throw", "radioProps is missing or wrong type");
 	});
 
 	it("Fails if less than two options", () => {

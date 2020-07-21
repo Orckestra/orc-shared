@@ -38,17 +38,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const extractAndValidateProps = radioProps => {
-	if (radioProps != null && radioProps instanceof RadioProps === false) {
-		throw new TypeError("radioProps property is not of type RadioProps");
+	if (radioProps == null || radioProps instanceof RadioProps === false) {
+		throw new TypeError("radioProps is missing or wrong type");
 	}
 
-	const name = radioProps?.get(RadioProps.propNames.name);
-	const label = radioProps?.get(RadioProps.propNames.label);
-	const defaultVal = radioProps?.get(RadioProps.propNames.defaultVal);
-	const value = radioProps?.get(RadioProps.propNames.value) ?? defaultVal;
-	const update = radioProps?.get(RadioProps.propNames.update);
-	const row = radioProps?.get(RadioProps.propNames.row) ?? false;
-	const radios = radioProps?.get(RadioProps.propNames.radios) ?? [];
+	const name = radioProps.get(RadioProps.propNames.name);
+	const label = radioProps.get(RadioProps.propNames.label);
+	const defaultVal = radioProps.get(RadioProps.propNames.defaultVal);
+	const value = radioProps.get(RadioProps.propNames.value) ?? defaultVal;
+	const update = radioProps.get(RadioProps.propNames.update);
+	const row = radioProps.get(RadioProps.propNames.row) ?? false;
+	const radios = radioProps.get(RadioProps.propNames.radios) ?? [];
 
 	if (radios.length < 2) {
 		throw new Error("Radio component must have at least two options");
