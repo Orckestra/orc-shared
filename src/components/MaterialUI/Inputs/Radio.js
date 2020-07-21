@@ -5,7 +5,6 @@ import RadioMui from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import { IntlContext } from "react-intl";
 import { makeStyles } from "@material-ui/core/styles";
 import RadioProps from "./RadioProps.js";
 
@@ -38,8 +37,6 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const maybeTranslate = (formatMessage, message) => (message?.id ? formatMessage(message) : message);
-
 const extractAndValidateProps = radioProps => {
 	if (radioProps != null && radioProps instanceof RadioProps === false) {
 		throw new TypeError("radioProps property is not of type RadioProps");
@@ -65,18 +62,21 @@ const extractAndValidateProps = radioProps => {
 		throw new Error("Radio component must have a matching option for it's value");
 	}
 
+	if (radios.some(radio => radios.some(x => x !== radio && x.value === radio.value))) {
+		throw new Error("Radio component must not have duplicated radio values");
+	}
+
 	return { name, label, defaultVal, value, update, row, radios };
 };
 
 const Radio = ({ radioProps }) => {
+	const classes = useStyles();
 	const { name, label, defaultVal, value, update, row, radios } = extractAndValidateProps(radioProps);
 	const handleChange = update ? event => update(event.target.value) : null;
-	const { formatMessage } = useContext(IntlContext);
-	const classes = useStyles();
 
 	return (
 		<FormControl component="fieldset">
-			<FormLabel component="legend">{maybeTranslate(formatMessage, label)}</FormLabel>
+			<FormLabel component="legend">{label}</FormLabel>
 			<RadioGroupMui
 				row={row}
 				aria-label={name}
@@ -85,15 +85,15 @@ const Radio = ({ radioProps }) => {
 				value={value}
 				onChange={handleChange}
 			>
-				{radios.map((radio, index) => {
+				{radios.map(radio => {
 					const handleClick = radio.clickEvent ? event => radio.clickEvent(event.target.value) : null;
 
 					return (
 						<FormControlLabel
-							key={index}
+							key={`radiobutton_${radio.value}`}
 							name={radio.value}
 							value={radio.value}
-							label={maybeTranslate(formatMessage, radio.label)}
+							label={radio.label}
 							control={
 								<RadioMui
 									color="primary"

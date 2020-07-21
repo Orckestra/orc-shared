@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
-import { IntlProvider } from "react-intl";
 import { mount } from "enzyme";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import RadioGroupMui from "@material-ui/core/RadioGroup";
@@ -11,13 +10,10 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "./Radio";
 import RadioProps from "./RadioProps";
 
-const ValidRadioComponent = radioProps => (
-	<IntlProvider locale="en">
-		<Radio radioProps={radioProps} />;
-	</IntlProvider>
-);
-
 const ExpectComponentToBeRenderedProperly = radioProps => {
+	const component = <Radio radioProps={radioProps} />;
+	const mountedComponent = mount(component);
+
 	const name = radioProps?.get(RadioProps.propNames.name);
 	const label = radioProps?.get(RadioProps.propNames.label);
 	const defaultVal = radioProps?.get(RadioProps.propNames.defaultVal);
@@ -25,16 +21,13 @@ const ExpectComponentToBeRenderedProperly = radioProps => {
 	const row = radioProps?.get(RadioProps.propNames.row);
 	const radios = radioProps?.get(RadioProps.propNames.radios) ?? [];
 
-	const component = ValidRadioComponent(radioProps);
-	const mountedComponent = mount(component);
-
 	const formControl = mountedComponent.find(FormControl);
 	const formControlElement = formControl.getElements()[0];
 	expect(formControlElement, "not to be", null);
 
 	const formLabelElement = formControl.find(FormLabel).getElements()[0];
 	expect(formLabelElement, "not to be", null);
-	expect(formLabelElement.props.children, "to be", label?.id ? label?.defaultMessage ?? null : label);
+	expect(formLabelElement.props.children, "to be", label);
 
 	const radioGroup = formControl.find(RadioGroupMui);
 	const radioGroupElement =
@@ -56,21 +49,21 @@ const ExpectComponentToBeRenderedProperly = radioProps => {
 
 	radios.forEach(radio => {
 		let option =
-			radioElements.find(x =>
-				x.props &&
-				x.props.control.type.options.name === "MuiRadio" &&
-				x.props.name === radio.name &&
-				x.props.value === radio.value &&
-				x.props.label === radio.label?.id
-					? radio.label?.defaultMessage ?? null
-					: radio.label,
+			radioElements.find(
+				x =>
+					x.key === `radiobutton_${radio.value}` &&
+					x.props &&
+					x.props.control.type.options.name === "MuiRadio" &&
+					x.props.name === radio.value &&
+					x.props.value === radio.value &&
+					x.props.label === radio.label,
 			) || null;
 		expect(option, "not to be", null);
 	});
 };
 
-const ExpectEventToBeFiredWithValue = (radioProps, event, option) => {
-	const component = ValidRadioComponent(radioProps);
+const ExpectEventToBeFiredWithOptionValue = (radioProps, event, option) => {
+	const component = <Radio radioProps={radioProps} />;
 
 	let container = document.createElement("div");
 	document.body.appendChild(container);
@@ -85,14 +78,14 @@ const ExpectEventToBeFiredWithValue = (radioProps, event, option) => {
 };
 
 describe("Radio Component", () => {
-	let radios = [
-		{ label: { id: "radio.option1", defaultMessage: "Option 1 translated" }, value: "option1", name: "option1" },
-		{ label: { id: "radio.option2", defaultMessage: "Option 2 translated" }, value: "option2", name: "option2" },
-		{ label: { id: "radio.option3", defaultMessage: "Option 3 translated" }, value: "option3", name: "option3" },
-	];
-
-	let radioProps;
+	let radios, radioProps;
 	beforeEach(() => {
+		radios = [
+			{ label: "Option 1", value: "option1" },
+			{ label: "Option 2", value: "option2" },
+			{ label: "Option 3", value: "option3" },
+		];
+
 		radioProps = new RadioProps();
 		radioProps.set(RadioProps.propNames.name, "aRadioName");
 		radioProps.set(RadioProps.propNames.defaultVal, "option1");
@@ -108,53 +101,45 @@ describe("Radio Component", () => {
 		});
 	});
 
-	it("fails on attempt to translate intl message outside an IntlProvider", () => {
-		ignoreConsoleError(() => {
-			const component = <Radio radioProps={radioProps} />;
-			expect(() => mount(component), "to throw a", Error);
-		});
-	});
-
 	it("Fails if less than two options", () => {
 		ignoreConsoleError(() => {
-			radioProps.set(RadioProps.propNames.radios, [{ label: "Option 1", value: "option1", name: "option1" }]);
+			radioProps.set(RadioProps.propNames.radios, [{ label: "Option 1", value: "option1" }]);
 
-			const component = ValidRadioComponent(radioProps);
+			const component = <Radio radioProps={radioProps} />;
 			expect(() => mount(component), "to throw a", Error);
 		});
 	});
 
 	it("Fails if no corresponding option for value", () => {
 		ignoreConsoleError(() => {
-			radioProps.set(RadioProps.propNames.value, "option99");
+			radioProps.set(RadioProps.propNames.value, "option9");
 
-			const component = ValidRadioComponent(radioProps);
+			const component = <Radio radioProps={radioProps} />;
 			expect(() => mount(component), "to throw a", Error);
 		});
 	});
 
 	it("Fails if no corresponding option for default value", () => {
 		ignoreConsoleError(() => {
-			radioProps.set(RadioProps.propNames.defaultVal, "option99");
+			radioProps.set(RadioProps.propNames.defaultVal, "option9");
 
-			const component = ValidRadioComponent(radioProps);
+			const component = <Radio radioProps={radioProps} />;
 			expect(() => mount(component), "to throw a", Error);
 		});
 	});
 
-	it("Renders Radio component properly with translation", () => {
-		radioProps.set(RadioProps.propNames.label, { id: "toolbar.radio", defaultMessage: "aRadioLabel translated" });
-		ExpectComponentToBeRenderedProperly(radioProps);
+	it("Fails if two options with same value", () => {
+		ignoreConsoleError(() => {
+			radios[1].value = "option1";
+			radioProps.set(RadioProps.propNames.radios, radios);
+
+			const component = <Radio radioProps={radioProps} />;
+			expect(() => mount(component), "to throw a", Error);
+		});
 	});
 
-	it("Renders Radio component properly without translation", () => {
-		radioProps.set(RadioProps.propNames.label, "some label without translation");
-		radioProps.set(RadioProps.propNames.radios, [
-			{ label: "option 1 without translation", value: "option1", name: "option1" },
-			{ label: "option 2 without translation", value: "option2", name: "option2" },
-			{ label: "option 3 without translation", value: "option3", name: "option3" },
-		]);
-
+	it("Renders Radio component properly with label", () => {
+		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
 		ExpectComponentToBeRenderedProperly(radioProps);
 	});
 
@@ -167,17 +152,14 @@ describe("Radio Component", () => {
 		let update = sinon.spy().named("update");
 		radioProps.set(RadioProps.propNames.update, update);
 
-		ExpectEventToBeFiredWithValue(radioProps, update, "option3");
+		ExpectEventToBeFiredWithOptionValue(radioProps, update, "option3");
 	});
 
 	it("Radio component handles options clickEvent", async () => {
 		let clickEvent = sinon.spy().named("clickEvent");
-		radioProps.set(RadioProps.propNames.radios, [
-			{ label: "Option 1", value: "option1", name: "option1" },
-			{ label: "Option 2", value: "option2", name: "option2", clickEvent: clickEvent },
-			{ label: "Option 3", value: "option3", name: "option3" },
-		]);
+		radios[1].clickEvent = clickEvent;
+		radioProps.set(RadioProps.propNames.radios, radios);
 
-		ExpectEventToBeFiredWithValue(radioProps, clickEvent, "option2");
+		ExpectEventToBeFiredWithOptionValue(radioProps, clickEvent, "option2");
 	});
 });
