@@ -19,7 +19,8 @@
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
 		"coveralls": "cat coverage/lcov.info | coveralls",
-		"prepublishOnly": "npm run build:clean --"
+		"prepublishOnly": "npm run build:clean --",
+		"icons": "orc-scripts buildIconsSheet"
 	},
 	"files": [
 		"src",

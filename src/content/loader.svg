@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+	<symbol
+		id="icon-orckestra-loader"
+		viewBox="0 0 40 40">
+		<g>
+			<path d="M20,38 A18,18 0 0,0 38,20" style="fill:none;stroke:#00B3E3;stroke-width:4px;"/>
+			<path d="M38,20 A18,18 0 1,0 20,38" style="fill:none; stroke:#cccccc;stroke-width:4px;"/>
+		</g>
+	</symbol>
+</svg>
