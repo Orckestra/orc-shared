@@ -67,8 +67,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
 
   const [popperState, setPopperState] = useState({
     isDisplayed: false,
-    anchorElement: null,
-    arrowRef: null
+    anchorElement: null
   });
 
   const defaultComponent = (
@@ -111,13 +110,13 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
             },
             arrow: {
               enabled: true,
-              element: popperState.arrowRef
+              element: popperState.anchorElement
             }
           }}
           open={popperState.isDisplayed}
           anchorEl={popperState.anchorElement}
         >
-          <Arrow ref={popperState.arrowRef} />
+          <Arrow />
           {popperValue}
         </Popper>
       </div>
