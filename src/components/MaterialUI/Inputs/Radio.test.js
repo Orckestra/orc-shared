@@ -172,7 +172,7 @@ describe("Radio Component", () => {
 		ExpectComponentToBeRenderedProperly(radioProps);
 	});
 
-	it("Radio component handles option change", async () => {
+	it("Radio component handles radios update", async () => {
 		let update = sinon.spy().named("update");
 		radioProps.set(RadioProps.propNames.update, update);
 		radioProps.set(RadioProps.propNames.radios, radios);
@@ -180,7 +180,7 @@ describe("Radio Component", () => {
 		ExpectEventToBeFiredWithOptionValue(radioProps, update, "option3");
 	});
 
-	it("Radio component handles options clickEvent", async () => {
+	it("Radio component handles radios clickEvent", async () => {
 		let clickEvent = sinon.spy().named("clickEvent");
 		radios[1].clickEvent = clickEvent;
 		radioProps.set(RadioProps.propNames.radios, radios);

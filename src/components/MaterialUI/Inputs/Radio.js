@@ -48,9 +48,9 @@ const extractAndValidateProps = radioProps => {
 	const value = radioProps.get(RadioProps.propNames.value) ?? defaultVal;
 	const update = radioProps.get(RadioProps.propNames.update);
 	const row = radioProps.get(RadioProps.propNames.row);
-	const radios = radioProps.get(RadioProps.propNames.radios) ?? [];
+	const radios = radioProps.get(RadioProps.propNames.radios);
 
-	if (radios.length < 2) {
+	if (!radios || radios.length < 2) {
 		throw new Error("Radio component must have at least two options");
 	}
 
