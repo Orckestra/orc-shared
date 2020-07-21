@@ -1,186 +1,15 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { getDate, getDay, isSameMonth, isToday, format, parseISO } from "date-fns-2";
-import { FormattedDate, injectIntl } from "react-intl";
-import Kalendaryo from "kalendaryo";
-import { getThemeProp, ifFlag, switchEnum, memoize } from "../../../utils";
+import { format, parseISO } from "date-fns";
+import { injectIntl } from "react-intl";
+import { getThemeProp, switchEnum, memoize } from "../../../utils";
 import withClickOutside from "../../../hocs/withClickOutside";
-import useToggle from "../../../hooks/useToggle";
-import Icon from "../../Icon";
 import { FormInput, getEventUpdater } from "./Text";
 import { ButtonWrapper, InputButton } from "./FieldButtons";
-
-// TODO: Calendar dialog on focus
 
 export const PositionedWrapper = withClickOutside(styled(ButtonWrapper)`
 	position: relative;
 `);
-
-export const CalendarBox = styled.div`
-	box-sizing: border-box;
-	height: auto;
-	position: absolute;
-	top: 30px;
-	right: 3px;
-	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	padding: 8px 15px 15px;
-	background-color: white;
-	z-index: 100;
-	transition: visibility 0.2s, opacity 0.2s;
-
-	${ifFlag(
-		"open",
-		css`
-			visibility: visible;
-			opacity: 1;
-		`,
-		css`
-			visibility: hidden;
-			opacity: 0;
-		`,
-	)}
-`;
-
-export const CalendarHeader = styled.div`
-	display: flex;
-	height: 40px;
-	align-items: center;
-`;
-
-export const MonthName = styled.div`
-	flex: 1 1 auto;
-	text-align: center;
-`;
-
-const MonthArrow = styled(Icon).attrs(() => ({ role: "button" }))`
-	flex: 0 0 30px;
-	font-size: 10px;
-	cursor: pointer;
-`;
-
-export const LastArrow = styled(MonthArrow).attrs(props => ({
-	id: getThemeProp(["icons", "prev"], "previous")(props),
-	"aria-label": "last month",
-	"data-test-id": "calendar_lastArrow",
-}))``;
-export const NextArrow = styled(MonthArrow).attrs(props => ({
-	id: getThemeProp(["icons", "next"], "next")(props),
-	"aria-label": "next month",
-	"data-test-id": "calendar_nextArrow",
-}))``;
-
-export const DateTable = styled.table`
-	border-collapse: collapse;
-`;
-
-export const DayCell = styled.td.attrs(() => ({ role: "button" }))`
-	height: 30px;
-	width: 30px;
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	cursor: pointer;
-
-	${ifFlag("today", "font-weight: bold;")}
-	${ifFlag(
-		"outsideMonth",
-		css`
-			background-color: white;
-			color: ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-		`,
-		ifFlag(
-			"selected",
-			css`
-				background-color: ${getThemeProp(["colors", "application", "base"], "#cccccc")};
-				border-radius: 3px;
-			`,
-			css`
-				background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
-			`,
-		),
-	)}
-`;
-
-export const Day = ({
-	date,
-	selectedDate,
-	thisDate,
-	getClickHandler,
-	getFormattedDate,
-}) => (
-	<DayCell
-		onClick={getClickHandler(thisDate)}
-		outsideMonth={!isSameMonth(date, thisDate)}
-		today={isToday(thisDate)}
-		selected={getFormattedDate(selectedDate) === getFormattedDate(thisDate)}
-		active={getFormattedDate(date) === getFormattedDate(thisDate)}
-		data-test-id={getFormattedDate(thisDate)}
-	>
-		{getDate(thisDate) + ""}
-	</DayCell>
-);
-
-const getClickHandlerGetter = pickDate => date => () => pickDate(date);
-
-export const CalendarDropdown = ({
-	open,
-	date,
-	selectedDate,
-	getWeeksInMonth,
-	setDatePrevMonth,
-	setDateNextMonth,
-	getFormattedDate,
-	pickDate,
-}) => {
-	const getClickHandler = getClickHandlerGetter(pickDate);
-	const weeksInCurrentMonth = getWeeksInMonth();
-	return (
-		<CalendarBox open={open}>
-			<CalendarHeader>
-				<LastArrow onClick={setDatePrevMonth} />
-				<MonthName>
-					<FormattedDate value={date} month="long" year="numeric" />
-				</MonthName>
-				<NextArrow onClick={setDateNextMonth} />
-			</CalendarHeader>
-			<DateTable>
-				<thead>
-					<tr>
-						{weeksInCurrentMonth[0].map(day => (
-							<th key={getDay(day.dateValue)}>
-								<FormattedDate value={day.dateValue} weekday="short" />
-							</th>
-						))}
-					</tr>
-				</thead>
-				<tbody>
-					{weeksInCurrentMonth.map((week, index) => (
-						<tr key={index}>
-							{week.map(day => (
-								<Day
-									key={getFormattedDate(day.dateValue)}
-									thisDate={day.dateValue}
-									{...{
-										date,
-										selectedDate,
-										getClickHandler,
-										getFormattedDate,
-									}}
-								/>
-							))}
-						</tr>
-					))}
-				</tbody>
-			</DateTable>
-		</CalendarBox>
-	);
-};
-
-export const CalendarIcon = styled(Icon).attrs(props => ({
-	id: getThemeProp(["icons", "date"], "calendar")(props),
-}))`
-	font-size: 20px;
-`;
 
 export const CalendarButton = styled(InputButton)`
 	margin-top: -1px;
@@ -304,34 +133,11 @@ if (Intl.DateTimeFormat.prototype.formatToParts) {
 	});
 } else {
 	// IE11 does not support any of this
-	DateInputField = ({ update, ...props }) => (
-		<FormInput {...props} onChange={getEventUpdater(update)} type="text" />
-	);
+	DateInputField = ({ update, ...props }) => <FormInput {...props} onChange={getEventUpdater(update)} type="text" />;
 }
 
 export const DateInput = ({ update, initOpen, required, value, ...props }) => {
-	const [open, toggle, reset] = useToggle(initOpen);
 	const safeValue = value || "1970-01-01";
-	const parsedValue = parseISO(safeValue);
-	return (
-		<PositionedWrapper onClickOutside={reset} invalid={required && !value}>
-			<DateInputField update={update} {...props} value={safeValue} />
-			<Kalendaryo
-				key={open} // Re-render if opened and closed
-				open={open}
-				render={CalendarDropdown}
-				startSelectedDateAt={parsedValue}
-				startCurrentDateAt={parsedValue}
-				onSelectedChange={
-					/* istanbul ignore next */ date => {
-						update(format(date, "yyyy-MM-dd"));
-						reset();
-					}
-				}
-			/>
-			<CalendarButton onClick={toggle} active={open}>
-				<CalendarIcon />
-			</CalendarButton>
-		</PositionedWrapper>
-	);
+
+	return <DateInputField update={update} {...props} value={safeValue} />;
 };
