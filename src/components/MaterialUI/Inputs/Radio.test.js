@@ -91,10 +91,6 @@ describe("Radio Component", () => {
 
 		radioProps = new RadioProps();
 		radioProps.set(RadioProps.propNames.name, "aRadioName");
-		radioProps.set(RadioProps.propNames.defaultVal, "option3");
-		radioProps.set(RadioProps.propNames.value, "option4");
-		radioProps.set(RadioProps.propNames.radios, radios);
-		radioProps.set(RadioProps.propNames.row, true);
 	});
 
 	it("Fails if radioProps has wrong type", () => {
@@ -102,6 +98,12 @@ describe("Radio Component", () => {
 	});
 
 	it("Fails if less than two options", () => {
+		expect(
+			() => mount(<Radio radioProps={radioProps} />),
+			"to throw",
+			"Radio component must have at least two options",
+		);
+
 		radioProps.set(RadioProps.propNames.radios, [{ label: "Option 1", value: "option1" }]);
 
 		expect(
@@ -111,7 +113,28 @@ describe("Radio Component", () => {
 		);
 	});
 
+	it("Fails if two options with same value", () => {
+		radioProps.set(RadioProps.propNames.radios, [
+			{ label: "Option 1", value: "option1" },
+			{ label: "Option 2", value: "option1" },
+		]);
+
+		expect(
+			() => mount(<Radio radioProps={radioProps} />),
+			"to throw",
+			"Radio component must not have duplicated radio values",
+		);
+	});
+
+	it("Fails if name is not specified", () => {
+		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.name, null);
+
+		expect(() => mount(<Radio radioProps={radioProps} />), "to throw", "Radio component name is required and missing");
+	});
+
 	it("Fails if no corresponding option for value", () => {
+		radioProps.set(RadioProps.propNames.radios, radios);
 		radioProps.set(RadioProps.propNames.value, "option9");
 
 		expect(
@@ -122,6 +145,8 @@ describe("Radio Component", () => {
 	});
 
 	it("Fails if no corresponding option for default value", () => {
+		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.value, "option1");
 		radioProps.set(RadioProps.propNames.defaultVal, "option9");
 
 		expect(
@@ -131,30 +156,25 @@ describe("Radio Component", () => {
 		);
 	});
 
-	it("Fails if two options with same value", () => {
-		radios[1].value = "option1";
-		radioProps.set(RadioProps.propNames.radios, radios);
-
-		expect(
-			() => mount(<Radio radioProps={radioProps} />),
-			"to throw",
-			"Radio component must not have duplicated radio values",
-		);
-	});
-
-	it("Renders Radio component properly with label", () => {
+	it("Renders Radio component properly with all options", () => {
 		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
+		radioProps.set(RadioProps.propNames.defaultVal, "option3");
+		radioProps.set(RadioProps.propNames.value, "option4");
+		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.row, true);
+
 		ExpectComponentToBeRenderedProperly(radioProps);
 	});
 
-	it("Renders Radio component properly without label", () => {
-		radioProps.set(RadioProps.propNames.label, null);
+	it("Renders Radio component properly with no options", () => {
+		radioProps.set(RadioProps.propNames.radios, radios);
 		ExpectComponentToBeRenderedProperly(radioProps);
 	});
 
 	it("Radio component handles option change", async () => {
 		let update = sinon.spy().named("update");
 		radioProps.set(RadioProps.propNames.update, update);
+		radioProps.set(RadioProps.propNames.radios, radios);
 
 		ExpectEventToBeFiredWithOptionValue(radioProps, update, "option3");
 	});

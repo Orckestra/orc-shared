@@ -98,6 +98,7 @@ describe("Toolbar", () => {
 			{
 				type: "radio",
 				key: 9,
+				name: "aRadioName",
 				label: "aRadioLabel",
 				value: "option1",
 				defaultVal: "option1",
@@ -182,6 +183,7 @@ describe("Toolbar", () => {
 						/>
 						<ToolLabel label="Label message" />
 						<ToolRadio
+							name="aRadioName"
 							label="aRadioLabel"
 							value="option1"
 							defaultVal="option1"
@@ -433,6 +435,7 @@ describe("toolComponents.radio", () => {
 		];
 
 		radioProps = new RadioProps();
+		radioProps.set(RadioProps.propNames.name, "aRadioName");
 		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
 		radioProps.set(RadioProps.propNames.defaultVal, "option1");
 		radioProps.set(RadioProps.propNames.value, "option1");
@@ -450,23 +453,20 @@ describe("toolComponents.radio", () => {
 					getState: () => ({}),
 				}}
 			>
-				<IntlProvider locale="en">
-					<ToolRadio
-						label="aRadioLabel"
-						value="option1"
-						defaultVal="option1"
-						update={console.log}
-						radios={radios}
-						row={true}
-					/>
-				</IntlProvider>
+				<ToolRadio
+					name="aRadioName"
+					label="aRadioLabel"
+					value="option1"
+					defaultVal="option1"
+					update={console.log}
+					radios={radios}
+					row={true}
+				/>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<ToolbarRadioWrapper>
-					<ToolbarRadio radioProps={radioProps} />
-				</ToolbarRadioWrapper>
-			</IntlProvider>,
+			<ToolbarRadioWrapper>
+				<ToolbarRadio radioProps={radioProps} />
+			</ToolbarRadioWrapper>,
 		));
 });

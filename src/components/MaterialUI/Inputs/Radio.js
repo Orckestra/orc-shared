@@ -47,11 +47,15 @@ const extractAndValidateProps = radioProps => {
 	const defaultVal = radioProps?.get(RadioProps.propNames.defaultVal);
 	const value = radioProps?.get(RadioProps.propNames.value) ?? defaultVal;
 	const update = radioProps?.get(RadioProps.propNames.update);
-	const row = radioProps?.get(RadioProps.propNames.row);
+	const row = radioProps?.get(RadioProps.propNames.row) ?? false;
 	const radios = radioProps?.get(RadioProps.propNames.radios) ?? [];
 
 	if (radios.length < 2) {
 		throw new Error("Radio component must have at least two options");
+	}
+
+	if (!name || name.length == 0) {
+		throw new Error("Radio component name is required and missing");
 	}
 
 	if (value && !radios.some(radio => radio.value === value)) {
