@@ -120,32 +120,17 @@ export const Placeholder = styled.span`
 	color: rgb(117, 117, 117);
 `;
 
-export const Selector = ({
-	id,
-	value,
-	options,
-	update,
-	placeholder = "",
-	required,
-	...props
-}) => {
+export const Selector = ({ id, value, options, update, placeholder = "", required, ...props }) => {
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const clickOption = useCallback(
 		memoize(value => () => update(value)),
 		[update],
 	);
-	console.warn(
-		"Selector component has been deprecated in favor of Material-UI wrapper component Select",
-	);
+	console.warn("Selector component has been deprecated in favor of Material-UI wrapper component Select");
 	const onChange = useCallback(e => update(e.target.value), [update]);
 	return (
 		<Wrapper>
-			<InnerSelect
-				id={id}
-				onChange={onChange}
-				value={value}
-				required={required}
-				{...props}
-			>
+			<InnerSelect id={id} onChange={onChange} value={value} required={required} {...props}>
 				{required ? <option></option> : null}
 				{options.map(option => (
 					<option key={option.value} value={option.value}>
@@ -156,11 +141,7 @@ export const Selector = ({
 			<SelectBox htmlFor={id}>
 				{value ? (
 					<SelectedValue>
-						{
-							options
-								.filter(option => option.value === value)
-								.map(option => option.label)[0]
-						}
+						{options.filter(option => option.value === value).map(option => option.label)[0]}
 					</SelectedValue>
 				) : (
 					<Placeholder>{placeholder}</Placeholder>
