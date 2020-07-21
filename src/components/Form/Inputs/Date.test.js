@@ -2,7 +2,6 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
-import MockDate from "mockdate";
 import { parseISO } from "date-fns-2";
 import Kalendaryo from "kalendaryo";
 import {
@@ -139,93 +138,58 @@ describe("getDateUpdater", () => {
 	});
 
 	it("creates a change handler which updates the day of a date", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "day", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "18" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-05-18"] }])));
+		expect(getDateUpdater, "when called with", [update, "day", "2014-05-24"], "when called with", [
+			{ target: { value: "18" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-05-18"] }])));
 
 	it("creates a change handler which updates the month of a date", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "month", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "11" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-11-24"] }])));
+		expect(getDateUpdater, "when called with", [update, "month", "2014-05-24"], "when called with", [
+			{ target: { value: "11" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-11-24"] }])));
 
 	it("creates a change handler which updates the year of a date", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "year", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "1988" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["1988-05-24"] }])));
+		expect(getDateUpdater, "when called with", [update, "year", "2014-05-24"], "when called with", [
+			{ target: { value: "1988" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["1988-05-24"] }])));
 
 	it("handles short day values", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "day", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "8" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-05-08"] }])));
+		expect(getDateUpdater, "when called with", [update, "day", "2014-05-24"], "when called with", [
+			{ target: { value: "8" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-05-08"] }])));
 
 	it("handles short month values", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "month", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "3" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-03-24"] }])));
+		expect(getDateUpdater, "when called with", [update, "month", "2014-05-24"], "when called with", [
+			{ target: { value: "3" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-03-24"] }])));
 
 	it("handles short year values", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "year", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "19" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["0019-05-24"] }])));
+		expect(getDateUpdater, "when called with", [update, "year", "2014-05-24"], "when called with", [
+			{ target: { value: "19" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["0019-05-24"] }])));
 
 	it("handles long day values", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "day", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "122" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-05-22"] }])));
+		expect(getDateUpdater, "when called with", [update, "day", "2014-05-24"], "when called with", [
+			{ target: { value: "122" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-05-22"] }])));
 
 	it("handles long month values", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "month", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "112" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-12-24"] }])));
+		expect(getDateUpdater, "when called with", [update, "month", "2014-05-24"], "when called with", [
+			{ target: { value: "112" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["2014-12-24"] }])));
 
 	it("handles long year values", () =>
-		expect(
-			getDateUpdater,
-			"when called with",
-			[update, "year", "2014-05-24"],
-			"when called with",
-			[{ target: { value: "19882" } }],
-		).then(() => expect(update, "to have calls satisfying", [{ args: ["9882-05-24"] }])));
+		expect(getDateUpdater, "when called with", [update, "year", "2014-05-24"], "when called with", [
+			{ target: { value: "19882" } },
+		]).then(() => expect(update, "to have calls satisfying", [{ args: ["9882-05-24"] }])));
 });
 
 describe("CalendarDropdown", () => {
+	let clock;
 	beforeEach(() => {
-		MockDate.set(parseISO("2019-04-08"));
+		clock = sinon.useFakeTimers(parseISO("2019-04-08").getTime());
 	});
 	afterEach(() => {
-		MockDate.reset();
+		clock.restore();
 	});
 
 	it("renders a calendar browser", () =>
@@ -394,9 +358,7 @@ describe("CalendarDropdown", () => {
 				type: "click",
 				target: `[data-test-id="${parseISO("2019-04-12").toDateString()}"]`,
 			},
-		).then(() =>
-			expect(pick, "to have calls satisfying", [{ args: [parseISO("2019-04-12")] }]),
-		);
+		).then(() => expect(pick, "to have calls satisfying", [{ args: [parseISO("2019-04-12")] }]));
 	});
 
 	it("can switch to last month", () => {

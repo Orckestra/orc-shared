@@ -11,11 +11,11 @@ const getGenerator = name => {
 			return id;
 		};
 	}
-	return generators[name];
+	return generators[name]();
 };
 
 const withId = name => Comp => ({ id, ...props }) => {
-	const generatedId = useMemo(getGenerator(name), [name]);
+	const generatedId = useMemo(() => getGenerator(name), []);
 	return <Comp id={id || generatedId} {...props} />;
 };
 
