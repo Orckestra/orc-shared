@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 // Override values to use Orckestra icon sheet and colors
 // See also orc-shared/src/getTheme.js#setApplicationColors()
 const colors = {

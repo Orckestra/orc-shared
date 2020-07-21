@@ -7,6 +7,8 @@ const useStyles = makeStyles(theme => ({
     color: "initial",
     width: "1em",
     height: "1em",
+    fill: "currentColor",
+    stroke: "currentColor"
   }
 }));
 
@@ -15,7 +17,7 @@ const Icon = ({ id, ...props }) => {
 
   return (
     <SvgIcon fontSize="inherit" {...props} classes={{ root: classes.icon }}>
-      <use href={`#${id}`} />
+      <use href={`#icon-${id}`} />
     </SvgIcon>
   );
 }

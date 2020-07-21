@@ -5,7 +5,7 @@ import Icon from "./Icon";
 import Text from "./Text";
 
 export const ButtonIcon = styled(Icon)`
-	font-size: 1.7em;
+	font-size: 1.23em;
 	margin: -3px -2px;
 `;
 
