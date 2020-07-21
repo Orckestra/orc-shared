@@ -165,31 +165,16 @@ const getListFieldUpdater = (updateAll, getRows) => {
 	});
 };
 
-const FieldList = ({
-	name,
-	staticValues = [],
-	getUpdater,
-	rowField,
-	rowCount,
-	tallRows,
-	...props
-}) => {
+const FieldList = ({ name, staticValues = [], getUpdater, rowField, rowCount, tallRows, ...props }) => {
 	const { values, listIndex } = useContext(FormContext);
-	const getRows = useCallback(createRowGetter(values[name], rowCount), [
-		values,
-		name,
-		rowCount,
-	]);
-	const listUpdater = useCallback(getListFieldUpdater(getUpdater(name), getRows), [
-		getUpdater,
-		name,
-		getRows,
-	]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const getRows = useCallback(createRowGetter(values[name], rowCount), [values, name, rowCount]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const listUpdater = useCallback(getListFieldUpdater(getUpdater(name), getRows), [getUpdater, name, getRows]);
 	if (listIndex !== undefined) {
 		return <>Cannot render list inside list</>;
 	}
-	const renderField =
-		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
+	const renderField = rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
 	return (
 		<List {...{ tallRows }}>
 			{tallRows ? null : <FieldElements fields={[renderField]} labelOnly />}

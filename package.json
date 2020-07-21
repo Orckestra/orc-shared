@@ -36,10 +36,11 @@
 	},
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
-		"orc-scripts": "1.0.0-dev.21"
+		"jest": "^26.1.0",
+		"orc-scripts": "1.1.0-dev.1"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.0.0-dev.21"
+		"orc-scripts": "1.1.0-dev.1"
 	},
 	"sideEffects": false,
 	"lint-staged": {
