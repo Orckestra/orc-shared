@@ -98,14 +98,14 @@ describe("Toolbar", () => {
 			{
 				type: "radio",
 				key: 9,
-				label: { id: "toolbar.radio", defaultMessage: "Radio" },
+				label: "aRadioLabel",
 				value: "option1",
 				defaultVal: "option1",
 				update: () => {},
 				radios: [
-					{ label: { id: "radio.option1", defaultMessage: "Option 1" }, value: "option1" },
-					{ label: { id: "radio.option2", defaultMessage: "Option 2" }, value: "option2" },
-					{ label: { id: "radio.option3", defaultMessage: "Option 3" }, value: "option3" },
+					{ label: "Option 1", value: "option1" },
+					{ label: "Option 2", value: "option2" },
+					{ label: "Option 3", value: "option3" },
 				],
 				row: true,
 			},
@@ -182,14 +182,14 @@ describe("Toolbar", () => {
 						/>
 						<ToolLabel label="Label message" />
 						<ToolRadio
-							label={{ id: "toolbar.radio", defaultMessage: "Radio" }}
+							label="aRadioLabel"
 							value="option1"
 							defaultVal="option1"
 							update={toolList[9].update}
 							radios={[
-								{ label: { id: "radio.option1", defaultMessage: "Option 1" }, value: "option1", name: "option1" },
-								{ label: { id: "radio.option2", defaultMessage: "Option 2" }, value: "option2", name: "option2" },
-								{ label: { id: "radio.option3", defaultMessage: "Option 3" }, value: "option3", name: "option3" },
+								{ label: "Option 1", value: "option1" },
+								{ label: "Option 2", value: "option2" },
+								{ label: "Option 3", value: "option3" },
 							]}
 							row={true}
 						/>
@@ -424,14 +424,16 @@ describe("toolComponents.label", () => {
 });
 
 describe("toolComponents.radio", () => {
-	let radios = [
-		{ label: { id: "radio.option1", defaultMessage: "Option 1" }, value: "option1", name: "option1" },
-		{ label: { id: "radio.option2", defaultMessage: "Option 2" }, value: "option2", name: "option2" },
-		{ label: { id: "radio.option3", defaultMessage: "Option 3" }, value: "option3", name: "option3" },
-	];
-	let radioProps = new RadioProps();
+	let radios, radioProps;
 	beforeEach(() => {
-		radioProps.set(RadioProps.propNames.label, { id: "toolbar.radio", defaultMessage: "Radio" });
+		radios = [
+			{ label: "Option 1", value: "option1" },
+			{ label: "Option 2", value: "option2" },
+			{ label: "Option 3", value: "option3" },
+		];
+
+		radioProps = new RadioProps();
+		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
 		radioProps.set(RadioProps.propNames.defaultVal, "option1");
 		radioProps.set(RadioProps.propNames.value, "option1");
 		radioProps.set(RadioProps.propNames.update, console.log);
@@ -450,7 +452,7 @@ describe("toolComponents.radio", () => {
 			>
 				<IntlProvider locale="en">
 					<ToolRadio
-						label={{ id: "toolbar.radio", defaultMessage: "Radio" }}
+						label="aRadioLabel"
 						value="option1"
 						defaultVal="option1"
 						update={console.log}
