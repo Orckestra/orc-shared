@@ -77,9 +77,7 @@ describe("InputField", () => {
 			"to satisfy",
 			<p>Cannot render unknown type "{"undefined"}"</p>,
 		).then(() =>
-			expect(console.error, "to have calls satisfying", [
-				{ args: ['Unknown type "undefined", cannot render field'] },
-			]),
+			expect(console.error, "to have calls satisfying", [{ args: ['Unknown type "undefined", cannot render field'] }]),
 		));
 
 	Object.keys(inputs).forEach(type => {
@@ -113,9 +111,6 @@ describe("InputField", () => {
 				} else if (type === "TranslationInput") {
 					val = { "en-US": "Words", "fr-CA": "Des mots" };
 					emptyVal = undefined;
-				} else if (type === "DateInput") {
-					val = "2014-05-22";
-					emptyVal = "";
 				} else if (type === "Button" || type === "SmallButton") {
 					target = "button";
 				}
@@ -213,14 +208,7 @@ describe("InputField", () => {
 								label={`A ${type} field`}
 								required={`A ${type} field is a required field`}
 							>
-								<Input
-									id="fieldName"
-									value={val}
-									otherProp
-									placeholder="Placeholder"
-									options={options}
-									required
-								/>
+								<Input id="fieldName" value={val} otherProp placeholder="Placeholder" options={options} required />
 							</Field>
 						</SubjectWrapper>,
 					));
@@ -252,25 +240,14 @@ describe("InputField", () => {
 								required={`A ${type} field is a required field`}
 								invalid
 							>
-								<Input
-									id="fieldName"
-									value={emptyVal}
-									otherProp
-									placeholder="Placeholder"
-									options={options}
-									required
-								/>
+								<Input id="fieldName" value={emptyVal} otherProp placeholder="Placeholder" options={options} required />
 							</Field>
 						</PatternWrapper>,
 					));
 
 				it("renders a required and empty field in a named form", () =>
 					expect(
-						<SubjectWrapper
-							store={store}
-							values={{ fieldName: emptyVal }}
-							formName="activeForm"
-						>
+						<SubjectWrapper store={store} values={{ fieldName: emptyVal }} formName="activeForm">
 							<InputField
 								name="fieldName"
 								type={type}
@@ -312,13 +289,7 @@ describe("InputField", () => {
 			it("modifies the field name if inside a list", () =>
 				expect(
 					<SubjectWrapper store={store} values={{ fieldName: val }} index={12}>
-						<InputField
-							name="fieldName"
-							type={type}
-							label={`A ${type} field`}
-							options={options}
-							otherProp
-						/>
+						<InputField name="fieldName" type={type} label={`A ${type} field`} options={options} otherProp />
 					</SubjectWrapper>,
 					"when mounted",
 					"to satisfy",
