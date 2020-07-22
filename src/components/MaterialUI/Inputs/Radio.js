@@ -54,7 +54,7 @@ const extractAndValidateProps = radioProps => {
 		throw new Error("Radio component must have at least two options");
 	}
 
-	if (!name || name.length == 0) {
+	if (!name || name.length === 0) {
 		throw new Error("Radio component name is required and missing");
 	}
 
