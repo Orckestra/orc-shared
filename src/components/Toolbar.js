@@ -5,6 +5,8 @@ import { getThemeProp } from "../utils";
 import IconButton from "./IconButton";
 import Input from "./Input";
 import Text, { ptLabel } from "./Text";
+import Radio from "./MaterialUI/Inputs/Radio";
+import RadioProps from "./MaterialUI/Inputs/RadioProps";
 
 export const Bar = styled.div`
 	flex: 0 0 auto;
@@ -53,6 +55,21 @@ export const ToolbarInput = styled(Input)`
 	}
 `;
 
+export const ToolbarRadioWrapper = styled.div`
+	min-width: 250px;
+	padding-left: 10px;
+`;
+
+export const ToolbarRadio = styled(Radio)`
+	height: 30px;
+	flex: 0 0 auto;
+	margin: 0 5px;
+
+	&:focus {
+		z-index: 10;
+	}
+`;
+
 export const Separator = styled.div`
 	flex: 0 0 1px;
 	height: 30px;
@@ -83,14 +100,29 @@ const renderToolComponent = ({ key, type, subType, ...props }) => {
 toolComponents.input = ToolbarInput;
 toolComponents.input.displayName = "ToolInput";
 
-toolComponents.button = ({ label = {}, ...props }) => (
-	<ToolbarButton {...props} icon={label.icon} label={label.text} />
-);
+toolComponents.button = ({ label = {}, ...props }) => <ToolbarButton {...props} icon={label.icon} label={label.text} />;
 toolComponents.button.displayName = "ToolButton";
 
-toolComponents.group = ({ tools }) => (
-	<ToolGroup>{tools.map(renderToolComponent)}</ToolGroup>
-);
+toolComponents.radio = props => {
+	const radioProps = new RadioProps();
+
+	radioProps.set(RadioProps.propNames.name, props?.name);
+	radioProps.set(RadioProps.propNames.label, props?.label);
+	radioProps.set(RadioProps.propNames.defaultVal, props?.defaultVal);
+	radioProps.set(RadioProps.propNames.value, props?.value);
+	radioProps.set(RadioProps.propNames.update, props?.update);
+	radioProps.set(RadioProps.propNames.radios, props?.radios);
+	radioProps.set(RadioProps.propNames.row, props?.row);
+
+	return (
+		<ToolbarRadioWrapper>
+			<ToolbarRadio radioProps={radioProps} />
+		</ToolbarRadioWrapper>
+	);
+};
+toolComponents.radio.displayName = "ToolRadio";
+
+toolComponents.group = ({ tools }) => <ToolGroup>{tools.map(renderToolComponent)}</ToolGroup>;
 toolComponents.group.displayName = "ToolGroup";
 
 toolComponents.spacer = () => <Spacer />;
@@ -112,6 +144,9 @@ toolComponents.label.displayName = "ToolLabel";
 const ptTool = pt.oneOfType([
 	pt.shape({
 		type: pt.oneOf(["input"]).isRequired,
+	}),
+	pt.shape({
+		type: pt.oneOf(["radio"]).isRequired,
 	}),
 	pt.shape({
 		type: pt.oneOf(["button"]).isRequired,
