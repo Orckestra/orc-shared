@@ -56,10 +56,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const Arrow = () => {
-  const classes = useStyles();
-
-  return <div className={classes.arrow} />
+export const Arrow = ({ arrowClass }) => {
+  return <div className={arrowClass} />
 }
 
 const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
@@ -69,6 +67,14 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
     isDisplayed: false,
     anchorElement: null
   });
+
+  if (popperValue == null) return <Comp {...props} />;
+
+  if (isString(popperValue) && isStringNullOrWhitespace(popperValue))
+    return <Comp {...props} />;
+
+  if (isObject(popperValue) && isReactComponent(popperValue) === false)
+    return <Comp {...props} />;
 
   const defaultComponent = (
     <Comp onClick={(event) => togglePopper(event)} {...props} />
@@ -90,14 +96,6 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
     })
   }
 
-  if (popperValue == null) return <Comp {...props} />;
-
-  if (isString(popperValue) && isStringNullOrWhitespace(popperValue))
-    return <Comp {...props} />;
-
-  if (isObject(popperValue) && isReactComponent(popperValue) === false)
-    return <Comp {...props} />;
-
   return (
     <ClickAwayListener onClickAway={() => clickAwayHandler()}>
       <div>
@@ -116,7 +114,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
           open={popperState.isDisplayed}
           anchorEl={popperState.anchorElement}
         >
-          <Arrow />
+          <Arrow arrowClass={classes.arrow} />
           {popperValue}
         </Popper>
       </div>

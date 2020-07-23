@@ -109,7 +109,7 @@ const SectionExpansionPanel = ({
 			}}
 		>
 			<AccordionSummary
-				expandIcon={<Icon id="dropdawn-chevron-down" />}
+				expandIcon={<Icon id="dropdown-chevron-down" />}
 				IconButtonProps={defaultSummaryStyles}
 				classes={{
 					root: classNames(classes.summaryRoot),

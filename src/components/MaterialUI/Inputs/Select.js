@@ -57,7 +57,7 @@ const MenuProps = {
 };
 
 const ChevronDown = props => {
-	return <Icon id="dropdawn-chevron-down" {...props} />;
+	return <Icon id="dropdown-chevron-down" {...props} />;
 };
 
 const Select = ({ options, selectProps }) => {
