@@ -4,7 +4,7 @@ import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
-import Icon from "../../Icon";
+import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
 	select: {
@@ -57,7 +57,7 @@ const MenuProps = {
 };
 
 const ChevronDown = props => {
-	return <Icon id="chevron-down" {...props} />;
+	return <Icon id="dropdown-chevron-down" {...props} />;
 };
 
 const Select = ({ options, selectProps }) => {

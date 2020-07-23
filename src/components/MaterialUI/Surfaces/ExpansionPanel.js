@@ -6,7 +6,7 @@ import AccordionActions from "@material-ui/core/AccordionActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
-import Icon from "../../Icon";
+import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
 	expansionPanelHeader: {},
@@ -59,7 +59,7 @@ const ExpansionPanel = ({
 			onChange={onChange}
 		>
 			<AccordionSummary
-				expandIcon={<Icon {...{ id: "chevron-down" }} />}
+				expandIcon={<Icon id="chevron-down" />}
 				classes={{
 					root: classNames(classes.expansionPanelHeader),
 				}}

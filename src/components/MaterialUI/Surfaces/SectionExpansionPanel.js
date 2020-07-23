@@ -5,7 +5,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionActions from "@material-ui/core/AccordionActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import Icon from "../../Icon";
+import Icon from "./../DataDisplay/Icon";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import useViewState from "../../../hooks/useViewState";
 
@@ -109,7 +109,7 @@ const SectionExpansionPanel = ({
 			}}
 		>
 			<AccordionSummary
-				expandIcon={<Icon {...{ id: "chevron-down" }} />}
+				expandIcon={<Icon id="dropdown-chevron-down" />}
 				IconButtonProps={defaultSummaryStyles}
 				classes={{
 					root: classNames(classes.summaryRoot),
