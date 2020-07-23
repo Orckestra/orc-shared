@@ -1,5 +1,5 @@
 import React from "react";
-import clsx from "clsx";
+import classNames from "classnames";
 import RadioGroupMui from "@material-ui/core/RadioGroup";
 import RadioMui from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -101,7 +101,7 @@ const Radio = ({ radioProps }) => {
 							control={
 								<RadioMui
 									color="primary"
-									checkedIcon={<span className={clsx(classes.radioIcon, classes.radioIconChecked)} />}
+									checkedIcon={<span className={classNames(classes.radioIcon, classes.radioIconChecked)} />}
 									icon={<span className={classes.radioIcon} />}
 									onClick={handleClick}
 								/>
