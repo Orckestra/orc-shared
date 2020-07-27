@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "0.11.0-dev.5",
+	"version": "0.11.0-dev.6",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
@@ -19,7 +19,8 @@
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
 		"coveralls": "cat coverage/lcov.info | coveralls",
-		"prepublishOnly": "npm run build:clean --"
+		"prepublishOnly": "npm run build:clean --",
+		"icons": "orc-scripts buildIconsSheet"
 	},
 	"files": [
 		"src",

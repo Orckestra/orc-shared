@@ -4,13 +4,13 @@ import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
-import Icon from "../../Icon";
+import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
 	select: {
 		"& ul": {
 			minWidth: theme.spacing(17.5),
-			maxHeight: theme.spacing(30)
+			maxHeight: theme.spacing(30),
 		},
 		"& li": {
 			fontSize: theme.typography.fieldLabelSize,
@@ -38,14 +38,14 @@ const useStyles = makeStyles(theme => ({
 	label: {
 		fontFamily: theme.typography.button.fontFamily,
 		fontWeight: theme.typography.button.fontWeight,
-		fontSize: theme.typography.button.fontSize
+		fontSize: theme.typography.button.fontSize,
 	},
 	icon: {
 		right: theme.spacing(1),
 		width: theme.spacing(1.2),
 		padding: `${theme.spacing(0.5)} 0`,
 		color: theme.palette.primary.main,
-	}
+	},
 }));
 
 const MenuProps = {
@@ -57,7 +57,7 @@ const MenuProps = {
 };
 
 const ChevronDown = props => {
-	return <Icon id="chevron-down" {...props} />;
+	return <Icon id="dropdown-chevron-down" {...props} />;
 };
 
 const Select = ({ options, selectProps }) => {
@@ -85,7 +85,12 @@ const Select = ({ options, selectProps }) => {
 		>
 			{options.map(option => (
 				<MenuItem key={option.value} value={option.value}>
-					<TooltippedTypography children={option.label} noWrap titleValue={option.label} classes={{ body1: classes.label }} />
+					<TooltippedTypography
+						children={option.label}
+						noWrap
+						titleValue={option.label}
+						classes={{ body1: classes.label }}
+					/>
 				</MenuItem>
 			))}
 		</SelectMUI>
