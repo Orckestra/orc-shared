@@ -43,7 +43,6 @@ const wrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 	const [startDate, setStartDate] = useState(parsedValue);
 
 	const updateDate = date => {
-		console.warn("Test", date);
 		if (onChange) {
 			onChange(date);
 		}

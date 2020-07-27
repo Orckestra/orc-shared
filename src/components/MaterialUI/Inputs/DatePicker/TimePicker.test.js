@@ -54,6 +54,26 @@ describe("Time Component", () => {
 			buildExpectedTime("5", "00", "AM"),
 		));
 
+	it("sets up a time now when no value", () => {
+		const testDate = new Date(2018, 11, 24, 10, 33, 30, 0);
+		const _Date = Date;
+		global.Date = jest.fn(() => testDate);
+		global.Date.UTC = _Date.UTC;
+		global.Date.parse = _Date.parse;
+		global.Date.now = _Date.now;
+
+		expect(
+			<IntlProvider locale="en-US">
+				<div>
+					<TimePicker update={() => {}} value={""} />
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			buildExpectedTime("10", "30", "AM"),
+		);
+	});
+
 	it("sets up a time 5pm", () =>
 		expect(
 			<IntlProvider locale="en-US">

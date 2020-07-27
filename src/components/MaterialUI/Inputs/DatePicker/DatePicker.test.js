@@ -8,7 +8,7 @@ describe("DatePicker", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker update={() => {}} value={"2020/06/30"} />
+					<DatePicker onChange={() => {}} value={"2020/06/30"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -27,13 +27,36 @@ describe("DatePicker", () => {
 			</IntlProvider>,
 		));
 
+	it("sets up a default date to locale (en-US)", () =>
+		expect(
+			<IntlProvider locale="en-US">
+				<div>
+					<DatePicker onChange={() => {}} />
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en-US">
+				<div>
+					<label>
+						<div className="react-datepicker-wrapper">
+							<div className="react-datepicker__input-container">
+								<input value="01/01/1970" onChange={() => {}} />
+							</div>
+						</div>
+						<Ignore />
+					</label>
+				</div>
+			</IntlProvider>,
+		));
+
 	it("sets up a date to locale with time 5am (en-US)", () => {
 		const date = new Date("2020-06-30T05:00:00");
 		const expectedDate = "06/30/2020 5:00 AM";
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker useTime={true} update={() => {}} value={date} />
+					<DatePicker useTime={true} onChange={() => {}} value={date} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -59,7 +82,7 @@ describe("DatePicker", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker useTime={true} update={() => {}} value={date} />
+					<DatePicker useTime={true} onChange={() => {}} value={date} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -85,7 +108,7 @@ describe("DatePicker", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker useTime={true} update={() => {}} value={date} />
+					<DatePicker useTime={true} onChange={() => {}} value={date} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
