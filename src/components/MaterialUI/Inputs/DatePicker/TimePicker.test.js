@@ -2,6 +2,7 @@ import React from "react";
 import TimePicker from "./TimePicker";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
+import { mount } from "enzyme";
 
 const buildExpectedTime = (hours, mins, ampm, showTimeZone) => {
 	return (
@@ -46,7 +47,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={"05:00:00"} />
+					<TimePicker onChange={() => {}} value={"05:00:00"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -65,7 +66,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={""} />
+					<TimePicker onChange={() => {}} value={""} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -78,7 +79,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={"17:00:00"} />
+					<TimePicker onChange={() => {}} value={"17:00:00"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -90,7 +91,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={"00:00"} />
+					<TimePicker onChange={() => {}} value={"00:00"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -102,7 +103,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={"12:00 pm"} />
+					<TimePicker onChange={() => {}} value={"12:00 pm"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -114,7 +115,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={"4:16 pm"} />
+					<TimePicker onChange={() => {}} value={"4:16 pm"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -126,7 +127,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={"4:31 pm"} />
+					<TimePicker onChange={() => {}} value={"4:31 pm"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -138,11 +139,28 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker update={() => {}} value={"4:31 pm"} showTimeZone={true} />
+					<TimePicker onChange={() => {}} value={"4:31 pm"} showTimeZone={true} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			buildExpectedTime("4", "30", "PM", true),
 		));
+
+	it("should call onChange prop", () => {
+		const onChangeMock = jest.fn();
+		const event = {
+			preventDefault() {},
+			target: { value: "10" },
+		};
+		const component = mount(<TimePicker onChange={onChangeMock} />);
+
+		const select = component.find("select");
+		expect(select.length, "to equal", 3);
+
+		select.at(0).simulate("change", event);
+		select.at(1).simulate("change", event);
+		select.at(2).simulate("change", event);
+		expect(onChangeMock.mock.calls.length, "to equal", 3);
+	});
 });

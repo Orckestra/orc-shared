@@ -74,7 +74,7 @@ const TimePicker = ({ value, onChange, showTimeZone }) => {
 	const onTimeChange = useCallback(
 		datetime => {
 			if (onChange) {
-				// DatePicker expects military time format, or elsethings go wonky!
+				// DatePicker expects military time format, or else things go wonky!
 				const time = `${leftFillNum(datetime.getHours(), 2)}:${leftFillNum(datetime.getMinutes(), 2)}`;
 				onChange(time);
 			}

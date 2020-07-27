@@ -2,6 +2,7 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import DatePicker from "./index";
 import { Ignore } from "unexpected-reaction";
+import { mount } from "enzyme";
 
 describe("DatePicker", () => {
 	it("sets up a date to locale (en-US)", () =>
@@ -126,5 +127,20 @@ describe("DatePicker", () => {
 				</div>
 			</IntlProvider>,
 		);
+	});
+
+	it("should call onChange prop", () => {
+		const onChangeMock = jest.fn();
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+		const component = mount(<DatePicker onChange={onChangeMock} />);
+
+		const input = component.find("input");
+		expect(input.length, "to equal", 1);
+
+		input.at(0).simulate("change", event);
+		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
 });
