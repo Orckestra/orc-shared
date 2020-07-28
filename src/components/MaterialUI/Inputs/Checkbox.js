@@ -60,6 +60,9 @@ const Checkbox = ({ checkboxProps }) => {
 	};
 
 	const classes = useStyles();
+	if (label === null) {
+		return <CheckboxMUI checked={value} onChange={handleChange} />;
+	}
 
 	return (
 		<FormControlLabel
@@ -73,8 +76,8 @@ const Checkbox = ({ checkboxProps }) => {
 				/>
 			}
 			label={label}
-		></FormControlLabel>
+		/>
 	);
 };
 
-export default Checkbox;
+export default React.memo(Checkbox);

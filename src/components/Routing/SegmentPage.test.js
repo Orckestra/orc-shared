@@ -11,6 +11,9 @@ const View1 = () => <div id="view1" />;
 const View2 = () => <div id="view2" />;
 const View3 = () => <div id="view3" />;
 const View4 = () => <div id="view4" />;
+const View5 = () => <div id="view5" />;
+
+const ComponentLabel = () => <p>Component</p>;
 
 describe("SegmentPage", () => {
 	let state, store, segments;
@@ -33,9 +36,9 @@ describe("SegmentPage", () => {
 			},
 		});
 		store = {
-			subscribe: () => {},
+			subscribe: () => { },
 			getState: () => state,
-			dispatch: () => {},
+			dispatch: () => { },
 		};
 		segments = {
 			"/one": {
@@ -60,6 +63,10 @@ describe("SegmentPage", () => {
 					},
 				},
 			},
+			"/three": {
+				label: <ComponentLabel />,
+				component: View5
+			}
 		};
 	});
 
@@ -87,6 +94,9 @@ describe("SegmentPage", () => {
 						<Item to="/foo/meep/one">Text</Item>
 						<Item to="/foo/meep/two" active>
 							Translated
+						</Item>
+						<Item to="/foo/meep/three">
+							<ComponentLabel />
 						</Item>
 					</List>
 					<View2 />
@@ -124,6 +134,9 @@ describe("SegmentPage", () => {
 							<Item to="/foo/meep/one">Text</Item>
 							<Item to="/foo/meep/two" active>
 								Translated
+							</Item>
+							<Item to="/foo/meep/three">
+								<ComponentLabel />
 							</Item>
 						</List>
 						<View2 />
@@ -212,6 +225,9 @@ describe("SegmentPage", () => {
 					<List>
 						<Item to="/foo/meep/one">Text</Item>
 						<Item to="/foo/meep/two">Translated</Item>
+						<Item to="/foo/meep/three">
+							<ComponentLabel />
+						</Item>
 					</List>
 				</MemoryRouter>
 				<View1 />

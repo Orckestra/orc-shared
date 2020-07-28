@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Icon from "./../Icon";
 
 describe("Placeholder", () => {
-	const icon = "box-1";
+	const icon = "orders";
 	const title = "Test Title";
 	const subtitle = "Test Subtitle";
 
@@ -16,7 +16,7 @@ describe("Placeholder", () => {
 		const mountedComponent = mount(component);
 		const expected = (
 			<Grid>
-				<Icon {...{ id: icon }} />
+				<Icon id={icon} />
 				<Typography>{title}</Typography>
 				<Typography>{subtitle}</Typography>
 			</Grid>
@@ -45,7 +45,7 @@ describe("Placeholder", () => {
 		const mountedComponent = mount(component);
 		const expected = (
 			<Grid>
-				<Icon {...{ id: icon }} />
+				<Icon id={icon} />
 				<Typography>{subtitle}</Typography>
 			</Grid>
 		);
@@ -59,7 +59,7 @@ describe("Placeholder", () => {
 		const mountedComponent = mount(component);
 		const expected = (
 			<Grid>
-				<Icon {...{ id: icon }} />
+				<Icon id={icon} />
 				<Typography>{title}</Typography>
 			</Grid>
 		);

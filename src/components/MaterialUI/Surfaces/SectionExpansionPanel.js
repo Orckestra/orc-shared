@@ -1,11 +1,11 @@
 import React from "react";
-import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionActions from "@material-ui/core/AccordionActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import Icon from "../../Icon";
+import Icon from "./../DataDisplay/Icon";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import useViewState from "../../../hooks/useViewState";
 
@@ -105,7 +105,7 @@ const SectionExpansionPanel = ({
 	);
 
 	return (
-		<MuiExpansionPanel
+		<Accordion
 			defaultExpanded={defaultExpanded}
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
@@ -115,8 +115,8 @@ const SectionExpansionPanel = ({
 				expanded: classNames(classes.panelExpanded),
 			}}
 		>
-			<ExpansionPanelSummary
-				expandIcon={<Icon {...{ id: "chevron-down" }} />}
+			<AccordionSummary
+				expandIcon={<Icon id="dropdown-chevron-down" />}
 				IconButtonProps={defaultSummaryStyles}
 				classes={{
 					root: classNames(classes.summaryRoot),
@@ -126,22 +126,22 @@ const SectionExpansionPanel = ({
 				}}
 			>
 				{header}
-			</ExpansionPanelSummary>
-			<ExpansionPanelDetails
+			</AccordionSummary>
+			<AccordionDetails
 				classes={{
 					root: classNames(classes.resetPadding),
 				}}
 			>
 				{content}
-			</ExpansionPanelDetails>
+			</AccordionDetails>
 			{actions != null ? (
-				<ExpansionPanelActions
+				<AccordionActions
 					disableSpacing={disableSpacing == null ? false : disableSpacing}
 				>
 					{actions}
-				</ExpansionPanelActions>
+				</AccordionActions>
 			) : null}
-		</MuiExpansionPanel>
+		</Accordion>
 	);
 };
 

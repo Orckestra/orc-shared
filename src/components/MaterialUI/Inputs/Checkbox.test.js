@@ -43,6 +43,20 @@ describe("Checkbox Component", () => {
 		expect(mountedComponent.children().first().props().label, "to equal", "aLabel");
 	});
 
+	it("Renders Checkbox component without labels", () => {
+		const checkboxProps = new CheckboxProps();
+
+		checkboxProps.set(CheckboxProps.propNames.update, update);
+		checkboxProps.set(CheckboxProps.propNames.value, true);
+
+		const component = <Checkbox checkboxProps={checkboxProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <CheckboxMUI checked={true} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
 	it("Checkbox component handles check", async () => {
 		const checkboxProps = new CheckboxProps();
 		const aLabel = "aLabel";

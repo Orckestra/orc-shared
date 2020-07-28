@@ -16,31 +16,26 @@ const nullNaN = (num, nil = 0) => (Number.isNaN(num) ? nil : num);
 const containNumber = (number, max = Number.MAX_VALUE, min = -Number.MAX_VALUE) =>
 	Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : number;
 
-export const NumberInput = ({
-	update,
-	min,
-	max,
-	value = "",
-	step,
-	required,
-	...props
-}) => {
+export const NumberInput = ({ update, min, max, value = "", step, required, ...props }) => {
 	const onChange = useCallback(
-		step
-			? e => update(containNumber(roundToStep(e.target.value, step), max, min))
-			: e => update(containNumber(nullNaN(parseFloat(e.target.value), ""), max, min)),
+		e =>
+			step
+				? update(containNumber(roundToStep(e.target.value, step), max, min))
+				: update(containNumber(nullNaN(parseFloat(e.target.value), ""), max, min)),
 		[update, step, min, max],
 	);
 	const increment = useCallback(
-		step
-			? () => update(containNumber(roundToStep(value + step, step), max, undefined))
-			: () => update(containNumber(nullNaN(parseFloat(value)) + 1, max, undefined)),
+		() =>
+			step
+				? update(containNumber(roundToStep(value + step, step), max, undefined))
+				: update(containNumber(nullNaN(parseFloat(value)) + 1, max, undefined)),
 		[update, value, step, max],
 	);
 	const decrement = useCallback(
-		step
-			? () => update(containNumber(roundToStep(value - step, step), undefined, min))
-			: () => update(containNumber(nullNaN(parseFloat(value)) - 1, undefined, min)),
+		() =>
+			step
+				? update(containNumber(roundToStep(value - step, step), undefined, min))
+				: update(containNumber(nullNaN(parseFloat(value)) - 1, undefined, min)),
 		[update, value, step, min],
 	);
 	return (

@@ -8,6 +8,7 @@ const IconSVG = styled.svg`
 	stroke: currentColor;
 `;
 
+console.warn("Icon has been deprecated. Use Icon from MaterialUI.");
 const Icon = ({ id, ...props }) => (
 	<IconSVG {...props}>
 		<use href={`#icon-${id}`} />

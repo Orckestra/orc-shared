@@ -1,10 +1,10 @@
 import React from "react";
 import { mount } from "enzyme";
 import ExpansionPanel from "./ExpansionPanel";
-import ExpansionPanelMui from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionActions from "@material-ui/core/AccordionActions";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 
@@ -18,11 +18,11 @@ describe("Expansion Panel", () => {
 		);
 		const mountedComponent = mount(component);
 		const expected = (
-			<ExpansionPanelMui>
-				<ExpansionPanelSummary>{header}</ExpansionPanelSummary>
-				<ExpansionPanelDetails>{content}</ExpansionPanelDetails>
-				<ExpansionPanelActions>{actions}</ExpansionPanelActions>
-			</ExpansionPanelMui>
+			<Accordion>
+				<AccordionSummary>{header}</AccordionSummary>
+				<AccordionDetails>{content}</AccordionDetails>
+				<AccordionActions>{actions}</AccordionActions>
+			</Accordion>
 		);
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
@@ -37,7 +37,7 @@ describe("Expansion Panel", () => {
 		);
 		const mountedComponent = mount(component);
 
-		expect(mountedComponent.exists(".MuiExpansionPanelActions-root"), "to be truthy");
+		expect(mountedComponent.exists(".MuiAccordionActions-root"), "to be truthy");
 	});
 
 	it("Not renders Expansion Panel Actions if actions are null", () => {
@@ -46,7 +46,7 @@ describe("Expansion Panel", () => {
 		const component = <ExpansionPanel header={header} content={content} />;
 		const mountedComponent = mount(component);
 
-		expect(mountedComponent.exists(".MuiExpansionPanelActions-root"), "to be falsy");
+		expect(mountedComponent.exists(".MuiAccordionActions-root"), "to be falsy");
 	});
 
 	it("Fails if expansionPanelProps has wrong type", () => {
@@ -120,7 +120,7 @@ describe("Expansion Panel", () => {
 
 		const mountedComponent = mount(component);
 
-		const exp = mountedComponent.find(ExpansionPanelMui);
+		const exp = mountedComponent.find(Accordion);
 
 		exp.props().onChange(true);
 
@@ -145,7 +145,7 @@ describe("Expansion Panel", () => {
 
 		const mountedComponent = mount(component);
 
-		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be falsy");
+		expect(mountedComponent.exists(".MuiAccordionActions-spacing"), "to be falsy");
 	});
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps wasn't passed", () => {
@@ -155,7 +155,7 @@ describe("Expansion Panel", () => {
 
 		const mountedComponent = mount(component);
 
-		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be truthy");
+		expect(mountedComponent.exists(".MuiAccordionActions-spacing"), "to be truthy");
 	});
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps was passed without setting that", () => {
@@ -171,6 +171,6 @@ describe("Expansion Panel", () => {
 
 		const mountedComponent = mount(component);
 
-		expect(mountedComponent.exists(".MuiExpansionPanelActions-spacing"), "to be truthy");
+		expect(mountedComponent.exists(".MuiAccordionActions-spacing"), "to be truthy");
 	});
 });

@@ -3,6 +3,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps from "./SelectProps";
+import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
+import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
 	select: {
@@ -51,6 +53,17 @@ const useStyles = makeStyles(theme => ({
 			outline: "none",
 		},
 	},
+	label: {
+		fontFamily: theme.typography.button.fontFamily,
+		fontWeight: theme.typography.button.fontWeight,
+		fontSize: theme.typography.button.fontSize
+	},
+	icon: {
+		right: theme.spacing(1),
+		width: theme.spacing(1.2),
+		padding: `${theme.spacing(0.5)} 0`,
+		color: theme.palette.primary.main,
+	}
 }));
 
 const MenuProps = {
@@ -65,23 +78,9 @@ const MenuProps = {
 	},
 };
 
-const ChevronDown = props => (
-	<div
-		{...props}
-		style={{
-			fontSize: "32px",
-			fontFamily: "courier,monospace",
-			//fontWeight: 'bold',
-			color: "black",
-			height: "10px",
-			width: "20px",
-			marginRight: "5px",
-			padding: "12px 0 0",
-		}}
-	>
-		ˇ
-	</div>
-);
+const ChevronDown = props => {
+	return <Icon id="dropdown-chevron-down" {...props} />;
+};
 
 const Select = ({ options, selectProps }) => {
 	if (selectProps != null && selectProps instanceof SelectProps === false) {
@@ -104,10 +103,11 @@ const Select = ({ options, selectProps }) => {
 			disableUnderline={true}
 			IconComponent={ChevronDown}
 			MenuProps={{ classes: { paper: classes.select }, ...MenuProps }}
+			classes={{ icon: classes.icon }}
 		>
 			{options.map(option => (
 				<MenuItem key={option.value} value={option.value}>
-					{option.label}
+					<TooltippedTypography children={option.label} noWrap titleValue={option.label} classes={{ body1: classes.label }} />
 				</MenuItem>
 			))}
 		</SelectMUI>

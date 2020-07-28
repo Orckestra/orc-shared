@@ -31,7 +31,7 @@ const Placeholder = ({ icon, title, subtitle }) => {
 			alignItems="center"
 			className={classes.placeholder}
 		>
-			{icon ? <Icon className={classes.placeholderImage} {...{ id: icon }} /> : null}
+			{icon ? <Icon className={classes.placeholderImage} id={icon} /> : null}
 			{title ? (
 				<Typography className={classes.placeholderTitle}>{title}</Typography>
 			) : null}
