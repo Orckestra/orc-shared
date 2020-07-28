@@ -614,6 +614,10 @@ const setThemeOverrides = theme => ({
 				boxShadow: `0 0 4px ${theme.palette.focus}`,
 				outline: "none",
 			},
+			"&[readonly]": {
+				border: "none",
+				backgroundColor: "transparent",
+			}
 		},
 		adornedStart: {
 			"& > .MuiOutlinedInput-root:first-child, & > .MuiButtonBase-root:first-child": {
