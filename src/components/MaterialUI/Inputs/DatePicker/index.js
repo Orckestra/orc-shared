@@ -36,10 +36,8 @@ const DatePickerStyle = createGlobalStyle`
     }
 `;
 
-const wrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone, timeInputLabel, ...props }) => {
+const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone, timeInputLabel, ...props }) => {
 	const parsedValue = new Date(value || "1970/01/01");
-
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [startDate, setStartDate] = useState(parsedValue);
 
 	const updateDate = date => {
@@ -59,7 +57,7 @@ const wrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 				onChange={date => updateDate(date)}
 				showTimeInput={useTime ?? false}
 				useTime={useTime ?? false}
-				customTimeInput={<TimePicker showTimeZone={showTimeZone} />}
+				customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
 				timeInputLabel={timeInputLabel ?? ""}
 			/>
 			<CalendarIcon />
@@ -67,4 +65,4 @@ const wrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 	);
 };
 
-export default wrappedDatePicker;
+export default WrappedDatePicker;

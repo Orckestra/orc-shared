@@ -49,15 +49,11 @@ const parseTime = timeStr => {
 		return new Date();
 	}
 
-	let dt = new Date();
-	var hours = parseInt(time[1], 10);
+	var hours = parseInt(time[1]);
 	if (time[3] === "p" && hours < 12) {
 		hours += 12;
 	}
-	dt.setHours(hours);
-	dt.setMinutes(parseInt(time[2], 10) || 0);
-	dt.setSeconds(0, 0);
-	return dt;
+	return new Date(0, 0, 0, hours, parseInt(time[2]) || 0, 0);
 };
 
 const leftFillNum = (num, targetLength) => num.toString().padStart(targetLength, 0);
@@ -74,7 +70,7 @@ const TimePicker = ({ value, onChange, showTimeZone }) => {
 	const onTimeChange = useCallback(
 		datetime => {
 			if (onChange) {
-				// DatePicker expects military time format, or else things go wonky!
+				// DatePicker expects 24 hour time format, or else things go wonky!
 				const time = `${leftFillNum(datetime.getHours(), 2)}:${leftFillNum(datetime.getMinutes(), 2)}`;
 				onChange(time);
 			}
@@ -82,62 +78,43 @@ const TimePicker = ({ value, onChange, showTimeZone }) => {
 		[onChange],
 	);
 
-	const setHours = useCallback(
-		(hours, isAMTime) => {
-			if (isAMTime && hours === 12) {
-				time.setHours(0);
-			} else if (!isAMTime && hours === 12) {
-				time.setHours(12);
-			} else {
-				time.setHours(hours + (isAMTime ? 0 : 12));
-			}
-			setTime(time);
-			onTimeChange(time);
-		},
-		[time, setTime, onTimeChange],
-	);
+	const setHours = (hours, isAMTime) => {
+		if (isAMTime && hours === 12) {
+			time.setHours(0);
+		} else if (!isAMTime && hours === 12) {
+			time.setHours(12);
+		} else {
+			time.setHours(hours + (isAMTime ? 0 : 12));
+		}
+	};
 
-	const updateHours = useCallback(
-		e => {
-			setHours(parseInt(e?.target?.value || e), isAM(time));
-		},
-		[setHours, time],
-	);
+	const updateTimeOptions = id => event => {
+		const value = event?.target?.value || event;
+		if (id === "hours") {
+			setHours(value, isAM(time));
+		} else if (id === "ampm") {
+			setHours(calculateHours(time), value === "AM");
+		} else if (id === "mins") {
+			time.setMinutes(parseInt(value));
+		}
+		setTime(time);
+		onTimeChange(time);
+	};
 
 	const getTimeZone = () => {
 		var timezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
 		return `${timezone[2]} (GMT${timezone[1]})`;
 	};
 
-	const updateMins = useCallback(
-		e => {
-			const value = e.target.value;
-			if (value === "45") {
-				time.setMinutes(45);
-			} else if (value === "30") {
-				time.setMinutes(30);
-			} else if (value === "15") {
-				time.setMinutes(15);
-			} else {
-				time.setMinutes(0);
-			}
-			setTime(time);
-			onTimeChange(time);
-		},
-		[onTimeChange, setTime, time],
-	);
-
-	const updateAMPM = useCallback(
-		e => {
-			setHours(calculateHours(time), e.target.value === "AM");
-		},
-		[setHours, time],
-	);
-
 	return (
 		<TimeWrapper>
 			<TimePickerWrapper>
-				<TimePickerSegmentWrapper name="hours" id="hours" onChange={updateHours} value={calculateHours(time)}>
+				<TimePickerSegmentWrapper
+					name="hours"
+					id="hours"
+					onChange={updateTimeOptions("hours")}
+					value={calculateHours(time)}
+				>
 					{hourOptions.map(option => (
 						<option key={"hour" + option.value} value={option.value}>
 							{option.label}
@@ -145,14 +122,24 @@ const TimePicker = ({ value, onChange, showTimeZone }) => {
 					))}
 				</TimePickerSegmentWrapper>{" "}
 				:
-				<TimePickerSegmentWrapper name="mins" id="mins" onChange={updateMins} value={calculateMins(time)}>
+				<TimePickerSegmentWrapper
+					name="mins"
+					id="mins"
+					onChange={updateTimeOptions("mins")}
+					value={calculateMins(time)}
+				>
 					{minOptions.map(option => (
 						<option key={"min" + option.value} value={option.value}>
 							{option.label}
 						</option>
 					))}
 				</TimePickerSegmentWrapper>
-				<TimePickerSegmentWrapper name="ampm" id="ampm" onChange={updateAMPM} value={calculateAMPM(time)}>
+				<TimePickerSegmentWrapper
+					name="ampm"
+					id="ampm"
+					onChange={updateTimeOptions("ampm")}
+					value={calculateAMPM(time)}
+				>
 					{ampmOptions.map(option => (
 						<option key={"ampm" + option.value} value={option.value}>
 							{option.label}

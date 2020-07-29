@@ -111,6 +111,9 @@ describe("InputField", () => {
 				} else if (type === "TranslationInput") {
 					val = { "en-US": "Words", "fr-CA": "Des mots" };
 					emptyVal = undefined;
+				} else if (type === "DateInput") {
+					val = "2014-05-22";
+					emptyVal = "";
 				} else if (type === "Button" || type === "SmallButton") {
 					target = "button";
 				}
