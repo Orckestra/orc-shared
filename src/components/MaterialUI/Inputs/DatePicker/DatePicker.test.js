@@ -3,13 +3,19 @@ import { IntlProvider } from "react-intl";
 import DatePicker from "./index";
 import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
+import sinon from "sinon";
 
 describe("DatePicker", () => {
+	let updater;
+	beforeEach(() => {
+		updater = sinon.spy().named("updater");
+	});
+
 	it("sets up a date to locale (en-US)", () =>
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker onChange={() => {}} value={"2020/06/30"} />
+					<DatePicker onChange={updater} value={"2020/06/30"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -32,7 +38,7 @@ describe("DatePicker", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker onChange={() => {}} />
+					<DatePicker onChange={updater} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -57,7 +63,7 @@ describe("DatePicker", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker useTime={true} onChange={() => {}} value={date} />
+					<DatePicker useTime={true} onChange={updater} value={date} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -83,7 +89,7 @@ describe("DatePicker", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker useTime={true} onChange={() => {}} value={date} />
+					<DatePicker useTime={true} onChange={updater} value={date} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -109,7 +115,7 @@ describe("DatePicker", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<DatePicker useTime={true} onChange={() => {}} value={date} />
+					<DatePicker useTime={true} onChange={updater} value={date} />
 				</div>
 			</IntlProvider>,
 			"when mounted",

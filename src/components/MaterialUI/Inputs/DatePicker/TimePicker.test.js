@@ -3,6 +3,7 @@ import TimePicker from "./TimePicker";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
+import sinon from "sinon";
 
 const buildExpectedTime = (hours, mins, ampm, showTimeZone) => {
 	return (
@@ -43,11 +44,16 @@ const buildExpectedTime = (hours, mins, ampm, showTimeZone) => {
 };
 
 describe("Time Component", () => {
+	let updater;
+	beforeEach(() => {
+		updater = sinon.spy().named("updater");
+	});
+
 	it("sets up a time 5am", () =>
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"05:00:00"} />
+					<TimePicker onChange={updater} value={"05:00:00"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -66,7 +72,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={""} />
+					<TimePicker onChange={updater} value={""} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -86,7 +92,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"xxx"} />
+					<TimePicker onChange={updater} value={"xxx"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -99,7 +105,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"17:00:00"} />
+					<TimePicker onChange={updater} value={"17:00:00"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -111,7 +117,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"00:00"} />
+					<TimePicker onChange={updater} value={"00:00"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -123,7 +129,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"12:00 pm"} />
+					<TimePicker onChange={updater} value={"12:00 pm"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -135,7 +141,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"4:16 pm"} />
+					<TimePicker onChange={updater} value={"4:16 pm"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -147,7 +153,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"4:31 pm"} />
+					<TimePicker onChange={updater} value={"4:31 pm"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -159,7 +165,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US">
 				<div>
-					<TimePicker onChange={() => {}} value={"4:31 pm"} showTimeZone={true} />
+					<TimePicker onChange={updater} value={"4:31 pm"} showTimeZone={true} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
