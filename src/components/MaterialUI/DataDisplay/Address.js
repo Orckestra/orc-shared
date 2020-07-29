@@ -1,34 +1,32 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
 import { TextProps } from "../textProps";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 import _ from "lodash";
 
-const useStyles = makeStyles(theme => ({}));
-
-const Address = ({
-	name,
-	contactPerson,
-	line1,
-	line2,
-	city,
-	province,
-	postalCode,
-	country,
-	email,
-	phone,
-	textProps,
-}) => {
-	const classes = useStyles();
-
+const Address = ({ address, textProps }) => {
 	if (textProps != null && textProps instanceof TextProps === false) {
 		throw new TypeError("textProps property is not of type TextProps");
 	}
 
-	const cityProvincePostalCode = `${city}, ${province}, ${postalCode}`;
+	const cityRegionPostalCode = `${address.city}, ${address.regionCode}, ${address.postalCode}`;
 
-	const addressInfo = [name, contactPerson, line1, line2, cityProvincePostalCode, country, email, phone];
+	const contactPerson =
+		address.firstName && address.lastName
+			? `${address.firstName} ${address.lastName}`
+			: address.firstName || address.lastName;
+
+	const addressInfo = [
+		address.addressName,
+		contactPerson,
+		address.line1,
+		address.line2,
+		cityRegionPostalCode,
+		address.country,
+		address.notes,
+		address.email,
+		address.phoneNumber,
+	];
 
 	const customStyles = textProps?.get(TextProps.propNames.classes);
 

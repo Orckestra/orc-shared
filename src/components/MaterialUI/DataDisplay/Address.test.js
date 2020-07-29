@@ -7,65 +7,123 @@ import Grid from "@material-ui/core/Grid";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 
 describe("Address", () => {
-	const name = "My test address";
-	const contactPerson = "Test Test";
-	const line1 = "123 Test street";
-	const line2 = "Test building test entrance";
-	const city = "CityTest";
-	const province = "ProvinceTest";
-	const postalCode = "QWE12345";
-	const country = "CountryTest";
-	const email = "test@test.com";
-	const phone = "000-000-000";
+	it("Renders Address when all parameters are passed", () => {
+		const address = {
+			addressName: "My test address",
+			firstName: "TestFirstName",
+			lastName: "TestLastName",
+			line1: "123 Test line1",
+			line2: "Test line2",
+			city: "CityTest",
+			regionCode: "RegionTest",
+			postalCode: "QWE12345",
+			country: "Canada",
+			email: "test@test.com",
+			phoneNumber: "000-000-000",
+			notes: "Test address information",
+		};
 
-	const cityProvincePostalCode = `${city}, ${province}, ${postalCode}`;
+		const contactPerson = `${address.firstName} ${address.lastName}`;
 
-	it("Renders Address when all parameters passed", () => {
-		const component = (
-			<Address
-				name={name}
-				contactPerson={contactPerson}
-				line1={line1}
-				line2={line2}
-				city={city}
-				province={province}
-				postalCode={postalCode}
-				country={country}
-				email={email}
-				phone={phone}
-			/>
-		);
+		const cityRegionPostalCode = `${address.city}, ${address.regionCode}, ${address.postalCode}`;
+
+		const component = <Address address={address} />;
 
 		const mountedComponent = mount(component);
 
 		const expected = (
 			<Grid container>
-				<TooltippedTypography children={name} titleValue={name} />
+				<TooltippedTypography children={address.addressName} titleValue={address.addressName} />
 				<TooltippedTypography children={contactPerson} titleValue={contactPerson} />
-				<TooltippedTypography children={line1} titleValue={line1} />
-				<TooltippedTypography children={line2} titleValue={line2} />
-				<TooltippedTypography children={cityProvincePostalCode} titleValue={cityProvincePostalCode} />
-				<TooltippedTypography children={country} titleValue={country} />
-				<TooltippedTypography children={email} titleValue={email} />
-				<TooltippedTypography children={phone} titleValue={phone} />
+				<TooltippedTypography children={address.line1} titleValue={address.line1} />
+				<TooltippedTypography children={address.line2} titleValue={address.line2} />
+				<TooltippedTypography children={cityRegionPostalCode} titleValue={cityRegionPostalCode} />
+				<TooltippedTypography children={address.country} titleValue={address.country} />
+				<TooltippedTypography children={address.notes} titleValue={address.notes} />
+				<TooltippedTypography children={address.email} titleValue={address.email} />
+				<TooltippedTypography children={address.phoneNumber} titleValue={address.phoneNumber} />
 			</Grid>
 		);
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be true");
 	});
 
-	it("Renders Address when just required parameters passed", () => {
-		const component = (
-			<Address line1={line1} city={city} province={province} postalCode={postalCode} country={country} />
-		);
+	it("Renders Address when just required parameters are passed", () => {
+		const address = {
+			line1: "123 Test line1",
+			city: "CityTest",
+			regionCode: "RegionTest",
+			postalCode: "QWE12345",
+			country: "Canada",
+		};
+
+		const cityRegionPostalCode = `${address.city}, ${address.regionCode}, ${address.postalCode}`;
+
+		const component = <Address address={address} />;
 
 		const mountedComponent = mount(component);
 
 		const expected = (
 			<Grid container>
-				<TooltippedTypography children={line1} titleValue={line1} />
-				<TooltippedTypography children={cityProvincePostalCode} titleValue={cityProvincePostalCode} />
-				<TooltippedTypography children={country} titleValue={country} />
+				<TooltippedTypography children={address.line1} titleValue={address.line1} />
+				<TooltippedTypography children={cityRegionPostalCode} titleValue={cityRegionPostalCode} />
+				<TooltippedTypography children={address.country} titleValue={address.country} />
+			</Grid>
+		);
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be true");
+	});
+
+	it("Renders Address with just firstName when lastName is not passed", () => {
+		const address = {
+			firstName: "TestFirstName",
+			line1: "123 Test line1",
+			city: "CityTest",
+			regionCode: "RegionTest",
+			postalCode: "QWE12345",
+			country: "Canada",
+		};
+
+		const cityRegionPostalCode = `${address.city}, ${address.regionCode}, ${address.postalCode}`;
+
+		const component = <Address address={address} />;
+
+		const mountedComponent = mount(component);
+
+		const expected = (
+			<Grid container>
+				<TooltippedTypography children={address.firstName} titleValue={address.firstName} />
+				<TooltippedTypography children={address.line1} titleValue={address.line1} />
+				<TooltippedTypography children={cityRegionPostalCode} titleValue={cityRegionPostalCode} />
+				<TooltippedTypography children={address.country} titleValue={address.country} />
+			</Grid>
+		);
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be true");
+	});
+
+	it("Renders Address with just lastName when firstName is not passed", () => {
+		const address = {
+			lastName: "TestLastName",
+			line1: "123 Test line1",
+			city: "CityTest",
+			regionCode: "RegionTest",
+			postalCode: "QWE12345",
+			country: "Canada",
+		};
+
+		const cityRegionPostalCode = `${address.city}, ${address.regionCode}, ${address.postalCode}`;
+
+		const component = <Address address={address} />;
+
+		const mountedComponent = mount(component);
+
+		const expected = (
+			<Grid container>
+				<TooltippedTypography children={address.lastName} titleValue={address.lastName} />
+				<TooltippedTypography children={address.line1} titleValue={address.line1} />
+				<TooltippedTypography children={cityRegionPostalCode} titleValue={cityRegionPostalCode} />
+				<TooltippedTypography children={address.country} titleValue={address.country} />
 			</Grid>
 		);
 
@@ -73,19 +131,17 @@ describe("Address", () => {
 	});
 
 	it("Use style passed to component", () => {
+		const address = {
+			line1: "123 Test line1",
+			city: "CityTest",
+			regionCode: "RegionTest",
+			postalCode: "QWE12345",
+			country: "Canada",
+		};
 		const addressTextProps = new TextProps();
 		const test = "testRoot";
 		addressTextProps.set(TextProps.propNames.classes, test);
-		const component = (
-			<Address
-				line1={line1}
-				city={city}
-				province={province}
-				postalCode={postalCode}
-				country={country}
-				textProps={addressTextProps}
-			/>
-		);
+		const component = <Address address={address} textProps={addressTextProps} />;
 
 		const mountedComponent = mount(component);
 
