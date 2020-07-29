@@ -8,31 +8,49 @@ import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
 	select: {
+		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
 			maxHeight: theme.spacing(30),
+			paddingTop: 0,
+			paddingBottom: 0,
 		},
 		"& li": {
-			fontSize: theme.typography.fieldLabelSize,
+			fontSize: theme.typography.fontSize,
+			fontFamily: theme.typography.fontFamily,
+			textTransform: "none",
+			color: theme.palette.grey.dark,
+			paddingTop: theme.spacing(1),
+			paddingBottom: theme.spacing(1),
+			borderRadius: 0,
 			"&:hover": {
-				backgroundColor: theme.palette.primary.main,
+				backgroundColor: theme.palette.grey.light,
+				color: theme.palette.grey.dark,
+			},
+			"&:focus, &:active": {
+				borderRadius: 0,
+				"&:hover": {
+					color: theme.palette.grey.dark,
+					backgroundColor: theme.palette.hovergrey.light,
+				},
 			},
 		},
 	},
 	input: {
-		borderRadius: "4px",
+		borderRadius: theme.shape.borderRadius,
 		position: "relative",
 		backgroundColor: theme.palette.background.paper,
 		border: `1px solid ${theme.palette.grey.borders}`,
-		fontSize: theme.typography.fieldLabelSize,
+		fontSize: theme.typography.fontSize,
 		minWidth: theme.spacing(15),
 		maxWidth: theme.spacing(20),
-		padding: theme.spacing(0.6),
+		padding: theme.spacing(0.6 ,0.6, 0.6, 0.6),
 		transition: theme.transitions.create(["border-color", "box-shadow"]),
 		"&:focus": {
-			borderRadius: "4px",
-			borderColor: theme.palette.primary.light,
-			boxShadow: `0 0 0 0.2rem rgba(${theme.palette.primary.main},.25)`,
+			borderRadius: theme.shape.borderRadius,
+			borderColor: theme.palette.focus,
+			boxShadow: `0 0 4px ${theme.palette.focus}`,
+			outline: "none",
 		},
 	},
 	label: {
@@ -52,7 +70,11 @@ const MenuProps = {
 	getContentAnchorEl: null,
 	anchorOrigin: {
 		vertical: "bottom",
-		horizontal: "left",
+		horizontal: "right"
+	},
+	transformOrigin: {
+		vertical: "top",
+		horizontal: "right"
 	},
 };
 

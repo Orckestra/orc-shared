@@ -14,9 +14,16 @@ const useStyles = makeStyles(theme => ({
 		height: theme.spacing(8),
 		backgroundColor: theme.palette.primary.lighter,
 		flexDirection: "row-reverse",
+		borderRadius: 0,
+		"&:hover" : {
+			backgroundColor: theme.palette.hoverprimary.lighter,
+		},
+		"&:focus" : {
+			borderRadius: 0,
+		}
 	},
 	resetPadding: {
-		padding: "0",
+		padding: "0 !important",
 	},
 	panelExpanded: {},
 	summaryContent: {
@@ -106,6 +113,7 @@ const SectionExpansionPanel = ({
 					root: classNames(classes.summaryRoot),
 					expanded: classNames(classes.panelExpanded),
 					content: classNames(classes.summaryContent),
+					expandIcon: classNames(classes.summaryExpandIconRoot),
 				}}
 			>
 				{header}
