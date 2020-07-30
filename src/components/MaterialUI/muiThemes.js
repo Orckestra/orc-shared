@@ -810,10 +810,10 @@ const createThemes = (applicationTheme, themeDefinition) => {
 			...commonPalette,
 			...themeDefinition.palette,
 			hoverprimary: {
-				lighter: darken(commonPalette.primary.lighter, 0.05),
-				light: darken(commonPalette.primary.light, 0.05),
-				main: darken(commonPalette.primary.main, 0.05),
-				dark: darken(commonPalette.primary.dark, 0.05),
+				lighter: darken(themeDefinition.palette.primary.lighter, 0.05),
+				light: darken(themeDefinition.palette.primary.light, 0.05),
+				main: darken(themeDefinition.palette.primary.main, 0.05),
+				dark: darken(themeDefinition.palette.primary.dark, 0.05),
 			},
 			hovererror: {
 				light: darken(commonPalette.error.light, 0.05),
