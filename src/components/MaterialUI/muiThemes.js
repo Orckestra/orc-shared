@@ -350,10 +350,6 @@ const setThemeOverrides = theme => ({
 		fullWidth: {
 			width: "100%",
 		},
-		fullSize: {
-			width: "100%",
-			height: "100%",
-		},
 		/* Styles applied to the startIcon element if supplied. */
 		startIcon: {
 			display: "inherit",
