@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { fade, darken } from "@material-ui/core/styles/colorManipulator";
 
 const drawerWidth = 240;
 
@@ -41,6 +41,13 @@ const commonTheme = {
 };
 
 const commonPalette = {
+	primary: {
+		lighter: "#f5f5f5",
+		light: "#CCC",
+		main: "#232323",
+		dark: "#000",
+		contrastText: "#fff",
+	},
 	error: {
 		light: "#FFBBAE",
 		main: "#ED2E0B",
@@ -104,6 +111,7 @@ const setThemeProps = theme => ({
 
 const setThemeOverrides = theme => ({
 	...theme.overrides,
+
 	MuiButtonBase: {
 		...theme.MuiButtonBase,
 		root: {
@@ -122,10 +130,7 @@ const setThemeOverrides = theme => ({
 			}),
 			"&:hover": {
 				textDecoration: "none",
-				backgroundColor: fade(
-					theme.palette.text.primary,
-					theme.palette.action.hoverOpacity,
-				),
+				backgroundColor: fade(theme.palette.text.primary, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -164,10 +169,7 @@ const setThemeOverrides = theme => ({
 		textPrimary: {
 			color: theme.palette.primary.main,
 			"&:hover": {
-				backgroundColor: fade(
-					theme.palette.primary.main,
-					theme.palette.action.hoverOpacity,
-				),
+				backgroundColor: fade(theme.palette.primary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -178,10 +180,7 @@ const setThemeOverrides = theme => ({
 		textSecondary: {
 			color: theme.palette.secondary.main,
 			"&:hover": {
-				backgroundColor: fade(
-					theme.palette.secondary.main,
-					theme.palette.action.hoverOpacity,
-				),
+				backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -191,11 +190,7 @@ const setThemeOverrides = theme => ({
 		/* Styles applied to the root element if `variant="outlined"`. */
 		outlined: {
 			padding: theme.spacing(0.5, 1),
-			border: `1px solid ${
-				theme.palette.type === "light"
-					? "rgba(0, 0, 0, 0.23)"
-					: "rgba(255, 255, 255, 0.23)"
-				}`,
+			border: `1px solid ${theme.palette.type === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)"}`,
 			"&$disabled": {
 				border: `1px solid ${theme.palette.action.disabledBackground}`,
 			},
@@ -209,10 +204,7 @@ const setThemeOverrides = theme => ({
 			border: `1px solid ${fade(theme.palette.primary.main, 0.5)}`,
 			"&:hover": {
 				border: `1px solid ${theme.palette.primary.main}`,
-				backgroundColor: fade(
-					theme.palette.primary.main,
-					theme.palette.action.hoverOpacity,
-				),
+				backgroundColor: fade(theme.palette.primary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -225,10 +217,7 @@ const setThemeOverrides = theme => ({
 			border: `1px solid ${fade(theme.palette.secondary.main, 0.5)}`,
 			"&:hover": {
 				border: `1px solid ${theme.palette.secondary.main}`,
-				backgroundColor: fade(
-					theme.palette.secondary.main,
-					theme.palette.action.hoverOpacity,
-				),
+				backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -602,6 +591,10 @@ const setThemeOverrides = theme => ({
 				boxShadow: `0 0 4px ${theme.palette.focus}`,
 				outline: "none",
 			},
+			"&[readonly]": {
+				border: "none",
+				backgroundColor: "transparent",
+			},
 		},
 		adornedStart: {
 			"& > .MuiOutlinedInput-root:first-child, & > .MuiButtonBase-root:first-child": {
@@ -643,6 +636,44 @@ const setThemeOverrides = theme => ({
 		body1: {
 			...theme.body1,
 			fontSize: commonTheme.typography.fontSize,
+			lineHeight: 1.3,
+		},
+		h1: {
+			...theme.h1,
+			fontSize: theme.typography.h1Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+			color: theme.palette.grey.icon,
+		},
+		h2: {
+			...theme.h2,
+			fontSize: theme.typography.h2Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+		},
+		h3: {
+			...theme.h3,
+			fontSize: theme.typography.h3Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+		},
+		h4: {
+			...theme.h4,
+			fontSize: theme.typography.h4Size,
+			fontWeight: theme.typography.fontWeightRegular,
+			lineHeight: 1.3,
+		},
+		h5: {
+			...theme.h5,
+			fontSize: theme.typography.h5Size,
+			fontWeight: theme.typography.fontWeightBold,
+			lineHeight: 1.3,
+		},
+		h6: {
+			...theme.h6,
+			fontSize: theme.typography.h6Size,
+			fontWeight: theme.typography.fontWeightSemiBold,
+			lineHeight: 1.3,
 		},
 	},
 	MuiCheckbox: {
@@ -653,7 +684,18 @@ const setThemeOverrides = theme => ({
 			minWidth: theme.spacing(3),
 			backgroundColor: "inherit",
 			border: "none",
-			"&:active": {
+			"&.Mui-checked": {
+				"& .MuiSvgIcon-root": {
+					color: "inherit",
+				},
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&:focus, &:active": {
 				boxShadow: "none",
 			},
 		},
@@ -687,6 +729,60 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiRadio: {
+		...theme.MuiRadio,
+		root: {
+			...theme.root,
+			border: "none",
+			"&.Mui-checked": {
+				"& .MuiSvgIcon-root": {
+					color: "inherit",
+				},
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&:focus, &:active": {
+				boxShadow: "none",
+			},
+		},
+		colorPrimary: {
+			...theme.colorPrimary,
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&.Mui-checked": {
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+		},
+		colorSecondary: {
+			...theme.colorSecondary,
+			"&:hover": {
+				backgroundColor: "transparent !important",
+			},
+			"&.Mui-checked": {
+				"&:hover": {
+					backgroundColor: "transparent !important",
+				},
+			},
+		},
+	},
+	MuiFormLabel: {
+		...theme.MuiFormLabel,
+		root: {
+			...theme.root,
+			fontSize: theme.typography.fieldLabelSize,
+			color: theme.palette.grey.icon,
+			"&.Mui-focused": {
+				color: theme.palette.grey.icon,
+			},
+		},
+	},
 	MuiPaper: {
 		...theme.MuiPaper,
 		rounded: {
@@ -704,17 +800,50 @@ const createThemes = (applicationTheme, themeDefinition) => {
 	const applicationMuiTheme = createMuiTheme(applicationTheme);
 
 	const muiTheme = createMuiTheme({
-		...themeDefinition,
 		...commonTheme,
+		...themeDefinition,
 		palette: {
-			...themeDefinition.palette,
 			...commonPalette,
+			...themeDefinition.palette,
+			hoverprimary: {
+				lighter: darken(commonPalette.primary.lighter, 0.05),
+				light: darken(commonPalette.primary.light, 0.05),
+				main: darken(commonPalette.primary.main, 0.05),
+				dark: darken(commonPalette.primary.dark, 0.05),
+			},
+			hovererror: {
+				light: darken(commonPalette.error.light, 0.05),
+				main: darken(commonPalette.error.main, 0.05),
+				dark: darken(commonPalette.error.dark, 0.05),
+			},
+			hoverwarning: {
+				light: darken(commonPalette.warning.light, 0.05),
+				main: darken(commonPalette.warning.main, 0.05),
+				dark: darken(commonPalette.warning.dark, 0.05),
+			},
+			hoversuccess: {
+				light: darken(commonPalette.success.light, 0.05),
+				main: darken(commonPalette.success.main, 0.05),
+				dark: darken(commonPalette.success.dark, 0.05),
+			},
+			hoverinfo: {
+				light: darken(commonPalette.info.light, 0.05),
+				main: darken(commonPalette.info.main, 0.05),
+				dark: darken(commonPalette.info.dark, 0.05),
+			},
+			hovergrey: {
+				darker: darken(commonPalette.grey.darker, 0.05),
+				dark: darken(commonPalette.grey.dark, 0.05),
+				icon: darken(commonPalette.grey.icon, 0.05),
+				borders: darken(commonPalette.grey.borders, 0.05),
+				light: darken(commonPalette.grey.light, 0.05),
+				lighter: darken(commonPalette.grey.lighter, 0.05),
+			},
 		},
 	});
 
 	muiTheme.props = setThemeProps(muiTheme);
 	muiTheme.overrides = setThemeOverrides(muiTheme);
-
 	return {
 		applicationMuiTheme: applicationMuiTheme,
 		muiTheme: muiTheme,

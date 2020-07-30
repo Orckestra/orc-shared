@@ -8,13 +8,23 @@ import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import SelectProps from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
+import createThemes from "../muiThemes";
+import { MuiThemeProvider } from "@material-ui/core";
 
 describe("Select Component", () => {
-	let update, container;
+	let update, container, muiTheme;
 	beforeEach(() => {
 		container = document.createElement("div");
 		document.body.appendChild(container);
 		update = sinon.spy().named("update");
+
+		const applicationTheme = {
+			primary: { main: "#1F5B7F" },
+		};
+
+		const themes = createThemes(applicationTheme, {});
+
+		muiTheme = themes.muiTheme;
 	});
 	afterEach(() => {
 		document.body.removeChild(container);
@@ -114,7 +124,12 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.update, update);
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
-		ReactDOM.render(<Select options={options} selectProps={selectProps} />, container);
+		ReactDOM.render(
+			<MuiThemeProvider theme={muiTheme}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>,
+			container,
+		);
 
 		const mousedownEvent = document.createEvent("MouseEvents");
 		mousedownEvent.initEvent("mousedown", true, false);
