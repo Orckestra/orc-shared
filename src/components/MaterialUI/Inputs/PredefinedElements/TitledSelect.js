@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
   container: {
-    minWidth: theme.spacing(17)
+    margin: `0 ${theme.spacing(0.5)}`
   },
   title: {
     fontFamily: theme.typography.fontFamily,

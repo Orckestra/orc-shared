@@ -631,7 +631,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiSelect,
 		select: {
 			...theme.select,
-			minWidth: theme.spacing(15),
+			minWidth: theme.spacing(13),
 			borderRadius: theme.shape.borderRadius,
 		},
 		outlined: {
