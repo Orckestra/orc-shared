@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { mount } from "enzyme";
+import { mount, render } from "enzyme";
 import Select from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -42,14 +42,65 @@ describe("Select Component", () => {
 		const component = <Select options={options} selectProps={selectProps} />;
 
 		const mountedComponent = mount(component);
-		const expected = (
-			<SelectMUI>
-				<MenuItem><TooltippedTypography children="aLabel" noWrap titleValue="aLabel" /></MenuItem>
-				<MenuItem><TooltippedTypography children="anotherLabel" noWrap titleValue="anotherLabel" /></MenuItem>
-			</SelectMUI>
-		);
 
-		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+		const expected = <TooltippedTypography children="aLabel" noWrap titleValue="aLabel" />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be true");
+	});
+
+	it("Sorts select options correctly when numericSort is false", () => {
+		const options = [
+			{ value: "c", label: "c", sortOrder: 3 },
+			{ value: "a", label: "a", sortOrder: 1 },
+			{ value: "b", label: "b", sortOrder: 2 },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.numericSort, false);
+		selectProps.set(SelectProps.propNames.value, "b");
+
+		const component = <Select options={options} selectProps={selectProps} />;
+
+		const mountedComponent = mount(component);
+
+		const test = mountedComponent.find(SelectMUI);
+
+		const mountedOptions = test.props().children;
+
+		const optionsKeys = mountedOptions.map((option) => option.key);
+
+		expect(optionsKeys, "to equal", ['#All#', 'a', 'b', 'c']);
+	});
+
+	it("Sorts select options correctly when numericSort is true", () => {
+		const options = [
+			{ value: "BRC-409 - BRC-PROMENADES", label: "BRC-409 - BRC-PROMENADES", sortOrder: "BRC-409 - BRC-PROMENADES" },
+			{ value: "BRC-411 - BRC-CHAMPLAIN", label: "BRC-411 - BRC-CHAMPLAIN", sortOrder: "BRC-411 - BRC-CHAMPLAIN" },
+			{ value: "BRC-410 - BRC-GALERIES", label: "BRC-410 - BRC-GALERIES", sortOrder: "BRC-410 - BRC-GALERIES" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.numericSort, true);
+		selectProps.set(SelectProps.propNames.value, "BRC-409 - BRC-PROMENADES");
+
+		const component = <Select options={options} selectProps={selectProps} />;
+
+		const mountedComponent = mount(component);
+
+		const test = mountedComponent.find(SelectMUI);
+
+		const mountedOptions = test.props().children;
+
+		const optionsKeys = mountedOptions.map((option) => option.key);
+
+		expect(optionsKeys, "to equal", [
+			'#All#',
+			'BRC-409 - BRC-PROMENADES',
+			'BRC-410 - BRC-GALERIES',
+			'BRC-411 - BRC-CHAMPLAIN'
+		]);
 	});
 
 	it("Select component handles change", () => {
