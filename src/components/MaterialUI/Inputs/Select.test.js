@@ -141,27 +141,24 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.update, update);
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
-		ReactDOM.render(
+		const component = (
 			<MuiThemeProvider theme={muiTheme}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>,
-			container,
+			</MuiThemeProvider>
 		);
 
-		const mousedownEvent = document.createEvent("MouseEvents");
-		mousedownEvent.initEvent("mousedown", true, false);
+		const mountedComponent = mount(component);
 
-		const clickEvent = document.createEvent("MouseEvents");
-		clickEvent.initEvent("click", true, false);
+		const selectMui = mountedComponent.find(SelectMUI);
 
-		// Open the selector
-		const element = container.querySelector(".MuiSelect-root");
-		element.dispatchEvent(mousedownEvent);
+		const event = {
+			target: {
+				value: "anotherValue"
+			}
+		};
 
-		const menuItem = document.querySelectorAll("li")[1] || null;
-		expect(menuItem, "not to be", null);
+		selectMui.invoke("onChange")(event);
 
-		menuItem.dispatchEvent(clickEvent);
 		expect(update, "to have calls satisfying", [{ args: ["anotherValue"] }]);
 	});
 });
