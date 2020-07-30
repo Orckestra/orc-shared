@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fontSize,
 		minWidth: theme.spacing(15),
 		maxWidth: theme.spacing(20),
-		padding: theme.spacing(0.6 ,0.6, 0.6, 0.6),
+		padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
 		transition: theme.transitions.create(["border-color", "box-shadow"]),
 		"&:focus": {
 			borderRadius: theme.shape.borderRadius,
@@ -102,9 +102,9 @@ const Select = ({ options, selectProps }) => {
 				sensitivity: "base",
 			}),
 		);
-	} else {
+	}
+	else {
 		options.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));
-
 	}
 
 	options.unshift({

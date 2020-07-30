@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { mount, render } from "enzyme";
+import { mount } from "enzyme";
 import Select from "./Select";
 import SelectMUI from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import SelectProps from "./SelectProps";
@@ -33,7 +32,12 @@ describe("Select Component", () => {
 
 	it("Fails if selectProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = <Select selectProps="Wrong type" />;
+			const component = (
+				<MuiThemeProvider theme={muiTheme}>
+					<Select selectProps="Wrong type" />
+				</MuiThemeProvider>
+
+			);
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
@@ -49,7 +53,11 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.update, update);
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
-		const component = <Select options={options} selectProps={selectProps} />;
+		const component = (
+			<MuiThemeProvider theme={muiTheme}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -70,7 +78,12 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.numericSort, false);
 		selectProps.set(SelectProps.propNames.value, "b");
 
-		const component = <Select options={options} selectProps={selectProps} />;
+		const component = (
+			<MuiThemeProvider theme={muiTheme}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
+
 
 		const mountedComponent = mount(component);
 
@@ -95,7 +108,11 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.numericSort, true);
 		selectProps.set(SelectProps.propNames.value, "BRC-409 - BRC-PROMENADES");
 
-		const component = <Select options={options} selectProps={selectProps} />;
+		const component = (
+			<MuiThemeProvider theme={muiTheme}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
 
 		const mountedComponent = mount(component);
 
