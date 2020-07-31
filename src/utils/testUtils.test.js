@@ -9,6 +9,7 @@ import {
 	firstItemComparator,
 	spyOnConsole,
 	ignoreConsoleError,
+	createMuiTheme
 } from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
@@ -370,7 +371,7 @@ describe("PropStruct", () => {
 
 	it("handles function props (if poorly)", () =>
 		expect(
-			<PropStruct func={() => {}} />,
+			<PropStruct func={() => { }} />,
 			"when mounted",
 			"to satisfy",
 			<dl>
@@ -385,13 +386,13 @@ describe("PropStruct", () => {
 			"when mounted",
 			"to satisfy",
 			"<dl>" +
-				"<dt>alpha:</dt>" +
-				'<dd>string "yes"</dd>' +
-				"<!-- ignore -->" +
-				"<!-- ignore -->" +
-				"<dt>gamma:</dt>" +
-				'<dd>string "no"</dd>' +
-				"</dl>",
+			"<dt>alpha:</dt>" +
+			'<dd>string "yes"</dd>' +
+			"<!-- ignore -->" +
+			"<!-- ignore -->" +
+			"<dt>gamma:</dt>" +
+			'<dd>string "no"</dd>' +
+			"</dl>",
 		));
 
 	describe("comparator", () => {
@@ -445,5 +446,13 @@ describe("ignoreConsoleError", () => {
 		setConsoleError();
 
 		expect(console.error, "was not called");
+	});
+});
+
+describe("createMuiTheme", () => {
+	it("Creates mui theme", () => {
+		const theme = createMuiTheme();
+
+		expect(theme != null, "to be true");
 	});
 });
