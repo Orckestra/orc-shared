@@ -1,29 +1,19 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { mount } from "enzyme";
 import Select from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import sinon from "sinon";
-import { ignoreConsoleError } from "../../../utils/testUtils";
+import { ignoreConsoleError, createMuiTheme } from "../../../utils/testUtils";
 import SelectProps from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
-import createThemes from "../muiThemes";
 import { MuiThemeProvider } from "@material-ui/core";
 
 describe("Select Component", () => {
-	let update, container, muiTheme;
+	let update, container;
 	beforeEach(() => {
 		container = document.createElement("div");
 		document.body.appendChild(container);
 		update = sinon.spy().named("update");
-
-		const applicationTheme = {
-			primary: { main: "#1F5B7F" },
-		};
-
-		const themes = createThemes(applicationTheme, {});
-
-		muiTheme = themes.muiTheme;
 	});
 	afterEach(() => {
 		document.body.removeChild(container);
@@ -33,7 +23,7 @@ describe("Select Component", () => {
 	it("Fails if selectProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = (
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<Select selectProps="Wrong type" />
 				</MuiThemeProvider>
 
@@ -54,7 +44,7 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
 		const component = (
-			<MuiThemeProvider theme={muiTheme}>
+			<MuiThemeProvider theme={createMuiTheme()}>
 				<Select options={options} selectProps={selectProps} />
 			</MuiThemeProvider>
 		);
@@ -79,7 +69,7 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.value, "b");
 
 		const component = (
-			<MuiThemeProvider theme={muiTheme}>
+			<MuiThemeProvider theme={createMuiTheme()}>
 				<Select options={options} selectProps={selectProps} />
 			</MuiThemeProvider>
 		);
@@ -109,7 +99,7 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.value, "BRC-409 - BRC-PROMENADES");
 
 		const component = (
-			<MuiThemeProvider theme={muiTheme}>
+			<MuiThemeProvider theme={createMuiTheme()}>
 				<Select options={options} selectProps={selectProps} />
 			</MuiThemeProvider>
 		);
@@ -142,7 +132,7 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
 		const component = (
-			<MuiThemeProvider theme={muiTheme}>
+			<MuiThemeProvider theme={createMuiTheme()}>
 				<Select options={options} selectProps={selectProps} />
 			</MuiThemeProvider>
 		);
