@@ -9,12 +9,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
-import createThemes from "../muiThemes";
-import { MuiThemeProvider } from "@material-ui/core";
 import Placeholder from "../../Placeholder";
 import { staticTableSelectionMethods } from "./useTableSelection";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import { TableProps } from "./TableProps";
+import { MuiThemeProvider } from "@material-ui/core";
+import { createMuiTheme } from "./../../../utils/testUtils";
 
 const TestComp = ({ classToTest, styleProps }) => {
 	const classes = useStyles({ ...styleProps });
@@ -22,30 +22,18 @@ const TestComp = ({ classToTest, styleProps }) => {
 	return <div className={classes[classToTest]} />;
 };
 
-const MuiThemeContainer = ({ classToTest, styleProps, muiTheme }) => {
+const MuiThemeContainer = ({ classToTest, styleProps }) => {
 	return (
-		<MuiThemeProvider theme={muiTheme}>
+		<MuiThemeProvider theme={createMuiTheme()}>
 			<TestComp classToTest={classToTest} styleProps={styleProps} />
 		</MuiThemeProvider>
 	);
 };
 
 describe("useStyles", () => {
-	let muiTheme;
-
-	beforeEach(() => {
-		const applicationTheme = {
-			primary: { main: "#1F5B7F" },
-		};
-
-		const themes = createThemes(applicationTheme, {});
-
-		muiTheme = themes.muiTheme;
-	});
-
 	it("build tableHeader styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="tableHeader" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="tableHeader" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
@@ -58,7 +46,6 @@ describe("useStyles", () => {
 			<MuiThemeContainer
 				classToTest="tableHeader"
 				styleProps={{ withoutTopBorder: true, stickyHeader: true }}
-				muiTheme={muiTheme}
 			/>,
 			"when mounted",
 			"to have style rules satisfying",
@@ -71,7 +58,7 @@ describe("useStyles", () => {
 
 	it("build tableContainer styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="tableContainer" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="tableContainer" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "height: calc(100% - 0px)"),
@@ -81,7 +68,6 @@ describe("useStyles", () => {
 			<MuiThemeContainer
 				classToTest="tableContainer"
 				styleProps={{ headerHeight: 17, stickyHeader: true }}
-				muiTheme={muiTheme}
 			/>,
 			"when mounted",
 			"to have style rules satisfying",
@@ -91,14 +77,14 @@ describe("useStyles", () => {
 
 	it("build container styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="container" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="container" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "overflow: auto"),
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="container" styleProps={{ stickyHeader: true }} muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="container" styleProps={{ stickyHeader: true }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "overflow: hidden"),
@@ -107,14 +93,14 @@ describe("useStyles", () => {
 
 	it("build stickyHeaderHead styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderHead" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderHead" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "border-top: 1px solid #CCC"),
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderHead" styleProps={{ withoutTopBorder: true }} muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderHead" styleProps={{ withoutTopBorder: true }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "border-top: none"),
@@ -123,14 +109,14 @@ describe("useStyles", () => {
 
 	it("build stickyHeaderTable styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderTable" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderTable" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: calc(100% - 0px)"),
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderTable" styleProps={{ scrolled: 21 }} muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderTable" styleProps={{ scrolled: 21 }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: calc(100% - 21px)"),
@@ -139,14 +125,14 @@ describe("useStyles", () => {
 
 	it("build stickyHeaderTableScroll styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderTableScroll" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderTableScroll" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: 0px").and("to contain", "display: none"),
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderTableScroll" styleProps={{ scrolled: 13 }} muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderTableScroll" styleProps={{ scrolled: 13 }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: 13px").and("to contain", "display: block"),
@@ -155,14 +141,14 @@ describe("useStyles", () => {
 
 	it("build stickyHeaderTableScroll styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderTableScroll" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderTableScroll" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: 0px").and("to contain", "display: none"),
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="stickyHeaderTableScroll" styleProps={{ scrolled: 13 }} muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="stickyHeaderTableScroll" styleProps={{ scrolled: 13 }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "width: 13px").and("to contain", "display: block"),
@@ -171,14 +157,14 @@ describe("useStyles", () => {
 
 	it("build tableRow styles as expected", () => {
 		expect(
-			<MuiThemeContainer classToTest="tableRow" muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="tableRow" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "cursor: default").and("to contain", ":hover {background-color: #FFF;}"),
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => {} }} muiTheme={muiTheme} />,
+			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => { } }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),

@@ -7,6 +7,8 @@ import { ignoreConsoleError, createMuiTheme } from "../../../utils/testUtils";
 import SelectProps from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import { MuiThemeProvider } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import Icon from "./../DataDisplay/Icon";
 
 describe("Select Component", () => {
 	let update, container;
@@ -43,17 +45,32 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.update, update);
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
+		const theme = createMuiTheme();
+
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<MuiThemeProvider theme={theme}>
 				<Select options={options} selectProps={selectProps} />
 			</MuiThemeProvider>
 		);
 
-		const mountedComponent = mount(component);
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
 
-		const expected = <TooltippedTypography children="aLabel" noWrap titleValue="aLabel" />;
+		const expected = (
+			<MuiThemeProvider theme={theme}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<MenuItem key="anotherValue" value="anotherValue">
+						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</MuiThemeProvider>
+		);
 
-		expect(mountedComponent.containsMatchingElement(expected), "to be true");
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 
 	it("Sorts select options correctly when numericSort is false", () => {
