@@ -5,9 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
   badge: {
     color: theme.palette.background.default,
-    width: theme.spacing(3.5),
-    height: theme.spacing(3.5),
-    borderRadius: "30px"
+    height: theme.spacing(2.8),
+    borderRadius: theme.spacing(2.8),
+    padding: theme.spacing(1)
   }
 }));
 
