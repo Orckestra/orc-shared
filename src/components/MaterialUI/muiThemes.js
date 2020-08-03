@@ -339,10 +339,6 @@ const setThemeOverrides = theme => ({
 		fullWidth: {
 			width: "100%",
 		},
-		fullSize: {
-			width: "100%",
-			height: "100%",
-		},
 		/* Styles applied to the startIcon element if supplied. */
 		startIcon: {
 			display: "inherit",
@@ -628,7 +624,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiSelect,
 		select: {
 			...theme.select,
-			minWidth: theme.spacing(15),
+			minWidth: theme.spacing(13),
 			borderRadius: theme.shape.borderRadius,
 		},
 		outlined: {

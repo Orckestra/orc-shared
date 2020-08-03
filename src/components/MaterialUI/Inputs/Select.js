@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fontSize,
 		minWidth: theme.spacing(15),
 		maxWidth: theme.spacing(20),
-		padding: theme.spacing(0.6 ,0.6, 0.6, 0.6),
+		padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
 		transition: theme.transitions.create(["border-color", "box-shadow"]),
 		"&:focus": {
 			borderRadius: theme.shape.borderRadius,
@@ -93,6 +93,26 @@ const Select = ({ options, selectProps }) => {
 
 	const update = selectProps?.get(SelectProps.propNames.update);
 	const value = selectProps?.get(SelectProps.propNames.value);
+	const numericSort = selectProps?.get(SelectProps.propNames.numericSort) || false;
+	const showAllValue = selectProps?.get(SelectProps.propNames.showAllValue) || "#All#";
+	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel) || "Show All";
+
+	if (numericSort) {
+		options.sort((a, b) =>
+			a.sortOrder.localeCompare(b.sortOrder, undefined, {
+				numeric: true,
+				sensitivity: "base",
+			}),
+		);
+	}
+	else {
+		options.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));
+	}
+
+	options.unshift({
+		value: showAllValue,
+		label: showAllLabel,
+	});
 
 	const handleChange = event => {
 		update(event.target.value);
