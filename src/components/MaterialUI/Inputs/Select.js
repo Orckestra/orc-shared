@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
+			maxWidth: theme.spacing(24),
 			maxHeight: theme.spacing(30),
 			paddingTop: 0,
 			paddingBottom: 0,
@@ -23,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 			paddingTop: theme.spacing(1),
 			paddingBottom: theme.spacing(1),
 			borderRadius: 0,
+			whiteSpace: "normal",
 			"&:hover": {
 				backgroundColor: theme.palette.grey.light,
 				color: theme.palette.grey.dark,
@@ -127,7 +129,7 @@ const Select = ({ options, selectProps }) => {
 		>
 			{options.map(option => (
 				<MenuItem key={option.value} value={option.value}>
-					<TooltippedTypography children={option.label} noWrap titleValue={option.label} classes={{ body1: classes.label }} />
+					<TooltippedTypography noWrap children={option.label} titleValue={option.label} />
 				</MenuItem>
 			))}
 		</SelectMUI>

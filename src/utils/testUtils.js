@@ -113,7 +113,19 @@ export const createMuiTheme = () => {
 		primary: { main: "#1F5B7F" },
 	};
 
-	const themes = createThemes(applicationTheme, {});
+	const themeDefinition = {
+		palette: {
+			primary: {
+				lighter: "#f5f5f5",
+				light: "#CCC",
+				main: "#232323",
+				dark: "#000",
+				contrastText: "#fff",
+			},
+		}
+	};
+
+	const themes = createThemes(applicationTheme, themeDefinition);
 
 	const muiTheme = themes.muiTheme;
 
