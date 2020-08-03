@@ -83,6 +83,11 @@ export const useStyles = makeStyles(theme => ({
 			borderBottomRightRadius: 0,
 		},
 	},
+	selectPaper: {
+		"& ul": {
+			maxWidth: "none",
+		},
+	},
 }));
 
 const SearchControl = ({ placeholder, searchOptions, onSearch = () => {} }) => {
@@ -99,7 +104,7 @@ const SearchControl = ({ placeholder, searchOptions, onSearch = () => {} }) => {
 	const selectProps = new SelectProps();
 	selectProps.set(SelectProps.propNames.update, update);
 	selectProps.set(SelectProps.propNames.value, searchOption);
-	selectProps.set(SelectProps.propNames.classes, { root: classes.selectRoot });
+	selectProps.set(SelectProps.propNames.classes, { root: classes.selectRoot, selectPaper: classes.selectPaper });
 
 	const handleKeyDown = e => {
 		if (e.key === "Enter") {

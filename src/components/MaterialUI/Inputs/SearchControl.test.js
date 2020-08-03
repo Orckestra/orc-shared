@@ -1,7 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
 import sinon from "sinon";
-import { act } from "unexpected-reaction";
 import TooltippedTypography from "../DataDisplay/TooltippedElements/TooltippedTypography";
 import SearchControl from "./SearchControl";
 import { createMuiTheme } from "../../../utils/testUtils";

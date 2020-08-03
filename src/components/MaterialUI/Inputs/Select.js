@@ -3,11 +3,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps, { sortTypeEnum } from "./SelectProps";
+import classNames from "classnames";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
-	select: {
+	selectPaper: {
 		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
@@ -38,23 +39,6 @@ const useStyles = makeStyles(theme => ({
 			},
 		},
 	},
-	input: {
-		borderRadius: 0,
-		position: "relative",
-		backgroundColor: theme.palette.background.paper,
-		border: `1px solid ${theme.palette.grey.borders}`,
-		fontSize: theme.typography.fontSize,
-		minWidth: theme.spacing(15),
-		maxWidth: theme.spacing(50),
-		padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
-		transition: theme.transitions.create(["border-color", "box-shadow"]),
-		"&:focus": {
-			borderRadius: 0,
-			borderColor: theme.palette.focus,
-			boxShadow: `0 0 4px ${theme.palette.focus}`,
-			outline: "none",
-		},
-	},
 	label: {
 		fontFamily: theme.typography.button.fontFamily,
 		fontWeight: theme.typography.button.fontWeight,
@@ -82,7 +66,7 @@ const MenuProps = {
 };
 
 const ChevronDown = props => {
-	return <Icon id="chevron-down" {...props} />;
+	return <Icon id="dropdown-chevron-down" {...props} />;
 };
 
 const Select = ({ options, selectProps }) => {
@@ -124,11 +108,10 @@ const Select = ({ options, selectProps }) => {
 	return (
 		<SelectMUI
 			value={value}
-			autoWidth={true}
 			onChange={handleChange}
 			disableUnderline={true}
 			IconComponent={ChevronDown}
-			MenuProps={{ classes: { paper: classes.select }, ...MenuProps }}
+			MenuProps={{ classes: { paper: classNames(classes.selectPaper, classesProps?.selectPaper) }, ...MenuProps }}
 			classes={{ icon: classes.icon, root: classesProps?.root }}
 		>
 			{options.map(option => (
