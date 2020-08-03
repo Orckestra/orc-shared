@@ -15,6 +15,15 @@ describe("MUI Themes", () => {
 				main: "#ED2E0B",
 			},
 			divider: "#CCCCCC",
+			palette: {
+				primary: {
+					lighter: "#f5f5f5",
+					light: "#CCC",
+					main: "#232323",
+					dark: "#000",
+					contrastText: "#fff",
+				},
+			}
 		};
 
 		const { applicationMuiTheme, muiTheme } = createThemes(
@@ -49,6 +58,13 @@ describe("MUI Themes", () => {
 			palette: {
 				...baseMuiTheme.palette,
 				type: "dark",
+				primary: {
+					lighter: "#f5f5f5",
+					light: "#CCC",
+					main: "#232323",
+					dark: "#000",
+					contrastText: "#fff",
+				},
 			},
 		};
 
