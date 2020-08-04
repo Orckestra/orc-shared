@@ -2,12 +2,13 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
-import SelectProps from "./SelectProps";
+import SelectProps, { sortTypeEnum } from "./SelectProps";
+import classNames from "classnames";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
-	select: {
+	selectPaper: {
 		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
@@ -38,45 +39,29 @@ const useStyles = makeStyles(theme => ({
 			},
 		},
 	},
-	input: {
-		borderRadius: theme.shape.borderRadius,
-		position: "relative",
-		backgroundColor: theme.palette.background.paper,
-		border: `1px solid ${theme.palette.grey.borders}`,
-		fontSize: theme.typography.fontSize,
-		minWidth: theme.spacing(15),
-		maxWidth: theme.spacing(20),
-		padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
-		transition: theme.transitions.create(["border-color", "box-shadow"]),
-		"&:focus": {
-			borderRadius: theme.shape.borderRadius,
-			borderColor: theme.palette.focus,
-			boxShadow: `0 0 4px ${theme.palette.focus}`,
-			outline: "none",
-		},
-	},
 	label: {
 		fontFamily: theme.typography.button.fontFamily,
 		fontWeight: theme.typography.button.fontWeight,
-		fontSize: theme.typography.button.fontSize
+		fontSize: theme.typography.button.fontSize,
 	},
 	icon: {
 		right: theme.spacing(1),
 		width: theme.spacing(1.2),
 		padding: `${theme.spacing(0.5)} 0`,
 		color: theme.palette.primary.main,
-	}
+		zIndex: 999,
+	},
 }));
 
 const MenuProps = {
 	getContentAnchorEl: null,
 	anchorOrigin: {
 		vertical: "bottom",
-		horizontal: "right"
+		horizontal: "right",
 	},
 	transformOrigin: {
 		vertical: "top",
-		horizontal: "right"
+		horizontal: "right",
 	},
 };
 
@@ -93,26 +78,27 @@ const Select = ({ options, selectProps }) => {
 
 	const update = selectProps?.get(SelectProps.propNames.update);
 	const value = selectProps?.get(SelectProps.propNames.value);
-	const numericSort = selectProps?.get(SelectProps.propNames.numericSort) || false;
-	const showAllValue = selectProps?.get(SelectProps.propNames.showAllValue) || "#All#";
-	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel) || "Show All";
+	const sortType = selectProps?.get(SelectProps.propNames.sortType) || sortTypeEnum.none;
+	const showAllValue = selectProps?.get(SelectProps.propNames.showAllValue);
+	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
 
-	if (numericSort) {
+	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
 			a.sortOrder.localeCompare(b.sortOrder, undefined, {
 				numeric: true,
 				sensitivity: "base",
 			}),
 		);
-	}
-	else {
+	} else if (sortType === sortTypeEnum.default) {
 		options.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));
 	}
 
-	options.unshift({
-		value: showAllValue,
-		label: showAllLabel,
-	});
+	if (showAllValue && showAllLabel) {
+		options.unshift({
+			value: showAllValue,
+			label: showAllLabel,
+		});
+	}
 
 	const handleChange = event => {
 		update(event.target.value);
@@ -124,8 +110,11 @@ const Select = ({ options, selectProps }) => {
 			onChange={handleChange}
 			disableUnderline={true}
 			IconComponent={ChevronDown}
-			MenuProps={{ classes: { paper: classes.select }, ...MenuProps }}
-			classes={{ icon: classes.icon }}
+			MenuProps={{
+				classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
+				...MenuProps,
+			}}
+			classes={{ icon: classes.icon, root: selectProps?.getStyle(SelectProps.ruleNames.root) }}
 		>
 			{options.map(option => (
 				<MenuItem key={option.value} value={option.value}>
