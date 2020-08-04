@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import SelectProps from "./SelectProps";
-import Icon from "./../DataDisplay/Icon";
+import SelectProps from "../SelectProps";
+import Icon from "../../DataDisplay/Icon";
 import IconButton from "@material-ui/core/IconButton";
-import Select from "./Select";
+import Select from "../Select";
 import Input from "@material-ui/core/Input";
 
 export const useStyles = makeStyles(theme => ({
@@ -104,7 +104,8 @@ const SearchControl = ({ placeholder, searchOptions, onSearch = () => {} }) => {
 	const selectProps = new SelectProps();
 	selectProps.set(SelectProps.propNames.update, update);
 	selectProps.set(SelectProps.propNames.value, searchOption);
-	selectProps.set(SelectProps.propNames.classes, { root: classes.selectRoot, selectPaper: classes.selectPaper });
+	selectProps.setStyle(SelectProps.ruleNames.root, classes.selectRoot);
+	selectProps.setStyle(SelectProps.ruleNames.paper, classes.selectPaper);
 
 	const handleKeyDown = e => {
 		if (e.key === "Enter") {

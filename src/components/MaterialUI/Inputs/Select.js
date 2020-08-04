@@ -81,7 +81,6 @@ const Select = ({ options, selectProps }) => {
 	const sortType = selectProps?.get(SelectProps.propNames.sortType) || sortTypeEnum.none;
 	const showAllValue = selectProps?.get(SelectProps.propNames.showAllValue);
 	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
-	const classesProps = selectProps?.get(SelectProps.propNames.classes);
 
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
@@ -111,8 +110,11 @@ const Select = ({ options, selectProps }) => {
 			onChange={handleChange}
 			disableUnderline={true}
 			IconComponent={ChevronDown}
-			MenuProps={{ classes: { paper: classNames(classes.selectPaper, classesProps?.selectPaper) }, ...MenuProps }}
-			classes={{ icon: classes.icon, root: classesProps?.root }}
+			MenuProps={{
+				classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
+				...MenuProps,
+			}}
+			classes={{ icon: classes.icon, root: selectProps?.getStyle(SelectProps.ruleNames.root) }}
 		>
 			{options.map(option => (
 				<MenuItem key={option.value} value={option.value}>

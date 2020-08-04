@@ -1,14 +1,14 @@
 import React from "react";
 import { mount } from "enzyme";
 import sinon from "sinon";
-import TooltippedTypography from "../DataDisplay/TooltippedElements/TooltippedTypography";
+import TooltippedTypography from "../../DataDisplay/TooltippedElements/TooltippedTypography";
 import SearchControl from "./SearchControl";
-import { createMuiTheme } from "../../../utils/testUtils";
+import { createMuiTheme } from "../../../../utils/testUtils";
 import { MuiThemeProvider } from "@material-ui/core";
 import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
 import SelectMUI from "@material-ui/core/Select";
-import Icon from "../DataDisplay/Icon";
+import Icon from "../../DataDisplay/Icon";
 import { useStyles } from "./SearchControl";
 
 const TestComp = ({ classToTest, styleProps }) => {
