@@ -10,10 +10,12 @@ export const useStyles = makeStyles(theme => ({
 	clearButton: {
 		fontSize: theme.spacing(2.2),
 		padding: theme.spacing(0.3),
-		marginLeft: "0 !important",
 		marginRight: theme.spacing(-0.1),
 		borderRadius: 0,
 		border: "none",
+		"&.MuiIconButton-root": {
+			marginLeft: "0",
+		},
 		"&:active": {
 			boxShadow: "none",
 			borderRadius: 0,
@@ -26,10 +28,12 @@ export const useStyles = makeStyles(theme => ({
 	searchButton: {
 		fontSize: theme.spacing(2.2),
 		padding: `${theme.spacing(0.3)} ${theme.spacing(1)}`,
-		marginLeft: "0 !important",
 		borderTopLeftRadius: 0,
 		borderBottomLeftRadius: 0,
 		zIndex: 10,
+		"&.MuiIconButton-root": {
+			marginLeft: "0",
+		},
 		"&:active": {
 			borderTopLeftRadius: 0,
 			borderBottomLeftRadius: 0,
