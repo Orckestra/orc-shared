@@ -43,10 +43,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="tableHeader"
-				styleProps={{ withoutTopBorder: true, stickyHeader: true }}
-			/>,
+			<MuiThemeContainer classToTest="tableHeader" styleProps={{ withoutTopBorder: true, stickyHeader: true }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
@@ -65,10 +62,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer
-				classToTest="tableContainer"
-				styleProps={{ headerHeight: 17, stickyHeader: true }}
-			/>,
+			<MuiThemeContainer classToTest="tableContainer" styleProps={{ headerHeight: 17, stickyHeader: true }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "height: calc(100% - 17px)"),
@@ -164,7 +158,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => { } }} />,
+			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => {} }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),
@@ -598,54 +592,5 @@ describe("Table", () => {
 
 		const placeHolder = mountedComponent.find(Placeholder);
 		expect(placeHolder.length, "to equal", 1);
-	});
-
-	it("handle onresize event TODOJOC", () => {
-		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
-
-		const tableProps = new TableProps();
-
-		tableProps.set(TableProps.propNames.selectMode, true);
-		tableProps.set(TableProps.propNames.stickyHeader, true);
-
-		const root = document.createElement("div");
-
-		document.body.append(root);
-		const element = <Table rows={rows} headers={headers} tableProps={tableProps} />;
-		ReactDOM.render(element, root);
-
-		const tables = root.querySelectorAll("table");
-		expect(tables.length, "to equal", 2);
-
-		const scrollDiv = tables[0].parentElement.querySelectorAll("div")[0];
-		expect(getComputedStyle(scrollDiv).getPropertyValue("display"), "to equal", "none");
-
-		act(() => {
-			// XXX: This is a nasty hack of jsdom, and may break unexpectedly
-			Object.defineProperty(tables[1].parentElement, "clientHeight", {
-				value: 10,
-				writable: true,
-			});
-			Object.defineProperty(tables[1].parentElement, "clientWidth", {
-				value: 11,
-				writable: true,
-			});
-			window.dispatchEvent(new Event("resize"));
-		});
-
-		act(() => {
-			// XXX: This is a nasty hack of jsdom, and may break unexpectedly
-			Object.defineProperty(tables[1].parentElement, "clientHeight", {
-				value: 110,
-				writable: true,
-			});
-			Object.defineProperty(tables[1].parentElement, "clientWidth", {
-				value: 111,
-				writable: true,
-			});
-			window.dispatchEvent(new Event("resize"));
-		});
-
-		//expect(getComputedStyle(scrollDiv).getPropertyValue("display"), "to equal", "block");
 	});
 });

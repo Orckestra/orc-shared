@@ -13,7 +13,7 @@ import { MuiThemeProvider } from "@material-ui/core";
 import { createMuiTheme } from "./../../../utils/testUtils";
 
 describe("Section Expansion Panel", () => {
-	let muiTheme, state, store;
+	let state, store;
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -24,9 +24,9 @@ describe("Section Expansion Panel", () => {
 			},
 		});
 		store = state => ({
-			subscribe: () => { },
+			subscribe: () => {},
 			getState: () => state,
-			dispatch: () => { },
+			dispatch: () => {},
 		});
 	});
 

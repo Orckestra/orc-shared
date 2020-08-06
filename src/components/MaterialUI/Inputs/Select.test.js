@@ -4,7 +4,7 @@ import Select from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import sinon from "sinon";
 import { ignoreConsoleError, createMuiTheme } from "../../../utils/testUtils";
-import SelectProps from "./SelectProps";
+import SelectProps, { sortTypeEnum } from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import { MuiThemeProvider } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -28,7 +28,6 @@ describe("Select Component", () => {
 				<MuiThemeProvider theme={createMuiTheme()}>
 					<Select selectProps="Wrong type" />
 				</MuiThemeProvider>
-
 			);
 			expect(() => mount(component), "to throw a", TypeError);
 		});
@@ -73,7 +72,7 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Sorts select options correctly when numericSort is false", () => {
+	it("Sorts select options correctly without sorting and without showAll", () => {
 		const options = [
 			{ value: "c", label: "c", sortOrder: 3 },
 			{ value: "a", label: "a", sortOrder: 1 },
@@ -82,7 +81,6 @@ describe("Select Component", () => {
 
 		const selectProps = new SelectProps();
 
-		selectProps.set(SelectProps.propNames.numericSort, false);
 		selectProps.set(SelectProps.propNames.value, "b");
 
 		const component = (
@@ -91,29 +89,29 @@ describe("Select Component", () => {
 			</MuiThemeProvider>
 		);
 
-
 		const mountedComponent = mount(component);
 
 		const test = mountedComponent.find(SelectMUI);
 
 		const mountedOptions = test.props().children;
 
-		const optionsKeys = mountedOptions.map((option) => option.key);
+		const optionsKeys = mountedOptions.map(option => option.key);
 
-		expect(optionsKeys, "to equal", ['#All#', 'a', 'b', 'c']);
+		expect(optionsKeys, "to equal", ["c", "a", "b"]);
 	});
 
-	it("Sorts select options correctly when numericSort is true", () => {
+	it("Sorts select options correctly without sorting", () => {
 		const options = [
-			{ value: "BRC-409 - BRC-PROMENADES", label: "BRC-409 - BRC-PROMENADES", sortOrder: "BRC-409 - BRC-PROMENADES" },
-			{ value: "BRC-411 - BRC-CHAMPLAIN", label: "BRC-411 - BRC-CHAMPLAIN", sortOrder: "BRC-411 - BRC-CHAMPLAIN" },
-			{ value: "BRC-410 - BRC-GALERIES", label: "BRC-410 - BRC-GALERIES", sortOrder: "BRC-410 - BRC-GALERIES" },
+			{ value: "c", label: "c", sortOrder: 3 },
+			{ value: "a", label: "a", sortOrder: 1 },
+			{ value: "b", label: "b", sortOrder: 2 },
 		];
 
 		const selectProps = new SelectProps();
 
-		selectProps.set(SelectProps.propNames.numericSort, true);
-		selectProps.set(SelectProps.propNames.value, "BRC-409 - BRC-PROMENADES");
+		selectProps.set(SelectProps.propNames.value, "b");
+		selectProps.set(SelectProps.propNames.showAllValue, "#All#");
+		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
 
 		const component = (
 			<MuiThemeProvider theme={createMuiTheme()}>
@@ -127,13 +125,75 @@ describe("Select Component", () => {
 
 		const mountedOptions = test.props().children;
 
-		const optionsKeys = mountedOptions.map((option) => option.key);
+		const optionsKeys = mountedOptions.map(option => option.key);
+
+		expect(optionsKeys, "to equal", ["#All#", "c", "a", "b"]);
+	});
+
+	it("Sorts select options correctly with default sorting", () => {
+		const options = [
+			{ value: "c", label: "c", sortOrder: 3 },
+			{ value: "a", label: "a", sortOrder: 1 },
+			{ value: "b", label: "b", sortOrder: 2 },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.sortType, sortTypeEnum.default);
+		selectProps.set(SelectProps.propNames.value, "b");
+		selectProps.set(SelectProps.propNames.showAllValue, "#All#");
+		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
+
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
+
+		const mountedComponent = mount(component);
+
+		const test = mountedComponent.find(SelectMUI);
+
+		const mountedOptions = test.props().children;
+
+		const optionsKeys = mountedOptions.map(option => option.key);
+
+		expect(optionsKeys, "to equal", ["#All#", "a", "b", "c"]);
+	});
+
+	it("Sorts select options correctly with numeric sorting", () => {
+		const options = [
+			{ value: "BRC-409 - BRC-PROMENADES", label: "BRC-409 - BRC-PROMENADES", sortOrder: "BRC-409 - BRC-PROMENADES" },
+			{ value: "BRC-411 - BRC-CHAMPLAIN", label: "BRC-411 - BRC-CHAMPLAIN", sortOrder: "BRC-411 - BRC-CHAMPLAIN" },
+			{ value: "BRC-410 - BRC-GALERIES", label: "BRC-410 - BRC-GALERIES", sortOrder: "BRC-410 - BRC-GALERIES" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.sortType, sortTypeEnum.numeric);
+		selectProps.set(SelectProps.propNames.value, "BRC-409 - BRC-PROMENADES");
+		selectProps.set(SelectProps.propNames.showAllValue, "#All#");
+		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
+
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
+
+		const mountedComponent = mount(component);
+
+		const test = mountedComponent.find(SelectMUI);
+
+		const mountedOptions = test.props().children;
+
+		const optionsKeys = mountedOptions.map(option => option.key);
 
 		expect(optionsKeys, "to equal", [
-			'#All#',
-			'BRC-409 - BRC-PROMENADES',
-			'BRC-410 - BRC-GALERIES',
-			'BRC-411 - BRC-CHAMPLAIN'
+			"#All#",
+			"BRC-409 - BRC-PROMENADES",
+			"BRC-410 - BRC-GALERIES",
+			"BRC-411 - BRC-CHAMPLAIN",
 		]);
 	});
 
@@ -160,8 +220,8 @@ describe("Select Component", () => {
 
 		const event = {
 			target: {
-				value: "anotherValue"
-			}
+				value: "anotherValue",
+			},
 		};
 
 		selectMui.invoke("onChange")(event);
