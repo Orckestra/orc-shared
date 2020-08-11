@@ -72,6 +72,57 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Select component with position override without errors", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const positionOverride = {
+			anchorOrigin: {
+				vertical: "bottom",
+				horizontal: "center",
+			},
+			transformOrigin: {
+				vertical: "bottom",
+				horizontal: "center",
+			},
+		};
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.positionOverride, positionOverride);
+
+		const theme = createMuiTheme();
+
+		const component = (
+			<MuiThemeProvider theme={theme}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<MuiThemeProvider theme={theme}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<MenuItem key="anotherValue" value="anotherValue">
+						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</MuiThemeProvider>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Sorts select options correctly without sorting and without showAll", () => {
 		const options = [
 			{ value: "c", label: "c", sortOrder: 3 },
