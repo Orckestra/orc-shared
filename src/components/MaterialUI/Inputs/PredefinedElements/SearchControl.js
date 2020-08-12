@@ -108,6 +108,16 @@ const SearchControl = ({ placeholder, searchOptions, onSearch = () => {} }) => {
 	const selectProps = new SelectProps();
 	selectProps.set(SelectProps.propNames.update, update);
 	selectProps.set(SelectProps.propNames.value, searchOption);
+	selectProps.set(SelectProps.propNames.positionOverride, {
+		anchorOrigin: {
+			vertical: "bottom",
+			horizontal: "left",
+		},
+		transformOrigin: {
+			vertical: "top",
+			horizontal: "left",
+		},
+	});
 	selectProps.setStyle(SelectProps.ruleNames.root, classes.selectRoot);
 	selectProps.setStyle(SelectProps.ruleNames.paper, classes.selectPaper);
 

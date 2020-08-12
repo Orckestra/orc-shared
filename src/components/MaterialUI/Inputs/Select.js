@@ -81,6 +81,7 @@ const Select = ({ options, selectProps }) => {
 	const sortType = selectProps?.get(SelectProps.propNames.sortType) || sortTypeEnum.none;
 	const showAllValue = selectProps?.get(SelectProps.propNames.showAllValue);
 	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
+	const positionOverride = selectProps?.get(SelectProps.propNames.positionOverride) || {};
 
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
@@ -113,6 +114,7 @@ const Select = ({ options, selectProps }) => {
 			MenuProps={{
 				classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
 				...MenuProps,
+				...positionOverride,
 			}}
 			classes={{ icon: classes.icon, root: selectProps?.getStyle(SelectProps.ruleNames.root) }}
 		>

@@ -13,6 +13,7 @@ class SelectProps extends ComponentProps {
 		sortType: "sortType",
 		showAllValue: "showAllValue",
 		showAllLabel: "showAllLabel",
+		positionOverride: "positionOverride",
 	};
 
 	static ruleNames = {
@@ -27,6 +28,7 @@ class SelectProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.sortType, null);
 		this.componentProps.set(this.constructor.propNames.showAllValue, null);
 		this.componentProps.set(this.constructor.propNames.showAllLabel, null);
+		this.componentProps.set(this.constructor.propNames.positionOverride, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.paper, null);
