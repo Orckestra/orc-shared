@@ -154,8 +154,7 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM }) => {
 							{option.label}
 						</option>
 					))}
-				</select>{" "}
-				:
+				</select> :
 				<select
 					className={classes.timePickerSegmentWrapper}
 					name="mins"
