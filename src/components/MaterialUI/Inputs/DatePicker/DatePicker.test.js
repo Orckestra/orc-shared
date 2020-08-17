@@ -149,4 +149,17 @@ describe("DatePicker", () => {
 		input.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
+
+	it("should update with no onChange prop", () => {
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+		const component = mount(<DatePicker />);
+
+		const input = component.find("input");
+		expect(input.length, "to equal", 1);
+
+		input.at(0).simulate("change", event);
+	});
 });

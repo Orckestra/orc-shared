@@ -5,19 +5,22 @@ import Icon from "../../../../components/Icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+	datePickerWrapper: {
+		display: "flex",
+		flexWrap: "wrap",
+		width: "auto",
+		paddingLeft: "5px",
+	},
+}));
 
 const CalendarIcon = styled(Icon).attrs(props => ({
 	id: getThemeProp(["icons", "date"], "calendar")(props),
 }))`
 	font-size: 20px;
 	padding: 3px 3px 3px 3px;
-`;
-
-const DatePickerWrapper = styled.label`
-	display: flex;
-	flex-wrap: wrap;
-	width: auto;
-	padding-left: 5px;
 `;
 
 const DatePickerStyle = createGlobalStyle`
@@ -37,6 +40,7 @@ const DatePickerStyle = createGlobalStyle`
 `;
 
 const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone, timeInputLabel, ...props }) => {
+	const classes = useStyles();
 	const parsedValue = new Date(value || "1970/01/01");
 	const [startDate, setStartDate] = useState(parsedValue);
 
@@ -48,7 +52,7 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 	};
 
 	return (
-		<DatePickerWrapper>
+		<label className={classes.datePickerWrapper}>
 			<DatePickerStyle />
 			<DatePicker
 				{...props}
@@ -61,7 +65,7 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 				timeInputLabel={timeInputLabel ?? ""}
 			/>
 			<CalendarIcon />
-		</DatePickerWrapper>
+		</label>
 	);
 };
 
