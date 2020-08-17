@@ -339,10 +339,6 @@ const setThemeOverrides = theme => ({
 		fullWidth: {
 			width: "100%",
 		},
-		fullSize: {
-			width: "100%",
-			height: "100%",
-		},
 		/* Styles applied to the startIcon element if supplied. */
 		startIcon: {
 			display: "inherit",
@@ -628,7 +624,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiSelect,
 		select: {
 			...theme.select,
-			minWidth: theme.spacing(15),
+			minWidth: theme.spacing(13),
 			borderRadius: theme.shape.borderRadius,
 		},
 		outlined: {
@@ -810,10 +806,10 @@ const createThemes = (applicationTheme, themeDefinition) => {
 			...commonPalette,
 			...themeDefinition.palette,
 			hoverprimary: {
-				lighter: darken(commonPalette.primary.lighter, 0.05),
-				light: darken(commonPalette.primary.light, 0.05),
-				main: darken(commonPalette.primary.main, 0.05),
-				dark: darken(commonPalette.primary.dark, 0.05),
+				lighter: darken(themeDefinition.palette.primary.lighter, 0.05),
+				light: darken(themeDefinition.palette.primary.light, 0.05),
+				main: darken(themeDefinition.palette.primary.main, 0.05),
+				dark: darken(themeDefinition.palette.primary.dark, 0.05),
 			},
 			hovererror: {
 				light: darken(commonPalette.error.light, 0.05),

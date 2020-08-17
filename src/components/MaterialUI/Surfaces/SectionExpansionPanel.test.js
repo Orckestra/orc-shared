@@ -9,11 +9,11 @@ import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPane
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
-import createThemes from "../muiThemes";
 import { MuiThemeProvider } from "@material-ui/core";
+import { createMuiTheme } from "./../../../utils/testUtils";
 
 describe("Section Expansion Panel", () => {
-	let muiTheme, state, store;
+	let state, store;
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -28,14 +28,6 @@ describe("Section Expansion Panel", () => {
 			getState: () => state,
 			dispatch: () => {},
 		});
-
-		const applicationTheme = {
-			primary: { main: "#1F5B7F" },
-		};
-
-		const themes = createThemes(applicationTheme, {});
-
-		muiTheme = themes.muiTheme;
 	});
 
 	it("Renders Section Expansion Panel with actions if actions are not null", () => {
@@ -44,7 +36,7 @@ describe("Section Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel header={header} content={content} actions={actions} />
 				</MuiThemeProvider>
 			</Provider>
@@ -67,7 +59,7 @@ describe("Section Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel header={header} content={content} actions={actions} />
 				</MuiThemeProvider>
 			</Provider>
@@ -82,7 +74,7 @@ describe("Section Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel header={header} content={content} />
 				</MuiThemeProvider>
 			</Provider>
@@ -121,7 +113,7 @@ describe("Section Expansion Panel", () => {
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
 				</MuiThemeProvider>
 			</Provider>
@@ -139,7 +131,7 @@ describe("Section Expansion Panel", () => {
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
 				</MuiThemeProvider>
 			</Provider>
@@ -153,7 +145,7 @@ describe("Section Expansion Panel", () => {
 	it("Default value for disabled property is correct if expansionPanelProps wasn't passed", () => {
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel />
 				</MuiThemeProvider>
 			</Provider>
@@ -169,7 +161,7 @@ describe("Section Expansion Panel", () => {
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
 				</MuiThemeProvider>
 			</Provider>
@@ -188,7 +180,7 @@ describe("Section Expansion Panel", () => {
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} actions={actions} />
 				</MuiThemeProvider>
 			</Provider>
@@ -203,7 +195,7 @@ describe("Section Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel actions={actions} />
 				</MuiThemeProvider>
 			</Provider>
@@ -220,7 +212,7 @@ describe("Section Expansion Panel", () => {
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} actions={actions} />
 				</MuiThemeProvider>
 			</Provider>
@@ -238,7 +230,7 @@ describe("Section Expansion Panel", () => {
 		const expansionPanelId = "ExpPanel123";
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={muiTheme}>
+				<MuiThemeProvider theme={createMuiTheme()}>
 					<SectionExpansionPanel
 						header={header}
 						content={content}
