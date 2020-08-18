@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled, { createGlobalStyle } from "styled-components";
 import { getThemeProp } from "../../../../utils";
 import Icon from "../../../../components/Icon";
 import DatePicker from "react-datepicker";
@@ -12,32 +11,24 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexWrap: "wrap",
 		width: "auto",
-		paddingLeft: "5px",
+		paddingLeft: theme.spacing(0.5),
+		"& .react-datepicker": {
+			fontFamily: theme.fontFamily,
+		},
+		"& .react-datepicker-popper": {
+			zIndex: 100,
+		},
+		"& .react-datepicker__input-container input": {
+			width: theme.spacing(13.5),
+			border: `1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")}`,
+			zIndex: 100,
+		},
+	},
+	calendarIcon: {
+		fontSize: theme.fontSize,
+		padding: theme.spacing(0.3, 0.3, 0.3, 0.3),
 	},
 }));
-
-const CalendarIcon = styled(Icon).attrs(props => ({
-	id: getThemeProp(["icons", "date"], "calendar")(props),
-}))`
-	font-size: 20px;
-	padding: 3px 3px 3px 3px;
-`;
-
-const DatePickerStyle = createGlobalStyle`
-    .react-datepicker {
-        font-family: ${getThemeProp(["fonts", "base"], "sans-serif")};
-    }
-
-    .react-datepicker-popper {
-        z-index: 100;
-    }
-
-    .react-datepicker__input-container input {
-        width: 135px;
-        border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-        z-index: 100;
-    }
-`;
 
 const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone, timeInputLabel, ...props }) => {
 	const classes = useStyles();
@@ -53,7 +44,6 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 
 	return (
 		<label className={classes.datePickerWrapper}>
-			<DatePickerStyle />
 			<DatePicker
 				{...props}
 				dateFormat={dateFormat || (useTime ? "P p" : "P")}
@@ -64,7 +54,7 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 				customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
 				timeInputLabel={timeInputLabel ?? ""}
 			/>
-			<CalendarIcon />
+			<Icon className={classes.calendarIcon} id={getThemeProp(["icons", "date"], "calendar")(props)} />
 		</label>
 	);
 };
