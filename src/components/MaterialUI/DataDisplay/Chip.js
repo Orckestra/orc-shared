@@ -4,7 +4,25 @@ import ChipProps from "./chipProps";
 import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    minWidth: theme.spacing(8)
+  },
+  disabled: {
+    backgroundColor: theme.palette.grey.borders,
+    color: theme.palette.text.primary
+  }
+}));
+
 const Chip = ({ label, chipProps }) => {
+  const classes = useStyles();
+
+  if (chipProps != null && chipProps instanceof ChipProps === false) {
+    throw new TypeError("chipProps property is not of type ChipProps");
+  }
+
   const avatar = chipProps?.get(ChipProps.propNames.avatar) || null;
   const clickable = chipProps?.get(ChipProps.propNames.clickable) || false;
   const disabled = chipProps?.get(ChipProps.propNames.disabled) || false;
@@ -19,7 +37,10 @@ const Chip = ({ label, chipProps }) => {
       disabled={disabled}
       onDelete={onDelete}
       variant={variant}
-      classes={classNames(chipProps?.getStyle(ChipProps.ruleNames.root))}
+      classes={{
+        root: classNames(classes.root, chipProps?.getStyle(ChipProps.ruleNames.root)),
+        disabled: classes.disabled
+      }}
     />
   );
 

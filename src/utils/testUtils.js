@@ -131,3 +131,7 @@ export const createMuiTheme = () => {
 
 	return muiTheme;
 };
+
+export const generateClassName = (rule, styleSheet) => {
+	return `${styleSheet.options.classNamePrefix}-${rule.key}`;
+};
