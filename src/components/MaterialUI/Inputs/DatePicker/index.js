@@ -9,7 +9,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
 	datePickerWrapper: {
 		display: "flex",
-		flexWrap: "wrap",
 		width: "auto",
 		paddingLeft: theme.spacing(0.5),
 		"& .react-datepicker": {
@@ -54,7 +53,7 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 				customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
 				timeInputLabel={timeInputLabel ?? ""}
 			/>
-			<Icon className={classes.calendarIcon} id={getThemeProp(["icons", "date"], "calendar")(props)} />
+			<Icon className={classes.calendarIcon} id={getThemeProp(["icons", "calendar"], "date")(props)} />
 		</label>
 	);
 };
