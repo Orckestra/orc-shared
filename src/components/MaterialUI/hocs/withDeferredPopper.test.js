@@ -1,98 +1,111 @@
 import React from "react";
 import withDeferredPopper, { Arrow } from "./withDeferredPopper";
 import { shallow, mount } from "enzyme";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Popper from '@material-ui/core/Popper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { ignoreConsoleError } from "./../../../utils/testUtils";
 
 describe("withDeferredPopper", () => {
-	const ComponentToBePoppered = () => {
-		return (
-			<div>
-				<p>Test</p>
-			</div>
-		);
-	};
+  const ComponentToBePoppered = () => {
+    return (
+      <div>
+        <p>Test</p>
+      </div>
+    );
+  };
 
-	it("Renders correct component if passed popperValue is not null or empty", () => {
-		const Wrapper = props => <ComponentToBePoppered {...props} />;
 
-		const PopperedCompponent = withDeferredPopper(Wrapper);
+  it("Renders correct component if passed popperValue is not null or empty", () => {
+    const Wrapper = props => <ComponentToBePoppered {...props} />;
 
-		const popperValue = "test";
+    const PopperedCompponent = withDeferredPopper(Wrapper);
 
-		const mountedPopperedComponent = shallow(<PopperedCompponent popperValue={popperValue} />);
+    const popperValue = "test";
 
-		ignoreConsoleError(() => {
-			const expected = (
-				<ClickAwayListener>
-					<div>
-						<Wrapper />
-						<Popper open={false}>
-							<Arrow />
-							{popperValue}
-						</Popper>
-					</div>
-				</ClickAwayListener>
-			);
-			expect(mountedPopperedComponent.containsMatchingElement(expected), "to be true");
-		});
-	});
+    const mountedPopperedComponent = shallow(
+      <PopperedCompponent popperValue={popperValue} />,
+    );
 
-	it("Renders passed component as it is if passed popperValue is null, empty or not react component", () => {
-		const Wrapper = props => <ComponentToBePoppered {...props} />;
+    ignoreConsoleError(() => {
+      const expected = (
+        <ClickAwayListener>
+          <div>
+            <Wrapper />
+            <Popper open={false}>
+              <Arrow />
+              {popperValue}
+            </Popper>
+          </div>
+        </ClickAwayListener>
+      );
+      expect(mountedPopperedComponent.containsMatchingElement(expected), "to be true");
+    });
+  });
 
-		const PopperedCompponent = withDeferredPopper(Wrapper);
+  it("Renders passed component as it is if passed popperValue is null, empty or not react component", () => {
+    const Wrapper = props => <ComponentToBePoppered {...props} />;
 
-		const emptyString = "";
-		const notReactComponent = { a: "test" };
+    const PopperedCompponent = withDeferredPopper(Wrapper);
 
-		let mountedPopperedComponent = shallow(<PopperedCompponent />);
+    const emptyString = "";
+    const notReactComponent = { a: "test" };
 
-		expect(mountedPopperedComponent.contains(<Wrapper />), "to be true");
+    let mountedPopperedComponent = shallow(
+      <PopperedCompponent />,
+    );
 
-		mountedPopperedComponent = shallow(<PopperedCompponent popperValue={emptyString} />);
+    expect(mountedPopperedComponent.contains(<Wrapper />), "to be true");
 
-		expect(mountedPopperedComponent.contains(<Wrapper />), "to be true");
+    mountedPopperedComponent = shallow(
+      <PopperedCompponent popperValue={emptyString} />
+    );
 
-		mountedPopperedComponent = shallow(<PopperedCompponent popperValue={notReactComponent} />);
+    expect(mountedPopperedComponent.contains(<Wrapper />), "to be true");
 
-		expect(mountedPopperedComponent.contains(<Wrapper />), "to be true");
-	});
+    mountedPopperedComponent = shallow(
+      <PopperedCompponent popperValue={notReactComponent} />
+    );
 
-	it("Closes popper when clickAway event occurs", () => {
-		const Wrapper = props => <ComponentToBePoppered {...props} />;
+    expect(mountedPopperedComponent.contains(<Wrapper />), "to be true");
+  });
 
-		const PopperedCompponent = withDeferredPopper(Wrapper);
+  it("Closes popper when clickAway event occurs", () => {
+    const Wrapper = props => <ComponentToBePoppered {...props} />;
 
-		const popperValue = "test";
+    const PopperedCompponent = withDeferredPopper(Wrapper);
 
-		const mountedPopperedComponent = mount(<PopperedCompponent popperValue={popperValue} />);
+    const popperValue = "test";
 
-		const wrapper = mountedPopperedComponent.find(Wrapper);
+    const mountedPopperedComponent = mount(
+      <PopperedCompponent popperValue={popperValue} />,
+    );
 
-		ignoreConsoleError(() => {
-			const event = {
-				currentTarget: wrapper,
-			};
+    const wrapper = mountedPopperedComponent.find(Wrapper);
 
-			wrapper.invoke("onClick")(event);
+    ignoreConsoleError(() => {
 
-			let popper = mountedPopperedComponent.find(Popper);
+      const event = {
+        currentTarget: wrapper
+      }
 
-			expect(popper.prop("open"), "to be true");
+      wrapper.invoke("onClick")(event);
 
-			mountedPopperedComponent.find(ClickAwayListener).invoke("onClickAway")();
+      let popper = mountedPopperedComponent.find(Popper);
 
-			popper = mountedPopperedComponent.find(Popper);
+      expect(popper.prop("open"), "to be true");
 
-			expect(popper.prop("open"), "to be false");
-		});
-	});
+      mountedPopperedComponent.find(ClickAwayListener).invoke("onClickAway")();
 
-	it("Renders arrow", () => {
-		const mountedComponent = shallow(<Arrow />);
+      popper = mountedPopperedComponent.find(Popper);
 
-		expect(mountedComponent.containsMatchingElement(<div />), "to be true");
-	});
+      expect(popper.prop("open"), "to be false");
+
+    });
+  });
+
+  it("Renders arrow", () => {
+    const mountedComponent = shallow(<Arrow />);
+
+    expect(mountedComponent.containsMatchingElement(<div />), "to be true");
+  });
 });

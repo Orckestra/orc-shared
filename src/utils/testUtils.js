@@ -28,7 +28,9 @@ export const getElmClasses = (reactElm, container) => {
 	const domElm = mount(reactElm, container ? { container } : undefined);
 	const classes = domElm.getAttribute("class");
 	if (!classes) {
-		throw new Error("Class name not found in <" + (reactElm.type.name || reactElm.type) + " />");
+		throw new Error(
+			"Class name not found in <" + (reactElm.type.name || reactElm.type) + " />",
+		);
 	}
 	return classes.split(" ");
 };
@@ -50,7 +52,9 @@ export const getClassSelector = (elm, index, container) => {
 export const getStyledClassSelector = elm => {
 	const component = elm.type || elm;
 	if (!isStyledComponent(component)) {
-		throw new Error("<" + (component.name || component) + " /> is not a styled component");
+		throw new Error(
+			"<" + (component.name || component) + " /> is not a styled component",
+		);
 	}
 	// Styled component toString() function returns a stable class name
 	return component.toString();
@@ -67,18 +71,19 @@ export const PropStruct = React.forwardRef((props, ref) => (
 				value === undefined || value === null
 					? null
 					: value === "__ignore"
-					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
-					: [
+						? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
+						: [
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
 								{key === "children" ? (
 									value
 								) : typeof value === "object" ? (
-									value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
-										"React <" + (value.type.name || value.type) + ">"
-									) : (
-										<PropStruct {...value} />
-									)
+									value["$$typeof"] &&
+										value["$$typeof"] === Symbol.for("react.element") ? (
+											"React <" + (value.type.name || value.type) + ">"
+										) : (
+											<PropStruct {...value} />
+										)
 								) : typeof value === "function" ? (
 									"Function"
 								) : typeof value === "string" ? (
@@ -86,17 +91,17 @@ export const PropStruct = React.forwardRef((props, ref) => (
 								) : typeof value === "symbol" ? (
 									`symbol ${value.toString()}`
 								) : (
-									typeof value + " " + value
-								)}
+														typeof value + " " + value
+													)}
 							</dd>,
-					  ],
+						],
 			)}
 	</dl>
 ));
 
 export const ignoreConsoleError = func => {
 	jest.spyOn(console, "error");
-	console.error.mockImplementation(() => {});
+	console.error.mockImplementation(() => { });
 
 	func();
 
@@ -117,7 +122,7 @@ export const createMuiTheme = () => {
 				dark: "#000",
 				contrastText: "#fff",
 			},
-		},
+		}
 	};
 
 	const themes = createThemes(applicationTheme, themeDefinition);

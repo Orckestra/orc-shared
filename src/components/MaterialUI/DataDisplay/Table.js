@@ -20,7 +20,7 @@ export const useStyles = makeStyles(theme => ({
 	tableContainer: {
 		height: props => "calc(100% - " + (props.stickyHeader ? props.headerHeight : 0) + "px)",
 		overflowY: "auto",
-		position: "relative",
+		position: "relative"
 	},
 	table: {
 		tableLayout: "fixed",

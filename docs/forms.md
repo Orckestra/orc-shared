@@ -44,10 +44,9 @@ For picking one of a set of option, the `Selector` input type will provide a cla
 
 ## Advanced input fields
 
-A `DatePicker` field will display a date (and time if needed) and allow a calendar pop-up if the field is clicked on. Live updates of the field are also possible.
-For more information, see https://www.npmjs.com/package/react-datepicker
+Dates have specific constraints and formats depending on locale, but are held in a homogenized format as data, based on the ISO8601 standard - `YYYY-MM-DD`, e.g. `'2014-05-24'`, `'1980-10-01'`. While there exist built-in data input fields in HTML, these vary in implementation, and are uniformly both very ugly and impossible to style. The `DateInput` field will take this data format and construct a set of input fields that follow the selected locale standards, and which have a calendar dropdown available for visual selection of dates, all styled to fit the look of Orckestra applications.
 
-A `Time` field will display a time and allow a time selection to be made with a pull down list. Hours are from 1-12, minutes are 00, 15, 30 and 45, and you have the AM and PM option as well.
+<!-- TimeInput, awaits finalized function -->
 
 Translations to multiple languages can be handled with the `TranslationInput` type. This will start out showing the default language as an input field, with a clickable control to expand other languages. A translator can then expand these fields and insert the translated strings required. The data format is an object with keys containing locales and values the translated message, for example `{ 'en-US': "Hat", 'fr-FR': "Chapeau" }`. This matches the data format for translated messages in the Orckestra Commerce Suite database.
 
