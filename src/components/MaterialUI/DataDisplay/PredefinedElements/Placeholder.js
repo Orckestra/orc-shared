@@ -25,19 +25,10 @@ const useStyles = makeStyles(theme => ({
 const Placeholder = ({ icon, title, subtitle }) => {
 	const classes = useStyles();
 	return (
-		<Grid
-			container
-			direction="column"
-			alignItems="center"
-			className={classes.placeholder}
-		>
+		<Grid container direction="column" alignItems="center" className={classes.placeholder}>
 			{icon ? <Icon className={classes.placeholderImage} id={icon} /> : null}
-			{title ? (
-				<Typography className={classes.placeholderTitle}>{title}</Typography>
-			) : null}
-			{subtitle ? (
-				<Typography className={classes.placeholderSubtitle}>{subtitle}</Typography>
-			) : null}
+			{title ? <Typography className={classes.placeholderTitle}>{title}</Typography> : null}
+			{subtitle ? <Typography className={classes.placeholderSubtitle}>{subtitle}</Typography> : null}
 		</Grid>
 	);
 };
