@@ -6,7 +6,6 @@ import { mount } from "enzyme";
 import sinon from "sinon";
 
 const BuildHours = ({ hours, showAMPM }) => {
-	console.warn("BuildHours", hours, showAMPM);
 	if (showAMPM) {
 		return (
 			<select value={hours} onChange={() => {}}>

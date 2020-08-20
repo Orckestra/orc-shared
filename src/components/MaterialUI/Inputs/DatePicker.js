@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { getThemeProp } from "../../../../utils";
-import Icon from "../../../../components/Icon";
+import { getThemeProp } from "../../../utils";
+import Icon from "../../Icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		"& .react-datepicker__input-container input": {
 			width: theme.spacing(13.5),
-			border: `1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")}`,
+			border: `1px solid ${theme.palette.grey.borders}`,
 			zIndex: 100,
 		},
 	},
