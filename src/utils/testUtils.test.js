@@ -10,6 +10,7 @@ import {
 	spyOnConsole,
 	ignoreConsoleError,
 	createMuiTheme,
+	generateClassName
 } from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
@@ -282,7 +283,7 @@ describe("PropStruct", () => {
 
 	it("handles function props (if poorly)", () =>
 		expect(
-			<PropStruct func={() => {}} />,
+			<PropStruct func={() => { }} />,
 			"when mounted",
 			"to satisfy",
 			<dl>
@@ -297,13 +298,13 @@ describe("PropStruct", () => {
 			"when mounted",
 			"to satisfy",
 			"<dl>" +
-				"<dt>alpha:</dt>" +
-				'<dd>string "yes"</dd>' +
-				"<!-- ignore -->" +
-				"<!-- ignore -->" +
-				"<dt>gamma:</dt>" +
-				'<dd>string "no"</dd>' +
-				"</dl>",
+			"<dt>alpha:</dt>" +
+			'<dd>string "yes"</dd>' +
+			"<!-- ignore -->" +
+			"<!-- ignore -->" +
+			"<dt>gamma:</dt>" +
+			'<dd>string "no"</dd>' +
+			"</dl>",
 		));
 
 	describe("comparator", () => {
@@ -365,5 +366,23 @@ describe("createMuiTheme", () => {
 		const theme = createMuiTheme();
 
 		expect(theme != null, "to be true");
+	});
+});
+
+describe("generateClassName", () => {
+	it("Generates proper class name", () => {
+		const styleSheet = {
+			options: {
+				classNamePrefix: "prefix"
+			}
+		};
+
+		const rule = {
+			key: "key"
+		};
+
+		const generatedClassname = generateClassName(rule, styleSheet);
+
+		expect(generatedClassname, "to equal", "prefix-key");
 	});
 });

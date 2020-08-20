@@ -67,8 +67,8 @@ export const PropStruct = React.forwardRef((props, ref) => (
 				value === undefined || value === null
 					? null
 					: value === "__ignore"
-					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
-					: [
+						? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
+						: [
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
 								{key === "children" ? (
@@ -77,8 +77,8 @@ export const PropStruct = React.forwardRef((props, ref) => (
 									value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
 										"React <" + (value.type.name || value.type) + ">"
 									) : (
-										<PropStruct {...value} />
-									)
+											<PropStruct {...value} />
+										)
 								) : typeof value === "function" ? (
 									"Function"
 								) : typeof value === "string" ? (
@@ -86,17 +86,17 @@ export const PropStruct = React.forwardRef((props, ref) => (
 								) : typeof value === "symbol" ? (
 									`symbol ${value.toString()}`
 								) : (
-									typeof value + " " + value
-								)}
+														typeof value + " " + value
+													)}
 							</dd>,
-					  ],
+						],
 			)}
 	</dl>
 ));
 
 export const ignoreConsoleError = func => {
 	jest.spyOn(console, "error");
-	console.error.mockImplementation(() => {});
+	console.error.mockImplementation(() => { });
 
 	func();
 
@@ -125,4 +125,8 @@ export const createMuiTheme = () => {
 	const muiTheme = themes.muiTheme;
 
 	return muiTheme;
+};
+
+export const generateClassName = (rule, styleSheet) => {
+	return `${styleSheet.options.classNamePrefix}-${rule.key}`;
 };
