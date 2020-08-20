@@ -33,7 +33,79 @@ describe("Paper", () => {
     });
   });
 
-  it("Uses paperProps root rule name correctly", () => {
+  it("Uses elevation prop correctly when it's passed", () => {
+    const paperProps = new PaperProps();
+
+    paperProps.set(PaperProps.propNames.elevation, 16);
+
+    const component = <Paper paperProps={paperProps} />;
+
+    const mountedComponent = mount(component);
+
+    const muiPaper = mountedComponent.find(MuiPaper);
+
+    expect(muiPaper.prop("elevation"), "to equal", 16);
+  });
+
+  it("Uses elevation prop correctly when it's not passed", () => {
+    const component = <Paper />;
+
+    const mountedComponent = mount(component);
+
+    const muiPaper = mountedComponent.find(MuiPaper);
+
+    expect(muiPaper.prop("elevation"), "to equal", 0);
+  });
+
+  it("Uses square prop correctly when it's passed", () => {
+    const paperProps = new PaperProps();
+
+    paperProps.set(PaperProps.propNames.square, true);
+
+    const component = <Paper paperProps={paperProps} />;
+
+    const mountedComponent = mount(component);
+
+    const muiPaper = mountedComponent.find(MuiPaper);
+
+    expect(muiPaper.prop("square"), "to be true");
+  });
+
+  it("Uses square prop correctly when it's not passed", () => {
+    const component = <Paper />;
+
+    const mountedComponent = mount(component);
+
+    const muiPaper = mountedComponent.find(MuiPaper);
+
+    expect(muiPaper.prop("square"), "to be false");
+  });
+
+  it("Uses variant prop correctly when it's passed", () => {
+    const paperProps = new PaperProps();
+
+    paperProps.set(PaperProps.propNames.variant, "elevation");
+
+    const component = <Paper paperProps={paperProps} />;
+
+    const mountedComponent = mount(component);
+
+    const muiPaper = mountedComponent.find(MuiPaper);
+
+    expect(muiPaper.prop("variant"), "to equal", "elevation");
+  });
+
+  it("Uses variant prop correctly when it's not passed", () => {
+    const component = <Paper />;
+
+    const mountedComponent = mount(component);
+
+    const muiPaper = mountedComponent.find(MuiPaper);
+
+    expect(muiPaper.prop("variant"), "to equal", "outlined");
+  });
+
+  it("Uses root rule name correctly", () => {
     const paperProps = new PaperProps();
 
     paperProps.setStyle(PaperProps.ruleNames.root, "myclass");
