@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { getThemeProp } from "../../../../utils";
-import Icon from "../../../../components/Icon";
+import { getThemeProp } from "../../../utils";
+import Icon from "../../Icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
@@ -9,7 +9,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
 	datePickerWrapper: {
 		display: "flex",
-		flexWrap: "wrap",
 		width: "auto",
 		paddingLeft: theme.spacing(0.5),
 		"& .react-datepicker": {
@@ -20,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		"& .react-datepicker__input-container input": {
 			width: theme.spacing(13.5),
-			border: `1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")}`,
+			border: `1px solid ${theme.palette.grey.borders}`,
 			zIndex: 100,
 		},
 	},
@@ -54,7 +53,7 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 				customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
 				timeInputLabel={timeInputLabel ?? ""}
 			/>
-			<Icon className={classes.calendarIcon} id={getThemeProp(["icons", "date"], "calendar")(props)} />
+			<Icon className={classes.calendarIcon} id={getThemeProp(["icons", "calendar"], "date")(props)} />
 		</label>
 	);
 };

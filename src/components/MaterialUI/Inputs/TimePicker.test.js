@@ -6,7 +6,6 @@ import { mount } from "enzyme";
 import sinon from "sinon";
 
 const BuildHours = ({ hours, showAMPM }) => {
-	console.warn("BuildHours", hours, showAMPM);
 	if (showAMPM) {
 		return (
 			<select value={hours} onChange={() => {}}>
@@ -61,7 +60,8 @@ const buildExpectedTime = (hours, mins, ampm, showTimeZone, showAMPM = true) => 
 		<div>
 			<div>
 				<span>
-					<BuildHours hours={hours} showAMPM={showAMPM} /> :
+					<BuildHours hours={hours} showAMPM={showAMPM} />
+					<label> : </label>
 					<select value={mins} onChange={() => {}}>
 						<option value="00">00</option>
 						<option value="15">15</option>

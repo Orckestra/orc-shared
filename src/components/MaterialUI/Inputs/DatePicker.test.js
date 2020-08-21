@@ -1,6 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
-import DatePicker from "./index";
+import DatePicker from "./DatePicker";
 import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
 import sinon from "sinon";
