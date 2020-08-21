@@ -23,10 +23,18 @@ const Paper = ({ content, paperProps }) => {
 
   const classes = useStyle();
 
+  const elevation = paperProps?.get(PaperProps.propNames.elevation) || 0;
+  const square = paperProps?.get(PaperProps.propNames.square) || false;
+  const variant = paperProps?.get(PaperProps.propNames.variant) || "outlined";
+
   const rootStyle = paperProps?.getStyle(PaperProps.ruleNames.root);
 
   return (
-    <MuiPaper classes={{ root: classNames(classes.container, rootStyle) }} variant="outlined">
+    <MuiPaper
+      classes={{ root: classNames(classes.container, rootStyle) }}
+      elevation={elevation}
+      square={square}
+      variant={variant}>
       {content}
     </MuiPaper>
   );

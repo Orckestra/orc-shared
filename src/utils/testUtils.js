@@ -28,9 +28,7 @@ export const getElmClasses = (reactElm, container) => {
 	const domElm = mount(reactElm, container ? { container } : undefined);
 	const classes = domElm.getAttribute("class");
 	if (!classes) {
-		throw new Error(
-			"Class name not found in <" + (reactElm.type.name || reactElm.type) + " />",
-		);
+		throw new Error("Class name not found in <" + (reactElm.type.name || reactElm.type) + " />");
 	}
 	return classes.split(" ");
 };
@@ -52,9 +50,7 @@ export const getClassSelector = (elm, index, container) => {
 export const getStyledClassSelector = elm => {
 	const component = elm.type || elm;
 	if (!isStyledComponent(component)) {
-		throw new Error(
-			"<" + (component.name || component) + " /> is not a styled component",
-		);
+		throw new Error("<" + (component.name || component) + " /> is not a styled component");
 	}
 	// Styled component toString() function returns a stable class name
 	return component.toString();
@@ -78,10 +74,9 @@ export const PropStruct = React.forwardRef((props, ref) => (
 								{key === "children" ? (
 									value
 								) : typeof value === "object" ? (
-									value["$$typeof"] &&
-										value["$$typeof"] === Symbol.for("react.element") ? (
-											"React <" + (value.type.name || value.type) + ">"
-										) : (
+									value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
+										"React <" + (value.type.name || value.type) + ">"
+									) : (
 											<PropStruct {...value} />
 										)
 								) : typeof value === "function" ? (
@@ -122,7 +117,7 @@ export const createMuiTheme = () => {
 				dark: "#000",
 				contrastText: "#fff",
 			},
-		}
+		},
 	};
 
 	const themes = createThemes(applicationTheme, themeDefinition);
@@ -130,4 +125,8 @@ export const createMuiTheme = () => {
 	const muiTheme = themes.muiTheme;
 
 	return muiTheme;
+};
+
+export const generateClassName = (rule, styleSheet) => {
+	return `${styleSheet.options.classNamePrefix}-${rule.key}`;
 };
