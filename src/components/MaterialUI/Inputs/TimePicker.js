@@ -14,13 +14,19 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexWrap: "wrap",
 		width: "100%",
+		alignItems: "center"
 	},
 	timePickerSegmentWrapper: {
 		fontFamily: theme.fontFamily,
 		fontSize: theme.fontSize,
 		color: "#333333",
-		marginLeft: "0.5em",
-		marginRight: theme.spacing(0.3),
+		marginLeft: theme.spacing(0.5),
+		marginRight: theme.spacing(0.5),
+		padding: theme.spacing(0.5, 1.5, 0.5, 1),
+		borderRadius: theme.shape.borderRadius,
+		"&:first-child": {
+			marginLeft: 0
+		}
 	},
 }));
 
