@@ -120,7 +120,7 @@ const Select = ({ options, selectProps }) => {
 		>
 			{options.map(option => (
 				<MenuItem key={option.value} value={option.value}>
-					<TooltippedTypography children={option.label} titleValue={option.label}  />
+					<TooltippedTypography noWrap children={option.label} titleValue={option.label}  />
 				</MenuItem>
 			))}
 		</SelectMUI>
