@@ -7,6 +7,7 @@ env:
   global:
     - BUILD_REACT=true
 script:
+  - npm ls --depth 1
   - npm run lint
   - npm run coverage
 after_success: npm run coveralls
