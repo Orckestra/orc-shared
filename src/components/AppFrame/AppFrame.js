@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
@@ -75,6 +75,10 @@ const AppFrame = ({
 	const currentApplication = getApp(applications, applicationId);
 	useLoader(getVersionInfo(locale), () => locale === null || helpUrl !== null);
 
+	useEffect(() => {
+		document.title = currentApplication?.displayName || applicationId;
+	}, [currentApplication?.id]);
+
 	const [prefViewState] = useViewState(PREFS_NAME);
 
 	return (
@@ -111,9 +115,7 @@ AppFrame.displayName = "AppFrame";
 AppFrame.propTypes = {
 	applicationId: pt.string.isRequired,
 	modules: pt.array.isRequired,
-	activeModules: pt.objectOf(
-		pt.oneOfType([pt.bool, pt.shape({ type: pt.string, message: ptLabel })]),
-	),
+	activeModules: pt.objectOf(pt.oneOfType([pt.bool, pt.shape({ type: pt.string, message: ptLabel })])),
 	helpMessages: pt.shape({
 		help: ptLabel.isRequired,
 	}).isRequired,
