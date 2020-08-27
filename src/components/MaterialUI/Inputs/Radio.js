@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
 			transform: "translate(-50%, -50%)",
 		},
 	},
+	radioFormControl: {
+		minWidth: theme.spacing(30)
+	}
 }));
 
 const extractAndValidateProps = radioProps => {
@@ -79,7 +82,7 @@ const Radio = ({ radioProps }) => {
 	const handleChange = update ? event => update(event.target.value) : null;
 
 	return (
-		<FormControl component="fieldset">
+		<FormControl component="fieldset" className={classes.radioFormControl}>
 			<FormLabel component="legend">{label}</FormLabel>
 			<RadioGroupMui
 				row={row}
