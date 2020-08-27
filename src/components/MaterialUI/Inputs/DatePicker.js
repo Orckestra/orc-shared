@@ -10,23 +10,37 @@ const useStyles = makeStyles(theme => ({
 	datePickerWrapper: {
 		display: "flex",
 		width: "auto",
-		paddingLeft: theme.spacing(0.5),
+		padding: theme.spacing(0.3, 0.5),
+		border: `1px solid ${theme.palette.grey.borders}`,
+		borderRadius: theme.shape.borderRadius,
+		alignItems: "center",
+		"&:focus, &:focus-within": {
+			borderRadius: theme.shape.borderRadius,
+			borderColor: theme.palette.focus,
+			boxShadow: `0 0 4px ${theme.palette.focus}`,
+			outline: "none",
+		},
 		"& .react-datepicker": {
 			fontFamily: theme.fontFamily,
+		},
+		"& .react-datepicker__input-time-container" : {
+			margin: theme.spacing(0.5, 0, 1, 0)
 		},
 		"& .react-datepicker-popper": {
 			zIndex: 100,
 		},
 		"& .react-datepicker__input-container input": {
 			width: theme.spacing(13.5),
-			border: `1px solid ${theme.palette.grey.borders}`,
+			border: "none",
 			zIndex: 100,
+			"&:focus": {
+				outline: "none"
+			}
 		},
 	},
 	calendarIcon: {
 		fontSize: theme.fontSize,
-		padding: theme.spacing(0.3, 0.3, 0.3, 0.3),
-	},
+	}
 }));
 
 const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone, timeInputLabel, ...props }) => {
