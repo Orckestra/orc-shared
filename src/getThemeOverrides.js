@@ -20,30 +20,6 @@ const getThemeOverrides = appName => {
 	};
 	return {
 		colors: { ...colors, application },
-		icons: {
-			scopeTypes: {
-				Global: "global",
-				Virtual: "virtual-scope",
-				Sale: "sales-scope",
-				Dependant: "dependent-scope",
-			},
-			toast: {
-				confirm: "checkmark",
-				warn: "close2",
-				error: "close",
-			},
-			prev: "collapse",
-			next: "expand",
-			menu: "app-list",
-			sidebarOpen: "collapse",
-			sidebarClosed: "expand",
-			close: "close",
-			date: "calendar-generic",
-			time: "clock",
-			backArrow: "large-left",
-			loading: "orckestra-loader",
-			error: "warning",
-		},
 	};
 };
 
