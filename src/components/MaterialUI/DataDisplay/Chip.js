@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
-    minWidth: theme.spacing(8)
+    minWidth: theme.spacing(6)
   },
   disabled: {
     backgroundColor: theme.palette.grey.borders,
