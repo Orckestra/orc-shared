@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 
 const ErrorPlaceholder = withTheme(({ message, description, onClick, ...props }) => (
 	<Placeholder
-		icon={getThemeProp(["icons", "error"], "error")(props)}
+		icon={getThemeProp(["icons", "reportProblem"], "error")(props)}
 		warn
 		title={message}
 		subtitle={description}

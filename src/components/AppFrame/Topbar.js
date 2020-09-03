@@ -30,13 +30,13 @@ export const useMenuProps = messages => {
 				id: "userMenuSignOut",
 				label: intl.formatMessage(messages.sign_out),
 				handler: () => dispatch(signOut()),
-				icon: "logout-1",
+				icon: "logout",
 			},
 			{
 				id: "userMenuPrefsMenu",
 				label: intl.formatMessage(messages.preferences),
 				handler: () => dispatch(setStateField(PREFS_NAME, "show", true)),
-				icon: "settings-cogwheel",
+				icon: "cogwheel",
 			},
 			{
 				id: "userMenuAbout",
@@ -99,19 +99,19 @@ const Topbar = ({
 	helpUrl,
 	...config
 }) => (
-	<Wrapper onClick={onClick}>
-		<AppBox>
-			<ApplicationSelector
-				{...{
-					applications,
-					applicationId,
-				}}
-			/>
-			<CurrentApp {...(currentApplication || {})} />
-		</AppBox>
-		<Menu {...config} messages={menuMessages} />
-		<Help {...{ messages: helpMessages, helpUrl }} />
-	</Wrapper>
-);
+		<Wrapper onClick={onClick}>
+			<AppBox>
+				<ApplicationSelector
+					{...{
+						applications,
+						applicationId,
+					}}
+				/>
+				<CurrentApp {...(currentApplication || {})} />
+			</AppBox>
+			<Menu {...config} messages={menuMessages} />
+			<Help {...{ messages: helpMessages, helpUrl }} />
+		</Wrapper>
+	);
 
 export default Topbar;
