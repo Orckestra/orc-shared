@@ -798,9 +798,18 @@ const setThemeOverrides = theme => ({
 		...theme.MuiChip,
 		root: {
 			...theme.root,
+			height: theme.spacing(1.7),
+			fontSize: theme.spacing(1.1),
+			justifyContent: "left",
+			texTransform: "capitalize",
 			"&.Mui-disabled": {
 				opacity: 1
 			}
+		},
+		label: {
+			...theme.label,
+			paddingLeft: theme.spacing(1),
+			paddingRight: theme.spacing(1),
 		}
 	}
 });
