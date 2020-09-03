@@ -1,12 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
-    <title>Assets / Icons / Clock</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Assets-/-Icons-/-Clock" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Stroke-1331-+-Stroke-1332" stroke="#000000">
-            <path d="M13.7083333,7 C13.7083333,10.7053333 10.7041667,13.7083333 7,13.7083333 C3.2935,13.7083333 0.291666667,10.7053333 0.291666667,7 C0.291666667,3.29466667 3.2935,0.291666667 7,0.291666667 C10.7041667,0.291666667 13.7083333,3.29466667 13.7083333,7 L13.7083333,7 Z" id="Stroke-1331"></path>
-            <polyline id="Stroke-1332" points="6.70833333 3.79166667 6.70833333 7 10.2083333 10.2083333"></polyline>
-        </g>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M13.7083333,7 C13.7083333,10.7053333 10.7041667,13.7083333 7,13.7083333 C3.2935,13.7083333 0.291666667,10.7053333 0.291666667,7 C0.291666667,3.29466667 3.2935,0.291666667 7,0.291666667 C10.7041667,0.291666667 13.7083333,3.29466667 13.7083333,7 L13.7083333,7 Z M6.70833333,3.79166667 L6.70833333,7 L10.2083333,10.2083333"/>
 </svg>

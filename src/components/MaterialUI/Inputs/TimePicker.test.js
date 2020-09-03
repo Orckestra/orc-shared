@@ -84,8 +84,14 @@ const buildExpectedTime = (hours, mins, ampm, showTimeZone, showAMPM = true) => 
 
 describe("Time Component", () => {
 	let updater;
+	let originalDate;
 	beforeEach(() => {
 		updater = sinon.spy().named("updater");
+		originalDate = global.Date;
+	});
+
+	afterEach(() => {
+		global.Date = originalDate;
 	});
 
 	it("sets up a time 5am", () =>
@@ -472,6 +478,7 @@ describe("Time Component", () => {
 
 		select.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
+		expect(onChangeMock.mock.calls[0][0], "to equal", "00:00");
 	});
 
 	it("should update time with 12pm", () => {
@@ -487,7 +494,9 @@ describe("Time Component", () => {
 
 		select.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
+		expect(onChangeMock.mock.calls[0][0], "to equal", "12:00");
 	});
+
 	it("should update time without AMPM", () => {
 		const onChangeMock = jest.fn();
 		const event = {
@@ -501,6 +510,7 @@ describe("Time Component", () => {
 
 		select.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
+		expect(onChangeMock.mock.calls[0][0], "to equal", "05:00");
 	});
 
 	it("should update when 12", () => {
@@ -516,6 +526,7 @@ describe("Time Component", () => {
 
 		select.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
+		expect(onChangeMock.mock.calls[0][0], "to equal", "12:00");
 	});
 
 	it("should update in AM when 12", () => {
@@ -528,7 +539,7 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "AM" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} />);
+		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -536,6 +547,8 @@ describe("Time Component", () => {
 		select.at(2).simulate("change", eventAMPM);
 		select.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 2);
+		expect(onChangeMock.mock.calls[0][0], "to equal", "10:00");
+		expect(onChangeMock.mock.calls[1][0], "to equal", "00:00");
 	});
 
 	it("should update in PM when hours 12", () => {
@@ -548,7 +561,7 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "PM" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} />);
+		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} value="10:00" />);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -556,6 +569,8 @@ describe("Time Component", () => {
 		select.at(2).simulate("change", eventAMPM);
 		select.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 2);
+		expect(onChangeMock.mock.calls[0][0], "to equal", "22:00");
+		expect(onChangeMock.mock.calls[1][0], "to equal", "12:00");
 	});
 
 	it("should update when no onchange", () => {

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexWrap: "wrap",
 		width: "100%",
-		alignItems: "center"
+		alignItems: "center",
 	},
 	timePickerSegmentWrapper: {
 		fontFamily: theme.fontFamily,
@@ -25,8 +25,8 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(0.5, 1.5, 0.5, 1),
 		borderRadius: theme.shape.borderRadius,
 		"&:first-child": {
-			marginLeft: 0
-		}
+			marginLeft: 0,
+		},
 	},
 }));
 
@@ -99,10 +99,10 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM }) => {
 	const setHours = (hours, isAMTime) => {
 		if (!showAMPM) {
 			time.setHours(hours);
-		} else if (hours === 12) {
+		} else if (parseInt(hours) === 12) {
 			time.setHours(isAMTime ? 0 : 12);
 		} else {
-			time.setHours(hours + (isAMTime ? 0 : 12));
+			time.setHours(parseInt(hours) + parseInt(isAMTime ? 0 : 12));
 		}
 	};
 
