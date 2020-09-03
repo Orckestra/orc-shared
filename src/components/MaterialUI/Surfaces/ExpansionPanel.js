@@ -9,7 +9,21 @@ import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPane
 import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
-	expansionPanelHeader: {},
+	expansionPanelHeader: {
+		minHeight: 0,
+		backgroundColor: theme.palette.grey.light,
+		height: theme.spacing(4),
+		"&$headerPanelExpanded": {
+			minHeight: 0,
+			margin: 0,
+		},
+		borderColor: theme.palette.grey.borders
+	},
+	expandIcon: {
+		hight: theme.spacing(1),
+		width: theme.spacing(1)
+	},
+	headerPanelExpanded: {}
 }));
 
 const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansionPanelActionsProps }) => {
@@ -28,8 +42,15 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 
 	// Expansion panel props
 	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
-	const expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
-	const onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
+	const defaultExpanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.defaultExpanded) ?? true;
+
+	const [expanded, setExpanded] = React.useState(defaultExpanded);
+
+	const internalOnChange = (evt, isExpanded) => {
+		setExpanded(isExpanded);
+	};
+
+	const expansionPanelRootStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.root);
 
 	// Expansion panel summary props
 
@@ -37,11 +58,20 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 	const disableSpacing = expansionPanelActionsProps?.get(ExpansionPanelActionsProps.propNames.disableSpacing);
 
 	return (
-		<Accordion defaultExpanded disabled={disabled == null ? false : disabled} expanded={expanded} onChange={onChange}>
+		<Accordion
+			defaultExpanded={defaultExpanded}
+			disabled={disabled == null ? false : disabled}
+			expanded={expanded}
+			onChange={internalOnChange}
+			classes={{
+				root: expansionPanelRootStyle
+			}}
+		>
 			<AccordionSummary
-				expandIcon={<Icon id="chevron-down" />}
+				expandIcon={<Icon id="chevron-down" className={classes.expandIcon} />}
 				classes={{
 					root: classNames(classes.expansionPanelHeader),
+					expanded: classes.headerPanelExpanded
 				}}
 			>
 				{header}

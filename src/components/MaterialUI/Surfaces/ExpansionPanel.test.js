@@ -7,6 +7,8 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionActions from "@material-ui/core/AccordionActions";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import { ignoreConsoleError } from "../../../utils/testUtils";
+import { MuiThemeProvider } from "@material-ui/core";
+import { createMuiTheme } from "./../../../utils/testUtils";
 
 describe("Expansion Panel", () => {
 	it("Renders Expansion Panel with actions if actions are not null", () => {
@@ -14,7 +16,9 @@ describe("Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<ExpansionPanel header={header} content={content} actions={actions} />
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel header={header} content={content} actions={actions} />
+			</MuiThemeProvider>
 		);
 		const mountedComponent = mount(component);
 		const expected = (
@@ -33,7 +37,9 @@ describe("Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<ExpansionPanel header={header} content={content} actions={actions} />
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel header={header} content={content} actions={actions} />
+			</MuiThemeProvider>
 		);
 		const mountedComponent = mount(component);
 
@@ -43,7 +49,11 @@ describe("Expansion Panel", () => {
 	it("Not renders Expansion Panel Actions if actions are null", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;
-		const component = <ExpansionPanel header={header} content={content} />;
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel header={header} content={content} />
+			</MuiThemeProvider>
+		);
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".MuiAccordionActions-root"), "to be falsy");
@@ -51,14 +61,22 @@ describe("Expansion Panel", () => {
 
 	it("Fails if expansionPanelProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = <ExpansionPanel expansionPanelProps="Wrong type" />;
+			const component = (
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<ExpansionPanel expansionPanelProps="Wrong type" />
+				</MuiThemeProvider>
+			);
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
 
 	it("Fails if expansionPanelActionsProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = <ExpansionPanel expansionPanelActionsProps="Wrong type" />;
+			const component = (
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<ExpansionPanel expansionPanelActionsProps="Wrong type" />
+				</MuiThemeProvider>
+			);
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
@@ -68,7 +86,11 @@ describe("Expansion Panel", () => {
 
 		expansionPanelProps.set(ExpansionPanelProps.propNames.expanded, true);
 
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+			</MuiThemeProvider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -80,7 +102,11 @@ describe("Expansion Panel", () => {
 
 		expansionPanelProps.set(ExpansionPanelProps.propNames.disabled, true);
 
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+			</MuiThemeProvider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -88,7 +114,11 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Default value for disabled property is correct if expansionPanelProps wasn't passed", () => {
-		const component = <ExpansionPanel />;
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel />
+			</MuiThemeProvider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -98,33 +128,15 @@ describe("Expansion Panel", () => {
 	it("Default value for disabled property is correct if expansionPanelProps was passed without setting that", () => {
 		const expansionPanelProps = new ExpansionPanelProps();
 
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+			</MuiThemeProvider>
+		);
 
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".Mui-disabled"), "to be falsy");
-	});
-
-	it("Uses expansionPanelProps.onChange correctly", () => {
-		let expanded = false;
-
-		const onChange = value => {
-			expanded = value;
-		};
-
-		const expansionPanelProps = new ExpansionPanelProps();
-
-		expansionPanelProps.set(ExpansionPanelProps.propNames.onChange, onChange);
-
-		const component = <ExpansionPanel expansionPanelProps={expansionPanelProps} />;
-
-		const mountedComponent = mount(component);
-
-		const exp = mountedComponent.find(Accordion);
-
-		exp.props().onChange(true);
-
-		expect(expanded, "to be truthy");
 	});
 
 	it("Uses expansionPanelActionsProps.disableSpacing correctly", () => {
@@ -137,10 +149,12 @@ describe("Expansion Panel", () => {
 		);
 
 		const component = (
-			<ExpansionPanel
-				actions={actions}
-				expansionPanelActionsProps={expansionPanelActionsProps}
-			/>
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel
+					actions={actions}
+					expansionPanelActionsProps={expansionPanelActionsProps}
+				/>
+			</MuiThemeProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -151,7 +165,11 @@ describe("Expansion Panel", () => {
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps wasn't passed", () => {
 		const actions = <p>Actions</p>;
 
-		const component = <ExpansionPanel actions={actions} />;
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel actions={actions} />
+			</MuiThemeProvider>
+		);
 
 		const mountedComponent = mount(component);
 
@@ -163,14 +181,38 @@ describe("Expansion Panel", () => {
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
 
 		const component = (
-			<ExpansionPanel
-				actions={actions}
-				expansionPanelActionsProps={expansionPanelActionsProps}
-			/>
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel
+					actions={actions}
+					expansionPanelActionsProps={expansionPanelActionsProps}
+				/>
+			</MuiThemeProvider>
 		);
 
 		const mountedComponent = mount(component);
 
 		expect(mountedComponent.exists(".MuiAccordionActions-spacing"), "to be truthy");
+	});
+
+	it("handles internal on change function", () => {
+		const header = <p>Header</p>;
+		const content = <p>Content</p>;
+		const actions = <p>Actions</p>;
+		const expansionPanelId = "ExpPanel123";
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel
+					header={header}
+					content={content}
+					actions={actions}
+					expansionPanelId={expansionPanelId}
+				/>
+			</MuiThemeProvider>
+		);
+		const mountedComponent = mount(component);
+
+		mountedComponent.find(AccordionSummary).simulate("click");
+
+		expect(mountedComponent.exists(".Mui-expanded"), "to be false");
 	});
 });

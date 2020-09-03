@@ -8,12 +8,18 @@ class ExpansionPanelProps extends ComponentProps {
 		onChange: "onChange",
 	};
 
+	static ruleNames = {
+		root: "root"
+	};
+
 	constructor() {
 		super();
 		this.componentProps.set(this.constructor.propNames.defaultExpanded, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.expanded, null);
 		this.componentProps.set(this.constructor.propNames.onChange, null);
+
+		this.componentClasses.set(this.constructor.ruleNames.root, null);
 	}
 }
 
