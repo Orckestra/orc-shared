@@ -163,8 +163,8 @@ export const StyledMenu = styled(DropMenu).attrs(() => ({ alignRight: true }))`
 export const MenuButton = styled(IconButton).attrs(props => ({
 	icon: ifFlag(
 		"open",
-		getThemeProp(["icons", "indicators", "up"], "chevron-up"),
-		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
+		getThemeProp(["icons", "indicators", "more"], "arrow-more"),
+		getThemeProp(["icons", "indicators", "more"], "arrow-more"),
 	)(props),
 }))``;
 

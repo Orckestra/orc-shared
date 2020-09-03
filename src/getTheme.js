@@ -45,7 +45,8 @@ const baseTheme = {
 		indicators: {
 			up: "chevron-up",
 			down: "dropdown-chevron-down",
-			right: "dropdown-chevron-right"
+			right: "dropdown-chevron-right",
+			more: "arrow-more"
 		},
 		scopeTypes: {
 			Global: "global-scope",
