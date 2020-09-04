@@ -1,4 +1,4 @@
-const parseGuid = guid => {
+export const parseGuid = guid => {
 	if (guid.length !== 32) return "";
 
 	const partsLength = [8, 4, 4, 4, 12];
@@ -18,4 +18,23 @@ const parseGuid = guid => {
 	return parsedGuid;
 };
 
-export { parseGuid };
+export const concatObjectPropsWithDelimeter = (object, propsToUse, delimeter = ",", useSpace = true) => {
+	let concatedString = "";
+
+	propsToUse.forEach((prop, index) => {
+		const tempProp = object[prop];
+		if (tempProp != null) {
+			concatedString += tempProp;
+			if (index < propsToUse.length - 1) {
+				if (delimeter != null) {
+					concatedString += delimeter;
+				}
+				if (useSpace) {
+					concatedString += " ";
+				}
+			}
+		}
+	});
+
+	return concatedString;
+}
