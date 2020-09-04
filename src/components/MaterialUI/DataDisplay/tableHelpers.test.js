@@ -276,13 +276,19 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				extraneous: "Don't show 3",
 				currency: "CAD",
 			},
+			{
+				id: "an_id3",
+				test: 0,
+				another: "another 3",
+				extraneous: "Don't show 3",
+			},
 		];
 
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 1);
 
-		expect(rows.length, "to equal", 3);
+		expect(rows.length, "to equal", 4);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
 		expect(rows[0].columns[0].cellElement.props, "to equal", {
@@ -317,6 +323,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			currency: "CAD",
 			value: "0",
 		});
+
+		expect(rows[3].columns[0].cellElement, "to equal", null);
+		expect(rows[3].columns[0].title, "to equal", null);
 	});
 
 	it("build table rows as expected with date", () => {
@@ -324,13 +333,14 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		const elements = [
 			{ id: "an_id1", test: 123, another: "another 1", extraneous: "Don't show 1" },
 			{ id: "an_id2", test: 44, another: "another 2", extraneous: "Don't show 2" },
+			{ id: "an_id2", test: null, another: "another 2", extraneous: "Don't show 2" },
 		];
 
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 1);
 
-		expect(rows.length, "to equal", 2);
+		expect(rows.length, "to equal", 3);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
 		expect(rows[0].columns[0].cellElement.props, "to equal", { value: 123 });
@@ -338,6 +348,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(rows[1].columns[0].cellElement.props, "to equal", { value: 44 });
 		expect(rows[1].columns[0].title.props, "to equal", { value: 44 });
+
+		expect(rows[2].columns[0].cellElement, "to equal", null);
+		expect(rows[2].columns[0].title, "to equal", null);
 	});
 
 	it("build table rows as expected with datetime", () => {
@@ -345,13 +358,14 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		const elements = [
 			{ id: "an_id1", test: 123, another: "another 1", extraneous: "Don't show 1" },
 			{ id: "an_id2", test: 44, another: "another 2", extraneous: "Don't show 2" },
+			{ id: "an_id2", test: null, another: "another 2", extraneous: "Don't show 2" },
 		];
 
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 1);
 
-		expect(rows.length, "to equal", 2);
+		expect(rows.length, "to equal", 3);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
 		expect(rows[0].columns[0].cellElement.props.children[0].props, "to equal", {
@@ -375,6 +389,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			value: 44,
 		});
 		expect(rows[1].columns[0].title.props.children[2].props, "to equal", { value: 44 });
+
+		expect(rows[2].columns[0].title, "to equal", null);
+		expect(rows[2].columns[0].cellElement, "to equal", null);
 	});
 
 	it("build table rows as expected with select", () => {
