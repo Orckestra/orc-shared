@@ -21,17 +21,22 @@ export const parseGuid = guid => {
 export const concatObjectPropsWithDelimeter = (object, propsToUse, delimeter = ",", useSpace = true) => {
 	let concatedString = "";
 
-	propsToUse.forEach((prop, index) => {
+	const valuesToUse = [];
+	propsToUse.forEach((prop) => {
 		const tempProp = object[prop];
 		if (tempProp != null) {
-			concatedString += tempProp;
-			if (index < propsToUse.length - 1) {
-				if (delimeter != null) {
-					concatedString += delimeter;
-				}
-				if (useSpace) {
-					concatedString += " ";
-				}
+			valuesToUse.push(tempProp)
+		}
+	})
+
+	valuesToUse.forEach((value, index) => {
+		concatedString += value;
+		if (index < valuesToUse.length - 1) {
+			if (delimeter != null) {
+				concatedString += delimeter;
+			}
+			if (useSpace) {
+				concatedString += " ";
 			}
 		}
 	});
