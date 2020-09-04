@@ -15,24 +15,24 @@ const renderByType = (e, def, rowId) => {
 
 		case "currency": {
 			const currency = Array.isArray(def.currency) ? safeGet(e, ...def.currency) : def.currency;
-			return [
+			return currency != null ? [
 				<FormattedNumber
 					style="currency" // eslint-disable-line react/style-prop-object
 					currency={currency}
 					value={transformedValue || "0"}
 				/>,
-			];
+			] : [null];
 		}
 
 		case "date":
-			return [<FormattedDate value={transformedValue} />];
+			return transformedValue != null ? [<FormattedDate value={transformedValue} />] : [null];
 
 		case "datetime":
-			return [
+			return transformedValue != null ? [
 				<React.Fragment>
 					<FormattedDate value={transformedValue} /> <FormattedTime value={transformedValue} />
 				</React.Fragment>,
-			];
+			] : [null];
 
 		case "select":
 			const checkboxProps = new CheckboxProps();
