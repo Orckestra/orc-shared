@@ -1,20 +1,25 @@
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 
 describe("Expansion Panel Props", () => {
-	it("Contains necessary props keys", () => {
+	it("Contains necessary prop and rule keys", () => {
 		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange"];
+		const rulesNames = ["root"];
 
 		expect(ExpansionPanelProps.propNames, "to have keys", propNames);
+		expect(ExpansionPanelProps.ruleNames, "to have keys", rulesNames);
 	});
 
-	it("Puts keys in component props map", () => {
+	it("Puts keys in component prop and rule maps", () => {
 		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange"];
+		const rulesNames = ["root"];
 
 		const expansionPanelProps = new ExpansionPanelProps();
 
-		const keys = Array.from(expansionPanelProps.componentProps.keys());
+		const propsKeys = Array.from(expansionPanelProps.componentProps.keys());
+		const classesKeys = Array.from(expansionPanelProps.componentClasses.keys());
 
-		expect(keys, "to equal", propNames);
+		expect(propsKeys, "to equal", propNames);
+		expect(classesKeys, "to equal", rulesNames);
 	});
 });
 
