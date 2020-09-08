@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "0.11.0-dev.30",
+	"version": "0.11.0-dev.31",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
@@ -38,10 +38,10 @@
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
 		"jest": "^26.1.0",
-		"orc-scripts": "1.1.0-dev.6"
+		"orc-scripts": "1.1.0-dev.7"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.1.0-dev.6"
+		"orc-scripts": "1.1.0-dev.7"
 	},
 	"sideEffects": false,
 	"lint-staged": {
