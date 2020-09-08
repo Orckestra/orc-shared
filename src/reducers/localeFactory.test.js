@@ -1,4 +1,4 @@
-import Immutable from "immutable";
+import Immutable from "immutable4";
 import reducerFactory from "./localeFactory";
 import { changeLocale, GET_CULTURES_SUCCESS } from "../actions/locale";
 

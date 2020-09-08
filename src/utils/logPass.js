@@ -1,4 +1,4 @@
-import Immutable from "immutable";
+import Immutable from "immutable4";
 import unwrapImmutable from "./unwrapImmutable";
 
 /* Logs a value and returns it, useful for debugging arrow
