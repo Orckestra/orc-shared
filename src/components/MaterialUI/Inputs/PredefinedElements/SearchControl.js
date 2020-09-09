@@ -7,6 +7,10 @@ import Select from "../Select";
 import Input from "@material-ui/core/Input";
 
 export const useStyles = makeStyles(theme => ({
+	container: {
+		display: "flex",
+		marginRight: "10px"
+	},
 	clearButton: {
 		fontSize: theme.spacing(2.2),
 		padding: theme.spacing(0.3),
@@ -91,10 +95,10 @@ export const useStyles = makeStyles(theme => ({
 		"& ul": {
 			maxWidth: "none",
 		},
-	},
+	}
 }));
 
-const SearchControl = ({ placeholder, searchOptions, onSearch = () => {} }) => {
+const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => { } }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 	const [clearFocused, setClearFocused] = useState(false);
 	const [searchOption, setSearchOption] = useState(searchOptions[0].value);
@@ -147,6 +151,7 @@ const SearchControl = ({ placeholder, searchOptions, onSearch = () => {} }) => {
 		<div data-qa="searchInput" data-qa-is-focused={inputFocused || clearFocused} className={classes.parentInput}>
 			<Input
 				placeholder={placeholder}
+				defaultValue={defaultValue}
 				inputRef={inputRef}
 				type="text"
 				classes={{ input: classes.controlInput }}
@@ -180,7 +185,7 @@ const SearchControl = ({ placeholder, searchOptions, onSearch = () => {} }) => {
 	);
 
 	return (
-		<div style={{ display: "flex", marginRight: "10px" }}>
+		<div className={classes.container}>
 			<Select options={searchOptions} selectProps={selectProps} />
 			{inputSection}
 			{searchSection}

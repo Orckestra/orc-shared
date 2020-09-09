@@ -1,7 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
 import sinon from "sinon";
-import TooltippedTypography from "../../DataDisplay/TooltippedElements/TooltippedTypography";
 import SearchControl from "./SearchControl";
 import { createMuiTheme } from "../../../../utils/testUtils";
 import { MuiThemeProvider } from "@material-ui/core";
@@ -10,6 +9,8 @@ import IconButton from "@material-ui/core/IconButton";
 import SelectMUI from "@material-ui/core/Select";
 import Icon from "../../DataDisplay/Icon";
 import { useStyles } from "./SearchControl";
+import Select from "../Select";
+import SelectProps from "../SelectProps";
 
 const TestComp = ({ classToTest, styleProps }) => {
 	const classes = useStyles({ ...styleProps });
@@ -63,38 +64,39 @@ describe("SearchControl Component", () => {
 			{ value: "anotherValue", label: "anotherLabel" },
 		];
 
+		const theme = createMuiTheme();
+
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<SearchControl placeholder="placeHolderTest" searchOptions={options} />
+			<MuiThemeProvider theme={theme}>
+				<SearchControl placeholder="placeHolderTest" defaultValue="default" searchOptions={options} />
 			</MuiThemeProvider>
 		);
 
-		const mountedComponent = mount(component);
+		const selectProps = new SelectProps();
+		selectProps.set(SelectProps.propNames.value, "aValue");
 
-		expect(
-			mountedComponent.containsMatchingElement(<TooltippedTypography children="aLabel" noWrap titleValue="aLabel" />),
-			"to be true",
+		const expected = (
+			<MuiThemeProvider theme={theme}>
+				<div>
+					<Select options={options} selectProps={selectProps} />
+					<div>
+						<Input
+							placeholder="placeHolderTest"
+							defaultValue="default"
+							disableUnderline={true}
+						/>
+						<IconButton tabIndex="-1">
+							<Icon id="close2" />
+						</IconButton>
+					</div>
+					<IconButton>
+						<Icon id="search" />
+					</IconButton>
+				</div>
+			</MuiThemeProvider>
 		);
 
-		expect(mountedComponent.containsMatchingElement(<Input placeholder="placeHolderTest" />), "to be true");
-
-		expect(
-			mountedComponent.containsMatchingElement(
-				<IconButton>
-					<Icon id="close2" />
-				</IconButton>,
-			),
-			"to be true",
-		);
-
-		expect(
-			mountedComponent.containsMatchingElement(
-				<IconButton>
-					<Icon id="search" />
-				</IconButton>,
-			),
-			"to be true",
-		);
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 
 	it("Search Control should trigger the event when hitting Enter even without prop", () => {
@@ -274,8 +276,8 @@ describe("SearchControl Component", () => {
 		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
 
 		const event = {
-			preventDefault: () => {},
-			stopPropagation: () => {},
+			preventDefault: () => { },
+			stopPropagation: () => { },
 		};
 
 		searchInput.invoke("onFocus")(event);
@@ -315,8 +317,8 @@ describe("SearchControl Component", () => {
 		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
 
 		const event = {
-			preventDefault: () => {},
-			stopPropagation: () => {},
+			preventDefault: () => { },
+			stopPropagation: () => { },
 		};
 
 		clearButton.invoke("onFocus")(event);
