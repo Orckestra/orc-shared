@@ -24,11 +24,11 @@ export const Base = styled.div`
 	height: 100%;
 	overflow: hidden;
 	${ifFlag(
-		"preferencesOpen",
-		css`
+	"preferencesOpen",
+	css`
 			pointer-events: none;
 		`,
-	)};
+)};
 `;
 
 export const ViewPort = styled.div`
@@ -44,11 +44,11 @@ export const ViewPort = styled.div`
 	flex-direction: column;
 	transition: width 0.3s ease-out;
 	${ifFlag(
-		"open",
-		css`
+	"open",
+	css`
 			width: calc(100% - 200px);
 		`,
-	)};
+)};
 `;
 
 const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
@@ -77,7 +77,7 @@ const AppFrame = ({
 
 	useEffect(() => {
 		document.title = currentApplication?.displayName || applicationId;
-	}, [currentApplication?.id]);
+	}, [currentApplication, applicationId]);
 
 	const [prefViewState] = useViewState(PREFS_NAME);
 
@@ -103,8 +103,8 @@ const AppFrame = ({
 						{children}
 					</React.Fragment>
 				) : (
-					<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
-				)}
+						<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+					)}
 			</ViewPort>
 			<About messages={aboutMessages} currentApplication={currentApplication} />
 			<Preferences messages={prefMessages} />
