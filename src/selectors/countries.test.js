@@ -1,0 +1,66 @@
+import Immutable from "immutable";
+import { localizedCountry } from "./countries";
+
+export const countriesPayload = {
+  countries: {
+    CA: {
+      name: {
+        "en-US": "Canada",
+      },
+      isoCode: "CA",
+      id: "1829012a-a336-4db5-8dea-b1ae441a4bf8",
+    },
+    US: {
+      name: {
+        "en-US": "United States",
+      },
+      isoCode: "US",
+      id: "25a4a8f7-7162-4b51-abbf-8320c8ff1b59",
+    },
+    NL: {
+      isoCode: "NL",
+      id: "25a4a8f7-3456-4b51-abbf-8320c8ff1b59",
+    },
+  },
+};
+
+describe("Countries Selectors", () => {
+  let state;
+  beforeEach(() => {
+    state = Immutable.fromJS({
+      ...countriesPayload,
+      locale: {
+        supportedLocales: [
+          { language: "English", cultureIso: "en" },
+          { language: "Français", cultureIso: "fr" },
+        ],
+      },
+    });
+  });
+
+  it("Retrieves country display name by country code", () => {
+    const countryCode = "CA";
+    expect(
+      localizedCountry,
+      "when called with",
+      [countryCode],
+      "called with",
+      [state],
+      "to satisfy",
+      "Canada"
+    );
+  });
+
+  it("Retrieves null if no display name found", () => {
+    const countryCode = "NL";
+    expect(
+      localizedCountry,
+      "when called with",
+      [countryCode],
+      "called with",
+      [state],
+      "to satisfy",
+      null
+    );
+  });
+});

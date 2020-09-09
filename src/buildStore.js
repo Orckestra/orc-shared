@@ -15,6 +15,8 @@ import settingsReducer from "./reducers/settings";
 import toastReducer from "./reducers/toasts";
 import viewReducer from "./reducers/view";
 import versionInfoReducer from "./reducers/versionInfo";
+import countriesReducer from "./reducers/countries";
+import timezonesReducer from "./reducers/timezones";
 
 window.BUILD_ID = BUILD_ID;
 window.BUILD_NUMBER = BUILD_NUMBER;
@@ -61,6 +63,8 @@ const buildStore = (reducers, devOptions = {}) => {
 			toasts: toastReducer,
 			versionInfo: versionInfoReducer,
 			view: viewReducer,
+			countries: countriesReducer,
+			timezones: timezonesReducer
 		});
 	const rootReducer = buildReducer(reducers);
 
