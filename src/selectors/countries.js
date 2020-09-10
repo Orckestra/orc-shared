@@ -12,9 +12,8 @@ export const mappedCountries = createSelector(countriesData, (data) => {
 export const localizedCountry = countryCode =>
   createSelector(countriesData, currentLocaleOrDefault,
     (countries, locale) => {
-      const countryDisplayName = countries.getIn([countryCode, "name"]);
-      const country = countryDisplayName
-        ? getLocalization(countryDisplayName.toJS(), locale, countryCode)
-        : null;
+      const countryName = countries.getIn([countryCode, "name"]);
+      const displayName = countryName ? countryName.toJS() : null;
+      const country = getLocalization(displayName, locale, countryCode);
       return country;
     })

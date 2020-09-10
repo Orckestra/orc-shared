@@ -80,7 +80,7 @@ describe("Countries Selectors", () => {
     );
   });
 
-  it("Retrieves null if no display name found", () => {
+  it("Retrieves not translated country code if no display name found", () => {
     const countryCode = "NL";
     expect(
       localizedCountry,
@@ -89,7 +89,20 @@ describe("Countries Selectors", () => {
       "called with",
       [state],
       "to satisfy",
-      null
+      "[NL]"
+    );
+  });
+
+  it("Retrieves not translated country code if no country found", () => {
+    const countryCode = "UA";
+    expect(
+      localizedCountry,
+      "when called with",
+      [countryCode],
+      "called with",
+      [state],
+      "to satisfy",
+      "[UA]"
     );
   });
 });

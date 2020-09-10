@@ -32,25 +32,25 @@ describe("Country Helper", () => {
     );
   });
 
-  it("Retrieves null if no display name found", () => {
+  it("Retrieves not translated country code if no display name found", () => {
     const countryCode = "NL";
     expect(
       getLocalizedCountryByCode,
       "called with",
       [countries, countryCode, locale],
       "to satisfy",
-      null
+      "[NL]"
     );
   });
 
-  it("Retrieves null if no country found", () => {
+  it("Retrieves not translated country code if no country found", () => {
     const countryCode = "UA";
     expect(
       getLocalizedCountryByCode,
       "called with",
       [countries, countryCode, locale],
       "to satisfy",
-      null
+      "[UA]"
     );
   });
 });
