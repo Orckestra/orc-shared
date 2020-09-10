@@ -6,9 +6,7 @@ const countriesData = state => state.get("countries");
 
 export const mappedCountries = createSelector(countriesData, (data) => {
   const countries = data.toJS();
-  return Object.keys(countries).map(key => {
-    return countries[key];
-  }).filter(Boolean)
+  return Object.keys(countries).map(key => countries[key])
 })
 
 export const localizedCountry = countryCode =>
