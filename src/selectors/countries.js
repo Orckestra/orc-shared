@@ -4,6 +4,13 @@ import { createSelector } from "reselect";
 
 const countriesData = state => state.get("countries");
 
+export const mappedCountries = createSelector(countriesData, (data) => {
+  const countries = data.toJS();
+  return Object.keys(countries).map(key => {
+    return countries[key];
+  }).filter(Boolean)
+})
+
 export const localizedCountry = countryCode =>
   createSelector(countriesData, currentLocaleOrDefault,
     (countries, locale) => {
