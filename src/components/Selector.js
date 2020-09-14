@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled, { css } from "styled-components";
 import { getThemeProp, ifFlag, memoize } from "../utils";
 import withId from "../hocs/withId";
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 export const InnerSelect = styled.select`
 	position: absolute;
@@ -19,6 +19,7 @@ export const Wrapper = styled.div`
 	position: relative;
 	cursor: pointer;
 	font-size: 12px;
+	max-width: 700px;
 `;
 
 export const SelectBox = styled.label`
@@ -99,7 +100,7 @@ export const Dropdown = styled.div`
 				opacity: 1;
 				visibility: visible;
 				transition: visibility 0s step-end;
-			}`
+			}`;
 		}
 	}}
 `;
@@ -110,11 +111,11 @@ export const Option = styled.div`
 	padding: 6px 12px;
 	white-space: pre;
 	${ifFlag(
-	"active",
-	css`
+		"active",
+		css`
 			background-color: #f0f0f0;
 		`,
-)};
+	)};
 
 	&:hover {
 		background-color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
@@ -166,8 +167,8 @@ export const Selector = ({ id, value, options, update, placeholder = "", require
 							{options.filter(option => option.value === value).map(option => option.label)[0]}
 						</SelectedValue>
 					) : (
-							<Placeholder>{placeholder}</Placeholder>
-						)}
+						<Placeholder>{placeholder}</Placeholder>
+					)}
 				</SelectBox>
 				<Dropdown isVisible={isVisible}>
 					{options.map(option => (
