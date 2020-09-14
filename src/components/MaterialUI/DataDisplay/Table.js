@@ -233,7 +233,7 @@ const FullTable = React.forwardRef((props, ref) => {
 	);
 });
 
-const Table = ({ headers, rows, scrollLoader, latestPage, pageLength, placeholder, tableProps }) => {
+const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength, placeholder, tableProps }) => {
 	if (tableProps != null && tableProps instanceof TableProps === false) {
 		throw new TypeError("tableProps property is not of type TableProps");
 	}
@@ -304,6 +304,7 @@ const Table = ({ headers, rows, scrollLoader, latestPage, pageLength, placeholde
 
 	return (
 		<TableContainer className={classes.container}>
+			{tableInfo}
 			{stickerTableHeader}
 			<FullTable
 				ref={refScrolled}

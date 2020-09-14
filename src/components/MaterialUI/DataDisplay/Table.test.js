@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import Placeholder from "../../Placeholder";
+import TableInfoBar from "./PredefinedElements/TableInfoBar";
 import { staticTableSelectionMethods } from "./useTableSelection";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import { TableProps } from "./TableProps";
@@ -592,5 +593,17 @@ describe("Table", () => {
 
 		const placeHolder = mountedComponent.find(Placeholder);
 		expect(placeHolder.length, "to equal", 1);
+	});
+
+	it("Renders Table with tableInfo if provided", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, []);
+
+		const tableInfoBar = <TableInfoBar rowsCount={1206} tableName={"someItems"} />;
+
+		const component = <Table rows={rows} headers={headers} tableInfo={tableInfoBar} />;
+		const mountedComponent = mount(component);
+
+		const tableInfo = mountedComponent.find(TableInfoBar);
+		expect(tableInfo.length, "to equal", 1);
 	});
 });

@@ -12,7 +12,6 @@ export const PageTab = styled.div`
 	overflow: hidden;
 	height: 38px;
 	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	transform: translateY(-10px);
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	margin-left: -1px;
@@ -110,18 +109,7 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 `;
 
 const Tab = (
-	{
-		href,
-		label,
-		mustTruncate,
-		icon,
-		module,
-		active,
-		close = () => {},
-		outsideScope,
-		scopeNotSupported,
-		hide,
-	},
+	{ href, label, mustTruncate, icon, module, active, close = () => {}, outsideScope, scopeNotSupported, hide },
 	ref,
 ) => {
 	const ThisTab = module ? ModuleTab : PageTab;
@@ -135,23 +123,13 @@ const Tab = (
 	useEffect(() => {
 		if (scopeNotSupported) {
 			close();
-		} else if (
-			mustTruncate &&
-			tabTextRef.current &&
-			tabTextRef.current.offsetWidth < tabTextRef.current.scrollWidth
-		) {
+		} else if (mustTruncate && tabTextRef.current && tabTextRef.current.offsetWidth < tabTextRef.current.scrollWidth) {
 			setTitle(labelMessage);
 		}
 	}, [scopeNotSupported, tabTextRef, setTitle, labelMessage, mustTruncate, close]);
 
 	return (
-		<ThisTab
-			ref={ref}
-			active={active}
-			outsideScope={outsideScope}
-			hide={hide || scopeNotSupported}
-			data-href={href}
-		>
+		<ThisTab ref={ref} active={active} outsideScope={outsideScope} hide={hide || scopeNotSupported} data-href={href}>
 			<TabLink
 				to={href}
 				mustTruncate={mustTruncate}
