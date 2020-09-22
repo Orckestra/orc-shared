@@ -94,6 +94,20 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
+function headersAreIdentical(prevHeaders, nextHeaders) {
+	prevHeaders.forEach((prevHeader, index) => {
+		let prevSortOptions = prevHeader.cellElement.props.columnDefinition.sortOptions;
+		let nextSortOptions = nextHeaders[index].cellElement.props.columnDefinition.sortOptions;
+		if (prevSortOptions != null && nextSortOptions != null) {
+			if (prevSortOptions.sortField !== nextSortOptions.sortField) {
+				return false;
+			}
+			return prevSortOptions.direction === nextSortOptions.direction;
+		}
+		return true;
+	});
+}
+
 function rowAreIdentical(prevRows, nextRows) {
 	return (
 		prevRows.length === nextRows.length && prevRows.findIndex((pr, index) => pr.key !== nextRows[index].key) === -1
@@ -325,4 +339,6 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	);
 };
 
-export default React.memo(Table, (prev, next) => rowAreIdentical(prev.rows, next.rows));
+export default React.memo(Table, (prev, next) =>
+	rowAreIdentical(prev.rows, next.rows) &&
+	headersAreIdentical(prev.headers, next.headers));
