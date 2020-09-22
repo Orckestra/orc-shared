@@ -5,7 +5,12 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
+import {
+	ExpansionPanelProps,
+	ExpansionPanelActionsProps,
+	isExpansionPanelProps,
+	isExpansionPanelActionsProps
+} from "./expansionPanelProps";
 import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
@@ -27,14 +32,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansionPanelActionsProps }) => {
-	if (expansionPanelProps != null && expansionPanelProps instanceof ExpansionPanelProps === false) {
+	if (isExpansionPanelProps(expansionPanelProps) === false) {
 		throw new TypeError("expansionPanelProps property is not of type ExpansionPanelProps");
 	}
 
-	if (
-		expansionPanelActionsProps != null &&
-		expansionPanelActionsProps instanceof ExpansionPanelActionsProps === false
-	) {
+	if (isExpansionPanelActionsProps(expansionPanelActionsProps) === false) {
 		throw new TypeError("expansionPanelActionsProps property is not of type ExpansionPanelActionsProps");
 	}
 

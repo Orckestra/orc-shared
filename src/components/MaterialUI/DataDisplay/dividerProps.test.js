@@ -1,4 +1,4 @@
-import DividerProps from "./dividerProps";
+import DividerProps, { isDividerProps } from "./dividerProps";
 
 describe("Divider Props", () => {
 	it("Puts keys in component props map", () => {
@@ -54,5 +54,28 @@ describe("Divider Props", () => {
 		dividerProps.setStyle(DividerProps.ruleNames.inset, test);
 
 		expect(dividerProps.componentClasses.get("inset"), "to equal", test);
+	});
+});
+
+describe("isDividerProps", () => {
+	it("Returns true if passed value is null", () => {
+		expect(isDividerProps(null), "to be true");
+	});
+
+	it("Returns false if passed value is not object", () => {
+		expect(isDividerProps("Not object"), "to be false");
+	});
+
+	it("Returns true if passed value type is DividerProps", () => {
+		expect(isDividerProps(new DividerProps()), "to be true");
+	});
+
+	it("Returns true if passed value has property _isDividerProps and it's true", () => {
+		expect(isDividerProps({ _isDividerProps: true }), "to be true");
+	});
+
+	it("Returns false if passed value has property _isDividerProps and it's false or missing", () => {
+		expect(isDividerProps({}), "to be false");
+		expect(isDividerProps({ _isDividerProps: false }), "to be false");
 	});
 });

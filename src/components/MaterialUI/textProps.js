@@ -1,6 +1,6 @@
 import ComponentProps from "./componentProps";
 
-export default class TextProps extends ComponentProps {
+class TextProps extends ComponentProps {
 	static propNames = {
 		classes: "classes",
 		lineCount: "lineCount",
@@ -10,7 +10,14 @@ export default class TextProps extends ComponentProps {
 		super();
 		this.componentProps.set(this.constructor.propNames.classes, null);
 		this.componentProps.set(this.constructor.propNames.lineCount, null);
+
+		this._isTextProps = true;
 	}
 }
 
-export { TextProps };
+export const isTextProps = function (value) {
+	if (value == null) return true;
+	return typeof value === "object" && (value instanceof TextProps || value._isTextProps === true);
+};
+
+export default TextProps;

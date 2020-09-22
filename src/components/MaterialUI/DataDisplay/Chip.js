@@ -1,6 +1,6 @@
 import React from "react";
 import ChipMui from '@material-ui/core/Chip';
-import ChipProps from "./chipProps";
+import ChipProps, { isChipProps } from "./chipProps";
 import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 const Chip = ({ label, chipProps }) => {
   const classes = useStyles();
 
-  if (chipProps != null && chipProps instanceof ChipProps === false) {
+  if (isChipProps(chipProps) === false) {
     throw new TypeError("chipProps property is not of type ChipProps");
   }
 

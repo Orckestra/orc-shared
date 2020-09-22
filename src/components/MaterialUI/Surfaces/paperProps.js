@@ -18,7 +18,14 @@ class PaperProps extends ComponentProps {
     this.componentProps.set(this.constructor.propNames.variant, null);
 
     this.componentClasses.set(this.constructor.ruleNames.root, null);
+
+    this._isPaperProps = true;
   }
 }
+
+export const isPaperProps = function (value) {
+  if (value == null) return true;
+  return typeof value === "object" && (value instanceof PaperProps || value._isPaperProps === true);
+};
 
 export default PaperProps;

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import { TextProps } from "../../textProps";
+import TextProps, { isTextProps } from "../../textProps";
 import TextClamp from "react-multi-clamp";
 import withDeferredTooltip from "../../hocs/withDeferredTooltip";
 
@@ -16,7 +16,7 @@ const MultipleLinesText = ({ children, titleValue, textProps }) => {
 
 	const [isClamped, setIsClamped] = useState(false);
 
-	if (textProps != null && textProps instanceof TextProps === false) {
+	if (isTextProps(textProps) === false) {
 		throw new TypeError("textProps property is not of type TextProps");
 	}
 	const customStyles = textProps?.get(TextProps.propNames.classes);

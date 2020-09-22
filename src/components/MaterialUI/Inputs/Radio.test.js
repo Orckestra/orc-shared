@@ -94,8 +94,12 @@ describe("Radio Component", () => {
 	});
 
 	it("Fails if radioProps is missing or wrong type", () => {
-		expect(() => mount(<Radio />), "to throw", "radioProps is missing or wrong type");
-		expect(() => mount(<Radio radioProps="Wrong type" />), "to throw", "radioProps is missing or wrong type");
+		expect(() => mount(<Radio />), "to throw a", TypeError).then((error) => {
+			expect(error, "to have message", "radioProps property is not of type RadioProps")
+		});
+		expect(() => mount(<Radio radioProps="Wrong type" />), "to throw a", TypeError).then((error) => {
+			expect(error, "to have message", "radioProps property is not of type RadioProps")
+		});
 	});
 
 	it("Fails if less than two options", () => {

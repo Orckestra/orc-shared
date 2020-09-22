@@ -22,7 +22,9 @@ describe("Checkbox Component", () => {
 	it("Fails if checkboxProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = <Checkbox checkboxProps="Wrong type" />;
-			expect(() => mount(component), "to throw a", TypeError);
+			expect(() => mount(component), "to throw a", TypeError).then((error) => {
+				expect(error, "to have message", "checkboxProps property is not of type CheckboxProps")
+			});
 		});
 	});
 

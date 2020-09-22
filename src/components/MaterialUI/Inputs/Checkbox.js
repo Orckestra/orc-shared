@@ -2,7 +2,7 @@ import React from "react";
 import clsx from 'clsx';
 import CheckboxMUI from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import CheckboxProps from "./CheckboxProps";
+import CheckboxProps, { isCheckboxProps } from "./CheckboxProps";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Checkbox = ({ checkboxProps }) => {
-	if (checkboxProps != null && checkboxProps instanceof CheckboxProps === false) {
+	if (isCheckboxProps(checkboxProps) === false) {
 		throw new TypeError("checkboxProps property is not of type CheckboxProps");
 	}
 
