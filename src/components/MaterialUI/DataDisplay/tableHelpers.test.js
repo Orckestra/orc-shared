@@ -1,5 +1,6 @@
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import CheckboxProps from "../Inputs/CheckboxProps";
+import { ignoreConsoleError } from "~/utils/testUtils";
 
 describe("table helpers buildHeaderAndRowFromConfig", () => {
 	const messages = {
@@ -8,6 +9,29 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		captionOn: { id: "captionOn", defaultMessage: "is On" },
 		captionOff: { id: "captionOff", defaultMessage: "is Off" },
 	};
+
+	it("Throws an error if columnDefinitions has more than one sortField", () => {
+		const columnDef = [
+			{
+				fieldName: "test",
+				label: "simple header",
+				sortOptions: {
+					sortField: true
+				}
+			},
+			{
+				fieldName: "another",
+				label: "another simple header",
+				sortOptions: {
+					sortField: true
+				}
+			},
+		];
+
+		ignoreConsoleError(() => {
+			expect(() => buildHeaderAndRowFromConfig(columnDef), "to throw a", Error);
+		});
+	});
 
 	it("build simple table headers", () => {
 		const columnDef = [
@@ -32,9 +56,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		const { headers } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 2);
-		expect(headers[0].cellElement, "to equal", "simple header");
+		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
 		expect(headers[0].className, "to equal", columnDef[0].className);
-		expect(headers[1].cellElement, "to equal", "another simple header");
+		expect(headers[1].cellElement.props.columnDefinition, "to equal", columnDef[1]);
 		expect(headers[1].className, "to be undefined");
 	});
 
@@ -61,9 +85,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 2);
-		expect(headers[0].cellElement.props, "to equal", messages.a_label);
+		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
 		expect(headers[0].className, "to equal", columnDef[0].className);
-		expect(headers[1].cellElement.props, "to equal", messages.another);
+		expect(headers[1].cellElement.props.columnDefinition, "to equal", columnDef[1]);
 		expect(headers[1].className, "to be undefined");
 
 		expect(rows.length, "to equal", 2);
@@ -113,9 +137,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements, "extraneous");
 
 		expect(headers.length, "to equal", 2);
-		expect(headers[0].cellElement.props, "to equal", messages.a_label);
+		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
 		expect(headers[0].className, "to equal", columnDef[0].className);
-		expect(headers[1].cellElement.props, "to equal", messages.another);
+		expect(headers[1].cellElement.props.columnDefinition, "to equal", columnDef[1]);
 		expect(headers[1].className, "to be undefined");
 
 		expect(rows.length, "to equal", 2);
@@ -549,9 +573,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 2);
-		expect(headers[0].cellElement.props, "to equal", messages.a_label);
+		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
 		expect(headers[0].className, "to equal", columnDef[0].className);
-		expect(headers[1].cellElement.props, "to equal", messages.another);
+		expect(headers[1].cellElement.props.columnDefinition, "to equal", columnDef[1]);
 		expect(headers[1].className, "to be undefined");
 
 		expect(rows.length, "to equal", 2);

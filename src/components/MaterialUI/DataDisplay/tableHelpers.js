@@ -4,6 +4,7 @@ import safeGet from "../../../utils/safeGet";
 import Checkbox from "../Inputs/Checkbox";
 import Switch from "../../Switch";
 import CheckboxProps from "../Inputs/CheckboxProps";
+import TableHeaderCell from "./TableHeaderCell";
 
 const renderByType = (e, def, rowId) => {
 	const transformedValue = def.transform ? def.transform(e[def.fieldName]) : e[def.fieldName];
@@ -59,9 +60,13 @@ const renderByType = (e, def, rowId) => {
 };
 
 export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, keyField = "id") => {
+	if (columnDefinitions.filter(def => def.sortOptions != null && def.sortOptions.sortField).length > 1) {
+		throw new Error("Only one active sort column can exist at the same time");
+	}
+
 	const headers = columnDefinitions.map(def => ({
-		cellElement: typeof def.label === "object" ? <FormattedMessage {...def.label} /> : def.label,
-		className: def.className,
+		cellElement: <TableHeaderCell columnDefinition={def} />,
+		className: def.className
 	}));
 
 	const rows = elements.map(e => {

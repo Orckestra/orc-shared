@@ -7,7 +7,6 @@ import Table, { MemoTableBody, MemoTableRow, useStyles } from "./Table";
 import TableMui from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Checkbox from "@material-ui/core/Checkbox";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import Placeholder from "../../Placeholder";
 import TableInfoBar from "./PredefinedElements/TableInfoBar";
@@ -16,6 +15,10 @@ import { ignoreConsoleError } from "../../../utils/testUtils";
 import { TableProps } from "./TableProps";
 import { MuiThemeProvider } from "@material-ui/core";
 import { createMuiTheme } from "./../../../utils/testUtils";
+import TableContainer from "@material-ui/core/TableContainer";
+import ResizeDetector from "react-resize-detector";
+import CheckboxMui from "@material-ui/core/Checkbox";
+import { cloneDeep } from "lodash";
 
 const TestComp = ({ classToTest, styleProps }) => {
 	const classes = useStyles({ ...styleProps });
@@ -159,7 +162,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => {} }} />,
+			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => { } }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),
@@ -194,7 +197,7 @@ describe("Memoize components", () => {
 		});
 	});
 
-	it("Updates table props", () => {
+	it("Updates table props when rows changes", () => {
 		const mountedComponent = mount(<Table headers={[]} rows={[]} />);
 
 		expect(mountedComponent.prop("rows").length, "to equal", 0);
@@ -202,6 +205,125 @@ describe("Memoize components", () => {
 		mountedComponent.setProps({ rows: [{ key: "1", columns: [] }] });
 
 		expect(mountedComponent.prop("rows").length, "to equal", 1);
+	});
+
+	it("Updates table props when sortField in headers change", () => {
+		const elements = [
+			{ id: "1", column1: "test11", column2: "test12" },
+			{ id: "2", column1: "test21", column2: "test22" },
+		];
+
+		const initialColumnDefs = [
+			{
+				fieldName: "column1",
+				label: "column1",
+				sortOptions: {
+					sortField: true,
+					direction: "Ascending",
+					propertyName: "column1"
+				},
+				sortCallback: jest.fn()
+			},
+			{
+				fieldName: "column2",
+				label: "column2",
+				sortOptions: {
+					sortField: false,
+					direction: "Ascending",
+					propertyName: "column2",
+				},
+				sortCallback: jest.fn()
+			}
+		];
+
+		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
+
+		const updatedColumnHeaders = cloneDeep(headers);
+
+		const mountedComponent = mount(<Table headers={headers} rows={rows} />);
+
+		let mountedFirstHeaderSortOptions = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition.sortOptions;
+		let mountedSecondHeaderSortOptions = mountedComponent.prop("headers")[1].cellElement.props.columnDefinition.sortOptions;
+
+		expect(mountedFirstHeaderSortOptions.sortField, "to be true");
+		expect(mountedSecondHeaderSortOptions.sortField, "to be false");
+
+		updatedColumnHeaders[0].cellElement.props.columnDefinition.sortOptions.sortField = false;
+		updatedColumnHeaders[1].cellElement.props.columnDefinition.sortOptions.sortField = true;
+
+		mountedComponent.setProps({ headers: updatedColumnHeaders });
+
+		mountedFirstHeaderSortOptions = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition.sortOptions;
+		mountedSecondHeaderSortOptions = mountedComponent.prop("headers")[1].cellElement.props.columnDefinition.sortOptions;
+
+		expect(mountedFirstHeaderSortOptions.sortField, "to be false");
+		expect(mountedSecondHeaderSortOptions.sortField, "to be true");
+	});
+
+	it("Updates table props when sorting direction in headers changes", () => {
+		const elements = [
+			{ id: "1", column1: "test11", column2: "test12" },
+			{ id: "2", column1: "test21", column2: "test22" },
+		];
+
+		const initialColumnDefs = [
+			{
+				fieldName: "column1",
+				label: "column1",
+				sortOptions: {
+					sortField: true,
+					direction: "Ascending",
+					propertyName: "column1"
+				},
+				sortCallback: jest.fn()
+			}
+		];
+
+		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
+
+		const updatedColumnHeaders = cloneDeep(headers);
+
+		const mountedComponent = mount(<Table headers={headers} rows={rows} />);
+
+		let mountedHeaderSortOptions = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition.sortOptions;
+
+		expect(mountedHeaderSortOptions.direction, "to equal", "Ascending");
+
+		updatedColumnHeaders[0].cellElement.props.columnDefinition.sortOptions.direction = "Descending";
+
+		mountedComponent.setProps({ headers: updatedColumnHeaders });
+
+		mountedHeaderSortOptions = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition.sortOptions;
+
+		expect(mountedHeaderSortOptions.direction, "to equal", "Descending");
+	});
+
+	it("Not updates table props when prev, next or both header.sortOptions are undefined", () => {
+		const elements = [
+			{ id: "1", column1: "test11", column2: "test12" },
+			{ id: "2", column1: "test21", column2: "test22" },
+		];
+
+		const initialColumnDefs = [
+			{
+				fieldName: "column1",
+				label: "column1"
+			}
+		];
+
+		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
+
+		const updatedColumnHeaders = cloneDeep(headers);
+
+		const mountedComponent = mount(<Table headers={headers} rows={rows} />);
+
+		let mountedHeaderColumnDefinition = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition;
+
+		expect(mountedHeaderColumnDefinition, "to equal", headers[0].cellElement.props.columnDefinition);
+
+		mountedComponent.setProps({ headers: updatedColumnHeaders });
+
+		expect(mountedHeaderColumnDefinition, "to equal", headers[0].cellElement.props.columnDefinition);
 	});
 });
 
@@ -231,37 +353,104 @@ describe("Table", () => {
 	it("Renders Table", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
 
-		const mountedComponent = mount(<Table rows={rows} headers={headers} />);
+		const component = <Table rows={rows} headers={headers} />;
+
+		const expectedTableRows = (
+			<>
+				<MemoTableRow>
+					<td>{elements[0].a1}</td>
+					<td>{elements[0].a2}</td>
+				</MemoTableRow>
+				<MemoTableRow>
+					<td>{elements[1].a1}</td>
+					<td>{elements[1].a2}</td>
+				</MemoTableRow>
+			</>
+		);
 
 		const expectedHeader = (
 			<TableHead>
 				<TableRow>
-					<th>Column One</th>
-					<th>Column Two</th>
+					<th>{headerLabels.column1}</th>
+					<th>{headerLabels.column2}</th>
 				</TableRow>
 			</TableHead>
 		);
 
-		const tableHeaders = mountedComponent.find(TableHead);
-		expect(tableHeaders.length, "to equal", 1);
+		const expected = (
+			<TableContainer>
+				<div>
+					<ResizeDetector />
+					<TableMui>
+						{expectedHeader}
+						<MemoTableBody
+							dataRows={rows}
+							tableRows={expectedTableRows}
+						/>
+					</TableMui>
+				</div>
+			</TableContainer>
+		);
 
-		const tableRows = mountedComponent.find("tbody").find(TableRow);
-		expect(tableRows.length, "to equal", 2);
-
-		let expectedCells = tableRows.at(0).find("td");
-		expect(expectedCells.length, "to equal", 2);
-		expect(expectedCells.at(0).matchesElement(<td>test11</td>), "to be truthy");
-		expect(expectedCells.at(1).matchesElement(<td>test12</td>), "to be truthy");
-
-		expectedCells = tableRows.at(1).find("td");
-		expect(expectedCells.length, "to equal", 2);
-		expect(expectedCells.at(0).matchesElement(<td>test21</td>), "to be truthy");
-		expect(expectedCells.at(1).matchesElement(<td>test22</td>), "to be truthy");
-
-		expect(mountedComponent.containsMatchingElement(expectedHeader), "to be truthy");
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Renders Table with sticky header enabled", () => {
+	it("Renders Table with enabled sticky header", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.stickyHeader, true);
+
+		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
+
+		const expectedTableRows = (
+			<>
+				<MemoTableRow>
+					<td>{elements[0].a1}</td>
+					<td>{elements[0].a2}</td>
+				</MemoTableRow>
+				<MemoTableRow>
+					<td>{elements[1].a1}</td>
+					<td>{elements[1].a2}</td>
+				</MemoTableRow>
+			</>
+		);
+
+		const expectedHeader = (
+			<TableHead>
+				<TableRow>
+					<th>{headerLabels.column1}</th>
+					<th>{headerLabels.column2}</th>
+				</TableRow>
+			</TableHead>
+		);
+
+		const expected = (
+			<TableContainer>
+				<div>
+					<TableMui>
+						{expectedHeader}
+					</TableMui>
+					<div />
+				</div>
+				<div>
+					<ResizeDetector />
+					<TableMui>
+						{expectedHeader}
+						<MemoTableBody
+							dataRows={rows}
+							tableRows={expectedTableRows}
+						/>
+					</TableMui>
+				</div>
+			</TableContainer>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Table with enabled sticky header and select mode", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
 
 		const tableProps = new TableProps();
@@ -271,57 +460,53 @@ describe("Table", () => {
 
 		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
 
-		const mountedComponent = mount(component);
+		const expectedTableRows = (
+			<>
+				<MemoTableRow>
+					<td><CheckboxMui /></td>
+					<td>{elements[0].a1}</td>
+					<td>{elements[0].a2}</td>
+				</MemoTableRow>
+				<MemoTableRow>
+					<td><CheckboxMui /></td>
+					<td>{elements[1].a1}</td>
+					<td>{elements[1].a2}</td>
+				</MemoTableRow>
+			</>
+		);
 
 		const expectedHeader = (
 			<TableHead>
 				<TableRow>
-					<th>
-						<Checkbox />
-					</th>
-					<th>Column One</th>
-					<th>Column Two</th>
+					<th><CheckboxMui /></th>
+					<th>{headerLabels.column1}</th>
+					<th>{headerLabels.column2}</th>
 				</TableRow>
 			</TableHead>
 		);
 
-		const tableHeaders = mountedComponent.find(TableHead);
-		expect(tableHeaders.length, "to equal", 2);
-		expect(tableHeaders.at(0).find("input").length, "to equal", 1);
-		expect(tableHeaders.at(1).find("input").length, "to equal", 1);
-
-		const body = mountedComponent.find("tbody");
-
-		const tableRows = body.find(TableRow);
-		expect(tableRows.length, "to equal", 2);
-
-		let expectedCells = tableRows.at(0).find("td");
-		expect(expectedCells.length, "to equal", 3);
-		expect(
-			expectedCells.at(0).matchesElement(
-				<td>
-					<Checkbox />
-				</td>,
-			),
-			"to be truthy",
+		const expected = (
+			<TableContainer>
+				<div>
+					<TableMui>
+						{expectedHeader}
+					</TableMui>
+					<div />
+				</div>
+				<div>
+					<ResizeDetector />
+					<TableMui>
+						{expectedHeader}
+						<MemoTableBody
+							dataRows={rows}
+							tableRows={expectedTableRows}
+						/>
+					</TableMui>
+				</div>
+			</TableContainer>
 		);
-		expect(expectedCells.at(1).matchesElement(<td>test11</td>), "to be truthy");
-		expect(expectedCells.at(2).matchesElement(<td>test12</td>), "to be truthy");
 
-		expectedCells = tableRows.at(1).find("td");
-		expect(expectedCells.length, "to equal", 3);
-		expect(
-			expectedCells.at(0).matchesElement(
-				<td>
-					<Checkbox />
-				</td>,
-			),
-			"to be truthy",
-		);
-		expect(expectedCells.at(1).matchesElement(<td>test21</td>), "to be truthy");
-		expect(expectedCells.at(2).matchesElement(<td>test22</td>), "to be truthy");
-
-		expect(mountedComponent.containsMatchingElement(expectedHeader), "to be truthy");
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 
 	it("Renders Table with selection enabled", () => {
@@ -333,52 +518,47 @@ describe("Table", () => {
 
 		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
 
-		const mountedComponent = mount(component);
+		const expectedTableRows = (
+			<>
+				<MemoTableRow>
+					<td><CheckboxMui /></td>
+					<td>{elements[0].a1}</td>
+					<td>{elements[0].a2}</td>
+				</MemoTableRow>
+				<MemoTableRow>
+					<td><CheckboxMui /></td>
+					<td>{elements[1].a1}</td>
+					<td>{elements[1].a2}</td>
+				</MemoTableRow>
+			</>
+		);
 
 		const expectedHeader = (
 			<TableHead>
 				<TableRow>
-					<th>
-						<Checkbox />
-					</th>
-					<th>Column One</th>
-					<th>Column Two</th>
+					<th><CheckboxMui /></th>
+					<th>{headerLabels.column1}</th>
+					<th>{headerLabels.column2}</th>
 				</TableRow>
 			</TableHead>
 		);
 
-		const body = mountedComponent.find("tbody");
-
-		const tableRows = body.find(TableRow);
-		expect(tableRows.length, "to equal", 2);
-
-		let expectedCells = tableRows.at(0).find("td");
-		expect(expectedCells.length, "to equal", 3);
-		expect(
-			expectedCells.at(0).matchesElement(
-				<td>
-					<Checkbox />
-				</td>,
-			),
-			"to be truthy",
+		const expected = (
+			<TableContainer>
+				<div>
+					<ResizeDetector />
+					<TableMui>
+						{expectedHeader}
+						<MemoTableBody
+							dataRows={rows}
+							tableRows={expectedTableRows}
+						/>
+					</TableMui>
+				</div>
+			</TableContainer>
 		);
-		expect(expectedCells.at(1).matchesElement(<td>test11</td>), "to be truthy");
-		expect(expectedCells.at(2).matchesElement(<td>test12</td>), "to be truthy");
 
-		expectedCells = tableRows.at(1).find("td");
-		expect(expectedCells.length, "to equal", 3);
-		expect(
-			expectedCells.at(0).matchesElement(
-				<td>
-					<Checkbox />
-				</td>,
-			),
-			"to be truthy",
-		);
-		expect(expectedCells.at(1).matchesElement(<td>test21</td>), "to be truthy");
-		expect(expectedCells.at(2).matchesElement(<td>test22</td>), "to be truthy");
-
-		expect(mountedComponent.containsMatchingElement(expectedHeader), "to be truthy");
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 
 	it("Table row selection handler is invoked", () => {
