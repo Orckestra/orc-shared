@@ -66,7 +66,9 @@ describe("Expansion Panel", () => {
 					<ExpansionPanel expansionPanelProps="Wrong type" />
 				</MuiThemeProvider>
 			);
-			expect(() => mount(component), "to throw a", TypeError);
+			expect(() => mount(component), "to throw a", TypeError).then((error) => {
+				expect(error, "to have message", "expansionPanelProps property is not of type ExpansionPanelProps")
+			});
 		});
 	});
 
@@ -77,7 +79,9 @@ describe("Expansion Panel", () => {
 					<ExpansionPanel expansionPanelActionsProps="Wrong type" />
 				</MuiThemeProvider>
 			);
-			expect(() => mount(component), "to throw a", TypeError);
+			expect(() => mount(component), "to throw a", TypeError).then((error) => {
+				expect(error, "to have message", "expansionPanelActionsProps property is not of type ExpansionPanelActionsProps")
+			});
 		});
 	});
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import { TextProps } from "../../textProps";
+import TextProps from "../../textProps";
 import TooltippedTypography from "../TooltippedElements/TooltippedTypography";
 import Address from "./Address";
 import Grid from "@material-ui/core/Grid";

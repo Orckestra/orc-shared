@@ -1,4 +1,4 @@
-import SelectProps from "./SelectProps";
+import SelectProps, { isSelectProps } from "./SelectProps";
 
 describe("Select Props", () => {
 	it("Contains necessary props keys", () => {
@@ -33,5 +33,28 @@ describe("Select Props", () => {
 		selectProps.setStyle(SelectProps.ruleNames.paper, test);
 
 		expect(selectProps.componentClasses.get("paper"), "to equal", test);
+	});
+});
+
+describe("isSelectProps", () => {
+	it("Returns true if passed value is null", () => {
+		expect(isSelectProps(null), "to be true");
+	});
+
+	it("Returns false if passed value is not object", () => {
+		expect(isSelectProps("Not object"), "to be false");
+	});
+
+	it("Returns true if passed value type is SelectProps", () => {
+		expect(isSelectProps(new SelectProps()), "to be true");
+	});
+
+	it("Returns true if passed value has property _isSelectProps and it's true", () => {
+		expect(isSelectProps({ _isSelectProps: true }), "to be true");
+	});
+
+	it("Returns false if passed value has property _isSelectProps and it's false or missing", () => {
+		expect(isSelectProps({}), "to be false");
+		expect(isSelectProps({ _isSelectProps: false }), "to be false");
 	});
 });

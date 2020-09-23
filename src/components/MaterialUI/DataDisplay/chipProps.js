@@ -22,7 +22,14 @@ class ChipProps extends ComponentProps {
     this.componentProps.set(this.constructor.propNames.variant, null);
 
     this.componentClasses.set(this.constructor.ruleNames.root, null);
+
+    this._isChipProps = true;
   }
 }
+
+export const isChipProps = function (value) {
+  if (value == null) return true;
+  return typeof value === "object" && (value instanceof ChipProps || value._isChipProps === true);
+};
 
 export default ChipProps;

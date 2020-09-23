@@ -2,7 +2,7 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
-import SelectProps, { sortTypeEnum } from "./SelectProps";
+import SelectProps, { sortTypeEnum, isSelectProps } from "./SelectProps";
 import classNames from "classnames";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "./../DataDisplay/Icon";
@@ -70,7 +70,7 @@ const ChevronDown = props => {
 };
 
 const Select = ({ options, selectProps }) => {
-	if (selectProps != null && selectProps instanceof SelectProps === false) {
+	if (isSelectProps(selectProps) === false) {
 		throw new TypeError("selectProps property is not of type SelectProps");
 	}
 

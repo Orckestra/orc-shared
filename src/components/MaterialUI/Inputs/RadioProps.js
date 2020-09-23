@@ -20,7 +20,14 @@ class RadioProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.row, true);
 		this.componentProps.set(this.constructor.propNames.name, null);
 		this.componentProps.set(this.constructor.propNames.radios, null);
+
+		this._isRadioProps = true;
 	}
 }
+
+export const isRadioProps = function (value) {
+	if (value == null) return false;
+	return typeof value === "object" && (value instanceof RadioProps || value._isRadioProps === true);
+};
 
 export default RadioProps;

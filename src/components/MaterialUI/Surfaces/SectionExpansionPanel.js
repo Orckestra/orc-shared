@@ -6,7 +6,12 @@ import AccordionActions from "@material-ui/core/AccordionActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import Icon from "./../DataDisplay/Icon";
-import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
+import {
+	ExpansionPanelProps,
+	ExpansionPanelActionsProps,
+	isExpansionPanelProps,
+	isExpansionPanelActionsProps
+} from "./expansionPanelProps";
 import useViewState from "../../../hooks/useViewState";
 
 const useStyles = makeStyles(theme => ({
@@ -15,10 +20,10 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.primary.lighter,
 		flexDirection: "row-reverse",
 		borderRadius: 0,
-		"&:hover" : {
+		"&:hover": {
 			backgroundColor: theme.palette.hoverprimary.lighter,
 		},
-		"&:focus" : {
+		"&:focus": {
 			borderRadius: 0,
 		}
 	},
@@ -57,14 +62,11 @@ const SectionExpansionPanel = ({
 	expansionPanelProps,
 	expansionPanelActionsProps,
 }) => {
-	if (expansionPanelProps != null && expansionPanelProps instanceof ExpansionPanelProps === false) {
+	if (isExpansionPanelProps(expansionPanelProps) === false) {
 		throw new TypeError("expansionPanelProps property is not of type ExpansionPanelProps");
 	}
 
-	if (
-		expansionPanelActionsProps != null &&
-		expansionPanelActionsProps instanceof ExpansionPanelActionsProps === false
-	) {
+	if (isExpansionPanelActionsProps(expansionPanelActionsProps) === false) {
 		throw new TypeError("expansionPanelActionsProps property is not of type ExpansionPanelActionsProps");
 	}
 

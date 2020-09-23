@@ -9,7 +9,9 @@ describe("Chip", () => {
   it("Throws an error if chipProps has wrong type", () => {
     ignoreConsoleError(() => {
       const component = <Chip chipProps="Wrong Type" />;
-      expect(() => shallow(component), "to throw a", TypeError);
+      expect(() => mount(component), "to throw a", TypeError).then((error) => {
+        expect(error, "to have message", "chipProps property is not of type ChipProps")
+      });
     });
   });
 

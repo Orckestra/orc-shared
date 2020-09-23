@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CheckboxMui from "@material-ui/core/Checkbox";
 import withDeferredTooltip from "../hocs/withDeferredTooltip";
 import { tableSelectionMode, useTableSelection } from "./useTableSelection";
-import { TableProps } from "./TableProps";
+import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
 import ResizeDetector from "react-resize-detector";
 
@@ -248,7 +248,7 @@ const FullTable = React.forwardRef((props, ref) => {
 });
 
 const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength, placeholder, tableProps }) => {
-	if (tableProps != null && tableProps instanceof TableProps === false) {
+	if (isTableProps(tableProps) === false) {
 		throw new TypeError("tableProps property is not of type TableProps");
 	}
 

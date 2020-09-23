@@ -12,7 +12,7 @@ import Placeholder from "../../Placeholder";
 import TableInfoBar from "./PredefinedElements/TableInfoBar";
 import { staticTableSelectionMethods } from "./useTableSelection";
 import { ignoreConsoleError } from "../../../utils/testUtils";
-import { TableProps } from "./TableProps";
+import TableProps from "./TableProps";
 import { MuiThemeProvider } from "@material-ui/core";
 import { createMuiTheme } from "./../../../utils/testUtils";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -346,7 +346,9 @@ describe("Table", () => {
 	it("Fails if tableProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = <Table rows={[]} headers={[]} tableProps="Wrong type" />;
-			expect(() => mount(component), "to throw a", TypeError);
+			expect(() => mount(component), "to throw a", TypeError).then((error) => {
+				expect(error, "to have message", "tableProps property is not of type TableProps")
+			});
 		});
 	});
 
