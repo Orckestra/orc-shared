@@ -47,3 +47,11 @@ export const cultureOptionList = createSelector(supportedLocales, locales =>
 		label: iso.get("language"),
 	})),
 );
+
+export const cultureNameByIsoCode = cultureIsoCode => createSelector(cultures, cultures => {
+	const culture = cultures.get(cultureIsoCode);
+	if (culture) {
+		return culture.cultureName;
+	}
+	return `[${cultureIsoCode}]`;
+});
