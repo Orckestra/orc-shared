@@ -8,6 +8,7 @@ import {
 	orderedCultureList,
 	cultureOptionList,
 	currentLocale,
+	cultureNameByIsoCode
 } from "./locale";
 
 describe("default locale selector", () => {
@@ -254,4 +255,57 @@ describe("cultureOptionList", () => {
 		state = state.deleteIn(["locale", "supportedLocales"]);
 		expect(cultureOptionList, "called with", [state], "to satisfy", Immutable.List([]));
 	});
+});
+
+describe("cultureNameByIsoCode", () => {
+	let state;
+
+	const culturesList = [
+		{
+			cultureIso: "en-US",
+			cultureName: "English - United States",
+			sortOrder: 0,
+			isDefault: false,
+		},
+		{
+			cultureIso: "fr-FR",
+			cultureName: "French - France",
+			sortOrder: 0,
+			isDefault: true,
+		},
+	]
+	beforeEach(() => {
+		const cultures = Immutable.Map()
+			.set(culturesList[0].cultureIso, culturesList[0])
+			.set(culturesList[1].cultureIso, culturesList[1])
+
+		state = Immutable.fromJS({
+			locale: {
+				cultures: cultures
+			},
+		});
+	});
+
+	it("return culture name by culture iso code", () =>
+		expect(
+			cultureNameByIsoCode,
+			"when called with",
+			["en-US"],
+			"called with",
+			[state],
+			"to equal",
+			"English - United States"
+		));
+
+
+	it("return culture iso code if it is not found", () =>
+		expect(
+			cultureNameByIsoCode,
+			"when called with",
+			["it-IT"],
+			"called with",
+			[state],
+			"to equal",
+			"[it-IT]"
+		));
 });
