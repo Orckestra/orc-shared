@@ -17,18 +17,17 @@ const useStyles = makeStyles(theme => ({
 	label: {
 		fontSize: theme.typography.h2Size,
 		fontFamily: theme.typography.fontFamily,
-		fontWeight: theme.typography.fontWeightMedium,
-		textTransform: "lowercase",
+		fontWeight: theme.typography.fontWeightMedium
 	},
 }));
 
-const TableInfoBar = ({ rowsCount, tableName }) => {
+const TableInfoBar = ({ tableLabel }) => {
 	const classes = useStyles();
 
 	const content = (
 		<Grid container alignItems="center">
 			<Grid item className={classes.container} xs={9} md={10} lg={11}>
-				<Typography className={classes.label} children={`${rowsCount} ${tableName}`} />
+				<Typography className={classes.label} children={tableLabel} />
 			</Grid>
 		</Grid>
 	);
