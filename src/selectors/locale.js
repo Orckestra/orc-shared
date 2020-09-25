@@ -49,9 +49,12 @@ export const cultureOptionList = createSelector(supportedLocales, locales =>
 );
 
 export const cultureNameByIsoCode = cultureIsoCode => createSelector(cultures, cultures => {
-	const culture = cultures.get(cultureIsoCode);
-	if (culture) {
-		return culture.cultureName;
+	if (cultureIsoCode != null) {
+		const culture = cultures.get(cultureIsoCode);
+		if (culture) {
+			return culture.cultureName;
+		}
+		return `[${cultureIsoCode}]`;
 	}
-	return `[${cultureIsoCode}]`;
+	return null;
 });
