@@ -38,10 +38,10 @@
 	"homepage": "https://github.com/Orckestra/orc-shared#readme",
 	"devDependencies": {
 		"jest": "^26.1.0",
-		"orc-scripts": "1.1.0-dev.9"
+		"orc-scripts": "1.1.0-dev.10"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.1.0-dev.9"
+		"orc-scripts": "1.1.0-dev.10"
 	},
 	"sideEffects": false,
 	"lint-staged": {
