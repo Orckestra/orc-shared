@@ -308,4 +308,26 @@ describe("cultureNameByIsoCode", () => {
 			"to equal",
 			"[it-IT]"
 		));
+
+	it("return null if iso code is undefined", () =>
+		expect(
+			cultureNameByIsoCode,
+			"when called with",
+			[undefined],
+			"called with",
+			[state],
+			"to equal",
+			null
+		));
+
+	it("return null if iso code is null", () =>
+		expect(
+			cultureNameByIsoCode,
+			"when called with",
+			[null],
+			"called with",
+			[state],
+			"to equal",
+			null
+		));
 });
