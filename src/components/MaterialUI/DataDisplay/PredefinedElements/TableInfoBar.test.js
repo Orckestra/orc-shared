@@ -7,25 +7,23 @@ import TableInfoBar from "./TableInfoBar";
 
 describe("TableInfoBar", () => {
 	it("Renders properly", () => {
-		const rowsCount = 1206;
-		const tableName = "someItems";
+		const tableLabel = "322 orders";
 
-		const expectedContent = (
-			<Grid container alignItems="center">
-				<Grid item xs={9} md={10} lg={11}>
-					<Typography children={`${rowsCount} ${tableName}`} />
-				</Grid>
-			</Grid>
-		);
+		const component = <TableInfoBar tableLabel={tableLabel} />;
 
 		const paperProps = new PaperProps();
 		paperProps.set(PaperProps.propNames.square, true);
 
-		expect(
-			<TableInfoBar rowsCount={rowsCount} tableName={tableName} />,
-			"when mounted",
-			"to satisfy",
-			<Paper content={expectedContent} paperProps={paperProps} />,
+		const expectedPaperContent = (
+			<Grid container alignItems="center">
+				<Grid item xs={9} md={10} lg={11}>
+					<Typography children={tableLabel} />
+				</Grid>
+			</Grid>
 		);
+
+		const expected = <Paper content={expectedPaperContent} paperProps={paperProps} />;
+
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 });
