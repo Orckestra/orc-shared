@@ -53,7 +53,7 @@ export const cultureNameByIsoCode = cultureIsoCode => createSelector(cultures, c
 	if (cultureIsoCode != null) {
 		const culture = culturesList[cultureIsoCode];
 		if (culture != null) {
-			return culture.cultureName
+			return culture.cultureName;
 		}
 		return `[${cultureIsoCode}]`;
 	}
