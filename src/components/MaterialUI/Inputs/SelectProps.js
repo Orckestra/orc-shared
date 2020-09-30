@@ -32,7 +32,14 @@ class SelectProps extends ComponentProps {
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.paper, null);
+
+		this._isSelectProps = true;
 	}
 }
+
+export const isSelectProps = function (value) {
+	if (value == null) return true;
+	return typeof value === "object" && (value instanceof SelectProps || value._isSelectProps === true);
+};
 
 export default SelectProps;

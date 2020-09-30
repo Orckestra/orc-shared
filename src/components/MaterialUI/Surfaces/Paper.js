@@ -1,6 +1,6 @@
 import React from "react";
 import MuiPaper from '@material-ui/core/Paper';
-import PaperProps from "./paperProps";
+import PaperProps, { isPaperProps } from "./paperProps";
 import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,10 +12,7 @@ const useStyle = makeStyles(theme => ({
 }));
 
 const Paper = ({ content, paperProps }) => {
-  if (
-    paperProps != null &&
-    paperProps instanceof PaperProps === false
-  ) {
+  if (isPaperProps(paperProps) === false) {
     throw new TypeError(
       "paperProps property is not of type PaperProps",
     );

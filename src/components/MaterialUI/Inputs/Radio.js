@@ -6,7 +6,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
-import RadioProps from "./RadioProps.js";
+import RadioProps, { isRadioProps } from "./RadioProps.js";
 
 const useStyles = makeStyles(theme => ({
 	/* Radio Button */
@@ -41,8 +41,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const extractAndValidateProps = radioProps => {
-	if (radioProps == null || radioProps instanceof RadioProps === false) {
-		throw new TypeError("radioProps is missing or wrong type");
+	if (isRadioProps(radioProps) === false) {
+		throw new TypeError("radioProps property is not of type RadioProps");
 	}
 
 	const name = radioProps.get(RadioProps.propNames.name);

@@ -1,6 +1,6 @@
 import ComponentProps from "../componentProps";
 
-export class TableProps extends ComponentProps {
+class TableProps extends ComponentProps {
 	static propNames = {
 		withoutTopBorder: "withoutTopBorder",
 		stickyHeader: "stickyHeader",
@@ -17,5 +17,14 @@ export class TableProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.selectMode, null);
 		this.componentProps.set(this.constructor.propNames.onRowClick, null);
 		this.componentProps.set(this.constructor.propNames.classes, null);
+
+		this._isTableProps = true;
 	}
 }
+
+export const isTableProps = function (value) {
+	if (value == null) return true;
+	return typeof value === "object" && (value instanceof TableProps || value._isTableProps === true);
+};
+
+export default TableProps;

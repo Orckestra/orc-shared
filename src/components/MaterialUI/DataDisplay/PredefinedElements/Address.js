@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { TextProps } from "../../textProps";
+import TextProps, { isTextProps } from "../../textProps";
 import TooltippedTypography from "../TooltippedElements/TooltippedTypography";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 const Address = ({ address, textProps }) => {
 	const classes = useStyles();
 
-	if (textProps != null && textProps instanceof TextProps === false) {
+	if (isTextProps(textProps) === false) {
 		throw new TypeError("textProps property is not of type TextProps");
 	}
 

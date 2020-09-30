@@ -1,7 +1,7 @@
 import React from "react";
 import DividerMui from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
-import DividerProps from "./dividerProps";
+import DividerProps, { isDividerProps } from "./dividerProps";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 const Divider = ({ dividerProps }) => {
 	const classes = useStyles();
 
-	if (dividerProps != null && dividerProps instanceof DividerProps === false) {
+	if (isDividerProps(dividerProps) === false) {
 		throw new TypeError("dividerProps property is not of type DividerProps");
 	}
 

@@ -26,7 +26,14 @@ class DividerProps extends ComponentProps {
 		this.componentClasses.set(this.constructor.ruleNames.middle, null);
 		this.componentClasses.set(this.constructor.ruleNames.vertical, null);
 		this.componentClasses.set(this.constructor.ruleNames.inset, null);
+
+		this._isDividerProps = true;
 	}
 }
+
+export const isDividerProps = function (value) {
+	if (value == null) return true;
+	return typeof value === "object" && (value instanceof DividerProps || value._isDividerProps === true);
+};
 
 export default DividerProps;

@@ -29,7 +29,9 @@ describe("Paper", () => {
   it("Fails if paperProps has wrong type", () => {
     ignoreConsoleError(() => {
       const component = <Paper paperProps="Wrong type" />;
-      expect(() => shallow(component), "to throw a", TypeError);
+      expect(() => mount(component), "to throw a", TypeError).then((error) => {
+        expect(error, "to have message", "paperProps property is not of type PaperProps")
+      });
     });
   });
 

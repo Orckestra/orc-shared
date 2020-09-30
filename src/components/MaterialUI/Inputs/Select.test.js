@@ -29,7 +29,10 @@ describe("Select Component", () => {
 					<Select selectProps="Wrong type" />
 				</MuiThemeProvider>
 			);
-			expect(() => mount(component), "to throw a", TypeError);
+
+			expect(() => mount(component), "to throw a", TypeError).then((error) => {
+				expect(error, "to have message", "selectProps property is not of type SelectProps")
+			});
 		});
 	});
 

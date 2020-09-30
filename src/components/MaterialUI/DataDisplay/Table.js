@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CheckboxMui from "@material-ui/core/Checkbox";
 import withDeferredTooltip from "../hocs/withDeferredTooltip";
 import { tableSelectionMode, useTableSelection } from "./useTableSelection";
-import { TableProps } from "./TableProps";
+import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
 import ResizeDetector from "react-resize-detector";
 
@@ -93,6 +93,20 @@ export const useStyles = makeStyles(theme => ({
 		transform: "translate(-50%, -50%)",
 	},
 }));
+
+function headersAreIdentical(prevHeaders, nextHeaders) {
+	prevHeaders.forEach((prevHeader, index) => {
+		let prevSortOptions = prevHeader.cellElement.props.columnDefinition.sortOptions;
+		let nextSortOptions = nextHeaders[index].cellElement.props.columnDefinition.sortOptions;
+		if (prevSortOptions != null && nextSortOptions != null) {
+			if (prevSortOptions.sortField !== nextSortOptions.sortField) {
+				return false;
+			}
+			return prevSortOptions.direction === nextSortOptions.direction;
+		}
+		return true;
+	});
+}
 
 function rowAreIdentical(prevRows, nextRows) {
 	return (
@@ -233,8 +247,8 @@ const FullTable = React.forwardRef((props, ref) => {
 	);
 });
 
-const Table = ({ headers, rows, scrollLoader, latestPage, pageLength, placeholder, tableProps }) => {
-	if (tableProps != null && tableProps instanceof TableProps === false) {
+const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength, placeholder, tableProps }) => {
+	if (isTableProps(tableProps) === false) {
 		throw new TypeError("tableProps property is not of type TableProps");
 	}
 
@@ -304,6 +318,7 @@ const Table = ({ headers, rows, scrollLoader, latestPage, pageLength, placeholde
 
 	return (
 		<TableContainer className={classes.container}>
+			{tableInfo}
 			{stickerTableHeader}
 			<FullTable
 				ref={refScrolled}
@@ -324,4 +339,6 @@ const Table = ({ headers, rows, scrollLoader, latestPage, pageLength, placeholde
 	);
 };
 
-export default React.memo(Table, (prev, next) => rowAreIdentical(prev.rows, next.rows));
+export default React.memo(Table, (prev, next) =>
+	rowAreIdentical(prev.rows, next.rows) &&
+	headersAreIdentical(prev.headers, next.headers));
