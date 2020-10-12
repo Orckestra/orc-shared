@@ -55,6 +55,24 @@ export const scopeGetter = createSelector(filteredScopesSelector, scopes => id =
 	return scope.toJS();
 });
 
+export const selectLocalizedScopes = memoize(scopeIds =>
+	createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) => {
+		const localizedScopes = [];
+
+		scopeIds.forEach(scopeId => {
+			const scope = scopes.get(scopeId)?.toJS();
+
+			if (scope != null) {
+				scope.displayName = getLocalization(scope.name, locale, scope.name);
+				scope.displayCurrency = getLocalization(scope.currency.displayName, locale, scope.currency);
+				localizedScopes.push(scope);
+			}
+		});
+
+		return localizedScopes;
+	})
+);
+
 export const localizedScopeSelector = memoize(key =>
 	createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) => {
 		const name = scopes.getIn([key, "name"]);
