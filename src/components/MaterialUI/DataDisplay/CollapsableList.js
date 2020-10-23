@@ -61,11 +61,7 @@ const CollapsableList = ({ defaultElement, otherElements, collapsableListProps }
         {otherElements}
       </Collapse>
       <div onClick={() => handleClick()} className={classNames(classes.toggleContainer, expandPositionClass)}>
-        {
-          open ?
-            <Icon className={classes.icon} color="primary" id="chevron-up" /> :
-            <Icon className={classes.icon} color="primary" id="chevron-down" />
-        }
+        <Icon className={classes.icon} color="primary" id={open ? "chevron-up" : "chevron-down"} />
         {hasMessage ? <Typography color="primary" children={message} /> : null}
       </div>
     </div>
