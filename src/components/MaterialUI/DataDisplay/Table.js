@@ -23,6 +23,7 @@ export const useStyles = makeStyles(theme => ({
 		position: "relative",
 		display: "flex",
 		flex: 1,
+		"flex-direction": "column",
 	},
 	table: {
 		tableLayout: "fixed",
@@ -88,10 +89,10 @@ export const useStyles = makeStyles(theme => ({
 		padding: 0,
 	},
 	placeholder: {
-		position: "absolute",
-		left: "50%",
-		top: "50%",
-		transform: "translate(-50%, -50%)",
+		display: "flex",
+		flex: 1,
+		"justify-content": "center",
+		"align-items": "center",
 	},
 }));
 
