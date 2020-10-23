@@ -14,7 +14,7 @@ export const PlaceholderBox = styled.div`
 	flex-direction: column;
 	align-items: center;
 	margin: auto;
-	${ifFlag("warn", "color: #ed2e0b;", "color: #ababab;")}
+	${ifFlag("warn", "color: #ed2e0b; width: 33%; max-width:540px; text-align:center;", "color: #ababab;")}
 `;
 
 export const PlaceholderIcon = styled(Icon)`
