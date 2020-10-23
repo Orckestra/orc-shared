@@ -57,38 +57,6 @@ describe("useStyles", () => {
 		);
 	});
 
-	it("build tableContainer styles as expected", () => {
-		expect(
-			<MuiThemeContainer classToTest="tableContainer" />,
-			"when mounted",
-			"to have style rules satisfying",
-			expect.it("to contain", "height: calc(100% - 0px)"),
-		);
-
-		expect(
-			<MuiThemeContainer classToTest="tableContainer" styleProps={{ headerHeight: 17, stickyHeader: true }} />,
-			"when mounted",
-			"to have style rules satisfying",
-			expect.it("to contain", "height: calc(100% - 17px)"),
-		);
-	});
-
-	it("build container styles as expected", () => {
-		expect(
-			<MuiThemeContainer classToTest="container" />,
-			"when mounted",
-			"to have style rules satisfying",
-			expect.it("to contain", "overflow: auto"),
-		);
-
-		expect(
-			<MuiThemeContainer classToTest="container" styleProps={{ stickyHeader: true }} />,
-			"when mounted",
-			"to have style rules satisfying",
-			expect.it("to contain", "overflow: hidden"),
-		);
-	});
-
 	it("build stickyHeaderHead styles as expected", () => {
 		expect(
 			<MuiThemeContainer classToTest="stickyHeaderHead" />,
@@ -162,7 +130,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => { } }} />,
+			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => {} }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),
@@ -220,9 +188,9 @@ describe("Memoize components", () => {
 				sortOptions: {
 					sortField: true,
 					direction: "Ascending",
-					propertyName: "column1"
+					propertyName: "column1",
 				},
-				sortCallback: jest.fn()
+				sortCallback: jest.fn(),
 			},
 			{
 				fieldName: "column2",
@@ -232,8 +200,8 @@ describe("Memoize components", () => {
 					direction: "Ascending",
 					propertyName: "column2",
 				},
-				sortCallback: jest.fn()
-			}
+				sortCallback: jest.fn(),
+			},
 		];
 
 		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
@@ -242,8 +210,10 @@ describe("Memoize components", () => {
 
 		const mountedComponent = mount(<Table headers={headers} rows={rows} />);
 
-		let mountedFirstHeaderSortOptions = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition.sortOptions;
-		let mountedSecondHeaderSortOptions = mountedComponent.prop("headers")[1].cellElement.props.columnDefinition.sortOptions;
+		let mountedFirstHeaderSortOptions = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition
+			.sortOptions;
+		let mountedSecondHeaderSortOptions = mountedComponent.prop("headers")[1].cellElement.props.columnDefinition
+			.sortOptions;
 
 		expect(mountedFirstHeaderSortOptions.sortField, "to be true");
 		expect(mountedSecondHeaderSortOptions.sortField, "to be false");
@@ -273,10 +243,10 @@ describe("Memoize components", () => {
 				sortOptions: {
 					sortField: true,
 					direction: "Ascending",
-					propertyName: "column1"
+					propertyName: "column1",
 				},
-				sortCallback: jest.fn()
-			}
+				sortCallback: jest.fn(),
+			},
 		];
 
 		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
@@ -307,8 +277,8 @@ describe("Memoize components", () => {
 		const initialColumnDefs = [
 			{
 				fieldName: "column1",
-				label: "column1"
-			}
+				label: "column1",
+			},
 		];
 
 		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
@@ -346,8 +316,8 @@ describe("Table", () => {
 	it("Fails if tableProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = <Table rows={[]} headers={[]} tableProps="Wrong type" />;
-			expect(() => mount(component), "to throw a", TypeError).then((error) => {
-				expect(error, "to have message", "tableProps property is not of type TableProps")
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "tableProps property is not of type TableProps");
 			});
 		});
 	});
@@ -385,10 +355,7 @@ describe("Table", () => {
 					<ResizeDetector />
 					<TableMui>
 						{expectedHeader}
-						<MemoTableBody
-							dataRows={rows}
-							tableRows={expectedTableRows}
-						/>
+						<MemoTableBody dataRows={rows} tableRows={expectedTableRows} />
 					</TableMui>
 				</div>
 			</TableContainer>
@@ -431,19 +398,14 @@ describe("Table", () => {
 		const expected = (
 			<TableContainer>
 				<div>
-					<TableMui>
-						{expectedHeader}
-					</TableMui>
+					<TableMui>{expectedHeader}</TableMui>
 					<div />
 				</div>
 				<div>
 					<ResizeDetector />
 					<TableMui>
 						{expectedHeader}
-						<MemoTableBody
-							dataRows={rows}
-							tableRows={expectedTableRows}
-						/>
+						<MemoTableBody dataRows={rows} tableRows={expectedTableRows} />
 					</TableMui>
 				</div>
 			</TableContainer>
@@ -465,12 +427,16 @@ describe("Table", () => {
 		const expectedTableRows = (
 			<>
 				<MemoTableRow>
-					<td><CheckboxMui /></td>
+					<td>
+						<CheckboxMui />
+					</td>
 					<td>{elements[0].a1}</td>
 					<td>{elements[0].a2}</td>
 				</MemoTableRow>
 				<MemoTableRow>
-					<td><CheckboxMui /></td>
+					<td>
+						<CheckboxMui />
+					</td>
 					<td>{elements[1].a1}</td>
 					<td>{elements[1].a2}</td>
 				</MemoTableRow>
@@ -480,7 +446,9 @@ describe("Table", () => {
 		const expectedHeader = (
 			<TableHead>
 				<TableRow>
-					<th><CheckboxMui /></th>
+					<th>
+						<CheckboxMui />
+					</th>
 					<th>{headerLabels.column1}</th>
 					<th>{headerLabels.column2}</th>
 				</TableRow>
@@ -490,19 +458,14 @@ describe("Table", () => {
 		const expected = (
 			<TableContainer>
 				<div>
-					<TableMui>
-						{expectedHeader}
-					</TableMui>
+					<TableMui>{expectedHeader}</TableMui>
 					<div />
 				</div>
 				<div>
 					<ResizeDetector />
 					<TableMui>
 						{expectedHeader}
-						<MemoTableBody
-							dataRows={rows}
-							tableRows={expectedTableRows}
-						/>
+						<MemoTableBody dataRows={rows} tableRows={expectedTableRows} />
 					</TableMui>
 				</div>
 			</TableContainer>
@@ -523,12 +486,16 @@ describe("Table", () => {
 		const expectedTableRows = (
 			<>
 				<MemoTableRow>
-					<td><CheckboxMui /></td>
+					<td>
+						<CheckboxMui />
+					</td>
 					<td>{elements[0].a1}</td>
 					<td>{elements[0].a2}</td>
 				</MemoTableRow>
 				<MemoTableRow>
-					<td><CheckboxMui /></td>
+					<td>
+						<CheckboxMui />
+					</td>
 					<td>{elements[1].a1}</td>
 					<td>{elements[1].a2}</td>
 				</MemoTableRow>
@@ -538,7 +505,9 @@ describe("Table", () => {
 		const expectedHeader = (
 			<TableHead>
 				<TableRow>
-					<th><CheckboxMui /></th>
+					<th>
+						<CheckboxMui />
+					</th>
 					<th>{headerLabels.column1}</th>
 					<th>{headerLabels.column2}</th>
 				</TableRow>
@@ -551,10 +520,7 @@ describe("Table", () => {
 					<ResizeDetector />
 					<TableMui>
 						{expectedHeader}
-						<MemoTableBody
-							dataRows={rows}
-							tableRows={expectedTableRows}
-						/>
+						<MemoTableBody dataRows={rows} tableRows={expectedTableRows} />
 					</TableMui>
 				</div>
 			</TableContainer>
