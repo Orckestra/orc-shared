@@ -16,14 +16,14 @@ export const useStyles = makeStyles(theme => ({
 		flex: "0 1 100%",
 		fontSize: theme.typography.fontSize,
 		display: "flex",
-		"flex-direction": "column",
+		flexDirection: "column",
 	},
 	tableContainer: {
 		overflowY: "auto",
 		position: "relative",
 		display: "flex",
 		flex: 1,
-		"flex-direction": "column",
+		flexDirection: "column",
 	},
 	table: {
 		tableLayout: "fixed",
@@ -91,8 +91,8 @@ export const useStyles = makeStyles(theme => ({
 	placeholder: {
 		display: "flex",
 		flex: 1,
-		"justify-content": "center",
-		"align-items": "center",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 }));
 
