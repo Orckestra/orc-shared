@@ -5,9 +5,7 @@ import { getThemeProp, ifFlag } from "../utils";
 import withId from "../hocs/withId";
 
 const switchSpeed = 200;
-const FilteredLabel = ({ onColor, offColor, onCaption, offCaption, ...props }) => (
-	<label {...props} />
-);
+const FilteredLabel = ({ onColor, offColor, onCaption, offCaption, ...props }) => <label {...props} />;
 
 export const Wrapper = styled(FilteredLabel)`
 	display: inline-block;
@@ -52,10 +50,10 @@ export const Wrapper = styled(FilteredLabel)`
 		${ifFlag(
 			"value",
 			css`
-				transform: translateX(-1.9em);
+				transform: translateX(1.9em);
 			`,
 			css`
-				transform: translateX(1.9em);
+				transform: translateX(-1.9em);
 			`,
 		)};
 	}
@@ -76,6 +74,15 @@ export const Caption = styled.span`
 	text-align: center;
 	font-size: 0.8em;
 	${ifFlag(
+		"activeLabel",
+		css`
+			left: 0;
+		`,
+		css`
+			right: 0;
+		`,
+	)};
+	${ifFlag(
 		"value",
 		css`
 			opacity: 1;
@@ -95,19 +102,11 @@ export const ContainedCheckbox = styled.input.attrs(() => ({
 	opacity: 0;
 `;
 
-export const Switch = ({
-	value,
-	onCaption,
-	offCaption,
-	onColor,
-	offColor,
-	id,
-	...checkboxProps
-}) => (
+export const Switch = ({ value, onCaption, offCaption, onColor, offColor, id, ...checkboxProps }) => (
 	<Wrapper htmlFor={id} value={value} onColor={onColor} offColor={offColor}>
 		<ContainedCheckbox id={id} {...checkboxProps} checked={value} />
 		{onCaption ? (
-			<Caption value={value}>
+			<Caption value={value} activeLabel={true}>
 				<Text message={onCaption} />
 			</Caption>
 		) : null}
