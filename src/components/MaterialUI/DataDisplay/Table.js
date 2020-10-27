@@ -15,12 +15,15 @@ export const useStyles = makeStyles(theme => ({
 	container: {
 		flex: "0 1 100%",
 		fontSize: theme.typography.fontSize,
-		overflow: props => (props.stickyHeader ? "hidden" : "auto"),
+		display: "flex",
+		flexDirection: "column",
 	},
 	tableContainer: {
-		height: props => "calc(100% - " + (props.stickyHeader ? props.headerHeight : 0) + "px)",
 		overflowY: "auto",
 		position: "relative",
+		display: "flex",
+		flex: 1,
+		flexDirection: "column",
 	},
 	table: {
 		tableLayout: "fixed",
@@ -30,7 +33,6 @@ export const useStyles = makeStyles(theme => ({
 		borderBottom: "1px solid " + theme.palette.grey.borders,
 		backgroundColor: theme.palette.grey.lighter,
 		display: "flex",
-		overflow: "hidden",
 		cursor: "default",
 	},
 	stickyHeaderTable: {
@@ -87,10 +89,10 @@ export const useStyles = makeStyles(theme => ({
 		padding: 0,
 	},
 	placeholder: {
-		position: "absolute",
-		left: "50%",
-		top: "50%",
-		transform: "translate(-50%, -50%)",
+		display: "flex",
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 }));
 
@@ -167,16 +169,16 @@ const buildTableCheckbox = (classes, tableSelectionStatus, selectionMethods) => 
 	);
 };
 
-const StickerTableHeader = React.forwardRef((props, refHeader) => (
-	<div key="stickyHeader" className={props.classes.stickyHeaderHead}>
-		<TableMui className={props.classes.stickyHeaderTable}>
-			<TableHead ref={refHeader}>
-				<TableRow>{props.tableHeaders}</TableRow>
+const StickerTableHeader = ({ classes, tableHeaders }) => (
+	<div key="stickyHeader" className={classes.stickyHeaderHead}>
+		<TableMui className={classes.stickyHeaderTable}>
+			<TableHead>
+				<TableRow>{tableHeaders}</TableRow>
 			</TableHead>
 		</TableMui>
-		<div className={props.classes.stickyHeaderTableScroll} />
+		<div className={classes.stickyHeaderTableScroll} />
 	</div>
-));
+);
 
 const buildTableHeaders = (headers, classes, customClasses, selectMode, tableSelectionStatus, selectionMethods) => {
 	const tableCheckbox =
@@ -259,9 +261,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || false;
 
 	const refScrolled = useRef();
-	const refHeader = useRef();
 
-	const [headerHeight, setHeaderHeight] = useState(41);
 	const [scrolled, setScrolled] = useState(0);
 	const [tableSize, setTableSize] = useState({ width: 0, height: 0 });
 
@@ -272,7 +272,6 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 		selectMode,
 		stickyHeader,
 		scrolled,
-		headerHeight,
 		onRowClick,
 	});
 
@@ -291,12 +290,6 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 		return () => window.removeEventListener("resize", handleResize);
 	}, [refScrolled, tableSize.width, tableSize.height]);
 
-	useEffect(() => {
-		if (stickyHeader) {
-			setHeaderHeight(refHeader.current.clientHeight);
-		}
-	}, [refHeader, stickyHeader]);
-
 	const tableHeaders = buildTableHeaders(
 		headers,
 		classes,
@@ -310,7 +303,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 
 	const stickerTableHeader =
 		stickyHeader === true ? (
-			<StickerTableHeader ref={refHeader} selectMode={selectMode} classes={classes} tableHeaders={tableHeaders} />
+			<StickerTableHeader selectMode={selectMode} classes={classes} tableHeaders={tableHeaders} />
 		) : null;
 
 	/* istanbul ignore next */
@@ -330,7 +323,6 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 				dataRows={rows}
 				tableRows={tableRows}
 				stickyHeader={stickyHeader}
-				headerHeight={headerHeight}
 				latestPage={latestPage}
 				pageLength={pageLength}
 				placeholder={placeholder}
@@ -339,6 +331,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	);
 };
 
-export default React.memo(Table, (prev, next) =>
-	rowAreIdentical(prev.rows, next.rows) &&
-	headersAreIdentical(prev.headers, next.headers));
+export default React.memo(
+	Table,
+	(prev, next) => rowAreIdentical(prev.rows, next.rows) && headersAreIdentical(prev.headers, next.headers),
+);
