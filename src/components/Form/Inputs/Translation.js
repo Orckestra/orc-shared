@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { getThemeProp, unwrapImmutable } from "../../../utils";
+import { getThemeProp, unwrapImmutable, ifFlag } from "../../../utils";
 import Icon from "../../Icon";
 import Text from "../../Text";
 import { orderedCultureList } from "../../../selectors/locale";
@@ -18,13 +18,7 @@ export const LanguageLabel = styled.label`
 	margin-right: 0;
 `;
 
-export const TranslationField = ({
-	lang,
-	message = "",
-	onChange,
-	required,
-	...props
-}) => (
+export const TranslationField = ({ lang, message = "", onChange, required, ...props }) => (
 	<ButtonWrapper invalid={required && !message}>
 		<LanguageLabel>{lang}</LanguageLabel>
 		<FormInput value={message} onChange={onChange} {...props} />
@@ -52,7 +46,11 @@ export const ShowButton = styled.div.attrs(() => ({
 `;
 
 export const ShowButtonChevron = styled(Icon).attrs(props => ({
-	id: getThemeProp(["icons", "indicators", "down"], "chevron-down")(props),
+	id: ifFlag(
+		"opened",
+		getThemeProp(["icons", "indicators", "up"], "chevron-up"),
+		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
+	)(props),
 }))`
 	font-size: 10px;
 	margin-right: 5px;
@@ -65,6 +63,8 @@ export const TranslationInput = ({
 	initShowAll,
 	required,
 	moreLabel = "[more]",
+	fewerLabel = "[fewer]",
+	showFewer,
 	...props
 }) => {
 	const cultures = unwrapImmutable(useSelector(orderedCultureList));
@@ -99,6 +99,12 @@ export const TranslationInput = ({
 					<Text message={moreLabel} />
 				</ShowButton>
 			) : null}
+			{showAll && showFewer && (
+				<ShowButton onClick={toggle}>
+					<ShowButtonChevron opened={true} />
+					<Text message={fewerLabel} />
+				</ShowButton>
+			)}
 		</TranslationWrapper>
 	);
 };
