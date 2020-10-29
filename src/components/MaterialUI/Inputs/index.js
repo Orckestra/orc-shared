@@ -3,6 +3,9 @@ export { default as CheckboxProps } from "./CheckboxProps";
 
 export { default as DatePicker } from "./DatePicker";
 
+export { default as Input } from "./Input";
+export { default as InputProps } from "./InputProps";
+
 export { default as Radio } from "./Radio";
 export { default as RadioProps } from "./RadioProps";
 
