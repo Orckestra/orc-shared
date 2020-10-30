@@ -6,7 +6,6 @@ import InputProps, { isInputProps } from "./InputProps";
 export const useStyles = makeStyles(theme => ({
 	container: {
 		display: "flex",
-		marginRight: "10px",
 	},
 	prepend: {
 		fontSize: theme.spacing(1.3),
@@ -19,10 +18,11 @@ export const useStyles = makeStyles(theme => ({
 		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
 		boxSizing: "border-box",
 		backgroundColor: theme.palette.grey.light,
+		whiteSpace: "nowrap",
 	},
 	controlInput: {
 		height: theme.spacing(1.6),
-		width: theme.spacing(20),
+		maxWidth: "unset",
 		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
 		borderRadius: props => (props.label ? theme.spacing(0, 0.5, 0.5, 0) : theme.spacing(0.5)),
 		paddingLeft: theme.spacing(0.85),
@@ -58,6 +58,7 @@ const Input = ({ inputProps }) => {
 				type={type}
 				placeholder={placeholder}
 				value={value}
+				fullWidth={true}
 				onChange={e => update(e.target.value)}
 			/>
 		</div>
