@@ -67,7 +67,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 	disabled: {
 		"& + $track": {
-			backgroundColor: theme.palette.grey.borders,
+			backgroundColor: `${theme.palette.grey.borders} !important`,
 		},
 	},
 }));
