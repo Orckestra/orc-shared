@@ -43,9 +43,9 @@ const Input = ({ inputProps }) => {
 	}
 
 	const update = inputProps?.get(InputProps.propNames.update);
-	const value = inputProps?.get(InputProps.propNames.value);
+	const value = inputProps?.get(InputProps.propNames.value) || "";
 	const label = inputProps?.get(InputProps.propNames.label);
-	const type = inputProps?.get(InputProps.propNames.type);
+	const type = inputProps?.get(InputProps.propNames.type) || "text";
 	const placeholder = inputProps?.get(InputProps.propNames.placeholder);
 
 	const classes = useStyles({ label });

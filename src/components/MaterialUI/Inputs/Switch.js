@@ -65,6 +65,11 @@ export const useStyles = makeStyles(theme => ({
 			},
 		},
 	},
+	disabled: {
+		"& + $track": {
+			backgroundColor: theme.palette.grey.borders,
+		},
+	},
 }));
 
 const Switch = ({ switchProps }) => {
@@ -73,13 +78,22 @@ const Switch = ({ switchProps }) => {
 	}
 
 	const update = switchProps?.get(SwitchProps.propNames.update);
-	const value = switchProps?.get(SwitchProps.propNames.value);
+	const value = switchProps?.get(SwitchProps.propNames.value) || false;
 	const onCaption = switchProps?.get(SwitchProps.propNames.onCaption);
 	const offCaption = switchProps?.get(SwitchProps.propNames.offCaption);
+	const disabled = switchProps?.get(SwitchProps.propNames.disabled);
 
 	const classes = useStyles({ onCaption, offCaption });
 
-	return <SwitchMui classes={classes} checked={value} onChange={e => update(e.target.checked)} color={"primary"} />;
+	return (
+		<SwitchMui
+			disabled={disabled}
+			classes={classes}
+			checked={value}
+			onChange={e => update(e.target.checked)}
+			color={"primary"}
+		/>
+	);
 };
 
 export default Switch;

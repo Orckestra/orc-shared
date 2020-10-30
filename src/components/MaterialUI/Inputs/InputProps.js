@@ -14,7 +14,7 @@ class InputProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.update, null);
 		this.componentProps.set(this.constructor.propNames.value, null);
 		this.componentProps.set(this.constructor.propNames.placeholder, null);
-		this.componentProps.set(this.constructor.propNames.type, "text");
+		this.componentProps.set(this.constructor.propNames.type, null);
 		this.componentProps.set(this.constructor.propNames.label, null);
 
 		this._isInputProps = true;
