@@ -10,7 +10,8 @@ export const useStyles = makeStyles(theme => ({
 	prepend: {
 		fontSize: theme.spacing(1.3),
 		lineHeight: theme.spacing(1.3),
-		padding: theme.spacing(0.85, 1.7, 0.85, 0.85),
+		padding: theme.spacing(0.85),
+		minWidth: theme.spacing(6),
 		marginRight: theme.spacing(-0.1),
 		height: theme.spacing(3),
 		display: "inline-flex",
