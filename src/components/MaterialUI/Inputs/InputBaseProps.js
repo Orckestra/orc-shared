@@ -1,12 +1,13 @@
 import ComponentProps from "../componentProps";
 
-class InputProps extends ComponentProps {
+class InputBaseProps extends ComponentProps {
 	static propNames = {
 		update: "update",
 		value: "value",
 		placeholder: "placeholder",
 		type: "type",
 		label: "label",
+		error: "error",
 	};
 
 	constructor() {
@@ -16,6 +17,7 @@ class InputProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.placeholder, null);
 		this.componentProps.set(this.constructor.propNames.type, null);
 		this.componentProps.set(this.constructor.propNames.label, null);
+		this.componentProps.set(this.constructor.propNames.error, null);
 
 		this._isInputProps = true;
 	}
@@ -23,7 +25,7 @@ class InputProps extends ComponentProps {
 
 export const isInputProps = function (value) {
 	if (value == null) return true;
-	return typeof value === "object" && (value instanceof InputProps || value._isInputProps === true);
+	return typeof value === "object" && (value instanceof InputBaseProps || value._isInputProps === true);
 };
 
-export default InputProps;
+export default InputBaseProps;

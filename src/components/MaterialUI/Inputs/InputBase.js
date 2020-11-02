@@ -1,11 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import InputMUI from "@material-ui/core/Input";
-import InputProps, { isInputProps } from "./InputProps";
+import InputBaseMUI from "@material-ui/core/InputBase";
+import InputBaseProps, { isInputProps } from "./InputBaseProps";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
 		display: "flex",
+		position: "relative",
 	},
 	prepend: {
 		fontSize: theme.spacing(1.3),
@@ -27,43 +28,59 @@ export const useStyles = makeStyles(theme => ({
 		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
 		borderRadius: props => (props.label ? theme.spacing(0, 0.5, 0.5, 0) : theme.spacing(0.5)),
 		paddingLeft: theme.spacing(0.85),
-		"&:active": {
-			borderRadius: props => (props.label ? theme.spacing(0, 0.5, 0.5, 0) : theme.spacing(0.5)),
-		},
-		"&:focus": {
+		"&:focus, &:active": {
 			border: `${theme.spacing(0.1)} solid ${theme.palette.focus}`,
 			borderRadius: props => (props.label ? theme.spacing(0, 0.5, 0.5, 0) : theme.spacing(0.5)),
 		},
 	},
+	errorInput: {
+		"& input": {
+			border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
+
+			"&:focus": {
+				border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
+				boxShadow: `${theme.spacing(0, 0, 0.4)} ${theme.palette.error.main}`,
+			},
+		},
+	},
+	errorText: {
+		position: "absolute",
+		bottom: theme.spacing(-2),
+		right: 0,
+		color: theme.palette.error.main,
+		fontSize: theme.typography.fieldLabelSize,
+	},
 }));
 
-const Input = ({ inputProps }) => {
+const InputBase = ({ inputProps }) => {
 	if (isInputProps(inputProps) === false) {
-		throw new TypeError("inputProps property is not of type InputProps");
+		throw new TypeError("inputProps property is not of type InputBaseProps");
 	}
 
-	const update = inputProps?.get(InputProps.propNames.update);
-	const value = inputProps?.get(InputProps.propNames.value) || "";
-	const label = inputProps?.get(InputProps.propNames.label);
-	const type = inputProps?.get(InputProps.propNames.type) || "text";
-	const placeholder = inputProps?.get(InputProps.propNames.placeholder);
+	const update = inputProps?.get(InputBaseProps.propNames.update);
+	const value = inputProps?.get(InputBaseProps.propNames.value) || "";
+	const label = inputProps?.get(InputBaseProps.propNames.label);
+	const type = inputProps?.get(InputBaseProps.propNames.type) || "text";
+	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
+	const error = inputProps?.get(InputBaseProps.propNames.error);
 
 	const classes = useStyles({ label });
 
 	return (
 		<div className={classes.container}>
 			{label && <label className={classes.prepend}>{label}</label>}
-			<InputMUI
-				classes={{ input: classes.controlInput }}
-				disableUnderline={true}
+			<InputBaseMUI
+				classes={{ input: classes.controlInput, error: classes.errorInput }}
 				type={type}
 				placeholder={placeholder}
 				value={value}
 				fullWidth={true}
 				onChange={e => update(e.target.value)}
+				error={!!error}
 			/>
+			{error && <div className={classes.errorText}>{error}</div>}
 		</div>
 	);
 };
 
-export default Input;
+export default InputBase;

@@ -1,16 +1,16 @@
-import InputProps, { isInputProps } from "./InputProps";
+import InputBaseProps, { isInputProps } from "./InputBaseProps";
 
-describe("Input Props", () => {
+describe("InputBase Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["update", "value", "placeholder", "type", "label"];
+		const propNames = ["update", "value", "placeholder", "type", "label", "error"];
 
-		expect(InputProps.propNames, "to have keys", propNames);
+		expect(InputBaseProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["update", "value", "placeholder", "type", "label"];
+		const propNames = ["update", "value", "placeholder", "type", "label", "error"];
 
-		const inputProps = new InputProps();
+		const inputProps = new InputBaseProps();
 
 		const keys = Array.from(inputProps.componentProps.keys());
 
@@ -27,8 +27,8 @@ describe("isInputProps", () => {
 		expect(isInputProps("Not object"), "to be false");
 	});
 
-	it("Returns true if passed value type is InputProps", () => {
-		expect(isInputProps(new InputProps()), "to be true");
+	it("Returns true if passed value type is InputBaseProps", () => {
+		expect(isInputProps(new InputBaseProps()), "to be true");
 	});
 
 	it("Returns true if passed value has property _isInputProps and it's true", () => {
