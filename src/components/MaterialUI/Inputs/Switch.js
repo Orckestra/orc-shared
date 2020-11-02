@@ -5,12 +5,12 @@ import SwitchProps, { isSwitchProps } from "./SwitchProps";
 
 export const useStyles = makeStyles(theme => ({
 	root: {
-		width: 64,
-		height: 17,
+		width: theme.spacing(6.4),
+		height: theme.spacing(1.7),
 		padding: 0,
 	},
 	switchBase: {
-		padding: 2,
+		padding: theme.spacing(0.2),
 		border: "none",
 		"&:hover, &:active": {
 			backgroundColor: "unset",
@@ -22,15 +22,14 @@ export const useStyles = makeStyles(theme => ({
 		width: "600%",
 	},
 	thumb: {
-		width: 13,
-		height: 13,
-		backgroundColor: "#fff",
+		width: theme.spacing(1.3),
+		height: theme.spacing(1.3),
+		backgroundColor: theme.palette.background.default,
 	},
 	track: {
 		backgroundColor: theme.palette.grey.borders,
-		color: "#232323",
 		opacity: "1 !important",
-		borderRadius: 20,
+		borderRadius: "20px",
 		position: "relative",
 		"&:before, &:after": {
 			display: "inline-block",
@@ -38,25 +37,25 @@ export const useStyles = makeStyles(theme => ({
 			top: "50%",
 			transform: "translateY(-50%)",
 			textAlign: "center",
-			fontSize: 10,
+			fontSize: theme.spacing(1),
 		},
 		"&:before": {
 			content: props => `"${props.onCaption}"`,
-			left: 9,
+			left: theme.spacing(0.9),
 			opacity: 0,
 		},
 		"&:after": {
 			content: props => `"${props.offCaption}"`,
-			right: 9,
+			right: theme.spacing(0.9),
 		},
 	},
 	checked: {
 		"&$switchBase": {
-			transform: "translateX(47px)",
+			transform: `translateX(${theme.spacing(4.7)})`,
 		},
 		"& + $track": {
 			backgroundColor: theme.palette.primary.main,
-			color: "#fff",
+			color: theme.palette.background.default,
 			"&:before": {
 				opacity: 1,
 			},

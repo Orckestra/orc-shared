@@ -7,7 +7,7 @@ class CollapsableListProps extends ComponentProps {
 		openMessage: "openMessage",
 		closeMessage: "closeMessage",
 		expandPosition: "expandPosition",
-		maxContent: "maxContent",
+		containerWidth: "containerWidth",
 	};
 
 	constructor() {
@@ -17,7 +17,7 @@ class CollapsableListProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.openMessage, null);
 		this.componentProps.set(this.constructor.propNames.closeMessage, null);
 		this.componentProps.set(this.constructor.propNames.expandPosition, null);
-		this.componentProps.set(this.constructor.propNames.maxContent, null);
+		this.componentProps.set(this.constructor.propNames.containerWidth, null);
 
 		this._isCollapsableListProps = true;
 	}

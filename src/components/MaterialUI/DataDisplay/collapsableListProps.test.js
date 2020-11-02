@@ -2,13 +2,13 @@ import CollapsableListProps, { isCollapsableListProps } from "./collapsableListP
 
 describe("Collapsable List Props", () => {
 	it("Contains necessary props and rules keys", () => {
-		const propNames = ["isExpanded", "hasMessage", "openMessage", "closeMessage", "expandPosition", "maxContent"];
+		const propNames = ["isExpanded", "hasMessage", "openMessage", "closeMessage", "expandPosition", "containerWidth"];
 
 		expect(CollapsableListProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props and rules map", () => {
-		const propNames = ["isExpanded", "hasMessage", "openMessage", "closeMessage", "expandPosition", "maxContent"];
+		const propNames = ["isExpanded", "hasMessage", "openMessage", "closeMessage", "expandPosition", "containerWidth"];
 
 		const collapsableListProps = new CollapsableListProps();
 

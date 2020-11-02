@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	container: {
-		width: props => (props.maxContent ? "max-content" : "unset"),
+		width: props => props.containerWidth,
 	},
 	toggleContainer: {
 		display: "flex",
@@ -34,8 +34,8 @@ const CollapsableList = ({ defaultElement, otherElements, collapsableListProps }
 		throw new TypeError("collapsableListProps property is not of type CollapsableListProps");
 	}
 
-	const maxContent = collapsableListProps?.get(CollapsableListProps.propNames.maxContent) ?? true;
-	const classes = useStyles({ maxContent });
+	const containerWidth = collapsableListProps?.get(CollapsableListProps.propNames.containerWidth) ?? "max-content";
+	const classes = useStyles({ containerWidth });
 
 	const isExpanded = collapsableListProps?.get(CollapsableListProps.propNames.isExpanded) || false;
 
