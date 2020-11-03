@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectMUI from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,6 +6,7 @@ import SelectProps, { sortTypeEnum, isSelectProps } from "./SelectProps";
 import classNames from "classnames";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "./../DataDisplay/Icon";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
 	selectPaper: {
@@ -51,6 +52,9 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.primary.main,
 		zIndex: 999,
 	},
+	displayNone: {
+		display: "none"
+	}
 }));
 
 const MenuProps = {
@@ -65,14 +69,41 @@ const MenuProps = {
 	},
 };
 
-const ChevronDown = props => {
+const getIconButtonMenuProps = (anchorRef) => (
+	{
+		getContentAnchorEl: null,
+		anchorEl: anchorRef,
+		anchorOrigin: {
+			vertical: "bottom",
+			horizontal: "right",
+		},
+		transformOrigin: {
+			vertical: "top",
+			horizontal: "right",
+		},
+	});
+
+const SelectIcon = props => {
 	return <Icon id="dropdown-chevron-down" {...props} />;
+};
+
+const SelectIconButton = (props) => {
+	const classes = useStyles();
+
+	return (
+		<IconButton className={classes.iconButton} onClick={props.clickHandler}>
+			<Icon id="arrow-more" />
+		</IconButton>
+	);
 };
 
 const Select = ({ options, selectProps }) => {
 	if (isSelectProps(selectProps) === false) {
 		throw new TypeError("selectProps property is not of type SelectProps");
 	}
+
+	const [open, setOpen] = useState(false);
+	const ref = useRef(null);
 
 	const classes = useStyles();
 
@@ -82,6 +113,7 @@ const Select = ({ options, selectProps }) => {
 	const showAllValue = selectProps?.get(SelectProps.propNames.showAllValue);
 	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
 	const positionOverride = selectProps?.get(SelectProps.propNames.positionOverride) || {};
+	const isIconSelect = selectProps?.get(SelectProps.propNames.iconSelect) || false;
 
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
@@ -95,36 +127,73 @@ const Select = ({ options, selectProps }) => {
 	}
 
 	if (showAllValue && showAllLabel) {
-		options.unshift({
-			value: showAllValue,
-			label: showAllLabel,
-		});
+		if (options.find(o => o.value === showAllValue) == null) {
+			options.unshift({
+				value: showAllValue,
+				label: showAllLabel,
+			});
+		}
 	}
 
 	const handleChange = event => {
 		update(event.target.value);
 	};
 
-	return (
+	const defaultMenuProps = {
+		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
+		...MenuProps,
+		...positionOverride
+	};
+
+	const iconSelectMenuProps = {
+		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
+		...positionOverride,
+		...getIconButtonMenuProps(ref.current)
+	};
+
+	const items = options.map(option => (
+		<MenuItem key={option.value} value={option.value}>
+			<TooltippedTypography noWrap children={option.label} titleValue={option.label} />
+		</MenuItem>
+	));
+
+	const defaultSelect = (
 		<SelectMUI
 			value={value}
 			onChange={handleChange}
 			disableUnderline={true}
-			IconComponent={ChevronDown}
-			MenuProps={{
-				classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
-				...MenuProps,
-				...positionOverride,
+			IconComponent={SelectIcon}
+			MenuProps={defaultMenuProps}
+			classes={{
+				icon: classes.icon,
+				root: selectProps?.getStyle(SelectProps.ruleNames.root),
 			}}
-			classes={{ icon: classes.icon, root: selectProps?.getStyle(SelectProps.ruleNames.root) }}
 		>
-			{options.map(option => (
-				<MenuItem key={option.value} value={option.value}>
-					<TooltippedTypography noWrap children={option.label} titleValue={option.label} />
-				</MenuItem>
-			))}
+			{items}
 		</SelectMUI>
 	);
+
+	const iconSelect = (
+		<SelectMUI
+			open={open}
+			value={value}
+			ref={ref}
+			onChange={handleChange}
+			disableUnderline={true}
+			IconComponent={SelectIconButton}
+			MenuProps={iconSelectMenuProps}
+			classes={{
+				icon: classes.icon,
+				root: selectProps?.getStyle(SelectProps.ruleNames.root),
+				select: classes.displayNone
+			}}
+			onClick={() => setOpen(!open)}
+		>
+			{items}
+		</SelectMUI>
+	);
+
+	return isIconSelect ? iconSelect : defaultSelect;
 };
 
 export default Select;

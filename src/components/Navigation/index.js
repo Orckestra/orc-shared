@@ -2,6 +2,7 @@ import React from "react";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import Bar from "./Bar";
 import { useNavigationState } from "./useNavigationState";
+import MuiBar from "./MuiBar";
 
 // Tab lists stored to localstorage?
 
@@ -10,7 +11,7 @@ import { useNavigationState } from "./useNavigationState";
 // Warn when changing scopes, close out-scope tabs?
 
 const Navigation = withErrorBoundary("Navigation")(({ modules }) => (
-	<Bar {...useNavigationState(modules)} />
+	<MuiBar {...useNavigationState(modules)} />
 ));
 
 export default Navigation;
