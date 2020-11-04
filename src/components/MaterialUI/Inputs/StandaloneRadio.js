@@ -3,7 +3,6 @@ import RadioMui from '@material-ui/core/Radio';
 import RadioProps, { isRadioProps } from "./standaloneRadioProps";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import { $dataMetaSchema } from "ajv";
 
 const useStyles = makeStyles(theme => ({
   radioIcon: {
