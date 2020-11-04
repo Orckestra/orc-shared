@@ -5,8 +5,11 @@ import Checkbox from "../Inputs/Checkbox";
 import Switch from "../../Switch";
 import CheckboxProps from "../Inputs/CheckboxProps";
 import TableHeaderCell from "./TableHeaderCell";
+import StandaloneRadio from "../Inputs/StandaloneRadio";
+import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
+import isEmpty from "lodash";
 
-const renderByType = (e, def, rowId) => {
+const renderByType = (e, def, rowId, readOnly) => {
 	const transformedValue = def.transform ? def.transform(e[def.fieldName]) : e[def.fieldName];
 
 	switch (def.type) {
@@ -54,12 +57,25 @@ const renderByType = (e, def, rowId) => {
 				titleCaption ? <FormattedMessage {...titleCaption} /> : null,
 			];
 
+		case "radio":
+			const selectedValue = def.selectedValue;
+			const onChange = def.onChangeCallback;
+			const groupName = def.groupName;
+
+			const radioProps = new StandaloneRadioProps();
+			radioProps.set(StandaloneRadioProps.propNames.checked, selectedValue === transformedValue);
+			radioProps.set(StandaloneRadioProps.propNames.value, transformedValue);
+			radioProps.set(StandaloneRadioProps.propNames.name, groupName);
+			radioProps.set(StandaloneRadioProps.propNames.onChange, onChange);
+			radioProps.set(StandaloneRadioProps.propNames.readOnly, readOnly);
+			return [<StandaloneRadio radioProps={radioProps} />];
+
 		default:
 			return [transformedValue];
 	}
 };
 
-export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, keyField = "id") => {
+export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnly = true, keyField = "id") => {
 	if (columnDefinitions.filter(def => def.sortOptions != null && def.sortOptions.sortField).length > 1) {
 		throw new Error("Only one active sort column can exist at the same time");
 	}
@@ -75,7 +91,7 @@ export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, keyFiel
 			key: rowId,
 			element: e,
 			columns: columnDefinitions.map(def => {
-				const [cellElement, title] = renderByType(e, def, rowId);
+				const [cellElement, title] = renderByType(e, def, rowId, readOnly);
 
 				return {
 					title: def.tooltipable !== false ? (title === undefined ? cellElement : title) : null,

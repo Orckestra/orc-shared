@@ -1,14 +1,14 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
-import Radio from "./Radio";
-import RadioProps from "./radioProps";
+import StandaloneRadio from "./StandaloneRadio";
+import RadioProps from "./standaloneRadioProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
 import RadioMui from '@material-ui/core/Radio';
 
 describe("Radio", () => {
   it("Throws an error if radioProps has wrong type", () => {
     ignoreConsoleError(() => {
-      const component = <Radio radioProps="Wrong Type" />;
+      const component = <StandaloneRadio radioProps="Wrong Type" />;
       expect(() => mount(component), "to throw a", TypeError).then((error) => {
         expect(error, "to have message", "radioProps property is not of type RadioProps")
       });
@@ -16,7 +16,7 @@ describe("Radio", () => {
   });
 
   it("Renders Radio propely", () => {
-    const component = <Radio />;
+    const component = <StandaloneRadio />;
 
     const mountedComponent = mount(component);
     const expected = <RadioMui />
@@ -27,7 +27,7 @@ describe("Radio", () => {
   it("Uses passed checked for checked property", () => {
     const radioProps = new RadioProps();
     radioProps.set(RadioProps.propNames.checked, true);
-    const component = <Radio radioProps={radioProps} />;
+    const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
 
@@ -39,7 +39,7 @@ describe("Radio", () => {
   it("Uses passed disabled for disabled property", () => {
     const radioProps = new RadioProps();
     radioProps.set(RadioProps.propNames.disabled, true);
-    const component = <Radio radioProps={radioProps} />;
+    const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
 
@@ -48,11 +48,11 @@ describe("Radio", () => {
     expect(radioMui.prop("disabled"), "to be true");
   });
 
-  it("Uses passed onDelete for onDelete property", () => {
+  it("Uses passed onChange for onChange property", () => {
     const radioProps = new RadioProps();
     const onChange = jest.fn();
     radioProps.set(RadioProps.propNames.onChange, onChange);
-    const component = <Radio radioProps={radioProps} />;
+    const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
 
@@ -65,7 +65,7 @@ describe("Radio", () => {
     const radioProps = new RadioProps();
     const value = "value";
     radioProps.set(RadioProps.propNames.value, value);
-    const component = <Radio radioProps={radioProps} />;
+    const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
 
@@ -74,11 +74,24 @@ describe("Radio", () => {
     expect(radioMui.prop("value"), "to equal", value);
   });
 
+  it("Uses passed name for name property", () => {
+    const radioProps = new RadioProps();
+    const name = "name";
+    radioProps.set(RadioProps.propNames.name, name);
+    const component = <StandaloneRadio radioProps={radioProps} />;
+
+    const mountedComponent = mount(component);
+
+    const radioMui = mountedComponent.find(RadioMui);
+
+    expect(radioMui.prop("name"), "to equal", name);
+  });
+
   it("Uses passed size for size property", () => {
     const radioProps = new RadioProps();
     const size = "small";
     radioProps.set(RadioProps.propNames.size, size);
-    const component = <Radio radioProps={radioProps} />;
+    const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
 
@@ -91,7 +104,7 @@ describe("Radio", () => {
     const radioProps = new RadioProps();
     const inputProps = { prop: "value" };
     radioProps.set(RadioProps.propNames.inputProps, inputProps);
-    const component = <Radio radioProps={radioProps} />;
+    const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
 
@@ -104,7 +117,7 @@ describe("Radio", () => {
     const radioProps = new RadioProps();
     const testClassRoot = "testClassRoot";
     radioProps.setStyle(RadioProps.ruleNames.root, testClassRoot);
-    const component = <Radio radioProps={radioProps} />;
+    const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
 
@@ -112,7 +125,7 @@ describe("Radio", () => {
   });
 
   it("Uses fallback values if poperties are not passed", () => {
-    const component = <Radio />;
+    const component = <StandaloneRadio />;
     const mountedComponent = shallow(component);
 
     expect(mountedComponent.prop("checked"), "to equal", false);
@@ -121,5 +134,6 @@ describe("Radio", () => {
     expect(mountedComponent.prop("size"), "to equal", "medium");
     expect(mountedComponent.prop("value"), "to equal", undefined);
     expect(mountedComponent.prop("inputProps"), "to equal", null);
+    expect(mountedComponent.prop("name"), "to equal", null);
   });
 });

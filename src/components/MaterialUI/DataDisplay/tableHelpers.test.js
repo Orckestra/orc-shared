@@ -1,5 +1,6 @@
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import CheckboxProps from "../Inputs/CheckboxProps";
+import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
 
 describe("table helpers buildHeaderAndRowFromConfig", () => {
@@ -134,7 +135,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			},
 		];
 
-		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements, "extraneous");
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements, true, "extraneous");
 
 		expect(headers.length, "to equal", 2);
 		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
@@ -600,5 +601,47 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[1].cellElement, "to equal", "another 2");
 		expect(rows[1].columns[1].className, "to be undefined");
 		expect(rows[1].columns[1].title, "to equal", "another 2");
+	});
+
+	it("build table rows as expected with radio", () => {
+		const changeEvent = () => console.log("just an event handler");
+
+		const elements = [
+			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const columnDef = [
+			{
+				type: "radio",
+				fieldName: "id",
+				onChangeCallback: changeEvent,
+				groupName: "preferredStore",
+				selectedValue: "an_id2",
+				label: messages.a_label,
+			}
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		console.log(rows[0].columns[0].cellElement.props)
+
+		// expect(rows[0].columns[0].cellElement.props, "to equal", {
+		// 	value: true,
+		// 	"data-row-id": "an_id1",
+		// 	onChange: changeEvent,
+		// });
+
+		// expect(rows[1].columns[0].cellElement.props, "to equal", {
+		// 	value: false,
+		// 	"data-row-id": "an_id2",
+		// 	onChange: changeEvent,
+		// });
 	});
 });

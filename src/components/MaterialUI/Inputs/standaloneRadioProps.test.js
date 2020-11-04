@@ -1,19 +1,19 @@
-import RadioProps, { isRadioProps } from "./radioProps";
+import StandaloneRadioProps, { isRadioProps } from "./standaloneRadioProps";
 
-describe("Radio Props", () => {
+describe("Standalone Radio Props", () => {
   it("Contains necessary props and rules keys", () => {
-    const propNames = ["checked", "disabled", "onChange", "size", "value", "inputProps"];
+    const propNames = ["name", "checked", "disabled", "onChange", "size", "value", "inputProps", "readOnly"];
     const ruleNames = ["root"];
 
-    expect(RadioProps.propNames, "to have keys", propNames);
-    expect(RadioProps.ruleNames, "to have keys", ruleNames);
+    expect(StandaloneRadioProps.propNames, "to have keys", propNames);
+    expect(StandaloneRadioProps.ruleNames, "to have keys", ruleNames);
   });
 
   it("Puts keys in component props and rules map", () => {
-    const propNames = ["checked", "disabled", "onChange", "size", "value", "inputProps"];
+    const propNames = ["name", "checked", "disabled", "onChange", "size", "value", "inputProps", "readOnly"];
     const ruleNames = ["root"];
 
-    const radioProps = new RadioProps();
+    const radioProps = new StandaloneRadioProps();
 
     const propKeys = Array.from(radioProps.componentProps.keys());
     const ruleKeys = Array.from(radioProps.componentClasses.keys());
@@ -33,7 +33,7 @@ describe("isRadioProps", () => {
   });
 
   it("Returns true if passed value type is RadioProps", () => {
-    expect(isRadioProps(new RadioProps()), "to be true");
+    expect(isRadioProps(new StandaloneRadioProps()), "to be true");
   });
 
   it("Returns true if passed value has property _isRadioProps and it's true", () => {
