@@ -44,6 +44,7 @@ describe("Navigation", () => {
 						params: { scope: "TestScope" },
 					},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			scopes: {
 				TestScope: {
@@ -100,14 +101,7 @@ describe("Navigation", () => {
 			"to satisfy",
 			<MemoryRouter>
 				<TabBar>
-					<Tab
-						active={false}
-						href="/TestScope/test"
-						icon="thing"
-						label="Thing"
-						mappedFrom="/TestScope/test"
-						module
-					/>
+					<Tab active={false} href="/TestScope/test" icon="thing" label="Thing" mappedFrom="/TestScope/test" module />
 					<ScrollableBar>
 						<Tab
 							active={true}

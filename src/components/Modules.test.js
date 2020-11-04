@@ -7,11 +7,7 @@ import { mount } from "unexpected-reaction";
 import { getStyledClassSelector } from "../utils/testUtils";
 import { TabBar, ScrollableBar } from "./Navigation/Bar";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
-import {
-	Wrapper as SegmentWrapper,
-	List as SegmentList,
-	Item as SegmentItem,
-} from "./Routing/SegmentPage";
+import { Wrapper as SegmentWrapper, List as SegmentList, Item as SegmentItem } from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 
 describe("Modules", () => {
@@ -60,6 +56,7 @@ describe("Modules", () => {
 				moduleTabs: {},
 				mappedHrefs: {},
 				route: {},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			router: {
 				location: {},
@@ -165,7 +162,7 @@ describe("Modules", () => {
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/photos"]}>
 						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
+							<Modules modules={modules} />
 						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
