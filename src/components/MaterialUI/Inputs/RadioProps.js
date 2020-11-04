@@ -9,6 +9,7 @@ class RadioProps extends ComponentProps {
 		row: "row",
 		name: "name",
 		radios: "radios",
+		disabled: "disabled"
 	};
 
 	constructor() {
@@ -20,6 +21,7 @@ class RadioProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.row, true);
 		this.componentProps.set(this.constructor.propNames.name, null);
 		this.componentProps.set(this.constructor.propNames.radios, null);
+		this.componentProps.set(this.constructor.propNames.disabled, false);
 
 		this._isRadioProps = true;
 	}
