@@ -10,6 +10,7 @@ import {
 	resetLastScope,
 	selectRouteHref,
 	selectRoutePath,
+	selectPrependPathConfig,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -29,6 +30,23 @@ describe("selectTabGetter", () => {
 				expect(getter, "called with", ["/path/to/tab2"], "to equal", Immutable.fromJS({ tab: 2 })),
 				expect(getter, "called with", ["/path/to/tab3"], "to equal", undefined),
 			]),
+		));
+});
+
+describe("selectPrependPathConfig", () => {
+	it("finds the prepend path in config", () =>
+		expect(
+			selectPrependPathConfig,
+			"called with",
+			[
+				Immutable.fromJS({
+					navigation: {
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
+				}),
+			],
+			"to be",
+			"/:scope/",
 		));
 });
 

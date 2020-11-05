@@ -1,5 +1,5 @@
 import Immutable from "immutable";
-import { setRoute, removeTab, mapHref } from "../actions/navigation";
+import { setRoute, removeTab, mapHref, setHrefConfig } from "../actions/navigation";
 import reducer from "./navigation";
 
 describe("Navigation reducer", () => {
@@ -157,7 +157,7 @@ describe("Navigation reducer", () => {
 					location: {},
 					match: {},
 				},
-				config: {},
+				config: { prependPath: "/:scope/", prependHref: "/Value/" },
 			});
 			const action = setRoute(
 				{
@@ -282,6 +282,22 @@ describe("Navigation reducer", () => {
 			const action = removeTab("thing", "te111st");
 			const newState = reducer(oldState, action);
 			return expect(newState, "to be", oldState);
+		});
+	});
+
+	describe("SET_HREF_CONFIG", () => {
+		it("update href config in navigation state", () => {
+			const oldState = Immutable.fromJS({
+				config: {},
+			});
+			const action = setHrefConfig("/:scope/", "/scope/");
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to satisfy",
+				Immutable.fromJS({
+					config: { prependPath: "/:scope/", prependHref: "/scope/" },
+				}),
+			);
 		});
 	});
 });

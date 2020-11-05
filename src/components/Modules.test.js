@@ -192,7 +192,7 @@ describe("Modules", () => {
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/demos"]}>
 						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
+							<Modules modules={modules} />
 						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
@@ -215,4 +215,70 @@ describe("Modules", () => {
 				<Mod3 />,
 			],
 		));
+
+	describe("with custom href", () => {
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				navigation: {
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					route: {},
+					config: { prependPath: "/", prependHref: "/" },
+				},
+				router: {
+					location: {},
+				},
+				settings: {
+					defaultScope: "myScope",
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+			});
+		});
+
+		it("renders a module table with custom prepend href ", () =>
+			expect(
+				mount(
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/demos"]}>
+							<IntlProvider locale="en">
+								<Modules modules={modules} customPath={"/"} customHref={"/"} />
+							</IntlProvider>
+						</MemoryRouter>
+					</Provider>,
+				).childNodes,
+				"to satisfy",
+				[
+					<MemoryRouter initialEntries={["/demos"]}>
+						<IntlProvider locale="en">
+							<TabBar>
+								<ModuleTab active>
+									<TabLink to="/demos">
+										<ModuleIcon id="cloud" />
+										<TabText>Module 3</TabText>
+									</TabLink>
+								</ModuleTab>
+								<ScrollableBar />
+							</TabBar>
+						</IntlProvider>
+					</MemoryRouter>,
+					<Mod3 />,
+				],
+			));
+	});
 });
