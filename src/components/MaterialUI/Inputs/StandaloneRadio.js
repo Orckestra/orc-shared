@@ -32,27 +32,30 @@ const useStyles = makeStyles(theme => ({
   },
   radioReadOnlyChecked: {
     "&:before": {
-			content: `" "`,
-			position: "absolute",
-			left: theme.spacing(0.7),
-			top: theme.spacing(0.4),
-			width: theme.spacing(0.9),
-			height: theme.spacing(0.3),
-			backgroundColor: theme.palette.grey.dark,
-			borderRadius: 3,
-			transform: "rotate(46deg)",
-		},
-		"&:after": {
-			content: `" "`,
-			position: "absolute",
-			left: theme.spacing(1.6),
-			top: theme.spacing(-0.4),
-			width: theme.spacing(0.3),
-			height: theme.spacing(1.4),
-			backgroundColor: theme.palette.grey.dark,
-			borderRadius: 3,
-			transform: "rotate(33deg)",
-		},
+      content: `" "`,
+      position: "absolute",
+      left: theme.spacing(0.7),
+      top: theme.spacing(0.4),
+      width: theme.spacing(0.9),
+      height: theme.spacing(0.3),
+      backgroundColor: theme.palette.grey.dark,
+      borderRadius: 3,
+      transform: "rotate(46deg)",
+    },
+    "&:after": {
+      content: `" "`,
+      position: "absolute",
+      left: theme.spacing(1.6),
+      top: theme.spacing(-0.4),
+      width: theme.spacing(0.3),
+      height: theme.spacing(1.4),
+      backgroundColor: theme.palette.grey.dark,
+      borderRadius: 3,
+      transform: "rotate(33deg)",
+    },
+  },
+  radioReadOnly: {
+    display: "none"
   },
   root: {
     padding: "0"
@@ -87,11 +90,14 @@ const StandaloneRadio = ({ radioProps }) => {
       inputProps={inputProps}
       name={name}
       checkedIcon={<span className={classNames({
-        [`${classes.radioIcon}`] : !readOnly,
-        [`${classes.radioIconChecked}`] : !readOnly && checked,
-        [`${classes.radioReadOnlyChecked}`] : readOnly && checked
+        [`${classes.radioIcon}`]: !readOnly,
+        [`${classes.radioIconChecked}`]: !readOnly && checked,
+        [`${classes.radioReadOnlyChecked}`]: readOnly && checked
       })} />}
-      icon={<span className={classes.radioIcon} />}
+      icon={<span className={classNames({
+        [`${classes.radioIcon}`]: !readOnly,
+        [`${classes.radioReadOnly}`]: readOnly
+      })} />}
       classes={{
         root: classNames(classes.root, radioProps?.getStyle(RadioProps.ruleNames.root))
       }}
