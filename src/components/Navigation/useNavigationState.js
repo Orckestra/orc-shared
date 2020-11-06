@@ -6,9 +6,11 @@ import { removeTab } from "../../actions/navigation";
 import {
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
+	selectPrependPathConfig,
 	getCurrentScope,
 } from "../../selectors/navigation";
 import { scopeGetter } from "../../selectors/scope";
+import { getModuleNameFromHref } from "../../utils/parseHelper";
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	let page = pages[pathStep];
@@ -31,13 +33,7 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	}
 };
 
-const redirectScopeWhenRequired = (
-	isPageTab,
-	pageScopeSelector,
-	rawPage,
-	currentScope,
-	scopeDefinitionGetter,
-) => {
+const redirectScopeWhenRequired = (isPageTab, pageScopeSelector, rawPage, currentScope, scopeDefinitionGetter) => {
 	const params = rawPage.params || {};
 	const scopeChanged = params.scope && params.scope !== currentScope;
 	const currentScopeDefinition = scopeDefinitionGetter(currentScope);
@@ -48,10 +44,7 @@ const redirectScopeWhenRequired = (
 		if (scopeChanged) {
 			rawPage = { ...rawPage, params: { ...params } };
 
-			rawPage.href = rawPage.href.replace(
-				"/".concat(rawPage.params.scope, "/"),
-				"/".concat(currentScope, "/"),
-			);
+			rawPage.href = rawPage.href.replace(`/${rawPage.params.scope}/`, `/${currentScope}/`);
 			rawPage.params.scope = currentScope;
 		}
 
@@ -82,11 +75,12 @@ export const getPageData = (path, params, module) => {
 
 export const useNavigationState = modules => {
 	const dispatch = useDispatch();
-	const location = useLocation();
-	const currentHref = location.pathname;
+	const { pathname: currentHref } = useLocation();
 	const store = useStore();
 	const hrefMapper = useSelector(selectSegmentHrefMapper);
-	const [moduleHref = "", moduleName = ""] = currentHref.match(/^\/[^/]+\/([^/]+)/) || [];
+	const prependPath = useSelector(selectPrependPathConfig);
+	const [moduleName, moduleHref] = getModuleNameFromHref(prependPath, currentHref);
+
 	const moduleData = modules[moduleName] /* istanbul ignore next */ || {};
 	const rawModule = {
 		icon: moduleData.icon,
@@ -96,11 +90,11 @@ export const useNavigationState = modules => {
 	const currentScope = useSelector(getCurrentScope);
 	const scopeDefinitionGetter = useSelector(scopeGetter);
 
-	const rawPages = unwrapImmutable(useSelector(selectMappedCurrentModuleList)).filter(
-		page =>
-			page &&
-			page.href !== `/${safeGet(page, "params", "scope") || currentScope}/${moduleName}`,
-	);
+	const rawPages = unwrapImmutable(useSelector(selectMappedCurrentModuleList)).filter(page => {
+		if (!page) return false;
+		const [pageModuleName, pageModuleHref] = getModuleNameFromHref(prependPath, page.href);
+		return page.href !== pageModuleHref || pageModuleName !== moduleName;
+	});
 
 	const [module, ...pages] = [rawModule, ...rawPages].map(rawPage => {
 		const isPageTab = !rawPage.icon;
@@ -115,13 +109,9 @@ export const useNavigationState = modules => {
 			scopeDefinitionGetter,
 		);
 		const params = page.params || {};
-		const pageBaseHref = params.scope ? `/${params.scope}/${moduleName}` : moduleHref;
+		const [, pageBaseHref] = getModuleNameFromHref(prependPath, page.href);
 
-		const pageData = getPageData(
-			page.href.replace(pageBaseHref, ""),
-			params,
-			moduleData,
-		) || { label: "[Not found]" };
+		const pageData = getPageData(page.href.replace(pageBaseHref, ""), params, moduleData) || { label: "[Not found]" };
 		let label = pageData.label;
 		if (label && label.id) {
 			label = { ...label };
@@ -131,9 +121,7 @@ export const useNavigationState = modules => {
 					delete label.values;
 				}
 			} else if (Array.isArray(pageData.dataPath)) {
-				console.warn(
-					"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-				);
+				console.warn("Using dataPath label value pointers is deprecated, use labelValueSelector instead");
 				const dataPath = [...pageData.dataPath];
 				/* istanbul ignore else */
 				if (pageData.dataIdParam) {
@@ -148,7 +136,7 @@ export const useNavigationState = modules => {
 		const close = isPageTab
 			? event => {
 					dispatch(removeTab(moduleName, page.href));
-					if (location.pathname === href) {
+					if (currentHref === href) {
 						dispatch(push(moduleHref));
 					}
 					if (event) {
