@@ -2,8 +2,12 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 import StandaloneRadio from "./StandaloneRadio";
 import RadioProps from "./standaloneRadioProps";
-import { ignoreConsoleError } from "~/utils/testUtils";
+import { ignoreConsoleError, generateClassName, createMuiTheme } from "~/utils/testUtils";
 import RadioMui from '@material-ui/core/Radio';
+import sinon from "sinon";
+import ReactDOM from "react-dom";
+import { StylesProvider } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core";
 
 describe("Radio", () => {
   it("Throws an error if radioProps has wrong type", () => {
@@ -50,15 +54,24 @@ describe("Radio", () => {
 
   it("Uses passed onChange for onChange property", () => {
     const radioProps = new RadioProps();
-    const onChange = jest.fn();
+
+    let onChange = sinon.spy().named("onChange");
     radioProps.set(RadioProps.propNames.onChange, onChange);
+    radioProps.set(RadioProps.propNames.name, "name");
+    radioProps.set(RadioProps.propNames.value, "value");
+
     const component = <StandaloneRadio radioProps={radioProps} />;
 
-    const mountedComponent = mount(component);
+    let container = document.createElement("div");
+    document.body.appendChild(container);
+    ReactDOM.render(component, container);
 
-    const radioMui = mountedComponent.find(RadioMui);
+    const click = document.createEvent("MouseEvents");
+    click.initEvent("click", true, false);
 
-    expect(radioMui.prop("onChange"), "to equal", onChange);
+    let element = container.querySelector(`span.MuiIconButton-label input[value="value"]`);
+    element.dispatchEvent(click);
+    expect(onChange, "to have calls satisfying", [{ args: ["value", "name"] }]);
   });
 
   it("Uses passed value for value property", () => {
@@ -135,5 +148,69 @@ describe("Radio", () => {
     expect(mountedComponent.prop("value"), "to equal", undefined);
     expect(mountedComponent.prop("inputProps"), "to equal", null);
     expect(mountedComponent.prop("name"), "to equal", null);
+  });
+
+  it("Use proper class if radio is not read only and checked", () => {
+    const radioProps = new RadioProps();
+    radioProps.set(RadioProps.propNames.readOnly, false);
+    radioProps.set(RadioProps.propNames.checked, true);
+    const component =
+      <StylesProvider generateClassName={generateClassName}>
+        <MuiThemeProvider theme={createMuiTheme()}>
+          <StandaloneRadio radioProps={radioProps} />
+        </MuiThemeProvider>
+      </StylesProvider>
+
+    const mountedComponent = mount(component);
+
+    expect(mountedComponent.exists(".makeStyles-radioIconChecked"), "to be true");
+  });
+
+  it("Use proper class if radio is read only and checked", () => {
+    const radioProps = new RadioProps();
+    radioProps.set(RadioProps.propNames.readOnly, true);
+    radioProps.set(RadioProps.propNames.checked, true);
+    const component =
+      <StylesProvider generateClassName={generateClassName}>
+        <MuiThemeProvider theme={createMuiTheme()}>
+          <StandaloneRadio radioProps={radioProps} />
+        </MuiThemeProvider>
+      </StylesProvider>
+
+    const mountedComponent = mount(component);
+
+    expect(mountedComponent.exists(".makeStyles-radioReadOnlyChecked"), "to be true");
+  });
+
+  it("Use proper class if radio is not read only and not checked", () => {
+    const radioProps = new RadioProps();
+    radioProps.set(RadioProps.propNames.readOnly, false);
+    radioProps.set(RadioProps.propNames.checked, false);
+    const component =
+      <StylesProvider generateClassName={generateClassName}>
+        <MuiThemeProvider theme={createMuiTheme()}>
+          <StandaloneRadio radioProps={radioProps} />
+        </MuiThemeProvider>
+      </StylesProvider>
+
+    const mountedComponent = mount(component);
+
+    expect(mountedComponent.exists(".makeStyles-radioIcon"), "to be true");
+  });
+
+  it("Use proper class if radio is read only and not checked", () => {
+    const radioProps = new RadioProps();
+    radioProps.set(RadioProps.propNames.readOnly, true);
+    radioProps.set(RadioProps.propNames.checked, false);
+    const component =
+      <StylesProvider generateClassName={generateClassName}>
+        <MuiThemeProvider theme={createMuiTheme()}>
+          <StandaloneRadio radioProps={radioProps} />
+        </MuiThemeProvider>
+      </StylesProvider>
+
+    const mountedComponent = mount(component);
+
+    expect(mountedComponent.exists(".makeStyles-radioReadOnly"), "to be true");
   });
 });

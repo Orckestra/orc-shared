@@ -1,6 +1,5 @@
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import CheckboxProps from "../Inputs/CheckboxProps";
-import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
 
 describe("table helpers buildHeaderAndRowFromConfig", () => {
@@ -606,11 +605,6 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 	it("build table rows as expected with radio", () => {
 		const changeEvent = () => console.log("just an event handler");
 
-		const elements = [
-			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
-			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
-		];
-
 		const columnDef = [
 			{
 				type: "radio",
@@ -622,6 +616,11 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			}
 		];
 
+		const elements = [
+			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
+		];
+
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
 		expect(headers.length, "to equal", 1);
@@ -630,18 +629,14 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
 
-		console.log(rows[0].columns[0].cellElement.props)
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("name"), "to equal", "preferredStore");
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id1");
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
 
-		// expect(rows[0].columns[0].cellElement.props, "to equal", {
-		// 	value: true,
-		// 	"data-row-id": "an_id1",
-		// 	onChange: changeEvent,
-		// });
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("name"), "to equal", "preferredStore");
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id2");
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("checked"), "to equal", true);
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
 
-		// expect(rows[1].columns[0].cellElement.props, "to equal", {
-		// 	value: false,
-		// 	"data-row-id": "an_id2",
-		// 	onChange: changeEvent,
-		// });
 	});
 });

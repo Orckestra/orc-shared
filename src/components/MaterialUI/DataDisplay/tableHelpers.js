@@ -7,7 +7,6 @@ import CheckboxProps from "../Inputs/CheckboxProps";
 import TableHeaderCell from "./TableHeaderCell";
 import StandaloneRadio from "../Inputs/StandaloneRadio";
 import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
-import isEmpty from "lodash";
 
 const renderByType = (e, def, rowId, readOnly) => {
 	const transformedValue = def.transform ? def.transform(e[def.fieldName]) : e[def.fieldName];

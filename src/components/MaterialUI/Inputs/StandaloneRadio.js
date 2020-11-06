@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     borderColor: "currentColor",
     "&:before": {
       content: `" "`,
-      backgroundColor: "currentColor",
+      backgroundColor: theme.palette.primary.main,
       width: theme.spacing(1),
       height: theme.spacing(1),
       position: "absolute",

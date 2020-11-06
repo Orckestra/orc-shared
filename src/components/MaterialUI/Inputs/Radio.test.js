@@ -167,6 +167,7 @@ describe("Radio Component", () => {
 		radioProps.set(RadioProps.propNames.value, "option4");
 		radioProps.set(RadioProps.propNames.radios, radios);
 		radioProps.set(RadioProps.propNames.row, true);
+		radioProps.set(RadioProps.propNames.disabled, true);
 
 		ExpectComponentToBeRenderedProperly(radioProps);
 	});
