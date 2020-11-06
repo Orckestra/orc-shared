@@ -1,4 +1,4 @@
-import StandaloneRadioProps, { isRadioProps } from "./standaloneRadioProps";
+import StandaloneRadioProps, { isStandaloneRadioProps } from "./standaloneRadioProps";
 
 describe("Standalone Radio Props", () => {
   it("Contains necessary props and rules keys", () => {
@@ -23,25 +23,25 @@ describe("Standalone Radio Props", () => {
   });
 });
 
-describe("isRadioProps", () => {
+describe("isStandaloneRadioProps", () => {
   it("Returns true if passed value is null", () => {
-    expect(isRadioProps(null), "to be true");
+    expect(isStandaloneRadioProps(null), "to be true");
   });
 
   it("Returns false if passed value is not object", () => {
-    expect(isRadioProps("Not object"), "to be false");
+    expect(isStandaloneRadioProps("Not object"), "to be false");
   });
 
   it("Returns true if passed value type is RadioProps", () => {
-    expect(isRadioProps(new StandaloneRadioProps()), "to be true");
+    expect(isStandaloneRadioProps(new StandaloneRadioProps()), "to be true");
   });
 
   it("Returns true if passed value has property _isRadioProps and it's true", () => {
-    expect(isRadioProps({ _isRadioProps: true }), "to be true");
+    expect(isStandaloneRadioProps({ _isStandaloneRadioProps: true }), "to be true");
   });
 
   it("Returns false if passed value has property _isRadioProps and it's false or missing", () => {
-    expect(isRadioProps({}), "to be false");
-    expect(isRadioProps({ _isRadioProps: false }), "to be false");
+    expect(isStandaloneRadioProps({}), "to be false");
+    expect(isStandaloneRadioProps({ _isStandaloneRadioPropss: false }), "to be false");
   });
 });

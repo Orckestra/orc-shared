@@ -1,6 +1,6 @@
 import React from "react";
 import RadioMui from '@material-ui/core/Radio';
-import RadioProps, { isRadioProps } from "./standaloneRadioProps";
+import RadioProps, { isStandaloneRadioProps } from "./standaloneRadioProps";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 
@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 const StandaloneRadio = ({ radioProps }) => {
   const classes = useStyles();
 
-  if (isRadioProps(radioProps) === false) {
+  if (isStandaloneRadioProps(radioProps) === false) {
     throw new TypeError("radioProps property is not of type RadioProps");
   }
 

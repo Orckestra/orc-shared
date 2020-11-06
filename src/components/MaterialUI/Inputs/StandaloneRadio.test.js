@@ -1,7 +1,7 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
 import StandaloneRadio from "./StandaloneRadio";
-import RadioProps from "./standaloneRadioProps";
+import StandaloneRadioProps from "./standaloneRadioProps";
 import { ignoreConsoleError, generateClassName, createMuiTheme } from "~/utils/testUtils";
 import RadioMui from '@material-ui/core/Radio';
 import sinon from "sinon";
@@ -29,8 +29,8 @@ describe("Radio", () => {
   });
 
   it("Uses passed checked for checked property", () => {
-    const radioProps = new RadioProps();
-    radioProps.set(RadioProps.propNames.checked, true);
+    const radioProps = new StandaloneRadioProps();
+    radioProps.set(StandaloneRadioProps.propNames.checked, true);
     const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
@@ -41,8 +41,8 @@ describe("Radio", () => {
   });
 
   it("Uses passed disabled for disabled property", () => {
-    const radioProps = new RadioProps();
-    radioProps.set(RadioProps.propNames.disabled, true);
+    const radioProps = new StandaloneRadioProps();
+    radioProps.set(StandaloneRadioProps.propNames.disabled, true);
     const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
@@ -53,12 +53,12 @@ describe("Radio", () => {
   });
 
   it("Uses passed onChange for onChange property", () => {
-    const radioProps = new RadioProps();
+    const radioProps = new StandaloneRadioProps();
 
     let onChange = sinon.spy().named("onChange");
-    radioProps.set(RadioProps.propNames.onChange, onChange);
-    radioProps.set(RadioProps.propNames.name, "name");
-    radioProps.set(RadioProps.propNames.value, "value");
+    radioProps.set(StandaloneRadioProps.propNames.onChange, onChange);
+    radioProps.set(StandaloneRadioProps.propNames.name, "name");
+    radioProps.set(StandaloneRadioProps.propNames.value, "value");
 
     const component = <StandaloneRadio radioProps={radioProps} />;
 
@@ -75,9 +75,9 @@ describe("Radio", () => {
   });
 
   it("Uses passed value for value property", () => {
-    const radioProps = new RadioProps();
+    const radioProps = new StandaloneRadioProps();
     const value = "value";
-    radioProps.set(RadioProps.propNames.value, value);
+    radioProps.set(StandaloneRadioProps.propNames.value, value);
     const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
@@ -88,9 +88,9 @@ describe("Radio", () => {
   });
 
   it("Uses passed name for name property", () => {
-    const radioProps = new RadioProps();
+    const radioProps = new StandaloneRadioProps();
     const name = "name";
-    radioProps.set(RadioProps.propNames.name, name);
+    radioProps.set(StandaloneRadioProps.propNames.name, name);
     const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
@@ -101,9 +101,9 @@ describe("Radio", () => {
   });
 
   it("Uses passed size for size property", () => {
-    const radioProps = new RadioProps();
+    const radioProps = new StandaloneRadioProps();
     const size = "small";
-    radioProps.set(RadioProps.propNames.size, size);
+    radioProps.set(StandaloneRadioProps.propNames.size, size);
     const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
@@ -114,9 +114,9 @@ describe("Radio", () => {
   });
 
   it("Uses passed inputProps for inputProps property", () => {
-    const radioProps = new RadioProps();
+    const radioProps = new StandaloneRadioProps();
     const inputProps = { prop: "value" };
-    radioProps.set(RadioProps.propNames.inputProps, inputProps);
+    radioProps.set(StandaloneRadioProps.propNames.inputProps, inputProps);
     const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
@@ -127,9 +127,9 @@ describe("Radio", () => {
   });
 
   it("Uses passed class for root ruleName", () => {
-    const radioProps = new RadioProps();
+    const radioProps = new StandaloneRadioProps();
     const testClassRoot = "testClassRoot";
-    radioProps.setStyle(RadioProps.ruleNames.root, testClassRoot);
+    radioProps.setStyle(StandaloneRadioProps.ruleNames.root, testClassRoot);
     const component = <StandaloneRadio radioProps={radioProps} />;
 
     const mountedComponent = mount(component);
@@ -151,9 +151,9 @@ describe("Radio", () => {
   });
 
   it("Use proper class if radio is not read only and checked", () => {
-    const radioProps = new RadioProps();
-    radioProps.set(RadioProps.propNames.readOnly, false);
-    radioProps.set(RadioProps.propNames.checked, true);
+    const radioProps = new StandaloneRadioProps();
+    radioProps.set(StandaloneRadioProps.propNames.readOnly, false);
+    radioProps.set(StandaloneRadioProps.propNames.checked, true);
     const component =
       <StylesProvider generateClassName={generateClassName}>
         <MuiThemeProvider theme={createMuiTheme()}>
@@ -167,9 +167,9 @@ describe("Radio", () => {
   });
 
   it("Use proper class if radio is read only and checked", () => {
-    const radioProps = new RadioProps();
-    radioProps.set(RadioProps.propNames.readOnly, true);
-    radioProps.set(RadioProps.propNames.checked, true);
+    const radioProps = new StandaloneRadioProps();
+    radioProps.set(StandaloneRadioProps.propNames.readOnly, true);
+    radioProps.set(StandaloneRadioProps.propNames.checked, true);
     const component =
       <StylesProvider generateClassName={generateClassName}>
         <MuiThemeProvider theme={createMuiTheme()}>
@@ -183,9 +183,9 @@ describe("Radio", () => {
   });
 
   it("Use proper class if radio is not read only and not checked", () => {
-    const radioProps = new RadioProps();
-    radioProps.set(RadioProps.propNames.readOnly, false);
-    radioProps.set(RadioProps.propNames.checked, false);
+    const radioProps = new StandaloneRadioProps();
+    radioProps.set(StandaloneRadioProps.propNames.readOnly, false);
+    radioProps.set(StandaloneRadioProps.propNames.checked, false);
     const component =
       <StylesProvider generateClassName={generateClassName}>
         <MuiThemeProvider theme={createMuiTheme()}>
@@ -199,9 +199,9 @@ describe("Radio", () => {
   });
 
   it("Use proper class if radio is read only and not checked", () => {
-    const radioProps = new RadioProps();
-    radioProps.set(RadioProps.propNames.readOnly, true);
-    radioProps.set(RadioProps.propNames.checked, false);
+    const radioProps = new StandaloneRadioProps();
+    radioProps.set(StandaloneRadioProps.propNames.readOnly, true);
+    radioProps.set(StandaloneRadioProps.propNames.checked, false);
     const component =
       <StylesProvider generateClassName={generateClassName}>
         <MuiThemeProvider theme={createMuiTheme()}>

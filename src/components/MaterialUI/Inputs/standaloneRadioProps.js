@@ -30,13 +30,13 @@ class StandaloneRadioProps extends ComponentProps {
 
     this.componentClasses.set(this.constructor.ruleNames.root, null);
 
-    this._isRadioProps = true;
+    this._isStandaloneRadioProps = true;
   }
 }
 
-export const isRadioProps = function (value) {
+export const isStandaloneRadioProps = function (value) {
   if (value == null) return true;
-  return typeof value === "object" && (value instanceof StandaloneRadioProps || value._isRadioProps === true);
+  return typeof value === "object" && (value instanceof StandaloneRadioProps || value._isStandaloneRadioProps === true);
 };
 
 export default StandaloneRadioProps;
