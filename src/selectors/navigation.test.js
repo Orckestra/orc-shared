@@ -10,6 +10,7 @@ import {
 	resetLastScope,
 	selectRouteHref,
 	selectRoutePath,
+	selectPrependPathConfig,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -25,22 +26,27 @@ describe("selectTabGetter", () => {
 	it("provides a function that returns a named tab", () =>
 		expect(selectTabGetter, "called with", [state]).then(getter =>
 			Promise.all([
-				expect(
-					getter,
-					"called with",
-					["/path/to/tab1"],
-					"to equal",
-					Immutable.fromJS({ tab: 1 }),
-				),
-				expect(
-					getter,
-					"called with",
-					["/path/to/tab2"],
-					"to equal",
-					Immutable.fromJS({ tab: 2 }),
-				),
+				expect(getter, "called with", ["/path/to/tab1"], "to equal", Immutable.fromJS({ tab: 1 })),
+				expect(getter, "called with", ["/path/to/tab2"], "to equal", Immutable.fromJS({ tab: 2 })),
 				expect(getter, "called with", ["/path/to/tab3"], "to equal", undefined),
 			]),
+		));
+});
+
+describe("selectPrependPathConfig", () => {
+	it("finds the prepend path in config", () =>
+		expect(
+			selectPrependPathConfig,
+			"called with",
+			[
+				Immutable.fromJS({
+					navigation: {
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
+				}),
+			],
+			"to be",
+			"/:scope/",
 		));
 });
 
@@ -51,7 +57,10 @@ describe("selectCurrentModuleName", () => {
 			"called with",
 			[
 				Immutable.fromJS({
-					navigation: { route: { match: { path: "/:scope/thing" } } },
+					navigation: {
+						route: { match: { path: "/:scope/thing" } },
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
 				}),
 			],
 			"to be",
@@ -66,6 +75,7 @@ describe("selectCurrentModuleName", () => {
 				Immutable.fromJS({
 					navigation: {
 						route: { match: { path: "/:scope/thing/further/pages" } },
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
 					},
 				}),
 			],
@@ -79,7 +89,10 @@ describe("selectCurrentModuleName", () => {
 			"called with",
 			[
 				Immutable.fromJS({
-					navigation: { route: { match: { path: "/dev/foo" } } },
+					navigation: {
+						route: { match: { path: "/dev/foo" } },
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
 				}),
 			],
 			"to be",
@@ -100,6 +113,7 @@ describe("selectMappedCurrentModuleList", () => {
 					"/path/to/tab4": { tab: 4 },
 				},
 				moduleTabs: { thing: ["/path/to/tab1", "/path/to/tab3"] },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
 			},
 		});
 	});
@@ -115,13 +129,7 @@ describe("selectMappedCurrentModuleList", () => {
 
 	it("returns an empty list if there is no list in state", () => {
 		state = state.setIn(["navigation", "route", "match", "path"], "/:scope/other");
-		return expect(
-			selectMappedCurrentModuleList,
-			"called with",
-			[state],
-			"to equal",
-			Immutable.fromJS([]),
-		);
+		return expect(selectMappedCurrentModuleList, "called with", [state], "to equal", Immutable.fromJS([]));
 	});
 });
 
@@ -139,12 +147,12 @@ describe("selectSegmentHrefMapper", () => {
 				mappedHrefs: {
 					"to/tab1": "to/tab1/subpage",
 				},
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
 			},
 		});
 	});
 
-	it("returns a function", () =>
-		expect(selectSegmentHrefMapper, "when called with", [state], "to be a function"));
+	it("returns a function", () => expect(selectSegmentHrefMapper, "when called with", [state], "to be a function"));
 
 	describe("returned function", () => {
 		let mapper;
@@ -153,13 +161,7 @@ describe("selectSegmentHrefMapper", () => {
 		});
 
 		it("maps segment hrefs", () =>
-			expect(
-				mapper,
-				"when called with",
-				["/path/to/tab1"],
-				"to equal",
-				"/path/to/tab1/subpage",
-			));
+			expect(mapper, "when called with", ["/path/to/tab1"], "to equal", "/path/to/tab1/subpage"));
 
 		it("passes unmapped hrefs", () =>
 			expect(mapper, "when called with", ["/path/to/tab2"], "to equal", "/path/to/tab2"));
@@ -226,13 +228,7 @@ describe("getCurrentScopeFromRoute", () => {
 	it("gets the last scope, if no scope set and previous scope is known", () => {
 		getCurrentScope(state);
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
-		return expect(
-			getCurrentScopeFromRoute,
-			"when called with",
-			[state],
-			"to be",
-			"thing",
-		);
+		return expect(getCurrentScopeFromRoute, "when called with", [state], "to be", "thing");
 	});
 
 	it("gets null if no scope set and no previous known", () => {
@@ -264,33 +260,20 @@ describe("route selectors", () => {
 
 	describe("selectRouteParams", () => {
 		it("selects the currently matched route's parameters.", () =>
-			expect(
-				selectRouteParams,
-				"when called with",
-				[state],
-				"to equal",
-				Immutable.fromJS({ foo: "true", bar: 12 }),
-			));
+			expect(selectRouteParams, "when called with", [state], "to equal", Immutable.fromJS({ foo: "true", bar: 12 })));
 
 		it("handles missing data", () =>
-			expect(
-				selectRouteParams,
+			expect(selectRouteParams, "when called with", [noMatchState], "to equal", Immutable.Map()).and(
 				"when called with",
-				[noMatchState],
+				[noParamState],
 				"to equal",
 				Immutable.Map(),
-			).and("when called with", [noParamState], "to equal", Immutable.Map()));
+			));
 	});
 
 	describe("selectRouteHref", () => {
 		it("selects the currently matched route's href.", () =>
-			expect(
-				selectRouteHref,
-				"when called with",
-				[state],
-				"to equal",
-				"/TestScope/thing/further/pages",
-			));
+			expect(selectRouteHref, "when called with", [state], "to equal", "/TestScope/thing/further/pages"));
 
 		it("handles missing data", () =>
 			expect(selectRouteHref, "when called with", [noMatchState], "to equal", "").and(
@@ -303,13 +286,7 @@ describe("route selectors", () => {
 
 	describe("selectRoutePath", () => {
 		it("selects the currently matched route's path.", () =>
-			expect(
-				selectRoutePath,
-				"when called with",
-				[state],
-				"to equal",
-				"/:scope/thing/further/pages",
-			));
+			expect(selectRoutePath, "when called with", [state], "to equal", "/:scope/thing/further/pages"));
 
 		it("handles missing data", () =>
 			expect(selectRoutePath, "when called with", [noMatchState], "to equal", "").and(
