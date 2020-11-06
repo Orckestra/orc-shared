@@ -1,6 +1,5 @@
 import React from "react";
 import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography';
 import TabLabel from "./TabLabel";
 import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
@@ -14,13 +13,13 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    flex: "0 0 10px",
+    flex: `0 0 ${theme.spacing(1)}`,
     maxHeight: 0,
-    padding: "0 0 0 10px",
-    margin: "0 200px 0 0",
+    padding: `0 0 0 ${theme.spacing(1)}`,
+    margin: `0 ${theme.spacing(20)} 0 0`,
     display: "flex",
     alignItems: "flex-end",
-    width: "calc(100% - 210px)",
+    width: `calc(100% - ${theme.spacing(21)})`,
   },
   tab: {
     flex: "0 0 auto"
@@ -139,7 +138,7 @@ const MuiBar = ({ module, pages }) => {
           {
             pages.map(
               ({ href, label, close }, index) => {
-                const tabLabel = <Typography><TabLabel label={label} /></Typography>;
+                const tabLabel = <TabLabel label={label} />;
                 const closeIcon = (
                   <Icon
                     id="close"
@@ -149,7 +148,7 @@ const MuiBar = ({ module, pages }) => {
                 );
                 tabLabels.push({
                   value: index + 1,
-                  label: <TabLabel label={label} />,
+                  label: tabLabel,
                   sortOrder: index + 1
                 });
                 return (
@@ -163,10 +162,6 @@ const MuiBar = ({ module, pages }) => {
                           {props.children}
                           {closeIcon}
                         </Link>
-                        // <div className={props.className} onClick={props.onClick} {...props}>
-                        //   <Link to={props.to} children={props.children} />
-                        //   {closeIcon}
-                        // </div>
                       )
                     })}
                     label={tabLabel}

@@ -28,14 +28,12 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: 0,
 			whiteSpace: "normal",
 			"&:hover": {
-				backgroundColor: theme.palette.grey.light,
-				color: theme.palette.grey.dark,
+				backgroundColor: theme.palette.primary.light,
 			},
 			"&:focus, &:active": {
 				borderRadius: 0,
 				"&:hover": {
-					color: theme.palette.grey.dark,
-					backgroundColor: theme.palette.hovergrey.light,
+					backgroundColor: theme.palette.primary.light,
 				},
 			},
 		},
