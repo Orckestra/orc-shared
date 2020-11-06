@@ -485,9 +485,6 @@ const setThemeOverrides = theme => ({
 				bottom: 0,
 				zIndex: 10,
 			},
-			"& > .MuiTabs-scroller": {
-				marginLeft: theme.spacing(2),
-			},
 		},
 	},
 	MuiTab: {

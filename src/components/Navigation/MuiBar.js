@@ -1,19 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import Tabs from '@material-ui/core/Tabs';
-
-import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import { useIntl } from "react-intl";
-import useLabelMessage from "../../hooks/useLabelMessage";
-import TabLabel, { labelvalue } from "./TabLabel";
+import TabLabel from "./TabLabel";
 import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import { Link } from "react-router-dom";
 import Select from "./../MaterialUI/Inputs/Select";
 import SelectProps from "./../MaterialUI/Inputs/SelectProps";
-import ResizeDetector from "react-resize-detector";
 import { WatchChildren } from 'react-mutation-observer';
+import Icon from "./../MaterialUI/DataDisplay/Icon";
+import classNames from "classnames";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,41 +25,76 @@ const useStyles = makeStyles((theme) => ({
   tab: {
     flex: "0 0 auto"
   },
+  tabWrapper: {
+    "& > *:first-child": {
+      order: "1 !important",
+      marginLeft: theme.spacing(1),
+      color: theme.palette.primary.contrastText,
+
+      "&:hover": {
+        color: theme.palette.primary.main,
+      }
+    }
+  },
+  hidden: {
+    visibility: "hidden",
+    position: "absolute"
+  },
+  moduleIcon: {
+    width: `${theme.spacing(2.4)} !important`,
+    height: theme.spacing(2.4),
+    color: "inherit"
+  },
+  select: {
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(1)
+  },
+  closeIcon: {
+    marginLeft: theme.spacing(1),
+    color: theme.palette.primary.contrastText,
+
+    "&:hover": {
+      color: theme.palette.primary.main,
+    }
+  },
 }));
 
-function a11yProps(index) {
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    'aria-controls': `scrollable-auto-tabpanel-${index}`,
-  };
-}
+const ScrollButton = () => {
+  const classes = useStyles();
 
-const Test = () => {
-  return <div className="showMore" />;
+  return <div className={classNames(classes.hidden, "showMore")} />
 };
+
+const HiddenTab = () => {
+  return <div />
+}
 
 const MuiBar = ({ module, pages }) => {
   const classes = useStyles();
-
-
-  const [value, setValue] = React.useState(0);
+  const history = useHistory();
+  const activeTabIndex = module.active === true ? 0 : pages.findIndex(p => p.active === true) + 1;
   const [showSelect, setShowSelect] = React.useState(false);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChange = (_, value) => {
+    if (value === 0) {
+      history.push(module.href);
+    }
+    else {
+      const href = pages[value - 1].href;
+      history.push(href)
+    }
   };
 
   const tabLabels = [];
 
   const selectProps = new SelectProps();
   selectProps.set(SelectProps.propNames.iconSelect, true);
-  selectProps.set(SelectProps.propNames.value, value);
-  selectProps.set(SelectProps.propNames.update, (newValue) => setValue(newValue));
+  selectProps.set(SelectProps.propNames.value, activeTabIndex === 0 ? '' : activeTabIndex);
+  selectProps.set(SelectProps.propNames.update, (newValue) => handleChange(null, newValue));
 
-  const select = <Select options={tabLabels} selectProps={selectProps} />;
+  const select = <div className={classes.select}><Select options={tabLabels} selectProps={selectProps} /></div>;
 
   const addHandler = (event) => {
-    console.log(event.child);
     if (event.child.className?.includes("showMore")) {
       setShowSelect(true);
     }
@@ -74,29 +106,74 @@ const MuiBar = ({ module, pages }) => {
     }
   }
 
+  const tabCloseHandler = (event, closeCallback) => {
+    event.stopPropagation();
+    event.preventDefault();
+    closeCallback();
+  };
+
+  const moduleIcon = <Icon id={module.icon} className={classes.moduleIcon} />
+
   return (
     <div className={classes.container}>
-      <Tab label={<TabLabel label={module.label} />} component={Link} key={module.href} to={module.href} />
+      <Tab
+        label={<TabLabel label={module.label} />}
+        component={Link}
+        key={module.href}
+        to={module.href}
+        icon={moduleIcon}
+        onClick={(e) => handleChange(e, 0)}
+        className={activeTabIndex === 0 ? "Mui-selected" : null}
+        disableFocusRipple
+      />
+
       <WatchChildren onRemoval={(event) => removeHandler(event)} onAddition={(event) => addHandler(event)}>
         <Tabs
-          value={value}
+          value={activeTabIndex}
           onChange={handleChange}
           variant="scrollable"
           scrollButtons="auto"
-          ScrollButtonComponent={Test}
+          ScrollButtonComponent={ScrollButton}
         >
+          <Tab value={0} component={React.forwardRef((props, ref) => <HiddenTab />)} />
           {
             pages.map(
-              ({ href, label }, index) => {
+              ({ href, label, close }, index) => {
                 const tabLabel = <Typography><TabLabel label={label} /></Typography>;
+                const closeIcon = (
+                  <Icon
+                    id="close"
+                    className={classes.closeIcon}
+                    onClick={(event) => tabCloseHandler(event, close)}
+                  />
+                );
                 tabLabels.push({
-                  value: index,
+                  value: index + 1,
                   label: <TabLabel label={label} />,
-                  sortOrder: index
+                  sortOrder: index + 1
                 });
                 return (
-                  //<MuiTab label={label} href={href} key={href} index={index} />
-                  <Tab className={classes.tab} component={Link} label={tabLabel} key={href} to={href} value={index} />
+                  <Tab
+                    classes={{
+                      root: classes.tab,
+                    }}
+                    component={React.forwardRef((props, ref) => {
+                      return (
+                        <Link to={props.to} {...props}>
+                          {props.children}
+                          {closeIcon}
+                        </Link>
+                        // <div className={props.className} onClick={props.onClick} {...props}>
+                        //   <Link to={props.to} children={props.children} />
+                        //   {closeIcon}
+                        // </div>
+                      )
+                    })}
+                    label={tabLabel}
+                    key={href}
+                    to={href}
+                    value={index + 1}
+                  />
                 )
               }
             )
