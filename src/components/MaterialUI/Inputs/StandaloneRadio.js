@@ -73,7 +73,7 @@ const StandaloneRadio = ({ radioProps }) => {
   const disabled = radioProps?.get(RadioProps.propNames.disabled) || false;
   const onChange = radioProps?.get(RadioProps.propNames.onChange) || null;
   const value = radioProps?.get(RadioProps.propNames.value) || undefined;
-  const size = radioProps?.get(RadioProps.propNames.size) || 'medium';
+  const size = radioProps?.get(RadioProps.propNames.size) || "medium";
   const inputProps = radioProps?.get(RadioProps.propNames.inputProps) || null;
   const name = radioProps?.get(RadioProps.propNames.name) || null;
   const readOnly = radioProps?.get(RadioProps.propNames.readOnly) || false;

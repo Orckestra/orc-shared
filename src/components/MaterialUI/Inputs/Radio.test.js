@@ -18,8 +18,9 @@ const ExpectComponentToBeRenderedProperly = radioProps => {
 	const label = radioProps?.get(RadioProps.propNames.label);
 	const defaultVal = radioProps?.get(RadioProps.propNames.defaultVal);
 	const value = radioProps?.get(RadioProps.propNames.value) ?? defaultVal;
-	const row = radioProps?.get(RadioProps.propNames.row);
+	const row = radioProps?.get(RadioProps.propNames.row) ?? true;
 	const radios = radioProps?.get(RadioProps.propNames.radios) ?? [];
+	const disabled = radioProps?.get(RadioProps.propNames.disabled) ?? false;
 
 	const formControl = mountedComponent.find(FormControl);
 	const formControlElement = formControl.getElements()[0];
@@ -56,7 +57,8 @@ const ExpectComponentToBeRenderedProperly = radioProps => {
 					x.props.control.type.options.name === "MuiRadio" &&
 					x.props.name === radio.value &&
 					x.props.value === radio.value &&
-					x.props.label === radio.label,
+					x.props.label === radio.label &&
+					x.props.disabled === disabled,
 			) || null;
 		expect(option, "not to be", null);
 	});

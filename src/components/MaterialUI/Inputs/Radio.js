@@ -50,7 +50,7 @@ const extractAndValidateProps = radioProps => {
 	const defaultVal = radioProps.get(RadioProps.propNames.defaultVal);
 	const value = radioProps.get(RadioProps.propNames.value) ?? defaultVal;
 	const update = radioProps.get(RadioProps.propNames.update);
-	const row = radioProps.get(RadioProps.propNames.row);
+	const row = radioProps.get(RadioProps.propNames.row) || true;
 	const radios = radioProps.get(RadioProps.propNames.radios);
 	const disabled = radioProps.get(RadioProps.propNames.disabled) || false;
 

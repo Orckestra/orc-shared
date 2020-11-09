@@ -603,7 +603,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 	});
 
 	it("build table rows as expected with radio", () => {
-		const changeEvent = () => console.log("just an event handler");
+		const changeEvent = jest.fn();
 
 		const columnDef = [
 			{

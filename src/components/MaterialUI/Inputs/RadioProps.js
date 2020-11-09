@@ -18,10 +18,10 @@ class RadioProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.value, null);
 		this.componentProps.set(this.constructor.propNames.defaultVal, null);
 		this.componentProps.set(this.constructor.propNames.label, null);
-		this.componentProps.set(this.constructor.propNames.row, true);
+		this.componentProps.set(this.constructor.propNames.row, null);
 		this.componentProps.set(this.constructor.propNames.name, null);
 		this.componentProps.set(this.constructor.propNames.radios, null);
-		this.componentProps.set(this.constructor.propNames.disabled, false);
+		this.componentProps.set(this.constructor.propNames.disabled, null);
 
 		this._isRadioProps = true;
 	}

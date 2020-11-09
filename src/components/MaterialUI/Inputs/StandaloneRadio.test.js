@@ -20,12 +20,28 @@ describe("Radio", () => {
   });
 
   it("Renders Radio propely", () => {
-    const component = <StandaloneRadio />;
+    const component = <StylesProvider generateClassName={generateClassName}>
+      <MuiThemeProvider theme={createMuiTheme()}>
+        <StandaloneRadio />
+      </MuiThemeProvider>
+    </StylesProvider>
+    const expected =
+      <StylesProvider generateClassName={generateClassName}>
+        <MuiThemeProvider theme={createMuiTheme()}>
+          <RadioMui
+            checked={false}
+            disabled={false}
+            onChange={null}
+            size={"medium"}
+            inputProps={null}
+            name={null}
+            icon={<span className={"makeStyles-radioIcon"} />}
+          />
+        </MuiThemeProvider>
+      </StylesProvider>
 
-    const mountedComponent = mount(component);
-    const expected = <RadioMui />
 
-    expect(mountedComponent.containsMatchingElement(expected), "to be true");
+    expect(component, "when mounted", "to satisfy", expected);
   });
 
   it("Uses passed checked for checked property", () => {
