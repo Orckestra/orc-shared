@@ -50,8 +50,9 @@ const extractAndValidateProps = radioProps => {
 	const defaultVal = radioProps.get(RadioProps.propNames.defaultVal);
 	const value = radioProps.get(RadioProps.propNames.value) ?? defaultVal;
 	const update = radioProps.get(RadioProps.propNames.update);
-	const row = radioProps.get(RadioProps.propNames.row);
+	const row = radioProps.get(RadioProps.propNames.row) || true;
 	const radios = radioProps.get(RadioProps.propNames.radios);
+	const disabled = radioProps.get(RadioProps.propNames.disabled) || false;
 
 	if (!radios || radios.length < 2) {
 		throw new Error("Radio component must have at least two options");
@@ -73,12 +74,12 @@ const extractAndValidateProps = radioProps => {
 		throw new Error("Radio component must not have duplicated radio values");
 	}
 
-	return { name, label, defaultVal, value, update, row, radios };
+	return { name, label, defaultVal, value, update, row, radios, disabled };
 };
 
 const Radio = ({ radioProps }) => {
 	const classes = useStyles();
-	const { name, label, defaultVal, value, update, row, radios } = extractAndValidateProps(radioProps);
+	const { name, label, defaultVal, value, update, row, radios, disabled } = extractAndValidateProps(radioProps);
 	const handleChange = update ? event => update(event.target.value) : null;
 
 	return (
@@ -101,6 +102,7 @@ const Radio = ({ radioProps }) => {
 							name={radio.value}
 							value={radio.value}
 							label={radio.label}
+							disabled={disabled}
 							control={
 								<RadioMui
 									color="primary"
