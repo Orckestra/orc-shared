@@ -1,5 +1,5 @@
 import Immutable from "immutable";
-import { setRoute, removeTab, mapHref } from "../actions/navigation";
+import { setRoute, removeTab, mapHref, setHrefConfig } from "../actions/navigation";
 import reducer from "./navigation";
 
 describe("Navigation reducer", () => {
@@ -9,6 +9,7 @@ describe("Navigation reducer", () => {
 			tabIndex: {},
 			moduleTabs: {},
 			mappedHrefs: {},
+			config: {},
 		}));
 
 	describe("SET_ROUTE", () => {
@@ -18,6 +19,7 @@ describe("Navigation reducer", () => {
 					location: {},
 					match: {},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/Value/" },
 			});
 			const action = setRoute(
 				{
@@ -40,6 +42,7 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "/test/old": {} },
 				moduleTabs: {},
+				config: { prependPath: "/:scope/", prependHref: "/Value/" },
 			});
 			const action = setRoute(
 				{
@@ -70,6 +73,7 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "/test/old": {} },
 				moduleTabs: {},
+				config: { prependPath: "/:scope/", prependHref: "/Value/" },
 			});
 			const action = setRoute(
 				{
@@ -96,6 +100,7 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "test/old": {} },
 				moduleTabs: { test: ["test/other"] },
+				config: { prependPath: "/:scope/", prependHref: "/Value/" },
 			});
 			const action = setRoute(
 				{
@@ -122,6 +127,7 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "test/old": {}, "test/new": {} },
 				moduleTabs: { test: ["test/new"] },
+				config: { prependPath: "/:scope/", prependHref: "/Value/" },
 			});
 			const action = setRoute(
 				{
@@ -151,6 +157,7 @@ describe("Navigation reducer", () => {
 					location: {},
 					match: {},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/Value/" },
 			});
 			const action = setRoute(
 				{
@@ -176,6 +183,7 @@ describe("Navigation reducer", () => {
 				tabIndex: { "test/old": {}, "test/new": {} },
 				moduleTabs: { test: ["test/new"] },
 				mappedHrefs: {},
+				config: { prependHref: "/scope/" },
 			});
 			const action = mapHref("/Value/test", "/Value/test/new");
 			const newState = reducer(oldState, action);
@@ -194,6 +202,7 @@ describe("Navigation reducer", () => {
 				tabIndex: { "test/old": {}, "test/new": {} },
 				moduleTabs: { test: ["test/new"] },
 				mappedHrefs: {},
+				config: { prependHref: "/scope/" },
 			});
 			const action = mapHref("te111st", "/Value/test/new");
 			const newState = reducer(oldState, action);
@@ -205,6 +214,7 @@ describe("Navigation reducer", () => {
 				tabIndex: { "test/old": {}, "test/new": {} },
 				moduleTabs: { test: ["test/new"] },
 				mappedHrefs: {},
+				config: { prependHref: "/scope/" },
 			});
 			const action = mapHref("/Value/test", "te111st");
 			const newState = reducer(oldState, action);
@@ -217,6 +227,7 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "test/old": {}, "test/new": {} },
 				moduleTabs: { thing: ["test/new", "test/old"] },
+				config: { prependHref: "/scope/" },
 			});
 			const action = removeTab("thing", "/scope/test/new");
 			const newState = reducer(oldState, action);
@@ -225,6 +236,7 @@ describe("Navigation reducer", () => {
 				Immutable.fromJS({
 					tabIndex: { "test/old": {} },
 					moduleTabs: { thing: ["test/old"] },
+					config: { prependHref: "/scope/" },
 				}),
 			);
 		});
@@ -233,6 +245,7 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "test/old": {}, "test/new": {} },
 				moduleTabs: {},
+				config: { prependHref: "/scope/" },
 			});
 			const action = removeTab("thing", "/scope/test/new");
 			return expect(() => reducer(oldState, action), "not to error")
@@ -243,6 +256,7 @@ describe("Navigation reducer", () => {
 						Immutable.fromJS({
 							tabIndex: { "test/old": {} },
 							moduleTabs: {},
+							config: { prependHref: "/scope/" },
 						}),
 					),
 				);
@@ -252,6 +266,7 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "/test/old": {}, "/test/new": {} },
 				moduleTabs: { thing: ["/test/new", "/test/old"] },
+				config: { prependHref: "/scope/" },
 			});
 			const action = removeTab("thing", "/test/fail");
 			const newState = reducer(oldState, action);
@@ -262,10 +277,27 @@ describe("Navigation reducer", () => {
 			const oldState = Immutable.fromJS({
 				tabIndex: { "/test/old": {}, "/test/new": {} },
 				moduleTabs: { thing: ["/test/new", "/test/old"] },
+				config: { prependHref: "/scope/" },
 			});
 			const action = removeTab("thing", "te111st");
 			const newState = reducer(oldState, action);
 			return expect(newState, "to be", oldState);
+		});
+	});
+
+	describe("SET_HREF_CONFIG", () => {
+		it("update href config in navigation state", () => {
+			const oldState = Immutable.fromJS({
+				config: {},
+			});
+			const action = setHrefConfig("/:scope/", "/scope/");
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to satisfy",
+				Immutable.fromJS({
+					config: { prependPath: "/:scope/", prependHref: "/scope/" },
+				}),
+			);
 		});
 	});
 });

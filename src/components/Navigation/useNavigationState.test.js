@@ -89,14 +89,7 @@ describe("useNavigationState", () => {
 					},
 				},
 				moduleTabs: {
-					test: [
-						"test",
-						"test/page1",
-						"test/foo",
-						"test/bar",
-						"test/page3",
-						"test/notexist",
-					],
+					test: ["test", "test/page1", "test/foo", "test/bar", "test/page3", "test/notexist"],
 				},
 				mappedHrefs: {},
 				route: {
@@ -106,6 +99,7 @@ describe("useNavigationState", () => {
 						params: { scope: "TestScope", page2: "bar" },
 					},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			scopes: {
 				Global: {
@@ -304,14 +298,10 @@ describe("useNavigationState", () => {
 		).then(() =>
 			expect(console.warn, "to have calls satisfying", [
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 			]),
 		));
@@ -413,14 +403,10 @@ describe("useNavigationState", () => {
 		).then(() =>
 			expect(console.warn, "to have calls satisfying", [
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 			]),
 		));
@@ -478,6 +464,7 @@ describe("useNavigationState", () => {
 							params: { scope: "TestScope" },
 						},
 					},
+					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 				},
 				scopes: {
 					TestScope: {
@@ -599,6 +586,7 @@ describe("useNavigationState", () => {
 							params: { scope: "TestScope", page2: "bar" },
 						},
 					},
+					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 				},
 				scopes: {
 					TestScope: {
@@ -828,14 +816,10 @@ describe("useNavigationState", () => {
 			).then(() =>
 				expect(console.warn, "to have calls satisfying", [
 					{
-						args: [
-							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-						],
+						args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 					},
 					{
-						args: [
-							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-						],
+						args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 					},
 				]),
 			);
@@ -985,22 +969,11 @@ describe("getPageData", () => {
 		}));
 
 	it("handles variable path steps", () =>
-		expect(
-			getPageData,
-			"when called with",
-			["/thing", { var: "thing" }, module],
-			"to satisfy",
-			{
-				label: "Page 1",
-				component: TestComp2,
-			},
-		));
+		expect(getPageData, "when called with", ["/thing", { var: "thing" }, module], "to satisfy", {
+			label: "Page 1",
+			component: TestComp2,
+		}));
 
 	it("handles missing page data", () =>
-		expect(
-			getPageData,
-			"when called with",
-			["/page2/notHere", {}, module],
-			"to be undefined",
-		));
+		expect(getPageData, "when called with", ["/page2/notHere", {}, module], "to be undefined"));
 });
