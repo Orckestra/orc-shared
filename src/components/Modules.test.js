@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "unexpected-reaction";
 import { getStyledClassSelector } from "../utils/testUtils";
-import { TabBar, ScrollableBar } from "./Navigation/Bar";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
 import {
 	Wrapper as SegmentWrapper,
@@ -13,9 +12,13 @@ import {
 	Item as SegmentItem,
 } from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
+import TabBar from "./MaterialUI/Navigation/TabBar";
+import { Ignore } from "unexpected-reaction";
+import { mount as mnt } from "enzyme";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
+
 	beforeEach(() => {
 		Mod2 = () => <div id="Mod2" />;
 		Mod3 = () => <div id="Mod3" />;
@@ -85,41 +88,54 @@ describe("Modules", () => {
 			},
 		});
 		store = {
-			subscribe: () => {},
-			dispatch: () => {},
+			subscribe: () => { },
+			dispatch: () => { },
 			getState: () => state,
 		};
 	});
 
-	it("renders a module table with navigation tabs", () =>
-		expect(
+	it("renders a module table with navigation tabs", () => {
+		const component = (
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/TestScope/demos"]}>
 					<IntlProvider locale="en">
 						<Modules modules={modules} scope="TestScope" />
 					</IntlProvider>
 				</MemoryRouter>
-			</Provider>,
-			"when mounted",
-			"queried for first",
-			getStyledClassSelector(TabBar),
-			"to satisfy",
-			<MemoryRouter initialEntries={["/TestScope/demos"]}>
-				<IntlProvider locale="en">
-					<TabBar>
-						<ModuleTab active>
-							<TabLink to="/TestScope/demos">
-								<ModuleIcon id="cloud" />
-								<TabText>Module 3</TabText>
-							</TabLink>
-						</ModuleTab>
-						<ScrollableBar />
-					</TabBar>
-				</IntlProvider>
-			</MemoryRouter>,
-		));
+			</Provider>
+		);
 
-	it("renders a module table as a routing system (user route)", () =>
+		const module = {
+			icon: 'cloud',
+			label: 'Module 3',
+			href: '/TestScope/demos',
+			mappedFrom: '/TestScope/demos',
+			active: true
+		};
+
+		const expected = [
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/TestScope/demos"]}>
+					<IntlProvider locale="en">
+						<TabBar module={module} pages={[]} />
+					</IntlProvider>
+				</MemoryRouter>
+			</Provider>,
+			<Mod3 />
+		];
+
+		expect(mount(component).childNodes, "to satisfy", expected);
+	});
+
+	it("renders a module table as a routing system (user route)", () => {
+		const module = {
+			icon: 'user',
+			label: 'Module 1',
+			href: '/TestScope/users',
+			mappedFrom: '/TestScope/users',
+			active: true
+		};
+
 		expect(
 			mount(
 				<Provider store={store}>
@@ -132,19 +148,13 @@ describe("Modules", () => {
 			).childNodes,
 			"to satisfy",
 			[
-				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-					<IntlProvider locale="en">
-						<TabBar>
-							<ModuleTab>
-								<TabLink to="/TestScope/users">
-									<ModuleIcon id="user" />
-									<TabText>Module 1</TabText>
-								</TabLink>
-							</ModuleTab>
-							<ScrollableBar />
-						</TabBar>
-					</IntlProvider>
-				</MemoryRouter>,
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
+						<IntlProvider locale="en">
+							<TabBar module={module} pages={[]} />
+						</IntlProvider>
+					</MemoryRouter>
+				</Provider>,
 				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
 					<SegmentWrapper>
 						<SegmentList>
@@ -155,11 +165,20 @@ describe("Modules", () => {
 						</SegmentList>
 						<Page1 />
 					</SegmentWrapper>
-				</MemoryRouter>,
+				</MemoryRouter>
 			],
-		));
+		)
+	});
 
-	it("renders a module table as a routing system (photo route)", () =>
+	it("renders a module table as a routing system (photo route)", () => {
+		const module = {
+			icon: 'image',
+			label: 'Module 2',
+			href: '/TestScope/photos',
+			mappedFrom: '/TestScope/photos',
+			active: true
+		};
+
 		expect(
 			mount(
 				<Provider store={store}>
@@ -172,24 +191,27 @@ describe("Modules", () => {
 			).childNodes,
 			"to satisfy",
 			[
-				<MemoryRouter initialEntries={["/TestScope/photos"]}>
-					<IntlProvider locale="en">
-						<TabBar>
-							<ModuleTab active>
-								<TabLink to="/TestScope/photos">
-									<ModuleIcon id="image" />
-									<TabText>Module 2</TabText>
-								</TabLink>
-							</ModuleTab>
-							<ScrollableBar />
-						</TabBar>
-					</IntlProvider>
-				</MemoryRouter>,
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/photos"]}>
+						<IntlProvider locale="en">
+							<TabBar module={module} pages={[]} />
+						</IntlProvider>
+					</MemoryRouter>
+				</Provider>,
 				<Mod2 />,
 			],
-		));
+		)
+	});
 
-	it("renders a module table as a routing system (demo route)", () =>
+	it("renders a module table as a routing system (demo route)", () => {
+		const module = {
+			icon: 'cloud',
+			label: 'Module 3',
+			href: '/TestScope/demos',
+			mappedFrom: '/TestScope/demos',
+			active: true
+		};
+
 		expect(
 			mount(
 				<Provider store={store}>
@@ -202,20 +224,15 @@ describe("Modules", () => {
 			).childNodes,
 			"to satisfy",
 			[
-				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<IntlProvider locale="en">
-						<TabBar>
-							<ModuleTab active>
-								<TabLink to="/TestScope/demos">
-									<ModuleIcon id="cloud" />
-									<TabText>Module 3</TabText>
-								</TabLink>
-							</ModuleTab>
-							<ScrollableBar />
-						</TabBar>
-					</IntlProvider>
-				</MemoryRouter>,
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/demos"]}>
+						<IntlProvider locale="en">
+							<TabBar module={module} pages={[]} />
+						</IntlProvider>
+					</MemoryRouter>
+				</Provider>,
 				<Mod3 />,
 			],
-		));
+		);
+	});
 });

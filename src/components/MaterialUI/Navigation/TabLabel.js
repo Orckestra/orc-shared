@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl";
-import useLabelMessage from "../../hooks/useLabelMessage";
+import useLabelMessage from "../../../hooks/useLabelMessage";
 
 const TabLabel = ({ label }) => {
   const { formatMessage } = useIntl();

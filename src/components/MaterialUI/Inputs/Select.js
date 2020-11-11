@@ -85,7 +85,7 @@ const SelectIcon = props => {
 	return <Icon id="dropdown-chevron-down" {...props} />;
 };
 
-const SelectIconButton = (props) => {
+export const SelectIconButton = (props) => {
 	const classes = useStyles();
 
 	return (
@@ -125,12 +125,10 @@ const Select = ({ options, selectProps }) => {
 	}
 
 	if (showAllValue && showAllLabel) {
-		if (options.find(o => o.value === showAllValue) == null) {
-			options.unshift({
-				value: showAllValue,
-				label: showAllLabel,
-			});
-		}
+		options.unshift({
+			value: showAllValue,
+			label: showAllLabel,
+		});
 	}
 
 	const handleChange = event => {

@@ -511,7 +511,6 @@ const setThemeOverrides = theme => ({
 			"&.Mui-selected": {
 				color: theme.palette.primary.main,
 				borderColor: theme.palette.primary.main,
-				zIndex: 10000,
 				borderBottom: `1px solid ${theme.palette.common.white}`,
 			},
 			"&.MuiTab-labelIcon svg": {
