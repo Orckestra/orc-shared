@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
 	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	flex: 0 1 100%;
 	height: calc(100% - 90px);
+	min-height: 0;
 
 	${TabBar} + & {
 		margin-top: 30px;
