@@ -56,8 +56,5 @@
 		"hooks": {
 			"pre-commit": "lint-staged"
 		}
-	},
-	"dependencies": {
-		"react-mutation-observer": "^1.1.0"
 	}
 }
