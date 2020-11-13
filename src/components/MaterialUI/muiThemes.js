@@ -436,6 +436,11 @@ const setThemeOverrides = theme => ({
 	},
 	MuiListItem: {
 		...theme.MuiListItem,
+		root: {
+			"&.Mui-selected": {
+				backgroundColor: theme.palette.primary.light
+			}
+		},
 		button: {
 			...theme.button,
 			color: theme.palette.grey.icon,
@@ -449,9 +454,9 @@ const setThemeOverrides = theme => ({
 		root: {
 			...theme.root,
 			...theme.typography.button,
-			color: theme.palette.grey.icon,
+			color: theme.palette.grey.dark,
 			"&:hover, &:hover .MuiListItemIcon-root, &hover .MuiListItemText-root": {
-				color: theme.palette.primary.light,
+				color: theme.palette.grey.dark,
 			},
 		},
 	},
@@ -473,21 +478,8 @@ const setThemeOverrides = theme => ({
 		root: {
 			...theme.root,
 			backgroundColor: theme.palette.grey.light,
-			paddingTop: theme.spacing(2),
 			position: "relative",
-			borderRadius: theme.spacing(1, 0, 0, 0),
-			"&:before": {
-				content: '""',
-				display: "flex",
-				position: "absolute",
-				borderBottom: `1px solid ${theme.palette.primary.main}`,
-				width: "100%",
-				bottom: 0,
-				zIndex: 10,
-			},
-			"& > .MuiTabs-scroller": {
-				marginLeft: theme.spacing(2),
-			},
+			minHeight: "auto",
 		},
 	},
 	MuiTab: {
@@ -499,9 +491,10 @@ const setThemeOverrides = theme => ({
 			border: `1px solid ${theme.palette.grey.borders}`,
 			borderRadius: theme.spacing(0.5, 0.5, 0, 0),
 			zIndex: 10,
+			height: theme.spacing(4.3),
+			minHeight: theme.spacing(4.3),
+			padding: `${theme.spacing(1.4)} ${theme.spacing(2)}`,
 			textTransform: "uppercase",
-			height: theme.spacing(4.8),
-			minHeight: theme.spacing(2.4),
 			flexGrow: 0,
 			[theme.breakpoints.up("sm")]: {
 				minWidth: 0,
@@ -518,25 +511,30 @@ const setThemeOverrides = theme => ({
 			"&.Mui-selected": {
 				color: theme.palette.primary.main,
 				borderColor: theme.palette.primary.main,
-				zIndex: 10000,
 				borderBottom: `1px solid ${theme.palette.common.white}`,
-				marginBottom: -1,
 			},
 			"&.MuiTab-labelIcon svg": {
-				marginBottom: theme.spacing(0),
+
 				marginRight: theme.spacing(1),
 			},
 			"& .MuiTab-wrapper": {
 				flexDirection: "row",
 			},
+			"&.MuiButtonBase-root:focus, &.MuiButtonBase-root:active": {
+				boxShadow: "none",
+				borderRadius: `4px 4px 0 0`
+			},
 		},
 		labelIcon: {
 			...theme.labelIcon,
-			height: theme.spacing(4.8),
-			minHeight: theme.spacing(2.4),
+			minHeight: theme.spacing(4.3),
+			padding: `${theme.spacing(1.4)} ${theme.spacing(2)} !important`,
 			"& path:not([fill='none'])": {
 				fill: "currentColor",
 			},
+			"& .MuiTab-wrapper > *:first-child": {
+				marginBottom: theme.spacing(0),
+			}
 		},
 	},
 	MuiTable: {

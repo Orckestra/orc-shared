@@ -22,12 +22,12 @@ export const concatObjectPropsWithDelimeter = (object, propsToUse, delimeter = "
 	let concatedString = "";
 
 	const valuesToUse = [];
-	propsToUse.forEach((prop) => {
+	propsToUse.forEach(prop => {
 		const tempProp = object[prop];
 		if (tempProp != null) {
-			valuesToUse.push(tempProp)
+			valuesToUse.push(tempProp);
 		}
-	})
+	});
 
 	valuesToUse.forEach((value, index) => {
 		concatedString += value;
@@ -42,4 +42,17 @@ export const concatObjectPropsWithDelimeter = (object, propsToUse, delimeter = "
 	});
 
 	return concatedString;
-}
+};
+
+export const getAllAfterPrependHref = (prependHref, href) => {
+	const prependSlashCount = (prependHref?.match(/\//g) || []).length;
+	return href.split("/").slice(prependSlashCount).join("/");
+};
+
+export const getModuleNameFromHref = (prependPath, href) => {
+	const pathArray = href.split("/");
+	const moduleNamePosition = (prependPath?.match(/\//g) || []).length;
+	const moduleName = moduleNamePosition < pathArray.length ? pathArray[moduleNamePosition] : "";
+	const moduleHref = moduleNamePosition < pathArray.length ? pathArray.slice(0, moduleNamePosition + 1).join("/") : "";
+	return [moduleName, moduleHref];
+};

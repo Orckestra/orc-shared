@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import Select from "./Select";
+import Select, { SelectIconButton } from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import sinon from "sinon";
 import { ignoreConsoleError, createMuiTheme } from "../../../utils/testUtils";
@@ -281,5 +281,79 @@ describe("Select Component", () => {
 		selectMui.invoke("onChange")(event);
 
 		expect(update, "to have calls satisfying", [{ args: ["anotherValue"] }]);
+	});
+
+	it("Renders Icon Select component correctly", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.iconSelect, true);
+
+		const theme = createMuiTheme();
+
+		const component = (
+			<MuiThemeProvider theme={theme}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
+
+		const expected = (
+			<MuiThemeProvider theme={theme}>
+				<SelectMUI
+					open={false}
+					value="aValue"
+					disableUnderline={true}
+					IconComponent={SelectIconButton}
+				>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<MenuItem key="anotherValue" value="anotherValue">
+						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</MuiThemeProvider>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Changes Icon Select open state on click", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.iconSelect, true);
+
+		const theme = createMuiTheme();
+
+		const component = (
+			<MuiThemeProvider theme={theme}>
+				<Select options={options} selectProps={selectProps} />
+			</MuiThemeProvider>
+		);
+
+		const mountedComponent = mount(component);
+
+		let muiSelect = mountedComponent.find(SelectMUI);
+
+		expect(muiSelect.prop("open"), "to be false");
+
+		muiSelect.invoke("onClick")();
+
+		muiSelect = mountedComponent.find(SelectMUI);
+
+		expect(muiSelect.prop("open"), "to be true");
 	});
 });

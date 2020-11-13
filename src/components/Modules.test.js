@@ -4,18 +4,13 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "unexpected-reaction";
-import { getStyledClassSelector } from "../utils/testUtils";
-import { TabBar, ScrollableBar } from "./Navigation/Bar";
-import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
-import {
-	Wrapper as SegmentWrapper,
-	List as SegmentList,
-	Item as SegmentItem,
-} from "./Routing/SegmentPage";
+import { Wrapper as SegmentWrapper, List as SegmentList, Item as SegmentItem } from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
+import TabBar from "./MaterialUI/Navigation/TabBar";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
+
 	beforeEach(() => {
 		Mod2 = () => <div id="Mod2" />;
 		Mod3 = () => <div id="Mod3" />;
@@ -60,6 +55,7 @@ describe("Modules", () => {
 				moduleTabs: {},
 				mappedHrefs: {},
 				route: {},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			router: {
 				location: {},
@@ -85,41 +81,54 @@ describe("Modules", () => {
 			},
 		});
 		store = {
-			subscribe: () => {},
-			dispatch: () => {},
+			subscribe: () => { },
+			dispatch: () => { },
 			getState: () => state,
 		};
 	});
 
-	it("renders a module table with navigation tabs", () =>
-		expect(
+	it("renders a module table with navigation tabs", () => {
+		const component = (
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/TestScope/demos"]}>
 					<IntlProvider locale="en">
 						<Modules modules={modules} scope="TestScope" />
 					</IntlProvider>
 				</MemoryRouter>
-			</Provider>,
-			"when mounted",
-			"queried for first",
-			getStyledClassSelector(TabBar),
-			"to satisfy",
-			<MemoryRouter initialEntries={["/TestScope/demos"]}>
-				<IntlProvider locale="en">
-					<TabBar>
-						<ModuleTab active>
-							<TabLink to="/TestScope/demos">
-								<ModuleIcon id="cloud" />
-								<TabText>Module 3</TabText>
-							</TabLink>
-						</ModuleTab>
-						<ScrollableBar />
-					</TabBar>
-				</IntlProvider>
-			</MemoryRouter>,
-		));
+			</Provider>
+		);
 
-	it("renders a module table as a routing system (user route)", () =>
+		const module = {
+			icon: 'cloud',
+			label: 'Module 3',
+			href: '/TestScope/demos',
+			mappedFrom: '/TestScope/demos',
+			active: true
+		};
+
+		const expected = [
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/TestScope/demos"]}>
+					<IntlProvider locale="en">
+						<TabBar module={module} pages={[]} />
+					</IntlProvider>
+				</MemoryRouter>
+			</Provider>,
+			<Mod3 />
+		];
+
+		expect(mount(component).childNodes, "to satisfy", expected);
+	});
+
+	it("renders a module table as a routing system (user route)", () => {
+		const module = {
+			icon: 'user',
+			label: 'Module 1',
+			href: '/TestScope/users',
+			mappedFrom: '/TestScope/users',
+			active: true
+		};
+
 		expect(
 			mount(
 				<Provider store={store}>
@@ -132,19 +141,13 @@ describe("Modules", () => {
 			).childNodes,
 			"to satisfy",
 			[
-				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-					<IntlProvider locale="en">
-						<TabBar>
-							<ModuleTab>
-								<TabLink to="/TestScope/users">
-									<ModuleIcon id="user" />
-									<TabText>Module 1</TabText>
-								</TabLink>
-							</ModuleTab>
-							<ScrollableBar />
-						</TabBar>
-					</IntlProvider>
-				</MemoryRouter>,
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
+						<IntlProvider locale="en">
+							<TabBar module={module} pages={[]} />
+						</IntlProvider>
+					</MemoryRouter>
+				</Provider>,
 				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
 					<SegmentWrapper>
 						<SegmentList>
@@ -155,67 +158,143 @@ describe("Modules", () => {
 						</SegmentList>
 						<Page1 />
 					</SegmentWrapper>
-				</MemoryRouter>,
+				</MemoryRouter>
 			],
-		));
+		)
+	});
 
-	it("renders a module table as a routing system (photo route)", () =>
+	it("renders a module table as a routing system (photo route)", () => {
+		const module = {
+			icon: 'image',
+			label: 'Module 2',
+			href: '/TestScope/photos',
+			mappedFrom: '/TestScope/photos',
+			active: true
+		};
+
 		expect(
 			mount(
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/photos"]}>
 						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
+							<Modules modules={modules} />
 						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
 			).childNodes,
 			"to satisfy",
 			[
-				<MemoryRouter initialEntries={["/TestScope/photos"]}>
-					<IntlProvider locale="en">
-						<TabBar>
-							<ModuleTab active>
-								<TabLink to="/TestScope/photos">
-									<ModuleIcon id="image" />
-									<TabText>Module 2</TabText>
-								</TabLink>
-							</ModuleTab>
-							<ScrollableBar />
-						</TabBar>
-					</IntlProvider>
-				</MemoryRouter>,
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/photos"]}>
+						<IntlProvider locale="en">
+							<TabBar module={module} pages={[]} />
+						</IntlProvider>
+					</MemoryRouter>
+				</Provider>,
 				<Mod2 />,
 			],
-		));
+		)
+	});
 
-	it("renders a module table as a routing system (demo route)", () =>
+	it("renders a module table as a routing system (demo route)", () => {
+		const module = {
+			icon: 'cloud',
+			label: 'Module 3',
+			href: '/TestScope/demos',
+			mappedFrom: '/TestScope/demos',
+			active: true
+		};
+
 		expect(
 			mount(
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/demos"]}>
 						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
+							<Modules modules={modules} />
 						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
 			).childNodes,
 			"to satisfy",
 			[
-				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<IntlProvider locale="en">
-						<TabBar>
-							<ModuleTab active>
-								<TabLink to="/TestScope/demos">
-									<ModuleIcon id="cloud" />
-									<TabText>Module 3</TabText>
-								</TabLink>
-							</ModuleTab>
-							<ScrollableBar />
-						</TabBar>
-					</IntlProvider>
-				</MemoryRouter>,
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/demos"]}>
+						<IntlProvider locale="en">
+							<TabBar module={module} pages={[]} />
+						</IntlProvider>
+					</MemoryRouter>
+				</Provider>,
 				<Mod3 />,
 			],
-		));
+		);
+	});
+
+	describe("with custom href", () => {
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				navigation: {
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					route: {},
+					config: { prependPath: "/", prependHref: "/" },
+				},
+				router: {
+					location: {},
+				},
+				settings: {
+					defaultScope: "myScope",
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+			});
+		});
+
+		it("renders a module table with custom prepend href ", () => {
+			const module = {
+				icon: 'cloud',
+				label: 'Module 3',
+				href: '/demos',
+				mappedFrom: '/',
+				active: true
+			};
+
+			expect(
+				mount(
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/demos"]}>
+							<IntlProvider locale="en">
+								<Modules modules={modules} customPath={"/"} customHref={"/"} />
+							</IntlProvider>
+						</MemoryRouter>
+					</Provider>,
+				).childNodes,
+				"to satisfy",
+				[
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/demos"]}>
+							<IntlProvider locale="en">
+								<TabBar module={module} pages={[]} />
+							</IntlProvider>
+						</MemoryRouter>
+					</Provider>,
+					<Mod3 />,
+				],
+			)
+		});
+	});
 });
