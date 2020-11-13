@@ -9,6 +9,7 @@ import SelectProps from "../Inputs/SelectProps";
 import Icon from "../DataDisplay/Icon";
 import { useHistory } from "react-router-dom";
 import ResizeDetector from "react-resize-detector";
+import { isScrollVisible } from "./../../../utils/domHelper";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -51,13 +52,9 @@ const useStyles = makeStyles((theme) => ({
   closeIcon: {
     marginLeft: theme.spacing(1),
     color: theme.palette.primary.contrastText,
-
     "&:hover": {
       color: theme.palette.primary.main,
     }
-  },
-  test: {
-    width: "1px"
   }
 }));
 
@@ -71,7 +68,7 @@ export const TabLink = React.forwardRef((props, ref) => {
 });
 
 const MuiBar = ({ module, pages }) => {
-  const tabs = React.useRef("yellow");
+  const tabs = React.useRef(null);
   const classes = useStyles();
   const history = useHistory();
   const activePage = pages.findIndex(p => p.active === true);
@@ -106,15 +103,8 @@ const MuiBar = ({ module, pages }) => {
   const moduleIcon = <Icon id={module.icon} className={classes.moduleIcon} />
 
   const resizeHandler = React.useCallback(() => {
-    //  console.log(tabs);
-    console.log(tabs.current.childElementCount);
-    /* istanbul ignore next */
-    if (tabs.current.childElementCount > 2) {
-      setShowSelect(true);
-    }
-    else {
-      setShowSelect(false);
-    }
+    const scroller = tabs.current.querySelector(".MuiTabs-flexContainer");
+    setShowSelect(isScrollVisible(scroller));
   }, [tabs]);
 
   React.useEffect(() => {
@@ -138,16 +128,15 @@ const MuiBar = ({ module, pages }) => {
         value={activeTabIndex}
         onChange={handleChange}
         variant="scrollable"
-        scrollButtons="auto"
+        scrollButtons="off"
         classes={{
-          root: classes.test,
           scrollButtons: classes.hidden
         }}
         ref={tabs}
       >
         {
           pages.map(
-            ({ href, label, close }, index) => {
+            ({ href, label, outsideScope, close }, index) => {
               const tabLabel = <TabLabel label={label} />;
               const closeIcon = (
                 <Icon
@@ -172,6 +161,7 @@ const MuiBar = ({ module, pages }) => {
                   to={href}
                   value={index}
                   close={closeIcon}
+                  disabled={outsideScope}
                 />
               )
             }

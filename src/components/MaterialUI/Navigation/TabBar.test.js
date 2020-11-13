@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { mount } from "enzyme"
-import TabBar, { TabLink } from "./TabBar";
+import TabBar, { TabLink, isScrollVisible } from "./TabBar";
 import Tabs from '@material-ui/core/Tabs';
 import TabLabel from "./TabLabel";
 import Tab from '@material-ui/core/Tab';
@@ -15,11 +15,8 @@ import ResizeDetector from "react-resize-detector";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import SelectMUI from "@material-ui/core/Select";
-import { act } from "react-dom/test-utils";
-import * as TabsToStub from '@material-ui/core/Tabs';
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
-import * as reactMock from "react";
+import * as domHelper from "./../../../utils/domHelper";
 
 describe("TabBar", () => {
   let store, state;
@@ -80,17 +77,20 @@ describe("TabBar", () => {
   tabLabels.push({
     value: 0,
     label: page1TabLabel,
-    sortOrder: 0
+    sortOrder: 0,
+    outsideScope: false
   });
   tabLabels.push({
     value: 1,
     label: page2TabLabel,
-    sortOrder: 1
+    sortOrder: 1,
+    outsideScope: true,
   });
   tabLabels.push({
     value: 2,
     label: page3TabLabel,
-    sortOrder: 2
+    sortOrder: 2,
+    outsideScope: false
   });
 
   const select = <div><Select options={tabLabels} selectProps={selectProps} /></div>;
@@ -118,6 +118,7 @@ describe("TabBar", () => {
         value={0}
         component={TabLink}
         close={closeIcon}
+        disabled={pages[0].outsideScope}
       />
       <Tab
         label={page2TabLabel}
@@ -126,6 +127,7 @@ describe("TabBar", () => {
         value={1}
         component={TabLink}
         close={closeIcon}
+        disabled={pages[1].outsideScope}
       />
       <Tab
         label={page3TabLabel}
@@ -134,6 +136,7 @@ describe("TabBar", () => {
         value={2}
         component={TabLink}
         close={closeIcon}
+        disabled={pages[2].outsideScope}
       />
     </Tabs>
   );
@@ -293,7 +296,7 @@ describe("TabBar", () => {
     expect(pages[0].close, "was called")
   });
 
-  it("Handles onResize correct when childElementCount <= 2", () => {
+  it("Handles onResize correct when isScrollVisible returns false", () => {
     const component = (
       <Provider store={store}>
         <MemoryRouter>
@@ -307,6 +310,8 @@ describe("TabBar", () => {
     const setState = sinon.spy();
     const useStateSpy = jest.spyOn(React, 'useState')
     useStateSpy.mockImplementation((value) => [value, setState]);
+
+    const isScrollVisibleStub = sinon.stub(domHelper, "isScrollVisible").returns(false);
 
     const mountedComponent = mount(component);
 
@@ -314,10 +319,14 @@ describe("TabBar", () => {
 
     resizeDetector.invoke("onResize")();
 
+    expect(isScrollVisibleStub.getCall(0).args[0].className, "to equal", "MuiTabs-flexContainer");
+
     expect(setState, "to have a call satisfying", { args: [false] });
+
+    isScrollVisibleStub.restore();
   });
 
-  it("Handles onResize correct when childElementCount > 2", () => {
+  it("Handles onResize correct when isScrollVisible returns true", () => {
     const component = (
       <Provider store={store}>
         <MemoryRouter>
@@ -332,30 +341,19 @@ describe("TabBar", () => {
     const useStateSpy = jest.spyOn(React, 'useState')
     useStateSpy.mockImplementation((value) => [value, setState]);
 
-    // jest.mock("react", () => ({
-    //   ...jest.requireActual("react"),
-    //   useRef: jest.fn().mockReturnValue({ current: { childElementCount: 4 } })
-    // }));
-
-    //const useRefSpy = jest.spyOn(React, 'useRef').mockReturnValue({ current: { childElementCount: 4 } });
-
-    //sinon.stub(React, "useRef").onFirstCall().returns({ current: { childElementCount: 4 } });
-
-    // sinon.stub(React, "useRef").callsFake(() => {
-    //   return { current: { childElementCount: 4 } };
-    // });
-
-    //sinon.stub(React, "useRef").withArgs("yellow").returns({ current: { childElementCount: 4 } });
-
     const mountedComponent = mount(component);
 
-    const tabs = mountedComponent.find(Tabs);
+    const isScrollVisibleStub = sinon.stub(domHelper, "isScrollVisible").returns(true);
 
-    console.log(window.innerWidth);
+    const resizeDetector = mountedComponent.find(ResizeDetector);
 
-    //tabs.setProps({ scrollButtons: "on" });
+    resizeDetector.invoke("onResize")();
 
-    expect(setState, "to have a call satisfying", { args: [true] }); // need to compare with true
+    expect(isScrollVisibleStub.getCall(0).args[0].className, "to equal", "MuiTabs-flexContainer");
+
+    expect(setState, "to have a call satisfying", { args: [true] });
+
+    isScrollVisibleStub.restore();
   });
 });
 
