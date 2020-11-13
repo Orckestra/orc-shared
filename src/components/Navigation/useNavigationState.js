@@ -1,7 +1,7 @@
 import { useSelector, useDispatch, useStore } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { push } from "connected-react-router";
-import { unwrapImmutable, safeGet } from "../../utils";
+import { unwrapImmutable } from "../../utils";
 import { removeTab } from "../../actions/navigation";
 import {
 	selectMappedCurrentModuleList,
@@ -135,15 +135,15 @@ export const useNavigationState = modules => {
 		// Modules do not have close functions
 		const close = isPageTab
 			? event => {
-					dispatch(removeTab(moduleName, page.href));
-					if (currentHref === href) {
-						dispatch(push(moduleHref));
-					}
-					if (event) {
-						event.stopPropagation();
-						event.preventDefault();
-					}
-			  }
+				dispatch(removeTab(moduleName, page.href));
+				if (currentHref === href) {
+					dispatch(push(moduleHref));
+				}
+				if (event) {
+					event.stopPropagation();
+					event.preventDefault();
+				}
+			}
 			: undefined;
 
 		return {

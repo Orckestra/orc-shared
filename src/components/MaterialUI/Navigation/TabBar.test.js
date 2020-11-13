@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React from "react";
 import { mount } from "enzyme"
-import TabBar, { TabLink, isScrollVisible } from "./TabBar";
+import TabBar, { TabLink } from "./TabBar";
 import Tabs from '@material-ui/core/Tabs';
 import TabLabel from "./TabLabel";
 import Tab from '@material-ui/core/Tab';

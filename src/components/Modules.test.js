@@ -4,13 +4,9 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "unexpected-reaction";
-import { getStyledClassSelector } from "../utils/testUtils";
-import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
 import { Wrapper as SegmentWrapper, List as SegmentList, Item as SegmentItem } from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
-import { Ignore } from "unexpected-reaction";
-import { mount as mnt } from "enzyme";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
