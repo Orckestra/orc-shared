@@ -34,7 +34,7 @@ const CollapsableList = ({ defaultElement, otherElements, collapsableListProps }
 		throw new TypeError("collapsableListProps property is not of type CollapsableListProps");
 	}
 
-	const containerWidth = collapsableListProps?.get(CollapsableListProps.propNames.containerWidth) ?? "max-content";
+	const containerWidth = collapsableListProps?.get(CollapsableListProps.propNames.containerWidth) ?? "fit-content";
 	const classes = useStyles({ containerWidth });
 
 	const isExpanded = collapsableListProps?.get(CollapsableListProps.propNames.isExpanded) || false;
