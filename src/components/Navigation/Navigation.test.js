@@ -44,6 +44,7 @@ describe("Navigation", () => {
 						params: { scope: "TestScope" },
 					},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			scopes: {
 				TestScope: {
@@ -121,6 +122,7 @@ describe("Navigation", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
+
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">

@@ -6,11 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 import { mount } from "unexpected-reaction";
 import { getStyledClassSelector } from "../utils/testUtils";
 import { ModuleTab, TabLink, ModuleIcon, TabText } from "./Navigation/Tab";
-import {
-	Wrapper as SegmentWrapper,
-	List as SegmentList,
-	Item as SegmentItem,
-} from "./Routing/SegmentPage";
+import { Wrapper as SegmentWrapper, List as SegmentList, Item as SegmentItem } from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
 import { Ignore } from "unexpected-reaction";
@@ -63,6 +59,7 @@ describe("Modules", () => {
 				moduleTabs: {},
 				mappedHrefs: {},
 				route: {},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			router: {
 				location: {},
@@ -184,7 +181,7 @@ describe("Modules", () => {
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/photos"]}>
 						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
+							<Modules modules={modules} />
 						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
@@ -217,7 +214,7 @@ describe("Modules", () => {
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/demos"]}>
 						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
+							<Modules modules={modules} />
 						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
@@ -234,5 +231,74 @@ describe("Modules", () => {
 				<Mod3 />,
 			],
 		);
+	});
+
+	describe("with custom href", () => {
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				navigation: {
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					route: {},
+					config: { prependPath: "/", prependHref: "/" },
+				},
+				router: {
+					location: {},
+				},
+				settings: {
+					defaultScope: "myScope",
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						children: ["test2"],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+			});
+		});
+
+		it("renders a module table with custom prepend href ", () => {
+			const module = {
+				icon: 'cloud',
+				label: 'Module 3',
+				href: '/demos',
+				mappedFrom: '/',
+				active: true
+			};
+
+			expect(
+				mount(
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/demos"]}>
+							<IntlProvider locale="en">
+								<Modules modules={modules} customPath={"/"} customHref={"/"} />
+							</IntlProvider>
+						</MemoryRouter>
+					</Provider>,
+				).childNodes,
+				"to satisfy",
+				[
+					<Provider store={store}>
+						<MemoryRouter initialEntries={["/demos"]}>
+							<IntlProvider locale="en">
+								<TabBar module={module} pages={[]} />
+							</IntlProvider>
+						</MemoryRouter>
+					</Provider>,
+					<Mod3 />,
+				],
+			)
+		});
 	});
 });

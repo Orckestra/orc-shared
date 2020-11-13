@@ -22,25 +22,26 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 		id="sidebarMenuToggle"
 		menuToggle
 		open={open}
-		icon={(open
-			? getThemeProp(["icons", "sidebarOpen"], "layers")
-			: getThemeProp(["icons", "sidebarClosed"], "menu"))({ theme })}
+		icon={(open ? getThemeProp(["icons", "sidebarOpen"], "layers") : getThemeProp(["icons", "sidebarClosed"], "menu"))({
+			theme,
+		})}
 		onClick={toggle}
 	/>
 ));
 
-const useEnhancement = id => {
+const useEnhancement = (id, customHref) => {
 	const scope = useSelector(getCurrentScope);
+	const scopeHref = `/${scope}/`;
 	const location = useLocation();
 	return {
-		href: `/${scope}/${id}`,
-		active: location.pathname.startsWith(`/${scope}/${id}`),
+		href: `${customHref || scopeHref}${id}`,
+		active: location.pathname.startsWith(`${customHref || scopeHref}${id}`),
 		id,
 	};
 };
 
-export const EnhancedMenuItem = ({ id, ...props }) => (
-	<MenuItem {...props} {...useEnhancement(id)} />
+export const EnhancedMenuItem = ({ id, customHref, ...props }) => (
+	<MenuItem {...props} {...useEnhancement(id, customHref)} />
 );
 
 const LogoSvg = styled.svg`
@@ -73,12 +74,7 @@ const Sidebar = ({ open, toggle, modules = [], activeModules = [] }) => {
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
 			{modules.map(item => (
-				<EnhancedMenuItem
-					key={item.id}
-					{...item}
-					open={open}
-					alert={activeModules[item.id] || false}
-				/>
+				<EnhancedMenuItem key={item.id} {...item} open={open} alert={activeModules[item.id] || false} />
 			))}
 			<Logo />
 		</Bar>
