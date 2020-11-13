@@ -2,13 +2,13 @@ import SelectProps, { isSelectProps } from "./SelectProps";
 
 describe("Select Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["update", "value", "sortType", "showAllValue", "showAllLabel", "positionOverride"];
+		const propNames = ["update", "value", "sortType", "showAllValue", "showAllLabel", "positionOverride", "iconSelect"];
 
 		expect(SelectProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["update", "value", "sortType", "showAllValue", "showAllLabel", "positionOverride"];
+		const propNames = ["update", "value", "sortType", "showAllValue", "showAllLabel", "positionOverride", "iconSelect"];
 
 		const selectProps = new SelectProps();
 
