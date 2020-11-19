@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
@@ -16,10 +16,12 @@ export const Modules = ({ modules, customPath, customHref }) => {
 	const scope = useSelector(getCurrentScope);
 	const scopePath = "/:scope/";
 	const scopeHref = `/${scope}/`;
-
 	const prependPath = customPath || scopePath;
 	const prependHref = customHref || scopeHref;
-	dispatch(setHrefConfig(prependPath, prependHref));
+
+	useEffect(() => {
+		dispatch(setHrefConfig(prependPath, prependHref));
+	}, [dispatch, prependPath, prependHref]);
 
 	return (
 		<React.Fragment>

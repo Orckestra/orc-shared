@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import styled, { withTheme } from "styled-components";
 import { useLocation } from "react-router-dom";
 import { getThemeProp } from "../../utils";
-import { getCurrentScope } from "../../selectors/navigation";
+import { getCurrentScope, selectPrependHrefConfig } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
 
 export const Bar = styled.div`
@@ -29,20 +29,18 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 	/>
 ));
 
-const useEnhancement = (id, customHref) => {
-	const scope = useSelector(getCurrentScope);
-	const scopeHref = `/${scope}/`;
+const useEnhancement = id => {
 	const location = useLocation();
+	const prependHref = useSelector(selectPrependHrefConfig);
+
 	return {
-		href: `${customHref || scopeHref}${id}`,
-		active: location.pathname.startsWith(`${customHref || scopeHref}${id}`),
+		href: `${prependHref}${id}`,
+		active: location.pathname.startsWith(`${prependHref}${id}`),
 		id,
 	};
 };
 
-export const EnhancedMenuItem = ({ id, customHref, ...props }) => (
-	<MenuItem {...props} {...useEnhancement(id, customHref)} />
-);
+export const EnhancedMenuItem = ({ id, ...props }) => <MenuItem {...props} {...useEnhancement(id)} />;
 
 const LogoSvg = styled.svg`
 	flex: 0 0 auto;

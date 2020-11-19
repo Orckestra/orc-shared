@@ -11,9 +11,6 @@ export { default as DividerProps } from "./dividerProps";
 
 export { default as Icon } from "./Icon";
 
-export { default as Radio } from "./Radio";
-export { default as RadioProps } from "./radioProps";
-
 export { default as Table } from "./Table";
 export { default as TableProps } from "./TableProps";
 

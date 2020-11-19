@@ -49,6 +49,7 @@ const selectModuleLists = createSelector(getNavigationState, nav => nav.get("mod
 
 const selectHrefConfig = createSelector(getNavigationState, state => state.get("config"));
 export const selectPrependPathConfig = createSelector(selectHrefConfig, config => config.get("prependPath"));
+export const selectPrependHrefConfig = createSelector(selectHrefConfig, config => config.get("prependHref"));
 
 export const selectCurrentModuleName = createSelector(selectPrependPathConfig, selectRoutePath, (prependPath, path) =>
 	new RegExp(`^${prependPath}`).test(path) ? path.replace(new RegExp(`^${prependPath}([^/]+)(/.*)?$`), "$1") : "",
