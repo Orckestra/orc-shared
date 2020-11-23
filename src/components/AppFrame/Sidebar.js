@@ -31,7 +31,7 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 
 const useEnhancement = id => {
 	const location = useLocation();
-	const prependHref = useSelector(selectPrependHrefConfig);
+	const prependHref = useSelector(selectPrependHrefConfig)(id);
 
 	return {
 		href: `${prependHref}${id}`,
