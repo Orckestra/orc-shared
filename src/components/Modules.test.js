@@ -81,8 +81,8 @@ describe("Modules", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => state,
 		};
 	});
@@ -99,11 +99,11 @@ describe("Modules", () => {
 		);
 
 		const module = {
-			icon: 'cloud',
-			label: 'Module 3',
-			href: '/TestScope/demos',
-			mappedFrom: '/TestScope/demos',
-			active: true
+			icon: "cloud",
+			label: "Module 3",
+			href: "/TestScope/demos",
+			mappedFrom: "/TestScope/demos",
+			active: true,
 		};
 
 		const expected = [
@@ -114,7 +114,7 @@ describe("Modules", () => {
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
-			<Mod3 />
+			<Mod3 />,
 		];
 
 		expect(mount(component).childNodes, "to satisfy", expected);
@@ -122,11 +122,11 @@ describe("Modules", () => {
 
 	it("renders a module table as a routing system (user route)", () => {
 		const module = {
-			icon: 'user',
-			label: 'Module 1',
-			href: '/TestScope/users',
-			mappedFrom: '/TestScope/users',
-			active: true
+			icon: "user",
+			label: "Module 1",
+			href: "/TestScope/users",
+			mappedFrom: "/TestScope/users",
+			active: true,
 		};
 
 		expect(
@@ -158,18 +158,18 @@ describe("Modules", () => {
 						</SegmentList>
 						<Page1 />
 					</SegmentWrapper>
-				</MemoryRouter>
+				</MemoryRouter>,
 			],
-		)
+		);
 	});
 
 	it("renders a module table as a routing system (photo route)", () => {
 		const module = {
-			icon: 'image',
-			label: 'Module 2',
-			href: '/TestScope/photos',
-			mappedFrom: '/TestScope/photos',
-			active: true
+			icon: "image",
+			label: "Module 2",
+			href: "/TestScope/photos",
+			mappedFrom: "/TestScope/photos",
+			active: true,
 		};
 
 		expect(
@@ -193,16 +193,16 @@ describe("Modules", () => {
 				</Provider>,
 				<Mod2 />,
 			],
-		)
+		);
 	});
 
 	it("renders a module table as a routing system (demo route)", () => {
 		const module = {
-			icon: 'cloud',
-			label: 'Module 3',
-			href: '/TestScope/demos',
-			mappedFrom: '/TestScope/demos',
-			active: true
+			icon: "cloud",
+			label: "Module 3",
+			href: "/TestScope/demos",
+			mappedFrom: "/TestScope/demos",
+			active: true,
 		};
 
 		expect(
@@ -266,11 +266,11 @@ describe("Modules", () => {
 
 		it("renders a module table with custom prepend href ", () => {
 			const module = {
-				icon: 'cloud',
-				label: 'Module 3',
-				href: '/demos',
-				mappedFrom: '/',
-				active: true
+				icon: "cloud",
+				label: "Module 3",
+				href: "/demos",
+				mappedFrom: "/",
+				active: true,
 			};
 
 			expect(
@@ -278,7 +278,7 @@ describe("Modules", () => {
 					<Provider store={store}>
 						<MemoryRouter initialEntries={["/demos"]}>
 							<IntlProvider locale="en">
-								<Modules modules={modules} customPath={"/"} customHref={"/"} />
+								<Modules modules={modules} pathConfig={{ customPath: "/" }} />
 							</IntlProvider>
 						</MemoryRouter>
 					</Provider>,
@@ -294,7 +294,7 @@ describe("Modules", () => {
 					</Provider>,
 					<Mod3 />,
 				],
-			)
+			);
 		});
 	});
 });
