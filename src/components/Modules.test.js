@@ -237,7 +237,8 @@ describe("Modules", () => {
 					moduleTabs: {},
 					mappedHrefs: {},
 					route: {},
-					config: { prependPath: "/", prependHref: "/" },
+					config: { customPath: "/", demos: { prependPath: "/:scope/" } },
+					currentPrependPath: "/TestScope/",
 				},
 				router: {
 					location: {},
@@ -268,17 +269,17 @@ describe("Modules", () => {
 			const module = {
 				icon: "cloud",
 				label: "Module 3",
-				href: "/demos",
-				mappedFrom: "/",
+				href: "/TestScope/demos",
+				mappedFrom: "/TestScope/",
 				active: true,
 			};
 
 			expect(
 				mount(
 					<Provider store={store}>
-						<MemoryRouter initialEntries={["/demos"]}>
+						<MemoryRouter initialEntries={["/TestScope/demos"]}>
 							<IntlProvider locale="en">
-								<Modules modules={modules} pathConfig={{ customPath: "/" }} />
+								<Modules modules={modules} pathConfig={{ customPath: "/", demos: { prependPath: "/:scope/" } }} />
 							</IntlProvider>
 						</MemoryRouter>
 					</Provider>,
@@ -286,7 +287,7 @@ describe("Modules", () => {
 				"to satisfy",
 				[
 					<Provider store={store}>
-						<MemoryRouter initialEntries={["/demos"]}>
+						<MemoryRouter initialEntries={["/TestScope/demos"]}>
 							<IntlProvider locale="en">
 								<TabBar module={module} pages={[]} />
 							</IntlProvider>
