@@ -22,7 +22,7 @@ describe("Sidebar", () => {
 			},
 		];
 		state = Immutable.fromJS({
-			navigation: { route: { match: { params: { scope: "Global" } } } },
+			navigation: { route: { match: { params: { scope: "Global" } } }, config: { prependHref: "/Global/" } },
 			settings: { defaultScope: "myScope" },
 		});
 		store = {
@@ -73,12 +73,7 @@ describe("Sidebar", () => {
 					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle />
-							<EnhancedMenuItem
-								icon="cars"
-								id="first"
-								label="First page"
-								alert={{ type: "confirm" }}
-							/>
+							<EnhancedMenuItem icon="cars" id="first" label="First page" alert={{ type: "confirm" }} />
 							<EnhancedMenuItem icon="person" id="second" label="Second page" />
 							<Logo />
 						</Bar>
@@ -150,6 +145,7 @@ describe("EnhancedMenuItem", () => {
 								params: { scope: "Global" },
 							},
 						},
+						config: { prependHref: "/Global/" },
 					},
 					settings: { defaultScope: "myScope" },
 				}),
@@ -213,12 +209,7 @@ describe("MenuToggle", () => {
 				"when mounted",
 				"to satisfy",
 				<Provider store={store}>
-					<MenuItem
-						id="sidebarMenuToggle"
-						menuToggle
-						icon="menu"
-						onClick={expect.it("to be a function")}
-					/>
+					<MenuItem id="sidebarMenuToggle" menuToggle icon="menu" onClick={expect.it("to be a function")} />
 				</Provider>,
 			));
 
@@ -234,13 +225,7 @@ describe("MenuToggle", () => {
 				"when mounted",
 				"to satisfy",
 				<Provider store={store}>
-					<MenuItem
-						id="sidebarMenuToggle"
-						menuToggle
-						open
-						icon="layers"
-						onClick={expect.it("to be a function")}
-					/>
+					<MenuItem id="sidebarMenuToggle" menuToggle open icon="layers" onClick={expect.it("to be a function")} />
 				</Provider>,
 			));
 	});

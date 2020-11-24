@@ -46,9 +46,17 @@ const selectTabs = createSelector(getNavigationState, nav => nav.get("tabIndex")
 export const selectTabGetter = createSelector(selectTabs, tabs => path => tabs.get(path));
 
 const selectModuleLists = createSelector(getNavigationState, nav => nav.get("moduleTabs"));
-
 const selectHrefConfig = createSelector(getNavigationState, state => state.get("config"));
-export const selectPrependPathConfig = createSelector(selectHrefConfig, config => config.get("prependPath"));
+const selectCurrentPrependPath = createSelector(getNavigationState, state => state.get("currentPrependPath"));
+
+export const selectPrependPathConfig = createSelector(
+	selectHrefConfig,
+	selectCurrentPrependPath,
+	(config, currentPath) => currentPath || config.get("prependPath"),
+);
+export const selectPrependHrefConfig = createSelector(selectHrefConfig, config => name =>
+	config.getIn([name, "prependHref"]) || config.get("prependHref"),
+);
 
 export const selectCurrentModuleName = createSelector(selectPrependPathConfig, selectRoutePath, (prependPath, path) =>
 	new RegExp(`^${prependPath}`).test(path) ? path.replace(new RegExp(`^${prependPath}([^/]+)(/.*)?$`), "$1") : ""
@@ -77,9 +85,9 @@ export const selectSegmentHrefMapper = createSelector(
 	segmentHrefMap,
 	(prependPath, map) => href => {
 		const otherPath = getAllAfterPrependHref(prependPath, href);
-		const scopePath = href.replace(otherPath, "");
+		const newPrependPath = href.replace(otherPath, "");
 
 		const hrefMap = map.get(otherPath);
-		return hrefMap ? scopePath.concat(hrefMap) : href;
+		return hrefMap ? newPrependPath.concat(hrefMap) : href;
 	},
 );

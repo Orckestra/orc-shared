@@ -42,19 +42,19 @@ export const Item = styled(FilteredLink)`
 	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
-	"active",
-	css`
+		"active",
+		css`
 			background-color: #b4cfe3;
 		`,
-	css`
+		css`
 			&:hover {
 				background-color: #f7f7f7;
 			}
 		`,
-)};
+	)};
 `;
 
-const SegmentPage = ({ path, component: View, segments, location, match }) => {
+const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
@@ -69,7 +69,7 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 							key={pagePath}
 							path={path + pagePath}
 							render={route => (
-								<FullPage path={path + pagePath} config={pageConfig} {...route} />
+								<FullPage path={path + pagePath} config={pageConfig} {...route} modulePrependPath={modulePrependPath} />
 							)}
 						/>
 					);
@@ -84,7 +84,7 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 						<Route
 							key={pagePath}
 							path={path + pagePath}
-							render={route => <SubPage root={path} config={config} {...route} />}
+							render={route => <SubPage root={path} config={config} {...route} modulePrependPath={modulePrependPath} />}
 						/>
 					);
 				}),
@@ -95,7 +95,13 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 				key={segpath}
 				path={path + segpath}
 				render={route => (
-					<Segment path={path + segpath} config={config} root={baseHref} {...route} />
+					<Segment
+						path={path + segpath}
+						config={config}
+						root={baseHref}
+						{...route}
+						modulePrependPath={modulePrependPath}
+					/>
 				)}
 			/>
 		);
@@ -109,11 +115,7 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 					<Wrapper key="Segments">
 						<List>
 							{Object.entries(segments).map(([segpath, config]) => (
-								<Item
-									key={segpath}
-									to={baseHref + segpath}
-									active={location.pathname === baseHref + segpath}
-								>
+								<Item key={segpath} to={baseHref + segpath} active={location.pathname === baseHref + segpath}>
 									{React.isValidElement(config.label) === true ? config.label : <Text message={config.label} />}
 								</Item>
 							))}

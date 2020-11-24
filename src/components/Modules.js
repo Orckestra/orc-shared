@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
@@ -9,19 +9,32 @@ import { setHrefConfig } from "../actions/navigation";
 import { initializeEditTree } from "../actions/view";
 import { setModulesStructure } from "../actions/modules";
 
-export const Module = withErrorBoundary("Module")(({ config, path, error, location, match }) => {
-	return <FullPage path={path} config={config} location={location} match={match} />;
+export const Module = withErrorBoundary("Module")(({ config, path, error, location, match, modulePrependPath }) => {
+	return (
+		<FullPage path={path} config={config} location={location} match={match} modulePrependPath={modulePrependPath} />
+	);
 });
 
-export const Modules = ({ modules, customPath, customHref }) => {
+const getHrefFromPath = (path, scope) => path.replace(":scope", scope);
+
+export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } = {} }) => {
 	const dispatch = useDispatch();
 	const scope = useSelector(getCurrentScope);
 	const scopePath = "/:scope/";
-	const scopeHref = `/${scope}/`;
-
 	const prependPath = customPath || scopePath;
-	const prependHref = customHref || scopeHref;
-	dispatch(setHrefConfig(prependPath, prependHref));
+	const prependHref = getHrefFromPath(prependPath, scope);
+
+	Object.keys(otherConfigs).forEach(key => {
+		const moduleConfig = otherConfigs[key];
+		moduleConfig.prependHref = getHrefFromPath(moduleConfig.prependPath, scope);
+	});
+
+	useEffect(() => {
+		dispatch(setHrefConfig(prependPath, prependHref, otherConfigs));
+	}, [dispatch, prependPath, prependHref, otherConfigs]);
+
+	const getModuleConfig = name => (otherConfigs && otherConfigs[name]) || { prependPath, prependHref };
+	const firstModuleName = Object.keys(modules)[0];
 
 	React.useEffect(() => {
 		dispatch(setModulesStructure(modules));
@@ -33,10 +46,19 @@ export const Modules = ({ modules, customPath, customHref }) => {
 			<Navigation modules={modules} />
 			<Switch>
 				{Object.entries(modules).map(([name, module]) => {
-					const path = `${prependPath}${name}`;
-					return <Route key={name} path={path} render={route => <Module config={module} path={path} {...route} />} />;
+					const moduleConfig = getModuleConfig(name);
+					const path = `${moduleConfig.prependPath}${name}`;
+					return (
+						<Route
+							key={name}
+							path={path}
+							render={route => (
+								<Module modulePrependPath={moduleConfig.prependPath} config={module} path={path} {...route} />
+							)}
+						/>
+					);
 				})}
-				<Redirect to={`${prependHref}${Object.keys(modules)[0]}`} />
+				<Redirect to={`${getModuleConfig(firstModuleName).prependHref}${firstModuleName}`} />
 			</Switch>
 		</React.Fragment>
 	);
