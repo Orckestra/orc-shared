@@ -18,17 +18,18 @@ import useApplicationHelpUrl from "./useApplicationHelpUrl";
 import useViewState from "../../hooks/useViewState";
 import { getVersionInfo } from "../../actions/versionInfo";
 import { currentLocale } from "../../selectors/locale";
+import { selectCurrentModuleName } from "../../selectors/navigation";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
 	height: 100%;
 	overflow: hidden;
 	${ifFlag(
-	"preferencesOpen",
-	css`
+		"preferencesOpen",
+		css`
 			pointer-events: none;
 		`,
-)};
+	)};
 `;
 
 export const ViewPort = styled.div`
@@ -44,11 +45,11 @@ export const ViewPort = styled.div`
 	flex-direction: column;
 	transition: width 0.3s ease-out;
 	${ifFlag(
-	"open",
-	css`
+		"open",
+		css`
 			width: calc(100% - 200px);
 		`,
-)};
+	)};
 `;
 
 const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
@@ -66,9 +67,11 @@ const AppFrame = ({
 	prefActions,
 	scopeFilterPlaceholder,
 	noScope,
+	forceShowScope = [],
 }) => {
 	const locale = useSelector(currentLocale);
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
+	const moduleName = useSelector(selectCurrentModuleName);
 	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
@@ -97,14 +100,14 @@ const AppFrame = ({
 			/>
 			<Sidebar {...{ open, toggle, modules, activeModules }} />
 			<ViewPort open={open} onClick={reset}>
-				{noScope ? (
+				{noScope && !forceShowScope.includes(moduleName) ? (
 					<React.Fragment>
 						<ScopeBar />
 						{children}
 					</React.Fragment>
 				) : (
-						<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
-					)}
+					<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+				)}
 			</ViewPort>
 			<About messages={aboutMessages} currentApplication={currentApplication} />
 			<Preferences messages={prefMessages} />
