@@ -137,6 +137,9 @@ describe("AppFrame", () => {
 						params: { scope: "test1" },
 					},
 				},
+				config: {
+					prependHref: "/test1/",
+				},
 			},
 			locale: {
 				locale: "en",

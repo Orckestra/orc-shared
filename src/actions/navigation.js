@@ -27,7 +27,14 @@ export const removeTab = (module, path) => ({
 
 export const SET_HREF_CONFIG = "SET_HREF_CONFIG";
 
-export const setHrefConfig = (prependPath, prependHref) => ({
+export const setHrefConfig = (prependPath, prependHref, otherConfigs = {}) => ({
 	type: SET_HREF_CONFIG,
-	payload: { prependPath, prependHref },
+	payload: { prependPath, prependHref, ...otherConfigs },
+});
+
+export const SET_CURRENT_PREPEND_PATH = "SET_CURRENT_PREPEND_PATH";
+
+export const setCurrentPrependPath = prependPath => ({
+	type: SET_CURRENT_PREPEND_PATH,
+	payload: prependPath,
 });

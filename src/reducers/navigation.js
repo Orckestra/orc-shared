@@ -1,6 +1,5 @@
 import Immutable from "immutable";
-import { SET_ROUTE, MAP_HREF, REMOVE_TAB, SET_HREF_CONFIG } from "../actions/navigation";
-import { unwrapImmutable } from "../utils";
+import { SET_ROUTE, MAP_HREF, REMOVE_TAB, SET_HREF_CONFIG, SET_CURRENT_PREPEND_PATH } from "../actions/navigation";
 import { getAllAfterPrependHref } from "../utils/parseHelper";
 
 const initialState = Immutable.fromJS({
@@ -9,20 +8,21 @@ const initialState = Immutable.fromJS({
 	moduleTabs: {},
 	mappedHrefs: {},
 	config: {},
+	currentPrependPath: null,
 });
 
 const navigationReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_ROUTE:
 			return state.withMutations(s => {
-				const { prependPath, prependHref } = unwrapImmutable(s.get("config"));
+				const prependPath = state.get("currentPrependPath") || state.getIn(["config", "prependPath"]);
 
 				s.set("route", Immutable.fromJS(action.payload));
 				const {
 					location: { pathname: href },
 					match: { path, params },
 				} = action.payload;
-				const remainingSection = getAllAfterPrependHref(prependHref, href);
+				const remainingSection = getAllAfterPrependHref(prependPath, href);
 
 				if (remainingSection) {
 					s.setIn(
@@ -42,19 +42,19 @@ const navigationReducer = (state = initialState, action) => {
 				}
 			});
 		case MAP_HREF:
-			const prependHref = state.getIn(["config", "prependHref"]);
+			const prependPath = state.get("currentPrependPath") || state.getIn(["config", "prependPath"]);
 			const { from, to } = action.payload;
-			const remainingSectionFrom = getAllAfterPrependHref(prependHref, from);
-			const remainingSectionTo = getAllAfterPrependHref(prependHref, to);
+			const remainingSectionFrom = getAllAfterPrependHref(prependPath, from);
+			const remainingSectionTo = getAllAfterPrependHref(prependPath, to);
 			if (remainingSectionFrom && remainingSectionTo)
 				return state.setIn(["mappedHrefs", remainingSectionFrom], remainingSectionTo);
 			return state;
 		case REMOVE_TAB:
 			return state.withMutations(s => {
-				const prependHref = s.getIn(["config", "prependHref"]);
+				const prependPath = s.get("currentPrependPath") || s.getIn(["config", "prependPath"]);
 				const { module, path } = action.payload;
 				const list = s.getIn(["moduleTabs", module]) || Immutable.List();
-				const remainingSection = getAllAfterPrependHref(prependHref, path);
+				const remainingSection = getAllAfterPrependHref(prependPath, path);
 
 				if (remainingSection) {
 					const index = list.indexOf(remainingSection);
@@ -65,9 +65,9 @@ const navigationReducer = (state = initialState, action) => {
 				}
 			});
 		case SET_HREF_CONFIG:
-			return state.withMutations(s => {
-				s.set("config", Immutable.fromJS(action.payload));
-			});
+			return state.set("config", Immutable.fromJS(action.payload));
+		case SET_CURRENT_PREPEND_PATH:
+			return state.set("currentPrependPath", action.payload);
 		default:
 			return state;
 	}
