@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import styled, { withTheme } from "styled-components";
 import { useLocation } from "react-router-dom";
 import { getThemeProp } from "../../utils";
-import { getCurrentScope, selectPrependHrefConfig } from "../../selectors/navigation";
+import { selectPrependHrefConfig } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
 
 export const Bar = styled.div`

@@ -2,6 +2,7 @@ import Immutable from "immutable";
 import {
 	selectTabGetter,
 	selectCurrentModuleName,
+	selectCurrentSectionName,
 	selectMappedCurrentModuleList,
 	selectSegmentHrefMapper,
 	selectRouteParams,
@@ -97,6 +98,41 @@ describe("selectCurrentModuleName", () => {
 			],
 			"to be",
 			"",
+		));
+});
+
+
+describe("selectCurrentSectionName", () => {
+	it("finds the section name in the routing result", () =>
+		expect(
+			selectCurrentSectionName,
+			"called with",
+			[
+				Immutable.fromJS({
+					navigation: {
+						route: { match: { path: "/:scope/thing/id/mySection" } },
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
+				}),
+			],
+			"to be",
+			"mySection",
+		));
+
+	it("finds the section name in the routing result when route is deeper than just section", () =>
+		expect(
+			selectCurrentSectionName,
+			"called with",
+			[
+				Immutable.fromJS({
+					navigation: {
+						route: { match: { path: "/:scope/thing/id/mySection/foo/boo" } },
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
+				}),
+			],
+			"to be",
+			"mySection",
 		));
 });
 

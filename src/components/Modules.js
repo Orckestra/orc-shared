@@ -6,6 +6,8 @@ import { getCurrentScope } from "../selectors/navigation";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 import { setHrefConfig } from "../actions/navigation";
+import { initializeEditTree } from "../actions/view";
+import { setModulesStructure } from "../actions/modules";
 
 export const Module = withErrorBoundary("Module")(({ config, path, error, location, match, modulePrependPath }) => {
 	return (
@@ -33,6 +35,11 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 
 	const getModuleConfig = name => (otherConfigs && otherConfigs[name]) || { prependPath, prependHref };
 	const firstModuleName = Object.keys(modules)[0];
+
+	React.useEffect(() => {
+		dispatch(setModulesStructure(modules));
+		dispatch(initializeEditTree(modules));
+	}, [dispatch, modules]);
 
 	return (
 		<React.Fragment>
