@@ -32,9 +32,7 @@ const viewStateReducer = (state = initialState, action) => {
 			return state.set("edit", Immutable.fromJS(editTree));
 		}
 		case VIEW_CREATE_EDIT_NODE: {
-			const moduleName = action.payload.moduleName;
-			const id = action.payload.entityId;
-			const modulesData = action.payload.modulesData;
+			const { moduleName, entityId, modulesData } = action.payload;
 
 			const pages = modulesData[moduleName].pages;
 
@@ -48,22 +46,18 @@ const viewStateReducer = (state = initialState, action) => {
 			for (const sectionKey of sectionsKeys) {
 				sections[sectionKey].wasEdited = false;
 			}
-			return state.setIn(["edit", moduleName, id], Immutable.fromJS(sections));
+			return state.setIn(["edit", moduleName, entityId], Immutable.fromJS(sections));
 		}
 		case VIEW_REMOVE_EDIT_NODE: {
-			const moduleName = action.payload.moduleName;
-			const id = action.payload.entityId;
+			const { moduleName, entityId } = action.payload;
 
-			return state.removeIn(["edit", moduleName, id]);
+			return state.removeIn(["edit", moduleName, entityId]);
 		}
 		case VIEW_SET_EDIT_MODEL: {
-			const moduleName = action.payload.moduleName;
-			const id = action.payload.entityId;
-			const sectionName = action.payload.sectionName;
-			const model = action.payload.model;
+			const { moduleName, entityId, sectionName, model } = action.payload;
 
-			return state.setIn(["edit", moduleName, id, sectionName, "model"], Immutable.fromJS(model))
-				.setIn(["edit", moduleName, id, sectionName, "wasEdited"], true);
+			return state.setIn(["edit", moduleName, entityId, sectionName, "model"], Immutable.fromJS(model))
+				.setIn(["edit", moduleName, entityId, sectionName, "wasEdited"], true);
 		}
 		default:
 			return state;
