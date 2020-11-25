@@ -31,7 +31,7 @@ const viewStateReducer = (state = initialState, action) => {
         }
       }
 
-      return state.set("tree", modulesTree);
+      return state.set("tree", Immutable.fromJS(modulesTree));
     }
     default:
       return state;

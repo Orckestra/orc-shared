@@ -5,7 +5,7 @@ const modulesData = state => state.get("view");
 
 const editData = createSelector(modulesData, data => data.get("edit"));
 
-export const isTabUnderEditing = (entityId) => createSelector(
+export const isEntityUnderEditing = (entityId) => createSelector(
   editData,
   selectCurrentModuleName,
   (data, moduleName) => {

@@ -16,9 +16,9 @@ export const setStateField = (name, field, value) => ({
 	payload: { name, field, value },
 });
 
-export const initializeEditTree = (module) => ({
+export const initializeEditTree = (modules) => ({
 	type: VIEW_INITIALIZE_EDIT_TREE,
-	payload: module
+	payload: modules
 });
 
 export const createEditNode = (entityId, moduleName, modulesData) => ({

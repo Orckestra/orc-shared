@@ -32,7 +32,6 @@ const viewStateReducer = (state = initialState, action) => {
 			return state.set("edit", Immutable.fromJS(editTree));
 		}
 		case VIEW_CREATE_EDIT_NODE: {
-			console.log(action.payload);
 			const moduleName = action.payload.moduleName;
 			const id = action.payload.entityId;
 			const modulesData = action.payload.modulesData;
@@ -63,7 +62,7 @@ const viewStateReducer = (state = initialState, action) => {
 			const sectionName = action.payload.sectionName;
 			const model = action.payload.model;
 
-			return state.setIn(["edit", moduleName, id, sectionName, "model"], model)
+			return state.setIn(["edit", moduleName, id, sectionName, "model"], Immutable.fromJS(model))
 				.setIn(["edit", moduleName, id, sectionName, "wasEdited"], true);
 		}
 		default:

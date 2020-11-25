@@ -19,7 +19,7 @@ export const useDispatchWithModulesData = () => {
 		}
 		predefinedParams.push(currentModuleName);
 		if (options?.includeModulesTree === true) {
-			predefinedParams.push(modules);
+			predefinedParams.push(modules.toJS());
 		}
 		if (params != null) {
 			const actionParams = params.concat(predefinedParams);
