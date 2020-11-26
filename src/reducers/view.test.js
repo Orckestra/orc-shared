@@ -5,7 +5,8 @@ import {
 	initializeEditTree,
 	createEditNode,
 	removeEditNode,
-	setEditModel
+	setEditModel,
+	setEditModelField
 } from "../actions/view";
 import viewReducer from "./view";
 
@@ -149,6 +150,57 @@ describe("View state reducer", () => {
 		};
 
 		const action = setEditModel(model, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and(
+			"to equal",
+			Immutable.fromJS({ edit: expected }),
+		);
+	});
+
+	it("Sets edit field inside model correctly", () => {
+		const keys = ["key1", "key2", "key3"];
+		const value = "myValue";
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "section11";
+
+		const modules = Immutable.fromJS(
+			{
+				[moduleName]: {
+					[entityId]: {
+						[sectionName]: {
+							wasEdited: false,
+						},
+					}
+				}
+			}
+		);
+
+		const oldState = Immutable.Map({
+			edit: modules
+		});
+
+		const model = {
+			key1: {
+				key2: {
+					key3: value
+				}
+			}
+		}
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						wasEdited: true,
+						model
+					},
+				}
+			}
+		};
+
+		const action = setEditModelField(keys, value, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and(
