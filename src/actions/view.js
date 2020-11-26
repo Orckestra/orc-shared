@@ -5,6 +5,7 @@ export const VIEW_INITIALIZE_EDIT_TREE = "VIEW_INITIALIZE_EDIT_TREE";
 export const VIEW_CREATE_EDIT_NODE = "VIEW_CREATE_EDIT_NODE";
 export const VIEW_SET_EDIT_MODEL = "VIEW_SET_EDIT_MODEL";
 export const VIEW_REMOVE_EDIT_NODE = "VIEW_REMOVE_EDIT_NODE";
+export const VIEW_SET_EDIT_MODEL_FIELD = "VIEW_SET_EDIT_MODEL_FIELD";
 
 export const setValue = (name, value) => ({
 	type: VIEW_SET,
@@ -34,4 +35,9 @@ export const removeEditNode = (entityId, moduleName) => ({
 export const setEditModel = (model, entityId, sectionName, moduleName) => ({
 	type: VIEW_SET_EDIT_MODEL,
 	payload: { model, entityId, sectionName, moduleName }
+});
+
+export const setEditModelField = (keys, value, entityId, sectionName, moduleName) => ({
+	type: VIEW_SET_EDIT_MODEL_FIELD,
+	payload: { keys, value, entityId, sectionName, moduleName }
 });
