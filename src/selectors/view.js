@@ -41,3 +41,23 @@ export const getModifiedSections = (entityId) => createSelector(
     return modifiedSections;
   },
 );
+
+export const getModifiedModels = (entityId) => createSelector(
+  editData,
+  selectCurrentModuleName,
+  (data, moduleName) => {
+    const models = {};
+    if (data != null) {
+      const dataJS = data.toJS();
+      const sections = dataJS[moduleName][entityId];
+      if (sections != null) {
+        const sectionsKeys = Object.keys(sections);
+
+        sectionsKeys.forEach(sectionKey => {
+          models[sectionKey] = sections[sectionKey].model;
+        });
+      }
+    }
+    return models;
+  }
+);

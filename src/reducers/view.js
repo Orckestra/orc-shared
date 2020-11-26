@@ -5,7 +5,8 @@ import {
 	VIEW_INITIALIZE_EDIT_TREE,
 	VIEW_CREATE_EDIT_NODE,
 	VIEW_REMOVE_EDIT_NODE,
-	VIEW_SET_EDIT_MODEL
+	VIEW_SET_EDIT_MODEL,
+	VIEW_SET_EDIT_MODEL_FIELD,
 } from "../actions/view";
 
 const initialState = Immutable.Map({});
@@ -57,6 +58,14 @@ const viewStateReducer = (state = initialState, action) => {
 			const { moduleName, entityId, sectionName, model } = action.payload;
 
 			return state.setIn(["edit", moduleName, entityId, sectionName, "model"], Immutable.fromJS(model))
+				.setIn(["edit", moduleName, entityId, sectionName, "wasEdited"], true);
+		}
+		case VIEW_SET_EDIT_MODEL_FIELD: {
+			const { keys, value, entityId, sectionName, moduleName } = action.payload;
+
+			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
+
+			return state.setIn(path, value)
 				.setIn(["edit", moduleName, entityId, sectionName, "wasEdited"], true);
 		}
 		default:
