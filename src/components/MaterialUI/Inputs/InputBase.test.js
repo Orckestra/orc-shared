@@ -45,6 +45,11 @@ describe("InputBase Component", () => {
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 		expect(mountedComponent.containsMatchingElement(expectedLabel), "to be truthy");
+
+		inputProps.set(InputBaseProps.propNames.value, aValue + aValue);
+		mountedComponent.setProps({ inputProps });
+
+		expect(mountedComponent.prop("inputProps").get(InputBaseProps.propNames.value), "to equal", aValue + aValue);
 	});
 
 	it("Renders InputBase component without labels", () => {
