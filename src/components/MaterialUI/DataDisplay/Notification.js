@@ -68,7 +68,10 @@ const useNotificationState = (snackPack, setSnackPack, lastOnly) => {
 		if (snackPack.length && !messageInfo) {
 			// Set a new snack when we don't have an active one
 			setMessageInfo({ ...snackPack[0] });
-			setSnackPack(prev => prev.splice(0, 1));
+			setSnackPack(prev => {
+				prev.splice(0, 1);
+				return prev;
+			});
 			setOpen(true);
 		} else if (lastOnly && snackPack.length && messageInfo && open) {
 			// Close an active snack when a new one is added

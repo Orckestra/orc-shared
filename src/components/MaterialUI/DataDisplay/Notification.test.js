@@ -1,12 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import NotificationProps from "./NotificationProps";
 import Notification from "./Notification";
-import Switch from "../Inputs/Switch";
+import Snackbar from "@material-ui/core/Snackbar";
 
 describe("Notification Component", () => {
 	let setSnackPack, container;
@@ -94,20 +93,17 @@ describe("Notification Component", () => {
 			<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
 		);
 
-		ReactDOM.render(component, container);
+		const mountedComponent = mount(component);
 
-		const clickEvent = document.createEvent("MouseEvents");
-		clickEvent.initEvent("click", true, false);
-
-		container.dispatchEvent(clickEvent);
-
-		expect(container, "to contain", <div>{mockedMessage.message}</div>);
+		mountedComponent.find(Snackbar).invoke("onClose")({}, "clickaway");
+		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "to be truthy");
 
 		act(() => {
-			const closeButton = container.querySelector("button");
-			closeButton.dispatchEvent(clickEvent);
+			mountedComponent.find("button").simulate("click");
+
 			setTimeout(() => {
-				expect(container, "not to contain", <div>{mockedMessage.message}</div>);
+				mountedComponent.update();
+				expect(mountedComponent.containsMatchingElement(mockedMessage.message), "not to be truthy");
 				done();
 			}, 2000);
 		});
@@ -128,15 +124,12 @@ describe("Notification Component", () => {
 			<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
 		);
 
-		ReactDOM.render(component, container);
-
-		const clickEvent = document.createEvent("MouseEvents");
-		clickEvent.initEvent("click", true, false);
+		const mountedComponent = mount(component);
 
 		act(() => {
 			setTimeout(() => {
-				container.dispatchEvent(clickEvent);
-				expect(container, "to contain", <div>{mockedMessageSecond.message}</div>);
+				mountedComponent.update();
+				expect(mountedComponent.containsMatchingElement(mockedMessageSecond.message), "to be truthy");
 				done();
 			}, 2000);
 		});
