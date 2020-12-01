@@ -1,5 +1,4 @@
 import React from "react";
-import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
@@ -82,7 +81,7 @@ describe("Notification Component", () => {
 		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "to be truthy");
 	});
 
-	it("Renders Notification component without errors", done => {
+	it("Renders Notification component without errors", () => {
 		const mockedMessage = { key: new Date().getTime(), message: "This is confirmation notification message" };
 		let snackPack = [mockedMessage];
 		const setSnackPack = snackPackUpdate => snackPackUpdate(snackPack);
@@ -98,19 +97,14 @@ describe("Notification Component", () => {
 		mountedComponent.find(Snackbar).invoke("onClose")({}, "clickaway");
 		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "to be truthy");
 
-		act(() => {
-			mountedComponent.find("button").simulate("click");
+		mountedComponent.find("button").simulate("click");
 
-			setTimeout(() => {
-				mountedComponent.update();
-				expect(mountedComponent.containsMatchingElement(mockedMessage.message), "not to be truthy");
-				done();
-			}, 2000);
-		});
+		mountedComponent.find(Snackbar).invoke("onExited")();
+		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "not to be truthy");
 	});
 
-	it("Renders lastOnly Notification component without errors", done => {
-		const mockedMessage = { key: new Date().getTime(), message: "This is confirmation notification message" };
+	it("Renders lastOnly Notification component without errors", () => {
+		const mockedMessage = { key: new Date().getTime(), message: "This is confirmation first notification message" };
 		const mockedMessageSecond = {
 			key: new Date().getTime() + 1,
 			message: "This is confirmation second notification message",
@@ -126,12 +120,7 @@ describe("Notification Component", () => {
 
 		const mountedComponent = mount(component);
 
-		act(() => {
-			setTimeout(() => {
-				mountedComponent.update();
-				expect(mountedComponent.containsMatchingElement(mockedMessageSecond.message), "to be truthy");
-				done();
-			}, 2000);
-		});
+		mountedComponent.find(Snackbar).invoke("onExited")();
+		expect(mountedComponent.containsMatchingElement(mockedMessageSecond.message), "to be truthy");
 	});
 });
