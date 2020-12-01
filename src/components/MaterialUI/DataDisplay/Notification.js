@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
-import Icon from "orc-shared/src/components/MaterialUI/DataDisplay/Icon";
+import Icon from "./Icon";
 import NotificationProps from "./NotificationProps";
 
 const useStyles = makeStyles(theme => ({
