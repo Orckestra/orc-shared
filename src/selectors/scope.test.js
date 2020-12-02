@@ -6,7 +6,6 @@ import {
 	localizedScopeSelector,
 	selectLocalizedScopes
 } from "./scope";
-import { cloneDeep } from "lodash";
 
 let state;
 beforeEach(() => {
