@@ -130,4 +130,4 @@ const Notification = ({ notificationProps, snackPack, setSnackPack }) => {
 	);
 };
 
-export default Notification;
+export default React.memo(Notification);
