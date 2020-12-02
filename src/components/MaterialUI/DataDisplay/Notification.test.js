@@ -1,17 +1,25 @@
 import React from "react";
 import { mount } from "enzyme";
+import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
+import { Provider } from "react-redux";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import NotificationProps from "./NotificationProps";
 import Notification from "./Notification";
 import Snackbar from "@material-ui/core/Snackbar";
+import Icon from "./Icon";
 
 describe("Notification Component", () => {
-	let setSnackPack, container;
+	let setSnackPack, container, store;
 	beforeEach(() => {
 		container = document.createElement("div");
 		document.body.appendChild(container);
 		setSnackPack = sinon.spy().named("setSnackPack");
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => ({}),
+		};
 	});
 	afterEach(() => {
 		document.body.removeChild(container);
@@ -44,14 +52,20 @@ describe("Notification Component", () => {
 		notificationProps.set(NotificationProps.propNames.anchorOrigin, anchorOrigin);
 		notificationProps.set(NotificationProps.propNames.lastOnly, lastOnly);
 
-		const component = (
-			<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
+		expect(
+			<Provider store={store}>
+				<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<div>
+					<Icon id="error-cross-filled" />
+					<div>{mockedMessage.message}</div>
+					<Ignore />
+				</div>
+			</div>,
 		);
-
-		const mountedComponent = mount(component);
-
-		expect(mountedComponent.exists("#error-cross-filled"), "to be true");
-		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "to be truthy");
 	});
 
 	it("Renders Success Notification component without errors", () => {
@@ -71,14 +85,20 @@ describe("Notification Component", () => {
 		notificationProps.set(NotificationProps.propNames.anchorOrigin, anchorOrigin);
 		notificationProps.set(NotificationProps.propNames.lastOnly, lastOnly);
 
-		const component = (
-			<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
+		expect(
+			<Provider store={store}>
+				<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<div>
+					<Icon id="checkmark-filled" />
+					<div>{mockedMessage.message}</div>
+					<Ignore />
+				</div>
+			</div>,
 		);
-
-		const mountedComponent = mount(component);
-
-		expect(mountedComponent.exists("#checkmark-filled"), "to be true");
-		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "to be truthy");
 	});
 
 	it("Renders Notification component without errors", () => {
