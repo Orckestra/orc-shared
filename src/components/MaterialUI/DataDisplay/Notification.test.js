@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import { Ignore } from "unexpected-reaction";
+import IconButton from "@material-ui/core/IconButton";
 import sinon from "sinon";
 import { Provider } from "react-redux";
 import { ignoreConsoleError } from "../../../utils/testUtils";
@@ -62,7 +62,9 @@ describe("Notification Component", () => {
 				<div>
 					<Icon id="error-cross-filled" />
 					<div>{mockedMessage.message}</div>
-					<Ignore />
+					<IconButton aria-label="close">
+						<Icon id="close2" />
+					</IconButton>
 				</div>
 			</div>,
 		);
@@ -91,11 +93,14 @@ describe("Notification Component", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
+
 			<div>
 				<div>
 					<Icon id="checkmark-filled" />
 					<div>{mockedMessage.message}</div>
-					<Ignore />
+					<IconButton aria-label="close">
+						<Icon id="close2" />
+					</IconButton>
 				</div>
 			</div>,
 		);
