@@ -7,6 +7,7 @@ import CheckboxProps from "../Inputs/CheckboxProps";
 import TableHeaderCell from "./TableHeaderCell";
 import StandaloneRadio from "../Inputs/StandaloneRadio";
 import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
+import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 
 const renderByType = (e, def, rowId, readOnly) => {
 	const transformedValue = def.transform ? def.transform(e[def.fieldName]) : e[def.fieldName];
@@ -18,23 +19,35 @@ const renderByType = (e, def, rowId, readOnly) => {
 
 		case "currency": {
 			const currency = Array.isArray(def.currency) ? safeGet(e, ...def.currency) : def.currency;
-			return currency != null ? [
+
+			const currencyValue = (
 				<FormattedNumber
 					style="currency" // eslint-disable-line react/style-prop-object
 					currency={currency}
 					value={transformedValue || "0"}
-				/>,
+				/>
+			);
+			const tooltippedCurrencyValue = <TooltippedTypography noWrap children={currencyValue} titleValue={currencyValue} />;
+			return currency != null ? [
+				tooltippedCurrencyValue
+				,
 			] : [null];
 		}
 
 		case "date":
-			return transformedValue != null ? [<FormattedDate value={transformedValue} />] : [null];
+			const dateValue = <FormattedDate value={transformedValue} />;
+			const tooltippedDateValue = <TooltippedTypography noWrap children={dateValue} titleValue={dateValue} />;
+			return transformedValue != null ? [tooltippedDateValue] : [null];
 
 		case "datetime":
-			return transformedValue != null ? [
+			const datetimeValue = (
 				<React.Fragment>
 					<FormattedDate value={transformedValue} /> <FormattedTime value={transformedValue} />
-				</React.Fragment>,
+				</React.Fragment>
+			);
+			const tooltippedDatetimeValue = <TooltippedTypography noWrap children={datetimeValue} titleValue={datetimeValue} />;
+			return transformedValue != null ? [
+				tooltippedDatetimeValue,
 			] : [null];
 
 		case "select":
@@ -70,7 +83,7 @@ const renderByType = (e, def, rowId, readOnly) => {
 			return [<StandaloneRadio radioProps={radioProps} />];
 
 		default:
-			return [transformedValue];
+			return [<TooltippedTypography noWrap children={transformedValue} titleValue={transformedValue} />];
 	}
 };
 

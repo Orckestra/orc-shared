@@ -5,7 +5,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { makeStyles } from "@material-ui/core/styles";
 import CheckboxMui from "@material-ui/core/Checkbox";
-import withDeferredTooltip from "../hocs/withDeferredTooltip";
 import { tableSelectionMode, useTableSelection } from "./useTableSelection";
 import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
@@ -66,9 +65,6 @@ export const useStyles = makeStyles(theme => ({
 	},
 	tableCell: {
 		padding: theme.spacing(2, 1.6),
-		whiteSpace: "nowrap",
-		overflow: "hidden",
-		textOverflow: "ellipsis",
 	},
 	tableCellSelect: {
 		padding: theme.spacing(1.7, 1.6),
@@ -132,15 +128,15 @@ const TableBody = props => {
 
 export const MemoTableBody = React.memo(TableBody, propsAreEqualBody);
 
-const TableCell = withDeferredTooltip(
+const TableCell = //withDeferredTooltip(
 	React.forwardRef((props, ref) => {
 		return (
 			<td className={props.className} ref={ref} {...props}>
 				{props.value}
 			</td>
 		);
-	}),
-);
+	});
+//);
 
 const buildRowCheckbox = (classes, key, selectionHandlers) => {
 	const rowSelected = selectionHandlers.isSelected(key);
@@ -213,7 +209,6 @@ const buildTableRows = (rows, classes, customClasses, selectMode, onRowClick, se
 					className={classNames(classes.tableCell, customClasses[cell.className])}
 					key={cellIndex}
 					value={cell.cellElement}
-					titleValue={cell.title}
 				/>
 			))}
 		</MemoTableRow>
