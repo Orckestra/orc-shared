@@ -11,6 +11,9 @@ export { default as DividerProps } from "./dividerProps";
 
 export { default as Icon } from "./Icon";
 
+export { default as Notification } from "./Notification";
+export { default as NotificationProps } from "./NotificationProps";
+
 export { default as Table } from "./Table";
 export { default as TableProps } from "./TableProps";
 

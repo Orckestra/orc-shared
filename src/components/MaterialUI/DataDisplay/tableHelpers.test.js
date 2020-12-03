@@ -1,6 +1,8 @@
+import React from "react";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import CheckboxProps from "../Inputs/CheckboxProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
+import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 
 describe("table helpers buildHeaderAndRowFromConfig", () => {
 	const messages = {
@@ -95,23 +97,63 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(rows[0].key, "to equal", "an_id1");
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement, "to equal", "A text row 1");
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
-		expect(rows[0].columns[0].title, "to equal", "A text row 1");
-		expect(rows[0].columns[1].cellElement, "to equal", "another 1");
+		expect(
+			rows[0].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+		);
+		expect(
+			rows[0].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+		);
 		expect(rows[0].columns[1].className, "to be undefined");
-		expect(rows[0].columns[1].title, "to equal", "another 1");
+		expect(
+			rows[0].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+		);
 
 		expect(rows[1].columns.length, "to equal", 2);
 
 		expect(rows[1].key, "to equal", "an_id2");
 		expect(rows[1].element, "to equal", elements[1]);
-		expect(rows[1].columns[0].cellElement, "to equal", "A text row 2");
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
-		expect(rows[1].columns[0].title, "to equal", "A text row 2");
-		expect(rows[1].columns[1].cellElement, "to equal", "another 2");
+		expect(
+			rows[1].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+		);
+		expect(
+			rows[1].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+		);
 		expect(rows[1].columns[1].className, "to be undefined");
-		expect(rows[1].columns[1].title, "to equal", "another 2");
+		expect(
+			rows[1].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+		);
 	});
 
 	it("build table headers and rows as expected with another key field", () => {
@@ -147,23 +189,63 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(rows[0].key, "to equal", "Don't show 1");
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement, "to equal", "A text row 1");
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
-		expect(rows[0].columns[0].title, "to equal", "A text row 1");
-		expect(rows[0].columns[1].cellElement, "to equal", "another 1");
+		expect(
+			rows[0].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+		);
+		expect(
+			rows[0].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+		);
 		expect(rows[0].columns[1].className, "to be undefined");
-		expect(rows[0].columns[1].title, "to equal", "another 1");
+		expect(
+			rows[0].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+		);
 
 		expect(rows[1].columns.length, "to equal", 2);
 
 		expect(rows[1].key, "to equal", "Don't show 2");
 		expect(rows[1].element, "to equal", elements[1]);
-		expect(rows[1].columns[0].cellElement, "to equal", "A text row 2");
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
-		expect(rows[1].columns[0].title, "to equal", "A text row 2");
-		expect(rows[1].columns[1].cellElement, "to equal", "another 2");
+		expect(
+			rows[1].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+		);
+		expect(
+			rows[1].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+		);
 		expect(rows[1].columns[1].className, "to be undefined");
-		expect(rows[1].columns[1].title, "to equal", "another 2");
+		expect(
+			rows[1].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+		);
 	});
 
 	it("build table rows as expected with transform", () => {
@@ -186,11 +268,31 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows.length, "to equal", 2);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement, "to equal", "another 1_transformation");
-		expect(rows[0].columns[0].title, "to equal", "another 1_transformation");
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />
+		);
+		expect(
+			rows[0].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />
+		);
 
-		expect(rows[1].columns[0].cellElement, "to equal", "another 2_transformation");
-		expect(rows[1].columns[0].title, "to equal", "another 2_transformation");
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />
+		);
+		expect(
+			rows[1].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />
+		);
 	});
 
 	it("build table rows as expected with a custom builder", () => {
@@ -235,34 +337,34 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows.length, "to equal", 3);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement.props, "to equal", {
+		expect(rows[0].columns[0].cellElement.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: 123,
 		});
-		expect(rows[0].columns[0].title.props, "to equal", {
+		expect(rows[0].columns[0].title.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: 123,
 		});
 
-		expect(rows[1].columns[0].cellElement.props, "to equal", {
+		expect(rows[1].columns[0].cellElement.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: 44,
 		});
-		expect(rows[1].columns[0].title.props, "to equal", {
+		expect(rows[1].columns[0].title.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: 44,
 		});
 
-		expect(rows[2].columns[0].cellElement.props, "to equal", {
+		expect(rows[2].columns[0].cellElement.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: "0",
 		});
-		expect(rows[2].columns[0].title.props, "to equal", {
+		expect(rows[2].columns[0].title.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: "0",
@@ -315,34 +417,34 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows.length, "to equal", 4);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement.props, "to equal", {
+		expect(rows[0].columns[0].cellElement.props.children.props, "to equal", {
 			style: "currency",
 			currency: "EUR",
 			value: 123,
 		});
-		expect(rows[0].columns[0].title.props, "to equal", {
+		expect(rows[0].columns[0].title.props.children.props, "to equal", {
 			style: "currency",
 			currency: "EUR",
 			value: 123,
 		});
 
-		expect(rows[1].columns[0].cellElement.props, "to equal", {
+		expect(rows[1].columns[0].cellElement.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: 44,
 		});
-		expect(rows[1].columns[0].title.props, "to equal", {
+		expect(rows[1].columns[0].title.props.children.props, "to equal", {
 			style: "currency",
 			currency: "USD",
 			value: 44,
 		});
 
-		expect(rows[2].columns[0].cellElement.props, "to equal", {
+		expect(rows[2].columns[0].cellElement.props.children.props, "to equal", {
 			style: "currency",
 			currency: "CAD",
 			value: "0",
 		});
-		expect(rows[2].columns[0].title.props, "to equal", {
+		expect(rows[2].columns[0].title.props.children.props, "to equal", {
 			style: "currency",
 			currency: "CAD",
 			value: "0",
@@ -367,11 +469,11 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows.length, "to equal", 3);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement.props, "to equal", { value: 123 });
-		expect(rows[0].columns[0].title.props, "to equal", { value: 123 });
+		expect(rows[0].columns[0].cellElement.props.children.props, "to equal", { value: 123 });
+		expect(rows[0].columns[0].title.props.children.props, "to equal", { value: 123 });
 
-		expect(rows[1].columns[0].cellElement.props, "to equal", { value: 44 });
-		expect(rows[1].columns[0].title.props, "to equal", { value: 44 });
+		expect(rows[1].columns[0].cellElement.props.children.props, "to equal", { value: 44 });
+		expect(rows[1].columns[0].title.props.children.props, "to equal", { value: 44 });
 
 		expect(rows[2].columns[0].cellElement, "to equal", null);
 		expect(rows[2].columns[0].title, "to equal", null);
@@ -392,27 +494,28 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows.length, "to equal", 3);
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement.props.children[0].props, "to equal", {
+		expect(rows[0].columns[0].cellElement.props.children.props.children[0].props, "to equal", {
 			value: 123,
 		});
-		expect(rows[0].columns[0].title.props.children[0].props, "to equal", { value: 123 });
-		expect(rows[0].columns[0].cellElement.props.children[1], "to equal", " ");
-		expect(rows[0].columns[0].title.props.children[1], "to equal", " ");
-		expect(rows[0].columns[0].cellElement.props.children[2].props, "to equal", {
-			value: 123,
-		});
-		expect(rows[0].columns[0].title.props.children[2].props, "to equal", { value: 123 });
 
-		expect(rows[1].columns[0].cellElement.props.children[0].props, "to equal", {
+		expect(rows[0].columns[0].title.props.children.props.children[0].props, "to equal", { value: 123 });
+		expect(rows[0].columns[0].cellElement.props.children.props.children[1], "to equal", " ");
+		expect(rows[0].columns[0].title.props.children.props.children[1], "to equal", " ");
+		expect(rows[0].columns[0].cellElement.props.children.props.children[2].props, "to equal", {
+			value: 123,
+		});
+		expect(rows[0].columns[0].title.props.children.props.children[2].props, "to equal", { value: 123 });
+
+		expect(rows[1].columns[0].cellElement.props.children.props.children[0].props, "to equal", {
 			value: 44,
 		});
-		expect(rows[1].columns[0].title.props.children[0].props, "to equal", { value: 44 });
-		expect(rows[1].columns[0].cellElement.props.children[1], "to equal", " ");
-		expect(rows[1].columns[0].title.props.children[1], "to equal", " ");
-		expect(rows[1].columns[0].cellElement.props.children[2].props, "to equal", {
+		expect(rows[1].columns[0].title.props.children.props.children[0].props, "to equal", { value: 44 });
+		expect(rows[1].columns[0].cellElement.props.children.props.children[1], "to equal", " ");
+		expect(rows[1].columns[0].title.props.children.props.children[1], "to equal", " ");
+		expect(rows[1].columns[0].cellElement.props.children.props.children[2].props, "to equal", {
 			value: 44,
 		});
-		expect(rows[1].columns[0].title.props.children[2].props, "to equal", { value: 44 });
+		expect(rows[1].columns[0].title.props.children.props.children[2].props, "to equal", { value: 44 });
 
 		expect(rows[2].columns[0].title, "to equal", null);
 		expect(rows[2].columns[0].cellElement, "to equal", null);
@@ -582,24 +685,56 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[0].columns.length, "to equal", 2);
 
 		expect(rows[0].key, "to equal", "an_id1");
+
 		expect(rows[0].element, "to equal", elements[0]);
-		expect(rows[0].columns[0].cellElement, "to equal", "A text row 1");
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
 		expect(rows[0].columns[0].title, "to be null");
-		expect(rows[0].columns[1].cellElement, "to equal", "another 1");
+		expect(
+			rows[0].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+		);
 		expect(rows[0].columns[1].className, "to be undefined");
-		expect(rows[0].columns[1].title, "to equal", "another 1");
+
+		expect(
+			rows[0].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+		);
 
 		expect(rows[1].columns.length, "to equal", 2);
 
 		expect(rows[1].key, "to equal", "an_id2");
 		expect(rows[1].element, "to equal", elements[1]);
-		expect(rows[1].columns[0].cellElement, "to equal", "A text row 2");
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
 		expect(rows[1].columns[0].title, "to be null");
-		expect(rows[1].columns[1].cellElement, "to equal", "another 2");
+		expect(
+			rows[1].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+		);
 		expect(rows[1].columns[1].className, "to be undefined");
-		expect(rows[1].columns[1].title, "to equal", "another 2");
+		expect(
+			rows[1].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+		);
 	});
 
 	it("build table rows as expected with radio", () => {

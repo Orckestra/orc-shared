@@ -152,6 +152,9 @@ const setThemeOverrides = theme => ({
 	},
 	MuiButton: {
 		...theme.MuiButton,
+		root: {
+			padding: `${theme.spacing(0.8)} ${theme.spacing(1)}`,
+		},
 		/* Styles applied to the span element that wraps the children. */
 		label: {
 			...theme.label,
@@ -809,7 +812,7 @@ const setThemeOverrides = theme => ({
 			paddingLeft: theme.spacing(1),
 			paddingRight: theme.spacing(1),
 		}
-	}
+	},
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {

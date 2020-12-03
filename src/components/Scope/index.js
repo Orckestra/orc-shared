@@ -5,41 +5,67 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { getThemeProp } from "../../utils";
 import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
-import Button from "../Button";
 import Selector from "./Selector";
 import usePreviousModified from "../../hooks/usePreviousModified";
 import { unwrapImmutable } from "../../utils";
 import { defaultScopeSelector } from "../../selectors/settings";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+
+const useStyles = makeStyles(theme => ({
+	scopeButton: {
+		zIndex: 10,
+		maxWidth: theme.spacing(25),
+	},
+	outlinedButton: {
+		backgroundColor: theme.palette.primary.contrastText,
+	},
+	buttonContainer: {
+		position: "absolute",
+		top: "50%",
+		transform: "translateY(-50%)",
+		right: theme.spacing(2),
+	},
+	test: {
+		width: theme.spacing(20)
+	}
+}));
 
 export const Bar = styled.div`
-	flex: 0 0 49px;
+	position: relative;
 	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
+	width: 100%;
+	min-height: 49px;
 	user-select: none;
 `;
 
-export const AlignedButton = styled(Button)`
-	margin-right: 20px;
-	z-index: 10;
-`;
-AlignedButton.defaultProps = {
-	primary: true,
-};
+export const ScopeBar = ({ show, name, updateViewState }) => {
+	const classes = useStyles();
 
-export const ScopeBar = ({ show, name, updateViewState }) => (
-	<Bar>
-		<AlignedButton
-			id="showScopeSelector"
-			active={show}
-			onClick={() => updateViewState("show", true)}
-		>
-			{name}
-		</AlignedButton>
-	</Bar>
-);
+	const variant = show === true ? "contained" : "outlined";
+
+	// markup such this was made just to support correct behavior in IE
+	// because it doesn't support min-width: auto for flex elements
+	return (
+		<Bar>
+			<div className={classes.buttonContainer}>
+				<Button
+					classes={{ root: classes.scopeButton, outlined: classes.outlinedButton }}
+					variant={variant} color="primary"
+					onClick={() => updateViewState("show", true)}>
+					<TooltippedTypography
+						noWrap
+						children={name}
+						titleValue={name}
+					/>
+				</Button>
+			</div>
+		</Bar>
+	);
+}
+
 ScopeBar.displayName = "ScopeBar";
 
 export const Scope = ({ children, filterPlaceholder }) => {

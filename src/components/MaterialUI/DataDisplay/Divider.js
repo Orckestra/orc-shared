@@ -12,8 +12,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey.borders,
 	},
 	dividerVertical: {
-		height: theme.spacing(3),
-		margin: `0 ${theme.spacing(1)}`,
+		margin: `0 ${theme.spacing(2)}`,
 	},
 	inheritedWidth: {
 		width: "inherit",
@@ -31,6 +30,7 @@ const Divider = ({ dividerProps }) => {
 		dividerProps?.get(DividerProps.propNames.orientation) || "horizontal";
 	const light = dividerProps?.get(DividerProps.propNames.light) || false;
 	const variant = dividerProps?.get(DividerProps.propNames.variant) || "fullWidth";
+	const flexItem = dividerProps?.get(DividerProps.propNames.flexItem) || false;
 
 	const fullWidthHorizontalStyle =
 		variant === "fullWidth" && orientation === "horizontal"
@@ -42,6 +42,7 @@ const Divider = ({ dividerProps }) => {
 			orientation={orientation}
 			light={light}
 			variant={variant}
+			flexItem={flexItem}
 			classes={{
 				root: classNames(
 					classes.dividerRoot,

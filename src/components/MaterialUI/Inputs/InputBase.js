@@ -83,4 +83,7 @@ const InputBase = ({ inputProps }) => {
 	);
 };
 
-export default InputBase;
+const compareInputBase = (prev, next) =>
+	prev.inputProps.get(InputBaseProps.propNames.value) === next.inputProps.get(InputBaseProps.propNames.value);
+
+export default React.memo(InputBase, compareInputBase);

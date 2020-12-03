@@ -4,8 +4,7 @@ import { CHANGE_LOCALE, GET_CULTURES_SUCCESS } from "../actions/locale";
 export const cultureByDefault = "en-US";
 
 const localeFactory = supportedLocales => {
-	const defaultCulture =
-		(supportedLocales[0] && supportedLocales[0].cultureIso) || cultureByDefault;
+	const defaultCulture = (supportedLocales[0] && supportedLocales[0].cultureIso) || cultureByDefault;
 
 	const initialState = Immutable.fromJS({
 		locale: null,
@@ -17,8 +16,12 @@ const localeFactory = supportedLocales => {
 	const locale = (state = initialState, action) => {
 		switch (action.type) {
 			case CHANGE_LOCALE:
-				if (supportedLocales.findIndex(l => l.cultureIso === action.payload) !== -1) {
-					return state.set("locale", action.payload);
+				const supportedLocale =
+					(action.payload?.length >= 2 &&
+						supportedLocales.find(l => l.cultureIso.startsWith(action.payload.substring(0, 2)))) ||
+					null;
+				if (supportedLocale != null) {
+					return state.set("locale", supportedLocale.cultureIso);
 				} else {
 					return state;
 				}

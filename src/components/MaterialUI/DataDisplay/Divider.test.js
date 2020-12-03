@@ -121,5 +121,6 @@ describe("Divider", () => {
 		expect(mountedComponent.prop("light"), "to equal", false);
 		expect(mountedComponent.prop("orientation"), "to equal", "horizontal");
 		expect(mountedComponent.prop("variant"), "to equal", "fullWidth");
+		expect(mountedComponent.prop("flexItem"), "to equal", false);
 	});
 });
