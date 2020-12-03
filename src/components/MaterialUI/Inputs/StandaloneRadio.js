@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.grey.dark,
       borderRadius: 3,
       transform: "rotate(46deg)",
+      cursor: "auto"
     },
     "&:after": {
       content: `" "`,
@@ -52,6 +53,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.grey.dark,
       borderRadius: 3,
       transform: "rotate(33deg)",
+      cursor: "auto"
     },
   },
   radioReadOnly: {
