@@ -19,6 +19,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import ResizeDetector from "react-resize-detector";
 import CheckboxMui from "@material-ui/core/Checkbox";
 import { cloneDeep } from "lodash";
+import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 
 const TestComp = ({ classToTest, styleProps }) => {
 	const classes = useStyles({ ...styleProps });
@@ -130,7 +131,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => {} }} />,
+			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => { } }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),
@@ -330,12 +331,12 @@ describe("Table", () => {
 		const expectedTableRows = (
 			<>
 				<MemoTableRow>
-					<td>{elements[0].a1}</td>
-					<td>{elements[0].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a1} titleValue={elements[0].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a2} titleValue={elements[0].a2} />}</td>
 				</MemoTableRow>
 				<MemoTableRow>
-					<td>{elements[1].a1}</td>
-					<td>{elements[1].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a1} titleValue={elements[1].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a2} titleValue={elements[1].a2} />}</td>
 				</MemoTableRow>
 			</>
 		);
@@ -376,12 +377,12 @@ describe("Table", () => {
 		const expectedTableRows = (
 			<>
 				<MemoTableRow>
-					<td>{elements[0].a1}</td>
-					<td>{elements[0].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a1} titleValue={elements[0].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a2} titleValue={elements[0].a2} />}</td>
 				</MemoTableRow>
 				<MemoTableRow>
-					<td>{elements[1].a1}</td>
-					<td>{elements[1].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a1} titleValue={elements[1].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a2} titleValue={elements[1].a2} />}</td>
 				</MemoTableRow>
 			</>
 		);
@@ -430,15 +431,15 @@ describe("Table", () => {
 					<td>
 						<CheckboxMui />
 					</td>
-					<td>{elements[0].a1}</td>
-					<td>{elements[0].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a1} titleValue={elements[0].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a2} titleValue={elements[0].a2} />}</td>
 				</MemoTableRow>
 				<MemoTableRow>
 					<td>
 						<CheckboxMui />
 					</td>
-					<td>{elements[1].a1}</td>
-					<td>{elements[1].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a1} titleValue={elements[1].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a2} titleValue={elements[1].a2} />}</td>
 				</MemoTableRow>
 			</>
 		);
@@ -489,15 +490,15 @@ describe("Table", () => {
 					<td>
 						<CheckboxMui />
 					</td>
-					<td>{elements[0].a1}</td>
-					<td>{elements[0].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a1} titleValue={elements[0].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a2} titleValue={elements[0].a2} />}</td>
 				</MemoTableRow>
 				<MemoTableRow>
 					<td>
 						<CheckboxMui />
 					</td>
-					<td>{elements[1].a1}</td>
-					<td>{elements[1].a2}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a1} titleValue={elements[1].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a2} titleValue={elements[1].a2} />}</td>
 				</MemoTableRow>
 			</>
 		);

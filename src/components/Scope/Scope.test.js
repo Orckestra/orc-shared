@@ -1,17 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { mount } from "enzyme";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { simulate } from "unexpected-reaction";
-import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
+import { PropStruct } from "../../utils/testUtils";
 import { VIEW_SET_FIELD } from "../../actions/view";
 import I18n from "../I18n";
-import RoutedScope, { Scope, ScopeBar, Bar, AlignedButton } from "./index";
+import RoutedScope, { Scope, ScopeBar, Bar } from "./index";
 import { Wrapper as SelectorWrapper, InputBox, SearchInput } from "./Selector";
 import { Wrapper as BranchWrapper } from "../Treeview/Branch";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import Button from "@material-ui/core/Button";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -81,7 +84,7 @@ beforeEach(() => {
 		},
 		subscribe: sub => {
 			subs.push(sub);
-			return () => {};
+			return () => { };
 		},
 		getState: () => state,
 		dispatch: sinon.spy().named("dispatch"),
@@ -96,9 +99,88 @@ beforeEach(() => {
 afterEach(() => {
 	try {
 		ReactDOM.unmountComponentAtNode(appRoot);
-	} catch (_) {}
+	} catch (_) { }
 	document.body.removeChild(appRoot);
 	document.body.removeChild(modalRoot);
+});
+
+describe("ScopeBar", () => {
+	let updateViewState;
+	beforeEach(() => {
+		updateViewState = sinon.spy().named("updateViewState");
+	});
+
+	it("renders the button to show the scope dialog when scope selector is closed", () => {
+		const component = <ScopeBar show={false} name="Scope name" updateViewState={updateViewState} />;
+
+		const expected = (
+			<Bar>
+				<div>
+					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
+						<TooltippedTypography
+							noWrap
+							children="Scope name"
+							titleValue="Scope name"
+						/>
+					</Button>
+				</div>
+			</Bar>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("renders the button to show the scope dialog when scope selector is closed", () => {
+		const component = <ScopeBar show={false} name="Scope name" updateViewState={updateViewState} />;
+
+		const expected = (
+			<Bar>
+				<div>
+					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
+						<TooltippedTypography
+							noWrap
+							children="Scope name"
+							titleValue="Scope name"
+						/>
+					</Button>
+				</div>
+			</Bar>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("renders the button to show the scope dialog when scope selector is opened", () => {
+		const component = <ScopeBar show={true} name="Scope name" updateViewState={updateViewState} />;
+
+		const expected = (
+			<Bar>
+				<div>
+					<Button variant="contained" color="primary" onClick={() => updateViewState("show", true)}>
+						<TooltippedTypography
+							noWrap
+							children="Scope name"
+							titleValue="Scope name"
+						/>
+					</Button>
+				</div>
+			</Bar>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Calles passed updateViewState even on click", () => {
+		const component = <ScopeBar show={false} name="Scope name" updateViewState={updateViewState} />;
+
+		const mountedComponent = mount(component);
+
+		const button = mountedComponent.find(Button);
+
+		button.invoke("onClick")();
+
+		expect(updateViewState, "to have a call satisfying", { args: ["show", true] });
+	});
 });
 
 describe("Scope", () => {
@@ -136,9 +218,7 @@ describe("Scope", () => {
 			"to satisfy",
 			<div>
 				<div>
-					<Bar>
-						<AlignedButton active>Test 1</AlignedButton>
-					</Bar>
+					<ScopeBar show={true} name="Test 1" />
 					<div id="child" />
 				</div>
 			</div>,
@@ -265,36 +345,11 @@ describe("Scope", () => {
 			"when mounted",
 			"to satisfy",
 			<div>
-				<Bar>
-					<AlignedButton>Test 1</AlignedButton>
-				</Bar>
+				<ScopeBar show={false} name="Test 1" />
 				<div id="child" />
 			</div>,
 		).then(() => expect(modalRoot, "to satisfy", <div></div>));
 	});
-});
-
-describe("ScopeBar", () => {
-	let updateViewState;
-	beforeEach(() => {
-		updateViewState = sinon.spy().named("updateViewState");
-	});
-
-	it("renders the button to show the scope dialog", () =>
-		expect(
-			<ScopeBar name="Scope name" updateViewState={updateViewState} />,
-			"when mounted",
-			"with event",
-			{ type: "click", target: getStyledClassSelector(AlignedButton) },
-			"to satisfy",
-			<Bar>
-				<AlignedButton id="showScopeSelector">Scope name</AlignedButton>
-			</Bar>,
-		).then(() =>
-			Promise.all([
-				expect(updateViewState, "to have calls satisfying", [{ args: ["show", true] }]),
-			]),
-		));
 });
 
 describe("RoutedScope", () => {
