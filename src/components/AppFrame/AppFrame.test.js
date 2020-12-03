@@ -14,7 +14,7 @@ import {
 	GET_APPLICATIONS_SUCCESS,
 	GET_APPLICATIONS_FAILURE,
 } from "../../actions/applications";
-import { Bar as ScopeBar, AlignedButton } from "../Scope";
+import { ScopeBar, Bar as BarWrapper } from "../Scope";
 import AppFrame, { Base, ViewPort } from "./AppFrame";
 import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
@@ -186,7 +186,7 @@ describe("AppFrame", () => {
 			toasts: { queue: [] },
 		});
 		store = {
-			subscribe: () => {},
+			subscribe: () => { },
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
@@ -244,9 +244,7 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar>
-									<AlignedButton>Test 1</AlignedButton>
-								</ScopeBar>
+								<ScopeBar name="Test 1" />
 								<TestComp1 key="1" />
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />
@@ -306,9 +304,7 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar>
-									<AlignedButton>Test 1</AlignedButton>
-								</ScopeBar>
+								<ScopeBar name="Test 1" />
 								<TestComp1 key="1" />
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />
@@ -369,9 +365,7 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar>
-									<AlignedButton>Test 1</AlignedButton>
-								</ScopeBar>
+								<ScopeBar name="Test 1" />
 								<TestComp1 key="1" />
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />
@@ -432,10 +426,10 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar />
-								<TestComp1 key="1" />
-								<TestComp2 key="2" />
-								<TestComp3 key="3" />
+								<BarWrapper />
+								<TestComp1 />
+								<TestComp2 />
+								<TestComp3 />
 							</ViewPort>
 						</Base>
 					</MemoryRouter>

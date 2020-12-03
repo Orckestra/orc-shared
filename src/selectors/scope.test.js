@@ -56,6 +56,12 @@ beforeEach(() => {
 				id: "SecondChild",
 				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
 				parentScopeId: "Global",
+				currency: {
+					isoCode: "USD",
+					displayName: {
+						en: "Euro",
+					}
+				}
 			},
 			ThirdGrandchild: {
 				name: { en: "Third grandchild", fr: "Troisième petit-fils" },
@@ -100,6 +106,7 @@ describe("currentScopeSelector", () => {
 				id: "SecondChild",
 				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
 				parentScopeId: "Global",
+				currency: { isoCode: 'USD', displayName: 'Euro' }
 			}),
 		));
 
@@ -256,11 +263,14 @@ describe("localizedScopeSelector", () => {
 describe("selectLocalizedScopes", () => {
 	it("Retrieves localized scopes", () => {
 		const scopes = ["Global", "FirstChild"];
-		const expectedGlobal = state.toJS().scopes.Global;
+
+		const stateAsJS = state.toJS();
+
+		const expectedGlobal = stateAsJS.scopes.Global;
 		expectedGlobal.displayName = "Global";
 		expectedGlobal.displayCurrency = "Euro";
 
-		const expectedFirstChild = state.toJS().scopes.FirstChild;
+		const expectedFirstChild = stateAsJS.scopes.FirstChild;
 		expectedFirstChild.displayName = "Premier fils";
 		expectedFirstChild.displayCurrency = "US Dollar";
 
@@ -275,9 +285,32 @@ describe("selectLocalizedScopes", () => {
 		);
 	});
 
+	it("Retrieves localized scopes with fallback currency", () => {
+		const scopes = ["SecondChild"];
+
+		const stateAsJS = state.toJS();
+
+		const expectedSecondChild = stateAsJS.scopes.SecondChild;
+		expectedSecondChild.displayName = "Deuxième fils";
+		expectedSecondChild.displayCurrency = "[USD]";
+
+		expect(
+			selectLocalizedScopes,
+			"when called with",
+			[scopes],
+			"called with",
+			[state],
+			"to equal",
+			[expectedSecondChild]
+		);
+	});
+
 	it("Not adds scope in result array if it does not exist", () => {
 		const scopes = ["Global", "WrongScopeId"];
-		const expectedGlobal = state.toJS().scopes.Global;
+
+		const stateAsJS = state.toJS();
+
+		const expectedGlobal = stateAsJS.scopes.Global;
 		expectedGlobal.displayName = "Global";
 		expectedGlobal.displayCurrency = "Euro";
 

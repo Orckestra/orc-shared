@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     margin: `0 ${theme.spacing(20)} 0 0`,
     display: "flex",
     alignItems: "flex-end",
-    width: `calc(100% - ${theme.spacing(21)})`,
+    width: `calc(100% - ${theme.spacing(30)})`,
   },
   tab: {
     flex: "0 0 auto"
