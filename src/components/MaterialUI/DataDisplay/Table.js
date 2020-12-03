@@ -21,7 +21,9 @@ export const useStyles = makeStyles(theme => ({
 		overflowY: "auto",
 		position: "relative",
 		display: "flex",
-		flex: 1,
+		flexGrow: 1,
+		flexShrink: 0,
+		flexBasis: "auto",
 		flexDirection: "column",
 	},
 	table: {
