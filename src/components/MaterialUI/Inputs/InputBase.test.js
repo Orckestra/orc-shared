@@ -5,6 +5,9 @@ import InputBaseMUI from "@material-ui/core/InputBase";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import InputBaseProps from "./InputBaseProps";
+import CollapsableListProps from "../DataDisplay/collapsableListProps";
+import CollapsableList from "../DataDisplay/CollapsableList";
+import Icon from "../DataDisplay/Icon";
 
 describe("InputBase Component", () => {
 	let update, container;
@@ -105,5 +108,18 @@ describe("InputBase Component", () => {
 		const input = mountedComponent.find("input");
 		input.simulate("change", { target: { value: aValue } });
 		expect(update, "to have calls satisfying", [{ args: [aValue] }]);
+	});
+
+	it("Renders InputBase when error position is 'right'", () => {
+		const inputProps = new InputBaseProps();
+		const errorValue = "error";
+
+		inputProps.set(InputBaseProps.propNames.error, errorValue);
+		inputProps.set(InputBaseProps.propNames.errorPosition, "right");
+
+		const component = mount(<InputBase inputProps={inputProps} />);
+		const errorContainer = component.find("div").last().get(0);
+
+		expect(errorContainer, "when mounted", "to have style rules satisfying", "to contain", "float: right");
 	});
 });

@@ -6,7 +6,10 @@ import InputBaseProps, { isInputProps } from "./InputBaseProps";
 export const useStyles = makeStyles(theme => ({
 	container: {
 		display: "flex",
-		position: "relative",
+		flexDirection: "column",
+	},
+	inputContainer: {
+		display: "flex",
 	},
 	prepend: {
 		fontSize: theme.spacing(1.3),
@@ -44,11 +47,10 @@ export const useStyles = makeStyles(theme => ({
 		},
 	},
 	errorText: {
-		position: "absolute",
-		bottom: theme.spacing(-2),
-		right: 0,
+		marginTop: theme.spacing(0.5),
 		color: theme.palette.error.main,
 		fontSize: theme.typography.fieldLabelSize,
+		float: props => (props.errorPosition === "right" ? "right" : "left"),
 	},
 }));
 
@@ -63,27 +65,31 @@ const InputBase = ({ inputProps }) => {
 	const type = inputProps?.get(InputBaseProps.propNames.type) || "text";
 	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
 	const error = inputProps?.get(InputBaseProps.propNames.error);
+	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
 
-	const classes = useStyles({ label });
+	const classes = useStyles({ label, errorPosition });
 
 	return (
 		<div className={classes.container}>
-			{label && <label className={classes.prepend}>{label}</label>}
-			<InputBaseMUI
-				classes={{ input: classes.controlInput, error: classes.errorInput }}
-				type={type}
-				placeholder={placeholder}
-				value={value}
-				fullWidth={true}
-				onChange={e => update(e.target.value)}
-				error={!!error}
-			/>
+			<div className={classes.inputContainer}>
+				{label && <label className={classes.prepend}>{label}</label>}
+				<InputBaseMUI
+					classes={{ input: classes.controlInput, error: classes.errorInput }}
+					type={type}
+					placeholder={placeholder}
+					value={value}
+					fullWidth={true}
+					onChange={e => update(e.target.value)}
+					error={!!error}
+				/>
+			</div>
 			{error && <div className={classes.errorText}>{error}</div>}
 		</div>
 	);
 };
 
 const compareInputBase = (prev, next) =>
-	prev.inputProps.get(InputBaseProps.propNames.value) === next.inputProps.get(InputBaseProps.propNames.value);
+	prev.inputProps.get(InputBaseProps.propNames.value) === next.inputProps.get(InputBaseProps.propNames.value) &&
+	prev.inputProps.get(InputBaseProps.propNames.error) === next.inputProps.get(InputBaseProps.propNames.error);
 
 export default React.memo(InputBase, compareInputBase);
