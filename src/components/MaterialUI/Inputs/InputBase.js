@@ -90,6 +90,7 @@ const InputBase = ({ inputProps }) => {
 
 const compareInputBase = (prev, next) =>
 	prev.inputProps.get(InputBaseProps.propNames.value) === next.inputProps.get(InputBaseProps.propNames.value) &&
-	prev.inputProps.get(InputBaseProps.propNames.error) === next.inputProps.get(InputBaseProps.propNames.error);
+	prev.inputProps.get(InputBaseProps.propNames.error) === next.inputProps.get(InputBaseProps.propNames.error) &&
+	prev.inputProps.get(InputBaseProps.propNames.update) === next.inputProps.get(InputBaseProps.propNames.update);
 
 export default React.memo(InputBase, compareInputBase);
