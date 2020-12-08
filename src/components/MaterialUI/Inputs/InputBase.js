@@ -28,6 +28,7 @@ export const useStyles = makeStyles(theme => ({
 	controlInput: {
 		height: theme.spacing(1.6),
 		maxWidth: "unset",
+		minWidth: 0,
 		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
 		borderRadius: props => (props.label ? theme.spacing(0, 0.5, 0.5, 0) : theme.spacing(0.5)),
 		paddingLeft: theme.spacing(0.85),
@@ -60,9 +61,10 @@ const InputBase = ({ inputProps }) => {
 	}
 
 	const update = inputProps?.get(InputBaseProps.propNames.update);
-	const value = inputProps?.get(InputBaseProps.propNames.value) || "";
+	const value = inputProps?.get(InputBaseProps.propNames.value) ?? "";
 	const label = inputProps?.get(InputBaseProps.propNames.label);
 	const type = inputProps?.get(InputBaseProps.propNames.type) || "text";
+	const inputAttributes = inputProps?.get(InputBaseProps.propNames.inputAttributes) || {};
 	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
 	const error = inputProps?.get(InputBaseProps.propNames.error);
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
@@ -81,6 +83,7 @@ const InputBase = ({ inputProps }) => {
 					fullWidth={true}
 					onChange={e => update(e.target.value)}
 					error={!!error}
+					inputProps={inputAttributes}
 				/>
 			</div>
 			{error && <div className={classes.errorText}>{error}</div>}

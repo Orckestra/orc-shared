@@ -9,6 +9,7 @@ class InputBaseProps extends ComponentProps {
 		label: "label",
 		error: "error",
 		errorPosition: "errorPosition",
+		inputAttributes: "inputAttributes",
 	};
 
 	constructor() {
@@ -20,6 +21,7 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.label, null);
 		this.componentProps.set(this.constructor.propNames.error, null);
 		this.componentProps.set(this.constructor.propNames.errorPosition, null);
+		this.componentProps.set(this.constructor.propNames.inputAttributes, null);
 
 		this._isInputProps = true;
 	}
