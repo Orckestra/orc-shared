@@ -46,4 +46,4 @@ const InformationItem = ({ label, children, required, error }) => {
 	);
 };
 
-export default InformationItem;
+export default React.memo(InformationItem);
