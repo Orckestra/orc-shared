@@ -40,8 +40,7 @@ const useStyles = makeStyles(theme => ({
       height: theme.spacing(0.3),
       backgroundColor: theme.palette.grey.dark,
       borderRadius: 3,
-      transform: "rotate(46deg)",
-      cursor: "auto"
+      transform: "rotate(46deg)"
     },
     "&:after": {
       content: `" "`,
@@ -52,15 +51,17 @@ const useStyles = makeStyles(theme => ({
       height: theme.spacing(1.4),
       backgroundColor: theme.palette.grey.dark,
       borderRadius: 3,
-      transform: "rotate(33deg)",
-      cursor: "auto"
-    },
+      transform: "rotate(33deg)"
+    }
   },
   radioReadOnly: {
     display: "none"
   },
   root: {
     padding: "0"
+  },
+  cursorDefault: {
+    cursor: "default"
   }
 }));
 
@@ -101,7 +102,9 @@ const StandaloneRadio = ({ radioProps }) => {
         [`${classes.radioReadOnly}`]: readOnly
       })} />}
       classes={{
-        root: classNames(classes.root, radioProps?.getStyle(RadioProps.ruleNames.root))
+        root: classNames(classes.root,
+          radioProps?.getStyle(RadioProps.ruleNames.root),
+          readOnly && checked ? classes.cursorDefault : null)
       }}
     />
   );
