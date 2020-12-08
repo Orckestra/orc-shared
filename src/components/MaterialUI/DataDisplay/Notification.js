@@ -77,7 +77,7 @@ const useNotificationState = (snackPack, setSnackPack, lastOnly) => {
 			// Close an active snack when a new one is added
 			setOpen(false);
 		}
-	}, [snackPack, messageInfo, open, lastOnly]);
+	}, [snackPack, messageInfo, open, lastOnly, setSnackPack]);
 
 	const handleClose = (event, reason) => {
 		if (reason === "clickaway") {
