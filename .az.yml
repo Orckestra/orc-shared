@@ -79,14 +79,16 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      echo $(NpmTag)
       git describe --exact-match --tags HEAD
       echo '##vso[task.setvariable variable=CanUploadNpmPackage]$?'
 
 - task: Npm@1
   displayName: 'npm publish'
+  condition: and(succeeded(), eq(variables['CanUploadNpmPackage'], '0'))
   inputs:
     command: 'custom'
-    customCommand: 'publisha --tag $(NPM_TAG) aa $(env:NPM_TAG)'
+    customCommand: 'publisha --tag $(NPM_TAG) aa $(env:NPM_TAG) bb $(NpmTag)'
   env:
     NPM_TOKEN: $(NpmPublishToken)
     NPM_TAG: $(NpmTag)
