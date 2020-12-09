@@ -21,19 +21,19 @@ steps:
   inputs:
     versionSpec: 12.x
 
-    
-    - task: PowerShell@1
-      displayName: 'Build BetterRetail'
-      inputs:
-        scriptType: 'inlineScript'
-        inlineScript: |
-          # You can write your powershell scripts inline here. 
-          # You can also pass predefined and custom variables to this scripts using arguments
-          
-          gci env:
-          
-           Write-Host "Hello World"
-      continueOnError: true
+
+- task: PowerShell@1
+  displayName: 'Build BetterRetail'
+  inputs:
+    scriptType: 'inlineScript'
+    inlineScript: |
+      # You can write your powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this scripts using arguments
+      
+      gci env:
+      
+        Write-Host "Hello World"
+  continueOnError: true
 
     
   
