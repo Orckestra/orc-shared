@@ -1,0 +1,91 @@
+trigger:
+  branches:
+    include:
+    - master
+    - develop
+    - feature*
+    - hotfix*
+    - bug*
+    - release*
+   
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: BUILD_REACT
+    value: true
+  - group: coveralls orc-shared
+  - group: npm publish token
+
+steps:
+- task: NodeTool@0
+  displayName: 'Use Node 12.x'
+  inputs:
+    versionSpec: 12.x
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: true
+
+- task: Npm@1
+  displayName: 'npm prune'
+  inputs:
+    command: 'custom'
+    customCommand: 'prune'
+
+- task: Npm@1
+  displayName: 'npm ls --depth=1'
+  continueOnError: true
+  inputs:
+    command: 'custom'
+    customCommand: 'ls --depth=1'
+
+- task: Npm@1
+  displayName: 'npm run lint'
+  inputs:
+    command: 'custom'
+    customCommand: 'run lint'
+
+- task: Npm@1
+  displayName: 'npm run coverage'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coverage'
+
+- task: Npm@1
+  displayName: 'npm run coveralls'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coveralls'
+  env:
+    CI_NAME: 'Azure DevOps orc-shared'
+    CI_BUILD_NUMBER: $(Build.BuildNumber)
+    CI_BUILD_URL: $(Build.Repository.Uri)
+    CI_BRANCH: $(Build.SourceBranch)
+    COVERALLS_REPO_TOKEN: $(CoverallsToken)
+
+- task: Bash@3
+  displayName: 'Detect NPM tag'
+  inputs:
+    targetType: 'inline'
+    script: |
+      NPM_TAG=`node_modules/.bin/orc-scripts getDist`
+      echo "##vso[task.setvariable variable=NpmTag]$NPM_TAG"
+
+- task: Bash@3
+  displayName: 'Detect if we need to publish packages'
+  inputs:
+    targetType: 'inline'
+    script: |
+      git describe --exact-match --tags HEAD
+      echo "##vso[task.setvariable variable=CanUploadNpmPackage]$?"
+
+- task: Npm@1
+  displayName: 'npm publish'
+  condition: and(succeeded(), eq(variables['CanUploadNpmPackage'], '0'))
+  inputs:
+    command: 'custom'
+    customCommand: 'publish --tag $(NpmTag)'
+  env:
+    NPM_TOKEN: $(NpmPublishToken)
