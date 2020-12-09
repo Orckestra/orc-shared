@@ -45,7 +45,7 @@ const viewStateReducer = (state = initialState, action) => {
 			const sectionsKeys = Object.keys(sections);
 
 			for (const sectionKey of sectionsKeys) {
-				sections[sectionKey].wasEdited = false;
+				sections[sectionKey].wasModified = false;
 			}
 			return state.setIn(["edit", moduleName, entityId], Immutable.fromJS(sections));
 		}
@@ -58,15 +58,15 @@ const viewStateReducer = (state = initialState, action) => {
 			const { moduleName, entityId, sectionName, model } = action.payload;
 
 			return state.setIn(["edit", moduleName, entityId, sectionName, "model"], Immutable.fromJS(model))
-				.setIn(["edit", moduleName, entityId, sectionName, "wasEdited"], true);
+				.setIn(["edit", moduleName, entityId, sectionName, "wasModified"], true);
 		}
 		case VIEW_SET_EDIT_MODEL_FIELD: {
-			const { keys, value, entityId, sectionName, moduleName } = action.payload;
+			const { keys, value, storeValue, entityId, sectionName, moduleName } = action.payload;
 
 			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
 
 			return state.setIn(path, value)
-				.setIn(["edit", moduleName, entityId, sectionName, "wasEdited"], true);
+				.setIn(["edit", moduleName, entityId, sectionName, "wasModified"], value !== storeValue);
 		}
 		default:
 			return state;

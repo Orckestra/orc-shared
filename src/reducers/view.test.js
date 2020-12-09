@@ -95,13 +95,13 @@ describe("View state reducer", () => {
 			[moduleName]: {
 				[entityId]: {
 					infoBar: {
-						wasEdited: false
+						wasModified: false
 					},
 					section11: {
-						wasEdited: false
+						wasModified: false
 					},
 					section12: {
-						wasEdited: false
+						wasModified: false
 					}
 				}
 			}
@@ -125,7 +125,7 @@ describe("View state reducer", () => {
 				[moduleName]: {
 					[entityId]: {
 						[sectionName]: {
-							wasEdited: false,
+							wasModified: false,
 						},
 					}
 				}
@@ -142,7 +142,7 @@ describe("View state reducer", () => {
 			[moduleName]: {
 				[entityId]: {
 					[sectionName]: {
-						wasEdited: true,
+						wasModified: true,
 						model
 					},
 				}
@@ -170,7 +170,7 @@ describe("View state reducer", () => {
 				[moduleName]: {
 					[entityId]: {
 						[sectionName]: {
-							wasEdited: false,
+							wasModified: false,
 						},
 					}
 				}
@@ -193,7 +193,7 @@ describe("View state reducer", () => {
 			[moduleName]: {
 				[entityId]: {
 					[sectionName]: {
-						wasEdited: true,
+						wasModified: true,
 						model
 					},
 				}

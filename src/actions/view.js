@@ -37,7 +37,7 @@ export const setEditModel = (model, entityId, sectionName, moduleName) => ({
 	payload: { model, entityId, sectionName, moduleName }
 });
 
-export const setEditModelField = (keys, value, entityId, sectionName, moduleName) => ({
+export const setEditModelField = (keys, value, storeValue, entityId, sectionName, moduleName) => ({
 	type: VIEW_SET_EDIT_MODEL_FIELD,
-	payload: { keys, value, entityId, sectionName, moduleName }
+	payload: { keys, value, storeValue, entityId, sectionName, moduleName }
 });

@@ -54,10 +54,10 @@ describe("getModifiedSections", () => {
           module1: {
             id1: {
               section1: {
-                wasEdited: false
+                wasModified: false
               },
               section2: {
-                wasEdited: true
+                wasModified: true
               }
             }
           }
