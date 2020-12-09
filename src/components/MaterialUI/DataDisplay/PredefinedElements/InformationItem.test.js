@@ -27,6 +27,26 @@ describe("Information Item", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Information Item with incorrect value", () => {
+		const label = "label";
+		const value = null;
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label}>{value}</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<Grid item>
+				<Typography children={label} />
+				<MultipleLinesText>{""}</MultipleLinesText>
+			</Grid>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Renders Information Item properly when value is a jsx element", () => {
 		const label = "label";
 		const value = <p>Value</p>;
