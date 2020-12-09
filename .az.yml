@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+    - master
+    - develop
+    - feature*
+    - hotfix*
+    - bug*
+    - release*
+   
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  BUILD_REACT: true
+
+steps:
+- task: NodeTool@0
+  displayName: 'Use Node 12.x'
+  inputs:
+    versionSpec: 12.x
+
+- task: Npm@1
+  displayName: 'npm prune'
+  inputs:
+    command: 'custom'
+    customCommand: 'prune'
+
+- task: Npm@1
+  displayName: 'npm ls --depth=1'
+  continueOnError: true
+  inputs:
+    command: 'custom'
+    customCommand: 'ls --depth=1'
+
+- task: Npm@1
+  displayName: 'npm run lint'
+  inputs:
+    command: 'custom'
+    customCommand: 'run lint'
+
+- task: Npm@1
+  displayName: 'npm run coverage'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coverage'
