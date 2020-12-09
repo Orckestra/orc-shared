@@ -78,18 +78,7 @@ steps:
   displayName: 'npm publish'
   inputs:
     command: 'custom'
-    customCommand: 'publisha --tag $NpmTag'
+    customCommand: 'publisha --tag $NPM_TAG'
   env:
     NPM_TOKEN: $(NpmPublishToken)
     NPM_TAG: $(NpmTag)
-
-
-  # - script: |
-  #     pip install coveralls
-  #     export CIRCLE_BRANCH=$BUILD_SOURCEBRANCH
-  #     coveralls
-  #   displayName: 'coveralls'
-  #   env:
-  #     CIRCLECI: 1
-  #     CIRCLE_BUILD_NUM: $(Build.BuildNumber)
-  #     COVERALLS_REPO_TOKEN: $(CoverallsToken)
