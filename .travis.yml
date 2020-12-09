@@ -1,8 +1,7 @@
 os: linux
 language: node_js
 node_js:
-  - "10"
-  - "12"
+  - "lts/*"
 env:
   global:
     - BUILD_REACT=true
@@ -23,4 +22,3 @@ deploy:
   on:
     repo: Orckestra/orc-shared
     tags: true
-    condition: "$TRAVIS_NODE_VERSION = 12"
