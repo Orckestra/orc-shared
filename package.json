@@ -15,7 +15,7 @@
 		"build:clean": "npm run clean && npm run build --",
 		"clean": "orc-scripts clean",
 		"watch": "npm run build -- --watch",
-		"lint": "eslint src",
+		"lint": "npx eslint src",
 		"test": "orc-scripts test",
 		"coverage": "orc-scripts test --coverage",
 		"coveralls": "cat coverage/lcov.info | coveralls",
