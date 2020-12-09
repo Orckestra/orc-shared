@@ -9,7 +9,7 @@ trigger:
     - release*
    
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   BUILD_REACT: true
@@ -19,6 +19,11 @@ steps:
   displayName: 'Use Node 12.x'
   inputs:
     versionSpec: 12.x
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: true
 
 - task: Npm@1
   displayName: 'npm prune'
