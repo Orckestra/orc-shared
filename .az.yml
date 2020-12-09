@@ -21,6 +21,22 @@ steps:
   inputs:
     versionSpec: 12.x
 
+    
+- task: PowerShell@1
+  displayName: 'Build BetterRetail'
+  inputs:
+    scriptName: gci
+    arguments: 'env:'
+  continueOnError: true
+
+    
+- task: PowerShell@1
+  displayName: 'Build BetterRetail'
+  inputs:
+    scriptName: 'gci env:'
+  continueOnError: true
+
+  
 - task: Npm@1
   displayName: 'npm install'
   inputs:
@@ -51,19 +67,25 @@ steps:
     command: 'custom'
     customCommand: 'run coverage'
 
-# Disabled because I have no idea who controls our coveralls account
-# - task: Npm@1
-#   displayName: 'npm run coveralls'
-#   inputs:
-#     command: 'custom'
-#     customCommand: 'run coveralls'
-
-- script: |
-    pip install coveralls
-    export CIRCLE_BRANCH=$BUILD_SOURCEBRANCH
-    coveralls
-  displayName: 'coveralls'
+Disabled because I have no idea who controls our coveralls account
+- task: Npm@1
+  displayName: 'npm run coveralls'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coveralls'
   env:
-    CIRCLECI: 1
-    CIRCLE_BUILD_NUM: $(Build.BuildNumber)
+    CI_NAME: 'orc-shared'
+    CI_BUILD_NUMBER: $(Build.BuildNumber)
+    CI_BUILD_URL: 'https://github.com/Orckestra/orc-shared/'
+    CI_BRANCH: $(Build.SourceBranch)
     COVERALLS_REPO_TOKEN: $(CoverallsToken)
+
+  # - script: |
+  #     pip install coveralls
+  #     export CIRCLE_BRANCH=$BUILD_SOURCEBRANCH
+  #     coveralls
+  #   displayName: 'coveralls'
+  #   env:
+  #     CIRCLECI: 1
+  #     CIRCLE_BUILD_NUM: $(Build.BuildNumber)
+  #     COVERALLS_REPO_TOKEN: $(CoverallsToken)
