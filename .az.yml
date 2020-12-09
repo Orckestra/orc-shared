@@ -41,30 +41,29 @@ steps:
     command: 'custom'
     customCommand: 'ls --depth=1'
 
-# - task: Npm@1
-#   displayName: 'npm run lint'
-#   inputs:
-#     command: 'custom'
-#     customCommand: 'run lint'
+- task: Npm@1
+  displayName: 'npm run lint'
+  inputs:
+    command: 'custom'
+    customCommand: 'run lint'
 
-# - task: Npm@1
-#   displayName: 'npm run coverage'
-#   inputs:
-#     command: 'custom'
-#     customCommand: 'run coverage'
+- task: Npm@1
+  displayName: 'npm run coverage'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coverage'
 
-# - task: Npm@1
-#   displayName: 'npm run coveralls'
-#   inputs:
-#     command: 'custom'
-#     customCommand: 'run coveralls'
-#   env:
-#     CI_NAME: 'Azure DevOps orc-shared'
-#     CI_BUILD_NUMBER: $(Build.BuildNumber)
-#     CI_BUILD_URL: $(Build.Repository.Uri)
-#     CI_BRANCH: $(Build.SourceBranch)
-#     COVERALLS_REPO_TOKEN: $(CoverallsToken)
-
+- task: Npm@1
+  displayName: 'npm run coveralls'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coveralls'
+  env:
+    CI_NAME: 'Azure DevOps orc-shared'
+    CI_BUILD_NUMBER: $(Build.BuildNumber)
+    CI_BUILD_URL: $(Build.Repository.Uri)
+    CI_BRANCH: $(Build.SourceBranch)
+    COVERALLS_REPO_TOKEN: $(CoverallsToken)
 
 - task: Bash@3
   displayName: 'Detect NPM tag'
@@ -84,9 +83,9 @@ steps:
 
 - task: Npm@1
   displayName: 'npm publish'
-  condition: and(succeeded(), ne(variables['CanUploadNpmPackage'], '0'))
+  condition: and(succeeded(), eq(variables['CanUploadNpmPackage'], '0'))
   inputs:
     command: 'custom'
-    customCommand: 'publisha --tag $(NpmTag)'
+    customCommand: 'publish --tag $(NpmTag)'
   env:
     NPM_TOKEN: $(NpmPublishToken)
