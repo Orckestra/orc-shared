@@ -61,7 +61,6 @@ steps:
     command: 'custom'
     customCommand: 'run coverage'
 
-Disabled because I have no idea who controls our coveralls account
 - task: Npm@1
   displayName: 'npm run coveralls'
   inputs:
