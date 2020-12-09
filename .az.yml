@@ -12,6 +12,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
+  group: coveralls orc-shared
   BUILD_REACT: true
 
 steps:
@@ -50,8 +51,19 @@ steps:
     command: 'custom'
     customCommand: 'run coverage'
 
-- task: Npm@1
-  displayName: 'npm run coveralls'
-  inputs:
-    command: 'custom'
-    customCommand: 'run coveralls'
+# Disabled because I have no idea who controls our coveralls account
+# - task: Npm@1
+#   displayName: 'npm run coveralls'
+#   inputs:
+#     command: 'custom'
+#     customCommand: 'run coveralls'
+
+- script: |
+    pip install coveralls
+    export CIRCLE_BRANCH=$BUILD_SOURCEBRANCH
+    coveralls
+  displayName: 'coveralls'
+  env:
+    CIRCLECI: 1
+    CIRCLE_BUILD_NUM: $(Build.BuildNumber)
+    COVERALLS_REPO_TOKEN: $(CoverallsToken)
