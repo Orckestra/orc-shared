@@ -73,7 +73,7 @@ steps:
     command: 'custom'
     customCommand: 'run coveralls'
   env:
-    CI_NAME: 'orc-shared'
+    CI_NAME: 'Azure DevOps orc-shared'
     CI_BUILD_NUMBER: $(Build.BuildNumber)
     CI_BUILD_URL: $(Build.Repository.Uri)
     CI_BRANCH: $(Build.SourceBranch)
