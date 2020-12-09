@@ -78,6 +78,7 @@ steps:
     CI_BUILD_URL: $(Build.Repository.Uri)
     CI_BRANCH: $(Build.SourceBranch)
     COVERALLS_REPO_TOKEN: $(CoverallsToken)
+    CI_PULL_REQUEST: $(System.PullRequest.PullRequestId)
 
   # - script: |
   #     pip install coveralls
