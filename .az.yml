@@ -9,7 +9,7 @@ trigger:
     - release*
    
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   group: coveralls orc-shared
