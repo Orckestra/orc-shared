@@ -74,11 +74,19 @@ steps:
       NPM_TAG=`node_modules/.bin/orc-scripts getDist`
       echo '##vso[task.setvariable variable=NpmTag]$NPM_TAG'
 
+- task: Bash@3
+  displayName: 'Detect if we need to publish packages'
+  inputs:
+    targetType: 'inline'
+    script: |
+      git describe --exact-match --tags HEAD
+      echo '##vso[task.setvariable variable=CanUploadNpmPackage]$?'
+
 - task: Npm@1
   displayName: 'npm publish'
   inputs:
     command: 'custom'
-    customCommand: 'publisha --tag $NPM_TAG'
+    customCommand: 'publisha --tag $(NPM_TAG) aa $(env:NPM_TAG)'
   env:
     NPM_TOKEN: $(NpmPublishToken)
     NPM_TAG: $(NpmTag)
