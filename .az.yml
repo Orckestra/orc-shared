@@ -30,12 +30,6 @@ steps:
   continueOnError: true
 
     
-- task: PowerShell@1
-  displayName: 'Build BetterRetail'
-  inputs:
-    scriptName: 'gci env:'
-  continueOnError: true
-
   
 - task: Npm@1
   displayName: 'npm install'
