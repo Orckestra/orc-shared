@@ -40,7 +40,7 @@ const InformationItem = ({ label, children, required, error }) => {
 			{isReactComponent(children) ? (
 				children
 			) : (
-				<MultipleLinesText textProps={multipleLinesTextProps} children={children} />
+				<MultipleLinesText textProps={multipleLinesTextProps} children={children ?? ""} />
 			)}
 		</Grid>
 	);
