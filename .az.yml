@@ -72,26 +72,21 @@ steps:
     targetType: 'inline'
     script: |
       NPM_TAG=`node_modules/.bin/orc-scripts getDist`
-      echo $NPM_TAG
       echo "##vso[task.setvariable variable=NpmTag]$NPM_TAG"
-      echo '##vso[task.setvariable variable=Potato]Bleh'
 
 - task: Bash@3
   displayName: 'Detect if we need to publish packages'
   inputs:
     targetType: 'inline'
     script: |
-      echo $(NpmTag)
-      echo $(Potato)
       git describe --exact-match --tags HEAD
-      echo '##vso[task.setvariable variable=CanUploadNpmPackage]$?'
+      echo "##vso[task.setvariable variable=CanUploadNpmPackage]$?"
 
 - task: Npm@1
   displayName: 'npm publish'
   condition: and(succeeded(), ne(variables['CanUploadNpmPackage'], '0'))
   inputs:
     command: 'custom'
-    customCommand: 'publisha --tag $(NPM_TAG) aa $(env:NPM_TAG) bb $(NpmTag)'
+    customCommand: 'publisha --tag $(NpmTag)'
   env:
     NPM_TOKEN: $(NpmPublishToken)
-    NPM_TAG: $(NpmTag)
