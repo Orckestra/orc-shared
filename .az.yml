@@ -49,3 +49,9 @@ steps:
   inputs:
     command: 'custom'
     customCommand: 'run coverage'
+
+- task: Npm@1
+  displayName: 'npm run coveralls'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coveralls'
