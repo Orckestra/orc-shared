@@ -5,6 +5,7 @@ class ModalProps extends ComponentProps {
     open: "open",
     title: "title",
     actionPanel: "actionPanel",
+    backdropClickCallback: "backdropClickCallback"
   };
 
   constructor() {
@@ -13,6 +14,7 @@ class ModalProps extends ComponentProps {
     this.componentProps.set(this.constructor.propNames.open, null);
     this.componentProps.set(this.constructor.propNames.title, null);
     this.componentProps.set(this.constructor.propNames.actionPanel, null);
+    this.componentProps.set(this.constructor.propNames.backdropClickCallback, null);
 
     this._isModalProps = true;
   }

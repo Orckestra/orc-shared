@@ -13,6 +13,10 @@ import { isScrollVisible } from "./../../../utils/domHelper";
 import { getModifiedTabs } from "./../../../selectors/view";
 import { useSelector } from "react-redux";
 import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
+import { selectPrependPathConfig } from "./../../../selectors/navigation";
+import { removeEditNode } from "./../../../actions/view";
+import { getEntityIdFromUrl } from "./../../../utils/urlHelper";
+import { useDispatchWithModulesData } from "./../../../hooks/useDispatchWithModulesData";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -82,11 +86,14 @@ const MuiBar = ({ module, pages }) => {
   const tabs = React.useRef(null);
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatchWithModulesData();
+  const prependPath = useSelector(selectPrependPathConfig);
   const activePage = pages.findIndex(p => p.active === true);
   const activeTabIndex = activePage === -1 ? false : activePage;
   const [showSelect, setShowSelect] = React.useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = React.useState(false);
-
+  const [currentCloseData, setCurrentCloseData] = React.useState();
+  console.log(prependPath);
   const pagesParams = pages.map(page => (
     {
       href: page.href,
@@ -115,15 +122,23 @@ const MuiBar = ({ module, pages }) => {
 
   const select = <div className={classes.select}><Select options={tabLabels} selectProps={selectProps} /></div>;
 
-  const tabCloseHandler = (event, closeCallback) => {
-    setShowConfirmationModal(true);
-    // event.stopPropagation();
-    // event.preventDefault();
-    // closeCallback();
+  const tabCloseHandler = (event, closeCallback, isModified, href) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (isModified) {
+      setCurrentCloseData({ closeCallback: closeCallback, href: href });
+      setShowConfirmationModal(true);
+    }
+    else {
+      closeCallback();
+    }
   };
 
-  const closeTab = (event, closeCallback) => {
-    console.log("BOO");
+  const closeTab = () => {
+    setShowConfirmationModal(false);
+    currentCloseData.closeCallback();
+    const entityId = getEntityIdFromUrl(currentCloseData.href);
+    dispatch(removeEditNode, [entityId]);
   }
 
   const moduleIcon = <Icon id={module.icon} className={classes.moduleIcon} />
@@ -178,7 +193,7 @@ const MuiBar = ({ module, pages }) => {
                 <Icon
                   id="close"
                   className={classes.closeIcon}
-                  onClick={(event) => tabCloseHandler(event, close)}
+                  onClick={(event) => tabCloseHandler(event, close, isModified, href)}
                 />
               );
               tabLabels.push({
@@ -207,10 +222,10 @@ const MuiBar = ({ module, pages }) => {
       {showSelect ? select : null}
       <ConfirmationModal
         message="test"
-        title="Confirmation"
         open={showConfirmationModal}
         okCallback={() => closeTab()}
         cancelCallback={() => setShowConfirmationModal(false)}
+        backdropClickCallback={() => setShowConfirmationModal(false)}
       />
     </div>
   );

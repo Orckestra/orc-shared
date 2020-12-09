@@ -14,13 +14,16 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "8px",
     display: "flex",
     flexDirection: "column",
-    height: "100%",
     backgroundColor: theme.palette.primary.contrastText,
   },
   title: {
     height: theme.spacing(4),
     backgroundColor: theme.palette.grey.lighter,
-    padding: `0 ${theme.spacing(2)}`
+    padding: `0 ${theme.spacing(2)}`,
+    borderRadius: `8px 8px 0 0`,
+    borderBottom: `1px solid ${theme.palette.primary.light}`,
+    display: 'flex',
+    alignItems: 'center'
   },
   message: {
     minHeight: theme.spacing(10),
@@ -29,7 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
   actionPanel: {
     padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
-    backgroundColor: theme.palette.grey.lighter
+    backgroundColor: theme.palette.grey.lighter,
+    borderRadius: `0 0 8px 8px`,
+    borderTop: `1px solid ${theme.palette.primary.light}`
   }
 }));
 
@@ -43,6 +48,7 @@ const Modal = ({ message, modalProps }) => {
   const open = modalProps?.get(ModalProps.propNames.open) ?? false;
   const title = modalProps?.get(ModalProps.propNames.title);
   const actionPanel = modalProps?.get(ModalProps.propNames.actionPanel);
+  const backdropClickCallback = modalProps?.get(ModalProps.propNames.backdropClickCallback);
 
   const model = (
     <ModalMui
@@ -51,6 +57,7 @@ const Modal = ({ message, modalProps }) => {
       disableAutoFocus
       open={open}
       className={classes.modal}
+      onBackdropClick={backdropClickCallback != null ? () => backdropClickCallback() : null}
     >
       <div className={classes.container}>
         <div className={classes.title}>

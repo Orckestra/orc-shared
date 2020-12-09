@@ -3,31 +3,41 @@ import Modal from "./../Modal";
 import ModalProps from "./../modalProps";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
   actionPanel: {
-    display: "flex",
-    marginLeft: "auto"
+    float: "right"
   },
   cancelButton: {
     marginRight: theme.spacing(1)
+  },
+  title: {
+    fontSize: theme.typography.h3Size,
+    color: theme.palette.primary.main,
+    textTransform: theme.typography.button.textTransform,
+    fontFamily: theme.typography.button.fontFamily,
+    fontWeight: theme.typography.button.fontWeight
   }
 }));
 
-const ConfirmationModal = ({ message, title, open, okCallback, cancelCallback }) => {
+const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdropClickCallback }) => {
   const classes = useStyles();
 
   const modalProps = new ModalProps();
 
-  modalProps.set(ModalProps.propNames.title, title);
+  const titleComponent = <Typography className={classes.title} children="Confirmation" />;
+  const messageComponent = <Typography children={message} />;
+
+  modalProps.set(ModalProps.propNames.title, titleComponent);
   modalProps.set(ModalProps.propNames.open, open);
+  modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
 
   const actionPanel = (
     <div className={classes.actionPanel}>
       <Button
         className={classes.cancelButton}
         variant="outlined"
-        color="primary"
         onClick={() => cancelCallback()}
       >
         Cancel
@@ -39,7 +49,7 @@ const ConfirmationModal = ({ message, title, open, okCallback, cancelCallback })
   modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
 
 
-  return <Modal message={message} modalProps={modalProps} />
+  return <Modal message={messageComponent} modalProps={modalProps} />
 };
 
 export default ConfirmationModal;
