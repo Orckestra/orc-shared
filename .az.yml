@@ -15,6 +15,7 @@ variables:
   - name: BUILD_REACT
     value: true
   - group: coveralls orc-shared
+  - group: npm publish token
 
 steps:
 - task: NodeTool@0
@@ -40,29 +41,47 @@ steps:
     command: 'custom'
     customCommand: 'ls --depth=1'
 
-- task: Npm@1
-  displayName: 'npm run lint'
+# - task: Npm@1
+#   displayName: 'npm run lint'
+#   inputs:
+#     command: 'custom'
+#     customCommand: 'run lint'
+
+# - task: Npm@1
+#   displayName: 'npm run coverage'
+#   inputs:
+#     command: 'custom'
+#     customCommand: 'run coverage'
+
+# - task: Npm@1
+#   displayName: 'npm run coveralls'
+#   inputs:
+#     command: 'custom'
+#     customCommand: 'run coveralls'
+#   env:
+#     CI_NAME: 'Azure DevOps orc-shared'
+#     CI_BUILD_NUMBER: $(Build.BuildNumber)
+#     CI_BUILD_URL: $(Build.Repository.Uri)
+#     CI_BRANCH: $(Build.SourceBranch)
+#     COVERALLS_REPO_TOKEN: $(CoverallsToken)
+
+
+- task: Bash@3
+  displayName: 'Detect NPM tag'
   inputs:
-    command: 'custom'
-    customCommand: 'run lint'
+    targetType: 'inline'
+    script: |
+      NPM_TAG=`node_modules/.bin/orc-scripts getDist`
+      echo '##vso[task.setvariable variable=NpmTag]$NPM_TAG'
 
 - task: Npm@1
-  displayName: 'npm run coverage'
+  displayName: 'npm publish'
   inputs:
     command: 'custom'
-    customCommand: 'run coverage'
-
-- task: Npm@1
-  displayName: 'npm run coveralls'
-  inputs:
-    command: 'custom'
-    customCommand: 'run coveralls'
+    customCommand: 'publisha --tag $NpmTag'
   env:
-    CI_NAME: 'Azure DevOps orc-shared'
-    CI_BUILD_NUMBER: $(Build.BuildNumber)
-    CI_BUILD_URL: $(Build.Repository.Uri)
-    CI_BRANCH: $(Build.SourceBranch)
-    COVERALLS_REPO_TOKEN: $(CoverallsToken)
+    NPM_TOKEN: $(NpmPublishToken)
+    NPM_TAG: $(NpmTag)
 
 
   # - script: |
