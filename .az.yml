@@ -12,8 +12,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  group: coveralls orc-shared
-  BUILD_REACT: true
+  - name: BUILD_REACT
+    value: true
+  - group: coveralls orc-shared
 
 steps:
 - task: NodeTool@0
