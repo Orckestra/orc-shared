@@ -87,7 +87,6 @@ steps:
     targetType: 'inline'
     script: |
       echo -e "\r\n//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> .npmrc
-      cat .npmrc
 
 - task: Npm@1
   displayName: 'npm publish'
