@@ -1,6 +1,6 @@
 # Orckestra Client Application Framework shared code
 
-[![Build Status](https://travis-ci.org/Orckestra/orc-shared.svg?branch=master)](https://travis-ci.org/Orckestra/orc-shared) [![Coverage Status](https://coveralls.io/repos/github/Orckestra/orc-shared/badge.svg?branch=master)](https://coveralls.io/github/Orckestra/orc-shared?branch=master)
+![Build Status](https://dev.azure.com/orckestra001/OrckestraCommerce/_apis/build/status/FrontEnd/Framework/orc-shared?branchName=master) [![Coverage Status](https://coveralls.io/repos/github/Orckestra/orc-shared/badge.svg?branch=master)](https://coveralls.io/github/Orckestra/orc-shared?branch=master)
 
 A collection of useful, generally applicable pieces of code, used to build Orckestra applications.
 
