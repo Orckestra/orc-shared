@@ -23,6 +23,14 @@ steps:
   inputs:
     versionSpec: 12.x
 
+- task: Bash@3
+  displayName: 'Configure .npmrc with NPM_TOKEN config'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # There probably a better way to handle this change...
+      sed -i 's/https:\/\/registry.npmjs.org\//\/\/registry.npmjs.org\/:_authToken=${NPM_TOKEN}/' .npmrc
+
 - task: Npm@1
   displayName: 'npm install'
   inputs:
@@ -80,14 +88,6 @@ steps:
     script: |
       git describe --exact-match --tags HEAD
       echo "##vso[task.setvariable variable=CanUploadNpmPackage]$?"
-
-- task: Bash@3
-  displayName: 'Configure .npmrc'
-  inputs:
-    targetType: 'inline'
-    script: |
-      # There probably a better way to handle this change...
-      sed -i 's/registry.npmjs.org\//registry.npmjs.org\/:_authToken=${NPM_TOKEN}/' .npmrc
 
 - task: Npm@1
   displayName: 'npm publish'
