@@ -186,7 +186,7 @@ describe("AppFrame", () => {
 			toasts: { queue: [] },
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
@@ -366,6 +366,67 @@ describe("AppFrame", () => {
 							</SideBar>
 							<ViewPort>
 								<ScopeBar name="Test 1" />
+								<TestComp1 key="1" />
+								<TestComp2 key="2" />
+								<TestComp3 key="3" />
+							</ViewPort>
+							<About messages={props.aboutMessages} />
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+		);
+
+		expect(document.title, "to equal", "other");
+	});
+
+	it("renders disabled scopebar", () => {
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
+		state = state.setIn(["applications", "list"], Immutable.fromJS([]));
+		expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} scopeDisabler={["/:scope/test"]} applicationId="other" />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base>
+							<Wrapper>
+								<AppBox>
+									<AppSelWrapper>
+										<MenuIcon />
+									</AppSelWrapper>
+									<AppLabel>
+										<AppLogo />
+									</AppLabel>
+								</AppBox>
+								<MenuWrapper>
+									<Ignore />
+								</MenuWrapper>
+								<HelpLink>Help</HelpLink>
+							</Wrapper>
+							<SideBar>
+								<MenuToggle />
+								<Ignore />
+								<Ignore />
+								<Ignore />
+								<Logo />
+							</SideBar>
+							<ViewPort>
+								<ScopeBar name="Test 1" disabled={true} />
 								<TestComp1 key="1" />
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />

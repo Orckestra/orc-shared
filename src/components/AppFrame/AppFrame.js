@@ -18,7 +18,7 @@ import useApplicationHelpUrl from "./useApplicationHelpUrl";
 import useViewState from "../../hooks/useViewState";
 import { getVersionInfo } from "../../actions/versionInfo";
 import { currentLocale } from "../../selectors/locale";
-import { selectCurrentModuleName } from "../../selectors/navigation";
+import { selectCurrentModuleName, selectRoutePath } from "../../selectors/navigation";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
@@ -68,10 +68,12 @@ const AppFrame = ({
 	scopeFilterPlaceholder,
 	noScope,
 	forceShowScope = [],
+	scopeDisabler = [],
 }) => {
 	const locale = useSelector(currentLocale);
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
 	const moduleName = useSelector(selectCurrentModuleName);
+	const path = useSelector(selectRoutePath);
 	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
@@ -83,6 +85,8 @@ const AppFrame = ({
 	}, [currentApplication, applicationId]);
 
 	const [prefViewState] = useViewState(PREFS_NAME);
+
+	const disableScope = scopeDisabler.some(disabler => path.includes(disabler));
 
 	return (
 		<Base preferencesOpen={prefViewState.show}>
@@ -106,7 +110,9 @@ const AppFrame = ({
 						{children}
 					</React.Fragment>
 				) : (
-					<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+					<Scope filterPlaceholder={scopeFilterPlaceholder} disabled={disableScope}>
+						{children}
+					</Scope>
 				)}
 			</ViewPort>
 			<About messages={aboutMessages} currentApplication={currentApplication} />
