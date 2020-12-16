@@ -28,8 +28,8 @@ const useStyles = makeStyles(theme => ({
 		right: theme.spacing(2),
 	},
 	test: {
-		width: theme.spacing(20)
-	}
+		width: theme.spacing(20),
+	},
 }));
 
 export const Bar = styled.div`
@@ -41,7 +41,7 @@ export const Bar = styled.div`
 	user-select: none;
 `;
 
-export const ScopeBar = ({ show, name, updateViewState }) => {
+export const ScopeBar = ({ show, name, updateViewState, disabled }) => {
 	const classes = useStyles();
 
 	const variant = show === true ? "contained" : "outlined";
@@ -52,30 +52,30 @@ export const ScopeBar = ({ show, name, updateViewState }) => {
 		<Bar>
 			<div className={classes.buttonContainer}>
 				<Button
+					disabled={disabled}
 					classes={{ root: classes.scopeButton, outlined: classes.outlinedButton }}
-					variant={variant} color="primary"
-					onClick={() => updateViewState("show", true)}>
-					<TooltippedTypography
-						noWrap
-						children={name}
-						titleValue={name}
-					/>
+					variant={variant}
+					color="primary"
+					onClick={() => updateViewState("show", true)}
+				>
+					<TooltippedTypography noWrap children={name} titleValue={name} />
 				</Button>
 			</div>
 		</Bar>
 	);
-}
+};
 
 ScopeBar.displayName = "ScopeBar";
 
-export const Scope = ({ children }) => {
-	const name = "scopeSelector";
+export const SCOPE_SELECTOR_NAME = "scopeSelector";
+
+export const Scope = ({ children, filterPlaceholder }) => {
+
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
-	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
+	const [{ show = false, disabled, nodeState, filter }, updateViewState] = useViewState(SCOPE_SELECTOR_NAME);
 
 	const resetNodeState = useCallback(
-		current =>
-			current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
+		current => current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
 		[updateViewState, nodeState, defaultNodeState],
 	);
 	usePreviousModified(show, resetNodeState);
@@ -93,10 +93,11 @@ export const Scope = ({ children }) => {
 					name: currentScope.name,
 					show,
 					updateViewState,
+					disabled,
 				}}
 			/>
 			<Selector
-				name={name}
+				name={SCOPE_SELECTOR_NAME}
 				show={show}
 				reset={reset}
 				getScope={getScope}

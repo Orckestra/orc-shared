@@ -10,6 +10,8 @@ class InputBaseProps extends ComponentProps {
 		error: "error",
 		errorPosition: "errorPosition",
 		inputAttributes: "inputAttributes",
+		disabled: "disabled",
+		multiline: "multiline",
 	};
 
 	constructor() {
@@ -22,6 +24,8 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.error, null);
 		this.componentProps.set(this.constructor.propNames.errorPosition, null);
 		this.componentProps.set(this.constructor.propNames.inputAttributes, null);
+		this.componentProps.set(this.constructor.propNames.disabled, null);
+		this.componentProps.set(this.constructor.propNames.multiline, null);
 
 		this._isInputProps = true;
 	}

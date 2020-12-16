@@ -88,7 +88,7 @@ beforeEach(() => {
 		},
 		subscribe: sub => {
 			subs.push(sub);
-			return () => { };
+			return () => {};
 		},
 		getState: () => state,
 		dispatch: sinon.spy().named("dispatch"),
@@ -103,7 +103,7 @@ beforeEach(() => {
 afterEach(() => {
 	try {
 		ReactDOM.unmountComponentAtNode(appRoot);
-	} catch (_) { }
+	} catch (_) {}
 	document.body.removeChild(appRoot);
 	document.body.removeChild(modalRoot);
 });
@@ -121,11 +121,7 @@ describe("ScopeBar", () => {
 			<Bar>
 				<div>
 					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
-						<TooltippedTypography
-							noWrap
-							children="Scope name"
-							titleValue="Scope name"
-						/>
+						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
 			</Bar>
@@ -134,18 +130,14 @@ describe("ScopeBar", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("renders the button to show the scope dialog when scope selector is closed", () => {
-		const component = <ScopeBar show={false} name="Scope name" updateViewState={updateViewState} />;
+	it("renders the disabled scope button ", () => {
+		const component = <ScopeBar disabled={true} show={false} name="Scope name" updateViewState={updateViewState} />;
 
 		const expected = (
 			<Bar>
 				<div>
-					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
-						<TooltippedTypography
-							noWrap
-							children="Scope name"
-							titleValue="Scope name"
-						/>
+					<Button disabled variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
+						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
 			</Bar>
@@ -161,11 +153,7 @@ describe("ScopeBar", () => {
 			<Bar>
 				<div>
 					<Button variant="contained" color="primary" onClick={() => updateViewState("show", true)}>
-						<TooltippedTypography
-							noWrap
-							children="Scope name"
-							titleValue="Scope name"
-						/>
+						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
 			</Bar>
@@ -191,10 +179,7 @@ describe("Scope", () => {
 	let nodeState;
 	beforeEach(() => {
 		nodeState = { foo: true, bar: false };
-		state = state.setIn(
-			["view", "scopeSelector", "nodeState"],
-			Immutable.fromJS(nodeState),
-		);
+		state = state.setIn(["view", "scopeSelector", "nodeState"], Immutable.fromJS(nodeState));
 	});
 
 	it("renders a scope bar, selector panel with handlers, and viewport", () => {
@@ -263,10 +248,7 @@ describe("Scope", () => {
 	it("resets the scope tree state when closing, to ensure current scope is visible", () => {
 		state = state.withMutations(s => {
 			s.setIn(["navigation", "route", "match", "params", "scope"], "test3");
-			s.setIn(
-				["view", "scopeSelector"],
-				Immutable.fromJS({ show: false, nodeState: { test1: false, test4: true } }),
-			);
+			s.setIn(["view", "scopeSelector"], Immutable.fromJS({ show: false, nodeState: { test1: false, test4: true } }));
 		});
 		ReactDOM.render(
 			<div>
@@ -398,10 +380,6 @@ describe("RoutedScope", () => {
 			</Provider>,
 			appRoot,
 		);
-		return expect(
-			appRoot,
-			"to contain",
-			<PropStruct pathname="/aDefaultScope" itIs="me" />,
-		);
+		return expect(appRoot, "to contain", <PropStruct pathname="/aDefaultScope" itIs="me" />);
 	});
 });
