@@ -160,7 +160,8 @@ describe("View state reducer", () => {
 
 	it("Sets edit field inside model correctly", () => {
 		const keys = ["key1", "key2", "key3"];
-		const value = "myValue";
+		const oldValue = "oldVAlue";
+		const newValue = "newValue";
 		const entityId = "entityId";
 		const moduleName = "module1";
 		const sectionName = "section11";
@@ -171,6 +172,7 @@ describe("View state reducer", () => {
 					[entityId]: {
 						[sectionName]: {
 							wasModified: false,
+
 						},
 					}
 				}
@@ -184,7 +186,7 @@ describe("View state reducer", () => {
 		const model = {
 			key1: {
 				key2: {
-					key3: value
+					key3: newValue
 				}
 			}
 		}
@@ -200,7 +202,7 @@ describe("View state reducer", () => {
 			}
 		};
 
-		const action = setEditModelField(keys, value, entityId, sectionName, moduleName);
+		const action = setEditModelField(keys, newValue, oldValue, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and(

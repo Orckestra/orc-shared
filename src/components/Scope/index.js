@@ -68,7 +68,7 @@ export const ScopeBar = ({ show, name, updateViewState }) => {
 
 ScopeBar.displayName = "ScopeBar";
 
-export const Scope = ({ children, filterPlaceholder }) => {
+export const Scope = ({ children }) => {
 	const name = "scopeSelector";
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
@@ -104,7 +104,6 @@ export const Scope = ({ children, filterPlaceholder }) => {
 				currentScope={currentScope}
 				updateFilter={updateFilter}
 				defaultNodeState={{}}
-				filterPlaceholder={filterPlaceholder}
 			/>
 			{children}
 		</React.Fragment>

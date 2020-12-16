@@ -45,7 +45,6 @@ export const MultiSelector = ({
 	const [isVisible, setIsVisible] = useState(false);
 	/* istanbul ignore next */
 	const toggleVisibility = () => {
-		console.log("Selector toggleVisibility called", isVisible);
 		setIsVisible(!isVisible);
 	};
 
@@ -71,8 +70,8 @@ export const MultiSelector = ({
 							{labelFromOptions(options.filter(option => value.indexOf(option.value) !== -1))}
 						</SelectedValue>
 					) : (
-						<Placeholder>{placeholder}</Placeholder>
-					)}
+							<Placeholder>{placeholder}</Placeholder>
+						)}
 				</SelectBox>
 				<Dropdown isVisible={isVisible}>
 					{value.length ? (

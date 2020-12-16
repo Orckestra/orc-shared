@@ -156,7 +156,6 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 										</Grid>
 									</Grid>
 								);
-
 								return (
 									<Item key={segpath} to={baseHref + segpath} active={location.pathname === baseHref + segpath}>
 										{finalLabel}

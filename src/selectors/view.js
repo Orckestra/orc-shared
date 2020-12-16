@@ -28,7 +28,7 @@ export const getModifiedSections = (entityId) => createSelector(
   },
 );
 
-export const getModifiedSectionsFromModule = (editData, moduleName, entityId) => {
+const getModifiedSectionsFromModule = (editData, moduleName, entityId) => {
   const modifiedSections = [];
   if (editData != null) {
     const dataJS = editData.toJS();

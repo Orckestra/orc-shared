@@ -130,3 +130,16 @@ export const createMuiTheme = () => {
 export const generateClassName = (rule, styleSheet) => {
 	return `${styleSheet.options.classNamePrefix}-${rule.key}`;
 };
+
+export function extractMessages() {
+	const extractedMessages = {};
+
+	for (let i = 0; i < arguments.length; i++) {
+		const messages = arguments[i];
+		for (const property in messages) {
+			const message = messages[property];
+			extractedMessages[message.id] = message.defaultMessage;
+		}
+	}
+	return extractedMessages;
+}

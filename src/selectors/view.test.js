@@ -2,7 +2,8 @@ import Immutable from "immutable";
 import {
   isEntityUnderEditing,
   getModifiedSections,
-  getModifiedModels
+  getModifiedModels,
+  getModifiedTabs
 } from "./view";
 
 describe("isEntityUnderEditing", () => {
@@ -157,3 +158,103 @@ describe("getModifiedModels", () => {
     expect(getModifiedModels, "when called with", ["id2"], "called with", [stateWithEmptyEdit], "to satisfy", {});
   });
 });
+
+describe("getModifiedTabs", () => {
+  let state, stateWithEmptyEdit;
+  beforeEach(() => {
+    state = Immutable.fromJS({
+      view: {
+        edit: {
+          module1: {
+            id1: {
+              section1: {
+                wasModified: false
+              },
+              section2: {
+                wasModified: true
+              }
+            },
+            id2: {
+              section1: {
+                wasModified: false
+              },
+              section2: {
+                wasModified: false
+              }
+            }
+          }
+        },
+      },
+      navigation: {
+        route: { match: { path: "/:scope/module1/id1/section1" } },
+        config: { prependPath: "/:scope/", prependHref: "/scope/" },
+      }
+    });
+
+    stateWithEmptyEdit = Immutable.fromJS({
+      view: {},
+      navigation: {
+        route: { match: { path: "/:scope/module1/id1/section1" } },
+        config: { prependPath: "/:scope/", prependHref: "/scope/" },
+      }
+    })
+  });
+
+  it("Retrieves modified tabs correctly when edit is not empty", () => {
+    const tabParams = [
+      {
+        href: "id1Href",
+        params: [
+          "Global",
+          "id1"
+        ]
+      },
+      {
+        href: "id2Href",
+        params: [
+          "Global",
+          "id2"
+        ]
+      }
+    ];
+
+    expect(getModifiedTabs,
+      "when called with",
+      [tabParams],
+      "called with",
+      [state],
+      "to satisfy",
+      [
+        "id1Href"
+      ]
+    );
+  });
+
+  it("Retrieves empty array when edit is empty", () => {
+    const tabParams = [
+      {
+        href: "id1Href",
+        params: [
+          "Global",
+          "id1"
+        ]
+      },
+      {
+        href: "id2Href",
+        params: [
+          "Global",
+          "id2"
+        ]
+      }
+    ];
+
+    expect(getModifiedTabs,
+      "when called with",
+      [tabParams],
+      "called with",
+      [stateWithEmptyEdit],
+      "to satisfy",
+      []
+    );
+  });
+}); 

@@ -15,6 +15,10 @@ import { Wrapper as SelectorWrapper, InputBox, SearchInput } from "./Selector";
 import { Wrapper as BranchWrapper } from "../Treeview/Branch";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 import Button from "@material-ui/core/Button";
+import { extractMessages } from "./../../utils/testUtils";
+import sharedMessages from "./../../sharedMessages";
+
+const messages = extractMessages(sharedMessages);
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -28,8 +32,8 @@ let appRoot, modalRoot;
 beforeEach(() => {
 	state = Immutable.fromJS({
 		locale: {
-			locale: "en",
-			suportedLocales: ["en"],
+			locale: "en-US",
+			suportedLocales: ["en-US"],
 		},
 		navigation: {
 			route: { location: {}, match: { params: { scope: "test1" } } },
@@ -197,14 +201,9 @@ describe("Scope", () => {
 		ReactDOM.render(
 			<div>
 				<Provider store={store}>
-					<IntlProvider locale="en">
+					<IntlProvider locale="en-US" messages={messages}>
 						<MemoryRouter>
-							<Scope
-								filterPlaceholder={{
-									defaultMessage: "Type a scope name",
-									id: "test.placeholder",
-								}}
-							>
+							<Scope>
 								<div id="child" />
 							</Scope>
 						</MemoryRouter>
@@ -230,7 +229,7 @@ describe("Scope", () => {
 				<div>
 					<SelectorWrapper>
 						<InputBox>
-							<IntlProvider locale="en">
+							<IntlProvider locale="en-US" messages={messages}>
 								<SearchInput />
 							</IntlProvider>
 						</InputBox>
@@ -272,14 +271,9 @@ describe("Scope", () => {
 		ReactDOM.render(
 			<div>
 				<Provider store={store}>
-					<IntlProvider locale="en">
+					<IntlProvider locale="en-US" messages={messages}>
 						<MemoryRouter initialEntries={["/test3/stuff"]}>
-							<Scope
-								filterPlaceholder={{
-									defaultMessage: "Type a scope name",
-									id: "test.placeholder",
-								}}
-							>
+							<Scope>
 								<div id="child" />
 							</Scope>
 						</MemoryRouter>
@@ -333,7 +327,7 @@ describe("Scope", () => {
 		return expect(
 			<div>
 				<Provider store={store}>
-					<IntlProvider locale="en">
+					<IntlProvider locale="en-US" messages={messages}>
 						<MemoryRouter>
 							<Scope>
 								<div id="child" />

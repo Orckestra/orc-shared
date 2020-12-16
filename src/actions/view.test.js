@@ -57,7 +57,6 @@ describe("createEditNode", () => {
 	});
 });
 
-
 describe("setEditModel", () => {
 	it("creates an action object", () => {
 		expect(setEditModel, "when called with", ["model", "entityId", "sectionName", "moduleName"], "to equal", {
@@ -66,7 +65,6 @@ describe("setEditModel", () => {
 		});
 	});
 });
-
 
 describe("removeEditNode", () => {
 	it("creates an action object", () => {
@@ -79,9 +77,16 @@ describe("removeEditNode", () => {
 
 describe("setEditModelField", () => {
 	it("creates an action object", () => {
-		expect(setEditModelField, "when called with", ["keys", "value", "entityId", "sectionName", "moduleName"], "to equal", {
+		expect(setEditModelField, "when called with", ["keys", "value", "storeValue", "entityId", "sectionName", "moduleName"], "to equal", {
 			type: VIEW_SET_EDIT_MODEL_FIELD,
-			payload: { keys: "keys", value: "value", entityId: "entityId", sectionName: "sectionName", moduleName: "moduleName" },
+			payload: {
+				keys: "keys",
+				value: "value",
+				storeValue: "storeValue",
+				entityId: "entityId",
+				sectionName: "sectionName",
+				moduleName: "moduleName"
+			},
 		});
 	});
 });

@@ -13,10 +13,12 @@ import { isScrollVisible } from "./../../../utils/domHelper";
 import { getModifiedTabs } from "./../../../selectors/view";
 import { useSelector } from "react-redux";
 import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
-import { selectPrependPathConfig } from "./../../../selectors/navigation";
+import { selectPrependHrefConfig } from "./../../../selectors/navigation";
 import { removeEditNode } from "./../../../actions/view";
 import { getEntityIdFromUrl } from "./../../../utils/urlHelper";
 import { useDispatchWithModulesData } from "./../../../hooks/useDispatchWithModulesData";
+import sharedMessages from "./../../../sharedMessages";
+import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -87,13 +89,13 @@ const MuiBar = ({ module, pages }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatchWithModulesData();
-  const prependPath = useSelector(selectPrependPathConfig);
+  const prependHref = useSelector(selectPrependHrefConfig)();
   const activePage = pages.findIndex(p => p.active === true);
   const activeTabIndex = activePage === -1 ? false : activePage;
   const [showSelect, setShowSelect] = React.useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = React.useState(false);
   const [currentCloseData, setCurrentCloseData] = React.useState();
-  console.log(prependPath);
+
   const pagesParams = pages.map(page => (
     {
       href: page.href,
@@ -137,7 +139,7 @@ const MuiBar = ({ module, pages }) => {
   const closeTab = () => {
     setShowConfirmationModal(false);
     currentCloseData.closeCallback();
-    const entityId = getEntityIdFromUrl(currentCloseData.href);
+    const entityId = getEntityIdFromUrl(currentCloseData.href, prependHref);
     dispatch(removeEditNode, [entityId]);
   }
 
@@ -179,7 +181,8 @@ const MuiBar = ({ module, pages }) => {
           pages.map(
             ({ href, label, outsideScope, close }, index) => {
               const isModified = modifiedTabs.includes(href);
-              const tabLabel = (
+              const tabLabel = <TabLabel label={label} />;
+              const wrappedTabLabel = (
                 <div className={classes.labelContainer}>
                   <TabLabel label={label} />
                   {
@@ -187,7 +190,6 @@ const MuiBar = ({ module, pages }) => {
                       <span className={classes.asterix}>*</span> : null
                   }
                 </div>
-
               );
               const closeIcon = (
                 <Icon
@@ -207,7 +209,7 @@ const MuiBar = ({ module, pages }) => {
                     root: classes.tab,
                   }}
                   component={TabLink}
-                  label={tabLabel}
+                  label={wrappedTabLabel}
                   key={href}
                   to={href}
                   value={index}
@@ -221,7 +223,7 @@ const MuiBar = ({ module, pages }) => {
       </Tabs>
       {showSelect ? select : null}
       <ConfirmationModal
-        message="test"
+        message={<FormattedMessage {...sharedMessages.unsavedChanges} />}
         open={showConfirmationModal}
         okCallback={() => closeTab()}
         cancelCallback={() => setShowConfirmationModal(false)}

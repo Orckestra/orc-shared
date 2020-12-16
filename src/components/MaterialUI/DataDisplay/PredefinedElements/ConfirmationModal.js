@@ -4,6 +4,8 @@ import ModalProps from "./../modalProps";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import sharedMessages from "../../../../sharedMessages";
+import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
   actionPanel: {
@@ -26,7 +28,12 @@ const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdrop
 
   const modalProps = new ModalProps();
 
-  const titleComponent = <Typography className={classes.title} children="Confirmation" />;
+  const titleComponent = (
+    <Typography
+      className={classes.title}
+      children={<FormattedMessage {...sharedMessages.confirmation} />}
+    />
+  );
   const messageComponent = <Typography children={message} />;
 
   modalProps.set(ModalProps.propNames.title, titleComponent);
@@ -40,9 +47,11 @@ const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdrop
         variant="outlined"
         onClick={() => cancelCallback()}
       >
-        Cancel
+        <FormattedMessage {...sharedMessages.cancel} />
       </Button>
-      <Button variant="contained" color="primary" onClick={() => okCallback()}>OK</Button>
+      <Button variant="contained" color="primary" onClick={() => okCallback()}>
+        <FormattedMessage {...sharedMessages.ok} />
+      </Button>
     </div>
   );
 
