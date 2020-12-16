@@ -48,8 +48,8 @@ describe("Sidebar", () => {
 					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle />
-							<EnhancedMenuItem icon="cars" id="first" label="First page" />
-							<EnhancedMenuItem icon="person" id="second" label="Second page" />
+							<EnhancedMenuItem icon="cars" title="First page" id="first" label="First page" />
+							<EnhancedMenuItem icon="person" title="Second page" id="second" label="Second page" />
 							<Logo />
 						</Bar>
 					</MemoryRouter>
@@ -73,8 +73,8 @@ describe("Sidebar", () => {
 					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle />
-							<EnhancedMenuItem icon="cars" id="first" label="First page" alert={{ type: "confirm" }} />
-							<EnhancedMenuItem icon="person" id="second" label="Second page" />
+							<EnhancedMenuItem icon="cars" title="First page"  id="first" label="First page" alert={{ type: "confirm" }} />
+							<EnhancedMenuItem icon="person" title="Second page"  id="second" label="Second page" />
 							<Logo />
 						</Bar>
 					</MemoryRouter>
@@ -98,8 +98,8 @@ describe("Sidebar", () => {
 					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle open />
-							<EnhancedMenuItem open icon="cars" id="first" label="First page" />
-							<EnhancedMenuItem open icon="person" id="second" label="Second page" />
+							<EnhancedMenuItem open icon="cars" title="First page" id="first" label="First page" />
+							<EnhancedMenuItem open icon="person" title="Second page" id="second" label="Second page" />
 							<Logo />
 						</Bar>
 					</MemoryRouter>
