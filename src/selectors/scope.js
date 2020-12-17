@@ -66,7 +66,6 @@ export const selectLocalizedScopes = memoize(scopeIds =>
 				scope.displayName = getLocalization(scope.name, locale, scope.name);
 				scope.displayCurrency = getLocalization(scope.currency.displayName, locale, scope.currency.isoCode);
 				localizedScopes.push(scope);
-				console.log(scope);
 			}
 		});
 

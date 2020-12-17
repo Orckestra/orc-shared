@@ -6,6 +6,8 @@ import { MemoryRouter, Router } from "react-router";
 import { createMemoryHistory } from "history";
 import I18n from "../I18n";
 import SegmentPage, { Wrapper, Item, List } from "./SegmentPage";
+import Grid from "@material-ui/core/Grid";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 
 const View1 = () => <div id="view1" />;
 const View2 = () => <div id="view2" />;
@@ -20,19 +22,31 @@ describe("SegmentPage", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
-				locale: "en",
-				supportedLocales: ["en"],
+				locale: "en-US",
+				supportedLocales: ["en-US"],
 			},
 			navigation: {
 				route: {
-					location: { pathname: "/foo/meep/two", search: "", hash: "" },
+					location: { pathname: "/foo/meep/entityIdValue/two", search: "", hash: "" },
 					match: {
-						path: "/:scope/meep/two",
-						url: "/foo/meep/two",
-						params: { scope: "foo" },
+						path: "/:scope/meep/entityIdValue/two",
+						url: "/foo/meep/entityIdValue/two",
+						params: { scope: "foo", entityId: "entityIdValue" },
 						isExact: true,
 					},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/foo/" },
+			},
+			view: {
+				edit: {
+					meep: {
+						entityIdValue: {
+							two: {
+								wasModified: true
+							}
+						}
+					},
+				}
 			},
 		});
 		store = {
@@ -51,10 +65,7 @@ describe("SegmentPage", () => {
 				},
 			},
 			"/two": {
-				label: {
-					id: "message.translate",
-					defaultMessage: "Translated",
-				},
+				label: "Translated",
 				component: View2,
 				pages: {
 					"/:name": {
@@ -64,8 +75,9 @@ describe("SegmentPage", () => {
 				},
 			},
 			"/three": {
-				label: <ComponentLabel />,
-				component: View5
+				label: "ComponentLabel",
+				component: View5,
+				labelComponent: <ComponentLabel />
 			}
 		};
 	});
@@ -73,14 +85,14 @@ describe("SegmentPage", () => {
 	it("shows a list of links to segments", () => {
 		return expect(
 			<Provider store={store}>
-				<MemoryRouter initialEntries={["/foo/meep/two"]}>
+				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
 					<ThemeProvider theme={{}}>
 						<I18n>
 							<SegmentPage
-								path="/:scope/meep"
+								path="/:scope/meep/entityIdValue"
 								segments={segments}
-								match={{ params: { scope: "foo" } }}
-								location={{ pathname: "/foo/meep/two" }}
+								match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+								location={{ pathname: "/foo/meep/entityIdValue/two" }}
 							/>
 						</I18n>
 					</ThemeProvider>
@@ -88,36 +100,58 @@ describe("SegmentPage", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter initialEntries={["/foo/meep/two"]}>
+			<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
 				<Wrapper>
 					<List>
-						<Item to="/foo/meep/one">Text</Item>
-						<Item to="/foo/meep/two" active>
-							Translated
+						<Item to="/foo/meep/entityIdValue/one">
+							<Grid container justify="space-between">
+								<Grid item>
+									Text
+								</Grid>
+								<Grid item>
+								</Grid>
+							</Grid>
 						</Item>
-						<Item to="/foo/meep/three">
-							<ComponentLabel />
+						<Item to="/foo/meep/entityIdValue/two" active>
+							<Grid container justify="space-between">
+								<Grid item>
+									Translated
+									<span>*</span>
+								</Grid>
+								<Grid item>
+								</Grid>
+							</Grid>
+						</Item>
+						<Item to="/foo/meep/entityIdValue/three">
+							<Grid container justify="space-between">
+								<Grid item>
+									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+								</Grid>
+								<Grid item>
+									<ComponentLabel />
+								</Grid>
+							</Grid>
 						</Item>
 					</List>
 					<View2 />
 				</Wrapper>
-			</MemoryRouter>,
+			</MemoryRouter>
 		);
 	});
 
 	it("shows a view over the segment list/view", () => {
 		return expect(
 			<Provider store={store}>
-				<MemoryRouter initialEntries={["/foo/meep/two"]}>
+				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
 					<ThemeProvider theme={{}}>
 						<I18n>
 							<div>
 								<SegmentPage
-									path="/:scope/meep"
+									path="/:scope/meep/entityIdValue"
 									component={View4}
 									segments={segments}
-									match={{ params: { scope: "foo" } }}
-									location={{ pathname: "/foo/meep/two" }}
+									match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+									location={{ pathname: "/foo/meep/entityIdValue/two" }}
 								/>
 							</div>
 						</I18n>
@@ -126,17 +160,39 @@ describe("SegmentPage", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter initialEntries={["/foo/meep/two"]}>
+			<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
 				<div>
 					<View4 />
 					<Wrapper>
 						<List>
-							<Item to="/foo/meep/one">Text</Item>
-							<Item to="/foo/meep/two" active>
-								Translated
+							<Item to="/foo/meep/entityIdValue/one">
+								<Grid container justify="space-between">
+									<Grid item>
+										Text
+								</Grid>
+									<Grid item>
+									</Grid>
+								</Grid>
 							</Item>
-							<Item to="/foo/meep/three">
-								<ComponentLabel />
+							<Item to="/foo/meep/entityIdValue/two" active>
+								<Grid container justify="space-between">
+									<Grid item>
+										Translated
+										<span>*</span>
+									</Grid>
+									<Grid item>
+									</Grid>
+								</Grid>
+							</Item>
+							<Item to="/foo/meep/entityIdValue/three">
+								<Grid container justify="space-between">
+									<Grid item>
+										<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+									</Grid>
+									<Grid item>
+										<ComponentLabel />
+									</Grid>
+								</Grid>
 							</Item>
 						</List>
 						<View2 />
@@ -150,25 +206,25 @@ describe("SegmentPage", () => {
 		state.setIn(
 			["navigation", "route"],
 			Immutable.fromJS({
-				location: { pathname: "/foo/meep/one/sub", search: "", hash: "" },
+				location: { pathname: "/foo/meep/entityIdValue/one/sub", search: "", hash: "" },
 				match: {
-					path: "/:scope/meep/one/sub",
-					url: "/foo/meep/one/sub",
-					params: { scope: "foo" },
+					path: "/:scope/meep/entityIdValue/one/sub",
+					url: "/foo/meep/entityIdValue/one/sub",
+					params: { scope: "foo", entityId: "entityIdValue" },
 					isExact: true,
 				},
 			}),
 		);
 		return expect(
 			<Provider store={store}>
-				<MemoryRouter initialEntries={["/foo/meep/one/sub"]}>
+				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/one/sub"]}>
 					<ThemeProvider theme={{}}>
 						<I18n>
 							<SegmentPage
-								path="/:scope/meep"
+								path="/:scope/meep/entityIdValue"
 								segments={segments}
-								match={{ params: { scope: "foo" } }}
-								location={{ pathname: "/foo/meep/one/sub" }}
+								match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+								location={{ pathname: "/foo/meep/entityIdValue/one/sub" }}
 							/>
 						</I18n>
 					</ThemeProvider>
@@ -183,13 +239,13 @@ describe("SegmentPage", () => {
 	it("shows the relevant page under a segment if it is matched", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter initialEntries={["/foo/meep/two/sub"]}>
+				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two/sub"]}>
 					<ThemeProvider theme={{}}>
 						<SegmentPage
-							path="/:scope/meep"
+							path="/:scope/meep/entityIdValue"
 							segments={segments}
-							match={{ params: { scope: "foo" } }}
-							location={{ pathname: "/foo/meep/two" }}
+							match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+							location={{ pathname: "/foo/meep/entityIdValue/two" }}
 						/>
 					</ThemeProvider>
 				</MemoryRouter>
@@ -201,7 +257,7 @@ describe("SegmentPage", () => {
 
 	it("has a catching redirect when no path is matched", () => {
 		const history = createMemoryHistory({
-			initialEntries: ["/foo/meep"],
+			initialEntries: ["/foo/meep/entityIdValue"],
 		});
 		return expect(
 			<Provider store={store}>
@@ -209,10 +265,10 @@ describe("SegmentPage", () => {
 					<ThemeProvider theme={{}}>
 						<I18n>
 							<SegmentPage
-								path="/:scope/meep"
+								path="/:scope/meep/entityIdValue"
 								segments={segments}
-								match={{ params: { scope: "foo" } }}
-								location={{ pathname: "/foo/meep" }}
+								match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+								location={{ pathname: "/foo/meep/entityIdValue" }}
 							/>
 						</I18n>
 					</ThemeProvider>
@@ -223,10 +279,34 @@ describe("SegmentPage", () => {
 			<Wrapper>
 				<MemoryRouter>
 					<List>
-						<Item to="/foo/meep/one">Text</Item>
-						<Item to="/foo/meep/two">Translated</Item>
-						<Item to="/foo/meep/three">
-							<ComponentLabel />
+						<Item to="/foo/meep/entityIdValue/one">
+							<Grid container justify="space-between">
+								<Grid item>
+									Text
+								</Grid>
+								<Grid item>
+								</Grid>
+							</Grid>
+						</Item>
+						<Item to="/foo/meep/entityIdValue/two">
+							<Grid container justify="space-between">
+								<Grid item>
+									Translated
+									<span>*</span>
+								</Grid>
+								<Grid item>
+								</Grid>
+							</Grid>
+						</Item>
+						<Item to="/foo/meep/entityIdValue/three">
+							<Grid container justify="space-between">
+								<Grid item>
+									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+								</Grid>
+								<Grid item>
+									<ComponentLabel />
+								</Grid>
+							</Grid>
 						</Item>
 					</List>
 				</MemoryRouter>
@@ -234,7 +314,7 @@ describe("SegmentPage", () => {
 			</Wrapper>,
 		).then(() =>
 			expect(history, "to satisfy", {
-				location: { pathname: "/foo/meep/one" },
+				location: { pathname: "/foo/meep/entityIdValue/one" },
 			}),
 		);
 	});

@@ -56,3 +56,7 @@ export const getModuleNameFromHref = (prependPath, href) => {
 	const moduleHref = moduleNamePosition < pathArray.length ? pathArray.slice(0, moduleNamePosition + 1).join("/") : "";
 	return [moduleName, moduleHref];
 };
+
+export const stringifyWithoutQuotes = (obj) => {
+	return JSON.stringify(obj).replace(/"/g, "");
+}

@@ -1,15 +1,22 @@
 import React from "react";
+import { mount as m1 } from "enzyme";
 import { IntlProvider } from "react-intl";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { mount } from "unexpected-reaction";
-import { Wrapper as SegmentWrapper, List as SegmentList, Item as SegmentItem } from "./Routing/SegmentPage";
+import SegmentPage from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
+
+	const match = {
+		url: "/TestScope/users/page1",
+		path: "/:scope/users/page1",
+		params: { scope: "TestScope" },
+	};
 
 	beforeEach(() => {
 		Mod2 = () => <div id="Mod2" />;
@@ -54,11 +61,23 @@ describe("Modules", () => {
 				tabIndex: {},
 				moduleTabs: {},
 				mappedHrefs: {},
-				route: {},
+				route: {
+					match: match,
+				},
 				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			router: {
 				location: {},
+			},
+			modules: {
+				tree: {}
+			},
+			view: {
+				edit: {
+					users: {},
+					photos: {},
+					demos: {},
+				}
 			},
 			settings: {
 				defaultScope: "myScope",
@@ -81,8 +100,8 @@ describe("Modules", () => {
 			},
 		});
 		store = {
-			subscribe: () => {},
-			dispatch: () => {},
+			subscribe: () => { },
+			dispatch: () => { },
 			getState: () => state,
 		};
 	});
@@ -129,6 +148,10 @@ describe("Modules", () => {
 			active: true,
 		};
 
+		const location = {
+			pathname: "/TestScope/users/page1"
+		}
+
 		expect(
 			mount(
 				<Provider store={store}>
@@ -148,17 +171,16 @@ describe("Modules", () => {
 						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
-				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-					<SegmentWrapper>
-						<SegmentList>
-							<SegmentItem to="/TestScope/users/page1" active>
-								Page 1
-							</SegmentItem>
-							<SegmentItem to="/TestScope/users/page2">Page 2</SegmentItem>
-						</SegmentList>
-						<Page1 />
-					</SegmentWrapper>
-				</MemoryRouter>,
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
+						<SegmentPage
+							path="/:scope/users"
+							location={location}
+							segments={modules.users.segments}
+							match={match}
+						/>
+					</MemoryRouter>
+				</Provider>
 			],
 		);
 	});
@@ -245,6 +267,14 @@ describe("Modules", () => {
 				},
 				settings: {
 					defaultScope: "myScope",
+				},
+				modules: {
+					tree: {}
+				},
+				view: {
+					edit: {
+						module: {},
+					}
 				},
 				scopes: {
 					TestScope: {

@@ -38,6 +38,7 @@ const redirectScopeWhenRequired = (isPageTab, pageScopeSelector, rawPage, curren
 	const scopeChanged = params.scope && params.scope !== currentScope;
 	const currentScopeDefinition = scopeDefinitionGetter(currentScope);
 	const currentScopePath = currentScopeDefinition ? currentScopeDefinition.scopePath : [];
+
 	let outsideScope = scopeChanged;
 
 	if (isPageTab && pageScopeSelector) {

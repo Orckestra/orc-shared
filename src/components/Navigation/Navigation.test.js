@@ -46,6 +46,14 @@ describe("Navigation", () => {
 				},
 				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
+			modules: {
+				tree: {}
+			},
+			view: {
+				edit: {
+					test: {}
+				}
+			},
 			scopes: {
 				TestScope: {
 					id: "TestScope",
@@ -103,12 +111,14 @@ describe("Navigation", () => {
 			{
 				label: 'Page 1',
 				href: '/TestScope/test/page1',
-				active: true
+				active: true,
+				params: { scope: "TestScope", entityId: "page1" },
 			},
 			{
 				label: 'Page 2',
 				href: '/TestScope/test/page2',
-				active: false
+				active: false,
+				params: { scope: "TestScope", entityId: "page2" },
 			}
 		];
 
