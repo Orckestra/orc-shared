@@ -51,7 +51,7 @@ describe("Help", () => {
 			"when mounted",
 			"to satisfy",
 			<HelpLink href="any_help_url.com">
-				{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.help'])}
+				{stringifyWithoutQuotes(messages['orc-shared.help'])}
 			</HelpLink>,
 		));
 

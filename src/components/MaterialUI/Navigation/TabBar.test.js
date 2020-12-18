@@ -209,7 +209,7 @@ describe("TabBar", () => {
               {expectedModuleTab}
               {expectedTabs}
               <ConfirmationModal
-                message={stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.unsavedChanges'])}
+                message={stringifyWithoutQuotes(messages['orc-shared.unsavedChanges'])}
                 open={false}
               />
             </div>
@@ -246,7 +246,7 @@ describe("TabBar", () => {
               {expectedTabs}
               {select}
               <ConfirmationModal
-                message={stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.unsavedChanges'])}
+                message={stringifyWithoutQuotes(messages['orc-shared.unsavedChanges'])}
                 open={true}
               />
             </div>

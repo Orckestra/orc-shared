@@ -2,87 +2,87 @@ import { defineMessages } from "react-intl";
 
 const sharedMessages = defineMessages({
   scopeFilterPlaceholder: {
-    id: "node_modules.orc-shared.src.sharedMessages.scopeFilterPlaceholder",
+    id: "orc-shared.scopeFilterPlaceholder",
     defaultMessage: "Type a scope name"
   },
   signOut: {
-    id: "node_modules.orc-shared.src.sharedMessages.signOut",
+    id: "orc-shared.signOut",
     defaultMessage: "Sign out"
   },
   preferences: {
-    id: "node_modules.orc-shared.src.sharedMessages.preferences",
+    id: "orc-shared.preferences",
     defaultMessage: "Preferences"
   },
   about: {
-    id: "node_modules.orc-shared.src.sharedMessages.about",
+    id: "orc-shared.about",
     defaultMessage: "About"
   },
   help: {
-    id: "node_modules.orc-shared.src.sharedMessages.help",
+    id: "orc-shared.help",
     defaultMessage: "Help"
   },
   ccName: {
-    id: "node_modules.orc-shared.src.sharedMessages.ccName",
+    id: "orc-shared.ccName",
     defaultMessage: "Orckestra Commerce Cloud"
   },
   ccVersion: {
-    id: "node_modules.orc-shared.src.sharedMessages.ccVersion",
+    id: "orc-shared.ccVersion",
     defaultMessage: "Commerce Cloud {version}"
   },
   orcSharedVersion: {
-    id: "node_modules.orc-shared.src.sharedMessages.orcSharedVersion",
+    id: "orc-shared.orcSharedVersion",
     defaultMessage: "Orc-Shared Framework {version}"
   },
   orcScriptsVersion: {
-    id: "node_modules.orc-shared.src.sharedMessages.orcScriptsVersion",
+    id: "orc-shared.orcScriptsVersion",
     defaultMessage: "Orc-Scripts Framework {version}"
   },
   orcSecretVersion: {
-    id: "node_modules.orc-shared.src.sharedMessages.orcSecretVersion",
+    id: "orc-shared.orcSecretVersion",
     defaultMessage: "Orc-Secret Framework {version}"
   },
   copyrightTermsNotice: {
-    id: "node_modules.orc-shared.src.sharedMessages.copyrightTermsNotice",
+    id: "orc-shared.copyrightTermsNotice",
     defaultMessage: "This computer program is protected by copyright laws and international treaties. Unauthorized reproduction or redistribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law. Orckestra is a trademark of Orckestra Technologies Inc. All other trademarks are property of the respective owners."
   },
   copyright: {
-    id: "node_modules.orc-shared.src.sharedMessages.copyright",
-    defaultMessage: "© 2020 Orckestra Technologies Inc."
+    id: "orc-shared.copyright",
+    defaultMessage: "© 2021 Orckestra Technologies Inc."
   },
   allRightsReserved: {
-    id: "node_modules.orc-shared.src.sharedMessages.allRightsReserved",
+    id: "orc-shared.allRightsReserved",
     defaultMessage: "All rights reserved."
   },
   defaultApp: {
-    id: "node_modules.orc-shared.src.sharedMessages.defaultApp",
+    id: "orc-shared.defaultApp",
     defaultMessage: "Default application"
   },
   displayLanguage: {
-    id: "node_modules.orc-shared.src.sharedMessages.displayLanguage",
+    id: "orc-shared.displayLanguage",
     defaultMessage: "Display language"
   },
   save: {
-    id: "node_modules.orc-shared.src.sharedMessages.save",
+    id: "orc-shared.save",
     defaultMessage: "Save"
   },
   ok: {
-    id: "node_modules.orc-shared.src.sharedMessages.ok",
+    id: "orc-shared.ok",
     defaultMessage: "Ok"
   },
   cancel: {
-    id: "node_modules.orc-shared.src.sharedMessages.cancel",
+    id: "orc-shared.cancel",
     defaultMessage: "Cancel"
   },
   confirmation: {
-    id: "node_modules.orc-shared.src.sharedMessages.confirmation",
+    id: "orc-shared.confirmation",
     defaultMessage: "Confirmation"
   },
   notAvailable: {
-    id: "node_modules.orc-shared.src.sharedMessages.notAvailable",
+    id: "orc-shared.notAvailable",
     defaultMessage: "N/A"
   },
   unsavedChanges: {
-    id: "node_modules.orc-shared.src.sharedMessages.unsavedChanges",
+    id: "orc-shared.unsavedChanges",
     defaultMessage: "This entity has unsaved changes. All changes will be lost. Are you sure you want to close it?"
   }
 });

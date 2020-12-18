@@ -175,12 +175,12 @@ describe("Preferences", () => {
 						<div>
 							<Wrapper>
 								<Header>
-									{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.preferences'])}
+									{stringifyWithoutQuotes(messages['orc-shared.preferences'])}
 								</Header>
 								<PrefForm>
 									<FieldBox>
 										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.displayLanguage'])}
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="language" value="en-US" onChange={() => { }}>
@@ -195,7 +195,7 @@ describe("Preferences", () => {
 									</FieldBox>
 									<FieldBox>
 										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.defaultApp'])}
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="application" value={4} onChange={() => { }}>
@@ -209,10 +209,10 @@ describe("Preferences", () => {
 								</PrefForm>
 								<Footer>
 									<PrefButton id="cancelPrefs">
-										{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.cancel'])}
+										{stringifyWithoutQuotes(messages['orc-shared.cancel'])}
 									</PrefButton>
 									<PrefButton id="savePrefs" primary>
-										{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.save'])}
+										{stringifyWithoutQuotes(messages['orc-shared.save'])}
 									</PrefButton>
 								</Footer>
 							</Wrapper>
@@ -260,7 +260,7 @@ describe("Preferences", () => {
 								<PrefForm>
 									<FieldBox>
 										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.displayLanguage'])}
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="language" value="fr-CA" onChange={() => { }}>
@@ -275,7 +275,7 @@ describe("Preferences", () => {
 									</FieldBox>
 									<FieldBox>
 										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.defaultApp'])}
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="application" value={4} onChange={() => { }}>
@@ -396,7 +396,7 @@ describe("Preferences", () => {
 								<PrefForm>
 									<FieldBox>
 										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.displayLanguage'])}
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="language" value="en-US" onChange={() => { }}>
@@ -411,7 +411,7 @@ describe("Preferences", () => {
 									</FieldBox>
 									<FieldBox>
 										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.defaultApp'])}
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="application" value={3} onChange={() => { }}>
@@ -496,7 +496,7 @@ describe("Preferences", () => {
 								<PrefForm>
 									<FieldBox>
 										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.displayLanguage'])}
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="language" value="fr-CA" onChange={() => { }}>
@@ -511,7 +511,7 @@ describe("Preferences", () => {
 									</FieldBox>
 									<FieldBox>
 										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.defaultApp'])}
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
 										</Label>
 										<SelectorWrapper>
 											<select id="application" value={3} onChange={() => { }}>
@@ -568,7 +568,7 @@ describe("Preferences", () => {
 							<PrefForm>
 								<FieldBox>
 									<Label id="language_label">
-										{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.displayLanguage'])}
+										{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
 									</Label>
 									<SelectorWrapper>
 										<select id="language" value="" onChange={() => { }}>
@@ -583,7 +583,7 @@ describe("Preferences", () => {
 								</FieldBox>
 								<FieldBox>
 									<Label id="application_label">
-										{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.defaultApp'])}
+										{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
 									</Label>
 									<SelectorWrapper>
 										<select id="application" value="" onChange={() => { }}>
