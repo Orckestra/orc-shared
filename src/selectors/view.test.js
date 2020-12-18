@@ -54,11 +54,22 @@ describe("getModifiedSections", () => {
         edit: {
           module1: {
             id1: {
-              section1: {
-                wasModified: false
-              },
+              section1: {},
               section2: {
-                wasModified: true
+                model: {
+                  field1: {
+                    value: "smth",
+                    wasModified: true
+                  }
+                }
+              },
+              section3: {
+                model: {
+                  field1: {
+                    value: "another",
+                    wasModified: false
+                  }
+                }
               }
             }
           }
@@ -168,18 +179,20 @@ describe("getModifiedTabs", () => {
           module1: {
             id1: {
               section1: {
-                wasModified: false
               },
               section2: {
-                wasModified: true
+                model: {
+                  field1: {
+                    value: "smth",
+                    wasModified: true
+                  }
+                }
               }
             },
             id2: {
               section1: {
-                wasModified: false
               },
               section2: {
-                wasModified: false
               }
             }
           }

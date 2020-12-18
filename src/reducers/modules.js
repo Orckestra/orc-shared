@@ -2,6 +2,7 @@ import Immutable from "immutable";
 import {
   SET_MODULES_STRUCTURE,
 } from "../actions/modules";
+import { infoBar } from "./../constants";
 
 const initialState = Immutable.Map({});
 
@@ -21,7 +22,7 @@ const viewStateReducer = (state = initialState, action) => {
             modulesTree[moduleName].pages[pageKey] = {};
             const segments = modulePages[pageKey].segments;
             if (segments != null) {
-              modulesTree[moduleName].pages[pageKey].infoBar = {};
+              modulesTree[moduleName].pages[pageKey][infoBar] = {};
               const segmentsKeys = Object.keys(segments);
               for (const segmentKey of segmentsKeys) {
                 modulesTree[moduleName].pages[pageKey][segmentKey.replace("/", "")] = {};

@@ -6,6 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
 import TextProps from "../../textProps";
 import { isReactComponent } from "../../../../utils/propertyValidator";
+import sharedMessages from "../../../../sharedMessages";
+import { useIntl } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
 	title: {
@@ -25,10 +27,13 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const InformationItem = ({ label, children, required, error }) => {
+const InformationItem = ({ label, children, required, error, showNotAvailable = false }) => {
 	const classes = useStyles({ required, error });
+	const { formatMessage } = useIntl();
 
 	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
+
+	const value = children ?? (showNotAvailable ? formatMessage(sharedMessages.notAvailable) : "");
 
 	const multipleLinesTextProps = new TextProps();
 	multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
@@ -40,7 +45,7 @@ const InformationItem = ({ label, children, required, error }) => {
 			{isReactComponent(children) ? (
 				children
 			) : (
-				<MultipleLinesText textProps={multipleLinesTextProps} children={children} />
+				<MultipleLinesText textProps={multipleLinesTextProps} children={value} />
 			)}
 		</Grid>
 	);

@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import { selectCurrentModuleName } from "./navigation";
+import { isObjectContainsPropertyWithValue } from "./../utils/propertyHelper";
 
 const modulesData = state => state.get("view");
 
@@ -36,13 +37,17 @@ const getModifiedSectionsFromModule = (editData, moduleName, entityId) => {
     if (sections != null) {
       const sectionsKeys = Object.keys(sections);
       for (const sectionKey of sectionsKeys) {
-        if (sections[sectionKey].wasModified === true) {
-          modifiedSections.push(sectionKey);
+        const sectionModel = sections[sectionKey].model;
+
+        if (sectionModel != null) {
+          const wasModified = isObjectContainsPropertyWithValue(sectionModel, "wasModified", true);
+          if (wasModified === true) {
+            modifiedSections.push(sectionKey);
+          }
         }
       }
     }
   }
-
   return modifiedSections;
 }
 
