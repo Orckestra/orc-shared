@@ -74,39 +74,39 @@ describe("About", () => {
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
 						{
-							stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.ccVersion'])
+							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
 								.replace('{version}', ccVersion)
 						}
 						<br />
 						An application 2.3.2
 						<br />
 						{
-							stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.orcSharedVersion'])
+							stringifyWithoutQuotes(messages['orc-shared.orcSharedVersion'])
 								.replace('{version}', orcSharedVersion)
 						}
 						<br />
 						{
-							stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.orcScriptsVersion'])
+							stringifyWithoutQuotes(messages['orc-shared.orcScriptsVersion'])
 								.replace('{version}', orcScriptsVersion)
 						}
 						<br />
 						{
-							stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.orcSecretVersion'])
+							stringifyWithoutQuotes(messages['orc-shared.orcSecretVersion'])
 								.replace('{version}', orcSecretVersion)
 						}
 					</AboutParagraph>
 					<AboutParagraph long>
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.copyrightTermsNotice'])}
+						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
 					</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com">
-							{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.ccName'])}
+							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.copyright'])}
+						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
 						<br />
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.allRightsReserved'])}
+						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,
@@ -149,22 +149,22 @@ describe("About", () => {
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
 						{
-							stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.ccVersion'])
+							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
 								.replace('{version}', ccVersion)
 						}
 					</AboutParagraph>
 					<AboutParagraph long>
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.copyrightTermsNotice'])}
+						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
 					</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com">
-							{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.ccName'])}
+							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.copyright'])}
+						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
 						<br />
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.allRightsReserved'])}
+						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,
@@ -189,22 +189,22 @@ describe("About", () => {
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
 						{
-							stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.ccVersion'])
+							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
 								.replace('{version}', ccVersion)
 						}
 					</AboutParagraph>
 					<AboutParagraph long>
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.copyrightTermsNotice'])}
+						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
 					</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com/fr">
-							{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.ccName'])}
+							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.copyright'])}
+						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
 						<br />
-						{stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.allRightsReserved'])}
+						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,

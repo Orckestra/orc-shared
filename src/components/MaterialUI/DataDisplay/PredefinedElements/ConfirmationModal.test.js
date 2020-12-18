@@ -23,7 +23,7 @@ describe("ConfirmationModal", () => {
     const modalProps = new ModalProps();
 
     const titleComponent =
-      <Typography children={stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.confirmation'])} />;
+      <Typography children={stringifyWithoutQuotes(messages['orc-shared.confirmation'])} />;
     const messageComponent = <Typography children={message} />;
 
     modalProps.set(ModalProps.propNames.title, titleComponent);
@@ -36,10 +36,10 @@ describe("ConfirmationModal", () => {
           variant="outlined"
           onClick={() => cancelCallback()}
         >
-          {stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.cancel'])}
+          {stringifyWithoutQuotes(messages['orc-shared.cancel'])}
         </Button>
         <Button variant="contained" color="primary" onClick={() => okCallback()}>
-          {stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.ok'])}
+          {stringifyWithoutQuotes(messages['orc-shared.ok'])}
         </Button>
       </div>
     );
