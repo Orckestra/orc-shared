@@ -7,12 +7,12 @@ import Provision from "./Provision";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 const fakeStore = {
-	subscribe: listener => () => {},
+	subscribe: listener => () => { },
 	dispatch: action => action,
 	getState: () =>
 		Immutable.fromJS({
 			locale: {
-				locale: "en",
+				locale: "en-US",
 			},
 			authentication: {
 				name: "foo@bar.com",
@@ -21,7 +21,7 @@ const fakeStore = {
 				defaultScope: "myScope",
 			},
 		}),
-	replaceReducer: () => {},
+	replaceReducer: () => { },
 };
 
 const fakeTheme = { value: "styles" };

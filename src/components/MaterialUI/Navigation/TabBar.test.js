@@ -16,19 +16,21 @@ import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import SelectMUI from "@material-ui/core/Select";
 import { Link } from "react-router-dom";
+import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
+import { removeEditNode } from "./../../../actions/view";
 import * as domHelper from "./../../../utils/domHelper";
+import * as useDispatchWithModulesData from "./../../../hooks/useDispatchWithModulesData";
+import * as ReactMock from "react";
+import { extractMessages } from "./../../../utils/testUtils";
+import sharedMessages from "./../../../sharedMessages";
+import { stringifyWithoutQuotes } from "./../../../utils/parseHelper";
+
+const messages = extractMessages(sharedMessages);
 
 describe("TabBar", () => {
   let store, state;
   const history = createMemoryHistory({ initialEntries: ["/"] });
   sinon.spy(history, "push");
-
-  const messages = {
-    module1: { id: "module1", defaultMessage: "Module 1" },
-    page1: { id: "page1", defaultMessage: "Page 1" },
-    page2: { id: "page2", defaultMessage: "Page 2" },
-    page3: { id: "page3", defaultMessage: "Page 3" },
-  };
 
   const module = {
     icon: 'cloud',
@@ -41,18 +43,21 @@ describe("TabBar", () => {
     {
       label: messages.page1,
       href: '/Scope1/module1/page1',
+      params: { scope: "Scope1", entityId: "page1" },
       active: false,
       close: sinon.spy()
     },
     {
       label: messages.page2,
       href: '/Scope1/module1/page2',
+      params: { scope: "Scope1", entityId: "page2" },
       active: false,
       close: sinon.spy()
     },
     {
       label: messages.page3,
       href: '/Scope1/module1/page3',
+      params: { scope: "Scope1", entityId: "page3" },
       active: false,
       close: sinon.spy()
     },
@@ -105,6 +110,15 @@ describe("TabBar", () => {
     />
   );
 
+  const wrappedPage1TabLabel = <div><TabLabel label={messages.page1} /></div>;
+  const wrappedPage2TabLabel = <div><TabLabel label={messages.page2} /></div>;
+  const wrappedPage3TabLabel = (
+    <div>
+      <TabLabel label={messages.page3} />
+      <span>*</span>
+    </div>
+  );
+
   const expectedTabs = (
     <Tabs
       value={false}
@@ -112,7 +126,7 @@ describe("TabBar", () => {
       scrollButtons="auto"
     >
       <Tab
-        label={page1TabLabel}
+        label={wrappedPage1TabLabel}
         key={pages[0].href}
         to={pages[0].href}
         value={0}
@@ -121,7 +135,7 @@ describe("TabBar", () => {
         disabled={pages[0].outsideScope}
       />
       <Tab
-        label={page2TabLabel}
+        label={wrappedPage2TabLabel}
         key={pages[1].href}
         to={pages[1].href}
         value={1}
@@ -130,7 +144,7 @@ describe("TabBar", () => {
         disabled={pages[1].outsideScope}
       />
       <Tab
-        label={page3TabLabel}
+        label={wrappedPage3TabLabel}
         key={pages[2].href}
         to={pages[2].href}
         value={2}
@@ -142,7 +156,32 @@ describe("TabBar", () => {
   );
 
   beforeEach(() => {
-    state = Immutable.fromJS({});
+    state = Immutable.fromJS({
+      modules: {
+        tree: {}
+      },
+      view: {
+        edit: {
+          module1: {
+            page3: {
+              section1: {
+                wasModified: true
+              }
+            }
+          }
+        }
+      },
+      navigation: {
+        route: {
+          match: {
+            url: "/Scope1/module1/page1",
+            path: "/:scope/module1/page1",
+            params: { scope: "Scope1" },
+          },
+        },
+        config: { prependPath: "/:scope/", prependHref: "/Scope1/" },
+      },
+    });
     store = {
       subscribe: () => { },
       getState: () => state,
@@ -154,7 +193,7 @@ describe("TabBar", () => {
     const component = (
       <Provider store={store}>
         <MemoryRouter>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </MemoryRouter>
@@ -164,11 +203,15 @@ describe("TabBar", () => {
     const expected = (
       <Provider store={store}>
         <MemoryRouter>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <div>
               <ResizeDetector />
               {expectedModuleTab}
               {expectedTabs}
+              <ConfirmationModal
+                message={stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.unsavedChanges'])}
+                open={false}
+              />
             </div>
           </IntlProvider>
         </MemoryRouter>
@@ -178,11 +221,11 @@ describe("TabBar", () => {
     expect(component, "when mounted", "to satisfy", expected);
   });
 
-  it("Contains proper Select element when it's visible", () => {
+  it("Contains proper Select and Modal elements when they are visible", () => {
     const component = (
       <Provider store={store}>
         <MemoryRouter>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </MemoryRouter>
@@ -196,12 +239,16 @@ describe("TabBar", () => {
     const expected = (
       <Provider store={store}>
         <MemoryRouter>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <div>
               <ResizeDetector />
               {expectedModuleTab}
               {expectedTabs}
               {select}
+              <ConfirmationModal
+                message={stringifyWithoutQuotes(messages['node_modules.orc-shared.src.sharedMessages.unsavedChanges'])}
+                open={true}
+              />
             </div>
           </IntlProvider>
         </MemoryRouter>
@@ -215,7 +262,7 @@ describe("TabBar", () => {
     const component = (
       <Provider store={store}>
         <Router history={history}>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </Router>
@@ -235,7 +282,7 @@ describe("TabBar", () => {
     const component = (
       <Provider store={store}>
         <Router history={history}>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </Router>
@@ -255,7 +302,7 @@ describe("TabBar", () => {
     const component = (
       <Provider store={store}>
         <Router history={history}>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </Router>
@@ -275,11 +322,11 @@ describe("TabBar", () => {
     expect(history.push, "to have a call satisfying", { args: [pages[2].href] });
   });
 
-  it("Calls correct close callback when close icon for specific page tab is clicked", () => {
+  it("Calls correct close callback when close icon for specific page tab is clicked and tab was not modified", () => {
     const component = (
       <Provider store={store}>
         < MemoryRouter>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </MemoryRouter>
@@ -293,14 +340,14 @@ describe("TabBar", () => {
 
     closeIcon.simulate("click");
 
-    expect(pages[0].close, "was called")
+    expect(pages[0].close, "was called");
   });
 
-  it("Handles onResize correct when isScrollVisible returns false", () => {
+  it("Calls correct close callback when close icon for specific page tab is clicked and tab was modified", () => {
     const component = (
       <Provider store={store}>
-        <MemoryRouter>
-          <IntlProvider locale="en">
+        < MemoryRouter>
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </MemoryRouter>
@@ -309,6 +356,33 @@ describe("TabBar", () => {
 
     const setState = sinon.spy();
     const useStateSpy = jest.spyOn(React, 'useState')
+    useStateSpy.mockImplementation((value) => [value, setState]);
+
+    const mountedComponent = mount(component);
+
+    const pageTab = mountedComponent.find(Tab).at(3);
+    const closeIcon = pageTab.find(Icon);
+
+    closeIcon.simulate("click");
+
+    expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[2].close, href: pages[2].href }] });
+
+    expect(setState, "to have a call satisfying", { args: [true] });
+  });
+
+  it("Handles onResize correct when isScrollVisible returns false", () => {
+    const component = (
+      <Provider store={store}>
+        <MemoryRouter>
+          <IntlProvider locale="en-US" messages={messages}>
+            <TabBar module={module} pages={pages} />
+          </IntlProvider>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const setState = sinon.spy();
+    const useStateSpy = jest.spyOn(React, 'useState');
     useStateSpy.mockImplementation((value) => [value, setState]);
 
     const isScrollVisibleStub = sinon.stub(domHelper, "isScrollVisible").returns(false);
@@ -324,13 +398,14 @@ describe("TabBar", () => {
     expect(setState, "to have a call satisfying", { args: [false] });
 
     isScrollVisibleStub.restore();
+    useStateSpy.mockRestore();
   });
 
   it("Handles onResize correct when isScrollVisible returns true", () => {
     const component = (
       <Provider store={store}>
         <MemoryRouter>
-          <IntlProvider locale="en">
+          <IntlProvider locale="en-US" messages={messages}>
             <TabBar module={module} pages={pages} />
           </IntlProvider>
         </MemoryRouter>
@@ -354,6 +429,102 @@ describe("TabBar", () => {
     expect(setState, "to have a call satisfying", { args: [true] });
 
     isScrollVisibleStub.restore();
+    useStateSpy.mockRestore();
+  });
+
+  it("Closes tab when ok callback in confirmation modal is triggered", () => {
+    const component = (
+      <Provider store={store}>
+        <MemoryRouter>
+          <IntlProvider locale="en-US" messages={messages}>
+            <TabBar module={module} pages={pages} />
+          </IntlProvider>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const dispatchSpy = sinon.spy();
+    const useDispatchWithModulesDataStub =
+      sinon.stub(useDispatchWithModulesData, "useDispatchWithModulesData").returns(dispatchSpy);
+
+    const useStateStub = sinon.stub(ReactMock, "useState");
+    useStateStub.withArgs(undefined).returns([
+      { closeCallback: pages[2].close, href: pages[2].href }, jest.fn()
+    ]);
+
+    const mountedComponent = mount(component);
+
+    const pageTab = mountedComponent.find(Tab).at(3);
+    const closeIcon = pageTab.find(Icon);
+
+    closeIcon.simulate("click");
+
+    let confirmationModal = mountedComponent.find(ConfirmationModal);
+
+    confirmationModal.invoke("okCallback")();
+
+    confirmationModal = mountedComponent.find(ConfirmationModal);
+
+    expect(confirmationModal.prop("open"), "to be false");
+    expect(pages[2].close, "was called");
+    expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, [pages[2].params.entityId]] });
+
+    useDispatchWithModulesDataStub.restore();
+    useStateStub.restore();
+  });
+
+  it("Closes confirmation modal when cancelCallback is triggered", () => {
+    const component = (
+      <Provider store={store}>
+        <MemoryRouter>
+          <IntlProvider locale="en-US" messages={messages}>
+            <TabBar module={module} pages={pages} />
+          </IntlProvider>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const mountedComponent = mount(component);
+
+    const pageTab = mountedComponent.find(Tab).at(3);
+    const closeIcon = pageTab.find(Icon);
+
+    closeIcon.simulate("click");
+
+    let confirmationModal = mountedComponent.find(ConfirmationModal);
+
+    confirmationModal.invoke("cancelCallback")();
+
+    confirmationModal = mountedComponent.find(ConfirmationModal);
+
+    expect(confirmationModal.prop("open"), "to be false");
+  });
+
+  it("Closes confirmation modal when backdropClickCallback is triggered", () => {
+    const component = (
+      <Provider store={store}>
+        <MemoryRouter>
+          <IntlProvider locale="en-US" messages={messages}>
+            <TabBar module={module} pages={pages} />
+          </IntlProvider>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const mountedComponent = mount(component);
+
+    const pageTab = mountedComponent.find(Tab).at(3);
+    const closeIcon = pageTab.find(Icon);
+
+    closeIcon.simulate("click");
+
+    let confirmationModal = mountedComponent.find(ConfirmationModal);
+
+    confirmationModal.invoke("backdropClickCallback")();
+
+    confirmationModal = mountedComponent.find(ConfirmationModal);
+
+    expect(confirmationModal.prop("open"), "to be false");
   });
 });
 

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { defineMessages } from "react-intl";
 import {
 	getElmClasses,
 	getClassName,
@@ -10,7 +11,8 @@ import {
 	spyOnConsole,
 	ignoreConsoleError,
 	createMuiTheme,
-	generateClassName
+	generateClassName,
+	extractMessages
 } from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
@@ -384,5 +386,33 @@ describe("generateClassName", () => {
 		const generatedClassname = generateClassName(rule, styleSheet);
 
 		expect(generatedClassname, "to equal", "prefix-key");
+	});
+});
+
+describe("extractMessages", () => {
+	const testMessagesA = defineMessages({
+		test1: "test1",
+		test2: "test2",
+	});
+
+	const testMessagesB = defineMessages({
+		test3: "test3",
+		test4: "test4",
+	});
+
+	it("extracts messages out from one defineMessages", () => {
+		expect(extractMessages(testMessagesA), "to equal", {
+			"utils.testUtils.test1": "test1",
+			"utils.testUtils.test2": "test2",
+		});
+	});
+
+	it("extracts messages out from two defineMessages", () => {
+		expect(extractMessages(testMessagesA, testMessagesB), "to equal", {
+			"utils.testUtils.test1": "test1",
+			"utils.testUtils.test2": "test2",
+			"utils.testUtils.test3": "test3",
+			"utils.testUtils.test4": "test4",
+		});
 	});
 });

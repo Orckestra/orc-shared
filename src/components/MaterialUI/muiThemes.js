@@ -121,8 +121,8 @@ const setThemeOverrides = theme => ({
 			borderColor: theme.palette.grey.borders,
 			borderWidth: 1,
 			boxSizing: "border-box",
-			minWidth: 64,
 			padding: theme.spacing(1, 2),
+			height: theme.spacing(3),
 			borderRadius: theme.shape.borderRadius,
 			color: theme.palette.text.primary,
 			transition: theme.transitions.create(["background-color", "box-shadow", "border"], {

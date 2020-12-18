@@ -24,23 +24,47 @@ export const getModifiedSections = (entityId) => createSelector(
   editData,
   selectCurrentModuleName,
   (data, moduleName) => {
-    const modifiedSections = [];
-    if (data != null) {
-      const dataJS = data.toJS();
-      const sections = dataJS[moduleName][entityId];
-      if (sections != null) {
-        const sectionsKeys = Object.keys(sections);
-        for (const sectionKey of sectionsKeys) {
-          if (sections[sectionKey].wasEdited === true) {
-            modifiedSections.push(sectionKey);
-          }
+    return getModifiedSectionsFromModule(data, moduleName, entityId);
+  },
+);
+
+const getModifiedSectionsFromModule = (editData, moduleName, entityId) => {
+  const modifiedSections = [];
+  if (editData != null) {
+    const dataJS = editData.toJS();
+    const sections = dataJS[moduleName][entityId];
+    if (sections != null) {
+      const sectionsKeys = Object.keys(sections);
+      for (const sectionKey of sectionsKeys) {
+        if (sections[sectionKey].wasModified === true) {
+          modifiedSections.push(sectionKey);
         }
       }
     }
+  }
 
-    return modifiedSections;
-  },
-);
+  return modifiedSections;
+}
+
+export const getModifiedTabs = (tabsParams) => createSelector(
+  editData,
+  selectCurrentModuleName,
+  (data, moduleName) => {
+    const modifiedTabs = [];
+
+    tabsParams.forEach(tabParams => {
+      for (let i = 0; i < tabParams.params.length; i++) {
+        const modifiedSections = getModifiedSectionsFromModule(data, moduleName, tabParams.params[i]);
+        if (modifiedSections.length > 0) {
+          modifiedTabs.push(tabParams.href);
+          break;
+        }
+      }
+    });
+
+    return modifiedTabs;
+  }
+)
 
 export const getModifiedModels = (entityId) => createSelector(
   editData,

@@ -11,6 +11,7 @@ import { resetLastScope } from "../../selectors/navigation";
 import useNavigationState, { getPageData } from "./useNavigationState";
 import Bar from "./Bar";
 import { PropStruct } from "../../utils/testUtils";
+import { cloneDeep } from "lodash"
 
 const TestComp1 = props => (
 	<div data-test-id="comp-1">
@@ -139,7 +140,7 @@ describe("useNavigationState", () => {
 			},
 		});
 		store = {
-			subscribe: () => {},
+			subscribe: () => { },
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
@@ -411,6 +412,120 @@ describe("useNavigationState", () => {
 			]),
 		));
 
+	it("provides state information about navigation when redirection is needed and currentScopeDefinition is undefined", () => {
+		let stateWithEmptyScopes = cloneDeep(state);
+		stateWithEmptyScopes = stateWithEmptyScopes.setIn(["scopes"], Immutable.Map());
+		const storeWithEmptyScopes = {
+			subscribe: () => { },
+			dispatch: sinon.spy().named("dispatch"),
+			getState: () => stateWithEmptyScopes,
+		};
+
+		expect(
+			<Provider store={storeWithEmptyScopes}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modulesWithSelector} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={storeWithEmptyScopes}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<Bar
+							module={{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test",
+								mappedFrom: "/TestScope/test",
+								active: false,
+							}}
+							pages={[
+								{
+									label: "Page 1",
+									href: "/TestScope/test/page1",
+									mappedFrom: "/TestScope/test/page1",
+									active: true,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
+									scopeNotSupported: false,
+								},
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "11",
+										},
+									},
+									href: "/TestScope/test/foo",
+									mappedFrom: "/TestScope/test/foo",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									mustTruncate: true,
+									outsideScope: true,
+									scopeNotSupported: true,
+								},
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "22",
+										},
+									},
+									href: "/TestScope/test/bar",
+									mappedFrom: "/TestScope/test/bar",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									mustTruncate: true,
+									outsideScope: true,
+									scopeNotSupported: true,
+								},
+								{
+									label: {
+										id: "page3",
+										defaultMessage: "Page 3 {someField}",
+										values: { someField: "22" },
+									},
+									href: "/TestScope/test/page3",
+									mappedFrom: "/TestScope/test/page3",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
+									scopeNotSupported: false,
+								},
+								{
+									href: "/TestScope/test/notexist",
+									mappedFrom: "/TestScope/test/notexist",
+									label: "[Not found]",
+									active: false,
+								},
+							]}
+							moduleName="test"
+							moduleHref="/TestScope/test"
+						/>
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+		).then(() =>
+			expect(console.warn, "to have calls satisfying", [
+				{
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
+				},
+				{
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
+				},
+			]),
+		);
+	});
+
 	it("handles incomplete paths", () => {
 		state.setIn(
 			["navigation", "route", "match"],
@@ -543,7 +658,7 @@ describe("useNavigationState", () => {
 							outsideScope: false,
 							scopeNotSupported: false,
 							params: "__ignore",
-							close: () => {},
+							close: () => { },
 						},
 					]}
 					moduleName="test"

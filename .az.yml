@@ -82,12 +82,11 @@ steps:
       echo "##vso[task.setvariable variable=CanUploadNpmPackage]$?"
 
 - task: Bash@3
-  displayName: 'Configure .npmrc'
+  displayName: 'Configure .npmrc with NPM_TOKEN config'
   inputs:
     targetType: 'inline'
     script: |
-      # There probably a better way to handle this change...
-      sed -i 's/registry.npmjs.org\//registry.npmjs.org\/:_authToken=${NPM_TOKEN}/' .npmrc
+      echo -e "\r\n//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> .npmrc
 
 - task: Npm@1
   displayName: 'npm publish'

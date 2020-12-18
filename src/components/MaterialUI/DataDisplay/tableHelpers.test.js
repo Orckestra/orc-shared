@@ -522,7 +522,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 	});
 
 	it("build table rows as expected with select", () => {
-		const changeEvent = () => console.log("just an event handler");
+		const changeEvent = jest.fn();
 
 		const columnDef = [
 			{
@@ -561,7 +561,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 	});
 
 	it("build table rows as expected with switch", () => {
-		const changeEvent = () => console.log("just an event handler");
+		const changeEvent = jest.fn();
 
 		const columnDef = [
 			{
@@ -602,7 +602,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 	});
 
 	it("build table rows as expected with switch caption", () => {
-		const changeEvent = () => console.log("just an event handler");
+		const changeEvent = jest.fn();
 
 		const aSwitch = {
 			onCaption: messages.captionOn,
