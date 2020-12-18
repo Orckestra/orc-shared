@@ -5,13 +5,11 @@ import {
 	VIEW_SET_FIELD,
 	VIEW_INITIALIZE_EDIT_TREE,
 	VIEW_CREATE_EDIT_NODE,
-	VIEW_SET_EDIT_MODEL,
 	VIEW_REMOVE_EDIT_NODE,
 	VIEW_SET_EDIT_MODEL_FIELD,
 	initializeEditTree,
 	createEditNode,
 	removeEditNode,
-	setEditModel,
 	setEditModelField
 } from "./view";
 
@@ -53,15 +51,6 @@ describe("createEditNode", () => {
 		expect(createEditNode, "when called with", ["entityId", "moduleName", "modules"], "to equal", {
 			type: VIEW_CREATE_EDIT_NODE,
 			payload: { entityId: "entityId", moduleName: "moduleName", modulesData: "modules" },
-		});
-	});
-});
-
-describe("setEditModel", () => {
-	it("creates an action object", () => {
-		expect(setEditModel, "when called with", ["model", "entityId", "sectionName", "moduleName"], "to equal", {
-			type: VIEW_SET_EDIT_MODEL,
-			payload: { model: "model", entityId: "entityId", sectionName: "sectionName", moduleName: "moduleName" },
 		});
 	});
 });

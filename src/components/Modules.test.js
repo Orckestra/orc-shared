@@ -1,5 +1,4 @@
 import React from "react";
-import { mount as m1 } from "enzyme";
 import { IntlProvider } from "react-intl";
 import Immutable from "immutable";
 import { Provider } from "react-redux";

@@ -42,7 +42,12 @@ describe("SegmentPage", () => {
 					meep: {
 						entityIdValue: {
 							two: {
-								wasModified: true
+								model: {
+									field1: {
+										value: "smth",
+										wasModified: true
+									}
+								}
 							}
 						}
 					},

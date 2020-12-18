@@ -60,3 +60,19 @@ export function getPropertyOrDefault(
 
 	return defaultValue;
 }
+
+export const isObjectContainsPropertyWithValue = (obj, propertyName, value) => {
+	if (obj.hasOwnProperty(propertyName) && obj[propertyName] === value) {
+		return true;
+	}
+
+	let result = false;
+
+	for (let prop in obj) {
+		if (obj.hasOwnProperty(prop) && typeof obj[prop] === 'object') {
+			result = isObjectContainsPropertyWithValue(obj[prop], propertyName, value);
+		}
+	}
+
+	return result;
+};

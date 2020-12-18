@@ -3,8 +3,8 @@ import { modulesSelector } from "./../selectors/modules";
 import { selectCurrentModuleName, selectCurrentSectionName } from "./../selectors/navigation";
 
 // if n is number of parameters passed to action then
-// currentModule always will be passed as (n - 2) parameter
-// currentSection will be passed as (n - 1) parameter if includeCurrentSection is true
+// currentSection will be passed as (n - 2) parameter if includeCurrentSection is true
+// currentModule always will be passed as (n - 1) parameter
 // modules will be passed as (n)th parameter if includeModulesTree is true
 export const useDispatchWithModulesData = () => {
 	const baseDispatch = useDispatch();
