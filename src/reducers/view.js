@@ -5,9 +5,9 @@ import {
 	VIEW_INITIALIZE_EDIT_TREE,
 	VIEW_CREATE_EDIT_NODE,
 	VIEW_REMOVE_EDIT_NODE,
-	VIEW_SET_EDIT_MODEL,
 	VIEW_SET_EDIT_MODEL_FIELD,
 } from "../actions/view";
+import { isEqual } from "lodash";
 
 const initialState = Immutable.Map({});
 
@@ -42,11 +42,6 @@ const viewStateReducer = (state = initialState, action) => {
 			// it will be necessary to remake this part and to receive page key as a property
 			const sections = pages[pageKeys[0]];
 
-			const sectionsKeys = Object.keys(sections);
-
-			for (const sectionKey of sectionsKeys) {
-				sections[sectionKey].wasModified = false;
-			}
 			return state.setIn(["edit", moduleName, entityId], Immutable.fromJS(sections));
 		}
 		case VIEW_REMOVE_EDIT_NODE: {
@@ -54,19 +49,12 @@ const viewStateReducer = (state = initialState, action) => {
 
 			return state.removeIn(["edit", moduleName, entityId]);
 		}
-		case VIEW_SET_EDIT_MODEL: {
-			const { moduleName, entityId, sectionName, model } = action.payload;
-
-			return state.setIn(["edit", moduleName, entityId, sectionName, "model"], Immutable.fromJS(model))
-				.setIn(["edit", moduleName, entityId, sectionName, "wasModified"], true);
-		}
 		case VIEW_SET_EDIT_MODEL_FIELD: {
 			const { keys, value, storeValue, entityId, sectionName, moduleName } = action.payload;
 
 			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
 
-			return state.setIn(path, value)
-				.setIn(["edit", moduleName, entityId, sectionName, "wasModified"], value !== storeValue);
+			return state.setIn(path, Immutable.fromJS({ value, wasModified: !isEqual(value, storeValue) }));
 		}
 		default:
 			return state;

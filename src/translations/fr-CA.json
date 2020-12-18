@@ -5,7 +5,7 @@
   "node_modules.orc-shared.src.sharedMessages.ccName": "Orckestra Commerce Cloud",
   "node_modules.orc-shared.src.sharedMessages.ccVersion": "Commerce Cloud {version}",
   "node_modules.orc-shared.src.sharedMessages.confirmation": "Confirmation",
-  "node_modules.orc-shared.src.sharedMessages.copyright": "© 2020 Technologies Orckestra Inc.",
+  "node_modules.orc-shared.src.sharedMessages.copyright": "© 2021 Technologies Orckestra Inc.",
   "node_modules.orc-shared.src.sharedMessages.copyrightTermsNotice": "Avertissement: Ce programme est protégé par la loi relative au droit d'auteur et par les conventions internationales. Toute reproduction ou distribution partielle ou totale du logiciel, par quelque moyen que ce soit, est strictement interdite. Toute personne ne respectant pas ces dispositions se rendra coupable du délit de contrefaçon et sera passible des sanctions pénales prévues par la loi. Orckestra est une marque de commerce déposée et détenue par Technologies Orckestra Inc. Toutes les autres marques de commerce sont la propriété de leurs détenteurs respectifs.",
   "node_modules.orc-shared.src.sharedMessages.defaultApp": "Application par défaut",
   "node_modules.orc-shared.src.sharedMessages.displayLanguage": "Langue d'affichage",

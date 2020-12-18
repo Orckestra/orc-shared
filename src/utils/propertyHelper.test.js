@@ -130,3 +130,39 @@ describe("<propertyHelper.getPropertyOrDefault> for Map", () => {
 		);
 	});
 });
+
+describe("isObjectContainsPropertyWithValue", () => {
+	it("Returns true if object contains specified property with specified value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: "Hello"
+				}
+			},
+			prop2: {
+				m: "Hello Bob"
+			}
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithValue(obj, "m", "Hello Bob");
+
+		expect(result, "to be true");
+	});
+
+	it("Returns false if object does not contain specified property with specified value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: "Hello"
+				}
+			},
+			prop2: {
+				m: "Hello Bob"
+			}
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithValue(obj, "m", "Bye Bob");
+
+		expect(result, "to be false");
+	});
+});

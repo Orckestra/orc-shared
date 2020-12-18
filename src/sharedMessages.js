@@ -47,7 +47,7 @@ const sharedMessages = defineMessages({
   },
   copyright: {
     id: "node_modules.orc-shared.src.sharedMessages.copyright",
-    defaultMessage: "© 2020 Orckestra Technologies Inc."
+    defaultMessage: "© 2021 Orckestra Technologies Inc."
   },
   allRightsReserved: {
     id: "node_modules.orc-shared.src.sharedMessages.allRightsReserved",

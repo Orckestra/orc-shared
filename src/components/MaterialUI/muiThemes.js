@@ -122,7 +122,6 @@ const setThemeOverrides = theme => ({
 			borderWidth: 1,
 			boxSizing: "border-box",
 			padding: theme.spacing(1, 2),
-			height: theme.spacing(3),
 			borderRadius: theme.shape.borderRadius,
 			color: theme.palette.text.primary,
 			transition: theme.transitions.create(["background-color", "box-shadow", "border"], {
@@ -154,6 +153,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiButton,
 		root: {
 			padding: `${theme.spacing(0.8)} ${theme.spacing(1)}`,
+			height: theme.spacing(3),
 		},
 		/* Styles applied to the span element that wraps the children. */
 		label: {

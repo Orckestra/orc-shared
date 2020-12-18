@@ -5,9 +5,6 @@ import InputBaseMUI from "@material-ui/core/InputBase";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import InputBaseProps from "./InputBaseProps";
-import CollapsableListProps from "../DataDisplay/collapsableListProps";
-import CollapsableList from "../DataDisplay/CollapsableList";
-import Icon from "../DataDisplay/Icon";
 
 describe("InputBase Component", () => {
 	let update, container;
