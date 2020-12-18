@@ -70,7 +70,7 @@ describe("Information Item", () => {
 				<Grid item>
 					<Typography children={label} />
 					<MultipleLinesText>
-						{stringifyWithoutQuotes(messages["node_modules.orc-shared.src.sharedMessages.notAvailable"])}
+						{stringifyWithoutQuotes(messages["orc-shared.notAvailable"])}
 					</MultipleLinesText>
 				</Grid>
 			</IntlProvider>
