@@ -165,7 +165,12 @@ describe("TabBar", () => {
           module1: {
             page3: {
               section1: {
-                wasModified: true
+                model: {
+                  field1: {
+                    value: "smth",
+                    wasModified: true
+                  }
+                }
               }
             }
           }

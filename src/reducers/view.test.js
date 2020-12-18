@@ -5,7 +5,6 @@ import {
 	initializeEditTree,
 	createEditNode,
 	removeEditNode,
-	setEditModel,
 	setEditModelField
 } from "../actions/view";
 import viewReducer from "./view";
@@ -94,64 +93,15 @@ describe("View state reducer", () => {
 		const expected = {
 			[moduleName]: {
 				[entityId]: {
-					infoBar: {
-						wasModified: false
-					},
-					section11: {
-						wasModified: false
-					},
-					section12: {
-						wasModified: false
-					}
+					infoBar: {},
+					section11: {},
+					section12: {}
 				}
 			}
 		}
 
 		const action = createEditNode(entityId, moduleName, modulesData);
 		const newState = viewReducer(oldState, action);
-		return expect(newState, "not to be", oldState).and(
-			"to equal",
-			Immutable.fromJS({ edit: expected }),
-		);
-	});
-
-	it("Sets edit model correctly", () => {
-		const entityId = "entityId";
-		const moduleName = "module1";
-		const sectionName = "section11";
-
-		const modules = Immutable.fromJS(
-			{
-				[moduleName]: {
-					[entityId]: {
-						[sectionName]: {
-							wasModified: false,
-						},
-					}
-				}
-			}
-		);
-
-		const oldState = Immutable.Map({
-			edit: modules
-		});
-
-		const model = { test: "value" };
-
-		const expected = {
-			[moduleName]: {
-				[entityId]: {
-					[sectionName]: {
-						wasModified: true,
-						model
-					},
-				}
-			}
-		};
-
-		const action = setEditModel(model, entityId, sectionName, moduleName);
-		const newState = viewReducer(oldState, action);
-
 		return expect(newState, "not to be", oldState).and(
 			"to equal",
 			Immutable.fromJS({ edit: expected }),
@@ -170,10 +120,7 @@ describe("View state reducer", () => {
 			{
 				[moduleName]: {
 					[entityId]: {
-						[sectionName]: {
-							wasModified: false,
-
-						},
+						[sectionName]: {},
 					}
 				}
 			}
@@ -186,7 +133,10 @@ describe("View state reducer", () => {
 		const model = {
 			key1: {
 				key2: {
-					key3: newValue
+					key3: {
+						value: newValue,
+						wasModified: true
+					}
 				}
 			}
 		}
@@ -195,7 +145,6 @@ describe("View state reducer", () => {
 			[moduleName]: {
 				[entityId]: {
 					[sectionName]: {
-						wasModified: true,
 						model
 					},
 				}
