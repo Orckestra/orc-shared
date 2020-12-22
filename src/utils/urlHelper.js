@@ -1,5 +1,9 @@
-export const getEntityIdFromUrl = (url, prependPath) => {
-  return url.replace(prependPath, "")
-    .replace(new RegExp(`^([^/]*/){1}`), "")
-    .replace(new RegExp(`/.*$`), "");
+export const getValueFromUrlByKey = (url, path, key) => {
+  const valuesFromUrl = url.split('/');
+
+  const keysFromPath = path.split('/');
+
+  const keyIndex = keysFromPath.indexOf(key);
+
+  return valuesFromUrl[keyIndex];
 }
