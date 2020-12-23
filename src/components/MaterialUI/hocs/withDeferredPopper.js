@@ -78,6 +78,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
 			isDisplayed: isDisplayed,
 			anchorElement: anchorElement,
 		});
+		event.stopPropagation();
 	};
 
 	const clickAwayHandler = function () {
