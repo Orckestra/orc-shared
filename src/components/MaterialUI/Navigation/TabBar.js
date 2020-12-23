@@ -13,9 +13,8 @@ import { isScrollVisible } from "./../../../utils/domHelper";
 import { getModifiedTabs } from "./../../../selectors/view";
 import { useSelector } from "react-redux";
 import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
-import { selectPrependHrefConfig } from "./../../../selectors/navigation";
 import { removeEditNode } from "./../../../actions/view";
-import { getEntityIdFromUrl } from "./../../../utils/urlHelper";
+import { getValueFromUrlByKey } from "./../../../utils/urlHelper";
 import { useDispatchWithModulesData } from "./../../../hooks/useDispatchWithModulesData";
 import sharedMessages from "./../../../sharedMessages";
 import { FormattedMessage } from "react-intl";
@@ -89,7 +88,6 @@ const MuiBar = ({ module, pages }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatchWithModulesData();
-  const prependHref = useSelector(selectPrependHrefConfig)();
   const activePage = pages.findIndex(p => p.active === true);
   const activeTabIndex = activePage === -1 ? false : activePage;
   const [showSelect, setShowSelect] = React.useState(false);
@@ -124,11 +122,11 @@ const MuiBar = ({ module, pages }) => {
 
   const select = <div className={classes.select}><Select options={tabLabels} selectProps={selectProps} /></div>;
 
-  const tabCloseHandler = (event, closeCallback, isModified, href) => {
+  const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey) => {
     event.stopPropagation();
     event.preventDefault();
     if (isModified) {
-      setCurrentCloseData({ closeCallback: closeCallback, href: href });
+      setCurrentCloseData({ closeCallback: closeCallback, href: href, path: path, entityIdKey: entityIdKey });
       setShowConfirmationModal(true);
     }
     else {
@@ -139,7 +137,7 @@ const MuiBar = ({ module, pages }) => {
   const closeTab = () => {
     setShowConfirmationModal(false);
     currentCloseData.closeCallback();
-    const entityId = getEntityIdFromUrl(currentCloseData.href, prependHref);
+    const entityId = getValueFromUrlByKey(currentCloseData.href, currentCloseData.path, `:${currentCloseData.entityIdKey}`);
     dispatch(removeEditNode, [entityId]);
   }
 
@@ -179,7 +177,8 @@ const MuiBar = ({ module, pages }) => {
       >
         {
           pages.map(
-            ({ href, label, outsideScope, close }, index) => {
+            ({ href, label, outsideScope, close, path, params }, index) => {
+              const entityIdKey = Object.keys(params).find(p => p !== 'scope');
               const isModified = modifiedTabs.includes(href);
               const tabLabel = <TabLabel label={label} />;
               const wrappedTabLabel = (
@@ -195,7 +194,7 @@ const MuiBar = ({ module, pages }) => {
                 <Icon
                   id="close"
                   className={classes.closeIcon}
-                  onClick={(event) => tabCloseHandler(event, close, isModified, href)}
+                  onClick={(event) => tabCloseHandler(event, close, isModified, href, path, entityIdKey)}
                 />
               );
               tabLabels.push({

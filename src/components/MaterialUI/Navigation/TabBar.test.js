@@ -45,21 +45,24 @@ describe("TabBar", () => {
       href: '/Scope1/module1/page1',
       params: { scope: "Scope1", entityId: "page1" },
       active: false,
-      close: sinon.spy()
+      close: sinon.spy(),
+      path: '/:scope/module1/:entityId'
     },
     {
       label: messages.page2,
       href: '/Scope1/module1/page2',
       params: { scope: "Scope1", entityId: "page2" },
       active: false,
-      close: sinon.spy()
+      close: sinon.spy(),
+      path: '/:scope/module1/:entityId'
     },
     {
       label: messages.page3,
       href: '/Scope1/module1/page3',
       params: { scope: "Scope1", entityId: "page3" },
       active: false,
-      close: sinon.spy()
+      close: sinon.spy(),
+      path: '/:scope/module1/:entityId'
     },
   ];
 
