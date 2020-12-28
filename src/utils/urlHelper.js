@@ -13,16 +13,15 @@ export const NEW_ENTITY_URL_KEY = "new";
 	/new => new
 	/new/section => new
 	/new{number} => new{number}
-	/new{number}/section => new{number}	
+	/new{number}/section => new{number}
 */
 export const tryGetNewEntityIdKey = url => {
-	if (url.endsWith(`/${NEW_ENTITY_URL_KEY}`) || url.indexOf(`/${NEW_ENTITY_URL_KEY}/`) >= 0) return NEW_ENTITY_URL_KEY;
+	const valuesFromUrl = url.split("/");
+	if (valuesFromUrl.length < 2) return;
 
-	let match = url.match(`/(${NEW_ENTITY_URL_KEY}[0-9]+$)`);
-	if (match) return match[1];
-
-	match = url.match(`/(${NEW_ENTITY_URL_KEY}[0-9]+)(/+)`);
-	if (match) return match[1];
-
-	return undefined;
+	for (const section of valuesFromUrl) {
+		if (section === NEW_ENTITY_URL_KEY) return section;
+		let match = section.match(`(${NEW_ENTITY_URL_KEY}[0-9]+$)`);
+		if (match) return match[1];
+	}
 };
