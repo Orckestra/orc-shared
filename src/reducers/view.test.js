@@ -2,7 +2,6 @@ import Immutable from "immutable";
 import {
 	setValue,
 	setStateField,
-	initializeEditTree,
 	createEditNode,
 	removeEditNode,
 	setEditModelField
@@ -53,23 +52,6 @@ describe("View state reducer", () => {
 			"to have value at",
 			"test",
 			Immutable.fromJS({ stuff: "new value" }),
-		);
-	});
-
-	it("Initializes edit tree correctly", () => {
-		const oldState = Immutable.Map({});
-		const modulesData = {
-			module1: {
-			},
-			module2: {
-			}
-		};
-
-		const action = initializeEditTree(modulesData);
-		const newState = viewReducer(oldState, action);
-		return expect(newState, "not to be", oldState).and(
-			"to equal",
-			Immutable.fromJS({ edit: modulesData }),
 		);
 	});
 

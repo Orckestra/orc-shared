@@ -2,7 +2,6 @@ import Immutable from "immutable";
 import {
 	VIEW_SET,
 	VIEW_SET_FIELD,
-	VIEW_INITIALIZE_EDIT_TREE,
 	VIEW_CREATE_EDIT_NODE,
 	VIEW_REMOVE_EDIT_NODE,
 	VIEW_SET_EDIT_MODEL_FIELD,
@@ -21,16 +20,6 @@ const viewStateReducer = (state = initialState, action) => {
 				[action.payload.name, action.payload.field],
 				Immutable.fromJS(action.payload.value),
 			);
-		}
-		case VIEW_INITIALIZE_EDIT_TREE: {
-			const modules = action.payload;
-			const moduleNames = Object.keys(modules);
-			const editTree = {};
-			for (const moduleName of moduleNames) {
-				editTree[moduleName] = {};
-			}
-
-			return state.set("edit", Immutable.fromJS(editTree));
 		}
 		case VIEW_CREATE_EDIT_NODE: {
 			const { moduleName, entityId, modulesData } = action.payload;

@@ -3,11 +3,9 @@ import {
 	setStateField,
 	VIEW_SET,
 	VIEW_SET_FIELD,
-	VIEW_INITIALIZE_EDIT_TREE,
 	VIEW_CREATE_EDIT_NODE,
 	VIEW_REMOVE_EDIT_NODE,
 	VIEW_SET_EDIT_MODEL_FIELD,
-	initializeEditTree,
 	createEditNode,
 	removeEditNode,
 	setEditModelField
@@ -35,15 +33,6 @@ describe("setStateField", () => {
 			type: VIEW_SET_FIELD,
 			payload: { name: "testfield", field: "thing", value: false },
 		}));
-});
-
-describe("setStateField", () => {
-	it("creates an action object", () => {
-		expect(initializeEditTree, "when called with", ["modules"], "to equal", {
-			type: VIEW_INITIALIZE_EDIT_TREE,
-			payload: "modules",
-		});
-	});
 });
 
 describe("createEditNode", () => {
