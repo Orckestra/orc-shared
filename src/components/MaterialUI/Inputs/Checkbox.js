@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import CheckboxMUI from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CheckboxProps, { isCheckboxProps } from "./CheckboxProps";
