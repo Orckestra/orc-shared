@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
 	popper: {
-		zIndex: 1,
+		zIndex: 9999,
 		'&[x-placement*="bottom"] $arrow': {
 			top: 0,
 			left: "50%",
