@@ -3,7 +3,6 @@ import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "../../../utils/propertyValidator";
 import { makeStyles } from "@material-ui/core/styles";
-import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	popper: {
