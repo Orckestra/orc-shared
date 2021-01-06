@@ -20,11 +20,6 @@ export const useStyles = makeStyles(theme => ({
 	tableContainer: {
 		overflowY: "auto",
 		position: "relative",
-		display: "flex",
-		flexGrow: 1,
-		flexShrink: 1,
-		flexBasis: "auto",
-		flexDirection: "column",
 	},
 	table: {
 		tableLayout: "fixed",
