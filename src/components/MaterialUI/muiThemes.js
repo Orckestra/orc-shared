@@ -701,6 +701,13 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiAccordion: {
+		...theme.MuiAccordion,
+		root: {
+			...theme.root,
+			boxShadow: "none"
+		}
+	},
 	MuiAccordionSummary: {
 		...theme.MuiAccordionSummary,
 		expandIcon: {

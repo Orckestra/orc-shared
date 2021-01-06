@@ -3,6 +3,7 @@ import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "../../../utils/propertyValidator";
 import { makeStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	popper: {
@@ -49,6 +50,9 @@ const useStyles = makeStyles(theme => ({
 		border: "1px solid",
 		backgroundColor: theme.palette.background.paper,
 	},
+	popperContainer: {
+		cursor: "pointer"
+	}
 }));
 
 export const Arrow = ({ arrowClass }) => {
@@ -69,7 +73,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
 
 	if (isObject(popperValue) && isReactComponent(popperValue) === false) return <Comp {...props} />;
 
-	const defaultComponent = <Comp onClick={event => togglePopper(event)} {...props} />;
+	const defaultComponent = <Comp onClick={event => togglePopper(event)}	{...props} />;
 
 	const togglePopper = function (event) {
 		const isDisplayed = !popperState.isDisplayed;
@@ -90,7 +94,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
 
 	return (
 		<ClickAwayListener onClickAway={() => clickAwayHandler()}>
-			<div>
+			<div className={classes.popperContainer}>
 				{defaultComponent}
 				<Popper
 					className={classes.popper}
