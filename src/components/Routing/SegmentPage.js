@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	label: {
 		color: theme.palette.text.primary,
-		fontWeight: theme.typography.fontWeightBold,
+		fontWeight: theme.typography.fontWeightSemiBold,
 		fontSize: theme.typography.fontSize,
 		maxWidth: theme.spacing(15),
 	},
