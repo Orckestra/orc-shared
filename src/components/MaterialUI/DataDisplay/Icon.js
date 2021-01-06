@@ -20,7 +20,6 @@ const useStyles = makeStyles(theme => ({
 
 const Icon = ({ id, ...props }) => {
 	const classes = useStyles();
-	console.log(props);
 
 	return (
 		<SvgIcon
