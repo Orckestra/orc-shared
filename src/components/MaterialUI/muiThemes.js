@@ -484,6 +484,10 @@ const setThemeOverrides = theme => ({
 			position: "relative",
 			minHeight: "auto",
 		},
+		indicator: {
+			...theme.indicator,
+			backgroundColor: 'transparent'
+		}
 	},
 	MuiTab: {
 		...theme.MuiTab,
@@ -499,6 +503,7 @@ const setThemeOverrides = theme => ({
 			padding: `${theme.spacing(1.4)} ${theme.spacing(2)}`,
 			textTransform: "uppercase",
 			flexGrow: 0,
+			borderBottom: `1px solid ${theme.palette.primary.main}`,
 			[theme.breakpoints.up("sm")]: {
 				minWidth: 0,
 			},
@@ -538,7 +543,7 @@ const setThemeOverrides = theme => ({
 			"& .MuiTab-wrapper > *:first-child": {
 				marginBottom: theme.spacing(0),
 			}
-		},
+		}
 	},
 	MuiTable: {
 		...theme.MuiTable,

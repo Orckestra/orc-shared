@@ -92,6 +92,7 @@ const AppFrame = ({
 			/>
 			<Sidebar {...{ open, toggle, modules, activeModules }} />
 			<ViewPort open={open} onClick={reset}>
+
 				{noScope && !forceShowScope.includes(moduleName) ? (
 					<React.Fragment>
 						<ScopeBar />

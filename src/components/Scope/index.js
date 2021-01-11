@@ -1,8 +1,6 @@
 import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { getThemeProp } from "../../utils";
 import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
 import Selector from "./Selector";
@@ -27,19 +25,21 @@ const useStyles = makeStyles(theme => ({
 		transform: "translateY(-50%)",
 		right: theme.spacing(2),
 	},
-	test: {
-		width: theme.spacing(20),
-	},
+	scopeBar: {
+		position: "relative",
+		borderBottom: `1px solid ${theme.palette.primary.main}`,
+		backgroundColor: theme.palette.grey.light,
+		width: "100%",
+		minHeight: theme.spacing(4.9),
+		userSelect: "none"
+	}
 }));
 
-export const Bar = styled.div`
-	position: relative;
-	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
-	width: 100%;
-	min-height: 49px;
-	user-select: none;
-`;
+export const Bar = (props) => {
+	const classes = useStyles();
+
+	return <div className={classes.scopeBar}>{props.children}</div>
+};
 
 export const ScopeBar = ({ show, name, updateViewState, disabled }) => {
 	const classes = useStyles();
@@ -69,7 +69,7 @@ ScopeBar.displayName = "ScopeBar";
 
 export const SCOPE_SELECTOR_NAME = "scopeSelector";
 
-export const Scope = ({ children, filterPlaceholder }) => {
+export const Scope = ({ children }) => {
 
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, disabled, nodeState, filter }, updateViewState] = useViewState(SCOPE_SELECTOR_NAME);
