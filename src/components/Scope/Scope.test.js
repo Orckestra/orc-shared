@@ -10,7 +10,7 @@ import { simulate } from "unexpected-reaction";
 import { PropStruct } from "../../utils/testUtils";
 import { VIEW_SET_FIELD } from "../../actions/view";
 import I18n from "../I18n";
-import RoutedScope, { Scope, ScopeBar, Bar } from "./index";
+import RoutedScope, { Scope, ScopeBar } from "./index";
 import { Wrapper as SelectorWrapper, InputBox, SearchInput } from "./Selector";
 import { Wrapper as BranchWrapper } from "../Treeview/Branch";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
@@ -88,7 +88,7 @@ beforeEach(() => {
 		},
 		subscribe: sub => {
 			subs.push(sub);
-			return () => {};
+			return () => { };
 		},
 		getState: () => state,
 		dispatch: sinon.spy().named("dispatch"),
@@ -103,7 +103,7 @@ beforeEach(() => {
 afterEach(() => {
 	try {
 		ReactDOM.unmountComponentAtNode(appRoot);
-	} catch (_) {}
+	} catch (_) { }
 	document.body.removeChild(appRoot);
 	document.body.removeChild(modalRoot);
 });
@@ -118,13 +118,13 @@ describe("ScopeBar", () => {
 		const component = <ScopeBar show={false} name="Scope name" updateViewState={updateViewState} />;
 
 		const expected = (
-			<Bar>
+			<div>
 				<div>
 					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
 						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
-			</Bar>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -134,13 +134,13 @@ describe("ScopeBar", () => {
 		const component = <ScopeBar disabled={true} show={false} name="Scope name" updateViewState={updateViewState} />;
 
 		const expected = (
-			<Bar>
+			<div>
 				<div>
 					<Button disabled variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
 						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
-			</Bar>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -150,13 +150,13 @@ describe("ScopeBar", () => {
 		const component = <ScopeBar show={true} name="Scope name" updateViewState={updateViewState} />;
 
 		const expected = (
-			<Bar>
+			<div>
 				<div>
 					<Button variant="contained" color="primary" onClick={() => updateViewState("show", true)}>
 						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
-			</Bar>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
