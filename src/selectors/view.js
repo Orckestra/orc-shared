@@ -11,7 +11,7 @@ export const isEntityUnderEditing = entityId =>
 	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
 		if (data != null) {
 			const dataJS = data.toJS();
-			const sections = dataJS[moduleName]?.[entityId] ?? null;
+			const sections = dataJS[moduleName]?.[entityId];
 			if (sections != null) {
 				return true;
 			}
@@ -28,7 +28,7 @@ const getModifiedSectionsFromModule = (editData, moduleName, entityId) => {
 	const modifiedSections = [];
 	if (editData != null) {
 		const dataJS = editData.toJS();
-		const sections = dataJS[moduleName]?.[entityId] ?? null;
+		const sections = dataJS[moduleName]?.[entityId];
 		if (sections != null) {
 			const sectionsKeys = Object.keys(sections);
 			for (const sectionKey of sectionsKeys) {
@@ -71,7 +71,7 @@ export const getModifiedModels = entityId =>
 		const models = {};
 		if (data != null) {
 			const dataJS = data.toJS();
-			const sections = dataJS[moduleName]?.[entityId] ?? null;
+			const sections = dataJS[moduleName]?.[entityId];
 			if (sections != null) {
 				const sectionsKeys = Object.keys(sections);
 
