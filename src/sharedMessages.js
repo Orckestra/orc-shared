@@ -83,7 +83,7 @@ const sharedMessages = defineMessages({
   },
   unsavedChanges: {
     id: "orc-shared.unsavedChanges",
-    defaultMessage: "This entity has unsaved changes. All changes will be lost.\r\n\r\nAre you sure you want to close it?"
+    defaultMessage: "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?"
   }
 });
 
