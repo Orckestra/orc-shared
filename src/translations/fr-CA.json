@@ -19,5 +19,5 @@
 	"orc-shared.save": "Sauvegarder",
 	"orc-shared.scopeFilterPlaceholder": "Entrez un nom de Scope",
 	"orc-shared.signOut": "Se déconnecter",
-	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.<br/><br/>Voulez vous vraiment quitter?"
+	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\r\n\r\nVoulez vous vraiment quitter?"
 }
