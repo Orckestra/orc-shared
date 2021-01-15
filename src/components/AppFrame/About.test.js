@@ -5,6 +5,7 @@ import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
+import close from "../../content/close.png";
 import {
 	ABOUT_NAME,
 	AboutBox,
@@ -12,102 +13,198 @@ import {
 	AboutLink,
 	About,
 	getClickOutsideHandler,
+	CloseButton,
 } from "./About";
+import { setStateField } from "../../actions/view";
+import { extractMessages } from "./../../utils/testUtils";
+import sharedMessages from "./../../sharedMessages";
+import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
 
+const messages = extractMessages(sharedMessages);
 describe("About", () => {
-	let messages, state, store;
+	let state, store;
+	const ccVersion = "5.1.9.5";
+
 	beforeEach(() => {
-		messages = {
-			ccName: "Test App",
-			ccVersion: { id: "foo", defaultMessage: "Version {version}" },
-			sharedVersion: { id: "foo1", defaultMessage: "Orc-Shared Framework {version}" },
-			scriptsVersion: { id: "foo2", defaultMessage: "Orc-Scripts Framework {version}" },
-			secretVersion: { id: "foo3", defaultMessage: "Orc-Secret Framework {version}" },
-			copyrightTermsNotice: "Copyright all rights reserved",
-			copyright: "Copyright",
-			allRightsReserved: "All rights reserved",
-		};
 		state = Immutable.fromJS({
 			view: { [ABOUT_NAME]: { show: true } },
-			versionInfo: { version: "5.1.9.5" },
+			versionInfo: { version: ccVersion },
+			locale: {
+				locale: "en-US",
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
 		});
 		store = {
-			subscribe: () => {},
+			subscribe: () => { },
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
 	});
 
 	it("renders an about box with messages and background images", () => {
+		const orcSharedVersion = "2.9.0";
+		const orcScriptsVersion = "1.2.3";
+		const orcSecretVersion = "5.1.7";
+
 		global.DEPENDENCIES = {
-			"orc-scripts": "1.2.3",
-			"orc-secret": "5.1.7",
-			"orc-shared": "2.9.0",
+			"orc-scripts": orcScriptsVersion,
+			"orc-secret": orcSecretVersion,
+			"orc-shared": orcSharedVersion,
 		};
 		global.BUILD_NUMBER = "2.3.2";
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
+				<IntlProvider locale="en-US" messages={messages}>
 					<About
 						viewState={{ show: true }}
-						messages={messages}
 						currentApplication={{ displayName: "An application" }}
 					/>
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
+			<IntlProvider locale="en-US" messages={messages}>
 				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
-						Version 5.1.9.5
+						{
+							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
+								.replace('{version}', ccVersion)
+						}
 						<br />
 						An application 2.3.2
 						<br />
-						Orc-Shared Framework 2.9.0
+						{
+							stringifyWithoutQuotes(messages['orc-shared.orcSharedVersion'])
+								.replace('{version}', orcSharedVersion)
+						}
 						<br />
-						Orc-Scripts Framework 1.2.3
+						{
+							stringifyWithoutQuotes(messages['orc-shared.orcScriptsVersion'])
+								.replace('{version}', orcScriptsVersion)
+						}
 						<br />
-						Orc-Secret Framework 5.1.7
+						{
+							stringifyWithoutQuotes(messages['orc-shared.orcSecretVersion'])
+								.replace('{version}', orcSecretVersion)
+						}
 					</AboutParagraph>
-					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
-					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
+					<AboutParagraph long>
+						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
 					</AboutParagraph>
 					<AboutParagraph>
-						Copyright
+						<AboutLink href="https://www.orckestra.com">
+							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
+						</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
 						<br />
-						All rights reserved
+						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,
 		);
 	});
 
+	it("view state handler update show value when clicking on close button", () =>
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en-US" messages={messages}>
+					<About viewState={{ show: true }} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: '[alt="X"]' },
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [
+				{ args: [setStateField(ABOUT_NAME, "show", false)] },
+			]),
+		));
+
 	it("renders an about box with messages and background images but without versions", () => {
 		global.DEPENDENCIES = {};
 		global.BUILD_NUMBER = null;
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<About viewState={{ show: true }} messages={messages} />
+				<IntlProvider locale="en-US" messages={messages}>
+					<About viewState={{ show: true }} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
+
+			<IntlProvider locale="en-US" messages={messages}>
 				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
-					<AboutParagraph>Version 5.1.9.5</AboutParagraph>
-					<AboutParagraph long>Copyright all rights reserved</AboutParagraph>
 					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/">Test App</AboutLink>
+						{
+							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
+								.replace('{version}', ccVersion)
+						}
+					</AboutParagraph>
+					<AboutParagraph long>
+						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
 					</AboutParagraph>
 					<AboutParagraph>
-						Copyright
+						<AboutLink href="https://www.orckestra.com">
+							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
+						</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
 						<br />
-						All rights reserved
+						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
+					</AboutParagraph>
+				</AboutBox>
+			</IntlProvider>,
+		);
+	});
+
+	it("renders an about box with about ling to the french version of the web site.", () => {
+		state = state.setIn(["locale", "locale"], "FR-FR");
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en-US" messages={messages}>
+					<About viewState={{ show: true }} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en-US" messages={messages}>
+				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
+					<img src={logoImage} alt="Orckestra" />
+					<AboutParagraph>
+						{
+							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
+								.replace('{version}', ccVersion)
+						}
+					</AboutParagraph>
+					<AboutParagraph long>
+						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
+					</AboutParagraph>
+					<AboutParagraph>
+						<AboutLink href="https://www.orckestra.com/fr">
+							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
+						</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
+						<br />
+						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,

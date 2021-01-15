@@ -1,17 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { mount } from "enzyme";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import { simulate } from "unexpected-reaction";
-import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
+import { PropStruct } from "../../utils/testUtils";
 import { VIEW_SET_FIELD } from "../../actions/view";
 import I18n from "../I18n";
-import RoutedScope, { Scope, ScopeBar, Bar, AlignedButton } from "./index";
+import RoutedScope, { Scope, ScopeBar } from "./index";
 import { Wrapper as SelectorWrapper, InputBox, SearchInput } from "./Selector";
 import { Wrapper as BranchWrapper } from "../Treeview/Branch";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import Button from "@material-ui/core/Button";
+import { extractMessages } from "./../../utils/testUtils";
+import sharedMessages from "./../../sharedMessages";
+
+const messages = extractMessages(sharedMessages);
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -25,8 +32,8 @@ let appRoot, modalRoot;
 beforeEach(() => {
 	state = Immutable.fromJS({
 		locale: {
-			locale: "en",
-			suportedLocales: ["en"],
+			locale: "en-US",
+			suportedLocales: ["en-US"],
 		},
 		navigation: {
 			route: { location: {}, match: { params: { scope: "test1" } } },
@@ -81,7 +88,7 @@ beforeEach(() => {
 		},
 		subscribe: sub => {
 			subs.push(sub);
-			return () => {};
+			return () => { };
 		},
 		getState: () => state,
 		dispatch: sinon.spy().named("dispatch"),
@@ -96,33 +103,92 @@ beforeEach(() => {
 afterEach(() => {
 	try {
 		ReactDOM.unmountComponentAtNode(appRoot);
-	} catch (_) {}
+	} catch (_) { }
 	document.body.removeChild(appRoot);
 	document.body.removeChild(modalRoot);
+});
+
+describe("ScopeBar", () => {
+	let updateViewState;
+	beforeEach(() => {
+		updateViewState = sinon.spy().named("updateViewState");
+	});
+
+	it("renders the button to show the scope dialog when scope selector is closed", () => {
+		const component = <ScopeBar show={false} name="Scope name" updateViewState={updateViewState} />;
+
+		const expected = (
+			<div>
+				<div>
+					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
+						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
+					</Button>
+				</div>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("renders the disabled scope button ", () => {
+		const component = <ScopeBar disabled={true} show={false} name="Scope name" updateViewState={updateViewState} />;
+
+		const expected = (
+			<div>
+				<div>
+					<Button disabled variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
+						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
+					</Button>
+				</div>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("renders the button to show the scope dialog when scope selector is opened", () => {
+		const component = <ScopeBar show={true} name="Scope name" updateViewState={updateViewState} />;
+
+		const expected = (
+			<div>
+				<div>
+					<Button variant="contained" color="primary" onClick={() => updateViewState("show", true)}>
+						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
+					</Button>
+				</div>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Calles passed updateViewState even on click", () => {
+		const component = <ScopeBar show={false} name="Scope name" updateViewState={updateViewState} />;
+
+		const mountedComponent = mount(component);
+
+		const button = mountedComponent.find(Button);
+
+		button.invoke("onClick")();
+
+		expect(updateViewState, "to have a call satisfying", { args: ["show", true] });
+	});
 });
 
 describe("Scope", () => {
 	let nodeState;
 	beforeEach(() => {
 		nodeState = { foo: true, bar: false };
-		state = state.setIn(
-			["view", "scopeSelector", "nodeState"],
-			Immutable.fromJS(nodeState),
-		);
+		state = state.setIn(["view", "scopeSelector", "nodeState"], Immutable.fromJS(nodeState));
 	});
 
 	it("renders a scope bar, selector panel with handlers, and viewport", () => {
 		ReactDOM.render(
 			<div>
 				<Provider store={store}>
-					<IntlProvider locale="en">
+					<IntlProvider locale="en-US" messages={messages}>
 						<MemoryRouter>
-							<Scope
-								filterPlaceholder={{
-									defaultMessage: "Type a scope name",
-									id: "test.placeholder",
-								}}
-							>
+							<Scope>
 								<div id="child" />
 							</Scope>
 						</MemoryRouter>
@@ -136,9 +202,7 @@ describe("Scope", () => {
 			"to satisfy",
 			<div>
 				<div>
-					<Bar>
-						<AlignedButton active>Test 1</AlignedButton>
-					</Bar>
+					<ScopeBar show={true} name="Test 1" />
 					<div id="child" />
 				</div>
 			</div>,
@@ -150,7 +214,7 @@ describe("Scope", () => {
 				<div>
 					<SelectorWrapper>
 						<InputBox>
-							<IntlProvider locale="en">
+							<IntlProvider locale="en-US" messages={messages}>
 								<SearchInput />
 							</IntlProvider>
 						</InputBox>
@@ -184,22 +248,14 @@ describe("Scope", () => {
 	it("resets the scope tree state when closing, to ensure current scope is visible", () => {
 		state = state.withMutations(s => {
 			s.setIn(["navigation", "route", "match", "params", "scope"], "test3");
-			s.setIn(
-				["view", "scopeSelector"],
-				Immutable.fromJS({ show: false, nodeState: { test1: false, test4: true } }),
-			);
+			s.setIn(["view", "scopeSelector"], Immutable.fromJS({ show: false, nodeState: { test1: false, test4: true } }));
 		});
 		ReactDOM.render(
 			<div>
 				<Provider store={store}>
-					<IntlProvider locale="en">
+					<IntlProvider locale="en-US" messages={messages}>
 						<MemoryRouter initialEntries={["/test3/stuff"]}>
-							<Scope
-								filterPlaceholder={{
-									defaultMessage: "Type a scope name",
-									id: "test.placeholder",
-								}}
-							>
+							<Scope>
 								<div id="child" />
 							</Scope>
 						</MemoryRouter>
@@ -253,7 +309,7 @@ describe("Scope", () => {
 		return expect(
 			<div>
 				<Provider store={store}>
-					<IntlProvider locale="en">
+					<IntlProvider locale="en-US" messages={messages}>
 						<MemoryRouter>
 							<Scope>
 								<div id="child" />
@@ -265,36 +321,11 @@ describe("Scope", () => {
 			"when mounted",
 			"to satisfy",
 			<div>
-				<Bar>
-					<AlignedButton>Test 1</AlignedButton>
-				</Bar>
+				<ScopeBar show={false} name="Test 1" />
 				<div id="child" />
 			</div>,
 		).then(() => expect(modalRoot, "to satisfy", <div></div>));
 	});
-});
-
-describe("ScopeBar", () => {
-	let updateViewState;
-	beforeEach(() => {
-		updateViewState = sinon.spy().named("updateViewState");
-	});
-
-	it("renders the button to show the scope dialog", () =>
-		expect(
-			<ScopeBar name="Scope name" updateViewState={updateViewState} />,
-			"when mounted",
-			"with event",
-			{ type: "click", target: getStyledClassSelector(AlignedButton) },
-			"to satisfy",
-			<Bar>
-				<AlignedButton id="showScopeSelector">Scope name</AlignedButton>
-			</Bar>,
-		).then(() =>
-			Promise.all([
-				expect(updateViewState, "to have calls satisfying", [{ args: ["show", true] }]),
-			]),
-		));
 });
 
 describe("RoutedScope", () => {
@@ -349,10 +380,6 @@ describe("RoutedScope", () => {
 			</Provider>,
 			appRoot,
 		);
-		return expect(
-			appRoot,
-			"to contain",
-			<PropStruct pathname="/aDefaultScope" itIs="me" />,
-		);
+		return expect(appRoot, "to contain", <PropStruct pathname="/aDefaultScope" itIs="me" />);
 	});
 });

@@ -1,6 +1,6 @@
 import Immutable from "immutable";
 import reducer from "./versionInfo";
-import { GET_VERSION_INFO_SUCCESS } from "../actions/versionInfo";
+import { GET_VERSION_INFO_SUCCESS, RESET_VERSION_INFO } from "../actions/versionInfo";
 
 describe("versionInfo", () => {
 	it("behaves as a reducer should", () =>
@@ -37,6 +37,29 @@ describe("versionInfo", () => {
 					{ moduleName: "app1", helpUrl: "app1.com" },
 					{ moduleName: "app2", helpUrl: "app2.com" },
 				],
+			}),
+		);
+	});
+
+	it("resets version information", () => {
+		const oldState = Immutable.fromJS({
+			version: "5.1.2.3",
+			defaultHelpUrl: "help_url_default",
+			moduleHelpUrls: [
+				{ moduleName: "app1", helpUrl: "app1.com" },
+				{ moduleName: "app2", helpUrl: "app2.com" },
+			],
+		});
+		const action = {
+			type: RESET_VERSION_INFO,
+		};
+		const newState = reducer(oldState, action);
+		return expect(newState, "not to be", oldState).and(
+			"to satisfy",
+			Immutable.fromJS({
+				version: null,
+				defaultHelpUrl: null,
+				moduleHelpUrls: [],
 			}),
 		);
 	});

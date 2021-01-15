@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import Text, { messageContainsValues, Placeholder } from "./Text";
+import Text, { Placeholder } from "./Text";
 
 describe("Text", () => {
 	let state, store;
@@ -17,7 +17,9 @@ describe("Text", () => {
 	it("renders a simple message", () =>
 		expect(
 			<Provider store={store}>
-				<Text message="Test message" />
+				<IntlProvider locale="en">
+					<Text message="Test message" />
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -27,7 +29,9 @@ describe("Text", () => {
 	it("renders an empty string", () =>
 		expect(
 			<Provider store={store}>
-				<Text message="" />
+				<IntlProvider locale="en">
+					<Text message="" />
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -85,12 +89,14 @@ describe("Text", () => {
 	it("renders a translated message missing its values as a placeholder", () =>
 		expect(
 			<Provider store={store}>
-				<Text
-					message={{
-						id: "test.msg",
-						defaultMessage: "Test message {foo}",
-					}}
-				/>
+				<IntlProvider locale="en">
+					<Text
+						message={{
+							id: "test.msg",
+							defaultMessage: "Test message {foo}",
+						}}
+					/>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -100,7 +106,9 @@ describe("Text", () => {
 	it("renders an error", () =>
 		expect(
 			<Provider store={store}>
-				<Text message="Test message" error={{ message: "This failed" }} />
+				<IntlProvider locale="en">
+					<Text message="Test message" error={{ message: "This failed" }} />
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -119,7 +127,9 @@ describe("Text", () => {
 	it("renders an error if no message given", () =>
 		expect(
 			<Provider store={store}>
-				<Text />
+				<IntlProvider locale="en">
+					<Text />
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -133,47 +143,5 @@ describe("Text", () => {
 				{"Errored: "}
 				{"No message provided"}
 			</span>,
-		));
-});
-
-describe("messageContainsValues", () => {
-	it("validates messages without needed values", () =>
-		expect(
-			messageContainsValues,
-			"called with",
-			[{ defaultMessage: "Test" }],
-			"to be true",
-		));
-
-	it("invalidates messages missing values", () =>
-		expect(
-			messageContainsValues,
-			"called with",
-			[{ defaultMessage: "Test {foo}" }],
-			"to be false",
-		));
-
-	it("invalidates messages missing some needed values", () =>
-		expect(
-			messageContainsValues,
-			"called with",
-			[{ defaultMessage: "Test {foo} {bar}", values: { foo: 1 } }],
-			"to be false",
-		));
-
-	it("invalidates messages with needed values set to null", () =>
-		expect(
-			messageContainsValues,
-			"called with",
-			[{ defaultMessage: "Test {foo} {bar}", values: { foo: 1, bar: null } }],
-			"to be false",
-		));
-
-	it("validates messages containing all needed values", () =>
-		expect(
-			messageContainsValues,
-			"called with",
-			[{ defaultMessage: "Test {foo} {bar}", values: { foo: 1, bar: "aaa" } }],
-			"to be true",
 		));
 });

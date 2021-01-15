@@ -8,6 +8,26 @@ import { TabBar } from "../Navigation/Bar";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
+import { getModifiedSections } from "./../../selectors/view";
+import { useSelector } from "react-redux";
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from "@material-ui/core/Grid";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+
+const useStyles = makeStyles((theme) => ({
+	asterix: {
+		marginLeft: theme.spacing(0.5)
+	},
+	label: {
+		color: theme.palette.text.primary,
+		fontWeight: theme.typography.fontWeightSemiBold,
+		fontSize: theme.typography.fontSize,
+		maxWidth: theme.spacing(15),
+	},
+	labelComponent: {
+		margin: `0 ${theme.spacing(1)}`,
+	}
+}));
 
 export const Wrapper = styled.div`
 	box-sizing: border-box;
@@ -15,6 +35,7 @@ export const Wrapper = styled.div`
 	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	flex: 0 1 100%;
 	height: calc(100% - 90px);
+	min-height: 0;
 
 	${TabBar} + & {
 		margin-top: 30px;
@@ -41,23 +62,28 @@ export const Item = styled(FilteredLink)`
 	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
-		"active",
-		css`
+	"active",
+	css`
 			background-color: #b4cfe3;
 		`,
-		css`
+	css`
 			&:hover {
 				background-color: #f7f7f7;
 			}
 		`,
-	)};
+)};
 `;
 
-const SegmentPage = ({ path, component: View, segments, location, match }) => {
+const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
+	const classes = useStyles();
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
 		subpages = [];
+	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
+	const entityId = match.params[entityIdKey];
+	const modifiedSections = useSelector(getModifiedSections(entityId));
+	const asterix = <span className={classes.asterix}>*</span>;
 	const segmentElements = Object.entries(segments).map(([segpath, config]) => {
 		if (config.pages) {
 			pages.push(
@@ -68,7 +94,7 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 							key={pagePath}
 							path={path + pagePath}
 							render={route => (
-								<FullPage path={path + pagePath} config={pageConfig} {...route} />
+								<FullPage path={path + pagePath} config={pageConfig} {...route} modulePrependPath={modulePrependPath} />
 							)}
 						/>
 					);
@@ -83,7 +109,7 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 						<Route
 							key={pagePath}
 							path={path + pagePath}
-							render={route => <SubPage root={path} config={config} {...route} />}
+							render={route => <SubPage root={path} config={config} {...route} modulePrependPath={modulePrependPath} />}
 						/>
 					);
 				}),
@@ -94,7 +120,13 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 				key={segpath}
 				path={path + segpath}
 				render={route => (
-					<Segment path={path + segpath} config={config} root={baseHref} {...route} />
+					<Segment
+						path={path + segpath}
+						config={config}
+						root={baseHref}
+						{...route}
+						modulePrependPath={modulePrependPath}
+					/>
 				)}
 			/>
 		);
@@ -107,15 +139,29 @@ const SegmentPage = ({ path, component: View, segments, location, match }) => {
 					View ? <View key="View" /> : null,
 					<Wrapper key="Segments">
 						<List>
-							{Object.entries(segments).map(([segpath, config]) => (
-								<Item
-									key={segpath}
-									to={baseHref + segpath}
-									active={location.pathname === baseHref + segpath}
-								>
-									<Text message={config.label} />
-								</Item>
-							))}
+							{Object.entries(segments).map(([segpath, config]) => {
+								const text = <Text message={config.label} />;
+								const basicLabel = config.labelComponent != null ?
+									<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} /> :
+									text;
+
+								const finalLabel = (
+									<Grid container justify="space-between">
+										<Grid item className={classes.label}>
+											{basicLabel}
+											{modifiedSections.includes(segpath.replace("/", "")) === true ? asterix : null}
+										</Grid>
+										<Grid item className={classes.labelComponent}>
+											{config.labelComponent}
+										</Grid>
+									</Grid>
+								);
+								return (
+									<Item key={segpath} to={baseHref + segpath} active={location.pathname === baseHref + segpath}>
+										{finalLabel}
+									</Item>
+								);
+							})}
 						</List>
 						<Switch>
 							{segmentElements}

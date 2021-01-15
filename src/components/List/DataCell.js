@@ -24,7 +24,7 @@ const renderByType = (value, def, rowId, selected, row) => {
 				<FormattedNumber
 					style="currency" // eslint-disable-line react/style-prop-object
 					currency={currency}
-					value={transformedValue}
+					value={transformedValue || "0"}
 				/>
 			);
 		}

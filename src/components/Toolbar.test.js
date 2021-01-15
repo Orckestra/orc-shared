@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { spyOnConsole } from "../utils/testUtils";
 import IconButton from "./IconButton";
+import RadioProps from "./MaterialUI/Inputs/RadioProps";
 import {
 	Bar,
 	ToolGroup,
@@ -11,6 +12,8 @@ import {
 	Separator,
 	Spacer,
 	ToolbarLabel,
+	ToolbarRadio,
+	ToolbarRadioWrapper,
 	toolComponents,
 	Toolbar,
 } from "./Toolbar";
@@ -22,6 +25,7 @@ const {
 	spacer: ToolSpacer,
 	separator: ToolSeparator,
 	label: ToolLabel,
+	radio: ToolRadio,
 } = toolComponents;
 
 describe("Toolbar", () => {
@@ -33,14 +37,14 @@ describe("Toolbar", () => {
 				type: "input",
 				subType: "search",
 				key: 0,
-				onChange: () => {},
+				onChange: () => { },
 				value: "search",
 			},
 			{
 				type: "button",
 				key: 1,
 				label: { icon: "funnel" },
-				onClick: () => {},
+				onClick: () => { },
 			},
 			{ type: "spacer", key: 2 },
 			{
@@ -51,19 +55,19 @@ describe("Toolbar", () => {
 						type: "button",
 						key: 0,
 						label: { text: "Button" },
-						onClick: () => {},
+						onClick: () => { },
 					},
 					{
 						type: "input",
 						key: 1,
-						onChange: e => {},
+						onChange: e => { },
 						placeholder: "Text",
 					},
 					{
 						type: "button",
 						key: 2,
 						label: { text: "Button" },
-						onClick: () => {},
+						onClick: () => { },
 					},
 				],
 			},
@@ -71,7 +75,7 @@ describe("Toolbar", () => {
 				type: "button",
 				key: 4,
 				label: { icon: "eye", text: "Button" },
-				onClick: () => {},
+				onClick: () => { },
 				primary: true,
 			},
 			{ type: "separator", key: 5 },
@@ -84,12 +88,27 @@ describe("Toolbar", () => {
 				type: "button",
 				key: 7,
 				label: { text: { id: "toolbar.button", defaultMessage: "Button" } },
-				onClick: () => {},
+				onClick: () => { },
 			},
 			{
 				type: "label",
 				key: 8,
 				label: "Label message",
+			},
+			{
+				type: "radio",
+				key: 9,
+				name: "aRadioName",
+				label: "aRadioLabel",
+				value: "option1",
+				defaultVal: "option1",
+				update: () => { },
+				radios: [
+					{ label: "Option 1", value: "option1" },
+					{ label: "Option 2", value: "option2" },
+					{ label: "Option 3", value: "option3" },
+				],
+				row: true,
 			},
 		];
 	});
@@ -108,8 +127,8 @@ describe("Toolbar", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -121,8 +140,8 @@ describe("Toolbar", () => {
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -153,11 +172,7 @@ describe("Toolbar", () => {
 								},
 							]}
 						/>
-						<ToolButton
-							onClick={toolList[4].onClick}
-							label={{ icon: "eye", text: "Button" }}
-							primary
-						/>
+						<ToolButton onClick={toolList[4].onClick} label={{ icon: "eye", text: "Button" }} primary />
 						<ToolSeparator />
 						<ToolLabel label={{ id: "toolbar.label", defaultMessage: "Label message" }} />
 						<ToolButton
@@ -167,6 +182,19 @@ describe("Toolbar", () => {
 							}}
 						/>
 						<ToolLabel label="Label message" />
+						<ToolRadio
+							name="aRadioName"
+							label="aRadioLabel"
+							value="option1"
+							defaultVal="option1"
+							update={toolList[9].update}
+							radios={[
+								{ label: "Option 1", value: "option1" },
+								{ label: "Option 2", value: "option2" },
+								{ label: "Option 3", value: "option3" },
+							]}
+							row={true}
+						/>
 					</Bar>
 				</IntlProvider>
 			</Provider>,
@@ -177,22 +205,12 @@ describe("toolComponents.input", () => {
 	it("renders a styled input", () =>
 		expect(
 			<IntlProvider locale="en">
-				<ToolInput
-					random={4}
-					oddProp="Test"
-					onChange={console.log}
-					things={{ stuff: "nonsense" }}
-				/>
+				<ToolInput random={4} oddProp="Test" onChange={jest.fn()} things={{ stuff: "nonsense" }} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<IntlProvider locale="en">
-				<ToolbarInput
-					random={4}
-					oddProp="Test"
-					onChange={console.log}
-					things={{ stuff: "nonsense" }}
-				/>
+				<ToolbarInput random={4} oddProp="Test" onChange={jest.fn()} things={{ stuff: "nonsense" }} />
 			</IntlProvider>,
 		));
 });
@@ -202,8 +220,8 @@ describe("toolComponents.button", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -213,8 +231,8 @@ describe("toolComponents.button", () => {
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -226,8 +244,8 @@ describe("toolComponents.button", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -237,8 +255,8 @@ describe("toolComponents.button", () => {
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -250,23 +268,23 @@ describe("toolComponents.button", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
-				<ToolButton onClick={console.log} label={{ text: "A label" }} />
+				<ToolButton onClick={jest.fn()} label={{ text: "A label" }} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
-				<ToolbarButton onClick={console.log} label="A label" />
+				<ToolbarButton onClick={jest.fn()} label="A label" />
 			</Provider>,
 		));
 
@@ -274,22 +292,19 @@ describe("toolComponents.button", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
-				<ToolButton
-					things={{ stuff: "nonsense" }}
-					label={{ icon: "test", text: "A label" }}
-				/>
+				<ToolButton things={{ stuff: "nonsense" }} label={{ icon: "test", text: "A label" }} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -302,8 +317,8 @@ describe("toolComponents.button", () => {
 			expect(
 				<Provider
 					store={{
-						subscribe: () => {},
-						dispatch: () => {},
+						subscribe: () => { },
+						dispatch: () => { },
 						getState: () => ({}),
 					}}
 				>
@@ -313,8 +328,8 @@ describe("toolComponents.button", () => {
 				"to satisfy",
 				<Provider
 					store={{
-						subscribe: () => {},
-						dispatch: () => {},
+						subscribe: () => { },
+						dispatch: () => { },
 						getState: () => ({}),
 					}}
 				>
@@ -332,19 +347,19 @@ describe("toolComponents.group", () => {
 				type: "button",
 				key: 0,
 				label: { text: "Button" },
-				onClick: () => {},
+				onClick: () => { },
 			},
 			{
 				type: "input",
 				key: 1,
-				onChange: e => {},
+				onChange: e => { },
 				placeholder: "Text",
 			},
 			{
 				type: "button",
 				key: 2,
 				label: { text: "Button" },
-				onClick: () => {},
+				onClick: () => { },
 			},
 		];
 	});
@@ -353,8 +368,8 @@ describe("toolComponents.group", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -366,8 +381,8 @@ describe("toolComponents.group", () => {
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -383,13 +398,11 @@ describe("toolComponents.group", () => {
 });
 
 describe("toolComponents.spacer", () => {
-	it("renders a styled spacer", () =>
-		expect(<ToolSpacer />, "when mounted", "to satisfy", <Spacer />));
+	it("renders a styled spacer", () => expect(<ToolSpacer />, "when mounted", "to satisfy", <Spacer />));
 });
 
 describe("toolComponents.separator", () => {
-	it("renders a styled separator", () =>
-		expect(<ToolSeparator />, "when mounted", "to satisfy", <Separator />));
+	it("renders a styled separator", () => expect(<ToolSeparator />, "when mounted", "to satisfy", <Separator />));
 });
 
 describe("toolComponents.label", () => {
@@ -397,8 +410,8 @@ describe("toolComponents.label", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => {},
-					dispatch: () => {},
+					subscribe: () => { },
+					dispatch: () => { },
 					getState: () => ({}),
 				}}
 			>
@@ -409,5 +422,51 @@ describe("toolComponents.label", () => {
 			"when mounted",
 			"to satisfy",
 			<ToolbarLabel>A label</ToolbarLabel>,
+		));
+});
+
+describe("toolComponents.radio", () => {
+	let radios, radioProps;
+	beforeEach(() => {
+		radios = [
+			{ label: "Option 1", value: "option1" },
+			{ label: "Option 2", value: "option2" },
+			{ label: "Option 3", value: "option3" },
+		];
+
+		radioProps = new RadioProps();
+		radioProps.set(RadioProps.propNames.name, "aRadioName");
+		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
+		radioProps.set(RadioProps.propNames.defaultVal, "option1");
+		radioProps.set(RadioProps.propNames.value, "option1");
+		radioProps.set(RadioProps.propNames.update, jest.fn());
+		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.row, true);
+	});
+
+	it("renders a styled radio", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => { },
+					dispatch: () => { },
+					getState: () => ({}),
+				}}
+			>
+				<ToolRadio
+					name="aRadioName"
+					label="aRadioLabel"
+					value="option1"
+					defaultVal="option1"
+					update={jest.fn()}
+					radios={radios}
+					row={true}
+				/>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<ToolbarRadioWrapper>
+				<ToolbarRadio radioProps={radioProps} />
+			</ToolbarRadioWrapper>,
 		));
 });

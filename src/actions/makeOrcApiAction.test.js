@@ -142,43 +142,5 @@ describe("makeOrcApiAction", () => {
 				"to be false",
 			);
 		});
-
-		it("bails out if configured bailout is a truthy non-function value", () => {
-			const bailout = makeOrcApiAction(
-				"TEST_ACTION",
-				"https://orc-oco.api.test/",
-				"GET",
-				{ bailout: "yep" },
-			)[RSAA].bailout;
-			return expect(
-				bailout,
-				"when called with",
-				[
-					Immutable.fromJS({
-						requests: {},
-					}),
-				],
-				"to be true",
-			);
-		});
-
-		it("does not bail out if configured bailout is a falsy non-function value", () => {
-			const bailout = makeOrcApiAction(
-				"TEST_ACTION",
-				"https://orc-oco.api.test/",
-				"GET",
-				{ bailout: 0 },
-			)[RSAA].bailout;
-			return expect(
-				bailout,
-				"when called with",
-				[
-					Immutable.fromJS({
-						requests: {},
-					}),
-				],
-				"to be false",
-			);
-		});
 	});
 });

@@ -1,9 +1,13 @@
 import React from "react";
-import sinon from "sinon";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Help, { HelpLink } from "./Help";
+import { extractMessages } from "./../../utils/testUtils";
+import sharedMessages from "./../../sharedMessages";
+import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
+
+const messages = extractMessages(sharedMessages);
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -13,72 +17,48 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Help", () => {
-	let state, store, props, clicker, helpMessages, modalRoot, windowOpenSpy, windowOpen;
+	let state, store, props, clicker, modalRoot;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			authentication: { name: "foo@bar.com" },
 			versionInfo: { version: "ver4", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 		});
 		store = {
-			subscribe: () => {},
-			dispatch: () => {},
+			subscribe: () => { },
+			dispatch: () => { },
 			getState: () => state,
 		};
-		clicker = () => {};
-		helpMessages = {
-			help: { id: "msg.help", defaultMessage: "HELP" },
-		};
+		clicker = () => { };
 		props = {
 			onClick: clicker,
-			messages: helpMessages,
 			helpUrl: "any_help_url.com",
 		};
 		modalRoot = document.createElement("div");
 		modalRoot.id = "modal";
 		document.body.appendChild(modalRoot);
-
-		windowOpen = window.open;
-		windowOpenSpy = sinon.spy().named("windowOpen");
-		window.open = windowOpenSpy;
 	});
 	afterEach(() => {
-		window.open = windowOpen;
-
 		document.body.removeChild(modalRoot);
 	});
 
 	it("renders a help button", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
+				<IntlProvider locale="en-US" messages={messages}>
 					<Help {...props} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<HelpLink href="any_help_url.com">HELP</HelpLink>,
-		));
-
-	it("renders a help button and expect click to open the url", () =>
-		expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<Help {...props} />
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{ type: "click" },
-		).then(() =>
-			expect(windowOpenSpy, "to have calls satisfying", [
-				{ args: ["any_help_url.com", "_blank"] },
-			]),
+			<HelpLink href="any_help_url.com">
+				{stringifyWithoutQuotes(messages['orc-shared.help'])}
+			</HelpLink>,
 		));
 
 	it("sets css for help button ", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
+				<IntlProvider locale="en-US" messages={messages}>
 					<Help {...props} />
 				</IntlProvider>
 			</Provider>,

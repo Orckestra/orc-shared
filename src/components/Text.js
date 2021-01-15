@@ -1,22 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import pt from "prop-types";
 import styled, { keyframes } from "styled-components";
-import { FormattedMessage } from "react-intl";
-import { safeGet, unwrapImmutable, getThemeProp, stripKey } from "../utils";
+import { getThemeProp } from "../utils";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-
-export const messageContainsValues = message => {
-	const valRefs = message.defaultMessage.match(/(\{\w+\})/g);
-	if (!valRefs) return true;
-	const valNames = valRefs.map(ref => ref.replace(/[{}]/g, ""));
-	return (
-		!!message.values &&
-		valNames.every(
-			key => message.values[key] !== undefined && message.values[key] !== null,
-		)
-	);
-};
+import useLabelMessage from "../hooks/useLabelMessage";
 
 const fadeCycle = keyframes`
 	0% {
@@ -37,14 +24,9 @@ export const Placeholder = styled.span`
 `;
 
 const Text = ({ message: rawMessage, error }) => {
-	let valueSelector = () => {};
-	let message = typeof rawMessage === "object" ? { ...rawMessage } : rawMessage;
-	if (typeof safeGet(message, "values") === "function") {
-		valueSelector = message.values;
-		message = stripKey("values", message);
-	}
-	const selectValues = unwrapImmutable(useSelector(valueSelector));
-	if (error || (!message && message !== "")) {
+	const [labelMessage, missingValues] = useLabelMessage(rawMessage);
+
+	if (error || (!rawMessage && rawMessage !== "")) {
 		return (
 			<span
 				style={{
@@ -53,22 +35,15 @@ const Text = ({ message: rawMessage, error }) => {
 					fontWeight: "bold",
 				}}
 			>
-				Errored: {message ? error.message : "No message provided"}
+				Errored: {error && error.message ? error.message : "No message provided"}
 			</span>
 		);
 	}
-	if (message.id) {
-		if (message.values || selectValues) {
-			message.values = { ...message.values, ...selectValues };
-		}
-		if (messageContainsValues(message)) {
-			return <FormattedMessage {...message} />;
-		} else {
-			return <Placeholder />;
-		}
-	} else {
-		return message.toString();
+
+	if (missingValues) {
+		return <Placeholder />;
 	}
+	return labelMessage;
 };
 
 export const ptLabel = pt.oneOfType([

@@ -1,5 +1,11 @@
 import Immutable from "immutable";
-import { setValue, setStateField } from "../actions/view";
+import {
+	setValue,
+	setStateField,
+	createEditNode,
+	removeEditNode,
+	setEditModelField
+} from "../actions/view";
 import viewReducer from "./view";
 
 describe("View state reducer", () => {
@@ -46,6 +52,122 @@ describe("View state reducer", () => {
 			"to have value at",
 			"test",
 			Immutable.fromJS({ stuff: "new value" }),
+		);
+	});
+
+	it("Creates edit node correctly", () => {
+		const oldState = Immutable.Map({});
+		const moduleName = "module1";
+
+		const modulesData = {
+			[moduleName]: {
+				pages: {
+					':id1': {
+						infoBar: {},
+						section11: {},
+						section12: {}
+					}
+				}
+			},
+		};
+		const entityId = "123456";
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					infoBar: {},
+					section11: {},
+					section12: {}
+				}
+			}
+		}
+
+		const action = createEditNode(entityId, moduleName, modulesData);
+		const newState = viewReducer(oldState, action);
+		return expect(newState, "not to be", oldState).and(
+			"to equal",
+			Immutable.fromJS({ edit: expected }),
+		);
+	});
+
+	it("Sets edit field inside model correctly", () => {
+		const keys = ["key1", "key2", "key3"];
+		const oldValue = "oldVAlue";
+		const newValue = "newValue";
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "section11";
+
+		const modules = Immutable.fromJS(
+			{
+				[moduleName]: {
+					[entityId]: {
+						[sectionName]: {},
+					}
+				}
+			}
+		);
+
+		const oldState = Immutable.Map({
+			edit: modules
+		});
+
+		const model = {
+			key1: {
+				key2: {
+					key3: {
+						value: newValue,
+						wasModified: true
+					}
+				}
+			}
+		}
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model
+					},
+				}
+			}
+		};
+
+		const action = setEditModelField(keys, newValue, oldValue, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and(
+			"to equal",
+			Immutable.fromJS({ edit: expected }),
+		);
+	});
+
+	it("Removes edit node correctly", () => {
+		const entityId = "entityId";
+		const moduleName = "module1";
+
+		const modules = Immutable.fromJS(
+			{
+				[moduleName]: {
+					[entityId]: {}
+				}
+			}
+		);
+
+		const oldState = Immutable.Map({
+			edit: modules
+		});
+
+		const expected = {
+			[moduleName]: {}
+		};
+
+		const action = removeEditNode(entityId, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and(
+			"to equal",
+			Immutable.fromJS({ edit: expected }),
 		);
 	});
 });

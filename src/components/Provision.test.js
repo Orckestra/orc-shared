@@ -4,14 +4,15 @@ import { withTheme } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const fakeStore = {
-	subscribe: listener => () => {},
+	subscribe: listener => () => { },
 	dispatch: action => action,
 	getState: () =>
 		Immutable.fromJS({
 			locale: {
-				locale: "en",
+				locale: "en-US",
 			},
 			authentication: {
 				name: "foo@bar.com",
@@ -20,10 +21,14 @@ const fakeStore = {
 				defaultScope: "myScope",
 			},
 		}),
-	replaceReducer: () => {},
+	replaceReducer: () => { },
 };
 
 const fakeTheme = { value: "styles" };
+
+const fakeMuiTheme = createMuiTheme({
+	direction: "ltr",
+});
 
 const TestComp = withTheme(({ theme }) => <div>{JSON.stringify(theme)}</div>);
 
@@ -31,7 +36,7 @@ describe("Provision", () => {
 	spyOnConsole(["error"]);
 	it("renders", () =>
 		expect(
-			<Provision store={fakeStore} theme={fakeTheme}>
+			<Provision store={fakeStore} theme={fakeTheme} muiTheme={fakeMuiTheme}>
 				<TestComp />
 			</Provision>,
 			"when mounted",
@@ -41,13 +46,20 @@ describe("Provision", () => {
 
 	it("handles getting no theme", () =>
 		expect(
-			<Provision store={fakeStore}>
+			<Provision store={fakeStore} muiTheme={fakeMuiTheme}>
 				<TestComp />
 			</Provision>,
 			"when mounted",
 			"to satisfy",
 			<div>{"{}"}</div>,
 		).then(() => expect(console.error, "was not called")));
+
+	it("handles getting no mui theme", () => {
+		let mountedComponent = () =>
+			expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted");
+
+		expect(mountedComponent, "to throw");
+	});
 
 	it("fails if no children given", () =>
 		expect(

@@ -9,7 +9,10 @@ import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
+import close from "../../content/close.png";
 import { getVersionSelector } from "../../selectors/versionInfo";
+import { currentLocaleOrDefault } from "../../selectors/locale";
+import sharedMessages from "./../../sharedMessages";
 
 export const ABOUT_NAME = "__aboutBox";
 
@@ -45,16 +48,31 @@ export const AboutBox = withClickOutside(transition.div`
 `);
 AboutBox.defaultProps = { timeout: 800, unmountOnExit: true };
 
+export const CloseButton = styled.p`
+	z-index: 9999;
+	position: absolute;
+	color: #ffffff;
+	top: 15px;
+	right: 20px;
+	margin: 0;
+	cursor: pointer;
+	opacity: 1;
+
+	&:hover {
+		opacity: 0.75;
+	}
+`;
+
 export const AboutParagraph = styled.p`
 	margin-top: 20px;
 	${ifFlag(
-		"long",
-		css`
+	"long",
+	css`
 			html[lang^="fr"] & {
 				font-size: 10px;
 			}
 		`,
-	)}
+)}
 `;
 
 export const AboutLink = styled.a`
@@ -62,89 +80,95 @@ export const AboutLink = styled.a`
 	text-decoration: none;
 `;
 
-export const getClickOutsideHandler = ({ show }, updateViewState) =>
-	show
+export const getClickOutsideHandler = ({ show }, updateViewState) => {
+	return show
 		? event => {
-				event.stopPropagation();
-				updateViewState("show", false);
-		  }
-		: () => {};
+			event.stopPropagation();
+			updateViewState("show", false);
+		}
+		: () => { };
+};
 
-export const About = ({ messages, currentApplication }) => {
+export const About = ({ currentApplication }) => {
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
 	const version = useSelector(getVersionSelector);
+	const locale = useSelector(currentLocaleOrDefault);
+	const closeAboutBox = getClickOutsideHandler(viewState, updateViewState);
+	const aboutLinkUrl = "https://www.orckestra.com".concat(
+		locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "",
+	);
 
 	return (
-		<AboutBox
-			in={viewState.show}
-			onClickOutside={getClickOutsideHandler(viewState, updateViewState)}
-		>
+		<AboutBox in={viewState.show} onClickOutside={closeAboutBox}>
+			<CloseButton onClick={closeAboutBox}>
+				<img src={close} alt="X" />
+			</CloseButton>
 			<img src={logoImage} alt="Orckestra" />
 			<AboutParagraph>
 				<Text
 					message={{
-						...messages.ccVersion,
+						...sharedMessages.ccVersion,
 						values: { version: version },
 					}}
 				/>
 				{currentApplication && currentApplication.displayName
 					? [
-							<br key="application-br" />,
-							<Text
-								key="application-version"
-								message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
-							/>,
-					  ]
+						<br key="application-br" />,
+						<Text
+							key="application-version"
+							message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
+						/>,
+					]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-shared"]
 					? [
-							<br key="orc-shared-br" />,
-							<Text
-								key="orc-shared-version"
-								message={{
-									...messages.sharedVersion,
-									values: { version: DEPENDENCIES["orc-shared"] },
-								}}
-							/>,
-					  ]
+						<br key="orc-shared-br" />,
+						<Text
+							key="orc-shared-version"
+							message={{
+								...sharedMessages.orcSharedVersion,
+								values: { version: DEPENDENCIES["orc-shared"] },
+							}}
+						/>,
+					]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-scripts"]
 					? [
-							<br key="orc-scripts-br" />,
-							<Text
-								key="orc-scripts-version"
-								message={{
-									...messages.scriptsVersion,
-									values: { version: DEPENDENCIES["orc-scripts"] },
-								}}
-							/>,
-					  ]
+						<br key="orc-scripts-br" />,
+						<Text
+							key="orc-scripts-version"
+							message={{
+								...sharedMessages.orcScriptsVersion,
+								values: { version: DEPENDENCIES["orc-scripts"] },
+							}}
+						/>,
+					]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-secret"]
 					? [
-							<br key="orc-secret-br" />,
-							<Text
-								key="orc-secret-version"
-								message={{
-									...messages.secretVersion,
-									values: { version: DEPENDENCIES["orc-secret"] },
-								}}
-							/>,
-					  ]
+						<br key="orc-secret-br" />,
+						<Text
+							key="orc-secret-version"
+							message={{
+								...sharedMessages.orcSecretVersion,
+								values: { version: DEPENDENCIES["orc-secret"] },
+							}}
+						/>,
+					]
 					: null}
 			</AboutParagraph>
 			<AboutParagraph long>
-				<Text message={messages.copyrightTermsNotice} />
+				<Text message={sharedMessages.copyrightTermsNotice} />
 			</AboutParagraph>
 			<AboutParagraph>
-				<AboutLink href="https://www.orckestra.com/">
-					<Text message={messages.ccName} />
+				<AboutLink href={aboutLinkUrl} target="_blank">
+					<Text message={sharedMessages.ccName} />
 				</AboutLink>
 			</AboutParagraph>
 			<AboutParagraph>
-				<Text message={messages.copyright} />
+				<Text message={sharedMessages.copyright} />
 				<br />
-				<Text message={messages.allRightsReserved} />
+				<Text message={sharedMessages.allRightsReserved} />
 			</AboutParagraph>
 		</AboutBox>
 	);

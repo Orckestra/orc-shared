@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Text from "../Text";
 import { getThemeProp } from "../../utils";
+import sharedMessages from "./../../sharedMessages";
 
 export const HelpLink = styled.a`
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
@@ -12,21 +13,16 @@ export const HelpLink = styled.a`
 	cursor: pointer;
 	padding-top: 14px;
 	padding-right: 10px;
-
+	text-decoration: none;
 	&:hover {
 		color: ${getThemeProp(["colors", "application", "base"], "#cccccc")};
 	}
 `;
 
-const Help = ({ messages, helpUrl }) => {
-	const openHelp = e => {
-		window.open(helpUrl, "_blank");
-		e.preventDefault();
-	};
-
+const Help = ({ helpUrl }) => {
 	return (
-		<HelpLink href={helpUrl} onClick={openHelp}>
-			<Text message={messages.help} />
+		<HelpLink href={helpUrl} target="_blank">
+			<Text message={sharedMessages.help} />
 		</HelpLink>
 	);
 };

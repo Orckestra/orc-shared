@@ -8,10 +8,9 @@ import Tab from "./Tab";
 
 export const TabBar = styled.div`
 	flex: 0 0 10px;
-	max-height: 10px;
+	max-height: 0px;
 	padding: 0 0 0 10px;
 	margin: 0 200px 0 0;
-	height: 10px;
 	display: flex;
 	align-items: flex-end;
 	width: calc(100% - 210px);
@@ -109,8 +108,7 @@ export const useTabScroll = (pages, debug = false, refs) => {
 		const activeEdge = tabEdges[activeIndex + 1] || tabEdges[activeIndex] || 0;
 		let scrollEdge = Math.max(activeEdge - barWidth + 7, 0);
 		barElem.scrollLeft = scrollEdge;
-		const edgeIndex =
-			tabEdges.findIndex(edge => edge > barWidth + barElem.scrollLeft - 10) - 1;
+		const edgeIndex = tabEdges.findIndex(edge => edge > barWidth + barElem.scrollLeft - 10) - 1;
 		if (tabEdges[tabEdges.length - 1] <= barWidth) {
 			setLastShown(pages.length);
 		} else if (edgeIndex > activeIndex) {
@@ -163,15 +161,13 @@ export const StyledMenu = styled(DropMenu).attrs(() => ({ alignRight: true }))`
 export const MenuButton = styled(IconButton).attrs(props => ({
 	icon: ifFlag(
 		"open",
-		getThemeProp(["icons", "indicators", "up"], "chevron-up"),
-		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
+		getThemeProp(["icons", "indicators", "more"], "arrow-more"),
+		getThemeProp(["icons", "indicators", "more"], "arrow-more"),
 	)(props),
 }))``;
 
 const Bar = ({ module, pages }) => {
-	const { hiddenTabs, tabMenuItems, lastShownTab, getTabRef, getBarRef } = useTabScroll(
-		pages,
-	);
+	const { hiddenTabs, tabMenuItems, lastShownTab, getTabRef, getBarRef } = useTabScroll(pages);
 	return (
 		<TabBar>
 			<Tab
@@ -184,7 +180,7 @@ const Bar = ({ module, pages }) => {
 			/>
 			<ScrollableBar ref={getBarRef}>
 				{pages.map(
-					({ href, mappedFrom, label, active, icon, outsideScope, close }, index) => {
+					({ href, mappedFrom, label, mustTruncate, active, icon, outsideScope, scopeNotSupported, close }, index) => {
 						return (
 							<Tab
 								ref={getTabRef}
@@ -193,9 +189,11 @@ const Bar = ({ module, pages }) => {
 								href={href}
 								mappedFrom={mappedFrom}
 								label={label}
+								mustTruncate={mustTruncate}
 								active={active}
 								close={close}
 								outsideScope={outsideScope}
+								scopeNotSupported={scopeNotSupported}
 								hide={index > lastShownTab}
 							/>
 						);

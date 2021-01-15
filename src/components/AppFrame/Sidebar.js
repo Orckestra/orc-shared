@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import styled, { withTheme } from "styled-components";
 import { useLocation } from "react-router-dom";
 import { getThemeProp } from "../../utils";
-import { getCurrentScope } from "../../selectors/navigation";
+import { selectPrependHrefConfig } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
 
 export const Bar = styled.div`
@@ -22,26 +22,25 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 		id="sidebarMenuToggle"
 		menuToggle
 		open={open}
-		icon={(open
-			? getThemeProp(["icons", "sidebarOpen"], "layers")
-			: getThemeProp(["icons", "sidebarClosed"], "menu"))({ theme })}
+		icon={(open ? getThemeProp(["icons", "sidebarOpen"], "layers") : getThemeProp(["icons", "sidebarClosed"], "menu"))({
+			theme,
+		})}
 		onClick={toggle}
 	/>
 ));
 
 const useEnhancement = id => {
-	const scope = useSelector(getCurrentScope);
 	const location = useLocation();
+	const prependHref = useSelector(selectPrependHrefConfig)(id);
+
 	return {
-		href: `/${scope}/${id}`,
-		active: location.pathname.startsWith(`/${scope}/${id}`),
+		href: `${prependHref}${id}`,
+		active: location.pathname.startsWith(`${prependHref}${id}`),
 		id,
 	};
 };
 
-export const EnhancedMenuItem = ({ id, ...props }) => (
-	<MenuItem {...props} {...useEnhancement(id)} />
-);
+export const EnhancedMenuItem = ({ id, ...props }) => <MenuItem {...props} {...useEnhancement(id)} />;
 
 const LogoSvg = styled.svg`
 	flex: 0 0 auto;
@@ -73,12 +72,7 @@ const Sidebar = ({ open, toggle, modules = [], activeModules = [] }) => {
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
 			{modules.map(item => (
-				<EnhancedMenuItem
-					key={item.id}
-					{...item}
-					open={open}
-					alert={activeModules[item.id] || false}
-				/>
+				<EnhancedMenuItem key={item.id} title={item.label} {...item} open={open} alert={activeModules[item.id] || false} />
 			))}
 			<Logo />
 		</Bar>

@@ -7,7 +7,7 @@ import { combineReducers } from "redux-immutable";
 import { spawnerMiddleware } from "./spawnerMiddleware";
 import applicationReducer from "./reducers/applications";
 import authenticationReducer from "./reducers/authentication";
-import localeFactory from "./reducers/localeFactory";
+import localeFactory, { cultureByDefault } from "./reducers/localeFactory";
 import navigationReducer from "./reducers/navigation";
 import requestReducer from "./reducers/request";
 import scopesReducer from "./reducers/scopes";
@@ -15,6 +15,9 @@ import settingsReducer from "./reducers/settings";
 import toastReducer from "./reducers/toasts";
 import viewReducer from "./reducers/view";
 import versionInfoReducer from "./reducers/versionInfo";
+import countriesReducer from "./reducers/countries";
+import timezonesReducer from "./reducers/timezones";
+import modulesReducer from "./reducers/modules";
 
 window.BUILD_ID = BUILD_ID;
 window.BUILD_NUMBER = BUILD_NUMBER;
@@ -43,7 +46,7 @@ const buildStore = (reducers, devOptions = {}) => {
 	);
 
 	const supportedLocales = SUPPORTED_LOCALES || [
-		{ language: "English", cultureIso: "en-US" },
+		{ language: "English", cultureIso: cultureByDefault },
 	];
 	const localeReducer = localeFactory(supportedLocales);
 
@@ -61,6 +64,9 @@ const buildStore = (reducers, devOptions = {}) => {
 			toasts: toastReducer,
 			versionInfo: versionInfoReducer,
 			view: viewReducer,
+			countries: countriesReducer,
+			timezones: timezonesReducer,
+			modules: modulesReducer
 		});
 	const rootReducer = buildReducer(reducers);
 

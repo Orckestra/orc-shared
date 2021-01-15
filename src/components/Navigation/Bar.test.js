@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { IntlProvider } from "react-intl";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
@@ -32,41 +33,44 @@ describe("Bar", () => {
 				}}
 			>
 				<MemoryRouter>
-					<Bar
-						module={{
-							icon: "test",
-							label: "A module",
-							href: "/Foo/modu",
-							mappedFrom: "/Foo/modu",
-						}}
-						pages={[
-							{
-								href: "/Foo/modu/1",
-								mappedFrom: "/Foo/modu/1",
-								label: "Page 1",
-								close: closers[0],
-							},
-							{
-								href: "/Foo/modu/2",
-								mappedFrom: "/Foo/modu/2",
-								label: "Page 2",
-								close: closers[1],
-								active: true,
-							},
-							{
-								href: "/Foo/modu/3",
-								mappedFrom: "/Foo/modu/3",
-								label: "Page 3",
-								close: closers[2],
-							},
-							{
-								href: "/Foo/modu/4",
-								mappedFrom: "/Foo/modu/4",
-								label: "Page 4",
-								close: closers[3],
-							},
-						]}
-					/>
+					<IntlProvider locale="en">
+						<Bar
+							module={{
+								icon: "test",
+								label: "A module",
+								href: "/Foo/modu",
+								mappedFrom: "/Foo/modu",
+							}}
+							pages={[
+								{
+									href: "/Foo/modu/1",
+									mappedFrom: "/Foo/modu/1",
+									label: "Page 1",
+									mustTruncate: true,
+									close: closers[0],
+								},
+								{
+									href: "/Foo/modu/2",
+									mappedFrom: "/Foo/modu/2",
+									label: "Page 2",
+									close: closers[1],
+									active: true,
+								},
+								{
+									href: "/Foo/modu/3",
+									mappedFrom: "/Foo/modu/3",
+									label: "Page 3",
+									close: closers[2],
+								},
+								{
+									href: "/Foo/modu/4",
+									mappedFrom: "/Foo/modu/4",
+									label: "Page 4",
+									close: closers[3],
+								},
+							]}
+						/>
+					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -79,51 +83,54 @@ describe("Bar", () => {
 				}}
 			>
 				<MemoryRouter>
-					<TabBar>
-						<Tab
-							key="/Foo/modu"
-							module
-							icon="test"
-							href="/Foo/modu"
-							mappedFrom="/Foo/modu"
-							label="A module"
-						/>
-						<ScrollableBar>
+					<IntlProvider locale="en">
+						<TabBar>
 							<Tab
-								key="/Foo/modu/1"
-								href="/Foo/modu/1"
-								mappedFrom="/Foo/modu/1"
-								label="Page 1"
-								close={closers[0]}
-								hide={false}
+								key="/Foo/modu"
+								module
+								icon="test"
+								href="/Foo/modu"
+								mappedFrom="/Foo/modu"
+								label="A module"
 							/>
-							<Tab
-								key="/Foo/modu/2"
-								href="/Foo/modu/2"
-								mappedFrom="/Foo/modu/2"
-								label="Page 2"
-								close={closers[1]}
-								hide={false}
-								active
-							/>
-							<Tab
-								key="/Foo/modu/3"
-								href="/Foo/modu/3"
-								mappedFrom="/Foo/modu/3"
-								label="Page 3"
-								close={closers[2]}
-								hide={false}
-							/>
-							<Tab
-								key="/Foo/modu/4"
-								href="/Foo/modu/4"
-								mappedFrom="/Foo/modu/4"
-								label="Page 4"
-								close={closers[3]}
-								hide={false}
-							/>
-						</ScrollableBar>
-					</TabBar>
+							<ScrollableBar>
+								<Tab
+									key="/Foo/modu/1"
+									href="/Foo/modu/1"
+									mappedFrom="/Foo/modu/1"
+									label="Page 1"
+									close={closers[0]}
+									mustTruncate={true}
+									hide={false}
+								/>
+								<Tab
+									key="/Foo/modu/2"
+									href="/Foo/modu/2"
+									mappedFrom="/Foo/modu/2"
+									label="Page 2"
+									close={closers[1]}
+									hide={false}
+									active
+								/>
+								<Tab
+									key="/Foo/modu/3"
+									href="/Foo/modu/3"
+									mappedFrom="/Foo/modu/3"
+									label="Page 3"
+									close={closers[2]}
+									hide={false}
+								/>
+								<Tab
+									key="/Foo/modu/4"
+									href="/Foo/modu/4"
+									mappedFrom="/Foo/modu/4"
+									label="Page 4"
+									close={closers[3]}
+									hide={false}
+								/>
+							</ScrollableBar>
+						</TabBar>
+					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
 		));
@@ -138,16 +145,18 @@ describe("Bar", () => {
 				}}
 			>
 				<MemoryRouter>
-					<Bar
-						module={{
-							icon: "test",
-							label: "A module",
-							href: "/Foo/modu",
-							mappedFrom: "/Foo/modu",
-							active: true,
-						}}
-						pages={[]}
-					/>
+					<IntlProvider locale="en">
+						<Bar
+							module={{
+								icon: "test",
+								label: "A module",
+								href: "/Foo/modu",
+								mappedFrom: "/Foo/modu",
+								active: true,
+							}}
+							pages={[]}
+						/>
+					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -160,18 +169,20 @@ describe("Bar", () => {
 				}}
 			>
 				<MemoryRouter>
-					<TabBar>
-						<Tab
-							key="/Foo/modu"
-							module
-							icon="test"
-							href="/Foo/modu"
-							mappedFrom="/Foo/modu"
-							label="A module"
-							active
-						/>
-						<ScrollableBar />
-					</TabBar>
+					<IntlProvider locale="en">
+						<TabBar>
+							<Tab
+								key="/Foo/modu"
+								module
+								icon="test"
+								href="/Foo/modu"
+								mappedFrom="/Foo/modu"
+								label="A module"
+								active
+							/>
+							<ScrollableBar />
+						</TabBar>
+					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
 		));
@@ -191,40 +202,42 @@ describe("Bar", () => {
 				}}
 			>
 				<Router history={history}>
-					<Bar
-						module={{
-							icon: "test",
-							label: "A module",
-							href: "/Foo/modu",
-							mappedFrom: "/Foo/modu",
-						}}
-						pages={[
-							{
-								href: "/Foo/modu/1",
-								mappedFrom: "/Foo/modu/1",
-								label: "Page 1",
-								close: closers[0],
-							},
-							{
-								href: "/Foo/modu/2",
-								mappedFrom: "/Foo/modu/2",
-								label: "Page 2",
-								close: closers[1],
-							},
-							{
-								href: "/Foo/modu/3",
-								mappedFrom: "/Foo/modu/3",
-								label: "Page 3",
-								close: closers[2],
-							},
-							{
-								href: "/Foo/modu/4",
-								mappedFrom: "/Foo/modu/4",
-								label: "Page 4",
-								close: closers[3],
-							},
-						]}
-					/>
+					<IntlProvider locale="en">
+						<Bar
+							module={{
+								icon: "test",
+								label: "A module",
+								href: "/Foo/modu",
+								mappedFrom: "/Foo/modu",
+							}}
+							pages={[
+								{
+									href: "/Foo/modu/1",
+									mappedFrom: "/Foo/modu/1",
+									label: "Page 1",
+									close: closers[0],
+								},
+								{
+									href: "/Foo/modu/2",
+									mappedFrom: "/Foo/modu/2",
+									label: "Page 2",
+									close: closers[1],
+								},
+								{
+									href: "/Foo/modu/3",
+									mappedFrom: "/Foo/modu/3",
+									label: "Page 3",
+									close: closers[2],
+								},
+								{
+									href: "/Foo/modu/4",
+									mappedFrom: "/Foo/modu/4",
+									label: "Page 4",
+									close: closers[3],
+								},
+							]}
+						/>
+					</IntlProvider>
 				</Router>
 			</Provider>,
 			root,
@@ -257,61 +270,63 @@ describe("Bar", () => {
 					}}
 				>
 					<MemoryRouter>
-						<TabBar>
-							<Tab
-								key="/Foo/modu"
-								module
-								icon="test"
-								href="/Foo/modu"
-								mappedFrom="/Foo/modu"
-								label="A module"
-							/>
-							<ScrollableBar>
+						<IntlProvider locale="en">
+							<TabBar>
 								<Tab
-									key="/Foo/modu/1"
-									href="/Foo/modu/1"
-									mappedFrom="/Foo/modu/1"
-									label="Page 1"
-									close={closers[0]}
-									hide={false}
+									key="/Foo/modu"
+									module
+									icon="test"
+									href="/Foo/modu"
+									mappedFrom="/Foo/modu"
+									label="A module"
 								/>
-								<Tab
-									key="/Foo/modu/2"
-									href="/Foo/modu/2"
-									mappedFrom="/Foo/modu/2"
-									label="Page 2"
-									close={closers[1]}
-									hide={false}
-								/>
-								<Tab
-									key="/Foo/modu/3"
-									href="/Foo/modu/3"
-									mappedFrom="/Foo/modu/3"
-									label="Page 3"
-									close={closers[2]}
-									hide={true}
-								/>
-								<Tab
-									key="/Foo/modu/4"
-									href="/Foo/modu/4"
-									mappedFrom="/Foo/modu/4"
-									label="Page 4"
-									close={closers[3]}
-									hide={true}
-								/>
-							</ScrollableBar>
-							<StyledMenu
-								id="navigationTabs"
-								menuItems={[
-									{ label: "Page 1", id: "/Foo/modu/1" },
-									{ label: "Page 2", id: "/Foo/modu/2" },
-									{ label: "Page 3", id: "/Foo/modu/3" },
-									{ label: "Page 4", id: "/Foo/modu/4" },
-								]}
-							>
-								<MenuButton />
-							</StyledMenu>
-						</TabBar>
+								<ScrollableBar>
+									<Tab
+										key="/Foo/modu/1"
+										href="/Foo/modu/1"
+										mappedFrom="/Foo/modu/1"
+										label="Page 1"
+										close={closers[0]}
+										hide={false}
+									/>
+									<Tab
+										key="/Foo/modu/2"
+										href="/Foo/modu/2"
+										mappedFrom="/Foo/modu/2"
+										label="Page 2"
+										close={closers[1]}
+										hide={false}
+									/>
+									<Tab
+										key="/Foo/modu/3"
+										href="/Foo/modu/3"
+										mappedFrom="/Foo/modu/3"
+										label="Page 3"
+										close={closers[2]}
+										hide={true}
+									/>
+									<Tab
+										key="/Foo/modu/4"
+										href="/Foo/modu/4"
+										mappedFrom="/Foo/modu/4"
+										label="Page 4"
+										close={closers[3]}
+										hide={true}
+									/>
+								</ScrollableBar>
+								<StyledMenu
+									id="navigationTabs"
+									menuItems={[
+										{ label: "Page 1", id: "/Foo/modu/1" },
+										{ label: "Page 2", id: "/Foo/modu/2" },
+										{ label: "Page 3", id: "/Foo/modu/3" },
+										{ label: "Page 4", id: "/Foo/modu/4" },
+									]}
+								>
+									<MenuButton />
+								</StyledMenu>
+							</TabBar>
+						</IntlProvider>
 					</MemoryRouter>
 				</Provider>,
 			);
