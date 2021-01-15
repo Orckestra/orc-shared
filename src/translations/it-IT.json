@@ -19,5 +19,5 @@
   "orc-shared.save": "Save",
   "orc-shared.scopeFilterPlaceholder": "Type a scope name",
   "orc-shared.signOut": "Sign out",
-  "orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost. Are you sure you want to close it?"
+  "orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?"
 }
