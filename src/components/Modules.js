@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { getCurrentScope, selectRouteHref } from "../selectors/navigation";
-import { currentScopeSelector } from "../selectors/scope";
+import { isCurrentScopeAuthorizedSelector } from "../selectors/scope";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 import { setHrefConfig } from "../actions/navigation";
@@ -21,7 +21,7 @@ const getHrefFromPath = (path, scope) => path.replace(":scope", scope);
 export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } = {} }) => {
 	const dispatch = useDispatch();
 	const scope = useSelector(getCurrentScope);
-	const isAuthorizedScope = useSelector(currentScopeSelector).get("isAuthorizedScope", true);
+	const isAuthorizedScope = useSelector(isCurrentScopeAuthorizedSelector);
 	const defaultScope = useSelector(defaultScopeSelector);
 	const location = useSelector(selectRouteHref);
 
