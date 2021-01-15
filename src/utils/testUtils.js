@@ -2,6 +2,7 @@ import React from "react";
 import { isStyledComponent } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { Ignore } from "unexpected-reaction";
+import createThemes from "./../components/MaterialUI/muiThemes";
 const sinon = require("sinon");
 
 /* istanbul ignore next */
@@ -27,9 +28,7 @@ export const getElmClasses = (reactElm, container) => {
 	const domElm = mount(reactElm, container ? { container } : undefined);
 	const classes = domElm.getAttribute("class");
 	if (!classes) {
-		throw new Error(
-			"Class name not found in <" + (reactElm.type.name || reactElm.type) + " />",
-		);
+		throw new Error("Class name not found in <" + (reactElm.type.name || reactElm.type) + " />");
 	}
 	return classes.split(" ");
 };
@@ -51,9 +50,7 @@ export const getClassSelector = (elm, index, container) => {
 export const getStyledClassSelector = elm => {
 	const component = elm.type || elm;
 	if (!isStyledComponent(component)) {
-		throw new Error(
-			"<" + (component.name || component) + " /> is not a styled component",
-		);
+		throw new Error("<" + (component.name || component) + " /> is not a styled component");
 	}
 	// Styled component toString() function returns a stable class name
 	return component.toString();
@@ -70,19 +67,18 @@ export const PropStruct = React.forwardRef((props, ref) => (
 				value === undefined || value === null
 					? null
 					: value === "__ignore"
-					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
-					: [
+						? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
+						: [
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
 								{key === "children" ? (
 									value
 								) : typeof value === "object" ? (
-									value["$$typeof"] &&
-									value["$$typeof"] === Symbol.for("react.element") ? (
+									value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
 										"React <" + (value.type.name || value.type) + ">"
 									) : (
-										<PropStruct {...value} />
-									)
+											<PropStruct {...value} />
+										)
 								) : typeof value === "function" ? (
 									"Function"
 								) : typeof value === "string" ? (
@@ -90,19 +86,60 @@ export const PropStruct = React.forwardRef((props, ref) => (
 								) : typeof value === "symbol" ? (
 									`symbol ${value.toString()}`
 								) : (
-									typeof value + " " + value
-								)}
+														typeof value + " " + value
+													)}
 							</dd>,
-					  ],
+						],
 			)}
 	</dl>
 ));
 
 export const ignoreConsoleError = func => {
 	jest.spyOn(console, "error");
-	console.error.mockImplementation(() => {});
+	console.error.mockImplementation(() => { });
 
 	func();
 
 	console.error.mockRestore();
 };
+
+export const createMuiTheme = () => {
+	const applicationTheme = {
+		primary: { main: "#1F5B7F" },
+	};
+
+	const themeDefinition = {
+		palette: {
+			primary: {
+				lighter: "#f5f5f5",
+				light: "#CCC",
+				main: "#232323",
+				dark: "#000",
+				contrastText: "#fff",
+			},
+		},
+	};
+
+	const themes = createThemes(applicationTheme, themeDefinition);
+
+	const muiTheme = themes.muiTheme;
+
+	return muiTheme;
+};
+
+export const generateClassName = (rule, styleSheet) => {
+	return `${styleSheet.options.classNamePrefix}-${rule.key}`;
+};
+
+export function extractMessages() {
+	const extractedMessages = {};
+
+	for (let i = 0; i < arguments.length; i++) {
+		const messages = arguments[i];
+		for (const property in messages) {
+			const message = messages[property];
+			extractedMessages[message.id] = message.defaultMessage;
+		}
+	}
+	return extractedMessages;
+}

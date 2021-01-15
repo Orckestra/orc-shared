@@ -4,17 +4,18 @@ import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
 import sinon from "sinon";
 import useViewState from "./useViewState";
-import { setStateField } from "../actions/view";
+import { setValue, setStateField } from "../actions/view";
 
-const TestComp = ({ name }) => {
-	const [viewState, updateViewState] = useViewState(name);
+const TestComp = ({ name, resetValue }) => {
+	const [viewState, updateViewState, resetViewState] = useViewState(name);
 	return (
 		<div>
-			{Object.entries(viewState).map(([field, value]) => (
+			{Object.entries(viewState).map(([field]) => (
 				<input
 					key={field}
 					id={field}
 					onChange={e => updateViewState(field, e.target.value)}
+					onClick={e => resetViewState(resetValue)}
 					value={viewState[field]}
 				/>
 			))}
@@ -78,8 +79,32 @@ describe("useViewState", () => {
 			"with event",
 			{ type: "change", value: "Benjamin", target: "#name" },
 		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [
-				{ args: [setStateField("nameTest", "name", "Benjamin")] },
-			]),
+			expect(store.dispatch, "to have calls satisfying", [{ args: [setStateField("nameTest", "name", "Benjamin")] }]),
+		));
+
+	it("adds function that reset the state with default value", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<TestComp name="nameTest" />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "#name" },
+		).then(() => expect(store.dispatch, "to have calls satisfying", [{ args: [setValue("nameTest", {})] }])));
+
+	it("adds function that reset the state with specific value", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<TestComp name="nameTest" resetValue={{ reset: "reset" }} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{ type: "click", target: "#name" },
+		).then(() =>
+			expect(store.dispatch, "to have calls satisfying", [{ args: [setValue("nameTest", { reset: "reset" })] }]),
 		));
 });

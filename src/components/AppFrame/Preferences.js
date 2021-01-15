@@ -17,6 +17,7 @@ import { currentLocaleOrDefault, cultureOptionList } from "../../selectors/local
 import { defaultAppId } from "../../selectors/settings";
 import withClickOutside from "../../hocs/withClickOutside";
 import { resetVersionInfo } from "../../actions/versionInfo";
+import sharedMessages from "./../../sharedMessages";
 
 export const PREFS_NAME = "__prefsDialog";
 
@@ -112,7 +113,7 @@ export const clickOutsideHandler = e => {
 	e.stopPropagation();
 };
 
-export const Preferences = ({ messages }) => {
+export const Preferences = () => {
 	const {
 		show,
 		getUpdater,
@@ -126,20 +127,20 @@ export const Preferences = ({ messages }) => {
 		<PrefPanel in={show} width="380px" timeout={400}>
 			<Wrapper onClickOutside={clickOutsideHandler}>
 				<Header>
-					<Text message={messages.preferences} />
+					<Text message={sharedMessages.preferences} />
 				</Header>
 				<PrefForm>
 					<FormContext.Provider value={{ values }}>
 						<FieldElements
 							fields={[
 								{
-									label: messages.language,
+									label: sharedMessages.displayLanguage,
 									type: "Selector",
 									name: "language",
 									options: languageOptions,
 								},
 								{
-									label: messages.defaultApp,
+									label: sharedMessages.defaultApp,
 									type: "Selector",
 									name: "application",
 									options: applicationOptions,
@@ -151,10 +152,10 @@ export const Preferences = ({ messages }) => {
 				</PrefForm>
 				<Footer>
 					<PrefButton id="cancelPrefs" onClick={clear}>
-						<Text message={messages.cancel} />
+						<Text message={sharedMessages.cancel} />
 					</PrefButton>
 					<PrefButton id="savePrefs" primary onClick={save}>
-						<Text message={messages.save} />
+						<Text message={sharedMessages.save} />
 					</PrefButton>
 				</Footer>
 			</Wrapper>

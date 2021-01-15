@@ -16,7 +16,10 @@ export const getVersionInfo = locale =>
 	makeOrcApiAction(
 		GET_VERSION_INFO,
 		buildUrl(["diagnostic", "versioninfo"], {
-			cultureName: locale.substr(0, 2).toLowerCase() === "fr" ? locale : cultureByDefault,
+			cultureName:
+				(locale || cultureByDefault).substr(0, 2).toLowerCase() === "fr"
+					? locale
+					: cultureByDefault,
 		}),
 	);
 

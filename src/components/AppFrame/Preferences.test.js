@@ -31,6 +31,11 @@ import Preferences, {
 	clickOutsideHandler,
 } from "./Preferences";
 import { RESET_VERSION_INFO } from "../../actions/versionInfo";
+import { extractMessages } from "./../../utils/testUtils";
+import sharedMessages from "./../../sharedMessages";
+import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
+
+const messages = extractMessages(sharedMessages);
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -41,15 +46,8 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Preferences", () => {
-	let messages, modalRoot, state, store;
+	let modalRoot, state, store;
 	beforeEach(() => {
-		messages = {
-			preferences: "Preferences",
-			save: "Save",
-			cancel: "Cancel",
-			language: "Display language",
-			defaultApp: "Default application",
-		};
 		state = Immutable.fromJS({
 			view: { [PREFS_NAME]: { show: true } },
 			locale: {
@@ -141,7 +139,7 @@ describe("Preferences", () => {
 			},
 		});
 		store = {
-			subscribe: () => {},
+			subscribe: () => { },
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
@@ -156,8 +154,8 @@ describe("Preferences", () => {
 	it("renders a form dialog", () => {
 		return expect(
 			<Provider store={store}>
-				<IntlProvider locale="en-US">
-					<Preferences messages={messages} />
+				<IntlProvider locale="en-US" messages={messages}>
+					<Preferences />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -176,12 +174,16 @@ describe("Preferences", () => {
 					<div>
 						<div>
 							<Wrapper>
-								<Header>Preferences</Header>
+								<Header>
+									{stringifyWithoutQuotes(messages['orc-shared.preferences'])}
+								</Header>
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">Display language</Label>
+										<Label id="language_label">
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => {}}>
+											<select id="language" value="en-US" onChange={() => { }}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -192,9 +194,11 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">Default application</Label>
+										<Label id="application_label">
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => {}}>
+											<select id="application" value={4} onChange={() => { }}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -204,9 +208,11 @@ describe("Preferences", () => {
 									</FieldBox>
 								</PrefForm>
 								<Footer>
-									<PrefButton id="cancelPrefs">Cancel</PrefButton>
+									<PrefButton id="cancelPrefs">
+										{stringifyWithoutQuotes(messages['orc-shared.cancel'])}
+									</PrefButton>
 									<PrefButton id="savePrefs" primary>
-										Save
+										{stringifyWithoutQuotes(messages['orc-shared.save'])}
 									</PrefButton>
 								</Footer>
 							</Wrapper>
@@ -230,8 +236,8 @@ describe("Preferences", () => {
 		);
 		return expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<Preferences messages={messages} />
+				<IntlProvider locale="en-US" messages={messages}>
+					<Preferences />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -253,9 +259,11 @@ describe("Preferences", () => {
 								<Ignore />
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">Display language</Label>
+										<Label id="language_label">
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => {}}>
+											<select id="language" value="fr-CA" onChange={() => { }}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -266,9 +274,11 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">Default application</Label>
+										<Label id="application_label">
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => {}}>
+											<select id="application" value={4} onChange={() => { }}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -362,8 +372,8 @@ describe("Preferences", () => {
 		);
 		return expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<Preferences messages={messages} />
+				<IntlProvider locale="en-US" messages={messages}>
+					<Preferences />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -385,9 +395,11 @@ describe("Preferences", () => {
 								<Ignore />
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">Display language</Label>
+										<Label id="language_label">
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => {}}>
+											<select id="language" value="en-US" onChange={() => { }}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -398,9 +410,11 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">Default application</Label>
+										<Label id="application_label">
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => {}}>
+											<select id="application" value={3} onChange={() => { }}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -458,8 +472,8 @@ describe("Preferences", () => {
 		);
 		return expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<Preferences messages={messages} />
+				<IntlProvider locale="en-US" messages={messages}>
+					<Preferences />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -481,9 +495,11 @@ describe("Preferences", () => {
 								<Ignore />
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">Display language</Label>
+										<Label id="language_label">
+											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => {}}>
+											<select id="language" value="fr-CA" onChange={() => { }}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -494,9 +510,11 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">Default application</Label>
+										<Label id="application_label">
+											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
+										</Label>
 										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => {}}>
+											<select id="application" value={3} onChange={() => { }}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -532,8 +550,8 @@ describe("Preferences", () => {
 			.deleteIn(["settings", "defaultApp"]);
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<Preferences messages={messages} />
+				<IntlProvider locale="en-US" messages={messages}>
+					<Preferences />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -549,9 +567,11 @@ describe("Preferences", () => {
 							<Ignore />
 							<PrefForm>
 								<FieldBox>
-									<Label id="language_label">Display language</Label>
+									<Label id="language_label">
+										{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
+									</Label>
 									<SelectorWrapper>
-										<select id="language" value="" onChange={() => {}}>
+										<select id="language" value="" onChange={() => { }}>
 											<option>English</option>
 											<option>EnglishCa</option>
 											<option>Francais</option>
@@ -562,9 +582,11 @@ describe("Preferences", () => {
 									</SelectorWrapper>
 								</FieldBox>
 								<FieldBox>
-									<Label id="application_label">Default application</Label>
+									<Label id="application_label">
+										{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
+									</Label>
 									<SelectorWrapper>
-										<select id="application" value="" onChange={() => {}}>
+										<select id="application" value="" onChange={() => { }}>
 											<option>Marketing Legacy</option>
 											<option>Product Information</option>
 										</select>
@@ -585,7 +607,7 @@ describe("Preferences", () => {
 		let update, update2;
 		beforeEach(() => {
 			update = sinon.spy().named("update");
-			update2 = () => {};
+			update2 = () => { };
 		});
 		it("returns an update function", () =>
 			expect(

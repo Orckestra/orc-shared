@@ -37,8 +37,8 @@ describe("Topbar", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
-			subscribe: () => {},
-			dispatch: () => {},
+			subscribe: () => { },
+			dispatch: () => { },
 			getState: () => state,
 		};
 		applications = [
@@ -53,7 +53,7 @@ describe("Topbar", () => {
 				iconUri: "/test/elsewhere",
 			},
 		];
-		clicker = () => {};
+		clicker = () => { };
 		menuMessages = {
 			sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
 			preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
@@ -169,7 +169,7 @@ describe("useMenuProps", () => {
 		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
 			getState: () => state,
-			subscribe: () => {},
+			subscribe: () => { },
 			dispatch: sinon.spy().named("dispatch"),
 		};
 		messages = {
@@ -201,19 +201,19 @@ describe("useMenuProps", () => {
 					{
 						id: "userMenuSignOut",
 						label: "Sign out",
-						handler: () => {},
-						icon: "logout-1",
+						handler: () => { },
+						icon: "logout",
 					},
 					{
 						id: "userMenuPrefsMenu",
 						label: "Preferences",
-						handler: () => {},
-						icon: "settings-cogwheel",
+						handler: () => { },
+						icon: "cogwheel",
 					},
 					{
 						id: "userMenuAbout",
 						label: "About",
-						handler: () => {},
+						handler: () => { },
 						icon: "info",
 					},
 				]}

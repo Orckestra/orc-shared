@@ -1,129 +1,88 @@
 import React from "react";
-import ExpansionPanelMui from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionActions from "@material-ui/core/AccordionActions";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import Icon from "./../../Icon";
-import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
+import {
+	ExpansionPanelProps,
+	ExpansionPanelActionsProps,
+	isExpansionPanelProps,
+	isExpansionPanelActionsProps
+} from "./expansionPanelProps";
+import Icon from "./../DataDisplay/Icon";
 
 const useStyles = makeStyles(theme => ({
-	summaryRoot: {
-		height: theme.spacing(8),
-		backgroundColor: theme.palette.primary.lighter,
-		flexDirection: "row-reverse",
-	},
-	resetPadding: {
-		padding: "0",
-	},
-	panelExpanded: {},
-	summaryContent: {
-		marginLeft: theme.spacing(1),
-		"&$panelExpanded": {
-			marginLeft: theme.spacing(1),
+	expansionPanelHeader: {
+		minHeight: 0,
+		backgroundColor: theme.palette.grey.light,
+		height: theme.spacing(4),
+		"&$headerPanelExpanded": {
+			minHeight: 0,
+			margin: 0,
 		},
+		borderColor: theme.palette.grey.borders
 	},
-	panelRoot: {
-		"&$panelExpanded": {
-			margin: "0",
-			"&:before": {
-				opacity: "1",
-			},
-		},
-		"&:before": {
-			backgroundColor: theme.palette.secondary.light,
-		},
+	expandIcon: {
+		hight: theme.spacing(1),
+		width: theme.spacing(1)
 	},
-	summaryExpandIconRoot: {
-		color: theme.palette.grey.darker,
-		minWidth: "auto",
-	},
+	headerPanelExpanded: {}
 }));
 
-const ExpansionPanel = ({
-	header,
-	content,
-	actions,
-	expansionPanelProps,
-	expansionPanelActionsProps,
-}) => {
-	if (
-		expansionPanelProps != null &&
-		expansionPanelProps instanceof ExpansionPanelProps === false
-	) {
-		throw new TypeError(
-			"expansionPanelProps property is not of type ExpansionPanelProps",
-		);
+const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansionPanelActionsProps }) => {
+	if (isExpansionPanelProps(expansionPanelProps) === false) {
+		throw new TypeError("expansionPanelProps property is not of type ExpansionPanelProps");
 	}
 
-	if (
-		expansionPanelActionsProps != null &&
-		expansionPanelActionsProps instanceof ExpansionPanelActionsProps === false
-	) {
-		throw new TypeError(
-			"expansionPanelActionsProps property is not of type ExpansionPanelActionsProps",
-		);
+	if (isExpansionPanelActionsProps(expansionPanelActionsProps) === false) {
+		throw new TypeError("expansionPanelActionsProps property is not of type ExpansionPanelActionsProps");
 	}
 
 	const classes = useStyles();
 
 	// Expansion panel props
 	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
-	const expanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.expanded);
-	const onChange = expansionPanelProps?.get(ExpansionPanelProps.propNames.onChange);
+	const defaultExpanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.defaultExpanded) ?? true;
 
-	// Expansion panel summary props
-	const defaultSummaryStyles = {
-		edge: false,
-		size: "small",
-		classes: {
-			root: classes.summaryExpandIconRoot,
-			sizeSmall: classes.resetPadding,
-		},
+	const [expanded, setExpanded] = React.useState(defaultExpanded);
+
+	const internalOnChange = (evt, isExpanded) => {
+		setExpanded(isExpanded);
 	};
 
+	const expansionPanelRootStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.root);
+
+	// Expansion panel summary props
+
 	// Expansion panel actions props
-	const disableSpacing = expansionPanelActionsProps?.get(
-		ExpansionPanelActionsProps.propNames.disableSpacing,
-	);
+	const disableSpacing = expansionPanelActionsProps?.get(ExpansionPanelActionsProps.propNames.disableSpacing);
 
 	return (
-		<ExpansionPanelMui
+		<Accordion
+			defaultExpanded={defaultExpanded}
 			disabled={disabled == null ? false : disabled}
 			expanded={expanded}
-			onChange={onChange}
+			onChange={internalOnChange}
 			classes={{
-				root: classNames(classes.panelRoot),
-				expanded: classNames(classes.panelExpanded),
+				root: expansionPanelRootStyle
 			}}
 		>
-			<ExpansionPanelSummary
-				expandIcon={<Icon {...{ id: "chevron-down" }} />}
-				IconButtonProps={defaultSummaryStyles}
+			<AccordionSummary
+				expandIcon={<Icon id="chevron-down" className={classes.expandIcon} />}
 				classes={{
-					root: classNames(classes.summaryRoot),
-					expanded: classNames(classes.panelExpanded),
-					content: classNames(classes.summaryContent),
+					root: classNames(classes.expansionPanelHeader),
+					expanded: classes.headerPanelExpanded
 				}}
 			>
 				{header}
-			</ExpansionPanelSummary>
-			<ExpansionPanelDetails
-				classes={{
-					root: classNames(classes.resetPadding),
-				}}
-			>
-				{content}
-			</ExpansionPanelDetails>
+			</AccordionSummary>
+			<AccordionDetails>{content}</AccordionDetails>
 			{actions != null ? (
-				<ExpansionPanelActions
-					disableSpacing={disableSpacing == null ? false : disableSpacing}
-				>
-					{actions}
-				</ExpansionPanelActions>
+				<AccordionActions disableSpacing={disableSpacing == null ? false : disableSpacing}>{actions}</AccordionActions>
 			) : null}
-		</ExpansionPanelMui>
+		</Accordion>
 	);
 };
 

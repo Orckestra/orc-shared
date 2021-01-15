@@ -26,7 +26,7 @@ describe("Head", () => {
 		node.remove();
 	});
 
-	it("¨sets the language on the <html> element", () => {
+	it("¨sets the language on the <html> element", async () => {
 		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter>
@@ -36,8 +36,10 @@ describe("Head", () => {
 			node,
 		);
 		expect(document.documentElement.lang, "not to be", "fr-CA");
-		return new Promise(resolve => window.requestAnimationFrame(resolve)).then(() =>
-			expect(document.documentElement.lang, "to be", "fr-CA"),
-		);
+
+		await new Promise(resolve => window.requestAnimationFrame(resolve));
+		await new Promise(resolve => setTimeout(resolve, 100));
+
+		expect(document.documentElement.lang, "to be", "fr-CA");
 	});
 });

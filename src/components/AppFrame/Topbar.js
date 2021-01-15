@@ -12,6 +12,7 @@ import ApplicationSelector from "./ApplicationSelector";
 import DropMenu from "../DropMenu";
 import Anchor from "./Anchor";
 import Help from "./Help";
+import sharedMessages from "./../../sharedMessages";
 
 export const Wrapper = styled.div`
 	height: 40px;
@@ -19,7 +20,7 @@ export const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
-export const useMenuProps = messages => {
+export const useMenuProps = () => {
 	const intl = useIntl();
 	const dispatch = useDispatch();
 	return {
@@ -28,19 +29,19 @@ export const useMenuProps = messages => {
 		menuItems: [
 			{
 				id: "userMenuSignOut",
-				label: intl.formatMessage(messages.sign_out),
+				label: intl.formatMessage(sharedMessages.signOut),
 				handler: () => dispatch(signOut()),
-				icon: "logout-1",
+				icon: "logout",
 			},
 			{
 				id: "userMenuPrefsMenu",
-				label: intl.formatMessage(messages.preferences),
+				label: intl.formatMessage(sharedMessages.preferences),
 				handler: () => dispatch(setStateField(PREFS_NAME, "show", true)),
-				icon: "settings-cogwheel",
+				icon: "cogwheel",
 			},
 			{
 				id: "userMenuAbout",
-				label: intl.formatMessage(messages.about),
+				label: intl.formatMessage(sharedMessages.about),
 				handler: () => dispatch(setStateField(ABOUT_NAME, "show", true)),
 				icon: "info",
 			},
@@ -48,8 +49,8 @@ export const useMenuProps = messages => {
 	};
 };
 
-export const Menu = ({ messages }) => {
-	const { menuLabel, ...menuProps } = useMenuProps(messages);
+export const Menu = () => {
+	const { menuLabel, ...menuProps } = useMenuProps();
 	return (
 		<DropMenu {...menuProps}>
 			<Anchor menuLabel={menuLabel} />
@@ -94,8 +95,6 @@ const Topbar = ({
 	applicationId,
 	currentApplication,
 	onClick,
-	menuMessages,
-	helpMessages,
 	helpUrl,
 	...config
 }) => (
@@ -109,8 +108,8 @@ const Topbar = ({
 			/>
 			<CurrentApp {...(currentApplication || {})} />
 		</AppBox>
-		<Menu {...config} messages={menuMessages} />
-		<Help {...{ messages: helpMessages, helpUrl }} />
+		<Menu {...config} />
+		<Help {...{ helpUrl }} />
 	</Wrapper>
 );
 
