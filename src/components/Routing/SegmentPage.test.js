@@ -45,19 +45,19 @@ describe("SegmentPage", () => {
 								model: {
 									field1: {
 										value: "smth",
-										wasModified: true
-									}
-								}
-							}
-						}
+										wasModified: true,
+									},
+								},
+							},
+						},
 					},
-				}
+				},
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			getState: () => state,
-			dispatch: () => { },
+			dispatch: () => {},
 		};
 		segments = {
 			"/one": {
@@ -82,8 +82,8 @@ describe("SegmentPage", () => {
 			"/three": {
 				label: "ComponentLabel",
 				component: View5,
-				labelComponent: <ComponentLabel />
-			}
+				labelComponent: <ComponentLabel />,
+			},
 		};
 	});
 
@@ -110,11 +110,8 @@ describe("SegmentPage", () => {
 					<List>
 						<Item to="/foo/meep/entityIdValue/one">
 							<Grid container justify="space-between">
-								<Grid item>
-									Text
-								</Grid>
-								<Grid item>
-								</Grid>
+								<Grid item>Text</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/two" active>
@@ -123,8 +120,7 @@ describe("SegmentPage", () => {
 									Translated
 									<span>*</span>
 								</Grid>
-								<Grid item>
-								</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/three">
@@ -140,7 +136,7 @@ describe("SegmentPage", () => {
 					</List>
 					<View2 />
 				</Wrapper>
-			</MemoryRouter>
+			</MemoryRouter>,
 		);
 	});
 
@@ -172,11 +168,8 @@ describe("SegmentPage", () => {
 						<List>
 							<Item to="/foo/meep/entityIdValue/one">
 								<Grid container justify="space-between">
-									<Grid item>
-										Text
-								</Grid>
-									<Grid item>
-									</Grid>
+									<Grid item>Text</Grid>
+									<Grid item></Grid>
 								</Grid>
 							</Item>
 							<Item to="/foo/meep/entityIdValue/two" active>
@@ -185,8 +178,7 @@ describe("SegmentPage", () => {
 										Translated
 										<span>*</span>
 									</Grid>
-									<Grid item>
-									</Grid>
+									<Grid item></Grid>
 								</Grid>
 							</Item>
 							<Item to="/foo/meep/entityIdValue/three">
@@ -286,11 +278,8 @@ describe("SegmentPage", () => {
 					<List>
 						<Item to="/foo/meep/entityIdValue/one">
 							<Grid container justify="space-between">
-								<Grid item>
-									Text
-								</Grid>
-								<Grid item>
-								</Grid>
+								<Grid item>Text</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/two">
@@ -299,8 +288,7 @@ describe("SegmentPage", () => {
 									Translated
 									<span>*</span>
 								</Grid>
-								<Grid item>
-								</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/three">

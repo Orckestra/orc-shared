@@ -2,14 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import sinon from "sinon";
 import { getStyledClassSelector } from "../utils/testUtils";
-import {
-	InnerSelect,
-	Wrapper,
-	SelectBox,
-	Dropdown,
-	Option,
-	Placeholder,
-} from "./Selector";
+import { InnerSelect, Wrapper, SelectBox, Dropdown, Option, Placeholder } from "./Selector";
 import MultiSelector, { SelectedValue } from "./MultiSelector";
 
 describe("MultiSelector", () => {
@@ -303,9 +296,7 @@ describe("MultiSelector", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="multiselect_selectAll"]' },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: [["1", "2", "3", "4"]] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [["1", "2", "3", "4"]] }])));
 
 	it("deals with an empty value prop change", () =>
 		expect(

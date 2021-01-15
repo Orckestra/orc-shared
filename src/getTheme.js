@@ -46,7 +46,7 @@ const baseTheme = {
 			up: "chevron-up",
 			down: "dropdown-chevron-down",
 			right: "dropdown-chevron-right",
-			more: "arrow-more"
+			more: "arrow-more",
 		},
 		scopeTypes: {
 			Global: "global-scope",
@@ -70,7 +70,7 @@ const baseTheme = {
 		backArrow: "arrow-large-left",
 		loading: "sync",
 		error: "warning",
-		reportProblem: "report-problem-triangle"
+		reportProblem: "report-problem-triangle",
 	},
 	fonts: {
 		base: "Open Sans, sans-serif",
@@ -97,9 +97,7 @@ const setApplicationColors = theme => {
 const appHighlightColor_IS_DEPRECATED = { appHighlightColor: "#ff00ff" };
 
 const getTheme = (overrides = {}) => {
-	return setApplicationColors(
-		merge({}, baseTheme, overrides, appHighlightColor_IS_DEPRECATED),
-	);
+	return setApplicationColors(merge({}, baseTheme, overrides, appHighlightColor_IS_DEPRECATED));
 };
 
 export default getTheme;

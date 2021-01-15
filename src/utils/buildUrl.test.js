@@ -39,11 +39,7 @@ describe("loadConfig", () => {
 		fail = true;
 		return expect(loadConfig, "when called with", []).then(() => {
 			expect(placeholderBuildUrl, "not to be", buildUrl);
-			expect(
-				console.warn,
-				"was called with",
-				"Failed to load config.json, falling back to dev defaults",
-			);
+			expect(console.warn, "was called with", "Failed to load config.json, falling back to dev defaults");
 		});
 	});
 
@@ -52,8 +48,7 @@ describe("loadConfig", () => {
 			expect(
 				buildUrl,
 				"to throw",
-				"Config not yet loaded. " +
-					"Please call util.js#loadConfig() and await resolution of the returned Promise.",
+				"Config not yet loaded. " + "Please call util.js#loadConfig() and await resolution of the returned Promise.",
 			));
 
 		describe("with config loaded", () => {
@@ -65,13 +60,7 @@ describe("loadConfig", () => {
 			});
 
 			it("constructs an URL from path segments", () =>
-				expect(
-					buildUrl,
-					"called with",
-					[["foo", "bar"]],
-					"to equal",
-					"https://example.com/api/foo/bar",
-				));
+				expect(buildUrl, "called with", [["foo", "bar"]], "to equal", "https://example.com/api/foo/bar"));
 
 			it("constructs an URL with parameters", () =>
 				expect(

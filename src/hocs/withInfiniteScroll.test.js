@@ -20,11 +20,7 @@ const TestComp = props => (
 					([prop, value]) =>
 						prop +
 						": " +
-						(typeof value === "function"
-							? "function"
-							: typeof value === "string"
-							? '"' + value + '"'
-							: value),
+						(typeof value === "function" ? "function" : typeof value === "string" ? '"' + value + '"' : value),
 				)
 				.join(",\n  ") +
 			"\n}"}
@@ -88,27 +84,21 @@ describe("withInfiniteScroll", () => {
 				},
 			);
 			const fakeEvent = getFakeEvent(100);
-			return expect(onScroll, "called with", [fakeEvent]).then(() =>
-				expect(loader, "was not called"),
-			);
+			return expect(onScroll, "called with", [fakeEvent]).then(() => expect(loader, "was not called"));
 		});
 
 		it("does not call loader if not scrolled far enough", () => {
 			const fakeEvent = getFakeEvent(100);
 			return expect(onScroll, "called with", [fakeEvent])
 				.then(() => expect(loader, "was not called"))
-				.then(() =>
-					expect(oldOnScroll, "to have calls satisfying", [{ args: [fakeEvent] }]),
-				);
+				.then(() => expect(oldOnScroll, "to have calls satisfying", [{ args: [fakeEvent] }]));
 		});
 
 		it("calls the loader if scrolled far enough", () => {
 			const fakeEvent = getFakeEvent(350);
 			return expect(onScroll, "called with", [fakeEvent])
 				.then(() => expect(loader, "to have calls satisfying", [{ args: [2] }]))
-				.then(() =>
-					expect(oldOnScroll, "to have calls satisfying", [{ args: [fakeEvent] }]),
-				);
+				.then(() => expect(oldOnScroll, "to have calls satisfying", [{ args: [fakeEvent] }]));
 		});
 
 		it("does not call the loader if the latest page is not loaded", () => {
@@ -122,9 +112,7 @@ describe("withInfiniteScroll", () => {
 					scrollLoader: loader,
 				},
 			);
-			return expect(onScroll, "called with", [getFakeEvent(350)]).then(() =>
-				expect(loader, "was not called"),
-			);
+			return expect(onScroll, "called with", [getFakeEvent(350)]).then(() => expect(loader, "was not called"));
 		});
 
 		it("does not call the loader if a partial page is loaded", () => {
@@ -138,9 +126,7 @@ describe("withInfiniteScroll", () => {
 					scrollLoader: loader,
 				},
 			);
-			return expect(onScroll, "called with", [getFakeEvent(350)]).then(() =>
-				expect(loader, "was not called"),
-			);
+			return expect(onScroll, "called with", [getFakeEvent(350)]).then(() => expect(loader, "was not called"));
 		});
 	});
 });

@@ -21,11 +21,11 @@ export const PlaceholderIcon = styled(Icon)`
 	font-size: 140px;
 
 	${ifFlag(
-	"animate",
-	css`
+		"animate",
+		css`
 			animation: ${rotate} 4s linear infinite;
 		`,
-)};
+	)};
 `;
 
 export const PlaceholderTitle = styled.div`

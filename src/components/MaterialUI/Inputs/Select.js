@@ -51,8 +51,8 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 999,
 	},
 	displayNone: {
-		display: "none"
-	}
+		display: "none",
+	},
 }));
 
 const MenuProps = {
@@ -67,25 +67,24 @@ const MenuProps = {
 	},
 };
 
-const getIconButtonMenuProps = (anchorRef) => (
-	{
-		getContentAnchorEl: null,
-		anchorEl: anchorRef,
-		anchorOrigin: {
-			vertical: "bottom",
-			horizontal: "right",
-		},
-		transformOrigin: {
-			vertical: "top",
-			horizontal: "right",
-		},
-	});
+const getIconButtonMenuProps = anchorRef => ({
+	getContentAnchorEl: null,
+	anchorEl: anchorRef,
+	anchorOrigin: {
+		vertical: "bottom",
+		horizontal: "right",
+	},
+	transformOrigin: {
+		vertical: "top",
+		horizontal: "right",
+	},
+});
 
 const SelectIcon = props => {
 	return <Icon id="dropdown-chevron-down" {...props} />;
 };
 
-export const SelectIconButton = (props) => {
+export const SelectIconButton = props => {
 	const classes = useStyles();
 
 	return (
@@ -138,13 +137,13 @@ const Select = ({ options, selectProps }) => {
 	const defaultMenuProps = {
 		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
 		...MenuProps,
-		...positionOverride
+		...positionOverride,
 	};
 
 	const iconSelectMenuProps = {
 		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
 		...positionOverride,
-		...getIconButtonMenuProps(ref.current)
+		...getIconButtonMenuProps(ref.current),
 	};
 
 	const items = options.map(option => (
@@ -181,7 +180,7 @@ const Select = ({ options, selectProps }) => {
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
-				select: classes.displayNone
+				select: classes.displayNone,
 			}}
 			onClick={() => setOpen(!open)}
 		>

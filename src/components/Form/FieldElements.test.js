@@ -160,12 +160,7 @@ describe("FieldElements", () => {
 				<IntlProvider locale="en">
 					<FormContext.Provider value={{ values }}>
 						<React.Fragment>
-							<InputField
-								name="thing"
-								update={undefined}
-								value={undefined}
-								type="ReadOnly"
-							/>
+							<InputField name="thing" update={undefined} value={undefined} type="ReadOnly" />
 						</React.Fragment>
 					</FormContext.Provider>
 				</IntlProvider>

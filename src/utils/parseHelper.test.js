@@ -3,7 +3,7 @@ import {
 	concatObjectPropsWithDelimeter,
 	getAllAfterPrependHref,
 	getModuleNameFromHref,
-	stringifyWithoutQuotes
+	stringifyWithoutQuotes,
 } from "./parseHelper";
 
 describe("parseGuid", () => {

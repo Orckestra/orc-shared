@@ -8,57 +8,49 @@ import sharedMessages from "../../../../sharedMessages";
 import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
-  actionPanel: {
-    float: "right"
-  },
-  cancelButton: {
-    marginRight: theme.spacing(1)
-  },
-  title: {
-    fontSize: theme.typography.h3Size,
-    color: theme.palette.primary.main,
-    textTransform: theme.typography.button.textTransform,
-    fontFamily: theme.typography.button.fontFamily,
-    fontWeight: theme.typography.button.fontWeight
-  }
+	actionPanel: {
+		float: "right",
+	},
+	cancelButton: {
+		marginRight: theme.spacing(1),
+	},
+	title: {
+		fontSize: theme.typography.h3Size,
+		color: theme.palette.primary.main,
+		textTransform: theme.typography.button.textTransform,
+		fontFamily: theme.typography.button.fontFamily,
+		fontWeight: theme.typography.button.fontWeight,
+	},
 }));
 
 const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdropClickCallback }) => {
-  const classes = useStyles();
+	const classes = useStyles();
 
-  const modalProps = new ModalProps();
+	const modalProps = new ModalProps();
 
-  const titleComponent = (
-    <Typography
-      className={classes.title}
-      children={<FormattedMessage {...sharedMessages.confirmation} />}
-    />
-  );
-  const messageComponent = <Typography children={message} />;
+	const titleComponent = (
+		<Typography className={classes.title} children={<FormattedMessage {...sharedMessages.confirmation} />} />
+	);
+	const messageComponent = <Typography children={message} />;
 
-  modalProps.set(ModalProps.propNames.title, titleComponent);
-  modalProps.set(ModalProps.propNames.open, open);
-  modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
+	modalProps.set(ModalProps.propNames.title, titleComponent);
+	modalProps.set(ModalProps.propNames.open, open);
+	modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
 
-  const actionPanel = (
-    <div className={classes.actionPanel}>
-      <Button
-        className={classes.cancelButton}
-        variant="outlined"
-        onClick={() => cancelCallback()}
-      >
-        <FormattedMessage {...sharedMessages.cancel} />
-      </Button>
-      <Button variant="contained" color="primary" onClick={() => okCallback()}>
-        <FormattedMessage {...sharedMessages.ok} />
-      </Button>
-    </div>
-  );
+	const actionPanel = (
+		<div className={classes.actionPanel}>
+			<Button className={classes.cancelButton} variant="outlined" onClick={() => cancelCallback()}>
+				<FormattedMessage {...sharedMessages.cancel} />
+			</Button>
+			<Button variant="contained" color="primary" onClick={() => okCallback()}>
+				<FormattedMessage {...sharedMessages.ok} />
+			</Button>
+		</div>
+	);
 
-  modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+	modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
 
-
-  return <Modal message={messageComponent} modalProps={modalProps} />
+	return <Modal message={messageComponent} modalProps={modalProps} />;
 };
 
 export default ConfirmationModal;

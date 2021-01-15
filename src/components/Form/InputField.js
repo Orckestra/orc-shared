@@ -5,15 +5,7 @@ import { FormContext } from "./Form";
 import inputs from "./Inputs";
 import Field from "./Field";
 
-export const InputField = ({
-	name,
-	type = "undefined",
-	label,
-	labelOnly,
-	placeholder,
-	required,
-	...props
-}) => {
+export const InputField = ({ name, type = "undefined", label, labelOnly, placeholder, required, ...props }) => {
 	const { values, listIndex, formName } = useContext(FormContext);
 	let fieldName = name;
 	if (listIndex !== undefined) {
@@ -22,9 +14,7 @@ export const InputField = ({
 	const fullId = formName ? `${formName}_${fieldName}` : `field_${fieldName}`;
 	const [{ wasBlurred }, updateViewState] = useViewState(fullId);
 	const { [name]: value = "" } = values;
-	props.onBlur = useCallback(() => updateViewState("wasBlurred", true), [
-		updateViewState,
-	]);
+	props.onBlur = useCallback(() => updateViewState("wasBlurred", true), [updateViewState]);
 	const { formatMessage } = useIntl();
 	const Input = inputs[type];
 	if (!Input) {
@@ -46,9 +36,7 @@ export const InputField = ({
 				aria-labelledby={listIndex !== undefined ? name + "_label" : undefined}
 				data-test-id={fullId}
 				value={value}
-				placeholder={
-					typeof placeholder == "object" ? formatMessage(placeholder) : undefined
-				}
+				placeholder={typeof placeholder == "object" ? formatMessage(placeholder) : undefined}
 				required={required && wasBlurred}
 			/>
 		</Field>

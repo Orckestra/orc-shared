@@ -47,12 +47,12 @@ describe("Navigation", () => {
 				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			modules: {
-				tree: {}
+				tree: {},
 			},
 			view: {
 				edit: {
-					test: {}
-				}
+					test: {},
+				},
 			},
 			scopes: {
 				TestScope: {
@@ -75,7 +75,7 @@ describe("Navigation", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
@@ -100,26 +100,26 @@ describe("Navigation", () => {
 
 	it("renders a navigation tab bar with state-based props", () => {
 		const module = {
-			icon: 'thing',
-			label: 'Thing',
-			href: '/TestScope/test',
-			mappedFrom: '/TestScope/test',
-			active: false
+			icon: "thing",
+			label: "Thing",
+			href: "/TestScope/test",
+			mappedFrom: "/TestScope/test",
+			active: false,
 		};
 
 		const pages = [
 			{
-				label: 'Page 1',
-				href: '/TestScope/test/page1',
+				label: "Page 1",
+				href: "/TestScope/test/page1",
 				active: true,
 				params: { scope: "TestScope", entityId: "page1" },
 			},
 			{
-				label: 'Page 2',
-				href: '/TestScope/test/page2',
+				label: "Page 2",
+				href: "/TestScope/test/page2",
 				active: false,
 				params: { scope: "TestScope", entityId: "page2" },
-			}
+			},
 		];
 
 		expect(
@@ -139,7 +139,7 @@ describe("Navigation", () => {
 						<TabBar module={module} pages={pages} />
 					</IntlProvider>
 				</MemoryRouter>
-			</Provider>
+			</Provider>,
 		);
 	});
 });

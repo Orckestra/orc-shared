@@ -2,12 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { spyOnConsole } from "../utils/testUtils";
-import Placeholder, {
-	PlaceholderBox,
-	PlaceholderIcon,
-	PlaceholderTitle,
-	PlaceholderSubtitle,
-} from "./Placeholder";
+import Placeholder, { PlaceholderBox, PlaceholderIcon, PlaceholderTitle, PlaceholderSubtitle } from "./Placeholder";
 
 describe("Placeholder", () => {
 	spyOnConsole();
@@ -20,12 +15,7 @@ describe("Placeholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Placeholder
-					icon="testIcon"
-					title="A title"
-					subtitle="A subtitle"
-					otherProp={true}
-				/>
+				<Placeholder icon="testIcon" title="A title" subtitle="A subtitle" otherProp={true} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",

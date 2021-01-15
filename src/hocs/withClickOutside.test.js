@@ -4,11 +4,7 @@ import sinon from "sinon";
 import withClickOutside from "./withClickOutside";
 
 const TestComp = React.forwardRef(({ other = false, ...props }, ref) =>
-	other ? (
-		<button ref={ref} {...props} id="inner" />
-	) : (
-		<div ref={ref} {...props} id="inner" />
-	),
+	other ? <button ref={ref} {...props} id="inner" /> : <div ref={ref} {...props} id="inner" />,
 );
 const Enhanced = withClickOutside(TestComp);
 
@@ -23,12 +19,7 @@ const delay = () => new Promise(resolve => setTimeout(resolve, 10));
 describe("withClickOutside", () => {
 	it("acts as a HOC", () =>
 		expect(withClickOutside, "when called with", [TestComp]).then(Comp =>
-			expect(
-				<Comp data-test />,
-				"when mounted",
-				"to satisfy",
-				<div id="inner" data-test />,
-			),
+			expect(<Comp data-test />, "when mounted", "to satisfy", <div id="inner" data-test />),
 		));
 
 	describe("click handling", () => {
@@ -38,10 +29,7 @@ describe("withClickOutside", () => {
 			onClick = sinon.spy().named("onClick");
 			parentNode = document.createElement("div");
 			document.body.appendChild(parentNode);
-			ReactDOM.render(
-				<Wrapped onClick={onClick} onClickOutside={onClickOutside} />,
-				parentNode,
-			);
+			ReactDOM.render(<Wrapped onClick={onClick} onClickOutside={onClickOutside} />, parentNode);
 		});
 		afterEach(() => {
 			ReactDOM.unmountComponentAtNode(parentNode);
@@ -67,10 +55,7 @@ describe("withClickOutside", () => {
 
 		it("changes handlers on re-render", () => {
 			const newClickOutside = sinon.spy().named("newClickOutside");
-			ReactDOM.render(
-				<Wrapped onClick={onClick} onClickOutside={newClickOutside} />,
-				parentNode,
-			);
+			ReactDOM.render(<Wrapped onClick={onClick} onClickOutside={newClickOutside} />, parentNode);
 			const outernode = parentNode.querySelector("#outer");
 			outernode.click();
 			delay().then(() => {
@@ -81,10 +66,7 @@ describe("withClickOutside", () => {
 		});
 
 		it("changes DOM nodes on re-render", () => {
-			ReactDOM.render(
-				<Wrapped other onClick={onClick} onClickOutside={onClickOutside} />,
-				parentNode,
-			);
+			ReactDOM.render(<Wrapped other onClick={onClick} onClickOutside={onClickOutside} />, parentNode);
 			const innernode = parentNode.querySelector("#inner");
 			innernode.click();
 			delay().then(() => {
@@ -114,15 +96,10 @@ describe("withClickOutside", () => {
 		beforeEach(() => {
 			onClick = sinon.spy().named("onClick");
 			onClickPropagate = sinon.spy().named("onClickPropagate");
-			stoppingHandler = sinon
-				.spy(event => event.stopPropagation())
-				.named("stoppingHandler");
+			stoppingHandler = sinon.spy(event => event.stopPropagation()).named("stoppingHandler");
 			parentNode = document.createElement("div");
 			document.body.appendChild(parentNode);
-			ReactDOM.render(
-				<Wrapped onClick={onClick} onClickOutside={stoppingHandler} />,
-				parentNode,
-			);
+			ReactDOM.render(<Wrapped onClick={onClick} onClickOutside={stoppingHandler} />, parentNode);
 			parentNode.addEventListener("click", onClickPropagate);
 		});
 		afterEach(() => {

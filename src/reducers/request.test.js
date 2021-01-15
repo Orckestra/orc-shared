@@ -2,8 +2,7 @@ import Immutable from "immutable";
 import reducer, { ERROR, LOGOUT } from "./request";
 
 describe("Request reducer", () => {
-	it("behaves as a reducer should", () =>
-		expect(reducer, "to be a reducer with initial state", {}));
+	it("behaves as a reducer should", () => expect(reducer, "to be a reducer with initial state", {}));
 
 	it("sets activity flag when a request is started", () => {
 		const oldState = Immutable.fromJS({

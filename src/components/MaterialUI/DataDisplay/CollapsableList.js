@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		alignItems: "center",
 		cursor: "pointer",
 		userSelect: "none",
-		marginTop: theme.spacing(1)
+		marginTop: theme.spacing(1),
 	},
 	floatLeft: {
 		float: "left",

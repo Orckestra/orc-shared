@@ -66,13 +66,13 @@ export const CloseButton = styled.p`
 export const AboutParagraph = styled.p`
 	margin-top: 20px;
 	${ifFlag(
-	"long",
-	css`
+		"long",
+		css`
 			html[lang^="fr"] & {
 				font-size: 10px;
 			}
 		`,
-)}
+	)}
 `;
 
 export const AboutLink = styled.a`
@@ -83,10 +83,10 @@ export const AboutLink = styled.a`
 export const getClickOutsideHandler = ({ show }, updateViewState) => {
 	return show
 		? event => {
-			event.stopPropagation();
-			updateViewState("show", false);
-		}
-		: () => { };
+				event.stopPropagation();
+				updateViewState("show", false);
+		  }
+		: () => {};
 };
 
 export const About = ({ currentApplication }) => {
@@ -94,9 +94,7 @@ export const About = ({ currentApplication }) => {
 	const version = useSelector(getVersionSelector);
 	const locale = useSelector(currentLocaleOrDefault);
 	const closeAboutBox = getClickOutsideHandler(viewState, updateViewState);
-	const aboutLinkUrl = "https://www.orckestra.com".concat(
-		locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "",
-	);
+	const aboutLinkUrl = "https://www.orckestra.com".concat(locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "");
 
 	return (
 		<AboutBox in={viewState.show} onClickOutside={closeAboutBox}>
@@ -113,48 +111,48 @@ export const About = ({ currentApplication }) => {
 				/>
 				{currentApplication && currentApplication.displayName
 					? [
-						<br key="application-br" />,
-						<Text
-							key="application-version"
-							message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
-						/>,
-					]
+							<br key="application-br" />,
+							<Text
+								key="application-version"
+								message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
+							/>,
+					  ]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-shared"]
 					? [
-						<br key="orc-shared-br" />,
-						<Text
-							key="orc-shared-version"
-							message={{
-								...sharedMessages.orcSharedVersion,
-								values: { version: DEPENDENCIES["orc-shared"] },
-							}}
-						/>,
-					]
+							<br key="orc-shared-br" />,
+							<Text
+								key="orc-shared-version"
+								message={{
+									...sharedMessages.orcSharedVersion,
+									values: { version: DEPENDENCIES["orc-shared"] },
+								}}
+							/>,
+					  ]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-scripts"]
 					? [
-						<br key="orc-scripts-br" />,
-						<Text
-							key="orc-scripts-version"
-							message={{
-								...sharedMessages.orcScriptsVersion,
-								values: { version: DEPENDENCIES["orc-scripts"] },
-							}}
-						/>,
-					]
+							<br key="orc-scripts-br" />,
+							<Text
+								key="orc-scripts-version"
+								message={{
+									...sharedMessages.orcScriptsVersion,
+									values: { version: DEPENDENCIES["orc-scripts"] },
+								}}
+							/>,
+					  ]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-secret"]
 					? [
-						<br key="orc-secret-br" />,
-						<Text
-							key="orc-secret-version"
-							message={{
-								...sharedMessages.orcSecretVersion,
-								values: { version: DEPENDENCIES["orc-secret"] },
-							}}
-						/>,
-					]
+							<br key="orc-secret-br" />,
+							<Text
+								key="orc-secret-version"
+								message={{
+									...sharedMessages.orcSecretVersion,
+									values: { version: DEPENDENCIES["orc-secret"] },
+								}}
+							/>,
+					  ]
 					: null}
 			</AboutParagraph>
 			<AboutParagraph long>

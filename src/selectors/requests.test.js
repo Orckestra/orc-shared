@@ -21,14 +21,7 @@ describe("selectActivity", () => {
 			type: "BAR_FAILURE",
 			payload: { status: 500, message: "ServerError" },
 		});
-		expect(
-			selectActivity,
-			"called with",
-			["MEEP"],
-			"called with",
-			[state],
-			"to be falsy",
-		);
+		expect(selectActivity, "called with", ["MEEP"], "called with", [state], "to be falsy");
 	});
 
 	it("returns an identical selector for identical request names", () =>

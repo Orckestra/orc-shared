@@ -125,14 +125,14 @@ const TableBody = props => {
 
 export const MemoTableBody = React.memo(TableBody, propsAreEqualBody);
 
-const TableCell = //withDeferredTooltip(
-	React.forwardRef((props, ref) => {
-		return (
-			<td className={props.className} ref={ref} {...props}>
-				{props.value}
-			</td>
-		);
-	});
+const TableCell = React.forwardRef((props, ref) => {
+	//withDeferredTooltip(
+	return (
+		<td className={props.className} ref={ref} {...props}>
+			{props.value}
+		</td>
+	);
+});
 //);
 
 const buildRowCheckbox = (classes, key, selectionHandlers) => {

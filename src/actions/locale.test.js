@@ -19,8 +19,7 @@ import {
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
 	modExport.loadConfig = () => Promise.resolve({});
-	modExport.buildUrl = (path = [], params = "") =>
-		"URL: " + path.join("/") + " " + JSON.stringify(params);
+	modExport.buildUrl = (path = [], params = "") => "URL: " + path.join("/") + " " + JSON.stringify(params);
 	return modExport;
 });
 

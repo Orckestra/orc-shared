@@ -73,8 +73,14 @@ describe("Sidebar", () => {
 					<MemoryRouter initialEntries={["/Global/second"]}>
 						<Bar>
 							<MenuToggle />
-							<EnhancedMenuItem icon="cars" title="First page"  id="first" label="First page" alert={{ type: "confirm" }} />
-							<EnhancedMenuItem icon="person" title="Second page"  id="second" label="Second page" />
+							<EnhancedMenuItem
+								icon="cars"
+								title="First page"
+								id="first"
+								label="First page"
+								alert={{ type: "confirm" }}
+							/>
+							<EnhancedMenuItem icon="person" title="Second page" id="second" label="Second page" />
 							<Logo />
 						</Bar>
 					</MemoryRouter>

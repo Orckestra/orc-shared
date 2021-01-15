@@ -19,9 +19,7 @@ const requestReducer = (state = initialState, action) => {
 		if (safeGet(action, "payload", "status") === 403) {
 			return state.delete(requestName).set(LOGOUT, true);
 		} else {
-			return state
-				.set(requestName, Immutable.fromJS(action))
-				.set(ERROR, Immutable.fromJS(action));
+			return state.set(requestName, Immutable.fromJS(action)).set(ERROR, Immutable.fromJS(action));
 		}
 	}
 	return state;

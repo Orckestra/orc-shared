@@ -1,11 +1,6 @@
 import Immutable from "immutable";
 import { resetLastScope } from "./navigation";
-import {
-	currentScopeSelector,
-	scopeGetter,
-	localizedScopeSelector,
-	selectLocalizedScopes
-} from "./scope";
+import { currentScopeSelector, scopeGetter, localizedScopeSelector, selectLocalizedScopes } from "./scope";
 
 let state;
 beforeEach(() => {
@@ -25,9 +20,9 @@ beforeEach(() => {
 				currency: {
 					displayName: {
 						en: "Euro",
-						fr: "Euro"
-					}
-				}
+						fr: "Euro",
+					},
+				},
 			},
 			FirstChild: {
 				name: { en: "First child", fr: "Premier fils" },
@@ -37,9 +32,9 @@ beforeEach(() => {
 				currency: {
 					displayName: {
 						en: "US Dollar",
-						fr: "US Dollar"
-					}
-				}
+						fr: "US Dollar",
+					},
+				},
 			},
 			FirstGrandchild: {
 				name: { en: "First grandchild", fr: "Premier petit-fils" },
@@ -60,8 +55,8 @@ beforeEach(() => {
 					isoCode: "USD",
 					displayName: {
 						en: "Euro",
-					}
-				}
+					},
+				},
 			},
 			ThirdGrandchild: {
 				name: { en: "Third grandchild", fr: "Troisième petit-fils" },
@@ -106,14 +101,12 @@ describe("currentScopeSelector", () => {
 				id: "SecondChild",
 				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
 				parentScopeId: "Global",
-				currency: { isoCode: 'USD', displayName: 'Euro' }
+				currency: { isoCode: "USD", displayName: "Euro" },
 			}),
 		));
 
 	it("gets global scope when there is no current scope, not a default scope", () => {
-		state = state
-			.deleteIn(["navigation", "route", "match", "params", "scope"])
-			.deleteIn(["settings", "defaultScope"]);
+		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]).deleteIn(["settings", "defaultScope"]);
 		return expect(
 			currentScopeSelector,
 			"called with",
@@ -124,8 +117,8 @@ describe("currentScopeSelector", () => {
 				id: "Global",
 				children: ["FirstChild", "SecondChild"],
 				currency: {
-					displayName: 'Euro'
-				}
+					displayName: "Euro",
+				},
 			}),
 		);
 	});
@@ -142,41 +135,24 @@ describe("currentScopeSelector", () => {
 				id: "FirstChild",
 				children: ["FirstGrandchild", "SecondGrandchild"],
 				parentScopeId: "Global",
-				currency: { displayName: 'US Dollar' }
+				currency: { displayName: "US Dollar" },
 			}),
 		);
 	});
 
 	it("gets null if scope not found", () => {
-		state = state.setIn(
-			["navigation", "route", "match", "params", "scope"],
-			"WrongScope",
-		);
-		return expect(
-			currentScopeSelector,
-			"called with",
-			[state],
-			"to equal",
-			Immutable.Map(),
-		);
+		state = state.setIn(["navigation", "route", "match", "params", "scope"], "WrongScope");
+		return expect(currentScopeSelector, "called with", [state], "to equal", Immutable.Map());
 	});
 });
 
 describe("scopeGetter", () => {
 	it("returns a getter function for scopes from the full scope index", () =>
-		expect(
-			scopeGetter,
-			"called with",
-			[state],
-			"called with",
-			["FifthGrandchild"],
-			"to equal",
-			{
-				name: "Cinquième petit-fils",
-				id: "FifthGrandchild",
-				parentScopeId: "SecondChild",
-			},
-		));
+		expect(scopeGetter, "called with", [state], "called with", ["FifthGrandchild"], "to equal", {
+			name: "Cinquième petit-fils",
+			id: "FifthGrandchild",
+			parentScopeId: "SecondChild",
+		}));
 
 	it("returns a getter function for scopes from a filtered scope index", () => {
 		state = state.setIn(["view", "scopeSelector", "filter"], "deux");
@@ -187,8 +163,8 @@ describe("scopeGetter", () => {
 				id: "Global",
 				children: ["FirstChild", "SecondChild"],
 				currency: {
-					displayName: 'Euro'
-				}
+					displayName: "Euro",
+				},
 			});
 			expect(getter, "called with", ["SecondGrandchild"], "to equal", {
 				name: "Deuxième petit-fils",
@@ -200,22 +176,14 @@ describe("scopeGetter", () => {
 
 	it("will reach Global scope even if no scopes match search", () => {
 		state = state.setIn(["view", "scopeSelector", "filter"], "scaramouche");
-		return expect(
-			scopeGetter,
-			"called with",
-			[state],
-			"called with",
-			["Global"],
-			"to equal",
-			{
-				name: "Global",
-				id: "Global",
-				children: ["FirstChild", "SecondChild"],
-				currency: {
-					displayName: 'Euro'
-				}
+		return expect(scopeGetter, "called with", [state], "called with", ["Global"], "to equal", {
+			name: "Global",
+			id: "Global",
+			children: ["FirstChild", "SecondChild"],
+			currency: {
+				displayName: "Euro",
 			},
-		);
+		});
 	});
 });
 
@@ -248,15 +216,7 @@ describe("localizedScopeSelector", () => {
 
 	it("returns null when scope id is not found", () => {
 		const wrongScopeId = "TestWrongScope";
-		expect(
-			localizedScopeSelector,
-			"when called with",
-			[wrongScopeId],
-			"called with",
-			[state],
-			"to equal",
-			null,
-		);
+		expect(localizedScopeSelector, "when called with", [wrongScopeId], "called with", [state], "to equal", null);
 	});
 });
 
@@ -274,15 +234,10 @@ describe("selectLocalizedScopes", () => {
 		expectedFirstChild.displayName = "Premier fils";
 		expectedFirstChild.displayCurrency = "US Dollar";
 
-		expect(
-			selectLocalizedScopes,
-			"when called with",
-			[scopes],
-			"called with",
-			[state],
-			"to equal",
-			[expectedGlobal, expectedFirstChild]
-		);
+		expect(selectLocalizedScopes, "when called with", [scopes], "called with", [state], "to equal", [
+			expectedGlobal,
+			expectedFirstChild,
+		]);
 	});
 
 	it("Retrieves localized scopes with fallback currency", () => {
@@ -294,15 +249,9 @@ describe("selectLocalizedScopes", () => {
 		expectedSecondChild.displayName = "Deuxième fils";
 		expectedSecondChild.displayCurrency = "[USD]";
 
-		expect(
-			selectLocalizedScopes,
-			"when called with",
-			[scopes],
-			"called with",
-			[state],
-			"to equal",
-			[expectedSecondChild]
-		);
+		expect(selectLocalizedScopes, "when called with", [scopes], "called with", [state], "to equal", [
+			expectedSecondChild,
+		]);
 	});
 
 	it("Not adds scope in result array if it does not exist", () => {
@@ -314,14 +263,6 @@ describe("selectLocalizedScopes", () => {
 		expectedGlobal.displayName = "Global";
 		expectedGlobal.displayCurrency = "Euro";
 
-		expect(
-			selectLocalizedScopes,
-			"when called with",
-			[scopes],
-			"called with",
-			[state],
-			"to equal",
-			[expectedGlobal]
-		);
+		expect(selectLocalizedScopes, "when called with", [scopes], "called with", [state], "to equal", [expectedGlobal]);
 	});
 });

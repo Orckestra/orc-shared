@@ -4,11 +4,7 @@ const defaultPredicate = (previous, current) => {
 	return previous !== undefined && previous !== null && previous !== current;
 };
 
-const usePreviousModified = (
-	value,
-	effectAction = null,
-	predicate = defaultPredicate,
-) => {
+const usePreviousModified = (value, effectAction = null, predicate = defaultPredicate) => {
 	const ref = useRef(value);
 
 	const predicateResult = predicate(ref.current, value);

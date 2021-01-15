@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import MuiTooltip from "@material-ui/core/Tooltip";
-import {
-	isString,
-	isObject,
-	isStringNullOrWhitespace,
-	isReactComponent,
-} from "../../../utils/propertyValidator";
+import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "../../../utils/propertyValidator";
 
 // Pay attention that if component you are passed to this HOC contains titleValue property
 // by itself then that property will be disappeared after using that HOC.
@@ -14,9 +9,7 @@ import {
 const withDeferredTooltip = Comp => ({ titleValue, alwaysDisplay, ...props }) => {
 	const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
 
-	const defaultComponent = (
-		<Comp onMouseEnter={event => makeComponentTooltipped(event)} {...props} />
-	);
+	const defaultComponent = <Comp onMouseEnter={event => makeComponentTooltipped(event)} {...props} />;
 
 	const makeComponentTooltipped = function (event) {
 		if (alwaysDisplay) {
@@ -28,11 +21,9 @@ const withDeferredTooltip = Comp => ({ titleValue, alwaysDisplay, ...props }) =>
 
 	if (titleValue == null) return <Comp {...props} />;
 
-	if (isString(titleValue) && isStringNullOrWhitespace(titleValue))
-		return <Comp {...props} />;
+	if (isString(titleValue) && isStringNullOrWhitespace(titleValue)) return <Comp {...props} />;
 
-	if (isObject(titleValue) && isReactComponent(titleValue) === false)
-		return <Comp {...props} />;
+	if (isObject(titleValue) && isReactComponent(titleValue) === false) return <Comp {...props} />;
 
 	if (shouldBeTooltipped === false) return defaultComponent;
 

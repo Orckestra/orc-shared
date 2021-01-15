@@ -12,11 +12,7 @@ const TestComp = props => (
 					([prop, value]) =>
 						prop +
 						": " +
-						(typeof value === "function"
-							? "function"
-							: typeof value === "string"
-							? '"' + value + '"'
-							: value),
+						(typeof value === "function" ? "function" : typeof value === "string" ? '"' + value + '"' : value),
 				)
 				.join(",\n  ") +
 			"\n}"}
@@ -39,9 +35,7 @@ describe("withRequestActivity", () => {
 	});
 
 	it("sets an active flag if the named request is in progress", () =>
-		expect(withRequestActivity, "when called with", ["ONGOING"], "when called with", [
-			TestComp,
-		]).then(EnhComp =>
+		expect(withRequestActivity, "when called with", ["ONGOING"], "when called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
 					<MemoryRouter>
@@ -55,9 +49,7 @@ describe("withRequestActivity", () => {
 		));
 
 	it("does not set active flag if the named request is not in progress", () =>
-		expect(withRequestActivity, "when called with", ["INACTIVE"], "when called with", [
-			TestComp,
-		]).then(EnhComp =>
+		expect(withRequestActivity, "when called with", ["INACTIVE"], "when called with", [TestComp]).then(EnhComp =>
 			expect(
 				<Provider store={store}>
 					<MemoryRouter>

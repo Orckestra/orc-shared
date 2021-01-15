@@ -5,9 +5,7 @@ import { getThemeProp, ifFlag } from "../utils";
 import withId from "../hocs/withId";
 
 const switchSpeed = 200;
-const FilteredLabel = ({ onColor, offColor, onCaption, offCaption, ...props }) => (
-	<label {...props} />
-);
+const FilteredLabel = ({ onColor, offColor, onCaption, offCaption, ...props }) => <label {...props} />;
 
 export const Wrapper = styled(FilteredLabel)`
 	display: inline-block;
@@ -95,15 +93,7 @@ export const ContainedCheckbox = styled.input.attrs(() => ({
 	opacity: 0;
 `;
 
-export const Switch = ({
-	value,
-	onCaption,
-	offCaption,
-	onColor,
-	offColor,
-	id,
-	...checkboxProps
-}) => (
+export const Switch = ({ value, onCaption, offCaption, onColor, offColor, id, ...checkboxProps }) => (
 	<Wrapper htmlFor={id} value={value} onColor={onColor} offColor={offColor}>
 		<ContainedCheckbox id={id} {...checkboxProps} checked={value} />
 		{onCaption ? (

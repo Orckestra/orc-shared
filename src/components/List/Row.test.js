@@ -16,11 +16,7 @@ describe("Row", () => {
 	let rowOnClick, columnDefs, row;
 	beforeEach(() => {
 		rowOnClick = sinon.spy().named("rowOnClick");
-		columnDefs = [
-			{ fieldName: "a" },
-			{ fieldName: "b" },
-			{ fieldName: "test", type: "custom", component: TestComp },
-		];
+		columnDefs = [{ fieldName: "a" }, { fieldName: "b" }, { fieldName: "test", type: "custom", component: TestComp }];
 		row = { a: "foo", b: "bar" };
 	});
 
@@ -35,13 +31,7 @@ describe("Row", () => {
 			>
 				<table>
 					<tbody>
-						<Row
-							row={row}
-							rowId="rowIdentifier"
-							columnDefs={columnDefs}
-							rowOnClick={rowOnClick}
-							bgColor="#ff0000"
-						/>
+						<Row row={row} rowId="rowIdentifier" columnDefs={columnDefs} rowOnClick={rowOnClick} bgColor="#ff0000" />
 					</tbody>
 				</table>
 			</Provider>,
@@ -59,24 +49,9 @@ describe("Row", () => {
 				<table>
 					<tbody>
 						<TableRow bgColor="#ff0000" onClick={() => {}}>
-							<DataCell
-								key="a"
-								rowId="rowIdentifier"
-								row={row}
-								columnDef={columnDefs[0]}
-							/>
-							<DataCell
-								key="b"
-								rowId="rowIdentifier"
-								row={row}
-								columnDef={columnDefs[1]}
-							/>
-							<DataCell
-								key="test"
-								rowId="rowIdentifier"
-								row={row}
-								columnDef={columnDefs[2]}
-							/>
+							<DataCell key="a" rowId="rowIdentifier" row={row} columnDef={columnDefs[0]} />
+							<DataCell key="b" rowId="rowIdentifier" row={row} columnDef={columnDefs[1]} />
+							<DataCell key="test" rowId="rowIdentifier" row={row} columnDef={columnDefs[2]} />
 						</TableRow>
 					</tbody>
 				</table>
@@ -94,12 +69,7 @@ describe("Row", () => {
 			>
 				<table>
 					<tbody>
-						<Row
-							row={row}
-							rowId="rowIdentifier"
-							columnDefs={columnDefs}
-							rowOnClick={rowOnClick}
-						/>
+						<Row row={row} rowId="rowIdentifier" columnDefs={columnDefs} rowOnClick={rowOnClick} />
 					</tbody>
 				</table>
 			</Provider>,
@@ -211,31 +181,13 @@ describe("TableRow", () => {
 
 describe("stringifyFieldName", () => {
 	it("does nothing to a string", () =>
-		expect(
-			stringifyFieldName,
-			"when called with",
-			["FieldName"],
-			"to equal",
-			"FieldName",
-		));
+		expect(stringifyFieldName, "when called with", ["FieldName"], "to equal", "FieldName"));
 
 	it("converts an array to a string", () =>
-		expect(
-			stringifyFieldName,
-			"when called with",
-			[["fieldA", "foo"]],
-			"to equal",
-			"fieldA_foo",
-		));
+		expect(stringifyFieldName, "when called with", [["fieldA", "foo"]], "to equal", "fieldA_foo"));
 
 	it("handles arrays with non-string types", () =>
-		expect(
-			stringifyFieldName,
-			"when called with",
-			[["fieldA", 0, "foo"]],
-			"to equal",
-			"fieldA_0_foo",
-		));
+		expect(stringifyFieldName, "when called with", [["fieldA", 0, "foo"]], "to equal", "fieldA_0_foo"));
 
 	it("returns undefined if given undefined", () =>
 		expect(stringifyFieldName, "when called with", [undefined], "to equal", undefined));

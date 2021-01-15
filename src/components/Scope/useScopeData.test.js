@@ -19,11 +19,7 @@ const TestComp = ({ spy, ...props }) => {
 	return (
 		<div>
 			<input id="getScope" value="" onChange={e => spy(getScope(e.target.value))} />
-			<PropStruct
-				currentScope={currentScope}
-				defaultNodeState={defaultNodeState}
-				{...props}
-			/>
+			<PropStruct currentScope={currentScope} defaultNodeState={defaultNodeState} {...props} />
 		</div>
 	);
 };

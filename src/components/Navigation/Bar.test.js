@@ -8,14 +8,7 @@ import { createMemoryHistory } from "history";
 import sinon from "sinon";
 import { getStyledClassSelector } from "../../utils/testUtils";
 import Tab, { PageTab } from "./Tab";
-import Bar, {
-	TabBar,
-	ScrollableBar,
-	InnerBar,
-	useTabScroll,
-	StyledMenu,
-	MenuButton,
-} from "./Bar";
+import Bar, { TabBar, ScrollableBar, InnerBar, useTabScroll, StyledMenu, MenuButton } from "./Bar";
 
 describe("Bar", () => {
 	let closers;
@@ -85,14 +78,7 @@ describe("Bar", () => {
 				<MemoryRouter>
 					<IntlProvider locale="en">
 						<TabBar>
-							<Tab
-								key="/Foo/modu"
-								module
-								icon="test"
-								href="/Foo/modu"
-								mappedFrom="/Foo/modu"
-								label="A module"
-							/>
+							<Tab key="/Foo/modu" module icon="test" href="/Foo/modu" mappedFrom="/Foo/modu" label="A module" />
 							<ScrollableBar>
 								<Tab
 									key="/Foo/modu/1"
@@ -171,15 +157,7 @@ describe("Bar", () => {
 				<MemoryRouter>
 					<IntlProvider locale="en">
 						<TabBar>
-							<Tab
-								key="/Foo/modu"
-								module
-								icon="test"
-								href="/Foo/modu"
-								mappedFrom="/Foo/modu"
-								label="A module"
-								active
-							/>
+							<Tab key="/Foo/modu" module icon="test" href="/Foo/modu" mappedFrom="/Foo/modu" label="A module" active />
 							<ScrollableBar />
 						</TabBar>
 					</IntlProvider>
@@ -272,14 +250,7 @@ describe("Bar", () => {
 					<MemoryRouter>
 						<IntlProvider locale="en">
 							<TabBar>
-								<Tab
-									key="/Foo/modu"
-									module
-									icon="test"
-									href="/Foo/modu"
-									mappedFrom="/Foo/modu"
-									label="A module"
-								/>
+								<Tab key="/Foo/modu" module icon="test" href="/Foo/modu" mappedFrom="/Foo/modu" label="A module" />
 								<ScrollableBar>
 									<Tab
 										key="/Foo/modu/1"
@@ -375,12 +346,7 @@ describe("useTabScroll", () => {
 			<div id="outerElement">
 				<InnerBar ref={getBarRef} data-width={barWidth}>
 					{pages.map(({ href }, idx) => (
-						<PageTab
-							key={href}
-							ref={getTabRef}
-							data-href={href}
-							data-edge={tabEdges[idx]}
-						/>
+						<PageTab key={href} ref={getTabRef} data-href={href} data-edge={tabEdges[idx]} />
 					))}
 				</InnerBar>
 				Last shown tab: {lastShownTab}
@@ -462,13 +428,10 @@ describe("useTabScroll", () => {
 		});
 
 		it("fires resize event if bar size reset", () => {
-			const { setBarWidth } = setupTest(
-				[{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp" }],
-				{
-					bar: 100,
-					tabs: [50, 50, 50, 50],
-				},
-			);
+			const { setBarWidth } = setupTest([{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp" }], {
+				bar: 100,
+				tabs: [50, 50, 50, 50],
+			});
 			const handler = sinon.spy().named("resizeHandler");
 			window.addEventListener("resize", handler);
 			return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
@@ -484,12 +447,7 @@ describe("useTabScroll", () => {
 
 	it("sets its width state", () => {
 		const { element } = setupTest(
-			[
-				{ href: "foo" },
-				{ href: "bar" },
-				{ href: "bell" },
-				{ href: "lerp", active: true },
-			],
+			[{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp", active: true }],
 			{
 				bar: 200,
 				tabs: [75, 52, 65, 35],
@@ -509,12 +467,7 @@ describe("useTabScroll", () => {
 
 	it("scrolls one tab past the active element if possible", () => {
 		const { barElement } = setupTest(
-			[
-				{ href: "foo" },
-				{ href: "bar" },
-				{ href: "bell", active: true },
-				{ href: "lerp" },
-			],
+			[{ href: "foo" }, { href: "bar" }, { href: "bell", active: true }, { href: "lerp" }],
 			{
 				bar: 150,
 				tabs: [75, 52, 65, 35],
@@ -527,12 +480,7 @@ describe("useTabScroll", () => {
 
 	it("scrolls to the active element if it is last", () => {
 		const { barElement } = setupTest(
-			[
-				{ href: "foo" },
-				{ href: "bar" },
-				{ href: "bell" },
-				{ href: "lerp", active: true },
-			],
+			[{ href: "foo" }, { href: "bar" }, { href: "bell" }, { href: "lerp", active: true }],
 			{
 				bar: 150,
 				tabs: [75, 52, 65, 35],
@@ -545,13 +493,7 @@ describe("useTabScroll", () => {
 
 	it("sets last shown tab if bar wide enough to hold all", () => {
 		const { element } = setupTest(
-			[
-				{ href: "foo" },
-				{ href: "bar", active: true },
-				{ href: "bell" },
-				{ href: "lerp" },
-				{ href: "meep" },
-			],
+			[{ href: "foo" }, { href: "bar", active: true }, { href: "bell" }, { href: "lerp" }, { href: "meep" }],
 			{
 				bar: 300,
 				tabs: [50, 50, 50, 50, 50],
@@ -564,13 +506,7 @@ describe("useTabScroll", () => {
 
 	it("sets last shown tab according to how many will fit on screen", () => {
 		const { element } = setupTest(
-			[
-				{ href: "foo", active: true },
-				{ href: "bar" },
-				{ href: "bell" },
-				{ href: "lerp" },
-				{ href: "meep" },
-			],
+			[{ href: "foo", active: true }, { href: "bar" }, { href: "bell" }, { href: "lerp" }, { href: "meep" }],
 			{
 				bar: 400,
 				tabs: [120, 120, 120, 120, 120],
@@ -583,13 +519,7 @@ describe("useTabScroll", () => {
 
 	it("sets last shown tab to make sure active tab + next tab are shown", () => {
 		const { element } = setupTest(
-			[
-				{ href: "foo" },
-				{ href: "bar" },
-				{ href: "bell", active: true },
-				{ href: "lerp" },
-				{ href: "meep" },
-			],
+			[{ href: "foo" }, { href: "bar" }, { href: "bell", active: true }, { href: "lerp" }, { href: "meep" }],
 			{
 				bar: 300,
 				tabs: [120, 120, 120, 120, 120],
@@ -602,13 +532,7 @@ describe("useTabScroll", () => {
 
 	it("changes last shown tab if bar is resized", () => {
 		const { element, setBarWidth } = setupTest(
-			[
-				{ href: "foo", active: true },
-				{ href: "bar" },
-				{ href: "bell" },
-				{ href: "lerp" },
-				{ href: "meep" },
-			],
+			[{ href: "foo", active: true }, { href: "bar" }, { href: "bell" }, { href: "lerp" }, { href: "meep" }],
 			{
 				bar: 400,
 				tabs: [120, 120, 120, 120, 120],

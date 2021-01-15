@@ -37,12 +37,7 @@ describe("FormPage", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormPage
-						formName="testForm"
-						fields={fields}
-						getUpdater={getUpdater}
-						values={values}
-					/>
+					<FormPage formName="testForm" fields={fields} getUpdater={getUpdater} values={values} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -54,12 +49,7 @@ describe("FormPage", () => {
 							<Form spanWidth={1}>
 								<FieldBox>
 									<Label>A text</Label>
-									<input
-										value="foo"
-										id="text1"
-										onChange={() => {}}
-										data-test-id="testForm_text1"
-									/>
+									<input value="foo" id="text1" onChange={() => {}} data-test-id="testForm_text1" />
 								</FieldBox>
 							</Form>
 						</Wrapper>
@@ -94,12 +84,7 @@ describe("FormPage", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormPage
-						cols={[2, 1]}
-						fields={manyFields}
-						getUpdater={getUpdater}
-						values={values}
-					/>
+					<FormPage cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",

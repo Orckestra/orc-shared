@@ -1,14 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import { getStyledClassSelector } from "../../../utils/testUtils";
-import ApplicationDialog, {
-	List,
-	Block,
-	Link,
-	Logo,
-	Label,
-	Indicator,
-} from "./ApplicationDialog";
+import ApplicationDialog, { List, Block, Link, Logo, Label, Indicator } from "./ApplicationDialog";
 
 describe("ApplicationDialog", () => {
 	let toggle, applications;
@@ -32,11 +25,7 @@ describe("ApplicationDialog", () => {
 
 	it("renders a dialog structure listing applications", () =>
 		expect(
-			<ApplicationDialog
-				toggle={toggle}
-				applications={applications}
-				applicationId="ChosenId"
-			/>,
+			<ApplicationDialog toggle={toggle} applications={applications} applicationId="ChosenId" />,
 			"when mounted",
 			"with event",
 			{

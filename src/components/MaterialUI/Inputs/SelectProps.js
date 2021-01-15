@@ -14,7 +14,7 @@ class SelectProps extends ComponentProps {
 		showAllValue: "showAllValue",
 		showAllLabel: "showAllLabel",
 		positionOverride: "positionOverride",
-		iconSelect: "iconSelect"
+		iconSelect: "iconSelect",
 	};
 
 	static ruleNames = {

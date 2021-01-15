@@ -69,14 +69,14 @@ describe("Modules", () => {
 				location: {},
 			},
 			modules: {
-				tree: {}
+				tree: {},
 			},
 			view: {
 				edit: {
 					users: {},
 					photos: {},
 					demos: {},
-				}
+				},
 			},
 			settings: {
 				defaultScope: "myScope",
@@ -99,8 +99,8 @@ describe("Modules", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => state,
 		};
 	});
@@ -148,8 +148,8 @@ describe("Modules", () => {
 		};
 
 		const location = {
-			pathname: "/TestScope/users/page1"
-		}
+			pathname: "/TestScope/users/page1",
+		};
 
 		expect(
 			mount(
@@ -172,14 +172,9 @@ describe("Modules", () => {
 				</Provider>,
 				<Provider store={store}>
 					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-						<SegmentPage
-							path="/:scope/users"
-							location={location}
-							segments={modules.users.segments}
-							match={match}
-						/>
+						<SegmentPage path="/:scope/users" location={location} segments={modules.users.segments} match={match} />
 					</MemoryRouter>
-				</Provider>
+				</Provider>,
 			],
 		);
 	});
@@ -268,12 +263,12 @@ describe("Modules", () => {
 					defaultScope: "myScope",
 				},
 				modules: {
-					tree: {}
+					tree: {},
 				},
 				view: {
 					edit: {
 						module: {},
-					}
+					},
 				},
 				scopes: {
 					TestScope: {

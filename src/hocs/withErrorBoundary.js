@@ -9,9 +9,7 @@ class ErrorBoundary extends React.Component {
 		this.state = {};
 	}
 	componentDidCatch(error, info) {
-		console.error(
-			"Caught an error: " + error.message + ", at boundary " + this.boundary.name,
-		);
+		console.error("Caught an error: " + error.message + ", at boundary " + this.boundary.name);
 		console.error(info.componentStack);
 		this.setState({ error });
 		this.boundary.handler(error, info);

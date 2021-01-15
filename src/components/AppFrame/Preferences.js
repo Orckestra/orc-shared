@@ -74,9 +74,7 @@ export const PrefButton = styled(Button)`
 	min-width: 110px;
 `;
 
-export const createGetUpdater = memoize(update =>
-	memoize(name => value => update(name, value)),
-);
+export const createGetUpdater = memoize(update => memoize(name => value => update(name, value)));
 
 const usePreferenceSetup = () => {
 	const dispatch = useDispatch();
@@ -114,15 +112,7 @@ export const clickOutsideHandler = e => {
 };
 
 export const Preferences = () => {
-	const {
-		show,
-		getUpdater,
-		save,
-		clear,
-		languageOptions,
-		applicationOptions,
-		values,
-	} = usePreferenceSetup();
+	const { show, getUpdater, save, clear, languageOptions, applicationOptions, values } = usePreferenceSetup();
 	return (
 		<PrefPanel in={show} width="380px" timeout={400}>
 			<Wrapper onClickOutside={clickOutsideHandler}>

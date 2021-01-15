@@ -84,11 +84,7 @@ export const HeadBox = styled.div`
 `;
 
 const HeadCell = ({ columnDef, rowIds = [], allSelected }) => (
-	<TableHeader
-		onClick={columnDef.sort}
-		select={columnDef.type === "select"}
-		width={columnDef.width}
-	>
+	<TableHeader onClick={columnDef.sort} select={columnDef.type === "select"} width={columnDef.width}>
 		<HeadBox>
 			{columnDef.type === "select" ? (
 				<Checkbox
@@ -99,9 +95,7 @@ const HeadCell = ({ columnDef, rowIds = [], allSelected }) => (
 			) : columnDef.label ? (
 				[
 					<Text key="msg" message={columnDef.label} />,
-					columnDef.sort ? (
-						<SortMark key="sort" direction={columnDef.sortDirection} />
-					) : null,
+					columnDef.sort ? <SortMark key="sort" direction={columnDef.sortDirection} /> : null,
 				]
 			) : null}
 		</HeadBox>

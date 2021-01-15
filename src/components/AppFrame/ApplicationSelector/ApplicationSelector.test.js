@@ -1,14 +1,7 @@
 import React from "react";
 import ApplicationSelector, { getAnchor, getDialog } from "./index";
 import Header, { MenuIcon, Wrapper } from "./Header";
-import ApplicationDialog, {
-	List,
-	Block,
-	Link,
-	Logo,
-	Label,
-	Indicator,
-} from "./ApplicationDialog";
+import ApplicationDialog, { List, Block, Link, Logo, Label, Indicator } from "./ApplicationDialog";
 
 describe("ApplicationSelector", () => {
 	let props, applications, thisApp, modalRoot;
@@ -118,12 +111,7 @@ describe("ApplicationSelector", () => {
 				"when called with",
 				[toggle],
 				"to equal",
-				<ApplicationDialog
-					open
-					applications={applications}
-					applicationId={props.applicationId}
-					toggle={toggle}
-				/>,
+				<ApplicationDialog open applications={applications} applicationId={props.applicationId} toggle={toggle} />,
 			));
 	});
 });

@@ -7,17 +7,14 @@ import { getLocalization } from "../utils/localizationHelper";
 
 const scopeData = state => state.get("scopes");
 
-const localizedScopesSelector = createSelector(
-	scopeData,
-	currentLocaleOrDefault,
-	(scopes, locale) =>
-		scopes.map(scope =>
-			scope.withMutations(s => {
-				setTranslation(locale, s, "name");
-				setTranslation(locale, s, "description");
-				setTranslation(locale, s, "currency", "displayName");
-			}),
-		),
+const localizedScopesSelector = createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) =>
+	scopes.map(scope =>
+		scope.withMutations(s => {
+			setTranslation(locale, s, "name");
+			setTranslation(locale, s, "description");
+			setTranslation(locale, s, "currency", "displayName");
+		}),
+	),
 );
 
 export const currentScopeSelector = createSelector(
@@ -28,26 +25,20 @@ export const currentScopeSelector = createSelector(
 
 const scopeFilter = state => state.getIn(["view", "scopeSelector", "filter"]);
 
-const filteredScopesSelector = createSelector(
-	scopeFilter,
-	localizedScopesSelector,
-	(filter, scopes) => {
-		if (!filter) return scopes;
-		const directHitScopes = scopes.filter(s =>
-			normalizeForSearch(s.get("name")).includes(normalizeForSearch(filter)),
-		);
-		let foundScopes = Immutable.Map();
-		directHitScopes.forEach(scope => {
-			for (let parent = scope; parent; parent = scopes.get(parent.get("parentScopeId"))) {
-				foundScopes = foundScopes.set(parent.get("id"), parent);
-			}
-		});
-		if (foundScopes.size === 0) {
-			foundScopes = foundScopes.set("Global", scopes.get("Global"));
+const filteredScopesSelector = createSelector(scopeFilter, localizedScopesSelector, (filter, scopes) => {
+	if (!filter) return scopes;
+	const directHitScopes = scopes.filter(s => normalizeForSearch(s.get("name")).includes(normalizeForSearch(filter)));
+	let foundScopes = Immutable.Map();
+	directHitScopes.forEach(scope => {
+		for (let parent = scope; parent; parent = scopes.get(parent.get("parentScopeId"))) {
+			foundScopes = foundScopes.set(parent.get("id"), parent);
 		}
-		return foundScopes;
-	},
-);
+	});
+	if (foundScopes.size === 0) {
+		foundScopes = foundScopes.set("Global", scopes.get("Global"));
+	}
+	return foundScopes;
+});
 
 export const scopeGetter = createSelector(filteredScopesSelector, scopes => id => {
 	const scope = scopes.get(id);
@@ -70,7 +61,7 @@ export const selectLocalizedScopes = memoize(scopeIds =>
 		});
 
 		return localizedScopes;
-	})
+	}),
 );
 
 export const localizedScopeSelector = memoize(key =>

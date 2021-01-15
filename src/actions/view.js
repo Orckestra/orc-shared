@@ -17,15 +17,15 @@ export const setStateField = (name, field, value) => ({
 
 export const createEditNode = (entityId, moduleName, modulesData) => ({
 	type: VIEW_CREATE_EDIT_NODE,
-	payload: { entityId, moduleName, modulesData }
+	payload: { entityId, moduleName, modulesData },
 });
 
 export const removeEditNode = (entityId, moduleName) => ({
 	type: VIEW_REMOVE_EDIT_NODE,
-	payload: { entityId, moduleName }
+	payload: { entityId, moduleName },
 });
 
 export const setEditModelField = (keys, value, storeValue, entityId, sectionName, moduleName) => ({
 	type: VIEW_SET_EDIT_MODEL_FIELD,
-	payload: { keys, value, storeValue, entityId, sectionName, moduleName }
+	payload: { keys, value, storeValue, entityId, sectionName, moduleName },
 });

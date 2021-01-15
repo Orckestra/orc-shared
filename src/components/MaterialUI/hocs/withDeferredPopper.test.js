@@ -74,7 +74,7 @@ describe("withDeferredPopper", () => {
 		ignoreConsoleError(() => {
 			const event = {
 				currentTarget: wrapper,
-				stopPropagation: jest.fn()
+				stopPropagation: jest.fn(),
 			};
 
 			wrapper.invoke("onClick")(event);
