@@ -1,6 +1,12 @@
 import Immutable from "immutable";
 import { resetLastScope } from "./navigation";
-import { currentScopeSelector, scopeGetter, localizedScopeSelector, selectLocalizedScopes } from "./scope";
+import {
+	currentScopeSelector,
+	scopeGetter,
+	localizedScopeSelector,
+	selectLocalizedScopes,
+	isCurrentScopeAuthorizedSelector,
+} from "./scope";
 
 let state;
 beforeEach(() => {
@@ -51,6 +57,7 @@ beforeEach(() => {
 				id: "SecondChild",
 				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
 				parentScopeId: "Global",
+				isAuthorizedScope: true,
 				currency: {
 					isoCode: "USD",
 					displayName: {
@@ -101,6 +108,7 @@ describe("currentScopeSelector", () => {
 				id: "SecondChild",
 				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
 				parentScopeId: "Global",
+				isAuthorizedScope: true,
 				currency: { isoCode: "USD", displayName: "Euro" },
 			}),
 		));
@@ -143,6 +151,25 @@ describe("currentScopeSelector", () => {
 	it("gets null if scope not found", () => {
 		state = state.setIn(["navigation", "route", "match", "params", "scope"], "WrongScope");
 		return expect(currentScopeSelector, "called with", [state], "to equal", Immutable.Map());
+	});
+});
+
+describe("isCurrentScopeAuthorizedSelector", () => {
+	afterEach(() => {
+		resetLastScope();
+	});
+
+	it("get current scope is Authorized", () =>
+		expect(isCurrentScopeAuthorizedSelector, "called with", [state], "to equal", true));
+
+	it("get true because scopes list is empty", () => {
+		state = state.set("scopes", Immutable.List());
+		return expect(isCurrentScopeAuthorizedSelector, "called with", [state], "to equal", true);
+	});
+
+	it("get false if scope not found", () => {
+		state = state.setIn(["navigation", "route", "match", "params", "scope"], "WrongScope");
+		return expect(isCurrentScopeAuthorizedSelector, "called with", [state], "to equal", false);
 	});
 });
 

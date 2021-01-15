@@ -1,5 +1,6 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
+import sinon from "sinon";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -7,6 +8,7 @@ import { mount } from "unexpected-reaction";
 import SegmentPage from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
+import { shiftToast } from "../actions/toasts";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
@@ -320,6 +322,87 @@ describe("Modules", () => {
 					<Mod3 />,
 				],
 			);
+		});
+	});
+
+	describe("check is scope authorized", () => {
+		beforeAll(() => {
+			const location = window.location;
+			delete global.window.location;
+			global.window.location = Object.assign({}, location);
+			sinon.stub(window.location, "replace");
+		});
+
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				navigation: {
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					route: {
+						match: {
+							url: "/TestScope/demos",
+							params: {
+								scope: "TestScope",
+							},
+						},
+					},
+					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
+				},
+				router: {
+					location: {},
+				},
+				settings: {
+					defaultScope: "TestScope2",
+				},
+				modules: {
+					tree: {},
+				},
+				view: {
+					edit: {
+						module: {},
+					},
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						isAuthorizedScope: false,
+						children: ["TestScope2"],
+					},
+					TestScope2: {
+						id: "TestScope2",
+						name: { "en-CA": "Test 2" },
+						foo: false,
+						bar: false,
+						isAuthorizedScope: true,
+						children: [],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+			});
+		});
+
+		it("renders a module table when scope not Authorized", () => {
+			mount(
+				<Provider store={store}>
+					<MemoryRouter initialEntries={["/TestScope/demos"]}>
+						<IntlProvider locale="en">
+							<Modules modules={modules} />
+						</IntlProvider>
+					</MemoryRouter>
+				</Provider>,
+			);
+
+			expect(window.location.replace, "to have calls satisfying", [{ args: ["/TestScope2/demos"] }]);
 		});
 	});
 });

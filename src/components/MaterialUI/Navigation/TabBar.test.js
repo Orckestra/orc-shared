@@ -8,7 +8,7 @@ import Select from "../Inputs/Select";
 import SelectProps from "../Inputs/SelectProps";
 import Icon from "../DataDisplay/Icon";
 import { Provider } from "react-redux";
-import { IntlProvider } from "react-intl";
+import { IntlProvider, FormattedMessage } from "react-intl";
 import Immutable from "immutable";
 import { Router, MemoryRouter } from "react-router-dom";
 import ResizeDetector from "react-resize-detector";
@@ -23,7 +23,6 @@ import * as useDispatchWithModulesData from "./../../../hooks/useDispatchWithMod
 import * as ReactMock from "react";
 import { extractMessages } from "./../../../utils/testUtils";
 import sharedMessages from "./../../../sharedMessages";
-import { stringifyWithoutQuotes } from "./../../../utils/parseHelper";
 
 const messages = extractMessages(sharedMessages);
 
@@ -258,7 +257,7 @@ describe("TabBar", () => {
 							<ResizeDetector />
 							{expectedModuleTab}
 							{expectedTabs}
-							<ConfirmationModal message={stringifyWithoutQuotes(messages["orc-shared.unsavedChanges"])} open={false} />
+							<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
 						</div>
 					</IntlProvider>
 				</MemoryRouter>
@@ -292,7 +291,7 @@ describe("TabBar", () => {
 							{expectedModuleTab}
 							{expectedTabs}
 							{select}
-							<ConfirmationModal message={stringifyWithoutQuotes(messages["orc-shared.unsavedChanges"])} open={true} />
+							<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={true} />
 						</div>
 					</IntlProvider>
 				</MemoryRouter>

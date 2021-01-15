@@ -23,6 +23,10 @@ export const currentScopeSelector = createSelector(
 	(id, scopes) => scopes.get(id) || Immutable.Map(),
 );
 
+export const isCurrentScopeAuthorizedSelector = createSelector(getCurrentScope, localizedScopesSelector, (id, scopes) =>
+	scopes.getIn([id, "isAuthorizedScope"], !scopes.count()),
+);
+
 const scopeFilter = state => state.getIn(["view", "scopeSelector", "filter"]);
 
 const filteredScopesSelector = createSelector(scopeFilter, localizedScopesSelector, (filter, scopes) => {
