@@ -9,7 +9,7 @@ import Input from "@material-ui/core/Input";
 export const useStyles = makeStyles(theme => ({
 	container: {
 		display: "flex",
-		marginRight: "10px"
+		marginRight: "10px",
 	},
 	clearButton: {
 		fontSize: theme.spacing(2.2),
@@ -95,10 +95,10 @@ export const useStyles = makeStyles(theme => ({
 		"& ul": {
 			maxWidth: "none",
 		},
-	}
+	},
 }));
 
-const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => { } }) => {
+const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {} }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 	const [clearFocused, setClearFocused] = useState(false);
 	const [searchOption, setSearchOption] = useState(searchOptions[0].value);

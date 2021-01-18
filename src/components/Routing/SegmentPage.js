@@ -10,13 +10,13 @@ import SubPage from "./SubPage";
 import Segment from "./Segment";
 import { getModifiedSections } from "./../../selectors/view";
 import { useSelector } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	asterix: {
-		marginLeft: theme.spacing(0.5)
+		marginLeft: theme.spacing(0.5),
 	},
 	label: {
 		color: theme.palette.text.primary,
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
-	}
+	},
 }));
 
 export const Wrapper = styled.div`
@@ -62,16 +62,16 @@ export const Item = styled(FilteredLink)`
 	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
-	"active",
-	css`
+		"active",
+		css`
 			background-color: #b4cfe3;
 		`,
-	css`
+		css`
 			&:hover {
 				background-color: #f7f7f7;
 			}
 		`,
-)};
+	)};
 `;
 
 const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
@@ -141,9 +141,12 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 						<List>
 							{Object.entries(segments).map(([segpath, config]) => {
 								const text = <Text message={config.label} />;
-								const basicLabel = config.labelComponent != null ?
-									<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} /> :
-									text;
+								const basicLabel =
+									config.labelComponent != null ? (
+										<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} />
+									) : (
+										text
+									);
 
 								const finalLabel = (
 									<Grid container justify="space-between">

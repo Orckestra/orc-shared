@@ -2,8 +2,7 @@ import styled, { css } from "styled-components";
 import { getThemeProp, ifFlag } from "../utils";
 import { tint } from "polished";
 
-const borderColor = base =>
-	ifFlag("primary", getThemeProp(["colors", "application", "base"], base), base);
+const borderColor = base => ifFlag("primary", getThemeProp(["colors", "application", "base"], base), base);
 
 const background = ifFlag(
 	"primary",
@@ -12,9 +11,7 @@ const background = ifFlag(
 		css`
 			color: #fff;
 			background-image: linear-gradient(
-				${getThemeProp(["colors", "application", "base"], "#333", color =>
-					tint(0.05, color),
-				)},
+				${getThemeProp(["colors", "application", "base"], "#333", color => tint(0.05, color))},
 				${getThemeProp(["colors", "application", "base"], "#333")}
 			);
 			&:enabled:active {
@@ -30,9 +27,7 @@ const background = ifFlag(
 			&:enabled:active {
 				color: #fff;
 				background-image: linear-gradient(
-					${getThemeProp(["colors", "application", "base"], "#333", color =>
-						tint(0.05, color),
-					)},
+					${getThemeProp(["colors", "application", "base"], "#333", color => tint(0.05, color))},
 					${getThemeProp(["colors", "application", "base"], "#333")}
 				);
 			}

@@ -4,9 +4,7 @@ import { IntlContext } from "react-intl";
 import { getThemeProp } from "../utils";
 
 const defaultFormatMessage = message => {
-	throw new Error(
-		"Attempting to translate message " + message.id + " outside of Intl context",
-	);
+	throw new Error("Attempting to translate message " + message.id + " outside of Intl context");
 };
 const maybeTranslate = (formatMessage = defaultFormatMessage, message) =>
 	message && message.id ? formatMessage(message) : message;
@@ -31,9 +29,7 @@ export const InputComponent = styled.input`
 
 const Input = ({ placeholder, ...props }) => {
 	const { formatMessage } = useIntlSoft();
-	return (
-		<InputComponent {...props} placeholder={maybeTranslate(formatMessage, placeholder)} />
-	);
+	return <InputComponent {...props} placeholder={maybeTranslate(formatMessage, placeholder)} />;
 };
 
 export default Input;

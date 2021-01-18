@@ -68,15 +68,10 @@ describe("ConnectedToastList", () => {
 		)
 			.then(() => expect(store.dispatch, "was not called"))
 			.then(() => clock.tick(timeout))
-			.then(() =>
-				expect(store.dispatch, "to have calls satisfying", [{ args: [shiftToast()] }]),
-			)
+			.then(() => expect(store.dispatch, "to have calls satisfying", [{ args: [shiftToast()] }]))
 			.then(() => clock.tick(timeout))
 			.then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [shiftToast()] },
-					{ args: [shiftToast()] },
-				]),
+				expect(store.dispatch, "to have calls satisfying", [{ args: [shiftToast()] }, { args: [shiftToast()] }]),
 			));
 
 	it("does not remove toasts if there are none", () => {

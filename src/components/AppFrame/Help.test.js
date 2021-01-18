@@ -24,11 +24,11 @@ describe("Help", () => {
 			versionInfo: { version: "ver4", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 		});
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => state,
 		};
-		clicker = () => { };
+		clicker = () => {};
 		props = {
 			onClick: clicker,
 			helpUrl: "any_help_url.com",
@@ -50,9 +50,7 @@ describe("Help", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<HelpLink href="any_help_url.com">
-				{stringifyWithoutQuotes(messages['orc-shared.help'])}
-			</HelpLink>,
+			<HelpLink href="any_help_url.com">{stringifyWithoutQuotes(messages["orc-shared.help"])}</HelpLink>,
 		));
 
 	it("sets css for help button ", () =>
@@ -64,8 +62,6 @@ describe("Help", () => {
 			</Provider>,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "cursor: pointer;")
-				.and("to contain", ":hover {color: #cccccc;}"),
+			expect.it("to contain", "cursor: pointer;").and("to contain", ":hover {color: #cccccc;}"),
 		));
 });

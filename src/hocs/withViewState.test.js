@@ -91,9 +91,7 @@ describe("withViewState", () => {
 				"with event",
 				"change",
 			).then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [setStateField("test", "aField", "new value")] },
-				]),
+				expect(store.dispatch, "to have calls satisfying", [{ args: [setStateField("test", "aField", "new value")] }]),
 			),
 		));
 });

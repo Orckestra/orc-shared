@@ -21,8 +21,8 @@ describe("I18n", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => state,
 		};
 	});

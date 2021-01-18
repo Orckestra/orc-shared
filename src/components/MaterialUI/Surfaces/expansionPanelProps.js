@@ -9,7 +9,7 @@ class ExpansionPanelProps extends ComponentProps {
 	};
 
 	static ruleNames = {
-		root: "root"
+		root: "root",
 	};
 
 	constructor() {
@@ -45,7 +45,9 @@ class ExpansionPanelActionsProps extends ComponentProps {
 
 export const isExpansionPanelActionsProps = function (value) {
 	if (value == null) return true;
-	return typeof value === "object" && (value instanceof ExpansionPanelProps || value._isExpansionPanelActionsProps === true);
+	return (
+		typeof value === "object" && (value instanceof ExpansionPanelProps || value._isExpansionPanelActionsProps === true)
+	);
 };
 
 export { ExpansionPanelProps, ExpansionPanelActionsProps };

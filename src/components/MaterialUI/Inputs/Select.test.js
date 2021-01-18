@@ -30,8 +30,8 @@ describe("Select Component", () => {
 				</MuiThemeProvider>
 			);
 
-			expect(() => mount(component), "to throw a", TypeError).then((error) => {
-				expect(error, "to have message", "selectProps property is not of type SelectProps")
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "selectProps property is not of type SelectProps");
 			});
 		});
 	});
@@ -305,12 +305,7 @@ describe("Select Component", () => {
 
 		const expected = (
 			<MuiThemeProvider theme={theme}>
-				<SelectMUI
-					open={false}
-					value="aValue"
-					disableUnderline={true}
-					IconComponent={SelectIconButton}
-				>
+				<SelectMUI open={false} value="aValue" disableUnderline={true} IconComponent={SelectIconButton}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
 					</MenuItem>

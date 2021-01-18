@@ -24,11 +24,10 @@ export const useDispatchWithModulesData = () => {
 		if (params != null) {
 			const actionParams = params.concat(predefinedParams);
 			baseDispatch(action.apply(null, actionParams));
-		}
-		else {
+		} else {
 			baseDispatch(action.apply(null, predefinedParams));
 		}
-	}
+	};
 
 	return dispatch;
 };

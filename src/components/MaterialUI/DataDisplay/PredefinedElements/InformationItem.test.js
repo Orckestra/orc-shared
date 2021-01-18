@@ -69,9 +69,7 @@ describe("Information Item", () => {
 			<IntlProvider locale="en-US" messages={messages}>
 				<Grid item>
 					<Typography children={label} />
-					<MultipleLinesText>
-						{stringifyWithoutQuotes(messages["orc-shared.notAvailable"])}
-					</MultipleLinesText>
+					<MultipleLinesText>{stringifyWithoutQuotes(messages["orc-shared.notAvailable"])}</MultipleLinesText>
 				</Grid>
 			</IntlProvider>
 		);

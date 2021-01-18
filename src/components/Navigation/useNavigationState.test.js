@@ -11,7 +11,7 @@ import { resetLastScope } from "../../selectors/navigation";
 import useNavigationState, { getPageData } from "./useNavigationState";
 import Bar from "./Bar";
 import { PropStruct } from "../../utils/testUtils";
-import { cloneDeep } from "lodash"
+import { cloneDeep } from "lodash";
 
 const TestComp1 = props => (
 	<div data-test-id="comp-1">
@@ -140,7 +140,7 @@ describe("useNavigationState", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
@@ -416,7 +416,7 @@ describe("useNavigationState", () => {
 		let stateWithEmptyScopes = cloneDeep(state);
 		stateWithEmptyScopes = stateWithEmptyScopes.setIn(["scopes"], Immutable.Map());
 		const storeWithEmptyScopes = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => stateWithEmptyScopes,
 		};
@@ -658,7 +658,7 @@ describe("useNavigationState", () => {
 							outsideScope: false,
 							scopeNotSupported: false,
 							params: "__ignore",
-							close: () => { },
+							close: () => {},
 						},
 					]}
 					moduleName="test"

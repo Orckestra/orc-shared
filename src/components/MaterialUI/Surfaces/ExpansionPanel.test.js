@@ -2,8 +2,8 @@ import React from "react";
 import { mount } from "enzyme";
 import ExpansionPanel from "./ExpansionPanel";
 import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
 import { ignoreConsoleError } from "../../../utils/testUtils";
@@ -66,8 +66,8 @@ describe("Expansion Panel", () => {
 					<ExpansionPanel expansionPanelProps="Wrong type" />
 				</MuiThemeProvider>
 			);
-			expect(() => mount(component), "to throw a", TypeError).then((error) => {
-				expect(error, "to have message", "expansionPanelProps property is not of type ExpansionPanelProps")
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "expansionPanelProps property is not of type ExpansionPanelProps");
 			});
 		});
 	});
@@ -79,8 +79,12 @@ describe("Expansion Panel", () => {
 					<ExpansionPanel expansionPanelActionsProps="Wrong type" />
 				</MuiThemeProvider>
 			);
-			expect(() => mount(component), "to throw a", TypeError).then((error) => {
-				expect(error, "to have message", "expansionPanelActionsProps property is not of type ExpansionPanelActionsProps")
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(
+					error,
+					"to have message",
+					"expansionPanelActionsProps property is not of type ExpansionPanelActionsProps",
+				);
 			});
 		});
 	});
@@ -147,17 +151,11 @@ describe("Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
 
-		expansionPanelActionsProps.set(
-			ExpansionPanelActionsProps.propNames.disableSpacing,
-			true,
-		);
+		expansionPanelActionsProps.set(ExpansionPanelActionsProps.propNames.disableSpacing, true);
 
 		const component = (
 			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel
-					actions={actions}
-					expansionPanelActionsProps={expansionPanelActionsProps}
-				/>
+				<ExpansionPanel actions={actions} expansionPanelActionsProps={expansionPanelActionsProps} />
 			</MuiThemeProvider>
 		);
 
@@ -186,10 +184,7 @@ describe("Expansion Panel", () => {
 
 		const component = (
 			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel
-					actions={actions}
-					expansionPanelActionsProps={expansionPanelActionsProps}
-				/>
+				<ExpansionPanel actions={actions} expansionPanelActionsProps={expansionPanelActionsProps} />
 			</MuiThemeProvider>
 		);
 
@@ -205,12 +200,7 @@ describe("Expansion Panel", () => {
 		const expansionPanelId = "ExpPanel123";
 		const component = (
 			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel
-					header={header}
-					content={content}
-					actions={actions}
-					expansionPanelId={expansionPanelId}
-				/>
+				<ExpansionPanel header={header} content={content} actions={actions} expansionPanelId={expansionPanelId} />
 			</MuiThemeProvider>
 		);
 		const mountedComponent = mount(component);

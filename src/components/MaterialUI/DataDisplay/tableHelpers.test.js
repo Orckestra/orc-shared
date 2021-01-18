@@ -18,15 +18,15 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				fieldName: "test",
 				label: "simple header",
 				sortOptions: {
-					sortField: true
-				}
+					sortField: true,
+				},
 			},
 			{
 				fieldName: "another",
 				label: "another simple header",
 				sortOptions: {
-					sortField: true
-				}
+					sortField: true,
+				},
 			},
 		];
 
@@ -101,27 +101,27 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[0].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(
 			rows[0].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 		expect(rows[0].columns[1].className, "to be undefined");
 		expect(
 			rows[0].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 
 		expect(rows[1].columns.length, "to equal", 2);
@@ -132,27 +132,27 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[1].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(
 			rows[1].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 		expect(rows[1].columns[1].className, "to be undefined");
 		expect(
 			rows[1].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 	});
 
@@ -193,27 +193,27 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[0].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(
 			rows[0].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 		expect(rows[0].columns[1].className, "to be undefined");
 		expect(
 			rows[0].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 
 		expect(rows[1].columns.length, "to equal", 2);
@@ -224,27 +224,27 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[1].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(
 			rows[1].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 		expect(rows[1].columns[1].className, "to be undefined");
 		expect(
 			rows[1].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 	});
 
@@ -272,26 +272,26 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />
+			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />,
 		);
 		expect(
 			rows[0].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />
+			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />,
 		);
 
 		expect(
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />
+			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />,
 		);
 		expect(
 			rows[1].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />
+			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />,
 		);
 	});
 
@@ -691,7 +691,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
 		expect(rows[0].columns[0].title, "to be null");
@@ -699,7 +699,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 		expect(rows[0].columns[1].className, "to be undefined");
 
@@ -707,7 +707,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 
 		expect(rows[1].columns.length, "to equal", 2);
@@ -718,7 +718,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
 		expect(rows[1].columns[0].title, "to be null");
@@ -726,14 +726,14 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 		expect(rows[1].columns[1].className, "to be undefined");
 		expect(
 			rows[1].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 	});
 
@@ -748,7 +748,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				groupName: "preferredStore",
 				selectedValue: "an_id2",
 				label: messages.a_label,
-			}
+			},
 		];
 
 		const elements = [
@@ -772,6 +772,5 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id2");
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("checked"), "to equal", true);
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
-
 	});
 });

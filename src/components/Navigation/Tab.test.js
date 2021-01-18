@@ -67,13 +67,7 @@ describe("Tab", () => {
 			>
 				<Router history={history}>
 					<IntlProvider locale="en">
-						<Tab
-							module
-							active
-							icon="test"
-							label={{ id: "test.module", defaultMessage: "A module" }}
-							href="/Foo/modu"
-						/>
+						<Tab module active icon="test" label={{ id: "test.module", defaultMessage: "A module" }} href="/Foo/modu" />
 					</IntlProvider>
 				</Router>
 			</Provider>,
@@ -286,11 +280,7 @@ describe("Tab", () => {
 			>
 				<Router history={history}>
 					<IntlProvider locale="en">
-						<Tab
-							label={{ id: "test.page", defaultMessage: "A page" }}
-							href="/Foo/modu/page"
-							close={close}
-						/>
+						<Tab label={{ id: "test.page", defaultMessage: "A page" }} href="/Foo/modu/page" close={close} />
 					</IntlProvider>
 				</Router>
 			</Provider>,
@@ -355,12 +345,7 @@ describe("Tab", () => {
 			>
 				<Router history={history}>
 					<IntlProvider locale="en">
-						<Tab
-							label="A page"
-							href="/Foo/modu/page/sub"
-							mappedFrom="/Foo/modu/page"
-							close={close}
-						/>
+						<Tab label="A page" href="/Foo/modu/page/sub" mappedFrom="/Foo/modu/page" close={close} />
 					</IntlProvider>
 				</Router>
 			</Provider>,
@@ -394,9 +379,7 @@ describe("TabText", () => {
 			</Provider>,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("not to contain", "cursor: not-allowed;")
-				.and("not to contain", "max-width: 220px;"),
+			expect.it("not to contain", "cursor: not-allowed;").and("not to contain", "max-width: 220px;"),
 		));
 
 	it("sets css for TabLink with attributes", () =>

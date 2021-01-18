@@ -3,14 +3,7 @@ import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import Checkbox from "../Checkbox";
-import HeadCell, {
-	SortMark,
-	UpMark,
-	DownMark,
-	MarkBox,
-	HeadBox,
-	TableHeader,
-} from "./HeadCell";
+import HeadCell, { SortMark, UpMark, DownMark, MarkBox, HeadBox, TableHeader } from "./HeadCell";
 
 describe("HeadCell", () => {
 	it("renders a header cell with the column label", () => {
@@ -112,9 +105,7 @@ describe("HeadCell", () => {
 					</tr>
 				</thead>
 			</table>,
-		).then(() =>
-			expect(columnDef.onChange, "to have calls satisfying", [{ args: [rowIds] }]),
-		);
+		).then(() => expect(columnDef.onChange, "to have calls satisfying", [{ args: [rowIds] }]));
 	});
 
 	it("renders a header cell for a select column with all rows selected", () => {
@@ -146,9 +137,7 @@ describe("HeadCell", () => {
 					</tr>
 				</thead>
 			</table>,
-		).then(() =>
-			expect(columnDef.onChange, "to have calls satisfying", [{ args: [[]] }]),
-		);
+		).then(() => expect(columnDef.onChange, "to have calls satisfying", [{ args: [[]] }]));
 	});
 
 	it("renders a sortable header cell", () => {

@@ -18,13 +18,7 @@ export const LanguageLabel = styled.label`
 	margin-right: 0;
 `;
 
-export const TranslationField = ({
-	lang,
-	message = "",
-	onChange,
-	required,
-	...props
-}) => (
+export const TranslationField = ({ lang, message = "", onChange, required, ...props }) => (
 	<ButtonWrapper invalid={required && !message}>
 		<LanguageLabel>{lang}</LanguageLabel>
 		<FormInput value={message} onChange={onChange} {...props} />
@@ -59,14 +53,7 @@ export const ShowButtonChevron = styled(Icon).attrs(props => ({
 	color: ${getThemeProp(["colors", "application", "base"], "#000")};
 `;
 
-export const TranslationInput = ({
-	update,
-	value = {},
-	initShowAll,
-	required,
-	moreLabel = "[more]",
-	...props
-}) => {
+export const TranslationInput = ({ update, value = {}, initShowAll, required, moreLabel = "[more]", ...props }) => {
 	const cultures = unwrapImmutable(useSelector(orderedCultureList));
 	const handlers = useMemo(
 		() =>

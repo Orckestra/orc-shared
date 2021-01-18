@@ -24,9 +24,9 @@ describe("Section Expansion Panel", () => {
 			},
 		});
 		store = state => ({
-			subscribe: () => { },
+			subscribe: () => {},
 			getState: () => state,
-			dispatch: () => { },
+			dispatch: () => {},
 		});
 	});
 
@@ -91,8 +91,8 @@ describe("Section Expansion Panel", () => {
 					<SectionExpansionPanel expansionPanelProps="Wrong type" />
 				</Provider>
 			);
-			expect(() => mount(component), "to throw a", TypeError).then((error) => {
-				expect(error, "to have message", "expansionPanelProps property is not of type ExpansionPanelProps")
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "expansionPanelProps property is not of type ExpansionPanelProps");
 			});
 		});
 	});
@@ -104,8 +104,12 @@ describe("Section Expansion Panel", () => {
 					<SectionExpansionPanel expansionPanelActionsProps="Wrong type" />
 				</Provider>
 			);
-			expect(() => mount(component), "to throw a", TypeError).then((error) => {
-				expect(error, "to have message", "expansionPanelActionsProps property is not of type ExpansionPanelActionsProps")
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(
+					error,
+					"to have message",
+					"expansionPanelActionsProps property is not of type ExpansionPanelActionsProps",
+				);
 			});
 		});
 	});

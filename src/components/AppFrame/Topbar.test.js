@@ -6,23 +6,12 @@ import { RSAA } from "redux-api-middleware";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { VIEW_STATE_SET_FIELD } from "../../actions/view";
-import {
-	SIGN_OUT_REQUEST,
-	SIGN_OUT_SUCCESS,
-	SIGN_OUT_FAILURE,
-} from "../../actions/authentication";
+import { SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
-import Topbar, {
-	Wrapper,
-	AppBox,
-	CurrentApp,
-	AppLabel,
-	AppLogo,
-	useMenuProps,
-} from "./Topbar";
+import Topbar, { Wrapper, AppBox, CurrentApp, AppLabel, AppLogo, useMenuProps } from "./Topbar";
 import { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
@@ -37,8 +26,8 @@ describe("Topbar", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => state,
 		};
 		applications = [
@@ -53,7 +42,7 @@ describe("Topbar", () => {
 				iconUri: "/test/elsewhere",
 			},
 		];
-		clicker = () => { };
+		clicker = () => {};
 		menuMessages = {
 			sign_out: { id: "msg.signout", defaultMessage: "Sign out" },
 			preferences: { id: "msg.prefs", defaultMessage: "Preferences" },
@@ -169,7 +158,7 @@ describe("useMenuProps", () => {
 		state = Immutable.fromJS({ authentication: { name: "foo@bar.com" } });
 		store = {
 			getState: () => state,
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 		};
 		messages = {
@@ -201,19 +190,19 @@ describe("useMenuProps", () => {
 					{
 						id: "userMenuSignOut",
 						label: "Sign out",
-						handler: () => { },
+						handler: () => {},
 						icon: "logout",
 					},
 					{
 						id: "userMenuPrefsMenu",
 						label: "Preferences",
-						handler: () => { },
+						handler: () => {},
 						icon: "cogwheel",
 					},
 					{
 						id: "userMenuAbout",
 						label: "About",
-						handler: () => { },
+						handler: () => {},
 						icon: "info",
 					},
 				]}

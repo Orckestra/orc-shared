@@ -16,13 +16,7 @@ describe("Button", () => {
 		));
 
 	it("sets an inactive background-color", () =>
-		expect(
-			<Button />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"background-color: #f7f7f7;",
-		));
+		expect(<Button />, "when mounted", "to have style rules satisfying", "to contain", "background-color: #f7f7f7;"));
 
 	it("sets an active background-color", () =>
 		expect(

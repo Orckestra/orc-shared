@@ -12,16 +12,7 @@ import SubPage, { Backdrop, Dialog } from "./SubPage";
 
 const { button: ToolbarButton, separator: ToolbarSeparator } = toolComponents;
 
-const InnerView = ({
-	theme,
-	pathname,
-	search,
-	mapFrom,
-	match,
-	location,
-	routeIsAligned,
-	set,
-}) => (
+const InnerView = ({ theme, pathname, search, mapFrom, match, location, routeIsAligned, set }) => (
 	<PropStruct
 		{...{
 			theme,
@@ -73,12 +64,7 @@ describe("SubPage", () => {
 							<Route
 								path="/foo/bar"
 								render={route => (
-									<SubPage
-										config={{ component: InnerView, set: true }}
-										root="/foo"
-										path="/foo/bar"
-										{...route}
-									/>
+									<SubPage config={{ component: InnerView, set: true }} root="/foo" path="/foo/bar" {...route} />
 								)}
 							/>
 						</Router>
@@ -124,12 +110,7 @@ describe("SubPage", () => {
 							<Route
 								path="/foo/bar"
 								render={route => (
-									<SubPage
-										config={{ component: InnerView, set: true }}
-										root="/foo"
-										path="/foo/bar"
-										{...route}
-									/>
+									<SubPage config={{ component: InnerView, set: true }} root="/foo" path="/foo/bar" {...route} />
 								)}
 							/>
 						</Router>
@@ -153,12 +134,7 @@ describe("SubPage", () => {
 							<Route
 								path="/foo/bar"
 								render={route => (
-									<SubPage
-										config={{ component: InnerView, set: true }}
-										root="/foo"
-										path="/foo/bar"
-										{...route}
-									/>
+									<SubPage config={{ component: InnerView, set: true }} root="/foo" path="/foo/bar" {...route} />
 								)}
 							/>
 						</Router>
@@ -297,9 +273,6 @@ describe("SubPage", () => {
 				</Bar>
 			</Provider>,
 		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [
-				{ args: [{ isFoo: true }] },
-				{ args: [{ isFoo: false }] },
-			]),
+			expect(store.dispatch, "to have calls satisfying", [{ args: [{ isFoo: true }] }, { args: [{ isFoo: false }] }]),
 		));
 });

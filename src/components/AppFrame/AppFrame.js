@@ -25,11 +25,11 @@ export const Base = styled.div`
 	height: 100%;
 	overflow: hidden;
 	${ifFlag(
-	"preferencesOpen",
-	css`
+		"preferencesOpen",
+		css`
 			pointer-events: none;
 		`,
-)};
+	)};
 `;
 
 export const ViewPort = styled.div`
@@ -45,24 +45,16 @@ export const ViewPort = styled.div`
 	flex-direction: column;
 	transition: width 0.3s ease-out;
 	${ifFlag(
-	"open",
-	css`
+		"open",
+		css`
 			width: calc(100% - 200px);
 		`,
-)};
+	)};
 `;
 
 const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
 
-const AppFrame = ({
-	initOpen,
-	applicationId,
-	modules,
-	activeModules,
-	children,
-	noScope,
-	forceShowScope = [],
-}) => {
+const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, noScope, forceShowScope = [] }) => {
 	const locale = useSelector(currentLocale);
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
 	const moduleName = useSelector(selectCurrentModuleName);
@@ -98,8 +90,8 @@ const AppFrame = ({
 						{children}
 					</React.Fragment>
 				) : (
-						<Scope>{children}</Scope>
-					)}
+					<Scope>{children}</Scope>
+				)}
 			</ViewPort>
 			<About currentApplication={currentApplication} />
 			<Preferences />

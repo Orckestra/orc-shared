@@ -2,9 +2,7 @@ import React from "react";
 import { useTableSelection } from "./useTableSelection";
 
 const TestComp = ({ elements }) => {
-	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(
-		elements,
-	);
+	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(elements);
 
 	const onClick = evt => {
 		selectionMethods.selectionHandler({ target: { checked: evt.value } }, evt.element);

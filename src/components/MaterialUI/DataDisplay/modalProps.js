@@ -1,28 +1,28 @@
 import ComponentProps from "../componentProps";
 
 class ModalProps extends ComponentProps {
-  static propNames = {
-    open: "open",
-    title: "title",
-    actionPanel: "actionPanel",
-    backdropClickCallback: "backdropClickCallback"
-  };
+	static propNames = {
+		open: "open",
+		title: "title",
+		actionPanel: "actionPanel",
+		backdropClickCallback: "backdropClickCallback",
+	};
 
-  constructor() {
-    super();
+	constructor() {
+		super();
 
-    this.componentProps.set(this.constructor.propNames.open, null);
-    this.componentProps.set(this.constructor.propNames.title, null);
-    this.componentProps.set(this.constructor.propNames.actionPanel, null);
-    this.componentProps.set(this.constructor.propNames.backdropClickCallback, null);
+		this.componentProps.set(this.constructor.propNames.open, null);
+		this.componentProps.set(this.constructor.propNames.title, null);
+		this.componentProps.set(this.constructor.propNames.actionPanel, null);
+		this.componentProps.set(this.constructor.propNames.backdropClickCallback, null);
 
-    this._isModalProps = true;
-  }
+		this._isModalProps = true;
+	}
 }
 
 export const isModalProps = function (value) {
-  if (value == null) return true;
-  return typeof value === "object" && (value instanceof ModalProps || value._isModalProps === true);
+	if (value == null) return true;
+	return typeof value === "object" && (value instanceof ModalProps || value._isModalProps === true);
 };
 
 export default ModalProps;

@@ -8,13 +8,7 @@ export function getLocalization(localizations, locale, defaultValue) {
 	const localisation = getPropertyOrDefault(localizations, locale, fallbackValue, true);
 
 	if (localisation === fallbackValue) {
-		return getPropertyOrDefault(
-			localizations,
-			locale.split("-")[0],
-			fallbackValue,
-			true,
-			true,
-		);
+		return getPropertyOrDefault(localizations, locale.split("-")[0], fallbackValue, true, true);
 	}
 
 	return localisation;

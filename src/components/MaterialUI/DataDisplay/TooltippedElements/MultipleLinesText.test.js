@@ -6,17 +6,14 @@ import TextClamp from "react-multi-clamp";
 import { ignoreConsoleError } from "../../../../utils/testUtils";
 
 describe("MultipleLinesText", () => {
-	const text =
-		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas purus non augue tempor.";
+	const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas purus non augue tempor.";
 
 	it("Renders text", () => {
 		const lineCount = 2;
 		const multipleLinesTextProps = new TextProps();
 		multipleLinesTextProps.set(TextProps.propNames.lineCount, lineCount);
 
-		const component = (
-			<MultipleLinesText textProps={multipleLinesTextProps}>{text}</MultipleLinesText>
-		);
+		const component = <MultipleLinesText textProps={multipleLinesTextProps}>{text}</MultipleLinesText>;
 
 		const mountedComponent = mount(component);
 		const expected = (
@@ -31,19 +28,13 @@ describe("MultipleLinesText", () => {
 	it("Shoud use children property for titleValue by default", () => {
 		const component = <MultipleLinesText>{text}</MultipleLinesText>;
 		const mountedComponent = shallow(component);
-		expect(
-			mountedComponent.prop("titleValue"),
-			"to equal",
-			mountedComponent.prop("children"),
-		);
+		expect(mountedComponent.prop("titleValue"), "to equal", mountedComponent.prop("children"));
 	});
 
 	it("Shoud use passed titleValue if it's defined", () => {
 		const titleValue = "test";
 
-		const component = (
-			<MultipleLinesText titleValue={titleValue}>{text}</MultipleLinesText>
-		);
+		const component = <MultipleLinesText titleValue={titleValue}>{text}</MultipleLinesText>;
 		const mountedComponent = shallow(component);
 		expect(mountedComponent.prop("titleValue"), "to equal", titleValue);
 	});
@@ -52,9 +43,7 @@ describe("MultipleLinesText", () => {
 		const multipleLinesTextProps = new TextProps();
 		const test = "testRoot";
 		multipleLinesTextProps.set(TextProps.propNames.classes, test);
-		const component = (
-			<MultipleLinesText textProps={multipleLinesTextProps}>{text}</MultipleLinesText>
-		);
+		const component = <MultipleLinesText textProps={multipleLinesTextProps}>{text}</MultipleLinesText>;
 
 		const mountedComponent = mount(component);
 
@@ -96,9 +85,7 @@ describe("MultipleLinesText", () => {
 
 	it("Fails if textProps has wrong type", () => {
 		ignoreConsoleError(() => {
-			const component = (
-				<MultipleLinesText textProps="Wrong Type">{text}</MultipleLinesText>
-			);
+			const component = <MultipleLinesText textProps="Wrong Type">{text}</MultipleLinesText>;
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});

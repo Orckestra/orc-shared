@@ -81,11 +81,7 @@ export const CloseIcon = styled(Icon).attrs(props => ({
 	stroke-width: 2px;
 
 	&:hover {
-		background-color: ${getThemeProp(
-			["colors", "toasts", props => props.type],
-			"#999999",
-			color => shade(0.3, color),
-		)};
+		background-color: ${getThemeProp(["colors", "toasts", props => props.type], "#999999", color => shade(0.3, color))};
 	}
 `;
 

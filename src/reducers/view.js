@@ -16,17 +16,14 @@ const viewStateReducer = (state = initialState, action) => {
 			return state.set(action.payload.name, Immutable.fromJS(action.payload.value));
 		}
 		case VIEW_SET_FIELD: {
-			return state.setIn(
-				[action.payload.name, action.payload.field],
-				Immutable.fromJS(action.payload.value),
-			);
+			return state.setIn([action.payload.name, action.payload.field], Immutable.fromJS(action.payload.value));
 		}
 		case VIEW_CREATE_EDIT_NODE: {
 			const { moduleName, entityId, modulesData } = action.payload;
 
 			const pages = modulesData[moduleName].pages;
 
-			const pageKeys = Object.keys(pages)
+			const pageKeys = Object.keys(pages);
 			// if at some point it will be possible that there could be more than 1 page per module
 			// it will be necessary to remake this part and to receive page key as a property
 			const sections = pages[pageKeys[0]];

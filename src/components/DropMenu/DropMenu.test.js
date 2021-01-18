@@ -96,9 +96,7 @@ describe("DropMenu", () => {
 		const menu = ReactDOM.render(
 			<div>
 				<div id="outside" />
-				<Provider
-					store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}
-				>
+				<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
 					<DropMenu
 						id="test"
 						menuItems={[
@@ -175,9 +173,7 @@ describe("DropMenu", () => {
 
 		it("when clicked renders the menu", () =>
 			expect(
-				<Provider
-					store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}
-				>
+				<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
 					<DropMenu
 						id="test"
 						menuItems={[
@@ -219,9 +215,7 @@ describe("DropMenu", () => {
 			const menu = ReactDOM.render(
 				<div>
 					<div id="outside" />
-					<Provider
-						store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}
-					>
+					<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
 						<DropMenu
 							id="test"
 							menuItems={[
@@ -297,9 +291,7 @@ describe("DropMenu", () => {
 			const menuNode = document.createElement("div");
 			document.body.appendChild(menuNode);
 			ReactDOM.render(
-				<Provider
-					store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}
-				>
+				<Provider store={{ getState: () => ({}), subscribe: () => {}, dispatch: () => {} }}>
 					<>
 						<MakeMenu num="1" />
 						<MakeMenu num="2" />

@@ -27,11 +27,7 @@ describe("Segment", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/foo/bar"]}>
-					<Segment
-						location={{ pathname: "/" }}
-						config={{ component: View }}
-						match={match}
-					/>
+					<Segment location={{ pathname: "/" }} config={{ component: View }} match={match} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",

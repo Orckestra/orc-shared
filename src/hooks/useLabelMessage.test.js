@@ -97,10 +97,7 @@ describe("useLabelMessage", () => {
 		return expect(
 			<Provider store={store}>
 				<IntlProvider locale="en">
-					<TestComp
-						message={message}
-						buildMessage={a => a.defaultMessage.concat("_customBuilder")}
-					/>
+					<TestComp message={message} buildMessage={a => a.defaultMessage.concat("_customBuilder")} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -112,20 +109,10 @@ describe("useLabelMessage", () => {
 
 describe("messageContainsValues", () => {
 	it("validates messages without needed values", () =>
-		expect(
-			messageContainsValues,
-			"called with",
-			[{ defaultMessage: "Test" }],
-			"to be true",
-		));
+		expect(messageContainsValues, "called with", [{ defaultMessage: "Test" }], "to be true"));
 
 	it("invalidates messages missing values", () =>
-		expect(
-			messageContainsValues,
-			"called with",
-			[{ defaultMessage: "Test {foo}" }],
-			"to be false",
-		));
+		expect(messageContainsValues, "called with", [{ defaultMessage: "Test {foo}" }], "to be false"));
 
 	it("invalidates messages missing some needed values", () =>
 		expect(

@@ -47,13 +47,7 @@ describe("Wrapper", () => {
 				</RenderWrapper>,
 				appRoot,
 			);
-			return expect(
-				modalRoot,
-				"queried for first",
-				"#inner",
-				"to satisfy",
-				<div>Foo</div>,
-			);
+			return expect(modalRoot, "queried for first", "#inner", "to satisfy", <div>Foo</div>);
 		});
 	});
 });

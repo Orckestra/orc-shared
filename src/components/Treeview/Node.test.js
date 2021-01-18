@@ -14,9 +14,7 @@ describe("RootNode", () => {
 			Content: PropStruct,
 			otherProps: { foo: true, bar: false },
 		};
-		Wrap = props => (
-			<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
-		);
+		Wrap = props => <TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>;
 	});
 
 	it("renders a root node", () =>
@@ -59,9 +57,7 @@ describe("LeafNode", () => {
 			updateNodeState: updater,
 			otherProps: { foo: true, bar: false },
 		};
-		Wrap = props => (
-			<TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>
-		);
+		Wrap = props => <TreeContext.Provider value={contextValue}>{props.children}</TreeContext.Provider>;
 	});
 
 	it("renders a closed node with children", () =>
@@ -134,11 +130,7 @@ describe("LeafNode", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: getStyledClassSelector(Indicator) },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [
-				{ args: [{ otherNode: false, testNode: true }] },
-			]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [{ otherNode: false, testNode: true }] }])));
 
 	it("updates nodeState on click on the indicator, closing if open", () =>
 		expect(
@@ -148,11 +140,7 @@ describe("LeafNode", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: getStyledClassSelector(Indicator) },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [
-				{ args: [{ otherNode: false, testNode: false }] },
-			]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: [{ otherNode: false, testNode: false }] }])));
 });
 
 describe("Node", () => {
@@ -402,10 +390,7 @@ describe("Node", () => {
 					"to satisfy",
 					<PropStruct id="isClosed" other="stuff" foo={true} bar={false} />,
 				)
-				.and(
-					"to contain",
-					<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
-				),
+				.and("to contain", <PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />),
 		));
 
 	describe("with openAll set", () => {

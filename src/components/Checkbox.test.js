@@ -55,22 +55,14 @@ describe("Cover", () => {
 	});
 
 	it("sets a clear background when not checked", () =>
-		expect(
-			<Cover />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"background-color: white;",
-		));
+		expect(<Cover />, "when mounted", "to have style rules satisfying", "to contain", "background-color: white;"));
 
 	it("sets a colored background and a checkmark when checked", () =>
 		expect(
 			<Cover value />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "background-color: #7d7d7d;")
-				.and("to contain", '::after {content: "✔";'),
+			expect.it("to contain", "background-color: #7d7d7d;").and("to contain", '::after {content: "✔";'),
 		));
 
 	describe("with highlight color from theme", () => {
@@ -116,9 +108,7 @@ describe("Cover", () => {
 				<Cover theme={theme} />,
 				"when mounted",
 				"to have style rules satisfying",
-				expect
-					.it("to contain", "background-color: white;")
-					.and("not to contain", "::after"),
+				expect.it("to contain", "background-color: white;").and("not to contain", "::after"),
 			));
 
 		it("sets a colored background and a checkmark when checked", () =>
@@ -126,9 +116,7 @@ describe("Cover", () => {
 				<Cover theme={theme} value />,
 				"when mounted",
 				"to have style rules satisfying",
-				expect
-					.it("to contain", "background-color: #ce0c0c;")
-					.and("to contain", '::after {content: "✔";'),
+				expect.it("to contain", "background-color: #ce0c0c;").and("to contain", '::after {content: "✔";'),
 			));
 	});
 });

@@ -27,11 +27,10 @@ const renderByType = (e, def, rowId, readOnly) => {
 					value={transformedValue || "0"}
 				/>
 			);
-			const tooltippedCurrencyValue = <TooltippedTypography noWrap children={currencyValue} titleValue={currencyValue} />;
-			return currency != null ? [
-				tooltippedCurrencyValue
-				,
-			] : [null];
+			const tooltippedCurrencyValue = (
+				<TooltippedTypography noWrap children={currencyValue} titleValue={currencyValue} />
+			);
+			return currency != null ? [tooltippedCurrencyValue] : [null];
 		}
 
 		case "date":
@@ -45,10 +44,10 @@ const renderByType = (e, def, rowId, readOnly) => {
 					<FormattedDate value={transformedValue} /> <FormattedTime value={transformedValue} />
 				</React.Fragment>
 			);
-			const tooltippedDatetimeValue = <TooltippedTypography noWrap children={datetimeValue} titleValue={datetimeValue} />;
-			return transformedValue != null ? [
-				tooltippedDatetimeValue,
-			] : [null];
+			const tooltippedDatetimeValue = (
+				<TooltippedTypography noWrap children={datetimeValue} titleValue={datetimeValue} />
+			);
+			return transformedValue != null ? [tooltippedDatetimeValue] : [null];
 
 		case "select":
 			const checkboxProps = new CheckboxProps();
@@ -94,7 +93,7 @@ export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnl
 
 	const headers = columnDefinitions.map(def => ({
 		cellElement: <TableHeaderCell columnDefinition={def} />,
-		className: def.className
+		className: def.className,
 	}));
 
 	const rows = elements.map(e => {

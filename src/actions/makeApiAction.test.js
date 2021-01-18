@@ -13,30 +13,19 @@ describe("makeActionTypes", () => {
 
 describe("makeApiActions", () => {
 	it("creates a basic RSAA", () =>
-		expect(
-			makeApiAction,
-			"when called with",
-			["TEST_ACTION", "/mock/endpoint"],
-			"to equal",
-			{
-				[RSAA]: {
-					types: makeActionTypes("TEST_ACTION"),
-					endpoint: "/mock/endpoint",
-					method: "GET",
-				},
+		expect(makeApiAction, "when called with", ["TEST_ACTION", "/mock/endpoint"], "to equal", {
+			[RSAA]: {
+				types: makeActionTypes("TEST_ACTION"),
+				endpoint: "/mock/endpoint",
+				method: "GET",
 			},
-		));
+		}));
 
 	it("handles POST and bodies", () =>
 		expect(
 			makeApiAction,
 			"when called with",
-			[
-				"TEST_ACTION",
-				"/mock/endpoint",
-				"POST",
-				{ body: { test: true, someText: "This is a text value" } },
-			],
+			["TEST_ACTION", "/mock/endpoint", "POST", { body: { test: true, someText: "This is a text value" } }],
 			"to equal",
 			{
 				[RSAA]: {
@@ -78,12 +67,7 @@ describe("makeApiActions", () => {
 		return expect(
 			makeApiAction,
 			"when called with",
-			[
-				"TEST_ACTION",
-				"/mock/endpoint",
-				"GET",
-				{ options: { redirect: "follow" }, bailout },
-			],
+			["TEST_ACTION", "/mock/endpoint", "GET", { options: { redirect: "follow" }, bailout }],
 			"to equal",
 			{
 				[RSAA]: {

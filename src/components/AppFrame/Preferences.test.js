@@ -40,8 +40,7 @@ const messages = extractMessages(sharedMessages);
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
 	modExport.loadConfig = () => Promise.resolve({});
-	modExport.buildUrl = (path = [], params = "") =>
-		"URL: " + path.join("/") + " " + JSON.stringify(params);
+	modExport.buildUrl = (path = [], params = "") => "URL: " + path.join("/") + " " + JSON.stringify(params);
 	return modExport;
 });
 
@@ -125,8 +124,7 @@ describe("Preferences", () => {
 						isVisible: false,
 						isAbsoluteUrl: true,
 						url: "https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy",
-						iconUri:
-							"https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy/icon.png",
+						iconUri: "https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy/icon.png",
 						displayName: {
 							"en-CA": "Security",
 							"en-US": "Security",
@@ -139,7 +137,7 @@ describe("Preferences", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
@@ -174,16 +172,12 @@ describe("Preferences", () => {
 					<div>
 						<div>
 							<Wrapper>
-								<Header>
-									{stringifyWithoutQuotes(messages['orc-shared.preferences'])}
-								</Header>
+								<Header>{stringifyWithoutQuotes(messages["orc-shared.preferences"])}</Header>
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
-										</Label>
+										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
 										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => { }}>
+											<select id="language" value="en-US" onChange={() => {}}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -194,11 +188,9 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
-										</Label>
+										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
 										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => { }}>
+											<select id="application" value={4} onChange={() => {}}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -208,11 +200,9 @@ describe("Preferences", () => {
 									</FieldBox>
 								</PrefForm>
 								<Footer>
-									<PrefButton id="cancelPrefs">
-										{stringifyWithoutQuotes(messages['orc-shared.cancel'])}
-									</PrefButton>
+									<PrefButton id="cancelPrefs">{stringifyWithoutQuotes(messages["orc-shared.cancel"])}</PrefButton>
 									<PrefButton id="savePrefs" primary>
-										{stringifyWithoutQuotes(messages['orc-shared.save'])}
+										{stringifyWithoutQuotes(messages["orc-shared.save"])}
 									</PrefButton>
 								</Footer>
 							</Wrapper>
@@ -230,10 +220,7 @@ describe("Preferences", () => {
 	});
 
 	it("shows view state fields, saves language change", () => {
-		state = state.setIn(
-			["view", PREFS_NAME],
-			Immutable.fromJS({ show: true, language: "fr-CA" }),
-		);
+		state = state.setIn(["view", PREFS_NAME], Immutable.fromJS({ show: true, language: "fr-CA" }));
 		return expect(
 			<Provider store={store}>
 				<IntlProvider locale="en-US" messages={messages}>
@@ -259,11 +246,9 @@ describe("Preferences", () => {
 								<Ignore />
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
-										</Label>
+										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
 										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => { }}>
+											<select id="language" value="fr-CA" onChange={() => {}}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -274,11 +259,9 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
-										</Label>
+										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
 										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => { }}>
+											<select id="application" value={4} onChange={() => {}}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -366,10 +349,7 @@ describe("Preferences", () => {
 	});
 
 	it("shows view state fields, saves application change", () => {
-		state = state.setIn(
-			["view", PREFS_NAME],
-			Immutable.fromJS({ show: true, application: 3 }),
-		);
+		state = state.setIn(["view", PREFS_NAME], Immutable.fromJS({ show: true, application: 3 }));
 		return expect(
 			<Provider store={store}>
 				<IntlProvider locale="en-US" messages={messages}>
@@ -395,11 +375,9 @@ describe("Preferences", () => {
 								<Ignore />
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
-										</Label>
+										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
 										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => { }}>
+											<select id="language" value="en-US" onChange={() => {}}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -410,11 +388,9 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
-										</Label>
+										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
 										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => { }}>
+											<select id="application" value={3} onChange={() => {}}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -466,10 +442,7 @@ describe("Preferences", () => {
 	});
 
 	it("clears and closes", () => {
-		state = state.setIn(
-			["view", PREFS_NAME],
-			Immutable.fromJS({ show: true, language: "fr-CA", application: 3 }),
-		);
+		state = state.setIn(["view", PREFS_NAME], Immutable.fromJS({ show: true, language: "fr-CA", application: 3 }));
 		return expect(
 			<Provider store={store}>
 				<IntlProvider locale="en-US" messages={messages}>
@@ -495,11 +468,9 @@ describe("Preferences", () => {
 								<Ignore />
 								<PrefForm>
 									<FieldBox>
-										<Label id="language_label">
-											{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
-										</Label>
+										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
 										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => { }}>
+											<select id="language" value="fr-CA" onChange={() => {}}>
 												<option>English</option>
 												<option>EnglishCa</option>
 												<option>Francais</option>
@@ -510,11 +481,9 @@ describe("Preferences", () => {
 										</SelectorWrapper>
 									</FieldBox>
 									<FieldBox>
-										<Label id="application_label">
-											{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
-										</Label>
+										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
 										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => { }}>
+											<select id="application" value={3} onChange={() => {}}>
 												<option>Marketing Legacy</option>
 												<option>Product Information</option>
 											</select>
@@ -567,11 +536,9 @@ describe("Preferences", () => {
 							<Ignore />
 							<PrefForm>
 								<FieldBox>
-									<Label id="language_label">
-										{stringifyWithoutQuotes(messages['orc-shared.displayLanguage'])}
-									</Label>
+									<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
 									<SelectorWrapper>
-										<select id="language" value="" onChange={() => { }}>
+										<select id="language" value="" onChange={() => {}}>
 											<option>English</option>
 											<option>EnglishCa</option>
 											<option>Francais</option>
@@ -582,11 +549,9 @@ describe("Preferences", () => {
 									</SelectorWrapper>
 								</FieldBox>
 								<FieldBox>
-									<Label id="application_label">
-										{stringifyWithoutQuotes(messages['orc-shared.defaultApp'])}
-									</Label>
+									<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
 									<SelectorWrapper>
-										<select id="application" value="" onChange={() => { }}>
+										<select id="application" value="" onChange={() => {}}>
 											<option>Marketing Legacy</option>
 											<option>Product Information</option>
 										</select>
@@ -607,22 +572,12 @@ describe("Preferences", () => {
 		let update, update2;
 		beforeEach(() => {
 			update = sinon.spy().named("update");
-			update2 = () => { };
+			update2 = () => {};
 		});
 		it("returns an update function", () =>
-			expect(
-				createGetUpdater,
-				"when called with",
-				[update],
-				"called with",
-				["testField"],
-				"called with",
-				["testValue"],
-			).then(() =>
-				expect(update, "to have calls satisfying", [
-					{ args: ["testField", "testValue"] },
-				]),
-			));
+			expect(createGetUpdater, "when called with", [update], "called with", ["testField"], "called with", [
+				"testValue",
+			]).then(() => expect(update, "to have calls satisfying", [{ args: ["testField", "testValue"] }])));
 
 		it("memoizes on update function and field name", () => {
 			const update1_1 = createGetUpdater(update)("111");
@@ -630,20 +585,10 @@ describe("Preferences", () => {
 			const update2_1 = createGetUpdater(update2)("111");
 			const update2_2 = createGetUpdater(update2)("222");
 			expect(createGetUpdater, "called with", [update]).then(f =>
-				expect(f, "called with", ["111"], "to be", update1_1).and(
-					"called with",
-					["222"],
-					"to be",
-					update1_2,
-				),
+				expect(f, "called with", ["111"], "to be", update1_1).and("called with", ["222"], "to be", update1_2),
 			);
 			expect(createGetUpdater, "called with", [update2]).then(f =>
-				expect(f, "called with", ["111"], "to be", update2_1).and(
-					"called with",
-					["222"],
-					"to be",
-					update2_2,
-				),
+				expect(f, "called with", ["111"], "to be", update2_1).and("called with", ["222"], "to be", update2_2),
 			);
 		});
 	});

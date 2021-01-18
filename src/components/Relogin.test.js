@@ -46,11 +46,7 @@ describe("Relogin", () => {
 						},
 					]),
 				)
-				.then(() =>
-					expect(store.dispatch, "to have calls satisfying", [
-						{ args: [{ type: "__LOGIN_SUCCESS" }] },
-					]),
-				);
+				.then(() => expect(store.dispatch, "to have calls satisfying", [{ args: [{ type: "__LOGIN_SUCCESS" }] }]));
 		});
 
 		it("does not render if not needed", () => {
@@ -109,10 +105,6 @@ describe("Relogin", () => {
 				"when mounted",
 				"with event",
 				{ type: "load" },
-			).then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [{ type: "__LOGIN_SUCCESS" }] },
-				]),
-			));
+			).then(() => expect(store.dispatch, "to have calls satisfying", [{ args: [{ type: "__LOGIN_SUCCESS" }] }])));
 	});
 });

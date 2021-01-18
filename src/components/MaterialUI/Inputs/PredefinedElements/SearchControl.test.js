@@ -80,11 +80,7 @@ describe("SearchControl Component", () => {
 				<div>
 					<Select options={options} selectProps={selectProps} />
 					<div>
-						<Input
-							placeholder="placeHolderTest"
-							defaultValue="default"
-							disableUnderline={true}
-						/>
+						<Input placeholder="placeHolderTest" defaultValue="default" disableUnderline={true} />
 						<IconButton tabIndex="-1">
 							<Icon id="close2" />
 						</IconButton>
@@ -276,8 +272,8 @@ describe("SearchControl Component", () => {
 		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
 
 		const event = {
-			preventDefault: () => { },
-			stopPropagation: () => { },
+			preventDefault: () => {},
+			stopPropagation: () => {},
 		};
 
 		searchInput.invoke("onFocus")(event);
@@ -317,8 +313,8 @@ describe("SearchControl Component", () => {
 		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
 
 		const event = {
-			preventDefault: () => { },
-			stopPropagation: () => { },
+			preventDefault: () => {},
+			stopPropagation: () => {},
 		};
 
 		clearButton.invoke("onFocus")(event);

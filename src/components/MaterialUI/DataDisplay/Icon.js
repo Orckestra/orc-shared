@@ -11,11 +11,11 @@ const useStyles = makeStyles(theme => ({
 		stroke: "currentColor",
 	},
 	primary: {
-		color: theme.palette.primary.main
+		color: theme.palette.primary.main,
 	},
 	disabled: {
-		color: theme.palette.text.disabled
-	}
+		color: theme.palette.text.disabled,
+	},
 }));
 
 const Icon = ({ id, ...props }) => {
@@ -28,7 +28,7 @@ const Icon = ({ id, ...props }) => {
 			classes={{
 				root: classes.icon,
 				colorPrimary: classes.primary,
-				colorDisabled: classes.disabled
+				colorDisabled: classes.disabled,
 			}}
 		>
 			<use href={`#icon-${id}`} />

@@ -3,8 +3,7 @@ import reducer from "./toasts";
 import { pushToast, shiftToast } from "../actions/toasts";
 
 describe("toasts", () => {
-	it("behaves as a reducer", () =>
-		expect(reducer, "to be a reducer with initial state", { queue: [] }));
+	it("behaves as a reducer", () => expect(reducer, "to be a reducer with initial state", { queue: [] }));
 
 	describe("push new toast to queue", () => {
 		it("adds a toast to the end of the queue", () => {
