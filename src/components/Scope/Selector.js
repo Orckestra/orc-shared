@@ -48,7 +48,6 @@ export const Selector = ({
 	updateFilter,
 }) => {
 	const { formatMessage } = useIntl();
-
 	return (
 		<SelectorPanel in={show} width="27vw" timeout={300}>
 			<Wrapper onClickOutside={reset}>

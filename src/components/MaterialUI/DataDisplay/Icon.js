@@ -4,32 +4,32 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
 	icon: {
-		color: "initial",
+		color: props => (props.themeColor ?? "initial"),
 		width: "1em",
 		height: "1em",
 		fill: "currentColor",
 		stroke: "currentColor",
 	},
 	primary: {
-		color: theme.palette.primary.main
+		color: props => (props.themeColor ?? theme.palette.primary.main)
 	},
 	disabled: {
-		color: theme.palette.text.disabled
-	}
+		color: props => (props.themeColor ?? theme.palette.text.disabled)
+	},
 }));
 
-const Icon = ({ id, ...props }) => {
-	const classes = useStyles();
+const Icon = ({ id, themeColor, ...props }) => {
+	const classes = useStyles({ themeColor });
 
 	return (
 		<SvgIcon
-			fontSize="inherit"
-			{...props}
+			fontSize={props.fontSize ?? "inherit"}
 			classes={{
 				root: classes.icon,
 				colorPrimary: classes.primary,
 				colorDisabled: classes.disabled
 			}}
+			{...props}
 		>
 			<use href={`#icon-${id}`} />
 		</SvgIcon>

@@ -10,6 +10,7 @@ import { defaultScopeSelector } from "../../selectors/settings";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import ScopeSelector from "./../MaterialUI/ScopeSelector/ScopeSelector";
 
 const useStyles = makeStyles(theme => ({
 	scopeButton: {
@@ -74,6 +75,8 @@ export const Scope = ({ children }) => {
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, disabled, nodeState, filter }, updateViewState] = useViewState(SCOPE_SELECTOR_NAME);
 
+	console.log(show);
+
 	const resetNodeState = useCallback(
 		current => current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
 		[updateViewState, nodeState, defaultNodeState],
@@ -96,7 +99,7 @@ export const Scope = ({ children }) => {
 					disabled,
 				}}
 			/>
-			<Selector
+			{/* <Selector
 				name={SCOPE_SELECTOR_NAME}
 				show={show}
 				reset={reset}
@@ -105,7 +108,8 @@ export const Scope = ({ children }) => {
 				currentScope={currentScope}
 				updateFilter={updateFilter}
 				defaultNodeState={{}}
-			/>
+			/> */}
+			<ScopeSelector show={show} getScope={getScope} />
 			{children}
 		</React.Fragment>
 	);

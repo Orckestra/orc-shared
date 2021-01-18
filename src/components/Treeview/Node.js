@@ -20,8 +20,8 @@ export const LeafNode = ({ dark, isSelectedNode, ...nodeData }) => (
 								<Indicator key="b" open={nodeData.open} onClick={toggle} dark={dark} />,
 							]
 						) : (
-							<NonIndicator />
-						)}
+								<NonIndicator />
+							)}
 						<Label isSelectedNode={isSelectedNode}>
 							<Content {...stripKey("children", nodeData)} {...otherProps} />
 						</Label>
@@ -53,18 +53,19 @@ export const Node = ({ root, id }) => (
 			if (!nodeData) return null;
 			const isSelectedNode = selectedNodeId === id;
 			const open = root || openAll || nodeState[id] || false;
+			console.log(nodeData);
 			return (
 				<React.Fragment>
 					{root ? (
 						<RootNode {...nodeData} isSelectedNode={isSelectedNode} />
 					) : (
-						<LeafNode
-							{...nodeData}
-							open={open}
-							dark={dark}
-							isSelectedNode={isSelectedNode}
-						/>
-					)}
+							<LeafNode
+								{...nodeData}
+								open={open}
+								dark={dark}
+								isSelectedNode={isSelectedNode}
+							/>
+						)}
 					{open && safeGet(nodeData, "children", "length") ? (
 						<Branch dark={dark}>
 							{nodeData.children.map(id => (
