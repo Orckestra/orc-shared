@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	errorLabel: {
 		color: theme.palette.error.main,
-		fontWeight: theme.typography.fontWeightSemiBold,
+		fontWeight: theme.typography.fontWeightBold,
 		fontSize: theme.typography.fontSize,
 		maxWidth: theme.spacing(15),
 	},
