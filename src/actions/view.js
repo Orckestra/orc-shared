@@ -37,7 +37,7 @@ export const setEditModelErrors = (errors, entityId, sectionName, moduleName) =>
 	payload: { errors, entityId, sectionName, moduleName },
 });
 
-export const setEditModelFieldErrors = (keys, error, entityId, sectionName, moduleName) => ({
+export const setEditModelFieldError = (keys, error, entityId, sectionName, moduleName) => ({
 	type: VIEW_SET_EDIT_MODEL_FIELD_ERRORS,
 	payload: { keys, error, entityId, sectionName, moduleName },
 });
