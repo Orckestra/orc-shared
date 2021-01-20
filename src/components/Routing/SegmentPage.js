@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { tryGetNewEntityIdKey } from "./../../utils/urlHelper";
 
 const useStyles = makeStyles(theme => ({
 	asterix: {
@@ -87,7 +88,8 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 	const pages = [],
 		subpages = [];
 	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
-	const entityId = match.params[entityIdKey];
+	let entityId = match.params[entityIdKey];
+	if (!entityId) entityId = tryGetNewEntityIdKey(baseHref);
 	const modifiedSections = useSelector(getModifiedSections(entityId));
 	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
 	const asterix = <span className={classes.asterix}>*</span>;
@@ -160,13 +162,11 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 										<Grid
 											item
 											className={
-												sectionsWithErrors.includes(segpath.replace("/", "")) === true
-													? classes.errorLabel
-													: classes.label
+												sectionsWithErrors.includes(segpath.replace("/", "")) ? classes.errorLabel : classes.label
 											}
 										>
 											{basicLabel}
-											{modifiedSections.includes(segpath.replace("/", "")) === true ? asterix : null}
+											{modifiedSections.includes(segpath.replace("/", "")) ? asterix : null}
 										</Grid>
 										<Grid item className={classes.labelComponent}>
 											{config.labelComponent}
