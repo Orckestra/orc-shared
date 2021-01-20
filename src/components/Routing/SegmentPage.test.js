@@ -46,6 +46,7 @@ describe("SegmentPage", () => {
 									field1: {
 										value: "smth",
 										wasModified: true,
+										error: "error",
 									},
 								},
 							},

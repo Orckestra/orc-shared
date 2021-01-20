@@ -253,4 +253,36 @@ describe("View state reducer", () => {
 
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
 	});
+
+	it("Do not set error if keys is absent", () => {
+		const errors = [{ error: "error1" }];
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "section11";
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {},
+				},
+			},
+		};
+
+		const action = setEditModelErrors(errors, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
 });
