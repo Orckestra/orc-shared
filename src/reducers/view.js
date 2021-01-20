@@ -5,6 +5,7 @@ import {
 	VIEW_CREATE_EDIT_NODE,
 	VIEW_REMOVE_EDIT_NODE,
 	VIEW_SET_EDIT_MODEL_FIELD,
+	VIEW_SET_EDIT_MODEL_ERRORS,
 } from "../actions/view";
 import { isEqual } from "lodash";
 
@@ -41,6 +42,17 @@ const viewStateReducer = (state = initialState, action) => {
 			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
 
 			return state.setIn(path, Immutable.fromJS({ value, wasModified: !isEqual(value, storeValue) }));
+		}
+		case VIEW_SET_EDIT_MODEL_ERRORS: {
+			const { errors, entityId, sectionName, moduleName } = action.payload;
+			errors.forEach(item => {
+				if (item.keys) {
+					const path = ["edit", moduleName, entityId, sectionName, "model"].concat(item.keys).concat(["error"]);
+					state = state.setIn(path, item.error);
+				}
+			});
+
+			return state;
 		}
 		default:
 			return state;
