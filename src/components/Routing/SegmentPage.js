@@ -30,12 +30,6 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fontSize,
 		maxWidth: theme.spacing(15),
 	},
-	errorLabel: {
-		color: theme.palette.error.main,
-		fontWeight: theme.typography.fontWeightSemiBold,
-		fontSize: theme.typography.fontSize,
-		maxWidth: theme.spacing(15),
-	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
 	},
