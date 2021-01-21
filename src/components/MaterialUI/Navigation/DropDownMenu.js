@@ -26,6 +26,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new DropDownMenuProps() }) => {
+	if (isDropDownMenuProps(dropDownMenuProps) === false) {
+		throw new TypeError("dropDownMenuProps property is not of type DropDownMenuProps");
+	}
+
+	const disabled = dropDownMenuProps.get(DropDownMenuProps.propNames.disabled);
+	const autoFocus = dropDownMenuProps.get(DropDownMenuProps.propNames.autoFocus);
+
 	const [anchorEl, setAnchorEl] = useState(null);
 	const isOpened = Boolean(anchorEl);
 	const classes = useStyles();
@@ -44,13 +51,6 @@ const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new Dr
 		event.stopPropagation();
 		setAnchorEl(event.currentTarget);
 	};
-
-	if (isDropDownMenuProps(dropDownMenuProps) === false) {
-		throw new TypeError("dropDownMenuProps property is not of type DropDownMenuProps");
-	}
-
-	const disabled = dropDownMenuProps.get(DropDownMenuProps.propNames.disabled);
-	const autoFocus = dropDownMenuProps.get(DropDownMenuProps.propNames.autoFocus);
 
 	const buttonProps = { "aria-controls": "scope-menu", "aria-haspopup": true, onClick: onOpenClick, disabled };
 
