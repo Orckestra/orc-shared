@@ -11,7 +11,7 @@ describe("DropDownMenu", () => {
 	beforeEach(() => {
 		menuItems = [
 			{ title: "asd", action: sinon.spy().named("action") },
-			{ title: "asd2", action: jest.fn() },
+			{ title: "asd2", action: sinon.spy().named("action") },
 		];
 		store = {
 			subscribe: () => {},
