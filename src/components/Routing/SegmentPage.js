@@ -8,11 +8,12 @@ import { TabBar } from "../Navigation/Bar";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
-import { getModifiedSections } from "./../../selectors/view";
+import { getModifiedSections, getSectionsWithErrors } from "./../../selectors/view";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { tryGetNewEntityIdKey } from "./../../utils/urlHelper";
 
 const useStyles = makeStyles(theme => ({
 	asterix: {
@@ -21,6 +22,12 @@ const useStyles = makeStyles(theme => ({
 	label: {
 		color: theme.palette.text.primary,
 		fontWeight: theme.typography.fontWeightSemiBold,
+		fontSize: theme.typography.fontSize,
+		maxWidth: theme.spacing(15),
+	},
+	errorLabel: {
+		color: theme.palette.error.main,
+		fontWeight: theme.typography.fontWeightBold,
 		fontSize: theme.typography.fontSize,
 		maxWidth: theme.spacing(15),
 	},
@@ -81,8 +88,12 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 	const pages = [],
 		subpages = [];
 	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
-	const entityId = match.params[entityIdKey];
+	let entityId = match.params[entityIdKey];
+	if (!entityId) {
+		entityId = tryGetNewEntityIdKey(baseHref);
+	}
 	const modifiedSections = useSelector(getModifiedSections(entityId));
+	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
 	const asterix = <span className={classes.asterix}>*</span>;
 	const segmentElements = Object.entries(segments).map(([segpath, config]) => {
 		if (config.pages) {
@@ -150,9 +161,14 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 
 								const finalLabel = (
 									<Grid container justify="space-between">
-										<Grid item className={classes.label}>
+										<Grid
+											item
+											className={
+												sectionsWithErrors.includes(segpath.replace("/", "")) ? classes.errorLabel : classes.label
+											}
+										>
 											{basicLabel}
-											{modifiedSections.includes(segpath.replace("/", "")) === true ? asterix : null}
+											{modifiedSections.includes(segpath.replace("/", "")) ? asterix : null}
 										</Grid>
 										<Grid item className={classes.labelComponent}>
 											{config.labelComponent}

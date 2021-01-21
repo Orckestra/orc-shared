@@ -1,5 +1,11 @@
 import Immutable from "immutable";
-import { isEntityUnderEditing, getModifiedSections, getModifiedModels, getModifiedTabs } from "./view";
+import {
+	isEntityUnderEditing,
+	getModifiedSections,
+	getModifiedModels,
+	getModifiedTabs,
+	getSectionsWithErrors,
+} from "./view";
 
 describe("isEntityUnderEditing", () => {
 	let state, stateWithEmptyEdit;
@@ -95,6 +101,62 @@ describe("getModifiedSections", () => {
 
 	it("Retrieves empty array if edit is missing from the store", () => {
 		expect(getModifiedSections, "when called with", ["id2"], "called with", [stateWithEmptyEdit], "to satisfy", []);
+	});
+});
+
+describe("getSectionsWithErrors", () => {
+	let state, stateWithEmptyEdit;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			view: {
+				edit: {
+					module1: {
+						id1: {
+							section1: {},
+							section2: {
+								model: {
+									field1: {
+										error: "smth",
+									},
+								},
+							},
+							section3: {
+								model: {
+									field1: {
+										value: "another",
+										wasModified: false,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			navigation: {
+				route: { match: { path: "/:scope/module1/id1/section1" } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+		});
+
+		stateWithEmptyEdit = Immutable.fromJS({
+			view: {},
+			navigation: {
+				route: { match: { path: "/:scope/module1/id1/section1" } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+		});
+	});
+
+	it("Retrieves sections with errors", () => {
+		expect(getSectionsWithErrors, "when called with", ["id1"], "called with", [state], "to satisfy", ["section2"]);
+	});
+
+	it("Retrieves empty array if no sections found or no sections were modified", () => {
+		expect(getSectionsWithErrors, "when called with", ["id2"], "called with", [state], "to satisfy", []);
+	});
+
+	it("Retrieves empty array if edit is missing from the store", () => {
+		expect(getSectionsWithErrors, "when called with", ["id2"], "called with", [stateWithEmptyEdit], "to satisfy", []);
 	});
 });
 
