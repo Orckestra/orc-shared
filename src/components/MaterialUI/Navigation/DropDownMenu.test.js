@@ -1,15 +1,16 @@
 import React from "react";
 import { Provider } from "react-redux";
-import DropDownMenu from "./DropDownMenu";
+import ReactDOM from "react-dom";
+import sinon from "sinon";
 import Button from "@material-ui/core/Button";
-import { mount } from "enzyme";
 import Icon from "../DataDisplay/Icon";
+import DropDownMenu from "./DropDownMenu";
 
 describe("DropDownMenu", () => {
-	let store, menuItems;
+	let store, menuItems, container;
 	beforeEach(() => {
 		menuItems = [
-			{ title: "asd", action: jest.fn() },
+			{ title: "asd", action: sinon.spy().named("action") },
 			{ title: "asd2", action: jest.fn() },
 		];
 		store = {
@@ -17,6 +18,12 @@ describe("DropDownMenu", () => {
 			dispatch: () => {},
 			getState: () => ({}),
 		};
+		container = document.createElement("div");
+		document.body.appendChild(container);
+	});
+	afterEach(() => {
+		document.body.removeChild(container);
+		container = null;
 	});
 
 	it("render DropDownMenu without errors", () => {
@@ -44,22 +51,25 @@ describe("DropDownMenu", () => {
 	});
 
 	it("should open Drop Down ", () => {
-		const component = mount(
+		const payload = "payload";
+
+		ReactDOM.render(
 			<Provider store={store}>
-				<DropDownMenu menuItems={menuItems} />
+				<DropDownMenu payload={payload} menuItems={menuItems} />
 			</Provider>,
+			container,
 		);
 
-		const button = component.find("button");
-		expect(button.length, "to equal", 1);
+		const clickEvent = document.createEvent("MouseEvents");
+		clickEvent.initEvent("click", true, false);
 
-		button.simulate("click");
+		const button = container.querySelector("button");
+		button.dispatchEvent(clickEvent);
 
-		const items = component.find("li");
-		expect(items.length, "to equal", 2);
+		const items = document.querySelectorAll(".MuiListItem-root");
 
-		items.at(0).simulate("click");
+		items[0].dispatchEvent(clickEvent);
 
-		expect(menuItems[0].action.mock.calls.length, "to equal", 1);
+		expect(menuItems[0].action, "to have calls satisfying", [{ args: [payload] }]);
 	});
 });
