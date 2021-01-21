@@ -89,7 +89,9 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 		subpages = [];
 	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
 	let entityId = match.params[entityIdKey];
-	if (!entityId) entityId = tryGetNewEntityIdKey(baseHref);
+	if (!entityId) {
+		entityId = tryGetNewEntityIdKey(baseHref);
+	}
 	const modifiedSections = useSelector(getModifiedSections(entityId));
 	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
 	const asterix = <span className={classes.asterix}>*</span>;
