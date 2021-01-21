@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Text from "../../Text";
-import DropDownMenuProps from "./DropDownMenuProps";
+import DropDownMenuProps, { isDropDownMenuProps } from "./DropDownMenuProps";
 
 const useStyles = makeStyles(theme => ({
 	menuItem: {
@@ -44,6 +44,10 @@ const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new Dr
 		event.stopPropagation();
 		setAnchorEl(event.currentTarget);
 	};
+
+	if (isDropDownMenuProps(dropDownMenuProps) === false) {
+		throw new TypeError("dropDownMenuProps property is not of type DropDownMenuProps");
+	}
 
 	const disabled = dropDownMenuProps.get(DropDownMenuProps.propNames.disabled);
 	const autoFocus = dropDownMenuProps.get(DropDownMenuProps.propNames.autoFocus);
