@@ -109,3 +109,39 @@ describe("isObjectContainsPropertyWithValue", () => {
 		expect(result, "to be false");
 	});
 });
+
+describe("isObjectContainsPropertyWithAnyValue", () => {
+	it("Returns true if object contains specified property with any value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: "Hello",
+				},
+			},
+			prop2: {
+				m: "Hello Bobbina",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithAnyValue(obj, "m");
+
+		expect(result, "to be true");
+	});
+
+	it("Returns false if object does not contain specified property with any value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: "Hello",
+				},
+			},
+			prop2: {
+				m: "Hello Bob",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithAnyValue(obj, "error");
+
+		expect(result, "to be false");
+	});
+});

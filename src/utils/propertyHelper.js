@@ -49,3 +49,17 @@ export const isObjectContainsPropertyWithValue = (obj, propertyName, value) => {
 
 	return false;
 };
+
+export const isObjectContainsPropertyWithAnyValue = (obj, propertyName) => {
+	if (obj.hasOwnProperty(propertyName) && obj[propertyName]) {
+		return true;
+	}
+
+	for (let prop in obj) {
+		if (obj.hasOwnProperty(prop) && typeof obj[prop] === "object") {
+			if (isObjectContainsPropertyWithAnyValue(obj[prop], propertyName)) return true;
+		}
+	}
+
+	return false;
+};
