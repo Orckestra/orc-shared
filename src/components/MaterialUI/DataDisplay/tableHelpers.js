@@ -1,8 +1,9 @@
 import React from "react";
-import { FormattedNumber, FormattedDate, FormattedTime, FormattedMessage } from "react-intl";
+import { FormattedNumber, FormattedDate, FormattedTime } from "react-intl";
 import safeGet from "../../../utils/safeGet";
 import Checkbox from "../Inputs/Checkbox";
-import Switch from "../../Switch";
+import Switch from "../Inputs/Switch";
+import SwitchProps from "../Inputs/SwitchProps";
 import CheckboxProps from "../Inputs/CheckboxProps";
 import TableHeaderCell from "./TableHeaderCell";
 import StandaloneRadio from "../Inputs/StandaloneRadio";
@@ -14,7 +15,7 @@ const renderByType = (e, def, rowId, readOnly) => {
 
 	switch (def.type) {
 		case "custom": {
-			return [def.builder(e)];
+			return [def.builder(e, readOnly, def.fieldName)];
 		}
 
 		case "currency": {
@@ -53,20 +54,19 @@ const renderByType = (e, def, rowId, readOnly) => {
 			const checkboxProps = new CheckboxProps();
 			checkboxProps.set(CheckboxProps.propNames.update, def.onChange);
 			checkboxProps.set(CheckboxProps.propNames.value, !!transformedValue);
+			checkboxProps.set(CheckboxProps.propNames.readOnly, readOnly);
 
 			return [<Checkbox id={"select_" + transformedValue} data-row-id={rowId} checkboxProps={checkboxProps} />, null];
 
 		case "switch":
-			const titleCaption = transformedValue ? def.switch?.onCaption : def.switch?.offCaption;
-			return [
-				<Switch // TODO : Replace that component by Material-UI when we have it
-					value={!!transformedValue}
-					{...def.switch}
-					data-row-id={rowId}
-					onChange={def.onChange}
-				/>,
-				titleCaption ? <FormattedMessage {...titleCaption} /> : null,
-			];
+			const switchProps = new SwitchProps();
+			switchProps.set(SwitchProps.propNames.value, !!transformedValue);
+			switchProps.set(SwitchProps.propNames.onCaption, def.switch?.onCaption);
+			switchProps.set(SwitchProps.propNames.offCaption, def.switch?.offCaption);
+			switchProps.set(SwitchProps.propNames.readOnly, readOnly);
+			switchProps.set(SwitchProps.propNames.update, def.onChange);
+
+			return transformedValue != null ? [<Switch data-row-id={rowId} switchProps={switchProps} />] : [null];
 
 		case "radio":
 			const selectedValue = def.selectedValue;
@@ -82,7 +82,9 @@ const renderByType = (e, def, rowId, readOnly) => {
 			return [<StandaloneRadio radioProps={radioProps} />];
 
 		default:
-			return [<TooltippedTypography noWrap children={transformedValue} titleValue={transformedValue} />];
+			return transformedValue != null
+				? [<TooltippedTypography noWrap children={transformedValue} titleValue={transformedValue} />]
+				: [null];
 	}
 };
 
