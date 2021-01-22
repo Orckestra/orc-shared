@@ -2,6 +2,11 @@ import React from "react";
 import TreeView from "./TreeView";
 import { makeStyles } from "@material-ui/core/styles";
 import Sidepanel from "./../../Sidepanel";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import InputBase from "./../Inputs/InputBase";
+import { useIntl } from "react-intl";
+import InputBaseProps from "./../Inputs/InputBaseProps";
+import sharedMessages from "./../../../sharedMessages";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -9,27 +14,58 @@ const useStyles = makeStyles(theme => ({
     zIndex: 9999,
     backgroundColor: theme.palette.grey.light,
     border: `1px solid ${theme.palette.grey.borders}`,
-    boxShadow: "0 2px 4px rgba(0,0,0,0.5)"
+    boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
   },
   scopeSelector: {
     display: "flex",
     flexDirection: "column",
-    width: "100%",
-    height: "100%",
-    padding: theme.spacing(2)
+    height: `calc(100% - ${theme.spacing(12)})`,
+    overflowY: "auto",
+    overflowX: "hidden",
+    padding: `${theme.spacing(3)} ${theme.spacing(2)} ${theme.spacing(2)} ${theme.spacing(2)}`
+  },
+  inputContainer: {
+    padding: theme.spacing(2),
+    borderBottom: `1px solid ${theme.palette.grey.icon}`
   },
 }));
 
-const ScopeSelector = ({ show, getScope, currentScope }) => {
+const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, updateFilter }) => {
   const classes = useStyles();
+  const { formatMessage } = useIntl();
 
-  if (show === false) return null;
+  const inputBaseProps = new InputBaseProps();
+
+  inputBaseProps.set(InputBaseProps.propNames.placeholder, formatMessage(sharedMessages.scopeFilterPlaceholder));
+  inputBaseProps.set(InputBaseProps.propNames.value, filter);
+  inputBaseProps.set(InputBaseProps.propNames.update, updateFilter);
+
+  const scopeSelectorContent = (
+    <>
+      <div className={classes.inputContainer}>
+        <InputBase inputProps={inputBaseProps} />
+      </div>
+      <div className={classes.scopeSelector}>
+        <TreeView
+          className={classes.test}
+          rootId="Global"
+          getScope={getScope}
+          selectedScope={selectedScope}
+          closeSelector={closeSelector}
+          show={show}
+        />
+      </div>
+    </>
+  );
 
   const scopeSelector = (
     <Sidepanel className={classes.container} in={show} width="27vw" timeout={300}>
-      <div className={classes.scopeSelector}>
-        <TreeView rootId="Global" getScope={getScope} />
-      </div>
+      <ClickAwayListener onClickAway={(e) => closeSelector(e)}>
+        {/* this div is required since ClickAwayListener child element should be able to hold ref */}
+        <div>
+          {show ? scopeSelectorContent : null}
+        </div>
+      </ClickAwayListener>
     </Sidepanel>
   );
 

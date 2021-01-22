@@ -75,8 +75,6 @@ export const Scope = ({ children }) => {
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, disabled, nodeState, filter }, updateViewState] = useViewState(SCOPE_SELECTOR_NAME);
 
-	console.log(show);
-
 	const resetNodeState = useCallback(
 		current => current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
 		[updateViewState, nodeState, defaultNodeState],
@@ -87,7 +85,7 @@ export const Scope = ({ children }) => {
 		updateViewState("show", false);
 		event.stopPropagation();
 	};
-	const updateFilter = event => updateViewState("filter", event.target.value);
+	const updateFilter = event => updateViewState("filter", event);
 
 	return (
 		<React.Fragment>
@@ -109,7 +107,14 @@ export const Scope = ({ children }) => {
 				updateFilter={updateFilter}
 				defaultNodeState={{}}
 			/> */}
-			<ScopeSelector show={show} getScope={getScope} />
+			<ScopeSelector
+				show={show}
+				getScope={getScope}
+				selectedScope={currentScope}
+				closeSelector={reset}
+				filter={filter}
+				updateFilter={updateFilter}
+			/>
 			{children}
 		</React.Fragment>
 	);

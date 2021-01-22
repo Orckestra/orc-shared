@@ -6,49 +6,33 @@ import { useTheme } from '@material-ui/styles';
 import MultipleLinesText from "./../DataDisplay/TooltippedElements/MultipleLinesText";
 import TextProps from "./../textProps";
 import classNames from "classnames";
+import { scopeTypes } from "./../../../constants";
+import useScopeSelect from "./../../Scope/useScopeSelect";
 
 const useStyles = makeStyles(theme => ({
-  treeItem: {
-    position: "relative",
-    marginBottom: theme.spacing(1),
-  },
   group: {
     marginLeft: props => props.isRootScope ? theme.spacing(1.2) : theme.spacing(3.2),
-    borderLeft: `1px solid ${theme.palette.grey.borders}`,
-    "& > *": {
-      marginLeft: theme.spacing(2),
-      marginTop: theme.spacing(1.5),
-    },
-    "& > div > div > &:last-child": {
-      "&:after": {
-        content: "''",
-        backgroundColor: theme.palette.grey.light,
-        position: "absolute",
-        top: theme.spacing(1.2),
-        left: theme.spacing(-2.1),
-        bottom: 0,
-        width: "1px",
-      },
-    }
-  },
-  iconContainer: {
-    width: "auto",
-    marginRight: theme.spacing(1),
-    "& svg": {
-      fontSize: "10px"
-    }
+    // to hide unnecessary border part
+    // "& > div > div > :last-child": {
+    //   "&:after": {
+    //     content: "''",
+    //     backgroundColor: theme.palette.grey.light,
+    //     position: "absolute",
+    //     top: theme.spacing(1.2),
+    //     left: theme.spacing(-2.1),
+    //     height: "100%",
+    //     bottom: 0,
+    //     width: "1px",
+    //   },
+    // }
   },
   globalIconContainer: {
     marginRight: 0
   },
-  treeItemLabel: {
-    padding: 0
-  },
   scopeLabel: {
     position: "relative",
     display: "flex",
-    alignItems: "center",
-    paddingLeft: theme.spacing(0.5)
+    alignItems: "center"
   },
   scopeIcon: {
     marginRight: theme.spacing(0.7),
@@ -58,9 +42,31 @@ const useStyles = makeStyles(theme => ({
   horizontalLine: {
     position: "absolute",
     left: props => props.hasChildren ? theme.spacing(-4.1) : theme.spacing(-3),
-    width: props => props.hasChildren ? theme.spacing(1.5) : theme.spacing(2.9),
+    width: props => props.hasChildren ? theme.spacing(1.5) : theme.spacing(2.5),
     height: "1px",
-    backgroundColor: theme.palette.grey.borders,
+    backgroundColor: theme.palette.grey.icon
+  },
+  regularScopeName: {
+    fontSize: theme.typography.htmlFontSize,
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: theme.typography.fontWeightSemiBold
+  },
+  virtualScopeName: {
+    fontWeight: theme.typography.fontWeightRegular
+  },
+  virtualScopeContent: {
+    "& > .MuiTreeItem-label": {
+      cursor: "auto",
+      "&:hover,&:focus": {
+        backgroundColor: "transparent"
+      }
+    }
+  },
+  virtualScopeSelected: {
+    "& > .MuiTreeItem-content .MuiTreeItem-label": {
+      border: "none",
+      backgroundColor: "transparent !important",
+    }
   }
 }));
 
@@ -78,29 +84,33 @@ export const ScopeIcon = ({ type }) => {
     <Icon className={classes.scopeIcon} themeColor={theme.palette.success.main} fontSize="default" id="dependent-scope" />;
 
   switch (type) {
-    case "Global":
+    case scopeTypes.global:
       return globalIcon;
-    case "Virtual":
+    case scopeTypes.virtual:
       return virtualIcon;
-    case "Sale":
+    case scopeTypes.sale:
       return salesIcon;
-    case "Dependant":
+    case scopeTypes.dependant:
       return dependentIcon;
     default:
       return null;
   }
 };
 
-export const ScopeLabel = ({ name, type, isRootScope, hasChildren }) => {
+export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScope }) => {
   const classes = useStyles({ hasChildren });
 
   const icon = <ScopeIcon type={type} />;
 
   const multipleLinesTextProps = new TextProps();
   multipleLinesTextProps.set(TextProps.propNames.lineCount, 3);
-  //	multipleLinesTextPropsLabel.set(TextProps.propNames.classes, classes.label);
+  multipleLinesTextProps.set(
+    TextProps.propNames.classes,
+    classNames(classes.regularScopeName, { [classes.virtualScopeName]: isVirtualScope })
+  );
+  // 16.8 height of 1 lines of text
 
-  const horizontalLine = <div className={classes.horizontalLine} />;
+  const horizontalLine = <span className={classes.horizontalLine} />;
 
   const label = (
     <div className={classes.scopeLabel}>
@@ -113,30 +123,48 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren }) => {
   return label
 };
 
-const TreeItem = ({ scope, rootId, ...props }) => {
+const TreeItem = ({ scope, rootId, closeSelector, children }) => {
+  const [scopeSelectHandler] = useScopeSelect(scope.id, closeSelector);
+
   const isRootScope = scope.id === rootId;
+  const isVirtualScope = scope.type === scopeTypes.virtual;
   const hasChildren = scope.children.length > 0;
   const classes = useStyles({ isRootScope });
 
   const expandIcon = <Icon id="dropdown-chevron-down" />;
   const collapseIcon = <Icon id="dropdown-chevron-up" />;
 
-  console.log(props.children);
+  const onLabelClickHandler = (event) => {
+    event.preventDefault();
+    if (isVirtualScope === false) {
+      console.log(scopeSelectHandler);
+      scopeSelectHandler(event);
+    }
+  }
 
   const treeItem = (
     <TreeItemMui
       nodeId={scope.id}
-      label={<ScopeLabel name={scope.name} type={scope.type} isRootScope={isRootScope} hasChildren={hasChildren} />}
+      label={
+        <ScopeLabel
+          name={scope.name}
+          type={scope.type}
+          isRootScope={isRootScope}
+          isVirtualScope={isVirtualScope}
+          hasChildren={hasChildren}
+        />
+      }
       expandIcon={isRootScope ? null : expandIcon}
       collapseIcon={isRootScope ? null : collapseIcon}
+      onLabelClick={(e) => onLabelClickHandler(e)}
       classes={{
-        root: classes.treeItem,
         group: classes.group,
-        label: classes.treeItemLabel,
-        iconContainer: classNames(classes.iconContainer, { [classes.globalIconContainer]: isRootScope })
+        iconContainer: classNames({ [classes.globalIconContainer]: isRootScope }),
+        content: classNames({ [classes.virtualScopeContent]: isVirtualScope }),
+        selected: classNames({ [classes.virtualScopeSelected]: isVirtualScope })
       }}
     >
-      {props.children}
+      {children}
     </TreeItemMui>
   );
 
