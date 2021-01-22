@@ -25,11 +25,13 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fontSize,
 		maxWidth: theme.spacing(15),
 	},
+	modifiedLabel: {
+		color: theme.palette.text.primary,
+		fontWeight: theme.typography.fontWeightBold,
+	},
 	errorLabel: {
 		color: theme.palette.error.main,
 		fontWeight: theme.typography.fontWeightBold,
-		fontSize: theme.typography.fontSize,
-		maxWidth: theme.spacing(15),
 	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
@@ -142,6 +144,13 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 			/>
 		);
 	});
+
+	const getSectionLabelClassName = (isModified, isError) => {
+		let className = classes.label;
+		if (isModified) className = `${className} ${classes.modifiedLabel}`;
+		if (isError) className = `${className} ${classes.errorLabel}`;
+		return className;
+	};
 	return (
 		<Switch>
 			{pages}
@@ -158,17 +167,14 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 									) : (
 										text
 									);
-
+								const isModified = modifiedSections.includes(segpath.replace("/", ""));
+								const isError = sectionsWithErrors.includes(segpath.replace("/", ""));
+								const sectionLabelClassName = getSectionLabelClassName(isModified, isError);
 								const finalLabel = (
 									<Grid container justify="space-between">
-										<Grid
-											item
-											className={
-												sectionsWithErrors.includes(segpath.replace("/", "")) ? classes.errorLabel : classes.label
-											}
-										>
+										<Grid item className={sectionLabelClassName}>
 											{basicLabel}
-											{modifiedSections.includes(segpath.replace("/", "")) ? asterix : null}
+											{isModified ? asterix : null}
 										</Grid>
 										<Grid item className={classes.labelComponent}>
 											{config.labelComponent}
