@@ -146,7 +146,7 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 	});
 
 	const getSectionLabelClassName = (isModified, isError) => {
-		const className = classes.label;
+		let className = classes.label;
 		if (isModified) className = `${className} ${classes.modifiedLabel}`;
 		if (isError) className = `${className} ${classes.errorLabel}`;
 		return className;
