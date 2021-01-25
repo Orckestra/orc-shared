@@ -3,12 +3,12 @@ import { IntlProvider } from "react-intl";
 import sinon from "sinon";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import { mount } from "unexpected-reaction";
 import SegmentPage from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
-import { shiftToast } from "../actions/toasts";
+import { createMemoryHistory } from "history";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
@@ -90,6 +90,7 @@ describe("Modules", () => {
 					foo: false,
 					bar: false,
 					children: ["test2"],
+					isAuthorizedScope: true,
 				},
 			},
 			locale: {
@@ -279,6 +280,7 @@ describe("Modules", () => {
 						foo: false,
 						bar: false,
 						children: ["test2"],
+						isAuthorizedScope: true,
 					},
 				},
 				locale: {
@@ -326,11 +328,11 @@ describe("Modules", () => {
 	});
 
 	describe("check is scope authorized", () => {
+		let history;
 		beforeAll(() => {
-			const location = window.location;
-			delete global.window.location;
-			global.window.location = Object.assign({}, location);
-			sinon.stub(window.location, "replace");
+			history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
+			sinon.spy(history, "push");
+			history.push.named("history.push");
 		});
 
 		beforeEach(() => {
@@ -394,15 +396,15 @@ describe("Modules", () => {
 		it("renders a module table when scope not Authorized", () => {
 			mount(
 				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/demos"]}>
+					<Router history={history}>
 						<IntlProvider locale="en">
 							<Modules modules={modules} />
 						</IntlProvider>
-					</MemoryRouter>
+					</Router>
 				</Provider>,
 			);
 
-			expect(window.location.replace, "to have calls satisfying", [{ args: ["/TestScope2/demos"] }]);
+			expect(history.push, "to have calls satisfying", [{ args: ["/TestScope2/demos?arg=data"] }]);
 		});
 	});
 });
