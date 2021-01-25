@@ -179,7 +179,10 @@ const buildTableHeaders = (headers, classes, customClasses, selectMode, tableSel
 
 	return tableCheckbox.concat(
 		headers.map((header, index) => (
-			<th key={index} className={classNames(classes.headerCell, customClasses[header.className])}>
+			<th
+				key={index}
+				className={classNames(classes.headerCell, customClasses[header.className], customClasses.headerCell)}
+			>
 				{header.cellElement}
 			</th>
 		)),
@@ -188,14 +191,14 @@ const buildTableHeaders = (headers, classes, customClasses, selectMode, tableSel
 
 const buildTableRows = (rows, classes, customClasses, selectMode, onRowClick, selectionHandlers) => {
 	const onClick = (evt, row) => {
-		if (evt.target.tagName !== "INPUT") {
+		if (evt.target.tagName !== "INPUT" && onRowClick != null) {
 			onRowClick(evt, row.element);
 		}
 	};
 
 	return rows.map(row => (
 		<MemoTableRow
-			className={classes.tableRow}
+			className={classNames(classes.tableRow, customClasses.tableRow)}
 			key={row.key}
 			onClick={evt => onClick(evt, row)}
 			selected={selectionHandlers.isSelected(row.key)}
@@ -203,7 +206,7 @@ const buildTableRows = (rows, classes, customClasses, selectMode, onRowClick, se
 			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
 			{row.columns.map((cell, cellIndex) => (
 				<TableCell
-					className={classNames(classes.tableCell, customClasses[cell.className])}
+					className={classNames(classes.tableCell, customClasses[cell.className], customClasses.tableCell)}
 					key={cellIndex}
 					value={cell.cellElement}
 				/>
@@ -223,14 +226,19 @@ const FullTable = React.forwardRef((props, ref) => {
 	};
 
 	return (
-		<div key="actualTable" className={props.classes.tableContainer} ref={ref} onScroll={scrollEvent}>
+		<div
+			key="actualTable"
+			className={classNames(props.classes.tableContainer, props.customClasses.tableContainer)}
+			ref={ref}
+			onScroll={scrollEvent}
+		>
 			<ResizeDetector onResize={props.onResize} />
-			<TableMui className={props.classes.table}>
-				<TableHead className={props.classes.tableHeader}>
+			<TableMui className={classNames(props.classes.table, props.customClasses.table)}>
+				<TableHead className={classNames(props.classes.tableHeader, props.customClasses.tableHeader)}>
 					<TableRow>{props.tableHeaders}</TableRow>
 				</TableHead>
 				<MemoTableBody
-					className={props.classes.tableBody}
+					className={classNames(props.classes.tableBody, props.customClasses.tableBody)}
 					dataRows={props.dataRows}
 					tableRows={props.tableRows}
 					selectedNumber={props.selectedNumber}
@@ -250,7 +258,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	const selectMode = tableProps?.get(TableProps.propNames.selectMode) || false;
 	const stickyHeader = tableProps?.get(TableProps.propNames.stickyHeader) || false;
 	const withoutTopBorder = tableProps?.get(TableProps.propNames.withoutTopBorder) || false;
-	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || false;
+	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
 
 	const refScrolled = useRef();
 
@@ -308,6 +316,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 			<FullTable
 				ref={refScrolled}
 				classes={classes}
+				customClasses={customClasses}
 				onResize={onResize}
 				selectedNumber={selectedNumber}
 				scrollLoader={scrollLoader}
