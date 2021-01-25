@@ -58,67 +58,61 @@ describe("Switch Component", () => {
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 
-	it("Checkbox component handles check", async () => {
+	it("Checkbox component handles check", () => {
 		const switchProps = new SwitchProps();
 
 		switchProps.set(SwitchProps.propNames.update, update);
 		switchProps.set(SwitchProps.propNames.value, false);
 
-		ReactDOM.render(
+		const component = (
 			<IntlProvider locale="en-US">
 				<Switch switchProps={switchProps} />
-			</IntlProvider>,
-			container,
+			</IntlProvider>
 		);
 
-		const clickEvent = document.createEvent("MouseEvents");
-		clickEvent.initEvent("click", true, false);
+		const mountedComponent = mount(component);
 
-		const element = container.querySelector(".MuiSwitch-input ");
-		element.dispatchEvent(clickEvent);
+		const switchMui = mountedComponent.find(SwitchMUI).find("input");
+		switchMui.simulate("change", { target: { checked: true } });
 		expect(update, "to have calls satisfying", [{ args: [true] }]);
 	});
 
-	it("Checkbox component not handles check if it's read only", async () => {
+	it("Checkbox component handles uncheck", () => {
+		const switchProps = new SwitchProps();
+
+		switchProps.set(SwitchProps.propNames.update, update);
+		switchProps.set(SwitchProps.propNames.value, true);
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<Switch switchProps={switchProps} />
+			</IntlProvider>
+		);
+
+		const mountedComponent = mount(component);
+
+		const switchMui = mountedComponent.find(SwitchMUI).find("input");
+		switchMui.simulate("change", { target: { checked: false } });
+		expect(update, "to have calls satisfying", [{ args: [false] }]);
+	});
+
+	it("Checkbox component not handles check if it's read only", () => {
 		const switchProps = new SwitchProps();
 
 		switchProps.set(SwitchProps.propNames.update, update);
 		switchProps.set(SwitchProps.propNames.value, false);
 		switchProps.set(SwitchProps.propNames.readOnly, true);
 
-		ReactDOM.render(
+		const component = (
 			<IntlProvider locale="en-US">
 				<Switch switchProps={switchProps} />
-			</IntlProvider>,
-			container,
+			</IntlProvider>
 		);
 
-		const clickEvent = document.createEvent("MouseEvents");
-		clickEvent.initEvent("click", true, false);
+		const mountedComponent = mount(component);
 
-		const element = container.querySelector(".MuiSwitch-input ");
-		element.dispatchEvent(clickEvent);
+		const switchMui = mountedComponent.find(SwitchMUI).find("input");
+		switchMui.simulate("change");
 		expect(update, "to have calls satisfying", []);
-	});
-
-	it("Checkbox component handles uncheck", async () => {
-		const switchProps = new SwitchProps();
-
-		switchProps.set(SwitchProps.propNames.update, update);
-		switchProps.set(SwitchProps.propNames.value, true);
-
-		ReactDOM.render(
-			<IntlProvider locale="en-US">
-				<Switch switchProps={switchProps} />
-			</IntlProvider>,
-			container,
-		);
-
-		const clickEvent = document.createEvent("MouseEvents");
-		clickEvent.initEvent("click", true, false);
-
-		const element = container.querySelector(".MuiSwitch-input ");
-		element.dispatchEvent(clickEvent);
-		expect(update, "to have calls satisfying", [{ args: [false] }]);
 	});
 });
