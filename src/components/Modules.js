@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { getCurrentScope, selectRouteHref } from "../selectors/navigation";
+import { getCurrentScope } from "../selectors/navigation";
 import { isCurrentScopeAuthorizedSelector } from "../selectors/scope";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
@@ -23,7 +24,8 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 	const scope = useSelector(getCurrentScope);
 	const isAuthorizedScope = useSelector(isCurrentScopeAuthorizedSelector);
 	const defaultScope = useSelector(defaultScopeSelector);
-	const location = useSelector(selectRouteHref);
+	const history = useHistory();
+	const location = useLocation();
 
 	const scopePath = "/:scope/";
 	const prependPath = customPath || scopePath;
@@ -42,8 +44,9 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 	const firstModuleName = Object.keys(modules)[0];
 
 	useEffect(() => {
-		if (!isAuthorizedScope && location.includes(scope) && defaultScope) {
-			window.location.replace(location.replace(scope, defaultScope));
+		const { pathname, search } = location;
+		if (!isAuthorizedScope && pathname.includes(scope) && defaultScope) {
+			history.push(pathname.replace(scope, defaultScope) + search);
 		}
 	}, [isAuthorizedScope, defaultScope]);
 
