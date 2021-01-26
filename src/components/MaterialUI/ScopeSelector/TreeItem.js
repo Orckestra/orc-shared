@@ -137,7 +137,6 @@ const TreeItem = ({ scope, rootId, closeSelector, children }) => {
   const onLabelClickHandler = (event) => {
     event.preventDefault();
     if (isVirtualScope === false) {
-      console.log(scopeSelectHandler);
       scopeSelectHandler(event);
     }
   }

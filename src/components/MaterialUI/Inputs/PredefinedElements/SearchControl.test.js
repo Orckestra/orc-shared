@@ -2,8 +2,7 @@ import React from "react";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import SearchControl from "./SearchControl";
-import { createMuiTheme } from "../../../../utils/testUtils";
-import { MuiThemeProvider } from "@material-ui/core";
+import { TestWrapper, createMuiTheme } from "../../../../utils/testUtils";
 import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
 import SelectMUI from "@material-ui/core/Select";
@@ -18,18 +17,21 @@ const TestComp = ({ classToTest, styleProps }) => {
 	return <div className={classes[classToTest]} />;
 };
 
-const MuiThemeContainer = ({ classToTest, styleProps, muiTheme }) => {
+const MuiThemeContainer = ({ classToTest, styleProps }) => {
+	const theme = createMuiTheme();
+
 	return (
-		<MuiThemeProvider theme={muiTheme}>
+		<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 			<TestComp classToTest={classToTest} styleProps={styleProps} />
-		</MuiThemeProvider>
+		</TestWrapper>
 	);
 };
 
 describe("useStyles", () => {
 	it("build parentInput styles as expected", () => {
+
 		expect(
-			<MuiThemeContainer classToTest="parentInput" muiTheme={createMuiTheme()} />,
+			<MuiThemeContainer classToTest="parentInput" />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
@@ -39,7 +41,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="parentInput" styleProps={{ focused: true }} muiTheme={createMuiTheme()} />,
+			<MuiThemeContainer classToTest="parentInput" styleProps={{ focused: true }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
@@ -58,25 +60,25 @@ describe("SearchControl Component", () => {
 		jest.clearAllMocks();
 	});
 
+	const theme = createMuiTheme();
+
 	it("Renders Search Control component without errors", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
 			{ value: "anotherValue", label: "anotherLabel" },
 		];
 
-		const theme = createMuiTheme();
-
 		const component = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" defaultValue="default" searchOptions={options} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const selectProps = new SelectProps();
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
 		const expected = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<Select options={options} selectProps={selectProps} />
 					<div>
@@ -93,7 +95,7 @@ describe("SearchControl Component", () => {
 						<Icon id="search" />
 					</IconButton>
 				</div>
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -106,9 +108,9 @@ describe("SearchControl Component", () => {
 		];
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" searchOptions={options} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -130,9 +132,9 @@ describe("SearchControl Component", () => {
 		const onSearchEvent = sinon.spy().named("search");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" searchOptions={options} onSearch={onSearchEvent} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -157,9 +159,9 @@ describe("SearchControl Component", () => {
 		const onSearchEvent = sinon.spy().named("search");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" searchOptions={options} onSearch={onSearchEvent} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -189,9 +191,9 @@ describe("SearchControl Component", () => {
 		const onSearchEvent = sinon.spy().named("search");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" searchOptions={options} onSearch={onSearchEvent} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -219,9 +221,9 @@ describe("SearchControl Component", () => {
 		const onSearchEvent = sinon.spy().named("search");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" searchOptions={options} onSearch={onSearchEvent} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -259,9 +261,9 @@ describe("SearchControl Component", () => {
 		];
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" searchOptions={options} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -300,9 +302,9 @@ describe("SearchControl Component", () => {
 		];
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SearchControl placeholder="placeHolderTest" searchOptions={options} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);

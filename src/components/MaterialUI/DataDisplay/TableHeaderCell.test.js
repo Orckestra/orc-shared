@@ -5,8 +5,11 @@ import Icon from "./Icon";
 import { IntlProvider } from "react-intl";
 import { ignoreConsoleError } from "~/utils/testUtils";
 import sinon from "sinon";
+import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("TableHeaderCell", () => {
+  const theme = createMuiTheme();
+
   it("Retrieves label if column definition is not an object and sortOptions are not specified", () => {
     const columnDefinition = {
       label: "String"
@@ -98,13 +101,19 @@ describe("TableHeaderCell", () => {
       sortCallback: jest.fn()
     };
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <TableHeaderCell columnDefinition={columnDefinition} />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {columnDefinition.label}
-        <Icon id="caret-down" />
-      </div>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <div>
+          {columnDefinition.label}
+          <Icon id="caret-down" />
+        </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -121,13 +130,19 @@ describe("TableHeaderCell", () => {
       sortCallback: jest.fn()
     };
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <TableHeaderCell columnDefinition={columnDefinition} />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {columnDefinition.label}
-        <Icon id="caret-up" />
-      </div>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <div>
+          {columnDefinition.label}
+          <Icon id="caret-up" />
+        </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -144,13 +159,19 @@ describe("TableHeaderCell", () => {
       sortCallback: jest.fn()
     };
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <TableHeaderCell columnDefinition={columnDefinition} />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {columnDefinition.label}
-        <Icon id="caret-up" color="primary" />
-      </div>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <div>
+          {columnDefinition.label}
+          <Icon id="caret-up" color="primary" />
+        </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -167,13 +188,19 @@ describe("TableHeaderCell", () => {
       sortCallback: jest.fn()
     };
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <TableHeaderCell columnDefinition={columnDefinition} />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {columnDefinition.label}
-        <Icon id="caret-up" color="disabled" />
-      </div>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <div>
+          {columnDefinition.label}
+          <Icon id="caret-up" color="disabled" />
+        </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);

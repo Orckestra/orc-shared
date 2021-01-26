@@ -1,11 +1,9 @@
 import React from "react";
-import { MemoryRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import Navigation from "./index";
 import TabBar from "../MaterialUI/Navigation/TabBar";
-import { IntlProvider } from "react-intl";
+import { TestWrapper, createMuiTheme } from "./../../utils/testUtils";
 
 jest.mock("./Tab", () => ({
 	__esModule: true,
@@ -98,6 +96,8 @@ describe("Navigation", () => {
 		};
 	});
 
+	const theme = createMuiTheme();
+
 	it("renders a navigation tab bar with state-based props", () => {
 		const module = {
 			icon: 'thing',
@@ -123,23 +123,14 @@ describe("Navigation", () => {
 		];
 
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-					<IntlProvider locale="en">
-						<Navigation modules={modules} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/test/page1"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Navigation modules={modules} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en">
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper provider={{ store }} memoryRouter intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 	});
 });

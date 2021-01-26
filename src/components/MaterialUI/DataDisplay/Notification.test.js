@@ -2,12 +2,12 @@ import React from "react";
 import { mount } from "enzyme";
 import IconButton from "@material-ui/core/IconButton";
 import sinon from "sinon";
-import { Provider } from "react-redux";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import NotificationProps from "./NotificationProps";
 import Notification from "./Notification";
 import Snackbar from "@material-ui/core/Snackbar";
 import Icon from "./Icon";
+import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("Notification Component", () => {
 	let setSnackPack, container, store;
@@ -16,8 +16,8 @@ describe("Notification Component", () => {
 		document.body.appendChild(container);
 		setSnackPack = sinon.spy().named("setSnackPack");
 		store = {
-			subscribe: () => {},
-			dispatch: () => {},
+			subscribe: () => { },
+			dispatch: () => { },
 			getState: () => ({}),
 		};
 	});
@@ -25,6 +25,8 @@ describe("Notification Component", () => {
 		document.body.removeChild(container);
 		container = null;
 	});
+
+	const theme = createMuiTheme();
 
 	it("Fails if notificationProps has wrong type", () => {
 		ignoreConsoleError(() => {
@@ -53,20 +55,22 @@ describe("Notification Component", () => {
 		notificationProps.set(NotificationProps.propNames.lastOnly, lastOnly);
 
 		expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }}>
 				<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<div>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
-					<Icon id="error-cross-filled" />
-					<div>{mockedMessage.message}</div>
-					<IconButton aria-label="close">
-						<Icon id="close2" />
-					</IconButton>
+					<div>
+						<Icon id="error-cross-filled" />
+						<div>{mockedMessage.message}</div>
+						<IconButton aria-label="close">
+							<Icon id="close2" />
+						</IconButton>
+					</div>
 				</div>
-			</div>,
+			</TestWrapper>
 		);
 	});
 
@@ -88,21 +92,22 @@ describe("Notification Component", () => {
 		notificationProps.set(NotificationProps.propNames.lastOnly, lastOnly);
 
 		expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }}>
 				<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-
-			<div>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
-					<Icon id="checkmark-filled" />
-					<div>{mockedMessage.message}</div>
-					<IconButton aria-label="close">
-						<Icon id="close2" />
-					</IconButton>
+					<div>
+						<Icon id="checkmark-filled" />
+						<div>{mockedMessage.message}</div>
+						<IconButton aria-label="close">
+							<Icon id="close2" />
+						</IconButton>
+					</div>
 				</div>
-			</div>,
+			</TestWrapper>,
 		);
 	});
 

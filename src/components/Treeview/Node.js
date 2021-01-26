@@ -53,7 +53,7 @@ export const Node = ({ root, id }) => (
 			if (!nodeData) return null;
 			const isSelectedNode = selectedNodeId === id;
 			const open = root || openAll || nodeState[id] || false;
-			console.log(nodeData);
+
 			return (
 				<React.Fragment>
 					{root ? (

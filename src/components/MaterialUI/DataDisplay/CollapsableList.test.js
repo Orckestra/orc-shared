@@ -6,6 +6,7 @@ import Icon from "./Icon";
 import Typography from "@material-ui/core/Typography";
 import CollapsableListProps from "./collapsableListProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
+import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("CollapsableList", () => {
   const defaultElement = <p>Item1</p>;
@@ -19,6 +20,8 @@ describe("CollapsableList", () => {
   const openMessage = "Open";
   const closeMessage = "Close";
 
+  const theme = createMuiTheme();
+
   it("Throws an error if chipProps has wrong type", () => {
     ignoreConsoleError(() => {
       const component = <CollapsableList collapsableListProps="Wrong Type" />;
@@ -29,18 +32,24 @@ describe("CollapsableList", () => {
   });
 
   it("Renders CollapsableList in closed state correctly", () => {
-    const component = <CollapsableList defaultElement={defaultElement} otherElements={otherElements} />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <CollapsableList defaultElement={defaultElement} otherElements={otherElements} />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {defaultElement}
-        <Collapse in={false} timeout="auto">
-          {otherElements}
-        </Collapse>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
         <div>
-          <Icon color="primary" id="chevron-down" />
+          {defaultElement}
+          <Collapse in={false} timeout="auto">
+            {otherElements}
+          </Collapse>
+          <div>
+            <Icon color="primary" id="chevron-down" />
+          </div>
         </div>
-      </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -51,22 +60,28 @@ describe("CollapsableList", () => {
 
     collapsableListProps.set(CollapsableListProps.propNames.isExpanded, true);
 
-    const component = <CollapsableList
-      defaultElement={defaultElement}
-      otherElements={otherElements}
-      collapsableListProps={collapsableListProps}
-    />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <CollapsableList
+          defaultElement={defaultElement}
+          otherElements={otherElements}
+          collapsableListProps={collapsableListProps}
+        />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {defaultElement}
-        <Collapse in={true} timeout="auto">
-          {otherElements}
-        </Collapse>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
         <div>
-          <Icon color="primary" id="chevron-up" />
+          {defaultElement}
+          <Collapse in={true} timeout="auto">
+            {otherElements}
+          </Collapse>
+          <div>
+            <Icon color="primary" id="chevron-up" />
+          </div>
         </div>
-      </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -78,23 +93,29 @@ describe("CollapsableList", () => {
     collapsableListProps.set(CollapsableListProps.propNames.hasMessage, true);
     collapsableListProps.set(CollapsableListProps.propNames.openMessage, openMessage);
 
-    const component = <CollapsableList
-      defaultElement={defaultElement}
-      otherElements={otherElements}
-      collapsableListProps={collapsableListProps}
-    />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <CollapsableList
+          defaultElement={defaultElement}
+          otherElements={otherElements}
+          collapsableListProps={collapsableListProps}
+        />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {defaultElement}
-        <Collapse in={false} timeout="auto">
-          {otherElements}
-        </Collapse>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
         <div>
-          <Icon color="primary" id="chevron-down" />
-          <Typography color="primary" children={openMessage} />
+          {defaultElement}
+          <Collapse in={false} timeout="auto">
+            {otherElements}
+          </Collapse>
+          <div>
+            <Icon color="primary" id="chevron-down" />
+            <Typography color="primary" children={openMessage} />
+          </div>
         </div>
-      </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -107,23 +128,29 @@ describe("CollapsableList", () => {
     collapsableListProps.set(CollapsableListProps.propNames.hasMessage, true);
     collapsableListProps.set(CollapsableListProps.propNames.closeMessage, closeMessage);
 
-    const component = <CollapsableList
-      defaultElement={defaultElement}
-      otherElements={otherElements}
-      collapsableListProps={collapsableListProps}
-    />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <CollapsableList
+          defaultElement={defaultElement}
+          otherElements={otherElements}
+          collapsableListProps={collapsableListProps}
+        />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {defaultElement}
-        <Collapse in={true} timeout="auto">
-          {otherElements}
-        </Collapse>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
         <div>
-          <Icon color="primary" id="chevron-up" />
-          <Typography color="primary" children={closeMessage} />
+          {defaultElement}
+          <Collapse in={true} timeout="auto">
+            {otherElements}
+          </Collapse>
+          <div>
+            <Icon color="primary" id="chevron-up" />
+            <Typography color="primary" children={closeMessage} />
+          </div>
         </div>
-      </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -134,29 +161,39 @@ describe("CollapsableList", () => {
 
     collapsableListProps.set(CollapsableListProps.propNames.expandPosition, "right");
 
-    const component = <CollapsableList
-      defaultElement={defaultElement}
-      otherElements={otherElements}
-      collapsableListProps={collapsableListProps}
-    />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <CollapsableList
+          defaultElement={defaultElement}
+          otherElements={otherElements}
+          collapsableListProps={collapsableListProps}
+        />
+      </TestWrapper>
+    );
 
     const expected = (
-      <div>
-        {defaultElement}
-        <Collapse in={false} timeout="auto">
-          {otherElements}
-        </Collapse>
-        <div className="makeStyles-floatRight-4">
-          <Icon color="primary" id="chevron-down" />
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <div>
+          {defaultElement}
+          <Collapse in={false} timeout="auto">
+            {otherElements}
+          </Collapse>
+          <div className="makeStyles-floatRight">
+            <Icon color="primary" id="chevron-down" />
+          </div>
         </div>
-      </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
   });
 
   it("Changes changes open/closed state correctly on click", () => {
-    const component = <CollapsableList defaultElement={defaultElement} otherElements={otherElements} />;
+    const component = (
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <CollapsableList defaultElement={defaultElement} otherElements={otherElements} />
+      </TestWrapper>
+    );
 
     const mountedComponent = mount(component);
 

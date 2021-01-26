@@ -6,12 +6,8 @@ import MultipleLinesText from "./../DataDisplay/TooltippedElements/MultipleLines
 import TextProps from "./../textProps";
 import Immutable from "immutable";
 import { scopeTypes } from "./../../../constants";
-import { Provider } from "react-redux";
 import sinon from "sinon";
-import { MemoryRouter } from "react-router-dom";
-import { MuiThemeProvider } from "@material-ui/core";
-import { createMuiTheme, generateClassName } from "./../../../utils/testUtils";
-import { StylesProvider } from "@material-ui/core/styles";
+import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 import { mount } from "enzyme";
 
 describe("TreeItem", () => {
@@ -70,26 +66,18 @@ describe("TreeItem", () => {
       <ScopeLabel name={globalScope.name} type={globalScope.type} isRootScope={true} isVirtualScope={false} />;
 
     const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <StylesProvider generateClassName={generateClassName}>
-            <MuiThemeProvider theme={theme}>
-              <TreeItem scope={globalScope} rootId={rootId} />
-            </MuiThemeProvider>
-          </StylesProvider>
-        </MemoryRouter>
-      </Provider>
+      <TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+        <TreeItem scope={globalScope} rootId={rootId} />
+      </TestWrapper>
     );
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <TreeItemMui
-            nodeId={globalScope.id}
-            label={expectedGlobalLabel}
-          />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <TreeItemMui
+          nodeId={globalScope.id}
+          label={expectedGlobalLabel}
+        />
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -101,28 +89,20 @@ describe("TreeItem", () => {
       <ScopeLabel name={virtualScope.name} type={virtualScope.type} isRootScope={false} isVirtualScope={false} />;
 
     const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <StylesProvider generateClassName={generateClassName}>
-            <MuiThemeProvider theme={theme}>
-              <TreeItem scope={virtualScope} rootId={rootId} />
-            </MuiThemeProvider>
-          </StylesProvider>
-        </MemoryRouter>
-      </Provider>
+      <TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+        <TreeItem scope={virtualScope} rootId={rootId} />
+      </TestWrapper>
     );
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <TreeItemMui
-            nodeId={virtualScope.id}
-            label={expectedVirtualLabel}
-            expandIcon={expandIcon}
-            collapseIcon={collapseIcon}
-          />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <TreeItemMui
+          nodeId={virtualScope.id}
+          label={expectedVirtualLabel}
+          expandIcon={expandIcon}
+          collapseIcon={collapseIcon}
+        />
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -130,15 +110,9 @@ describe("TreeItem", () => {
 
   it("Calls scope select handler on label click if scope type is not virtual", () => {
     const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <StylesProvider generateClassName={generateClassName}>
-            <MuiThemeProvider theme={theme}>
-              <TreeItem scope={saleScope} rootId={rootId} closeSelector={closeSelectorSpy} />
-            </MuiThemeProvider>
-          </StylesProvider>
-        </MemoryRouter>
-      </Provider>
+      <TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+        <TreeItem scope={saleScope} rootId={rootId} closeSelector={closeSelectorSpy} />
+      </TestWrapper>
     );
 
     const preventDefaultSpy = sinon.spy();
@@ -159,15 +133,9 @@ describe("TreeItem", () => {
 
   it("Does not calls scope select handler on label click if scope type is virtual", () => {
     const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <StylesProvider generateClassName={generateClassName} closeSelector={closeSelectorSpy}>
-            <MuiThemeProvider theme={theme}>
-              <TreeItem scope={virtualScope} rootId={rootId} />
-            </MuiThemeProvider>
-          </StylesProvider>
-        </MemoryRouter>
-      </Provider>
+      <TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+        <TreeItem scope={virtualScope} rootId={rootId} closeSelector={closeSelectorSpy} />
+      </TestWrapper>
     );
 
     const preventDefaultSpy = sinon.spy();
@@ -194,25 +162,21 @@ describe("ScopeLabel", () => {
   it("Renders Scope Label for root scope correctly", () => {
     const component =
       (
-        <StylesProvider generateClassName={generateClassName}>
-          <MuiThemeProvider theme={theme}>
-            <ScopeLabel name={scopeName} type={scopeTypes.global} isRootScope />
-          </MuiThemeProvider>
-        </StylesProvider>
+        <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+          <ScopeLabel name={scopeName} type={scopeTypes.global} isRootScope />
+        </TestWrapper>
       );
 
     const multipleLinesTextProps = new TextProps();
     multipleLinesTextProps.set(TextProps.propNames.lineCount, 3);
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <div>
-            <ScopeIcon type={scopeTypes.global} />
-            <MultipleLinesText textProps={multipleLinesTextProps} children={scopeName} />
-          </div>
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <div>
+          <ScopeIcon type={scopeTypes.global} />
+          <MultipleLinesText textProps={multipleLinesTextProps} children={scopeName} />
+        </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -220,26 +184,22 @@ describe("ScopeLabel", () => {
 
   it("Renders Scope Label for non root scope correctly", () => {
     const component = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <ScopeLabel name={scopeName} type={scopeTypes.virtual} isRootScope={false} />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <ScopeLabel name={scopeName} type={scopeTypes.virtual} isRootScope={false} />
+      </TestWrapper>
     );
 
     const multipleLinesTextProps = new TextProps();
     multipleLinesTextProps.set(TextProps.propNames.lineCount, 3);
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <div>
-            <span />
-            <ScopeIcon type={scopeTypes.virtual} />
-            <MultipleLinesText textProps={multipleLinesTextProps} children={scopeName} />
-          </div>
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <div>
+          <span />
+          <ScopeIcon type={scopeTypes.virtual} />
+          <MultipleLinesText textProps={multipleLinesTextProps} children={scopeName} />
+        </div>
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -251,19 +211,15 @@ describe("ScopeIcon", () => {
 
   it("Renders correct Icon for scope type Global", () => {
     const component = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <ScopeIcon type={scopeTypes.global} />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <ScopeIcon type={scopeTypes.global} />
+      </TestWrapper>
     );
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <Icon color="primary" fontSize="default" id="global-scope" />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <Icon color="primary" fontSize="default" id="global-scope" />
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -271,19 +227,15 @@ describe("ScopeIcon", () => {
 
   it("Renders correct Icon for scope type Virtual", () => {
     const component = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <ScopeIcon type={scopeTypes.virtual} />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <ScopeIcon type={scopeTypes.virtual} />
+      </TestWrapper>
     );
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <Icon themeColor={theme.palette.grey.dark} fontSize="default" id="virtual-scope" />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <Icon themeColor={theme.palette.grey.dark} fontSize="default" id="virtual-scope" />
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -291,19 +243,15 @@ describe("ScopeIcon", () => {
 
   it("Renders correct Icon for scope type Sales", () => {
     const component = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <ScopeIcon type={scopeTypes.sale} />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <ScopeIcon type={scopeTypes.sale} />
+      </TestWrapper>
     );
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <Icon color="primary" fontSize="default" id="sales-scope" />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <Icon color="primary" fontSize="default" id="sales-scope" />
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -311,19 +259,15 @@ describe("ScopeIcon", () => {
 
   it("Renders correct Icon for scope type Dependant", () => {
     const component = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <ScopeIcon type={scopeTypes.dependant} />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <ScopeIcon type={scopeTypes.dependant} />
+      </TestWrapper>
     );
 
     const expected = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <Icon themeColor={theme.palette.success.main} fontSize="default" id="dependent-scope" />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <Icon themeColor={theme.palette.success.main} fontSize="default" id="dependent-scope" />
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", expected);
@@ -331,11 +275,9 @@ describe("ScopeIcon", () => {
 
   it("Renders nothing if type is wrong", () => {
     const component = (
-      <StylesProvider generateClassName={generateClassName}>
-        <MuiThemeProvider theme={theme}>
-          <ScopeIcon type="Wrong" />
-        </MuiThemeProvider>
-      </StylesProvider>
+      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+        <ScopeIcon type="Wrong" />
+      </TestWrapper>
     );
 
     expect(component, "when mounted", "to satisfy", null);

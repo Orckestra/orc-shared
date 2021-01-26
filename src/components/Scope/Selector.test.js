@@ -28,12 +28,12 @@ describe("Selector", () => {
 		props = {
 			id: "Global",
 			show: true,
-			reset: () => {},
+			reset: () => { },
 			intl: { formatMessage: msg => msg.defaultMessage },
 			getScope: id => nodes[id],
 			defaultNodeState: { foo: true, bar: true },
 			filter: "",
-			updateFilter: () => {},
+			updateFilter: () => { },
 			filterPlaceholder: { defaultMessage: "Type a scope name" },
 		};
 		state = Immutable.fromJS({
@@ -48,7 +48,7 @@ describe("Selector", () => {
 			},
 			router: {},
 		});
-		store = { subscribe: () => {}, dispatch: () => {}, getState: () => state };
+		store = { subscribe: () => { }, dispatch: () => { }, getState: () => state };
 	});
 	afterEach(() => {
 		document.body.removeChild(modalRoot);

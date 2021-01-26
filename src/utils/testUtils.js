@@ -3,6 +3,12 @@ import { isStyledComponent } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { Ignore } from "unexpected-reaction";
 import createThemes from "./../components/MaterialUI/muiThemes";
+import { Router, MemoryRouter } from "react-router-dom";
+import { MuiThemeProvider } from "@material-ui/core";
+import { StylesProvider } from "@material-ui/core/styles";
+import { IntlProvider } from "react-intl";
+import { Provider } from "react-redux";
+
 const sinon = require("sinon");
 
 /* istanbul ignore next */
@@ -143,3 +149,65 @@ export function extractMessages() {
 	}
 	return extractedMessages;
 }
+
+export const TestWrapper = ({
+	provider,
+	intlProvider,
+	router,
+	memoryRouter,
+	stylesProvider,
+	muiThemeProvider,
+	children
+}) => {
+	const ProviderWrapper = ({ children }) => {
+		if (provider == null) return children;
+
+		return <Provider store={provider.store}>{children}</Provider>
+	}
+
+	const IntlProvderWrapper = ({ children }) => {
+		if (intlProvider == null) return children;
+
+		return <IntlProvider locale="en-US" timeZone="UTC" messages={intlProvider.messages}>{children}</IntlProvider>;
+	}
+
+	const StylesProviderWrapper = ({ children }) => {
+		if (stylesProvider == null) return children;
+
+		return <StylesProvider generateClassName={generateClassName}>{children}</StylesProvider>;
+	};
+
+	const MuiThemeProviderWrapper = ({ children }) => {
+		if (muiThemeProvider == null) return children;
+
+		return <MuiThemeProvider theme={muiThemeProvider.theme}>{children}</MuiThemeProvider>;
+	};
+
+	const MemoryRouterWrapper = ({ children }) => {
+		if (memoryRouter == null) return children;
+
+		return <MemoryRouter initialEntries={memoryRouter.initialEntries}>{children}</MemoryRouter>;
+	};
+
+	const RouterWrapper = ({ children }) => {
+		if (router == null) return children;
+
+		return <Router history={router.history}>{children}</Router>;
+	};
+
+	return (
+		<ProviderWrapper>
+			<RouterWrapper>
+				<MemoryRouterWrapper>
+					<IntlProvderWrapper>
+						<StylesProviderWrapper>
+							<MuiThemeProviderWrapper>
+								{children}
+							</MuiThemeProviderWrapper>
+						</StylesProviderWrapper>
+					</IntlProvderWrapper>
+				</MemoryRouterWrapper>
+			</RouterWrapper>
+		</ProviderWrapper>
+	);
+};

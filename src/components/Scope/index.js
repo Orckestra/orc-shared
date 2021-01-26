@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
-import Selector from "./Selector";
 import usePreviousModified from "../../hooks/usePreviousModified";
 import { unwrapImmutable } from "../../utils";
 import { defaultScopeSelector } from "../../selectors/settings";
