@@ -28,9 +28,9 @@ const useStyles = makeStyles(theme => ({
 	message: {
 		minHeight: theme.spacing(10),
 		backgroundColor: theme.palette.primary.contrastText,
-    display: "flex",
-    alignItems: "center",
-    whiteSpace: "pre",
+		display: "flex",
+		alignItems: "center",
+		whiteSpace: "pre-wrap",
 		padding: `${theme.spacing(2)} ${theme.spacing(2)}`,
 	},
 	actionPanel: {

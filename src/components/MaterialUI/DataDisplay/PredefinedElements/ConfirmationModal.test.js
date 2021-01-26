@@ -23,7 +23,11 @@ describe("ConfirmationModal", () => {
 		const modalProps = new ModalProps();
 
 		const titleComponent = <Typography children={stringifyWithoutQuotes(messages["orc-shared.confirmation"])} />;
-		const messageComponent = <Typography children={message} />;
+		const messageComponent = (
+			<div>
+				<Typography children={message} />
+			</div>
+		);
 
 		modalProps.set(ModalProps.propNames.title, titleComponent);
 		modalProps.set(ModalProps.propNames.open, open);
@@ -35,7 +39,7 @@ describe("ConfirmationModal", () => {
 					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
 				</Button>
 				<Button variant="contained" color="primary" onClick={() => okCallback()}>
-					{stringifyWithoutQuotes(messages["orc-shared.ok"])}
+					{stringifyWithoutQuotes(messages["orc-shared.close"])}
 				</Button>
 			</div>
 		);

@@ -66,9 +66,9 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.save",
 		defaultMessage: "Save",
 	},
-	ok: {
-		id: "orc-shared.ok",
-		defaultMessage: "Ok",
+	close: {
+		id: "orc-shared.close",
+		defaultMessage: "Close",
 	},
 	cancel: {
 		id: "orc-shared.cancel",
