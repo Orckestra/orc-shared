@@ -14,106 +14,96 @@ import { stringifyWithoutQuotes } from "./../../../../utils/parseHelper";
 const messages = extractMessages(sharedMessages);
 
 describe("ConfirmationModal", () => {
-  it("Renders ConfirmationModal correctly", () => {
-    const open = true;
-    const message = "message";
-    const backdropClickCallback = jest.fn();
-    const okCallback = jest.fn();
-    const cancelCallback = jest.fn();
-    const modalProps = new ModalProps();
+	it("Renders ConfirmationModal correctly", () => {
+		const open = true;
+		const message = "message";
+		const backdropClickCallback = jest.fn();
+		const okCallback = jest.fn();
+		const cancelCallback = jest.fn();
+		const modalProps = new ModalProps();
 
-    const titleComponent =
-      <Typography children={stringifyWithoutQuotes(messages['orc-shared.confirmation'])} />;
-    const messageComponent = <Typography children={message} />;
+		const titleComponent = <Typography children={stringifyWithoutQuotes(messages["orc-shared.confirmation"])} />;
+		const messageComponent = <Typography children={message} />;
 
-    modalProps.set(ModalProps.propNames.title, titleComponent);
-    modalProps.set(ModalProps.propNames.open, open);
-    modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
+		modalProps.set(ModalProps.propNames.title, titleComponent);
+		modalProps.set(ModalProps.propNames.open, open);
+		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
 
-    const actionPanel = (
-      <div>
-        <Button
-          variant="outlined"
-          onClick={() => cancelCallback()}
-        >
-          {stringifyWithoutQuotes(messages['orc-shared.cancel'])}
-        </Button>
-        <Button variant="contained" color="primary" onClick={() => okCallback()}>
-          {stringifyWithoutQuotes(messages['orc-shared.ok'])}
-        </Button>
-      </div>
-    );
+		const actionPanel = (
+			<div>
+				<Button variant="outlined" onClick={() => cancelCallback()}>
+					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
+				</Button>
+				<Button variant="contained" color="primary" onClick={() => okCallback()}>
+					{stringifyWithoutQuotes(messages["orc-shared.ok"])}
+				</Button>
+			</div>
+		);
 
-    modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+		modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
 
-    const component = (
-      <IntlProvider locale="en-US" messages={messages}>
-        <ConfirmationModal
-          message={message}
-          open={open}
-          okCallback={okCallback}
-          cancelCallback={cancelCallback}
-          backdropClickCallback={backdropClickCallback}
-        />
-      </IntlProvider>
-    );
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<ConfirmationModal
+					message={message}
+					open={open}
+					okCallback={okCallback}
+					cancelCallback={cancelCallback}
+					backdropClickCallback={backdropClickCallback}
+				/>
+			</IntlProvider>
+		);
 
-    const expected = (
-      <IntlProvider locale="en-US" messages={messages}>
-        <Modal message={messageComponent} modalProps={modalProps} />
-      </IntlProvider>
-    );
+		const expected = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<Modal message={messageComponent} modalProps={modalProps} />
+			</IntlProvider>
+		);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 
-  it("Calls cancelCallback when cancel button is pressed", () => {
-    const open = true;
-    const cancelCallbackSpy = sinon.spy();
-    const modalProps = new ModalProps();
+	it("Calls cancelCallback when cancel button is pressed", () => {
+		const open = true;
+		const cancelCallbackSpy = sinon.spy();
+		const modalProps = new ModalProps();
 
-    modalProps.set(ModalProps.propNames.open, open);
+		modalProps.set(ModalProps.propNames.open, open);
 
-    const component = (
-      <IntlProvider locale="en-US" messages={messages}>
-        <ConfirmationModal
-          open={open}
-          cancelCallback={cancelCallbackSpy}
-        />
-      </IntlProvider>
-    );
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<ConfirmationModal open={open} cancelCallback={cancelCallbackSpy} />
+			</IntlProvider>
+		);
 
-    const mountedComponent = mount(component);
+		const mountedComponent = mount(component);
 
-    const cancelButton = mountedComponent.find(Button).at(0);
+		const cancelButton = mountedComponent.find(Button).at(0);
 
-    cancelButton.invoke("onClick")();
+		cancelButton.invoke("onClick")();
 
-    expect(cancelCallbackSpy, "was called");
-  });
+		expect(cancelCallbackSpy, "was called");
+	});
 
-  it("Calls cancelCallback when ok button is pressed", () => {
-    const open = true;
-    const okCallbackSpy = sinon.spy();
-    const modalProps = new ModalProps();
+	it("Calls cancelCallback when ok button is pressed", () => {
+		const open = true;
+		const okCallbackSpy = sinon.spy();
+		const modalProps = new ModalProps();
 
-    modalProps.set(ModalProps.propNames.open, open);
+		modalProps.set(ModalProps.propNames.open, open);
 
-    const component = (
-      <IntlProvider locale="en-US" messages={messages}>
-        <ConfirmationModal
-          open={open}
-          okCallback={okCallbackSpy}
-        />
-      </IntlProvider>
-    );
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<ConfirmationModal open={open} okCallback={okCallbackSpy} />
+			</IntlProvider>
+		);
 
-    const mountedComponent = mount(component);
+		const mountedComponent = mount(component);
 
-    const okButton = mountedComponent.find(Button).at(1);
+		const okButton = mountedComponent.find(Button).at(1);
 
-    okButton.invoke("onClick")();
+		okButton.invoke("onClick")();
 
-    expect(okCallbackSpy, "was called");
-  });
+		expect(okCallbackSpy, "was called");
+	});
 });

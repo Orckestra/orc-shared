@@ -37,16 +37,7 @@ export const SelectorPanel = styled(Sidepanel)`
 	z-index: 1000;
 `;
 
-export const Selector = ({
-	name,
-	show,
-	reset,
-	getScope,
-	currentScope,
-	defaultNodeState,
-	filter,
-	updateFilter,
-}) => {
+export const Selector = ({ name, show, reset, getScope, currentScope, defaultNodeState, filter, updateFilter }) => {
 	const { formatMessage } = useIntl();
 	return (
 		<SelectorPanel in={show} width="27vw" timeout={300}>
@@ -74,6 +65,6 @@ export const Selector = ({
 			</Wrapper>
 		</SelectorPanel>
 	);
-}
+};
 
 export default Selector;

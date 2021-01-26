@@ -72,7 +72,13 @@ const Sidebar = ({ open, toggle, modules = [], activeModules = [] }) => {
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
 			{modules.map(item => (
-				<EnhancedMenuItem key={item.id} title={item.label} {...item} open={open} alert={activeModules[item.id] || false} />
+				<EnhancedMenuItem
+					key={item.id}
+					title={item.label}
+					{...item}
+					open={open}
+					alert={activeModules[item.id] || false}
+				/>
 			))}
 			<Logo />
 		</Bar>

@@ -11,9 +11,7 @@ const HeadRow = ({ columnDefs, rowIds, allSelected }) => (
 	<HeadTableRow>
 		{columnDefs.map(columnDef => (
 			<HeadCell
-				key={
-					columnDef.type === "select" ? "select" : stringifyFieldName(columnDef.fieldName)
-				}
+				key={columnDef.type === "select" ? "select" : stringifyFieldName(columnDef.fieldName)}
 				{...{ columnDef, rowIds, allSelected }}
 			/>
 		))}

@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 		"&:after": {
 			content: props => props.required && '" *"',
+			color: theme.palette.error.main,
 		},
 	},
 	value: {

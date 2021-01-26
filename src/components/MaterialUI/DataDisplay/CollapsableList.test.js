@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import CollapsableList from "./CollapsableList";
-import Collapse from '@material-ui/core/Collapse';
+import Collapse from "@material-ui/core/Collapse";
 import Icon from "./Icon";
 import Typography from "@material-ui/core/Typography";
 import CollapsableListProps from "./collapsableListProps";

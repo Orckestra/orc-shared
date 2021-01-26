@@ -161,11 +161,7 @@ describe("withScopeData", () => {
 						args: [
 							{
 								[RSAA]: {
-									types: [
-										"GET_SCOPES_REQUEST",
-										"GET_SCOPES_SUCCESS",
-										"GET_SCOPES_FAILURE",
-									],
+									types: ["GET_SCOPES_REQUEST", "GET_SCOPES_SUCCESS", "GET_SCOPES_FAILURE"],
 								},
 							},
 						],

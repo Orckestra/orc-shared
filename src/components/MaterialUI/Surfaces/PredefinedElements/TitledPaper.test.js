@@ -5,26 +5,26 @@ import TitledPaper from "./TitledPaper";
 import { shallow } from "enzyme";
 
 describe("Titled Paper", () => {
-  it("Renders titled paper with passed title and content", () => {
-    const title = "Hello";
+	it("Renders titled paper with passed title and content", () => {
+		const title = "Hello";
 
-    const content = (
-      <div>
-        <p>Hello</p>
-      </div>
-    );
+		const content = (
+			<div>
+				<p>Hello</p>
+			</div>
+		);
 
-    const titledPaper = <TitledPaper content={content} title={title} />;
+		const titledPaper = <TitledPaper content={content} title={title} />;
 
-    const mountedTitledPaper = shallow(titledPaper);
+		const mountedTitledPaper = shallow(titledPaper);
 
-    const expected = (
-      <div>
-        <SectionTitle title={title} />
-        <Paper content={content} />
-      </div>
-    );
+		const expected = (
+			<div>
+				<SectionTitle title={title} />
+				<Paper content={content} />
+			</div>
+		);
 
-    expect(mountedTitledPaper.containsMatchingElement(expected), "to be true");
-  });
+		expect(mountedTitledPaper.containsMatchingElement(expected), "to be true");
+	});
 });

@@ -16,9 +16,7 @@ export const getAuthProfile = () =>
 
 export const SIGN_OUT = "SIGN_OUT";
 
-export const [SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE] = makeActionTypes(
-	SIGN_OUT,
-);
+export const [SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE] = makeActionTypes(SIGN_OUT);
 
 export const signOut = () =>
 	makeOrcApiAction(SIGN_OUT, buildUrl(["authentication", "signout"]), "POST", {

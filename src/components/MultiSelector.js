@@ -70,8 +70,8 @@ export const MultiSelector = ({
 							{labelFromOptions(options.filter(option => value.indexOf(option.value) !== -1))}
 						</SelectedValue>
 					) : (
-							<Placeholder>{placeholder}</Placeholder>
-						)}
+						<Placeholder>{placeholder}</Placeholder>
+					)}
 				</SelectBox>
 				<Dropdown isVisible={isVisible}>
 					{value.length ? (

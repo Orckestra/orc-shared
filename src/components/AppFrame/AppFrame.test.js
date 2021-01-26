@@ -186,7 +186,7 @@ describe("AppFrame", () => {
 			toasts: { queue: [] },
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};

@@ -4,13 +4,14 @@ import {
 	setStateField,
 	createEditNode,
 	removeEditNode,
-	setEditModelField
+	setEditModelField,
+	setEditModelFieldError,
+	setEditModelErrors,
 } from "../actions/view";
 import viewReducer from "./view";
 
 describe("View state reducer", () => {
-	it("behaves as a reducer should", () =>
-		expect(viewReducer, "to be a reducer with initial state", {}));
+	it("behaves as a reducer should", () => expect(viewReducer, "to be a reducer with initial state", {}));
 
 	it("sets a value, overwriting all fields", () => {
 		const oldState = Immutable.fromJS({
@@ -34,11 +35,7 @@ describe("View state reducer", () => {
 		const action = setStateField("test", "stuff", "new value");
 		const newState = viewReducer(oldState, action);
 		return expect(newState, "not to be", oldState)
-			.and(
-				"to have value at",
-				"test",
-				Immutable.fromJS({ stuff: "new value", things: "old value" }),
-			)
+			.and("to have value at", "test", Immutable.fromJS({ stuff: "new value", things: "old value" }))
 			.and("to have value at", "other", "don't touch");
 	});
 
@@ -62,12 +59,12 @@ describe("View state reducer", () => {
 		const modulesData = {
 			[moduleName]: {
 				pages: {
-					':id1': {
+					":id1": {
 						infoBar: {},
 						section11: {},
-						section12: {}
-					}
-				}
+						section12: {},
+					},
+				},
 			},
 		};
 		const entityId = "123456";
@@ -77,17 +74,14 @@ describe("View state reducer", () => {
 				[entityId]: {
 					infoBar: {},
 					section11: {},
-					section12: {}
-				}
-			}
-		}
+					section12: {},
+				},
+			},
+		};
 
 		const action = createEditNode(entityId, moduleName, modulesData);
 		const newState = viewReducer(oldState, action);
-		return expect(newState, "not to be", oldState).and(
-			"to equal",
-			Immutable.fromJS({ edit: expected }),
-		);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
 	});
 
 	it("Sets edit field inside model correctly", () => {
@@ -98,18 +92,16 @@ describe("View state reducer", () => {
 		const moduleName = "module1";
 		const sectionName = "section11";
 
-		const modules = Immutable.fromJS(
-			{
-				[moduleName]: {
-					[entityId]: {
-						[sectionName]: {},
-					}
-				}
-			}
-		);
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {},
+				},
+			},
+		});
 
 		const oldState = Immutable.Map({
-			edit: modules
+			edit: modules,
 		});
 
 		const model = {
@@ -117,57 +109,180 @@ describe("View state reducer", () => {
 				key2: {
 					key3: {
 						value: newValue,
-						wasModified: true
-					}
-				}
-			}
-		}
+						wasModified: true,
+					},
+				},
+			},
+		};
 
 		const expected = {
 			[moduleName]: {
 				[entityId]: {
 					[sectionName]: {
-						model
+						model,
 					},
-				}
-			}
+				},
+			},
 		};
 
 		const action = setEditModelField(keys, newValue, oldValue, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
-		return expect(newState, "not to be", oldState).and(
-			"to equal",
-			Immutable.fromJS({ edit: expected }),
-		);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
 	});
 
 	it("Removes edit node correctly", () => {
 		const entityId = "entityId";
 		const moduleName = "module1";
 
-		const modules = Immutable.fromJS(
-			{
-				[moduleName]: {
-					[entityId]: {}
-				}
-			}
-		);
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {},
+			},
+		});
 
 		const oldState = Immutable.Map({
-			edit: modules
+			edit: modules,
 		});
 
 		const expected = {
-			[moduleName]: {}
+			[moduleName]: {},
 		};
 
 		const action = removeEditNode(entityId, moduleName);
 		const newState = viewReducer(oldState, action);
 
-		return expect(newState, "not to be", oldState).and(
-			"to equal",
-			Immutable.fromJS({ edit: expected }),
-		);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Sets field error inside model correctly", () => {
+		const keys = ["key1", "key2", "key3"];
+		const error = "error";
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "section11";
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const model = {
+			key1: {
+				key2: {
+					key3: {
+						error: error,
+					},
+				},
+			},
+		};
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model,
+					},
+				},
+			},
+		};
+
+		const action = setEditModelFieldError(keys, error, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Sets all errors inside model correctly", () => {
+		const errors = [
+			{ keys: ["key1", "key12", "key13"], error: "error1" },
+			{ keys: ["key2", "key21", "key23"], error: "error2" },
+		];
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "section11";
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const model = {
+			key1: {
+				key12: {
+					key13: {
+						error: "error1",
+					},
+				},
+			},
+			key2: {
+				key21: {
+					key23: {
+						error: "error2",
+					},
+				},
+			},
+		};
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model,
+					},
+				},
+			},
+		};
+
+		const action = setEditModelErrors(errors, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Do not set error if keys is absent", () => {
+		const errors = [{ error: "error1" }];
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "section11";
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {},
+				},
+			},
+		};
+
+		const action = setEditModelErrors(errors, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
 	});
 });

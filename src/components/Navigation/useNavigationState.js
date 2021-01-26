@@ -136,15 +136,15 @@ export const useNavigationState = modules => {
 		// Modules do not have close functions
 		const close = isPageTab
 			? event => {
-				dispatch(removeTab(moduleName, page.href));
-				if (currentHref === href) {
-					dispatch(push(moduleHref));
-				}
-				if (event) {
-					event.stopPropagation();
-					event.preventDefault();
-				}
-			}
+					dispatch(removeTab(moduleName, page.href));
+					if (currentHref === href) {
+						dispatch(push(moduleHref));
+					}
+					if (event) {
+						event.stopPropagation();
+						event.preventDefault();
+					}
+			  }
 			: undefined;
 
 		return {

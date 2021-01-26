@@ -106,13 +106,7 @@ describe("MenuItem", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<MenuItem
-						id="test"
-						href="/foo/test"
-						icon="cake"
-						label="Test"
-						alert={{ type: "confirm" }}
-					/>
+					<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert={{ type: "confirm" }} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -130,13 +124,7 @@ describe("MenuItem", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<MenuItem
-						id="test"
-						href="/foo/test"
-						icon="cake"
-						label="Test"
-						alert={{ message: "Test message" }}
-					/>
+					<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert={{ message: "Test message" }} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -228,33 +216,15 @@ describe("MenuItem", () => {
 
 	describe("Label", () => {
 		it("sets full opacity if open", () =>
-			expect(
-				<Label show />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"opacity: 1;",
-			));
+			expect(<Label show />, "when mounted", "to have style rules satisfying", "to contain", "opacity: 1;"));
 
 		it("sets zero opacity if not open", () =>
-			expect(
-				<Label />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"opacity: 0;",
-			));
+			expect(<Label />, "when mounted", "to have style rules satisfying", "to contain", "opacity: 0;"));
 	});
 
 	describe("Alert", () => {
 		it("has a default color (red)", () =>
-			expect(
-				<Alert />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to match",
-				/border: \d+px solid red/,
-			));
+			expect(<Alert />, "when mounted", "to have style rules satisfying", "to match", /border: \d+px solid red/));
 
 		it("has a default color", () =>
 			expect(

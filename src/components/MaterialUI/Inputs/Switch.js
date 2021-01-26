@@ -2,6 +2,7 @@ import React from "react";
 import SwitchMui from "@material-ui/core/Switch";
 import { makeStyles } from "@material-ui/core/styles";
 import SwitchProps, { isSwitchProps } from "./SwitchProps";
+import { useIntl } from "react-intl";
 
 export const useStyles = makeStyles(theme => ({
 	root: {
@@ -20,11 +21,13 @@ export const useStyles = makeStyles(theme => ({
 	input: {
 		left: "-250%",
 		width: "600%",
+		cursor: props => (props.readOnly ? "default" : "inherit"),
 	},
 	thumb: {
 		width: theme.spacing(1.3),
 		height: theme.spacing(1.3),
 		backgroundColor: theme.palette.background.default,
+		display: props => (props.readOnly ? "none" : "inherit"),
 	},
 	track: {
 		backgroundColor: theme.palette.grey.borders,
@@ -40,13 +43,15 @@ export const useStyles = makeStyles(theme => ({
 			fontSize: theme.spacing(1),
 		},
 		"&:before": {
-			content: props => `"${props.onCaption}"`,
+			content: props => `"${props.formattedOnCaption}"`,
 			left: theme.spacing(0.9),
+			right: props => (props.readOnly ? theme.spacing(0.9) : 0),
 			opacity: 0,
 		},
 		"&:after": {
-			content: props => `"${props.offCaption}"`,
+			content: props => `"${props.formattedOffCaption}"`,
 			right: theme.spacing(0.9),
+			left: props => (props.readOnly ? theme.spacing(0.9) : 0),
 		},
 	},
 	checked: {
@@ -72,6 +77,8 @@ export const useStyles = makeStyles(theme => ({
 }));
 
 const Switch = ({ switchProps }) => {
+	const { formatMessage } = useIntl();
+
 	if (isSwitchProps(switchProps) === false) {
 		throw new TypeError("switchProps property is not of type SwitchProps");
 	}
@@ -80,16 +87,20 @@ const Switch = ({ switchProps }) => {
 	const value = switchProps?.get(SwitchProps.propNames.value) || false;
 	const onCaption = switchProps?.get(SwitchProps.propNames.onCaption);
 	const offCaption = switchProps?.get(SwitchProps.propNames.offCaption);
-	const disabled = switchProps?.get(SwitchProps.propNames.disabled);
+	const disabled = switchProps?.get(SwitchProps.propNames.disabled) || false;
+	const readOnly = switchProps?.get(SwitchProps.propNames.readOnly);
 
-	const classes = useStyles({ onCaption, offCaption });
+	const formattedOnCaption = onCaption != null ? formatMessage(onCaption) : "";
+	const formattedOffCaption = offCaption != null ? formatMessage(offCaption) : "";
+
+	const classes = useStyles({ formattedOnCaption, formattedOffCaption, readOnly });
 
 	return (
 		<SwitchMui
 			disabled={disabled}
 			classes={classes}
 			checked={value}
-			onChange={e => update(e.target.checked)}
+			onChange={e => (!readOnly ? update(e.target.checked) : null)}
 			color={"primary"}
 		/>
 	);

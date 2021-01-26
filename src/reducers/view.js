@@ -5,6 +5,8 @@ import {
 	VIEW_CREATE_EDIT_NODE,
 	VIEW_REMOVE_EDIT_NODE,
 	VIEW_SET_EDIT_MODEL_FIELD,
+	VIEW_SET_EDIT_MODEL_FIELD_ERRORS,
+	VIEW_SET_EDIT_MODEL_ERRORS,
 } from "../actions/view";
 import { isEqual } from "lodash";
 
@@ -16,17 +18,14 @@ const viewStateReducer = (state = initialState, action) => {
 			return state.set(action.payload.name, Immutable.fromJS(action.payload.value));
 		}
 		case VIEW_SET_FIELD: {
-			return state.setIn(
-				[action.payload.name, action.payload.field],
-				Immutable.fromJS(action.payload.value),
-			);
+			return state.setIn([action.payload.name, action.payload.field], Immutable.fromJS(action.payload.value));
 		}
 		case VIEW_CREATE_EDIT_NODE: {
 			const { moduleName, entityId, modulesData } = action.payload;
 
 			const pages = modulesData[moduleName].pages;
 
-			const pageKeys = Object.keys(pages)
+			const pageKeys = Object.keys(pages);
 			// if at some point it will be possible that there could be more than 1 page per module
 			// it will be necessary to remake this part and to receive page key as a property
 			const sections = pages[pageKeys[0]];
@@ -44,6 +43,22 @@ const viewStateReducer = (state = initialState, action) => {
 			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
 
 			return state.setIn(path, Immutable.fromJS({ value, wasModified: !isEqual(value, storeValue) }));
+		}
+		case VIEW_SET_EDIT_MODEL_FIELD_ERRORS: {
+			const { keys, error, entityId, sectionName, moduleName } = action.payload;
+			const path = ["edit", moduleName, entityId, sectionName, "model", ...keys, "error"];
+			return state.setIn(path, error);
+		}
+		case VIEW_SET_EDIT_MODEL_ERRORS: {
+			const { errors, entityId, sectionName, moduleName } = action.payload;
+			errors.forEach(item => {
+				if (item.keys) {
+					const path = ["edit", moduleName, entityId, sectionName, "model", ...item.keys, "error"];
+					state = state.setIn(path, item.error);
+				}
+			});
+
+			return state;
 		}
 		default:
 			return state;

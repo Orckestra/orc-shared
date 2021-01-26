@@ -4,9 +4,7 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 let hasWarned = false;
 const noCutout = () => {
 	if (!hasWarned) {
-		console.warn(
-			"useLoader hook called without cutout selector, loader will never be dispatched.",
-		);
+		console.warn("useLoader hook called without cutout selector, loader will never be dispatched.");
 		hasWarned = true;
 	}
 	return true;

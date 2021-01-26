@@ -36,8 +36,8 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	radioFormControl: {
-		minWidth: theme.spacing(30)
-	}
+		minWidth: theme.spacing(30),
+	},
 }));
 
 const extractAndValidateProps = radioProps => {

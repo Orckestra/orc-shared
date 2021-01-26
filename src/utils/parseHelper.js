@@ -57,6 +57,6 @@ export const getModuleNameFromHref = (prependPath, href) => {
 	return [moduleName, moduleHref];
 };
 
-export const stringifyWithoutQuotes = (obj) => {
+export const stringifyWithoutQuotes = obj => {
 	return JSON.stringify(obj).replace(/"/g, "");
-}
+};

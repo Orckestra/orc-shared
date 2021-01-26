@@ -67,6 +67,9 @@ const useStyles = makeStyles(theme => ({
 	labelContainer: {
 		position: "relative",
 	},
+	modifiedLabel: {
+		fontWeight: theme.typography.fontWeightBold,
+	},
 	asterix: {
 		position: "absolute",
 		top: theme.spacing(-0.5),
@@ -183,8 +186,11 @@ const MuiBar = ({ module, pages }) => {
 					if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
 					const isModified = modifiedTabs.includes(href);
 					const tabLabel = <TabLabel label={label} />;
+					const tabClassName = isModified
+						? `${classes.labelContainer} ${classes.modifiedLabel}`
+						: classes.labelContainer;
 					const wrappedTabLabel = (
-						<div className={classes.labelContainer}>
+						<div className={tabClassName}>
 							<TabLabel label={label} />
 							{isModified === true ? <span className={classes.asterix}>*</span> : null}
 						</div>

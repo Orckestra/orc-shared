@@ -65,12 +65,7 @@ const calculateVirtualization = (virtual, scrollTop, scrollBuffer, height, rows)
 export const useListState = (name, columnDefs) => {
 	const [viewState, updateViewState] = useViewState(name);
 	const { selection = [], sorting = {} } = viewState;
-	const enhancedColumnDefs = enhanceColumnDefs(
-		sorting,
-		selection,
-		updateViewState,
-		columnDefs,
-	);
+	const enhancedColumnDefs = enhanceColumnDefs(sorting, selection, updateViewState, columnDefs);
 
 	return [enhancedColumnDefs, selection];
 };
@@ -123,11 +118,7 @@ export const List = ({
 	}
 	if (rowElements.length === 0 && placeholder) {
 		rowElements.push(
-			<Placeholder
-				key="placeholder"
-				width={columnDefs.length}
-				height={height - HEADER_HEIGHT}
-			>
+			<Placeholder key="placeholder" width={columnDefs.length} height={height - HEADER_HEIGHT}>
 				{placeholder}
 			</Placeholder>,
 		);
@@ -147,16 +138,9 @@ export const List = ({
 };
 
 /* istanbul ignore next */
-const checkInfiniteScroll = branch(
-	({ scrollLoader }) => !!scrollLoader,
-	withInfiniteScroll,
-);
+const checkInfiniteScroll = branch(({ scrollLoader }) => !!scrollLoader, withInfiniteScroll);
 
-const StatefulList = compose(
-	setDisplayName("List"),
-	checkInfiniteScroll,
-	withScrollBox,
-)(List);
+const StatefulList = compose(setDisplayName("List"), checkInfiniteScroll, withScrollBox)(List);
 StatefulList.propTypes = {
 	columnDefs: pt.arrayOf(pt.object), // Each object must be a valid column definition
 	rows: pt.arrayOf(pt.object),

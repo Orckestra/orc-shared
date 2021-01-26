@@ -24,10 +24,7 @@ describe("useApplicationHelpUrl", () => {
 			versionInfo: {
 				version: "1.1.2.9",
 				defaultHelpUrl: "default_url.com",
-				moduleHelpUrls: [
-					{ moduleName: "myApp", helpUrl: "my_app_help_url.com" },
-					{ moduleName: "myOtherApp" },
-				],
+				moduleHelpUrls: [{ moduleName: "myApp", helpUrl: "my_app_help_url.com" }, { moduleName: "myOtherApp" }],
 			},
 		});
 		store = {

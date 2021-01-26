@@ -15,10 +15,7 @@ const ConnectedToastList = () => {
 	const dismissToasts = toasts.length > 0;
 	useEffect(() => {
 		if (dismissToasts) {
-			dismissalTimer.current = window.setInterval(
-				() => dispatch(shiftToast()),
-				TOAST_TIMEOUT * 1000,
-			);
+			dismissalTimer.current = window.setInterval(() => dispatch(shiftToast()), TOAST_TIMEOUT * 1000);
 		}
 		return () => {
 			window.clearInterval(dismissalTimer.current);

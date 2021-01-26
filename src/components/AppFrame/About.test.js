@@ -6,15 +6,7 @@ import sinon from "sinon";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
 import close from "../../content/close.png";
-import {
-	ABOUT_NAME,
-	AboutBox,
-	AboutParagraph,
-	AboutLink,
-	About,
-	getClickOutsideHandler,
-	CloseButton,
-} from "./About";
+import { ABOUT_NAME, AboutBox, AboutParagraph, AboutLink, About, getClickOutsideHandler, CloseButton } from "./About";
 import { setStateField } from "../../actions/view";
 import { extractMessages } from "./../../utils/testUtils";
 import sharedMessages from "./../../sharedMessages";
@@ -38,7 +30,7 @@ describe("About", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			getState: () => state,
 			dispatch: sinon.spy().named("dispatch"),
 		};
@@ -58,10 +50,7 @@ describe("About", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en-US" messages={messages}>
-					<About
-						viewState={{ show: true }}
-						currentApplication={{ displayName: "An application" }}
-					/>
+					<About viewState={{ show: true }} currentApplication={{ displayName: "An application" }} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
@@ -73,40 +62,26 @@ describe("About", () => {
 					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
-						{
-							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
-								.replace('{version}', ccVersion)
-						}
+						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
 						<br />
 						An application 2.3.2
 						<br />
-						{
-							stringifyWithoutQuotes(messages['orc-shared.orcSharedVersion'])
-								.replace('{version}', orcSharedVersion)
-						}
+						{stringifyWithoutQuotes(messages["orc-shared.orcSharedVersion"]).replace("{version}", orcSharedVersion)}
 						<br />
-						{
-							stringifyWithoutQuotes(messages['orc-shared.orcScriptsVersion'])
-								.replace('{version}', orcScriptsVersion)
-						}
+						{stringifyWithoutQuotes(messages["orc-shared.orcScriptsVersion"]).replace("{version}", orcScriptsVersion)}
 						<br />
-						{
-							stringifyWithoutQuotes(messages['orc-shared.orcSecretVersion'])
-								.replace('{version}', orcSecretVersion)
-						}
+						{stringifyWithoutQuotes(messages["orc-shared.orcSecretVersion"]).replace("{version}", orcSecretVersion)}
 					</AboutParagraph>
-					<AboutParagraph long>
-						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
-					</AboutParagraph>
+					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com">
-							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
+							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"])}
 						<br />
-						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
+						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,
@@ -124,9 +99,7 @@ describe("About", () => {
 			"with event",
 			{ type: "click", target: '[alt="X"]' },
 		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [
-				{ args: [setStateField(ABOUT_NAME, "show", false)] },
-			]),
+			expect(store.dispatch, "to have calls satisfying", [{ args: [setStateField(ABOUT_NAME, "show", false)] }]),
 		));
 
 	it("renders an about box with messages and background images but without versions", () => {
@@ -148,23 +121,18 @@ describe("About", () => {
 					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
-						{
-							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
-								.replace('{version}', ccVersion)
-						}
+						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
 					</AboutParagraph>
-					<AboutParagraph long>
-						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
-					</AboutParagraph>
+					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com">
-							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
+							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"])}
 						<br />
-						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
+						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,
@@ -188,23 +156,18 @@ describe("About", () => {
 					</CloseButton>
 					<img src={logoImage} alt="Orckestra" />
 					<AboutParagraph>
-						{
-							stringifyWithoutQuotes(messages['orc-shared.ccVersion'])
-								.replace('{version}', ccVersion)
-						}
+						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
 					</AboutParagraph>
-					<AboutParagraph long>
-						{stringifyWithoutQuotes(messages['orc-shared.copyrightTermsNotice'])}
-					</AboutParagraph>
+					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
 					<AboutParagraph>
 						<AboutLink href="https://www.orckestra.com/fr">
-							{stringifyWithoutQuotes(messages['orc-shared.ccName'])}
+							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages['orc-shared.copyright'])}
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"])}
 						<br />
-						{stringifyWithoutQuotes(messages['orc-shared.allRightsReserved'])}
+						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
 					</AboutParagraph>
 				</AboutBox>
 			</IntlProvider>,
@@ -213,13 +176,7 @@ describe("About", () => {
 
 	describe("AboutBox", () => {
 		it("has a background image", () =>
-			expect(
-				<AboutBox in />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				bgImage,
-			));
+			expect(<AboutBox in />, "when mounted", "to have style rules satisfying", "to contain", bgImage));
 
 		it("renders an opacity-transitioning box", () =>
 			expect(
@@ -241,25 +198,13 @@ describe("About", () => {
 		});
 
 		it("does not stop events or update state when closed", () =>
-			expect(
-				getClickOutsideHandler,
-				"called with",
-				[{ show: false }, update],
-				"called with",
-				[mockEvent],
-			).then(() => {
+			expect(getClickOutsideHandler, "called with", [{ show: false }, update], "called with", [mockEvent]).then(() => {
 				expect(update, "was not called");
 				expect(mockEvent.stopPropagation, "was not called");
 			}));
 
 		it("does stop events and close popup when open", () =>
-			expect(
-				getClickOutsideHandler,
-				"called with",
-				[{ show: true }, update],
-				"called with",
-				[mockEvent],
-			).then(() => {
+			expect(getClickOutsideHandler, "called with", [{ show: true }, update], "called with", [mockEvent]).then(() => {
 				expect(update, "to have calls satisfying", [{ args: ["show", false] }]);
 				expect(mockEvent.stopPropagation, "was called");
 			}));

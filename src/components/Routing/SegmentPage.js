@@ -8,15 +8,16 @@ import { TabBar } from "../Navigation/Bar";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
-import { getModifiedSections } from "./../../selectors/view";
+import { getModifiedSections, getSectionsWithErrors } from "./../../selectors/view";
 import { useSelector } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { tryGetNewEntityIdKey } from "./../../utils/urlHelper";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	asterix: {
-		marginLeft: theme.spacing(0.5)
+		marginLeft: theme.spacing(0.5),
 	},
 	label: {
 		color: theme.palette.text.primary,
@@ -24,9 +25,17 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: theme.typography.fontSize,
 		maxWidth: theme.spacing(15),
 	},
+	modifiedLabel: {
+		color: theme.palette.text.primary,
+		fontWeight: theme.typography.fontWeightBold,
+	},
+	errorLabel: {
+		color: theme.palette.error.main,
+		fontWeight: theme.typography.fontWeightBold,
+	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
-	}
+	},
 }));
 
 export const Wrapper = styled.div`
@@ -62,16 +71,16 @@ export const Item = styled(FilteredLink)`
 	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
-	"active",
-	css`
+		"active",
+		css`
 			background-color: #b4cfe3;
 		`,
-	css`
+		css`
 			&:hover {
 				background-color: #f7f7f7;
 			}
 		`,
-)};
+	)};
 `;
 
 const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
@@ -81,8 +90,12 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 	const pages = [],
 		subpages = [];
 	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
-	const entityId = match.params[entityIdKey];
+	let entityId = match.params[entityIdKey];
+	if (!entityId) {
+		entityId = tryGetNewEntityIdKey(baseHref);
+	}
 	const modifiedSections = useSelector(getModifiedSections(entityId));
+	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
 	const asterix = <span className={classes.asterix}>*</span>;
 	const segmentElements = Object.entries(segments).map(([segpath, config]) => {
 		if (config.pages) {
@@ -131,6 +144,13 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 			/>
 		);
 	});
+
+	const getSectionLabelClassName = (isModified, isError) => {
+		let className = classes.label;
+		if (isModified) className = `${className} ${classes.modifiedLabel}`;
+		if (isError) className = `${className} ${classes.errorLabel}`;
+		return className;
+	};
 	return (
 		<Switch>
 			{pages}
@@ -141,15 +161,20 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 						<List>
 							{Object.entries(segments).map(([segpath, config]) => {
 								const text = <Text message={config.label} />;
-								const basicLabel = config.labelComponent != null ?
-									<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} /> :
-									text;
-
+								const basicLabel =
+									config.labelComponent != null ? (
+										<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} />
+									) : (
+										text
+									);
+								const isModified = modifiedSections.includes(segpath.replace("/", ""));
+								const isError = sectionsWithErrors.includes(segpath.replace("/", ""));
+								const sectionLabelClassName = getSectionLabelClassName(isModified, isError);
 								const finalLabel = (
 									<Grid container justify="space-between">
-										<Grid item className={classes.label}>
+										<Grid item className={sectionLabelClassName}>
 											{basicLabel}
-											{modifiedSections.includes(segpath.replace("/", "")) === true ? asterix : null}
+											{isModified ? asterix : null}
 										</Grid>
 										<Grid item className={classes.labelComponent}>
 											{config.labelComponent}

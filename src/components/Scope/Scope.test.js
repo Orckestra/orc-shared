@@ -88,7 +88,7 @@ beforeEach(() => {
 		},
 		subscribe: sub => {
 			subs.push(sub);
-			return () => { };
+			return () => {};
 		},
 		getState: () => state,
 		dispatch: sinon.spy().named("dispatch"),
@@ -103,7 +103,7 @@ beforeEach(() => {
 afterEach(() => {
 	try {
 		ReactDOM.unmountComponentAtNode(appRoot);
-	} catch (_) { }
+	} catch (_) {}
 	document.body.removeChild(appRoot);
 	document.body.removeChild(modalRoot);
 });

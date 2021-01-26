@@ -28,12 +28,9 @@ describe("buildStore", () => {
 		}));
 
 	it("sets options on Redux dev tools", () => {
-		const devTool = sinon.spy(() => () => { }).named("devTool");
+		const devTool = sinon.spy(() => () => {}).named("devTool");
 		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTool;
-		const assert = expect(buildStore, "when called with", [
-			mockReducers,
-			{ options: true },
-		]).then(() =>
+		const assert = expect(buildStore, "when called with", [mockReducers, { options: true }]).then(() =>
 			expect(devTool, "to have calls satisfying", [{ args: [{ options: true }] }]),
 		);
 		delete window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -89,7 +86,7 @@ describe("buildStore", () => {
 						view: {},
 						test: false,
 						countries: {},
-						timezones: {}
+						timezones: {},
 					}),
 				));
 		});

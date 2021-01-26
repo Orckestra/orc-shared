@@ -29,23 +29,17 @@ describe("getTheme", () => {
 		}));
 
 	it("creates app colors from base", () =>
-		expect(
-			getTheme,
-			"called with",
-			[{ colors: { application: { base: "#cc33cc" } } }],
-			"to satisfy",
-			{
-				colors: {
-					application: {
-						base: "#cc33cc",
-						primary: "#cc33cc",
-						highlight: "#d866d8",
-						select: "#efc1ef",
-						dark: "#a328a3",
-					},
+		expect(getTheme, "called with", [{ colors: { application: { base: "#cc33cc" } } }], "to satisfy", {
+			colors: {
+				application: {
+					base: "#cc33cc",
+					primary: "#cc33cc",
+					highlight: "#d866d8",
+					select: "#efc1ef",
+					dark: "#a328a3",
 				},
 			},
-		));
+		}));
 
 	it("accepts preset app colors", () =>
 		expect(

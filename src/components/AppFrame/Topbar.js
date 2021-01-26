@@ -90,14 +90,7 @@ export const CurrentApp = ({ displayName, iconUri }) => (
 );
 CurrentApp.displayName = "CurrentApp";
 
-const Topbar = ({
-	applications,
-	applicationId,
-	currentApplication,
-	onClick,
-	helpUrl,
-	...config
-}) => (
+const Topbar = ({ applications, applicationId, currentApplication, onClick, helpUrl, ...config }) => (
 	<Wrapper onClick={onClick}>
 		<AppBox>
 			<ApplicationSelector

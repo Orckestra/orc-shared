@@ -7,6 +7,7 @@ class SwitchProps extends ComponentProps {
 		onCaption: "onCaption",
 		offCaption: "offCaption",
 		disabled: "disabled",
+		readOnly: "readOnly",
 	};
 
 	constructor() {
@@ -16,6 +17,7 @@ class SwitchProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.onCaption, null);
 		this.componentProps.set(this.constructor.propNames.offCaption, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
+		this.componentProps.set(this.constructor.propNames.readOnly, null);
 
 		this._isSwitchProps = true;
 	}

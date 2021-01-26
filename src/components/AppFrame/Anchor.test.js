@@ -61,13 +61,7 @@ describe("Anchor", () => {
 		});
 
 		it("shows the text color when closed", () =>
-			expect(
-				<Header theme={theme} />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"color: #ccc;",
-			));
+			expect(<Header theme={theme} />, "when mounted", "to have style rules satisfying", "to contain", "color: #ccc;"));
 
 		it("shows the highlight color when open", () =>
 			expect(

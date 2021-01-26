@@ -7,6 +7,7 @@ import Tab from "@material-ui/core/Tab";
 import Select from "../Inputs/Select";
 import SelectProps from "../Inputs/SelectProps";
 import Icon from "../DataDisplay/Icon";
+import { FormattedMessage } from "react-intl";
 import Immutable from "immutable";
 import ResizeDetector from "react-resize-detector";
 import sinon from "sinon";
@@ -19,7 +20,6 @@ import * as domHelper from "./../../../utils/domHelper";
 import * as useDispatchWithModulesData from "./../../../hooks/useDispatchWithModulesData";
 import * as ReactMock from "react";
 import sharedMessages from "./../../../sharedMessages";
-import { stringifyWithoutQuotes } from "./../../../utils/parseHelper";
 import { TestWrapper, createMuiTheme, extractMessages } from "./../../../utils/testUtils";
 
 const messages = extractMessages(sharedMessages);
@@ -251,7 +251,7 @@ describe("TabBar", () => {
 					<ResizeDetector />
 					{expectedModuleTab}
 					{expectedTabs}
-					<ConfirmationModal message={stringifyWithoutQuotes(messages["orc-shared.unsavedChanges"])} open={false} />
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
 				</div>
 			</TestWrapper>
 		);
@@ -277,7 +277,7 @@ describe("TabBar", () => {
 					{expectedModuleTab}
 					{expectedTabs}
 					{select}
-					<ConfirmationModal message={stringifyWithoutQuotes(messages["orc-shared.unsavedChanges"])} open={true} />
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={true} />
 				</div>
 			</TestWrapper>
 		);

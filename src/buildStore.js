@@ -27,9 +27,7 @@ const basename = window.BASE_PATH || "";
 export const getBaseUrl = () => {
 	const appBasePath = (window.BASE_PATH || "").split("/")[1] || "";
 
-	return appBasePath
-		? window.location.origin.concat("/", appBasePath)
-		: window.location.origin;
+	return appBasePath ? window.location.origin.concat("/", appBasePath) : window.location.origin;
 };
 
 export const history = createBrowserHistory({ basename });
@@ -41,13 +39,9 @@ const buildStore = (reducers, devOptions = {}) => {
 	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(devOptions)
 		: compose;
-	const enhancer = composeEnhancers(
-		applyMiddleware(routerMiddleware(history), apiMiddleware, spawnerMiddleware),
-	);
+	const enhancer = composeEnhancers(applyMiddleware(routerMiddleware(history), apiMiddleware, spawnerMiddleware));
 
-	const supportedLocales = SUPPORTED_LOCALES || [
-		{ language: "English", cultureIso: cultureByDefault },
-	];
+	const supportedLocales = SUPPORTED_LOCALES || [{ language: "English", cultureIso: cultureByDefault }];
 	const localeReducer = localeFactory(supportedLocales);
 
 	buildReducer = reducers =>
@@ -66,7 +60,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			view: viewReducer,
 			countries: countriesReducer,
 			timezones: timezonesReducer,
-			modules: modulesReducer
+			modules: modulesReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 

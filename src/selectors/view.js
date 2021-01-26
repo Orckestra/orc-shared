@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { selectCurrentModuleName } from "./navigation";
-import { isObjectContainsPropertyWithValue } from "./../utils/propertyHelper";
+import { isObjectContainsPropertyWithValue, isObjectContainsPropertyWithAnyValue } from "./../utils/propertyHelper";
 import { tryGetNewEntityIdKey } from "./../utils/urlHelper";
 
 const modulesData = state => state.get("view");
@@ -11,7 +11,7 @@ export const isEntityUnderEditing = entityId =>
 	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
 		if (data != null) {
 			const dataJS = data.toJS();
-			const sections = dataJS[moduleName][entityId];
+			const sections = dataJS[moduleName]?.[entityId];
 			if (sections != null) {
 				return true;
 			}
@@ -28,7 +28,7 @@ const getModifiedSectionsFromModule = (editData, moduleName, entityId) => {
 	const modifiedSections = [];
 	if (editData != null) {
 		const dataJS = editData.toJS();
-		const sections = dataJS[moduleName][entityId];
+		const sections = dataJS[moduleName]?.[entityId];
 		if (sections != null) {
 			const sectionsKeys = Object.keys(sections);
 			for (const sectionKey of sectionsKeys) {
@@ -44,6 +44,33 @@ const getModifiedSectionsFromModule = (editData, moduleName, entityId) => {
 		}
 	}
 	return modifiedSections;
+};
+
+export const getSectionsWithErrors = entityId =>
+	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
+		return getSectionsWithErrorsFromModule(data, moduleName, entityId);
+	});
+
+const getSectionsWithErrorsFromModule = (editData, moduleName, entityId) => {
+	const errorSections = [];
+	if (editData != null) {
+		const dataJS = editData.toJS();
+		const sections = dataJS[moduleName]?.[entityId];
+		if (sections != null) {
+			const sectionsKeys = Object.keys(sections);
+			for (const sectionKey of sectionsKeys) {
+				const sectionModel = sections[sectionKey].model;
+
+				if (sectionModel != null) {
+					const hasError = isObjectContainsPropertyWithAnyValue(sectionModel, "error");
+					if (hasError === true) {
+						errorSections.push(sectionKey);
+					}
+				}
+			}
+		}
+	}
+	return errorSections;
 };
 
 export const getModifiedTabs = tabsParams =>
@@ -71,7 +98,7 @@ export const getModifiedModels = entityId =>
 		const models = {};
 		if (data != null) {
 			const dataJS = data.toJS();
-			const sections = dataJS[moduleName][entityId];
+			const sections = dataJS[moduleName]?.[entityId];
 			if (sections != null) {
 				const sectionsKeys = Object.keys(sections);
 

@@ -50,8 +50,8 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.background.paper,
 	},
 	popperContainer: {
-		cursor: "pointer"
-	}
+		cursor: "pointer",
+	},
 }));
 
 export const Arrow = ({ arrowClass }) => {
@@ -72,7 +72,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
 
 	if (isObject(popperValue) && isReactComponent(popperValue) === false) return <Comp {...props} />;
 
-	const defaultComponent = <Comp onClick={event => togglePopper(event)}	{...props} />;
+	const defaultComponent = <Comp onClick={event => togglePopper(event)} {...props} />;
 
 	const togglePopper = function (event) {
 		const isDisplayed = !popperState.isDisplayed;

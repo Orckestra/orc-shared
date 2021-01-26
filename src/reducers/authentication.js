@@ -1,8 +1,5 @@
 import Immutable from "immutable";
-import {
-	GET_AUTHENTICATION_PROFILE_SUCCESS,
-	SIGN_OUT_SUCCESS,
-} from "../actions/authentication";
+import { GET_AUTHENTICATION_PROFILE_SUCCESS, SIGN_OUT_SUCCESS } from "../actions/authentication";
 
 const initialState = Immutable.fromJS({
 	upn: null,

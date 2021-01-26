@@ -7,9 +7,7 @@ import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
 import withNavigationLink from "./withNavigationLink";
 
-const TestComp = ({ active, staticContext, ...props }) => (
-	<a {...props}>Anchor{active ? " active" : ""}</a>
-);
+const TestComp = ({ active, staticContext, ...props }) => <a {...props}>Anchor{active ? " active" : ""}</a>;
 
 describe("withNavigationLink", () => {
 	let fakeStore, mockEvent, history, preventDefault;
@@ -101,10 +99,7 @@ describe("withNavigationLink", () => {
 				</Provider>,
 			);
 			simulate(element, mockEvent);
-			return Promise.all([
-				expect(preventDefault, "was called"),
-				expect(history.push, "was not called"),
-			]);
+			return Promise.all([expect(preventDefault, "was called"), expect(history.push, "was not called")]);
 		}));
 
 	it("does navigate to remote hrefs", () =>
@@ -117,10 +112,7 @@ describe("withNavigationLink", () => {
 				</Provider>,
 			);
 			simulate(element, mockEvent);
-			return Promise.all([
-				expect(preventDefault, "was not called"),
-				expect(history.push, "was not called"),
-			]);
+			return Promise.all([expect(preventDefault, "was not called"), expect(history.push, "was not called")]);
 		}));
 
 	it("no href does not navigate", () =>
@@ -133,9 +125,6 @@ describe("withNavigationLink", () => {
 				</Provider>,
 			);
 			simulate(element, mockEvent);
-			return Promise.all([
-				expect(preventDefault, "was called"),
-				expect(history.push, "was not called"),
-			]);
+			return Promise.all([expect(preventDefault, "was called"), expect(history.push, "was not called")]);
 		}));
 });

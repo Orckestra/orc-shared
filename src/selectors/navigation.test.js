@@ -101,7 +101,6 @@ describe("selectCurrentModuleName", () => {
 		));
 });
 
-
 describe("selectCurrentSectionName", () => {
 	it("finds the section name in the routing result", () =>
 		expect(

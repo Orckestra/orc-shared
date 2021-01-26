@@ -1,13 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import Switch from "../../Switch";
-import {
-	FormCheckbox,
-	getCheckUpdater,
-	CenterMiddleWrapper,
-	CheckboxInput,
-	SwitchInput,
-} from "./Toggles";
+import { FormCheckbox, getCheckUpdater, CenterMiddleWrapper, CheckboxInput, SwitchInput } from "./Toggles";
 
 describe("CheckboxInput", () => {
 	let update;
@@ -21,12 +15,7 @@ describe("CheckboxInput", () => {
 			"when mounted",
 			"to satisfy",
 			<CenterMiddleWrapper>
-				<FormCheckbox
-					id="test-item"
-					onChange={getCheckUpdater(update)}
-					value={false}
-					otherProp
-				/>
+				<FormCheckbox id="test-item" onChange={getCheckUpdater(update)} value={false} otherProp />
 			</CenterMiddleWrapper>,
 		));
 });
@@ -43,12 +32,7 @@ describe("SwitchInput", () => {
 			"when mounted",
 			"to satisfy",
 			<CenterMiddleWrapper>
-				<Switch
-					id="test-item"
-					onChange={getCheckUpdater(update)}
-					value={true}
-					otherProp
-				/>
+				<Switch id="test-item" onChange={getCheckUpdater(update)} value={true} otherProp />
 			</CenterMiddleWrapper>,
 		));
 });
@@ -60,10 +44,9 @@ describe("getCheckUpdater", () => {
 	});
 
 	it("creates a handler for an event and calls update with the 'checked' attribute of the target", () =>
-		expect(getCheckUpdater, "called with", [update], "called with", [
-			{ target: { checked: true } },
-		]).then(() => expect(update, "to have calls satisfying", [{ args: [true] }])));
+		expect(getCheckUpdater, "called with", [update], "called with", [{ target: { checked: true } }]).then(() =>
+			expect(update, "to have calls satisfying", [{ args: [true] }]),
+		));
 
-	it("is memoized", () =>
-		expect(getCheckUpdater, "called with", [update], "to be", getCheckUpdater(update)));
+	it("is memoized", () => expect(getCheckUpdater, "called with", [update], "to be", getCheckUpdater(update)));
 });

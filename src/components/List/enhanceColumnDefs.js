@@ -14,10 +14,7 @@ const enhanceSelectColumn = (selection, updateViewState, def) => {
 			if (Array.isArray(eventOrSelection)) {
 				updateViewState("selection", eventOrSelection);
 			} else {
-				updateViewState(
-					"selection",
-					toggleInArray(selection, eventOrSelection.target.dataset.rowId),
-				);
+				updateViewState("selection", toggleInArray(selection, eventOrSelection.target.dataset.rowId));
 				eventOrSelection.stopPropagation();
 			}
 		},
@@ -25,10 +22,7 @@ const enhanceSelectColumn = (selection, updateViewState, def) => {
 };
 
 const enhanceSortableColumn = (sorting, updateViewState, def) => {
-	const isSortColumn =
-		sorting.column &&
-		def.fieldName &&
-		sorting.column.toString() === def.fieldName.toString();
+	const isSortColumn = sorting.column && def.fieldName && sorting.column.toString() === def.fieldName.toString();
 	const isAscending = isSortColumn && sorting.direction === "asc";
 	const newDef = {
 		...def,

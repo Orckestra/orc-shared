@@ -65,11 +65,7 @@ describe("TranslationInput", () => {
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">
-						<TranslationInput
-							name="test"
-							value={{ "fr-CA": "Des mots" }}
-							handlers={handlers}
-						/>
+						<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} handlers={handlers} />
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
@@ -125,12 +121,7 @@ describe("TranslationInput", () => {
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<TranslationInput
-						name="test"
-						value={{ "fr-CA": "Des mots" }}
-						update={update}
-						moreLabel="Show more things"
-					/>
+					<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} update={update} moreLabel="Show more things" />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -144,12 +135,7 @@ describe("TranslationInput", () => {
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">
-						<TranslationInput
-							name="test"
-							value={{}}
-							required
-							moreLabel="Show more things"
-						/>
+						<TranslationInput name="test" value={{}} required moreLabel="Show more things" />
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
@@ -189,12 +175,7 @@ describe("TranslationField", () => {
 	it("shows a single language label and a text field", () =>
 		expect(
 			<IntlProvider locale="en">
-				<TranslationField
-					lang="en-US"
-					message="A hat, pardner"
-					onChange={onChange}
-					otherProp
-				/>
+				<TranslationField lang="en-US" message="A hat, pardner" onChange={onChange} otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -204,9 +185,7 @@ describe("TranslationField", () => {
 					<FormInput value="A hat, pardner" onChange={onChange} otherProp />
 				</IntlProvider>
 			</ButtonWrapper>,
-		).then(() =>
-			expect([console.log, console.warn, console.error], "to have calls satisfying", []),
-		));
+		).then(() => expect([console.log, console.warn, console.error], "to have calls satisfying", [])));
 
 	it("handles missing message", () =>
 		expect(
@@ -221,7 +200,5 @@ describe("TranslationField", () => {
 					<FormInput value="" onChange={onChange} otherProp />
 				</IntlProvider>
 			</ButtonWrapper>,
-		).then(() =>
-			expect([console.log, console.warn, console.error], "to have calls satisfying", []),
-		));
+		).then(() => expect([console.log, console.warn, console.error], "to have calls satisfying", [])));
 });

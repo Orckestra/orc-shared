@@ -24,13 +24,7 @@ describe("ScopeNode", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<ScopeNode
-						name="A scope"
-						type="test"
-						id="ScopeId"
-						closeSelector={closeSelector}
-						isAuthorizedScope={true}
-					/>
+					<ScopeNode name="A scope" type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -45,13 +39,7 @@ describe("ScopeNode", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<ScopeNode
-						name="A scope"
-						type="Global"
-						id="ScopeId"
-						closeSelector={closeSelector}
-						isAuthorizedScope={true}
-					/>
+					<ScopeNode name="A scope" type="Global" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -66,12 +54,7 @@ describe("ScopeNode", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<ScopeNode
-						name="A scope"
-						type="test"
-						id="ScopeId"
-						closeSelector={closeSelector}
-					/>
+					<ScopeNode name="A scope" type="test" id="ScopeId" closeSelector={closeSelector} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -86,12 +69,7 @@ describe("ScopeNode", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<ScopeNode
-						type="test"
-						id="ScopeId"
-						closeSelector={closeSelector}
-						isAuthorizedScope={true}
-					/>
+					<ScopeNode type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -106,13 +84,7 @@ describe("ScopeNode", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<ScopeNode
-						name={null}
-						type="test"
-						id="ScopeId"
-						closeSelector={closeSelector}
-						isAuthorizedScope={true}
-					/>
+					<ScopeNode name={null} type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -218,12 +190,7 @@ describe("ScopeIcon", () => {
 	});
 
 	it("renders an icon with id based on scope type", () =>
-		expect(
-			<ScopeIcon theme={theme} type="Test" />,
-			"when mounted",
-			"to satisfy",
-			<Icon id="test-icon" />,
-		));
+		expect(<ScopeIcon theme={theme} type="Test" />, "when mounted", "to satisfy", <Icon id="test-icon" />));
 
 	it("renders in a color based on scope type", () =>
 		expect(
@@ -235,10 +202,5 @@ describe("ScopeIcon", () => {
 		));
 
 	it("by default renders a cross", () =>
-		expect(
-			<ScopeIcon theme={theme} type="N/A" />,
-			"when mounted",
-			"to satisfy",
-			<Icon id="cross" />,
-		));
+		expect(<ScopeIcon theme={theme} type="N/A" />, "when mounted", "to satisfy", <Icon id="cross" />));
 });

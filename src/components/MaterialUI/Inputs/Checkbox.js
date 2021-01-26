@@ -113,39 +113,33 @@ const Checkbox = ({ checkboxProps }) => {
 	};
 
 	const classes = useStyles();
-	if (label === null) {
-		return <CheckboxMUI checked={value} onChange={handleChange} />;
-	}
 
-	return (
-		<FormControlLabel
-			control={
-				<CheckboxMUI
-					checked={value}
-					onChange={handleChange}
-					color="primary"
-					checkedIcon={
-						<span
-							className={classNames({
-								[`${classes.checkBoxIcon}`]: !readOnly,
-								[`${classes.checkBoxIconChecked}`]: !readOnly && value,
-								[`${classes.checkBoxIconReadOnlyChecked}`]: readOnly && value,
-							})}
-						/>
-					}
-					icon={
-						<span
-							className={classNames({
-								[`${classes.checkBoxIcon}`]: !readOnly,
-								[`${classes.checkBoxIconReadOnly}`]: readOnly && !value,
-							})}
-						/>
-					}
+	const checkBoxMui = (
+		<CheckboxMUI
+			checked={value}
+			onChange={handleChange}
+			color="primary"
+			checkedIcon={
+				<span
+					className={classNames({
+						[`${classes.checkBoxIcon}`]: !readOnly,
+						[`${classes.checkBoxIconChecked}`]: !readOnly && value,
+						[`${classes.checkBoxIconReadOnlyChecked}`]: readOnly && value,
+					})}
 				/>
 			}
-			label={label}
+			icon={
+				<span
+					className={classNames({
+						[`${classes.checkBoxIcon}`]: !readOnly,
+						[`${classes.checkBoxIconReadOnly}`]: readOnly && !value,
+					})}
+				/>
+			}
 		/>
 	);
+
+	return label === null ? checkBoxMui : <FormControlLabel control={checkBoxMui} label={label} />;
 };
 
 export default React.memo(Checkbox);

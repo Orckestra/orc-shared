@@ -12,7 +12,7 @@ import {
 	ignoreConsoleError,
 	createMuiTheme,
 	generateClassName,
-	extractMessages
+	extractMessages,
 } from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
@@ -285,7 +285,7 @@ describe("PropStruct", () => {
 
 	it("handles function props (if poorly)", () =>
 		expect(
-			<PropStruct func={() => { }} />,
+			<PropStruct func={() => {}} />,
 			"when mounted",
 			"to satisfy",
 			<dl>
@@ -300,13 +300,13 @@ describe("PropStruct", () => {
 			"when mounted",
 			"to satisfy",
 			"<dl>" +
-			"<dt>alpha:</dt>" +
-			'<dd>string "yes"</dd>' +
-			"<!-- ignore -->" +
-			"<!-- ignore -->" +
-			"<dt>gamma:</dt>" +
-			'<dd>string "no"</dd>' +
-			"</dl>",
+				"<dt>alpha:</dt>" +
+				'<dd>string "yes"</dd>' +
+				"<!-- ignore -->" +
+				"<!-- ignore -->" +
+				"<dt>gamma:</dt>" +
+				'<dd>string "no"</dd>' +
+				"</dl>",
 		));
 
 	describe("comparator", () => {
@@ -375,12 +375,12 @@ describe("generateClassName", () => {
 	it("Generates proper class name", () => {
 		const styleSheet = {
 			options: {
-				classNamePrefix: "prefix"
-			}
+				classNamePrefix: "prefix",
+			},
 		};
 
 		const rule = {
-			key: "key"
+			key: "key",
 		};
 
 		const generatedClassname = generateClassName(rule, styleSheet);

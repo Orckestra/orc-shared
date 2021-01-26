@@ -131,7 +131,7 @@ describe("useStyles", () => {
 		);
 
 		expect(
-			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => { } }} />,
+			<MuiThemeContainer classToTest="tableRow" styleProps={{ onRowClick: () => {} }} />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),

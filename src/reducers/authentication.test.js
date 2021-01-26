@@ -1,9 +1,6 @@
 import Immutable from "immutable";
 import sinon from "sinon";
-import {
-	GET_AUTHENTICATION_PROFILE_SUCCESS,
-	SIGN_OUT_SUCCESS,
-} from "../actions/authentication";
+import { GET_AUTHENTICATION_PROFILE_SUCCESS, SIGN_OUT_SUCCESS } from "../actions/authentication";
 import reducer from "./authentication";
 
 describe("authentication", () => {
@@ -30,11 +27,7 @@ describe("authentication", () => {
 				},
 			};
 			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to have value at",
-				["upn"],
-				"upnvalue",
-			);
+			return expect(newState, "not to be", oldState).and("to have value at", ["upn"], "upnvalue");
 		});
 
 		it("stores the name", () => {
@@ -52,11 +45,7 @@ describe("authentication", () => {
 				},
 			};
 			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to have value at",
-				["name"],
-				"username",
-			);
+			return expect(newState, "not to be", oldState).and("to have value at", ["name"], "username");
 		});
 
 		it("stores roles and claims", () => {
@@ -117,9 +106,7 @@ describe("authentication", () => {
 			};
 			const newState = reducer(oldState, action);
 			expect(newState, "to be", oldState);
-			expect(window.location.assign, "to have calls satisfying", [
-				{ args: ["https://mock.logout.url/LogOut"] },
-			]);
+			expect(window.location.assign, "to have calls satisfying", [{ args: ["https://mock.logout.url/LogOut"] }]);
 		});
 	});
 });

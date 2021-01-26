@@ -9,7 +9,7 @@ class RadioProps extends ComponentProps {
 		row: "row",
 		name: "name",
 		radios: "radios",
-		disabled: "disabled"
+		disabled: "disabled",
 	};
 
 	constructor() {

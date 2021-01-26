@@ -171,12 +171,7 @@ describe("NumberInput", () => {
 				"with event",
 				{ type: "change", target: "input", value: "0.13" },
 			).then(() =>
-				expect(update, "to have calls satisfying", [
-					{ args: [""] },
-					{ args: [0] },
-					{ args: [12.3] },
-					{ args: [0.1] },
-				]),
+				expect(update, "to have calls satisfying", [{ args: [""] }, { args: [0] }, { args: [12.3] }, { args: [0.1] }]),
 			));
 
 		it("increment handler raises value by step size", () =>
@@ -236,12 +231,7 @@ describe("NumberInput", () => {
 				"with event",
 				{ type: "change", target: "input", value: "0.13" },
 			).then(() =>
-				expect(update, "to have calls satisfying", [
-					{ args: [""] },
-					{ args: [3] },
-					{ args: [12.29] },
-					{ args: [3] },
-				]),
+				expect(update, "to have calls satisfying", [{ args: [""] }, { args: [3] }, { args: [12.29] }, { args: [3] }]),
 			));
 
 		it("increment handler raises value by 1", () =>
@@ -291,12 +281,7 @@ describe("NumberInput", () => {
 				"with event",
 				{ type: "change", target: "input", value: "0.13" },
 			).then(() =>
-				expect(update, "to have calls satisfying", [
-					{ args: [""] },
-					{ args: [3] },
-					{ args: [12.3] },
-					{ args: [3] },
-				]),
+				expect(update, "to have calls satisfying", [{ args: [""] }, { args: [3] }, { args: [12.3] }, { args: [3] }]),
 			));
 
 		it("increment handler raises value by 1", () =>
@@ -346,12 +331,7 @@ describe("NumberInput", () => {
 				"with event",
 				{ type: "change", target: "input", value: "0.13" },
 			).then(() =>
-				expect(update, "to have calls satisfying", [
-					{ args: [""] },
-					{ args: [0] },
-					{ args: [3] },
-					{ args: [0.13] },
-				]),
+				expect(update, "to have calls satisfying", [{ args: [""] }, { args: [0] }, { args: [3] }, { args: [0.13] }]),
 			));
 
 		it("increment handler raises value by 1", () =>
@@ -401,12 +381,7 @@ describe("NumberInput", () => {
 				"with event",
 				{ type: "change", target: "input", value: "0.13" },
 			).then(() =>
-				expect(update, "to have calls satisfying", [
-					{ args: [""] },
-					{ args: [0] },
-					{ args: [3] },
-					{ args: [0.1] },
-				]),
+				expect(update, "to have calls satisfying", [{ args: [""] }, { args: [0] }, { args: [3] }, { args: [0.1] }]),
 			));
 
 		it("increment handler raises value by 1", () =>
@@ -448,11 +423,9 @@ describe("roundToStep", () => {
 	it("rounds a number down to the nearest step", () =>
 		expect(roundToStep, "when called with", [103.231, 0.1], "to equal", 103.2));
 
-	it("works for steps > 1", () =>
-		expect(roundToStep, "when called with", [12343, 10], "to equal", 12340));
+	it("works for steps > 1", () => expect(roundToStep, "when called with", [12343, 10], "to equal", 12340));
 
-	it("can round off 0", () =>
-		expect(roundToStep, "when called with", [0, 0.1], "to equal", 0));
+	it("can round off 0", () => expect(roundToStep, "when called with", [0, 0.1], "to equal", 0));
 
 	it("returns empty string if given not a number to round off", () =>
 		expect(roundToStep, "when called with", ["foo", 0.1], "to equal", ""));

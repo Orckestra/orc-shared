@@ -11,12 +11,7 @@ export const messageContainsValues = message => {
 	const valRefs = message.defaultMessage.match(/(\{\w+\})/g);
 	if (!valRefs) return true;
 	const valNames = valRefs.map(ref => ref.replace(/[{}]/g, ""));
-	return (
-		!!message.values &&
-		valNames.every(
-			key => message.values[key] !== undefined && message.values[key] !== null,
-		)
-	);
+	return !!message.values && valNames.every(key => message.values[key] !== undefined && message.values[key] !== null);
 };
 
 const useLabelMessage = (label, buildMessage = defaultBuildMessage) => {

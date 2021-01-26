@@ -27,7 +27,7 @@ const Icon = ({ id, themeColor, ...props }) => {
 			classes={{
 				root: classes.icon,
 				colorPrimary: classes.primary,
-				colorDisabled: classes.disabled
+				colorDisabled: classes.disabled,
 			}}
 			{...props}
 		>

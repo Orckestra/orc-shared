@@ -59,13 +59,11 @@ export const selectPrependHrefConfig = createSelector(selectHrefConfig, config =
 );
 
 export const selectCurrentModuleName = createSelector(selectPrependPathConfig, selectRoutePath, (prependPath, path) =>
-	new RegExp(`^${prependPath}`).test(path) ? path.replace(new RegExp(`^${prependPath}([^/]+)(/.*)?$`), "$1") : ""
+	new RegExp(`^${prependPath}`).test(path) ? path.replace(new RegExp(`^${prependPath}([^/]+)(/.*)?$`), "$1") : "",
 );
 
 export const selectCurrentSectionName = createSelector(selectPrependPathConfig, selectRoutePath, (prependPath, path) =>
-	path.replace(prependPath, "")
-		.replace(new RegExp(`^([^/]*/){2}`), "")
-		.replace(new RegExp(`/.*$`), "")
+	path.replace(prependPath, "").replace(new RegExp(`^([^/]*/){2}`), "").replace(new RegExp(`/.*$`), ""),
 );
 
 const selectCurrentModuleList = createSelector(

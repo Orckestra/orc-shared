@@ -1,9 +1,6 @@
 import Immutable from "immutable";
 import reducer from "./settings";
-import {
-	GET_MY_APPLICATION_SUCCESS,
-	SET_MY_APPLICATION_SUCCESS,
-} from "../actions/applications";
+import { GET_MY_APPLICATION_SUCCESS, SET_MY_APPLICATION_SUCCESS } from "../actions/applications";
 import { GET_MY_SCOPE_SUCCESS } from "../actions/scopes";
 
 describe("settings", () => {

@@ -5,6 +5,8 @@ import SegmentPage from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
 import { TestWrapper, createMuiTheme } from "./../utils/testUtils";
+import sinon from "sinon";
+import { createMemoryHistory } from "history";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
@@ -67,14 +69,14 @@ describe("Modules", () => {
 				location: {},
 			},
 			modules: {
-				tree: {}
+				tree: {},
 			},
 			view: {
 				edit: {
 					users: {},
 					photos: {},
 					demos: {},
-				}
+				},
 			},
 			settings: {
 				defaultScope: "myScope",
@@ -86,6 +88,7 @@ describe("Modules", () => {
 					foo: false,
 					bar: false,
 					children: ["test2"],
+					isAuthorizedScope: true,
 				},
 			},
 			locale: {
@@ -140,8 +143,8 @@ describe("Modules", () => {
 		};
 
 		const location = {
-			pathname: "/TestScope/users/page1"
-		}
+			pathname: "/TestScope/users/page1",
+		};
 
 		expect(
 			mount(
@@ -234,12 +237,12 @@ describe("Modules", () => {
 					defaultScope: "myScope",
 				},
 				modules: {
-					tree: {}
+					tree: {},
 				},
 				view: {
 					edit: {
 						module: {},
-					}
+					},
 				},
 				scopes: {
 					TestScope: {
@@ -248,6 +251,7 @@ describe("Modules", () => {
 						foo: false,
 						bar: false,
 						children: ["test2"],
+						isAuthorizedScope: true,
 					},
 				},
 				locale: {
@@ -285,6 +289,83 @@ describe("Modules", () => {
 					<Mod3 />,
 				],
 			);
+		});
+	});
+
+	describe("check is scope authorized", () => {
+		let history;
+		beforeAll(() => {
+			history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
+			sinon.spy(history, "push");
+			history.push.named("history.push");
+		});
+
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				navigation: {
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					route: {
+						match: {
+							url: "/TestScope/demos",
+							params: {
+								scope: "TestScope",
+							},
+						},
+					},
+					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
+				},
+				router: {
+					location: {},
+				},
+				settings: {
+					defaultScope: "TestScope2",
+				},
+				modules: {
+					tree: {},
+				},
+				view: {
+					edit: {
+						module: {},
+					},
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						isAuthorizedScope: false,
+						children: ["TestScope2"],
+					},
+					TestScope2: {
+						id: "TestScope2",
+						name: { "en-CA": "Test 2" },
+						foo: false,
+						bar: false,
+						isAuthorizedScope: true,
+						children: [],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+			});
+		});
+
+		it("renders a module table when scope not Authorized", () => {
+			mount(
+				<TestWrapper provider={{ store }} router={{ history }} intlProvider>
+					<Modules modules={modules} />
+				</TestWrapper>,
+			);
+
+			expect(history.push, "to have calls satisfying", [{ args: ["/TestScope2/demos?arg=data"] }]);
 		});
 	});
 });

@@ -1,8 +1,13 @@
 import React from "react";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import CheckboxProps from "../Inputs/CheckboxProps";
-import { ignoreConsoleError } from "~/utils/testUtils";
+import { ignoreConsoleError, createMuiTheme, generateClassName } from "~/utils/testUtils";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
+import Switch from "../Inputs/Switch";
+import SwitchProps from "../Inputs/SwitchProps";
+import { IntlProvider } from "react-intl";
+import { MuiThemeProvider } from "@material-ui/core";
+import { StylesProvider } from "@material-ui/core/styles";
 
 describe("table helpers buildHeaderAndRowFromConfig", () => {
 	const messages = {
@@ -18,15 +23,15 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				fieldName: "test",
 				label: "simple header",
 				sortOptions: {
-					sortField: true
-				}
+					sortField: true,
+				},
 			},
 			{
 				fieldName: "another",
 				label: "another simple header",
 				sortOptions: {
-					sortField: true
-				}
+					sortField: true,
+				},
 			},
 		];
 
@@ -82,6 +87,12 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				another: "another 2",
 				extraneous: "Don't show 2",
 			},
+			{
+				id: "an_id3",
+				test: null,
+				another: null,
+				extraneous: "Don't show 2",
+			},
 		];
 
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
@@ -92,7 +103,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(headers[1].cellElement.props.columnDefinition, "to equal", columnDef[1]);
 		expect(headers[1].className, "to be undefined");
 
-		expect(rows.length, "to equal", 2);
+		expect(rows.length, "to equal", 3);
 		expect(rows[0].columns.length, "to equal", 2);
 
 		expect(rows[0].key, "to equal", "an_id1");
@@ -101,27 +112,27 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[0].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(
 			rows[0].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 		expect(rows[0].columns[1].className, "to be undefined");
 		expect(
 			rows[0].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 
 		expect(rows[1].columns.length, "to equal", 2);
@@ -132,28 +143,33 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[1].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(
 			rows[1].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 		expect(rows[1].columns[1].className, "to be undefined");
 		expect(
 			rows[1].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
+
+		expect(rows[2].key, "to equal", "an_id3");
+		expect(rows[2].element, "to equal", elements[2]);
+		expect(rows[2].columns[0].cellElement, "to be", null);
+		expect(rows[2].columns[1].cellElement, "to be", null);
 	});
 
 	it("build table headers and rows as expected with another key field", () => {
@@ -193,27 +209,27 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[0].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(
 			rows[0].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 		expect(rows[0].columns[1].className, "to be undefined");
 		expect(
 			rows[0].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 
 		expect(rows[1].columns.length, "to equal", 2);
@@ -224,27 +240,27 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
 		expect(
 			rows[1].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(
 			rows[1].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 		expect(rows[1].columns[1].className, "to be undefined");
 		expect(
 			rows[1].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 	});
 
@@ -272,26 +288,26 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />
+			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />,
 		);
 		expect(
 			rows[0].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />
+			<TooltippedTypography noWrap children="another 1_transformation" titleValue="another 1_transformation" />,
 		);
 
 		expect(
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />
+			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />,
 		);
 		expect(
 			rows[1].columns[0].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />
+			<TooltippedTypography noWrap children="another 2_transformation" titleValue="another 2_transformation" />,
 		);
 	});
 
@@ -578,9 +594,13 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
-		const checkboxProps = new CheckboxProps();
-		checkboxProps.set(CheckboxProps.propNames.update, changeEvent);
-		checkboxProps.set(CheckboxProps.propNames.value, true);
+		const switchProps1 = new SwitchProps();
+		switchProps1.set(SwitchProps.propNames.update, changeEvent);
+		switchProps1.set(SwitchProps.propNames.value, true);
+
+		const switchProps2 = new SwitchProps();
+		switchProps2.set(SwitchProps.propNames.update, changeEvent);
+		switchProps2.set(SwitchProps.propNames.value, false);
 
 		expect(headers.length, "to equal", 1);
 
@@ -588,17 +608,43 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
 
-		expect(rows[0].columns[0].cellElement.props, "to equal", {
-			value: true,
-			"data-row-id": "an_id1",
-			onChange: changeEvent,
-		});
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						{rows[0].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						<Switch switchProp={switchProps1} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
 
-		expect(rows[1].columns[0].cellElement.props, "to equal", {
-			value: false,
-			"data-row-id": "an_id2",
-			onChange: changeEvent,
-		});
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						{rows[1].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						<Switch switchProp={switchProps2} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
 	});
 
 	it("build table rows as expected with switch caption", () => {
@@ -625,9 +671,17 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
 
-		const checkboxProps = new CheckboxProps();
-		checkboxProps.set(CheckboxProps.propNames.update, changeEvent);
-		checkboxProps.set(CheckboxProps.propNames.value, true);
+		const switchProps1 = new SwitchProps();
+		switchProps1.set(SwitchProps.propNames.update, changeEvent);
+		switchProps1.set(SwitchProps.propNames.value, true);
+		switchProps1.set(SwitchProps.propNames.onCaption, aSwitch.onCaption);
+		switchProps1.set(SwitchProps.propNames.offCaption, aSwitch.offCaption);
+
+		const switchProps2 = new SwitchProps();
+		switchProps2.set(SwitchProps.propNames.update, changeEvent);
+		switchProps2.set(SwitchProps.propNames.value, false);
+		switchProps2.set(SwitchProps.propNames.onCaption, aSwitch.onCaption);
+		switchProps2.set(SwitchProps.propNames.offCaption, aSwitch.offCaption);
 
 		expect(headers.length, "to equal", 1);
 
@@ -635,21 +689,67 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[0].columns.length, "to equal", 1);
 		expect(rows[0].element, "to equal", elements[0]);
 
-		expect(rows[0].columns[0].cellElement.props, "to equal", {
-			value: true,
-			"data-row-id": "an_id1",
-			onChange: changeEvent,
-			onCaption: messages.captionOn,
-			offCaption: messages.captionOff,
-		});
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						{rows[0].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						<Switch switchProp={switchProps1} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
 
-		expect(rows[1].columns[0].cellElement.props, "to equal", {
-			value: false,
-			"data-row-id": "an_id2",
-			onChange: changeEvent,
-			onCaption: messages.captionOn,
-			offCaption: messages.captionOff,
-		});
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						{rows[1].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={messages} locale="en-US">
+						<Switch switchProp={switchProps2} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+	});
+
+	it("build table rows as expected when value is null and switch caption should not be shown", () => {
+		const changeEvent = jest.fn();
+
+		const columnDef = [
+			{
+				fieldName: "test",
+				label: messages.a_label,
+				type: "switch",
+				onChange: changeEvent,
+			},
+		];
+		const elements = [{ id: "an_id1", test: null, another: "another 1", extraneous: "Don't show 1" }];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 1);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(rows[0].columns[0].cellElement, "to be", null);
 	});
 
 	it("build table rows as expected without tooltip as required", () => {
@@ -691,7 +791,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
 		);
 		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
 		expect(rows[0].columns[0].title, "to be null");
@@ -699,7 +799,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 		expect(rows[0].columns[1].className, "to be undefined");
 
@@ -707,7 +807,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[0].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
 		);
 
 		expect(rows[1].columns.length, "to equal", 2);
@@ -718,7 +818,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[0].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
 		);
 		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
 		expect(rows[1].columns[0].title, "to be null");
@@ -726,14 +826,14 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			rows[1].columns[1].cellElement,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 		expect(rows[1].columns[1].className, "to be undefined");
 		expect(
 			rows[1].columns[1].title,
 			"when mounted",
 			"to satisfy",
-			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
 		);
 	});
 
@@ -748,7 +848,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				groupName: "preferredStore",
 				selectedValue: "an_id2",
 				label: messages.a_label,
-			}
+			},
 		];
 
 		const elements = [
@@ -772,6 +872,5 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id2");
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("checked"), "to equal", true);
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
-
 	});
 });

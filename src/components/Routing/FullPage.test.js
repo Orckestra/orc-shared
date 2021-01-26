@@ -16,13 +16,12 @@ describe("Fullpage", () => {
 		params: { scope: "meep" },
 	};
 
-
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			view: {
 				edit: {
 					snap: {},
-				}
+				},
 			},
 			navigation: {
 				route: {
@@ -32,8 +31,8 @@ describe("Fullpage", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => state,
 		};
 	});
@@ -80,8 +79,8 @@ describe("Fullpage", () => {
 
 	it("shows a segment page if segments", () => {
 		const location = {
-			pathname: "/meep/snap/stuff"
-		}
+			pathname: "/meep/snap/stuff",
+		};
 
 		const segments = { "/stuff": { component: View2, label: "Two" } };
 
@@ -107,15 +106,10 @@ describe("Fullpage", () => {
 				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
 					<div>
 						<div id="view1"></div>
-						<SegmentPage
-							path="/:scope/snap"
-							location={location}
-							segments={segments}
-							match={match}
-						/>
+						<SegmentPage path="/:scope/snap" location={location} segments={segments} match={match} />
 					</div>
 				</MemoryRouter>
-			</Provider>
-		)
+			</Provider>,
+		);
 	});
 });

@@ -441,8 +441,8 @@ const setThemeOverrides = theme => ({
 		...theme.MuiListItem,
 		root: {
 			"&.Mui-selected": {
-				backgroundColor: theme.palette.primary.light
-			}
+				backgroundColor: theme.palette.primary.light,
+			},
 		},
 		button: {
 			...theme.button,
@@ -486,8 +486,8 @@ const setThemeOverrides = theme => ({
 		},
 		indicator: {
 			...theme.indicator,
-			backgroundColor: 'transparent'
-		}
+			backgroundColor: "transparent",
+		},
 	},
 	MuiTab: {
 		...theme.MuiTab,
@@ -522,7 +522,6 @@ const setThemeOverrides = theme => ({
 				borderBottom: `1px solid ${theme.palette.common.white}`,
 			},
 			"&.MuiTab-labelIcon svg": {
-
 				marginRight: theme.spacing(1),
 			},
 			"& .MuiTab-wrapper": {
@@ -530,7 +529,7 @@ const setThemeOverrides = theme => ({
 			},
 			"&.MuiButtonBase-root:focus, &.MuiButtonBase-root:active": {
 				boxShadow: "none",
-				borderRadius: `4px 4px 0 0`
+				borderRadius: `4px 4px 0 0`,
 			},
 		},
 		labelIcon: {
@@ -542,8 +541,8 @@ const setThemeOverrides = theme => ({
 			},
 			"& .MuiTab-wrapper > *:first-child": {
 				marginBottom: theme.spacing(0),
-			}
-		}
+			},
+		},
 	},
 	MuiTable: {
 		...theme.MuiTable,
@@ -710,8 +709,8 @@ const setThemeOverrides = theme => ({
 		...theme.MuiAccordion,
 		root: {
 			...theme.root,
-			boxShadow: "none"
-		}
+			boxShadow: "none",
+		},
 	},
 	MuiAccordionSummary: {
 		...theme.MuiAccordionSummary,
@@ -820,14 +819,14 @@ const setThemeOverrides = theme => ({
 			justifyContent: "left",
 			texTransform: "capitalize",
 			"&.Mui-disabled": {
-				opacity: 1
-			}
+				opacity: 1,
+			},
 		},
 		label: {
 			...theme.label,
 			paddingLeft: theme.spacing(1),
 			paddingRight: theme.spacing(1),
-		}
+		},
 	},
 	MuiTreeItem: {
 		...theme.MuiTreeItem,

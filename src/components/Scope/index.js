@@ -31,14 +31,14 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey.light,
 		width: "100%",
 		minHeight: theme.spacing(4.9),
-		userSelect: "none"
-	}
+		userSelect: "none",
+	},
 }));
 
-export const Bar = (props) => {
+export const Bar = props => {
 	const classes = useStyles();
 
-	return <div className={classes.scopeBar}>{props.children}</div>
+	return <div className={classes.scopeBar}>{props.children}</div>;
 };
 
 export const ScopeBar = ({ show, name, updateViewState, disabled }) => {
@@ -70,7 +70,6 @@ ScopeBar.displayName = "ScopeBar";
 export const SCOPE_SELECTOR_NAME = "scopeSelector";
 
 export const Scope = ({ children }) => {
-
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
 	const [{ show = false, disabled, nodeState, filter }, updateViewState] = useViewState(SCOPE_SELECTOR_NAME);
 
