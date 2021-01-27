@@ -17,6 +17,11 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		captionOff: { id: "captionOff", defaultMessage: "is Off" },
 	};
 
+	const captionMessages = {
+		captionOn: "is On",
+		captionOff: "is Off",
+	};
+
 	it("Throws an error if columnDefinitions has more than one sortField", () => {
 		const columnDef = [
 			{
@@ -611,7 +616,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						{rows[0].columns[0].cellElement}
 					</IntlProvider>
 				</MuiThemeProvider>
@@ -620,7 +625,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						<Switch switchProp={switchProps1} />
 					</IntlProvider>
 				</MuiThemeProvider>
@@ -630,7 +635,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						{rows[1].columns[0].cellElement}
 					</IntlProvider>
 				</MuiThemeProvider>
@@ -639,7 +644,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						<Switch switchProp={switchProps2} />
 					</IntlProvider>
 				</MuiThemeProvider>
@@ -692,7 +697,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						{rows[0].columns[0].cellElement}
 					</IntlProvider>
 				</MuiThemeProvider>
@@ -701,7 +706,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						<Switch switchProp={switchProps1} />
 					</IntlProvider>
 				</MuiThemeProvider>
@@ -711,7 +716,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						{rows[1].columns[0].cellElement}
 					</IntlProvider>
 				</MuiThemeProvider>
@@ -720,7 +725,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={messages} locale="en-US">
+					<IntlProvider messages={captionMessages} locale="en-US">
 						<Switch switchProp={switchProps2} />
 					</IntlProvider>
 				</MuiThemeProvider>
