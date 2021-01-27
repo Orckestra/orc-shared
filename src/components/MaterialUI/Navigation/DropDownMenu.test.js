@@ -17,8 +17,8 @@ describe("DropDownMenu", () => {
 			{ title: "asd2", action: sinon.spy().named("action") },
 		];
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => ({}),
 		};
 		container = document.createElement("div");

@@ -43,7 +43,7 @@ beforeEach(() => {
 				name: { "en-CA": "Test 1" },
 				foo: false,
 				bar: false,
-				scopePath: ["test1"]
+				scopePath: ["test1"],
 			},
 			test2: {
 				id: "test2",
@@ -191,13 +191,19 @@ describe("Scope", () => {
 				name: "test",
 				children: [],
 				type: "Global",
-				scopePath: ["test"]
-			}
+				scopePath: ["test"],
+			},
 		];
-		const getScope = (_) => scopes[0];
+		const getScope = _ => scopes[0];
 
 		const component = (
-			<TestWrapper provider={{ store }} intlProvider={{ messages }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<Scope>
 					<div id="child" />
 				</Scope>
@@ -211,7 +217,13 @@ describe("Scope", () => {
 		);
 
 		const expectedScopeSelector = (
-			<TestWrapper provider={{ store }} intlProvider={{ messages }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<ScopeSelector
 					show={true}
 					getScope={getScope}
@@ -226,7 +238,7 @@ describe("Scope", () => {
 		const expectedChild = <div id="child" />;
 
 		expect(component, "when mounted", "to satisfy", [expectedScopeBar, expectedChild]).then(() =>
-			expect(modalRoot, "to satisfy", expectedScopeSelector)
+			expect(modalRoot, "to satisfy", expectedScopeSelector),
 		);
 
 		simulate(modalRoot, { type: "change", value: "text", target: "input" });
@@ -245,7 +257,13 @@ describe("Scope", () => {
 
 	it("Updates show to false in view state when close selector is called", () => {
 		const component = (
-			<TestWrapper provider={{ store }} intlProvider={{ messages }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<Scope>
 					<div id="child" />
 				</Scope>
@@ -259,7 +277,7 @@ describe("Scope", () => {
 		const stopPropagationSpy = sinon.spy();
 
 		const event = {
-			stopPropagation: stopPropagationSpy
+			stopPropagation: stopPropagationSpy,
 		};
 
 		scopeSelector.prop("closeSelector")(event);
@@ -285,7 +303,11 @@ describe("Scope", () => {
 		});
 		ReactDOM.render(
 			<div>
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/test3/stuff"] }} intlProvider={{ messages }}>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/test3/stuff"] }}
+					intlProvider={{ messages }}
+				>
 					<Scope>
 						<div id="child" />
 					</Scope>
@@ -337,7 +359,13 @@ describe("Scope", () => {
 		state = state.deleteIn(["view", "scopeSelector", "show"]);
 
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<Scope>
 					<div id="child" />
 				</Scope>
@@ -353,7 +381,7 @@ describe("Scope", () => {
 		const expectedChild = <div id="child" />;
 
 		expect(component, "when mounted", "to satisfy", [expectedScopeBar, expectedChild]).then(() =>
-			expect(modalRoot, "to satisfy", <div></div>)
+			expect(modalRoot, "to satisfy", <div></div>),
 		);
 	});
 });

@@ -16,8 +16,8 @@ export const LeafNode = ({ dark, isSelectedNode, ...nodeData }) => (
 						{safeGet(nodeData, "children", "length") ? (
 							[<BeforeIndicator key="a" />, <Indicator key="b" open={nodeData.open} onClick={toggle} dark={dark} />]
 						) : (
-								<NonIndicator />
-							)}
+							<NonIndicator />
+						)}
 						<Label isSelectedNode={isSelectedNode}>
 							<Content {...stripKey("children", nodeData)} {...otherProps} />
 						</Label>
@@ -53,8 +53,8 @@ export const Node = ({ root, id }) => (
 					{root ? (
 						<RootNode {...nodeData} isSelectedNode={isSelectedNode} />
 					) : (
-							<LeafNode {...nodeData} open={open} dark={dark} isSelectedNode={isSelectedNode} />
-						)}
+						<LeafNode {...nodeData} open={open} dark={dark} isSelectedNode={isSelectedNode} />
+					)}
 					{open && safeGet(nodeData, "children", "length") ? (
 						<Branch dark={dark}>
 							{nodeData.children.map(id => (

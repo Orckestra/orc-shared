@@ -230,9 +230,9 @@ describe("TabBar", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			getState: () => state,
-			dispatch: () => { },
+			dispatch: () => {},
 		};
 	});
 
@@ -240,13 +240,25 @@ describe("TabBar", () => {
 
 	it("Renders TabBar correctly", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
 
 		const expected = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<div>
 					<ResizeDetector />
 					{expectedModuleTab}
@@ -261,7 +273,13 @@ describe("TabBar", () => {
 
 	it("Contains proper Select and Modal elements when they are visible", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -271,7 +289,13 @@ describe("TabBar", () => {
 		useStateSpy.mockImplementation(() => [true, setState]);
 
 		const expected = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<div>
 					<ResizeDetector />
 					{expectedModuleTab}
@@ -287,7 +311,13 @@ describe("TabBar", () => {
 
 	it("Calls history.push to module link when module tab is clicked", () => {
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }} intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -303,7 +333,13 @@ describe("TabBar", () => {
 
 	it("Calls history.push to page link when page tab is clicked", () => {
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }} intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -319,7 +355,13 @@ describe("TabBar", () => {
 
 	it("Calls history.push to page link when page tab is selected via Select", () => {
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }} intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -339,7 +381,13 @@ describe("TabBar", () => {
 
 	it("Calls correct close callback when close icon for specific page tab is clicked and tab was not modified", () => {
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }} intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -356,7 +404,13 @@ describe("TabBar", () => {
 
 	it("Calls correct close callback when close icon for specific page tab is clicked and tab was modified", () => {
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }} intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -379,7 +433,13 @@ describe("TabBar", () => {
 
 	it("Handles onResize correct when isScrollVisible returns false", () => {
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }} intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -406,7 +466,13 @@ describe("TabBar", () => {
 
 	it("Handles onResize correct when isScrollVisible returns true", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -433,7 +499,13 @@ describe("TabBar", () => {
 
 	it("Closes tab when ok callback in confirmation modal is triggered", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -469,7 +541,13 @@ describe("TabBar", () => {
 
 	it("Closes confirmation modal when cancelCallback is triggered", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -492,7 +570,13 @@ describe("TabBar", () => {
 
 	it("Closes confirmation modal when backdropClickCallback is triggered", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);
@@ -515,7 +599,13 @@ describe("TabBar", () => {
 
 	it("Remove edit mode for new tab with modifications when close ok callback in confirmation modal is triggered", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={pages} />
 			</TestWrapper>
 		);

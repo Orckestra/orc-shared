@@ -73,8 +73,8 @@ export const PropStruct = React.forwardRef((props, ref) => (
 				value === undefined || value === null
 					? null
 					: value === "__ignore"
-						? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
-						: [
+					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
+					: [
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
 								{key === "children" ? (
@@ -83,8 +83,8 @@ export const PropStruct = React.forwardRef((props, ref) => (
 									value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
 										"React <" + (value.type.name || value.type) + ">"
 									) : (
-											<PropStruct {...value} />
-										)
+										<PropStruct {...value} />
+									)
 								) : typeof value === "function" ? (
 									"Function"
 								) : typeof value === "string" ? (
@@ -92,17 +92,17 @@ export const PropStruct = React.forwardRef((props, ref) => (
 								) : typeof value === "symbol" ? (
 									`symbol ${value.toString()}`
 								) : (
-														typeof value + " " + value
-													)}
+									typeof value + " " + value
+								)}
 							</dd>,
-						],
+					  ],
 			)}
 	</dl>
 ));
 
 export const ignoreConsoleError = func => {
 	jest.spyOn(console, "error");
-	console.error.mockImplementation(() => { });
+	console.error.mockImplementation(() => {});
 
 	func();
 
@@ -157,19 +157,23 @@ export const TestWrapper = ({
 	memoryRouter,
 	stylesProvider,
 	muiThemeProvider,
-	children
+	children,
 }) => {
 	const ProviderWrapper = ({ children }) => {
 		if (provider == null) return children;
 
-		return <Provider store={provider.store}>{children}</Provider>
-	}
+		return <Provider store={provider.store}>{children}</Provider>;
+	};
 
 	const IntlProvderWrapper = ({ children }) => {
 		if (intlProvider == null) return children;
 
-		return <IntlProvider locale="en-US" timeZone="UTC" messages={intlProvider.messages}>{children}</IntlProvider>;
-	}
+		return (
+			<IntlProvider locale="en-US" timeZone="UTC" messages={intlProvider.messages}>
+				{children}
+			</IntlProvider>
+		);
+	};
 
 	const StylesProviderWrapper = ({ children }) => {
 		if (stylesProvider == null) return children;
@@ -201,9 +205,7 @@ export const TestWrapper = ({
 				<MemoryRouterWrapper>
 					<IntlProvderWrapper>
 						<StylesProviderWrapper>
-							<MuiThemeProviderWrapper>
-								{children}
-							</MuiThemeProviderWrapper>
+							<MuiThemeProviderWrapper>{children}</MuiThemeProviderWrapper>
 						</StylesProviderWrapper>
 					</IntlProvderWrapper>
 				</MemoryRouterWrapper>

@@ -16,8 +16,8 @@ describe("Notification Component", () => {
 		document.body.appendChild(container);
 		setSnackPack = sinon.spy().named("setSnackPack");
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => ({}),
 		};
 	});
@@ -70,7 +70,7 @@ describe("Notification Component", () => {
 						</IconButton>
 					</div>
 				</div>
-			</TestWrapper>
+			</TestWrapper>,
 		);
 	});
 

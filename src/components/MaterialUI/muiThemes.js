@@ -730,7 +730,7 @@ const setThemeOverrides = theme => ({
 			border: "1px solid",
 			borderRadius: "3px",
 			borderColor: theme.palette.grey.icon,
-			boxShadow: "0 0 4px rgba(0,0,0,0.22)"
+			boxShadow: "0 0 4px rgba(0,0,0,0.22)",
 		},
 		arrow: {
 			...theme.arrow,
@@ -742,8 +742,8 @@ const setThemeOverrides = theme => ({
 		},
 		popper: {
 			...theme.popper,
-			zIndex: 10000
-		}
+			zIndex: 10000,
+		},
 	},
 	MuiRadio: {
 		...theme.MuiRadio,
@@ -845,15 +845,15 @@ const setThemeOverrides = theme => ({
 			"& > .MuiTreeItem-label": {
 				"&:hover": {
 					backgroundColor: `${theme.palette.primary.light}`,
-				}
-			}
+				},
+			},
 		},
 		selected: {
 			...theme.selected,
 			"& > .MuiTreeItem-content .MuiTreeItem-label": {
 				border: `1px solid ${theme.palette.primary.main}`,
 				backgroundColor: `${theme.palette.primary.light} !important`,
-			}
+			},
 		},
 		group: {
 			...theme.group,
@@ -868,10 +868,10 @@ const setThemeOverrides = theme => ({
 			marginRight: theme.spacing(0.6),
 			width: "auto",
 			"& svg": {
-				fontSize: "10px"
-			}
+				fontSize: "10px",
+			},
 		},
-	}
+	},
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {

@@ -73,7 +73,7 @@ describe("Navigation", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
@@ -123,14 +123,20 @@ describe("Navigation", () => {
 		];
 
 		expect(
-			<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/test/page1"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/test/page1"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<Navigation modules={modules} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<TestWrapper provider={{ store }} memoryRouter intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<TabBar module={module} pages={pages} />
-			</TestWrapper>
+			</TestWrapper>,
 		);
 	});
 });

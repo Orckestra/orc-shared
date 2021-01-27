@@ -8,223 +8,223 @@ import sinon from "sinon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("TableHeaderCell", () => {
-  const theme = createMuiTheme();
+	const theme = createMuiTheme();
 
-  it("Retrieves label if column definition is not an object and sortOptions are not specified", () => {
-    const columnDefinition = {
-      label: "String"
-    };
+	it("Retrieves label if column definition is not an object and sortOptions are not specified", () => {
+		const columnDefinition = {
+			label: "String",
+		};
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+		const component = <TableHeaderCell columnDefinition={columnDefinition} />;
 
-    expect(component, "when mounted", "to satisfy", columnDefinition.label);
-  });
+		expect(component, "when mounted", "to satisfy", columnDefinition.label);
+	});
 
-  it("Retrieves label if column definition is an object and sortOptions are not specified", () => {
-    const messages = {
-      cell: { id: "cell.name", defaultMessage: "a cell" }
-    };
+	it("Retrieves label if column definition is an object and sortOptions are not specified", () => {
+		const messages = {
+			cell: { id: "cell.name", defaultMessage: "a cell" },
+		};
 
-    const columnDefinition = {
-      label: messages.cell
-    };
+		const columnDefinition = {
+			label: messages.cell,
+		};
 
-    const component = (
-      <IntlProvider locale="en" messages={messages}>
-        <TableHeaderCell columnDefinition={columnDefinition} />
-      </IntlProvider>
-    );
+		const component = (
+			<IntlProvider locale="en" messages={messages}>
+				<TableHeaderCell columnDefinition={columnDefinition} />
+			</IntlProvider>
+		);
 
-    expect(component, "when mounted", "to satisfy", messages.cell.defaultMessage);
-  });
+		expect(component, "when mounted", "to satisfy", messages.cell.defaultMessage);
+	});
 
-  it("Throws error if sortOptions are specified but, direction has a wrong value", () => {
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: true,
-        direction: "Asc",
-        propertyName: "cell"
-      },
-      sortCallback: jest.fn()
-    };
+	it("Throws error if sortOptions are specified but, direction has a wrong value", () => {
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: true,
+				direction: "Asc",
+				propertyName: "cell",
+			},
+			sortCallback: jest.fn(),
+		};
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+		const component = <TableHeaderCell columnDefinition={columnDefinition} />;
 
-    ignoreConsoleError(() => {
-      expect(() => mount(component), "to throw a", Error);
-    });
-  });
+		ignoreConsoleError(() => {
+			expect(() => mount(component), "to throw a", Error);
+		});
+	});
 
-  it("Throws error if sortOptions are specified but, propertyName is missing", () => {
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: true,
-        direction: "Ascending"
-      },
-      sortCallback: jest.fn()
-    };
+	it("Throws error if sortOptions are specified but, propertyName is missing", () => {
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: true,
+				direction: "Ascending",
+			},
+			sortCallback: jest.fn(),
+		};
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+		const component = <TableHeaderCell columnDefinition={columnDefinition} />;
 
-    ignoreConsoleError(() => {
-      expect(() => mount(component), "to throw a", Error);
-    });
-  });
+		ignoreConsoleError(() => {
+			expect(() => mount(component), "to throw a", Error);
+		});
+	});
 
-  it("Throws error if sortOptions are specified but, sortCallback is missing", () => {
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: true,
-        direction: "Ascending",
-        propertyName: "cell"
-      }
-    };
+	it("Throws error if sortOptions are specified but, sortCallback is missing", () => {
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: true,
+				direction: "Ascending",
+				propertyName: "cell",
+			},
+		};
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+		const component = <TableHeaderCell columnDefinition={columnDefinition} />;
 
-    ignoreConsoleError(() => {
-      expect(() => mount(component), "to throw a", Error);
-    });
-  });
+		ignoreConsoleError(() => {
+			expect(() => mount(component), "to throw a", Error);
+		});
+	});
 
-  it("Renders TableHeaderCell correctly when sortOptions are specifed and direction is Ascending", () => {
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: true,
-        direction: "Ascending",
-        propertyName: "cell"
-      },
-      sortCallback: jest.fn()
-    };
+	it("Renders TableHeaderCell correctly when sortOptions are specifed and direction is Ascending", () => {
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: true,
+				direction: "Ascending",
+				propertyName: "cell",
+			},
+			sortCallback: jest.fn(),
+		};
 
-    const component = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <TableHeaderCell columnDefinition={columnDefinition} />
-      </TestWrapper>
-    );
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<TableHeaderCell columnDefinition={columnDefinition} />
+			</TestWrapper>
+		);
 
-    const expected = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <div>
-          {columnDefinition.label}
-          <Icon id="caret-down" />
-        </div>
-      </TestWrapper>
-    );
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					{columnDefinition.label}
+					<Icon id="caret-down" />
+				</div>
+			</TestWrapper>
+		);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 
-  it("Renders TableHeaderCell correctly when sortOptions are specifed and direction is Descending", () => {
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: true,
-        direction: "Descending",
-        propertyName: "cell"
-      },
-      sortCallback: jest.fn()
-    };
+	it("Renders TableHeaderCell correctly when sortOptions are specifed and direction is Descending", () => {
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: true,
+				direction: "Descending",
+				propertyName: "cell",
+			},
+			sortCallback: jest.fn(),
+		};
 
-    const component = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <TableHeaderCell columnDefinition={columnDefinition} />
-      </TestWrapper>
-    );
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<TableHeaderCell columnDefinition={columnDefinition} />
+			</TestWrapper>
+		);
 
-    const expected = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <div>
-          {columnDefinition.label}
-          <Icon id="caret-up" />
-        </div>
-      </TestWrapper>
-    );
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					{columnDefinition.label}
+					<Icon id="caret-up" />
+				</div>
+			</TestWrapper>
+		);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 
-  it("Renders TableHeaderCell correctly when sortOptions are specifed and sortField is true", () => {
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: true,
-        direction: "Descending",
-        propertyName: "cell"
-      },
-      sortCallback: jest.fn()
-    };
+	it("Renders TableHeaderCell correctly when sortOptions are specifed and sortField is true", () => {
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: true,
+				direction: "Descending",
+				propertyName: "cell",
+			},
+			sortCallback: jest.fn(),
+		};
 
-    const component = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <TableHeaderCell columnDefinition={columnDefinition} />
-      </TestWrapper>
-    );
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<TableHeaderCell columnDefinition={columnDefinition} />
+			</TestWrapper>
+		);
 
-    const expected = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <div>
-          {columnDefinition.label}
-          <Icon id="caret-up" color="primary" />
-        </div>
-      </TestWrapper>
-    );
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					{columnDefinition.label}
+					<Icon id="caret-up" color="primary" />
+				</div>
+			</TestWrapper>
+		);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 
-  it("Renders TableHeaderCell correctly when sortOptions are specifed and sortField is false", () => {
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: false,
-        direction: "Descending",
-        propertyName: "cell"
-      },
-      sortCallback: jest.fn()
-    };
+	it("Renders TableHeaderCell correctly when sortOptions are specifed and sortField is false", () => {
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: false,
+				direction: "Descending",
+				propertyName: "cell",
+			},
+			sortCallback: jest.fn(),
+		};
 
-    const component = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <TableHeaderCell columnDefinition={columnDefinition} />
-      </TestWrapper>
-    );
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<TableHeaderCell columnDefinition={columnDefinition} />
+			</TestWrapper>
+		);
 
-    const expected = (
-      <TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-        <div>
-          {columnDefinition.label}
-          <Icon id="caret-up" color="disabled" />
-        </div>
-      </TestWrapper>
-    );
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					{columnDefinition.label}
+					<Icon id="caret-up" color="disabled" />
+				</div>
+			</TestWrapper>
+		);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 
-  it("Calls back passed callback function when sort icon was clicked", () => {
-    const sortCallback = sinon.spy();
+	it("Calls back passed callback function when sort icon was clicked", () => {
+		const sortCallback = sinon.spy();
 
-    const columnDefinition = {
-      label: "Cell",
-      sortOptions: {
-        sortField: false,
-        direction: "Descending",
-        propertyName: "cell"
-      },
-      sortCallback: sortCallback
-    };
+		const columnDefinition = {
+			label: "Cell",
+			sortOptions: {
+				sortField: false,
+				direction: "Descending",
+				propertyName: "cell",
+			},
+			sortCallback: sortCallback,
+		};
 
-    const component = <TableHeaderCell columnDefinition={columnDefinition} />;
+		const component = <TableHeaderCell columnDefinition={columnDefinition} />;
 
-    const mountedComponent = mount(component);
+		const mountedComponent = mount(component);
 
-    mountedComponent.simulate("click");
+		mountedComponent.simulate("click");
 
-    expect(sortCallback, "to have a call satisfying", [columnDefinition.sortOptions.propertyName]);
-  });
+		expect(sortCallback, "to have a call satisfying", [columnDefinition.sortOptions.propertyName]);
+	});
 });

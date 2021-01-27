@@ -100,8 +100,8 @@ describe("Modules", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
-			dispatch: () => { },
+			subscribe: () => {},
+			dispatch: () => {},
 			getState: () => state,
 		};
 	});
@@ -110,7 +110,13 @@ describe("Modules", () => {
 
 	it("renders a module table with navigation tabs", () => {
 		const component = (
-			<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/demos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<Modules modules={modules} scope="TestScope" />
 			</TestWrapper>
 		);
@@ -124,7 +130,13 @@ describe("Modules", () => {
 		};
 
 		const expected = [
-			<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/demos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
 				<TabBar module={module} pages={[]} />
 			</TestWrapper>,
 			<Mod3 />,
@@ -148,23 +160,35 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
 					<Modules modules={modules} scope="TestScope" />
 				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
 					<TabBar module={module} pages={[]} />
 				</TestWrapper>,
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }} stylesProvider muiThemeProvider={{ theme }}>
-					<SegmentPage
-						path="/:scope/users"
-						location={location}
-						segments={modules.users.segments}
-						match={match}
-					/>
-				</TestWrapper>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<SegmentPage path="/:scope/users" location={location} segments={modules.users.segments} match={match} />
+				</TestWrapper>,
 			],
 		);
 	});
@@ -180,13 +204,25 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/photos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/photos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
 					<Modules modules={modules} />
 				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/photos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/photos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
 					<TabBar module={module} pages={[]} />
 				</TestWrapper>,
 				<Mod2 />,
@@ -205,13 +241,25 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/demos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
 					<Modules modules={modules} />
 				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/demos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
 					<TabBar module={module} pages={[]} />
 				</TestWrapper>,
 				<Mod3 />,
@@ -277,13 +325,25 @@ describe("Modules", () => {
 
 			expect(
 				mount(
-					<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/demos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+					<TestWrapper
+						provider={{ store }}
+						memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+						intlProvider
+						stylesProvider
+						muiThemeProvider={{ theme }}
+					>
 						<Modules modules={modules} pathConfig={{ customPath: "/", demos: { prependPath: "/:scope/" } }} />
 					</TestWrapper>,
 				).childNodes,
 				"to satisfy",
 				[
-					<TestWrapper provider={{ store }} memoryRouter={{ initialEntries: ["/TestScope/demos"] }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+					<TestWrapper
+						provider={{ store }}
+						memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+						intlProvider
+						stylesProvider
+						muiThemeProvider={{ theme }}
+					>
 						<TabBar module={module} pages={[]} />
 					</TestWrapper>,
 					<Mod3 />,

@@ -1,53 +1,51 @@
 import React from "react";
-import TreeViewMui from '@material-ui/lab/TreeView';
+import TreeViewMui from "@material-ui/lab/TreeView";
 import TreeItem from "./TreeItem";
 import { scopeTypes } from "./../../../constants";
 
 const TreeView = ({ rootId, getScope, selectedScope, closeSelector }) => {
-  const [expanded, setExpanded] = React.useState(selectedScope.scopePath);
-  const [selected, setSelected] = React.useState(selectedScope.id);
+	const [expanded, setExpanded] = React.useState(selectedScope.scopePath);
+	const [selected, setSelected] = React.useState(selectedScope.id);
 
-  const virtualScopes = [];
+	const virtualScopes = [];
 
-  const handleToggle = (_, nodeIds) => {
-    setExpanded(nodeIds);
-  };
+	const handleToggle = (_, nodeIds) => {
+		setExpanded(nodeIds);
+	};
 
-  const handleSelect = (_, nodeId) => {
-    if (virtualScopes.includes(nodeId) === false) {
-      setSelected(nodeId);
-    }
-  };
+	const handleSelect = (_, nodeId) => {
+		if (virtualScopes.includes(nodeId) === false) {
+			setSelected(nodeId);
+		}
+	};
 
-  const renderTree = (scopeId) => {
-    const currentScope = getScope(scopeId);
-    if (currentScope == null) return null;
+	const renderTree = scopeId => {
+		const currentScope = getScope(scopeId);
+		if (currentScope == null) return null;
 
-    if (currentScope.type === scopeTypes.virtual) {
-      virtualScopes.push(currentScope.id);
-    }
+		if (currentScope.type === scopeTypes.virtual) {
+			virtualScopes.push(currentScope.id);
+		}
 
-    return (
-      <TreeItem key={`ScopeSelector-${currentScope.id}`} scope={currentScope} rootId={rootId} closeSelector={closeSelector}>
-        {currentScope.children.map(child =>
-          renderTree(child)
-        )}
-      </TreeItem>
-    );
-  };
+		return (
+			<TreeItem
+				key={`ScopeSelector-${currentScope.id}`}
+				scope={currentScope}
+				rootId={rootId}
+				closeSelector={closeSelector}
+			>
+				{currentScope.children.map(child => renderTree(child))}
+			</TreeItem>
+		);
+	};
 
-  const treeView = (
-    <TreeViewMui
-      expanded={expanded}
-      selected={selected}
-      onNodeToggle={handleToggle}
-      onNodeSelect={handleSelect}
-    >
-      {renderTree(rootId)}
-    </TreeViewMui>
-  );
+	const treeView = (
+		<TreeViewMui expanded={expanded} selected={selected} onNodeToggle={handleToggle} onNodeSelect={handleSelect}>
+			{renderTree(rootId)}
+		</TreeViewMui>
+	);
 
-  return treeView;
+	return treeView;
 };
 
 export default TreeView;

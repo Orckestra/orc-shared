@@ -46,8 +46,8 @@ const InformationItem = ({ label, children, required, error, showNotAvailable = 
 			{isReactComponent(children) ? (
 				children
 			) : (
-					<MultipleLinesText textProps={multipleLinesTextProps} children={value} />
-				)}
+				<MultipleLinesText textProps={multipleLinesTextProps} children={value} />
+			)}
 		</Grid>
 	);
 };

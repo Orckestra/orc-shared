@@ -90,10 +90,10 @@ const InputBase = ({ inputProps }) => {
 
 	const classes = useStyles({ label, errorPosition });
 
-	const onChangeHandler = (event) => {
+	const onChangeHandler = event => {
 		event.persist();
-		update(event.target.value)
-	}
+		update(event.target.value);
+	};
 
 	return (
 		<div className={classes.container}>
@@ -111,7 +111,7 @@ const InputBase = ({ inputProps }) => {
 					placeholder={placeholder}
 					value={value}
 					fullWidth={true}
-					onChange={(event) => onChangeHandler(event)}
+					onChange={event => onChangeHandler(event)}
 					error={!!error}
 					inputProps={inputAttributes}
 					disabled={disabled}

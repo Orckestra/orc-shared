@@ -4,17 +4,17 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
 	icon: {
-		color: props => (props.themeColor ?? "initial"),
+		color: props => props.themeColor ?? "initial",
 		width: "1em",
 		height: "1em",
 		fill: "currentColor",
 		stroke: "currentColor",
 	},
 	primary: {
-		color: props => (props.themeColor ?? theme.palette.primary.main)
+		color: props => props.themeColor ?? theme.palette.primary.main,
 	},
 	disabled: {
-		color: props => (props.themeColor ?? theme.palette.text.disabled)
+		color: props => props.themeColor ?? theme.palette.text.disabled,
 	},
 }));
 

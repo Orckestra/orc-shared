@@ -29,7 +29,6 @@ const MuiThemeContainer = ({ classToTest, styleProps }) => {
 
 describe("useStyles", () => {
 	it("build parentInput styles as expected", () => {
-
 		expect(
 			<MuiThemeContainer classToTest="parentInput" />,
 			"when mounted",
