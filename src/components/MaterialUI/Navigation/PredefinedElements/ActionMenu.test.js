@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "../../DataDisplay/Icon";
 import ActionMenu from "./ActionMenu";
 import DropDownMenuProps from "../DropDownMenuProps";
+import { TestWrapper, createMuiTheme } from "./../../../../utils/testUtils";
 
 describe("ActionMenu", () => {
 	let menuItems;
@@ -14,16 +15,22 @@ describe("ActionMenu", () => {
 		];
 	});
 
+	const theme = createMuiTheme();
+
 	it("render DropDownMenu without errors", () => {
 		expect(
-			<ActionMenu menuItems={menuItems} />,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<ActionMenu menuItems={menuItems} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<DropDownMenu menuItems={menuItems}>
-				<IconButton>
-					<Icon id="dot-menu" />
-				</IconButton>
-			</DropDownMenu>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<DropDownMenu menuItems={menuItems}>
+					<IconButton>
+						<Icon id="dot-menu" />
+					</IconButton>
+				</DropDownMenu>
+			</TestWrapper>,
 		);
 	});
 
@@ -32,14 +39,18 @@ describe("ActionMenu", () => {
 		dropdownMenuProps.set(DropDownMenuProps.propNames.disabled, true);
 
 		expect(
-			<ActionMenu disabled={true} menuItems={menuItems} />,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<ActionMenu disabled={true} menuItems={menuItems} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<DropDownMenu menuItems={menuItems} dropDownMenuProps={dropdownMenuProps}>
-				<IconButton>
-					<Icon id="dot-menu" />
-				</IconButton>
-			</DropDownMenu>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<DropDownMenu menuItems={menuItems} dropDownMenuProps={dropdownMenuProps}>
+					<IconButton>
+						<Icon id="dot-menu" />
+					</IconButton>
+				</DropDownMenu>
+			</TestWrapper>,
 		);
 	});
 
@@ -48,14 +59,18 @@ describe("ActionMenu", () => {
 		dropdownMenuProps.set(DropDownMenuProps.propNames.autoFocus, false);
 
 		expect(
-			<ActionMenu autoFocus={false} menuItems={menuItems} />,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<ActionMenu autoFocus={false} menuItems={menuItems} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<DropDownMenu dropDownMenuProps={dropdownMenuProps} menuItems={menuItems}>
-				<IconButton>
-					<Icon id="dot-menu" />
-				</IconButton>
-			</DropDownMenu>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<DropDownMenu dropDownMenuProps={dropdownMenuProps} menuItems={menuItems}>
+					<IconButton>
+						<Icon id="dot-menu" />
+					</IconButton>
+				</DropDownMenu>
+			</TestWrapper>,
 		);
 	});
 });

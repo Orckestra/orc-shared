@@ -1,13 +1,11 @@
 import React from "react";
-import { IntlProvider } from "react-intl";
-import sinon from "sinon";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
 import { mount } from "unexpected-reaction";
 import SegmentPage from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
+import { TestWrapper, createMuiTheme } from "./../utils/testUtils";
+import sinon from "sinon";
 import { createMemoryHistory } from "history";
 
 describe("Modules", () => {
@@ -108,15 +106,19 @@ describe("Modules", () => {
 		};
 	});
 
+	const theme = createMuiTheme();
+
 	it("renders a module table with navigation tabs", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<IntlProvider locale="en">
-						<Modules modules={modules} scope="TestScope" />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
 		);
 
 		const module = {
@@ -128,13 +130,15 @@ describe("Modules", () => {
 		};
 
 		const expected = [
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<IntlProvider locale="en">
-						<TabBar module={module} pages={[]} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={[]} />
+			</TestWrapper>,
 			<Mod3 />,
 		];
 
@@ -156,28 +160,35 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<Modules modules={modules} scope="TestScope" />
+				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-						<IntlProvider locale="en">
-							<TabBar module={module} pages={[]} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-						<SegmentPage path="/:scope/users" location={location} segments={modules.users.segments} match={match} />
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<TabBar module={module} pages={[]} />
+				</TestWrapper>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<SegmentPage path="/:scope/users" location={location} segments={modules.users.segments} match={match} />
+				</TestWrapper>,
 			],
 		);
 	});
@@ -193,23 +204,27 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/photos"]}>
-						<IntlProvider locale="en">
-							<Modules modules={modules} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/photos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<Modules modules={modules} />
+				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/photos"]}>
-						<IntlProvider locale="en">
-							<TabBar module={module} pages={[]} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/photos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<TabBar module={module} pages={[]} />
+				</TestWrapper>,
 				<Mod2 />,
 			],
 		);
@@ -226,23 +241,27 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/demos"]}>
-						<IntlProvider locale="en">
-							<Modules modules={modules} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<Modules modules={modules} />
+				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/demos"]}>
-						<IntlProvider locale="en">
-							<TabBar module={module} pages={[]} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<TabBar module={module} pages={[]} />
+				</TestWrapper>,
 				<Mod3 />,
 			],
 		);
@@ -293,6 +312,8 @@ describe("Modules", () => {
 			});
 		});
 
+		const theme = createMuiTheme();
+
 		it("renders a module table with custom prepend href ", () => {
 			const module = {
 				icon: "cloud",
@@ -304,23 +325,27 @@ describe("Modules", () => {
 
 			expect(
 				mount(
-					<Provider store={store}>
-						<MemoryRouter initialEntries={["/TestScope/demos"]}>
-							<IntlProvider locale="en">
-								<Modules modules={modules} pathConfig={{ customPath: "/", demos: { prependPath: "/:scope/" } }} />
-							</IntlProvider>
-						</MemoryRouter>
-					</Provider>,
+					<TestWrapper
+						provider={{ store }}
+						memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+						intlProvider
+						stylesProvider
+						muiThemeProvider={{ theme }}
+					>
+						<Modules modules={modules} pathConfig={{ customPath: "/", demos: { prependPath: "/:scope/" } }} />
+					</TestWrapper>,
 				).childNodes,
 				"to satisfy",
 				[
-					<Provider store={store}>
-						<MemoryRouter initialEntries={["/TestScope/demos"]}>
-							<IntlProvider locale="en">
-								<TabBar module={module} pages={[]} />
-							</IntlProvider>
-						</MemoryRouter>
-					</Provider>,
+					<TestWrapper
+						provider={{ store }}
+						memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+						intlProvider
+						stylesProvider
+						muiThemeProvider={{ theme }}
+					>
+						<TabBar module={module} pages={[]} />
+					</TestWrapper>,
 					<Mod3 />,
 				],
 			);
@@ -395,13 +420,9 @@ describe("Modules", () => {
 
 		it("renders a module table when scope not Authorized", () => {
 			mount(
-				<Provider store={store}>
-					<Router history={history}>
-						<IntlProvider locale="en">
-							<Modules modules={modules} />
-						</IntlProvider>
-					</Router>
-				</Provider>,
+				<TestWrapper provider={{ store }} router={{ history }} intlProvider>
+					<Modules modules={modules} />
+				</TestWrapper>,
 			);
 
 			expect(history.push, "to have calls satisfying", [{ args: ["/TestScope2/demos?arg=data"] }]);

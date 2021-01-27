@@ -48,7 +48,7 @@ describe("loadConfig", () => {
 			expect(
 				buildUrl,
 				"to throw",
-				"Config not yet loaded. " + "Please call util.js#loadConfig() and await resolution of the returned Promise.",
+				"Config not yet loaded. Please call util.js#loadConfig() and await resolution of the returned Promise.",
 			));
 
 		describe("with config loaded", () => {

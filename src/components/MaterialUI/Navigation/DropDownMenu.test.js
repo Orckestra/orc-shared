@@ -2,11 +2,12 @@ import React from "react";
 import { Provider } from "react-redux";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import Button from "@material-ui/core/Button";
 import Icon from "../DataDisplay/Icon";
 import DropDownMenu from "./DropDownMenu";
 import { ignoreConsoleError } from "../../../utils/testUtils";
+import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("DropDownMenu", () => {
 	let store, menuItems, container;
@@ -38,17 +39,23 @@ describe("DropDownMenu", () => {
 	});
 
 	it("render DropDownMenu with custom button without errors", () => {
+		const theme = createMuiTheme();
+
 		expect(
-			<DropDownMenu menuItems={menuItems}>
-				<Button>
-					<Icon id="dot-menu" />
-				</Button>
-			</DropDownMenu>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<DropDownMenu menuItems={menuItems}>
+					<Button>
+						<Icon id="dot-menu" />
+					</Button>
+				</DropDownMenu>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Button aria-controls="scope-menu" aria-haspopup="true">
-				<Icon id="dot-menu" />
-			</Button>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Button aria-controls="scope-menu" aria-haspopup="true">
+					<Icon id="dot-menu" />
+				</Button>
+			</TestWrapper>,
 		);
 	});
 

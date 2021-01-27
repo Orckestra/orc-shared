@@ -77,7 +77,7 @@ const InputBase = ({ inputProps }) => {
 		throw new TypeError("inputProps property is not of type InputBaseProps");
 	}
 
-	const multiline = inputProps?.get(InputBaseProps.propNames.multiline);
+	const multiline = inputProps?.get(InputBaseProps.propNames.multiline) || false;
 	const update = inputProps?.get(InputBaseProps.propNames.update);
 	const value = inputProps?.get(InputBaseProps.propNames.value) ?? "";
 	const label = !multiline && inputProps?.get(InputBaseProps.propNames.label);
@@ -86,9 +86,14 @@ const InputBase = ({ inputProps }) => {
 	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
 	const error = inputProps?.get(InputBaseProps.propNames.error);
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
-	const disabled = inputProps?.get(InputBaseProps.propNames.disabled);
+	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) || false;
 
 	const classes = useStyles({ label, errorPosition });
+
+	const onChangeHandler = event => {
+		event.persist();
+		update(event.target.value);
+	};
 
 	return (
 		<div className={classes.container}>
@@ -106,7 +111,7 @@ const InputBase = ({ inputProps }) => {
 					placeholder={placeholder}
 					value={value}
 					fullWidth={true}
-					onChange={e => update(e.target.value)}
+					onChange={event => onChangeHandler(event)}
 					error={!!error}
 					inputProps={inputAttributes}
 					disabled={disabled}

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SectionTitle = ({ title, sectionTitleProps }) => {
+const SectionTitle = ({ title }) => {
 	const classes = useStyles();
 
 	return <Typography className={classes.title} children={title} />;
