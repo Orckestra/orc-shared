@@ -8,8 +8,8 @@ import Switch from "./Switch";
 import { IntlProvider } from "react-intl";
 
 const messages = {
-	captionOn: "captionOn",
-	captionOff: "captionOff",
+	captionOn: "is On",
+	captionOff: "is Off",
 };
 
 describe("Switch Component", () => {
