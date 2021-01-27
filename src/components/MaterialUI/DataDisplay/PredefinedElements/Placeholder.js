@@ -56,24 +56,26 @@ const Placeholder = ({ icon, title, subtitle, cellList = [] }) => {
 	return (
 		<>
 			<div className={classes.root}>
-				<div className={classes.placeholderRow}>
-					{cellList.map((value, index) => {
-						switch (value) {
-							case "chip":
-								return (
-									<div key={`pc-${index}`} className={classes.placeholderCell}>
-										<Skeleton className={classes.chipSkeleton} />
-									</div>
-								);
-							default:
-								return (
-									<div key={`pc-${index}`} className={classes.placeholderCell}>
-										<Skeleton className={classes.textSkeleton} />
-									</div>
-								);
-						}
-					})}
-				</div>
+				{cellList.length ? (
+					<div className={classes.placeholderRow}>
+						{cellList.map((value, index) => {
+							switch (value) {
+								case "chip":
+									return (
+										<div key={`pc-${index}`} className={classes.placeholderCell}>
+											<Skeleton className={classes.chipSkeleton} />
+										</div>
+									);
+								default:
+									return (
+										<div key={`pc-${index}`} className={classes.placeholderCell}>
+											<Skeleton className={classes.textSkeleton} />
+										</div>
+									);
+							}
+						})}
+					</div>
+				) : null}
 				<Grid container direction="column" alignItems="center" className={classes.placeholder}>
 					{icon ? <Icon className={classes.placeholderImage} id={icon} /> : null}
 					{title ? <Typography className={classes.placeholderTitle}>{title}</Typography> : null}
