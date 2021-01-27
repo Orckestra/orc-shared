@@ -7,7 +7,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles(theme => ({
 	placeholder: {
-		margin: `${theme.spacing(5)} auto`,
+		margin: `${theme.spacing(10)} auto`,
 	},
 	placeholderImage: {
 		fontSize: theme.spacing(14),
@@ -46,35 +46,41 @@ const useStyles = makeStyles(theme => ({
 		animation: false,
 		borderRadius: "15px",
 	},
+	root: {
+		flexGrow: 1,
+	},
 }));
 
 const Placeholder = ({ icon, title, subtitle, cellList = [] }) => {
 	const classes = useStyles();
-	return cellList.length ? (
-		<div className={classes.placeholderRow}>
-			{cellList.map((value, index) => {
-				switch (value) {
-					case "status":
-						return (
-							<div key={`pc-${index}`} className={classes.placeholderCell}>
-								<Skeleton className={classes.chipSkeleton} />
-							</div>
-						);
-					default:
-						return (
-							<div key={`pc-${index}`} className={classes.placeholderCell}>
-								<Skeleton className={classes.textSkeleton} />
-							</div>
-						);
-				}
-			})}
-		</div>
-	) : (
-		<Grid container direction="column" alignItems="center" className={classes.placeholder}>
-			{icon ? <Icon className={classes.placeholderImage} id={icon} /> : null}
-			{title ? <Typography className={classes.placeholderTitle}>{title}</Typography> : null}
-			{subtitle ? <Typography className={classes.placeholderSubtitle}>{subtitle}</Typography> : null}
-		</Grid>
+	return (
+		<>
+			<div className={classes.root}>
+				<div className={classes.placeholderRow}>
+					{cellList.map((value, index) => {
+						switch (value) {
+							case "chip":
+								return (
+									<div key={`pc-${index}`} className={classes.placeholderCell}>
+										<Skeleton className={classes.chipSkeleton} />
+									</div>
+								);
+							default:
+								return (
+									<div key={`pc-${index}`} className={classes.placeholderCell}>
+										<Skeleton className={classes.textSkeleton} />
+									</div>
+								);
+						}
+					})}
+				</div>
+				<Grid container direction="column" alignItems="center" className={classes.placeholder}>
+					{icon ? <Icon className={classes.placeholderImage} id={icon} /> : null}
+					{title ? <Typography className={classes.placeholderTitle}>{title}</Typography> : null}
+					{subtitle ? <Typography className={classes.placeholderSubtitle}>{subtitle}</Typography> : null}
+				</Grid>
+			</div>
+		</>
 	);
 };
 

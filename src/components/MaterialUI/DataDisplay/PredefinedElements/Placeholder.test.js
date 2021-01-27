@@ -11,7 +11,7 @@ describe("Placeholder", () => {
 	const title = "Test Title";
 	const subtitle = "Test Subtitle";
 
-	it("Renders placeholder with all parametres", () => {
+	it("Renders placeholder when cellList parameter is missed", () => {
 		const component = <Placeholder icon={icon} title={title} subtitle={subtitle} />;
 
 		const mountedComponent = mount(component);
@@ -68,7 +68,7 @@ describe("Placeholder", () => {
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 	it("Renders placeholder when cellList has value ", () => {
-		const component = <Placeholder cellList={["t", "t", "t", "status"]} />;
+		const component = <Placeholder cellList={["t", "t", "t", "chip"]} />;
 
 		const mountedComponent = mount(component);
 		const expected = (
@@ -85,6 +85,36 @@ describe("Placeholder", () => {
 				<div>
 					<Skeleton />
 				</div>
+			</div>
+		);
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+	it("Renders placeholder with all parametres", () => {
+		const component = <Placeholder icon={icon} title={title} subtitle={subtitle} cellList={["t", "t", "t", "chip"]} />;
+
+		const mountedComponent = mount(component);
+		const expected = (
+			<div>
+				<div>
+					<div>
+						<Skeleton />
+					</div>
+					<div>
+						<Skeleton />
+					</div>
+					<div>
+						<Skeleton />
+					</div>
+					<div>
+						<Skeleton />
+					</div>
+				</div>
+				<Grid>
+					<Icon id={icon} />
+					<Typography>{title}</Typography>
+					<Typography>{subtitle}</Typography>
+				</Grid>
 			</div>
 		);
 
