@@ -11,6 +11,10 @@ const useStyles = makeStyles(theme => ({
 	actionPanel: {
 		float: "right",
 	},
+	message: {
+		maxWidth: "480px",
+		wordWrap: "normal",
+	},
 	cancelButton: {
 		marginRight: theme.spacing(1),
 	},
@@ -31,7 +35,11 @@ const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdrop
 	const titleComponent = (
 		<Typography className={classes.title} children={<FormattedMessage {...sharedMessages.confirmation} />} />
 	);
-	const messageComponent = <Typography children={message} />;
+	const messageComponent = (
+		<div className={classes.message}>
+			<Typography children={message} />
+		</div>
+	);
 
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, open);
@@ -43,7 +51,7 @@ const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdrop
 				<FormattedMessage {...sharedMessages.cancel} />
 			</Button>
 			<Button variant="contained" color="primary" onClick={() => okCallback()}>
-				<FormattedMessage {...sharedMessages.ok} />
+				<FormattedMessage {...sharedMessages.close} />
 			</Button>
 		</div>
 	);

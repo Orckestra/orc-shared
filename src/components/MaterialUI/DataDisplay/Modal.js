@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.primary.contrastText,
 		display: "flex",
 		alignItems: "center",
-		whiteSpace: "pre",
+		whiteSpace: "pre-wrap",
 		padding: `${theme.spacing(2)} ${theme.spacing(2)}`,
 	},
 	actionPanel: {

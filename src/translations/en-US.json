@@ -11,7 +11,7 @@
 	"orc-shared.displayLanguage": "Display language",
 	"orc-shared.help": "Help",
 	"orc-shared.notAvailable": "N/A",
-	"orc-shared.ok": "Ok",
+	"orc-shared.close": "Close",
 	"orc-shared.orcScriptsVersion": "Orc-Scripts Framework {version}",
 	"orc-shared.orcSecretVersion": "Orc-Secret Framework {version}",
 	"orc-shared.orcSharedVersion": "Orc-Shared Framework {version}",
