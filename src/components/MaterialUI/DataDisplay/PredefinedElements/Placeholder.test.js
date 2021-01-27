@@ -4,6 +4,7 @@ import Placeholder from "./Placeholder";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Icon from "./../Icon";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 describe("Placeholder", () => {
 	const icon = "orders";
@@ -62,6 +63,29 @@ describe("Placeholder", () => {
 				<Icon id={icon} />
 				<Typography>{title}</Typography>
 			</Grid>
+		);
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+	it("Renders placeholder when cellList has value ", () => {
+		const component = <Placeholder cellList={["t", "t", "t", "status"]} />;
+
+		const mountedComponent = mount(component);
+		const expected = (
+			<div>
+				<div>
+					<Skeleton />
+				</div>
+				<div>
+					<Skeleton />
+				</div>
+				<div>
+					<Skeleton />
+				</div>
+				<div>
+					<Skeleton />
+				</div>
+			</div>
 		);
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
