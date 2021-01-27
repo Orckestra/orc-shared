@@ -7,7 +7,7 @@ const buildParamString = params =>
 /* Placeholder until config loads */
 const placeholder = () => {
 	throw new Error(
-		"Config not yet loaded. " + "Please call util.js#loadConfig() and await resolution of the returned Promise.",
+		"Config not yet loaded. Please call util.js#loadConfig() and await resolution of the returned Promise.",
 	);
 };
 

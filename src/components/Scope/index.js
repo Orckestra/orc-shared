@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
-import Selector from "./Selector";
 import usePreviousModified from "../../hooks/usePreviousModified";
 import { unwrapImmutable } from "../../utils";
 import { defaultScopeSelector } from "../../selectors/settings";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import ScopeSelector from "./../MaterialUI/ScopeSelector/ScopeSelector";
 
 const useStyles = makeStyles(theme => ({
 	scopeButton: {
@@ -83,7 +83,7 @@ export const Scope = ({ children }) => {
 		updateViewState("show", false);
 		event.stopPropagation();
 	};
-	const updateFilter = event => updateViewState("filter", event.target.value);
+	const updateFilter = event => updateViewState("filter", event);
 
 	return (
 		<React.Fragment>
@@ -95,7 +95,7 @@ export const Scope = ({ children }) => {
 					disabled,
 				}}
 			/>
-			<Selector
+			{/* <Selector
 				name={SCOPE_SELECTOR_NAME}
 				show={show}
 				reset={reset}
@@ -104,6 +104,14 @@ export const Scope = ({ children }) => {
 				currentScope={currentScope}
 				updateFilter={updateFilter}
 				defaultNodeState={{}}
+			/> */}
+			<ScopeSelector
+				show={show}
+				getScope={getScope}
+				selectedScope={currentScope}
+				closeSelector={reset}
+				filter={filter}
+				updateFilter={updateFilter}
 			/>
 			{children}
 		</React.Fragment>

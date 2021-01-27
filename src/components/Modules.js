@@ -48,7 +48,8 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 		if (!isAuthorizedScope && pathname.includes(scope) && defaultScope) {
 			history.push(pathname.replace(scope, defaultScope) + search);
 		}
-	}, [isAuthorizedScope, defaultScope]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isAuthorizedScope, defaultScope, history, scope]);
 
 	React.useEffect(() => {
 		dispatch(setModulesStructure(modules));

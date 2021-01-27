@@ -7,10 +7,8 @@ import Tab from "@material-ui/core/Tab";
 import Select from "../Inputs/Select";
 import SelectProps from "../Inputs/SelectProps";
 import Icon from "../DataDisplay/Icon";
-import { Provider } from "react-redux";
-import { IntlProvider, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import Immutable from "immutable";
-import { Router, MemoryRouter } from "react-router-dom";
 import ResizeDetector from "react-resize-detector";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
@@ -21,8 +19,8 @@ import { removeEditNode } from "./../../../actions/view";
 import * as domHelper from "./../../../utils/domHelper";
 import * as useDispatchWithModulesData from "./../../../hooks/useDispatchWithModulesData";
 import * as ReactMock from "react";
-import { extractMessages } from "./../../../utils/testUtils";
 import sharedMessages from "./../../../sharedMessages";
+import { TestWrapper, createMuiTheme, extractMessages } from "./../../../utils/testUtils";
 
 const messages = extractMessages(sharedMessages);
 
@@ -238,30 +236,36 @@ describe("TabBar", () => {
 		};
 	});
 
+	const theme = createMuiTheme();
+
 	it("Renders TabBar correctly", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const expected = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<div>
-							<ResizeDetector />
-							{expectedModuleTab}
-							{expectedTabs}
-							<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
-						</div>
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<ResizeDetector />
+					{expectedModuleTab}
+					{expectedTabs}
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
+				</div>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -269,13 +273,15 @@ describe("TabBar", () => {
 
 	it("Contains proper Select and Modal elements when they are visible", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const setState = jest.fn();
@@ -283,19 +289,21 @@ describe("TabBar", () => {
 		useStateSpy.mockImplementation(() => [true, setState]);
 
 		const expected = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<div>
-							<ResizeDetector />
-							{expectedModuleTab}
-							{expectedTabs}
-							{select}
-							<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={true} />
-						</div>
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<ResizeDetector />
+					{expectedModuleTab}
+					{expectedTabs}
+					{select}
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={true} />
+				</div>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -303,13 +311,15 @@ describe("TabBar", () => {
 
 	it("Calls history.push to module link when module tab is clicked", () => {
 		const component = (
-			<Provider store={store}>
-				<Router history={history}>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</Router>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -323,13 +333,15 @@ describe("TabBar", () => {
 
 	it("Calls history.push to page link when page tab is clicked", () => {
 		const component = (
-			<Provider store={store}>
-				<Router history={history}>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</Router>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -343,13 +355,15 @@ describe("TabBar", () => {
 
 	it("Calls history.push to page link when page tab is selected via Select", () => {
 		const component = (
-			<Provider store={store}>
-				<Router history={history}>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</Router>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const setState = jest.fn();
@@ -367,13 +381,15 @@ describe("TabBar", () => {
 
 	it("Calls correct close callback when close icon for specific page tab is clicked and tab was not modified", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -388,13 +404,15 @@ describe("TabBar", () => {
 
 	it("Calls correct close callback when close icon for specific page tab is clicked and tab was modified", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const setState = sinon.spy();
@@ -415,13 +433,15 @@ describe("TabBar", () => {
 
 	it("Handles onResize correct when isScrollVisible returns false", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const setState = sinon.spy();
@@ -446,13 +466,15 @@ describe("TabBar", () => {
 
 	it("Handles onResize correct when isScrollVisible returns true", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const setState = sinon.spy();
@@ -477,13 +499,15 @@ describe("TabBar", () => {
 
 	it("Closes tab when ok callback in confirmation modal is triggered", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const dispatchSpy = sinon.spy();
@@ -517,13 +541,15 @@ describe("TabBar", () => {
 
 	it("Closes confirmation modal when cancelCallback is triggered", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -544,13 +570,15 @@ describe("TabBar", () => {
 
 	it("Closes confirmation modal when backdropClickCallback is triggered", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -571,13 +599,15 @@ describe("TabBar", () => {
 
 	it("Remove edit mode for new tab with modifications when close ok callback in confirmation modal is triggered", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en-US" messages={messages}>
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
 		);
 
 		const dispatchSpy = sinon.spy();
@@ -617,20 +647,20 @@ describe("TabLink", () => {
 		const close = <div>close</div>;
 
 		const component = (
-			<MemoryRouter>
+			<TestWrapper memoryRouter>
 				<TabLink to={href} close={close}>
 					{child}
 				</TabLink>
-			</MemoryRouter>
+			</TestWrapper>
 		);
 
 		const expected = (
-			<MemoryRouter>
+			<TestWrapper memoryRouter>
 				<Link to={href}>
 					{child}
 					{close}
 				</Link>
-			</MemoryRouter>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);

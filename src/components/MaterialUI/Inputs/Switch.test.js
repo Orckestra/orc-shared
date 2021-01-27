@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { mount } from "enzyme";
 import SwitchMUI from "@material-ui/core/Switch";
 import sinon from "sinon";
@@ -9,8 +8,8 @@ import Switch from "./Switch";
 import { IntlProvider } from "react-intl";
 
 const messages = {
-	captionOn: "captionOn",
-	captionOff: "captionOff",
+	captionOn: "is On",
+	captionOff: "is Off",
 };
 
 describe("Switch Component", () => {
