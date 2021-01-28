@@ -11,7 +11,7 @@
 	"orc-shared.displayLanguage": "Langue d'affichage",
 	"orc-shared.help": "Aide",
 	"orc-shared.notAvailable": "N/A",
-	"orc-shared.ok": "Ok",
+	"orc-shared.close": "Fermer",
 	"orc-shared.orcScriptsVersion": "Infrastructure Orc-Scripts {version}",
 	"orc-shared.orcSecretVersion": "Infrastructure Orc-Secret {version}",
 	"orc-shared.orcSharedVersion": "Infrastructure Orc-Shared {version}",
