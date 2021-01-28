@@ -45,13 +45,13 @@ export const useStyles = makeStyles(theme => ({
 		"&:before": {
 			content: props => `"${props.formattedOnCaption}"`,
 			left: theme.spacing(0.9),
-			right: props => (props.readOnly ? theme.spacing(0.9) : 0),
+			right: props => props.readOnly && theme.spacing(0.9),
 			opacity: 0,
 		},
 		"&:after": {
 			content: props => `"${props.formattedOffCaption}"`,
 			right: theme.spacing(0.9),
-			left: props => (props.readOnly ? theme.spacing(0.9) : 0),
+			left: props => props.readOnly && theme.spacing(0.9),
 		},
 	},
 	checked: {
