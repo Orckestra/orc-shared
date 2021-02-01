@@ -19,5 +19,14 @@
 	"orc-shared.save": "Save",
 	"orc-shared.scopeFilterPlaceholder": "Type a scope name",
 	"orc-shared.signOut": "Sign out",
-	"orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?"
+	"orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
+	"orc-shared.sortOrder": "Sort Order",
+	"orc-shared.status": "Status",
+	"orc-shared.active": "Active",
+	"orc-shared.inactive": "Inactive",
+	"orc-shared.displayName": "Display Name",
+	"orc-shared.description": "Description",
+	"orc-shared.valueName": "Value Name",
+	"orc-shared.delete": "Delete",
+	"orc-shared.remove": "Remove"
 }
