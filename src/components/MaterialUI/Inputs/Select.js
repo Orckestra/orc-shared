@@ -148,7 +148,7 @@ const Select = ({ options, selectProps }) => {
 
 	const items = options.map(option => (
 		<MenuItem key={option.value} value={option.value}>
-			<TooltippedTypography noWrap children={option.label} titleValue={option.label} />
+			<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
 		</MenuItem>
 	));
 
