@@ -28,5 +28,7 @@
 	"orc-shared.description": "Description",
 	"orc-shared.valueName": "Value Name",
 	"orc-shared.delete": "Delete",
-	"orc-shared.remove": "Remove"
+	"orc-shared.remove": "Remove",
+	"orc-shared.showMoreLanguages": "Show more languages",
+	"orc-shared.showFewerLanguages": "Show fewer languages"
 }
