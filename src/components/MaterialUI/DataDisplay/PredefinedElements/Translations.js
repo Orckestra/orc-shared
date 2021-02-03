@@ -12,15 +12,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Translations = ({
-	cultures,
-	defaultCulture,
-	value = {},
-	update,
-	disabled = false,
-	errors = undefined,
-	readOnly,
-}) => {
+const Translations = ({ cultures, defaultCulture, value = {}, update, disabled = false, errors, readOnly = false }) => {
 	const classes = useStyles();
 	const collapsibleListProps = new CollapsibleListProps();
 
