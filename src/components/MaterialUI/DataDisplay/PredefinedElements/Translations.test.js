@@ -1,22 +1,36 @@
 import React from "react";
 import { mount } from "enzyme";
 import sinon from "sinon";
-import Collapse from "@material-ui/core/Collapse";
-import Typography from "@material-ui/core/Typography";
-import Icon from "../Icon";
 import { TestWrapper, createMuiTheme, extractMessages } from "../../../../utils/testUtils";
 import InputBase from "@material-ui/core/InputBase";
 import Translations, { compareTranslateStrings } from "./Translations";
 import sharedMessages from "../../../../sharedMessages";
-import { buildUrl } from "../../../../utils/buildUrl";
+import CollapsableList from "../CollapsableList";
+import CollapsibleListProps from "../collapsableListProps";
 
 const messages = extractMessages(sharedMessages);
 
 describe("Translations ", () => {
-	const cultures = ["en-CA", "en-US", "fr-CA"];
 	const defaultCulture = "en-US";
+	const cultures = ["en-CA", "en-US", "fr-CA"];
+	let collapsibleListProps;
 
 	const theme = createMuiTheme();
+
+	beforeEach(() => {
+		collapsibleListProps = new CollapsibleListProps();
+		collapsibleListProps.set(CollapsibleListProps.propNames.hasMessage, true);
+		collapsibleListProps.set(
+			CollapsibleListProps.propNames.openMessage,
+			sharedMessages.showMoreLanguages.defaultMessage,
+		);
+		collapsibleListProps.set(
+			CollapsibleListProps.propNames.closeMessage,
+			sharedMessages.showFewerLanguages.defaultMessage,
+		);
+		collapsibleListProps.set(CollapsibleListProps.propNames.expandPosition, "right");
+		collapsibleListProps.set(CollapsibleListProps.propNames.containerWidth, "unset");
+	});
 
 	it("Renders Translations  correctly", () => {
 		const component = (
@@ -25,44 +39,43 @@ describe("Translations ", () => {
 			</TestWrapper>
 		);
 
-		const expected = (
-			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+		const defaultElement = (
+			<div key={"en-US"}>
 				<div>
-					{
-						<div key={"en-US"}>
-							<div>
-								<div>
-									<label>{"en-US"}</label>
-									<InputBase />
-								</div>
-							</div>
-						</div>
-					}
-					<Collapse in={false} timeout="auto">
-						{[
-							<div key={"en-CA"}>
-								<div>
-									<div>
-										<label>{"en-CA"}</label>
-										<InputBase />
-									</div>
-								</div>
-							</div>,
-							<div key={"fr-CA"}>
-								<div>
-									<div>
-										<label>{"fr-CA"}</label>
-										<InputBase />
-									</div>
-								</div>
-							</div>,
-						]}
-					</Collapse>
 					<div>
-						<Icon color="primary" id="chevron-down" />
-						<Typography color="primary" children={"Show more languages"} />
+						<label>{"en-US"}</label>
+						<InputBase />
 					</div>
 				</div>
+			</div>
+		);
+
+		const otherElements = [
+			<div key={"en-CA"}>
+				<div>
+					<div>
+						<label>{"en-CA"}</label>
+						<InputBase />
+					</div>
+				</div>
+			</div>,
+			<div key={"fr-CA"}>
+				<div>
+					<div>
+						<label>{"fr-CA"}</label>
+						<InputBase />
+					</div>
+				</div>
+			</div>,
+		];
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<CollapsableList
+					defaultElement={defaultElement}
+					otherElements={otherElements}
+					collapsableListProps={collapsibleListProps}
+				/>
 			</TestWrapper>
 		);
 
@@ -78,45 +91,44 @@ describe("Translations ", () => {
 			</TestWrapper>
 		);
 
-		const expected = (
-			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+		const defaultElement = (
+			<div key={"en-US"}>
 				<div>
-					{
-						<div key={"en-US"}>
-							<div>
-								<div>
-									<label>{"en-US"}</label>
-									<InputBase />
-								</div>
-								<div>{aError}</div>
-							</div>
-						</div>
-					}
-					<Collapse in={false} timeout="auto">
-						{[
-							<div key={"en-CA"}>
-								<div>
-									<div>
-										<label>{"en-CA"}</label>
-										<InputBase />
-									</div>
-								</div>
-							</div>,
-							<div key={"fr-CA"}>
-								<div>
-									<div>
-										<label>{"fr-CA"}</label>
-										<InputBase />
-									</div>
-								</div>
-							</div>,
-						]}
-					</Collapse>
 					<div>
-						<Icon color="primary" id="chevron-down" />
-						<Typography color="primary" children={"Show more languages"} />
+						<label>{"en-US"}</label>
+						<InputBase />
+					</div>
+					<div>{aError}</div>
+				</div>
+			</div>
+		);
+
+		const otherElements = [
+			<div key={"en-CA"}>
+				<div>
+					<div>
+						<label>{"en-CA"}</label>
+						<InputBase />
 					</div>
 				</div>
+			</div>,
+			<div key={"fr-CA"}>
+				<div>
+					<div>
+						<label>{"fr-CA"}</label>
+						<InputBase />
+					</div>
+				</div>
+			</div>,
+		];
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<CollapsableList
+					defaultElement={defaultElement}
+					otherElements={otherElements}
+					collapsableListProps={collapsibleListProps}
+				/>
 			</TestWrapper>
 		);
 
