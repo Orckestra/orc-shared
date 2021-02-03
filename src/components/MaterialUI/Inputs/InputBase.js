@@ -25,6 +25,12 @@ export const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey.light,
 		whiteSpace: "nowrap",
 	},
+	disabledPrepend: {
+		border: 0,
+		padding: theme.spacing(0.8),
+		height: theme.spacing(2.8),
+		backgroundColor: theme.palette.grey.borders,
+	},
 	controlInput: {
 		minHeight: theme.spacing(1.6),
 		maxWidth: "unset",
@@ -57,9 +63,9 @@ export const useStyles = makeStyles(theme => ({
 		"& input, & textarea": {
 			color: theme.palette.text.primary,
 			backgroundColor: theme.palette.grey.light,
-			border: props => !props.label && 0,
+			border: 0,
 			"&:focus, &:active": {
-				border: props => !props.label && 0,
+				border: 0,
 				boxShadow: 0,
 			},
 		},
@@ -98,7 +104,7 @@ const InputBase = ({ inputProps }) => {
 	return (
 		<div className={classes.container}>
 			<div className={classes.inputContainer}>
-				{label && <label className={classes.prepend}>{label}</label>}
+				{label && <label className={`${classes.prepend} ${disabled && classes.disabledPrepend}`}>{label}</label>}
 				<InputBaseMUI
 					classes={{
 						input: classes.controlInput,

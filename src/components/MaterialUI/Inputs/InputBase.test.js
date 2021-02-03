@@ -36,6 +36,7 @@ describe("InputBase Component", () => {
 		inputProps.set(InputBaseProps.propNames.value, aValue);
 		inputProps.set(InputBaseProps.propNames.label, aLabel);
 		inputProps.set(InputBaseProps.propNames.type, "text");
+		inputProps.set(InputBaseProps.propNames.disabled, true);
 
 		const component = <InputBase inputProps={inputProps} />;
 
