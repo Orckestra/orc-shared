@@ -12,7 +12,15 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Translation = ({ cultures, defaultCulture, value = {}, update, disabled = false, errors = undefined }) => {
+const Translations = ({
+	cultures,
+	defaultCulture,
+	value = {},
+	update,
+	disabled = false,
+	errors = undefined,
+	readOnly,
+}) => {
 	const classes = useStyles();
 	const collapsibleListProps = new CollapsibleListProps();
 
@@ -49,9 +57,8 @@ const Translation = ({ cultures, defaultCulture, value = {}, update, disabled = 
 			inputProps.set(InputBaseProps.propNames.value, value[lang]);
 			inputProps.set(InputBaseProps.propNames.update, handlers[lang]);
 			inputProps.set(InputBaseProps.propNames.disabled, disabled);
-			if (defaultCulture && defaultCulture === lang && errors) {
-				inputProps.set(InputBaseProps.propNames.error, errors);
-			}
+			inputProps.set(InputBaseProps.propNames.readOnly, readOnly);
+			inputProps.set(InputBaseProps.propNames.error, errors?.[lang]);
 			return (
 				<div key={lang} className={classes.elementContainer}>
 					<InputBase inputProps={inputProps} />
@@ -75,4 +82,4 @@ export const compareTranslateStrings = (prev, next) =>
 	prev.errors === next.errors &&
 	prev.update === next.update;
 
-export default React.memo(Translation, compareTranslateStrings);
+export default React.memo(Translations, compareTranslateStrings);

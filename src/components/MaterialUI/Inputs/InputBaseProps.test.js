@@ -13,6 +13,7 @@ describe("InputBase Props", () => {
 			"inputAttributes",
 			"disabled",
 			"multiline",
+			"readOnly",
 		];
 
 		expect(InputBaseProps.propNames, "to have keys", propNames);
@@ -30,6 +31,7 @@ describe("InputBase Props", () => {
 			"inputAttributes",
 			"disabled",
 			"multiline",
+			"readOnly",
 		];
 
 		const inputProps = new InputBaseProps();

@@ -12,6 +12,7 @@ class InputBaseProps extends ComponentProps {
 		inputAttributes: "inputAttributes",
 		disabled: "disabled",
 		multiline: "multiline",
+		readOnly: "readOnly",
 	};
 
 	constructor() {
@@ -26,6 +27,7 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.inputAttributes, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.multiline, null);
+		this.componentProps.set(this.constructor.propNames.readOnly, null);
 
 		this._isInputProps = true;
 	}

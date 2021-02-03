@@ -6,22 +6,22 @@ import Typography from "@material-ui/core/Typography";
 import Icon from "../Icon";
 import { TestWrapper, createMuiTheme, extractMessages } from "../../../../utils/testUtils";
 import InputBase from "@material-ui/core/InputBase";
-import Translation, { compareTranslateStrings } from "./Translation";
+import Translations, { compareTranslateStrings } from "./Translations";
 import sharedMessages from "../../../../sharedMessages";
 import { buildUrl } from "../../../../utils/buildUrl";
 
 const messages = extractMessages(sharedMessages);
 
-describe("Translation", () => {
+describe("Translations ", () => {
 	const cultures = ["en-CA", "en-US", "fr-CA"];
 	const defaultCulture = "en-US";
 
 	const theme = createMuiTheme();
 
-	it("Renders Translation correctly", () => {
+	it("Renders Translations  correctly", () => {
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
-				<Translation cultures={cultures} defaultCulture={defaultCulture} />
+				<Translations cultures={cultures} defaultCulture={defaultCulture} />
 			</TestWrapper>
 		);
 
@@ -69,12 +69,12 @@ describe("Translation", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Renders Translation with error correctly", () => {
+	it("Renders Translations  with error correctly", () => {
 		const aError = "Error";
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
-				<Translation cultures={cultures} defaultCulture={defaultCulture} errors={aError} />
+				<Translations cultures={cultures} defaultCulture={defaultCulture} errors={{ "en-US": aError }} />
 			</TestWrapper>
 		);
 
@@ -123,13 +123,13 @@ describe("Translation", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Translation component handles change", () => {
+	it("Translations  component handles change", () => {
 		const aValue = "aValue";
 		const update = sinon.spy().named("update");
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
-				<Translation cultures={cultures} defaultCulture={defaultCulture} update={update} />
+				<Translations cultures={cultures} defaultCulture={defaultCulture} update={update} />
 			</TestWrapper>
 		);
 
