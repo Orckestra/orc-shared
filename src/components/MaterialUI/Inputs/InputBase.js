@@ -86,8 +86,7 @@ const InputBase = ({ inputProps }) => {
 	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
 	const error = inputProps?.get(InputBaseProps.propNames.error);
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
-	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) ?? false;
-	const readOnly = inputProps?.get(InputBaseProps.propNames.readOnly) ?? false;
+	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) || false;
 
 	const classes = useStyles({ label, errorPosition });
 
@@ -117,7 +116,6 @@ const InputBase = ({ inputProps }) => {
 					inputProps={inputAttributes}
 					disabled={disabled}
 					multiline={multiline}
-					readOnly={readOnly}
 					rows={4}
 				/>
 			</div>

@@ -12,7 +12,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Translations = ({ cultures, defaultCulture, value = {}, update, disabled = false, errors, readOnly = false }) => {
+const Translations = ({ cultures, defaultCulture, value = {}, update, disabled = false, errors }) => {
 	const classes = useStyles();
 	const collapsibleListProps = new CollapsibleListProps();
 
@@ -49,7 +49,6 @@ const Translations = ({ cultures, defaultCulture, value = {}, update, disabled =
 			inputProps.set(InputBaseProps.propNames.value, value[lang]);
 			inputProps.set(InputBaseProps.propNames.update, handlers[lang]);
 			inputProps.set(InputBaseProps.propNames.disabled, disabled);
-			inputProps.set(InputBaseProps.propNames.readOnly, readOnly);
 			inputProps.set(InputBaseProps.propNames.error, errors?.[lang]);
 			return (
 				<div key={lang} className={classes.elementContainer}>
