@@ -19,5 +19,16 @@
 	"orc-shared.save": "Sauvegarder",
 	"orc-shared.scopeFilterPlaceholder": "Entrez un nom de Scope",
 	"orc-shared.signOut": "Se déconnecter",
-	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?"
+	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?",
+	"orc-shared.sortOrder": "Ordre de tri",
+	"orc-shared.status": "Statut",
+	"orc-shared.active": "Actif",
+	"orc-shared.inactive": "Inactif",
+	"orc-shared.displayName": "Nom d'affichage",
+	"orc-shared.description": "Description",
+	"orc-shared.valueName": "Nom de la valeur",
+	"orc-shared.delete": "Supprimer",
+	"orc-shared.remove": "Retirer",
+	"orc-shared.showMoreLanguages": "Afficher moins de langues",
+	"orc-shared.showFewerLanguages": "Afficher plus de langues"
 }

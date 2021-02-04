@@ -86,6 +86,50 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.unsavedChanges",
 		defaultMessage: "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
 	},
+	sortOrder: {
+		id: "orc-shared.sortOrder",
+		defaultMessage: "Sort Order",
+	},
+	status: {
+		id: "orc-shared.status",
+		defaultMessage: "Status",
+	},
+	active: {
+		id: "orc-shared.active",
+		defaultMessage: "Active",
+	},
+	inactive: {
+		id: "orc-shared.inactive",
+		defaultMessage: "Inactive",
+	},
+	displayName: {
+		id: "orc-shared.displayName",
+		defaultMessage: "Display Name",
+	},
+	description: {
+		id: "orc-shared.description",
+		defaultMessage: "Description",
+	},
+	valueName: {
+		id: "orc-shared.valueName",
+		defaultMessage: "Value Name",
+	},
+	delete: {
+		id: "orc-shared.delete",
+		defaultMessage: "Delete",
+	},
+	remove: {
+		id: "orc-shared.remove",
+		defaultMessage: "Remove",
+	},
+	showMoreLanguages: {
+		id: "orc-shared.showMoreLanguages",
+		defaultMessage: "Show more languages",
+	},
+	showFewerLanguages: {
+		id: "orc-shared.showFewerLanguages",
+		defaultMessage: "Show fewer languages",
+	},
 });
 
 export default sharedMessages;

@@ -14,10 +14,12 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.grey.icon,
 	},
 	placeholderTitle: {
+		marginTop: theme.spacing(1),
 		fontSize: theme.typography.h1Size,
 		color: theme.palette.grey.icon,
 	},
 	placeholderSubtitle: {
+		marginTop: theme.spacing(1),
 		fontSize: theme.typography.h3Size,
 		color: theme.palette.grey.icon,
 	},
