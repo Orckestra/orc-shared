@@ -111,6 +111,11 @@ const Select = ({ options, selectProps }) => {
 	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
 	const positionOverride = selectProps?.get(SelectProps.propNames.positionOverride) || {};
 	const isIconSelect = selectProps?.get(SelectProps.propNames.iconSelect) || false;
+	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
+
+	if (disabled) {
+		return <TooltippedTypography noWrap children={value} titleValue={value} />;
+	}
 
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
