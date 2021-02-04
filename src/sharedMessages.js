@@ -123,11 +123,11 @@ const sharedMessages = defineMessages({
 		defaultMessage: "Remove",
 	},
 	showMoreLanguages: {
-		id: "orc-shared.showMore",
+		id: "orc-shared.showMoreLanguages",
 		defaultMessage: "Show more languages",
 	},
 	showFewerLanguages: {
-		id: "orc-shared.showFewer",
+		id: "orc-shared.showFewerLanguages",
 		defaultMessage: "Show fewer languages",
 	},
 });
