@@ -33,6 +33,9 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.error.main,
 		fontWeight: theme.typography.fontWeightBold,
 	},
+	disabledLabel: {
+		color: theme.palette.grey.icon,
+	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
 	},
@@ -58,7 +61,7 @@ export const List = styled.div`
 	flex-direction: column;
 `;
 
-const FilteredLink = ({ active, ...props }) => <Link {...props} />;
+const FilteredLink = ({ active, ...props }) => (props.to ? <Link {...props} /> : <div {...props} />);
 
 export const Item = styled(FilteredLink)`
 	display: block;
@@ -83,6 +86,55 @@ export const Item = styled(FilteredLink)`
 	)};
 `;
 
+export const SegmentItem = ({ isModified, isError, isActive, segpath, config, baseHref, params }) => {
+	const classes = useStyles();
+	let hideSelector = state => (typeof config.hide === "function" ? config.hide(params)(state) : config.hide ?? false);
+	const isHide = useSelector(hideSelector);
+	const asterix = <span className={classes.asterix}>*</span>;
+	const text = <Text message={config.label} />;
+	const basicLabel =
+		config.labelComponent != null ? (
+			<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} />
+		) : (
+			text
+		);
+	const getSectionLabelClassName = (isModified, isError, isDisabled) => {
+		let className = classes.label;
+		if (isModified) className = `${className} ${classes.modifiedLabel}`;
+		if (isError) className = `${className} ${classes.errorLabel}`;
+		if (isDisabled) className = `${className} ${classes.disabledLabel}`;
+
+		return className;
+	};
+
+	let disableSelector = state =>
+		typeof config.disabled === "function" ? config.disabled(params)(state) : config.disabled ?? false;
+	const isDisabled = useSelector(disableSelector);
+	const sectionLabelClassName = getSectionLabelClassName(isModified, isError, isDisabled);
+	const finalLabel = (
+		<Grid container justify="space-between">
+			<Grid item className={sectionLabelClassName}>
+				{basicLabel}
+				{isModified ? asterix : null}
+			</Grid>
+			<Grid item className={classes.labelComponent}>
+				{config.labelComponent}
+			</Grid>
+		</Grid>
+	);
+
+	return (
+		<>
+			{!isHide && isDisabled && <Item>{finalLabel}</Item>}
+			{!isHide && !isDisabled && (
+				<Item to={baseHref + segpath} active={isActive}>
+					{finalLabel}
+				</Item>
+			)}
+		</>
+	);
+};
+
 const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
 	const classes = useStyles();
 	const pattern = new UrlPattern(path);
@@ -94,10 +146,12 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 	if (!entityId) {
 		entityId = tryGetNewEntityIdKey(baseHref);
 	}
+
 	const modifiedSections = useSelector(getModifiedSections(entityId));
 	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
-	const asterix = <span className={classes.asterix}>*</span>;
-	const segmentElements = Object.entries(segments).map(([segpath, config]) => {
+	const segmentEntries = Object.entries(segments);
+
+	const segmentElements = segmentEntries.map(([segpath, config]) => {
 		if (config.pages) {
 			pages.push(
 				...Object.entries(config.pages).map(([subpath, pageConfig]) => {
@@ -145,12 +199,6 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 		);
 	});
 
-	const getSectionLabelClassName = (isModified, isError) => {
-		let className = classes.label;
-		if (isModified) className = `${className} ${classes.modifiedLabel}`;
-		if (isError) className = `${className} ${classes.errorLabel}`;
-		return className;
-	};
 	return (
 		<Switch>
 			{pages}
@@ -159,32 +207,21 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 					View ? <View key="View" /> : null,
 					<Wrapper key="Segments">
 						<List>
-							{Object.entries(segments).map(([segpath, config]) => {
-								const text = <Text message={config.label} />;
-								const basicLabel =
-									config.labelComponent != null ? (
-										<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} />
-									) : (
-										text
-									);
+							{segmentEntries.map(([segpath, config]) => {
 								const isModified = modifiedSections.includes(segpath.replace("/", ""));
 								const isError = sectionsWithErrors.includes(segpath.replace("/", ""));
-								const sectionLabelClassName = getSectionLabelClassName(isModified, isError);
-								const finalLabel = (
-									<Grid container justify="space-between">
-										<Grid item className={sectionLabelClassName}>
-											{basicLabel}
-											{isModified ? asterix : null}
-										</Grid>
-										<Grid item className={classes.labelComponent}>
-											{config.labelComponent}
-										</Grid>
-									</Grid>
-								);
+								const isActive = location.pathname === baseHref + segpath;
 								return (
-									<Item key={segpath} to={baseHref + segpath} active={location.pathname === baseHref + segpath}>
-										{finalLabel}
-									</Item>
+									<SegmentItem
+										key={segpath}
+										isModified={isModified}
+										isError={isError}
+										segpath={segpath}
+										config={config}
+										isActive={isActive}
+										baseHref={baseHref}
+										params={match.params}
+									/>
 								);
 							})}
 						</List>

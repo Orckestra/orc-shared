@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { MemoryRouter, Router } from "react-router";
 import { createMemoryHistory } from "history";
 import I18n from "../I18n";
-import SegmentPage, { Wrapper, Item, List } from "./SegmentPage";
+import SegmentPage, { Wrapper, Item, List, SegmentItem } from "./SegmentPage";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 
@@ -85,6 +85,22 @@ describe("SegmentPage", () => {
 				component: View5,
 				labelComponent: <ComponentLabel />,
 			},
+			"/four": {
+				label: "DisabledSection",
+				disabled: true,
+			},
+			"/five": {
+				label: "HiddenSection",
+				hide: true,
+			},
+			"/six": {
+				label: "DisabledSectionBySelector",
+				disabled: () => state => true,
+			},
+			"/seven": {
+				label: "HiddenBySelector",
+				hide: () => state => true,
+			},
 		};
 	});
 
@@ -115,6 +131,7 @@ describe("SegmentPage", () => {
 								<Grid item></Grid>
 							</Grid>
 						</Item>
+
 						<Item to="/foo/meep/entityIdValue/two" active>
 							<Grid container justify="space-between">
 								<Grid item>
@@ -124,6 +141,7 @@ describe("SegmentPage", () => {
 								<Grid item></Grid>
 							</Grid>
 						</Item>
+
 						<Item to="/foo/meep/entityIdValue/three">
 							<Grid container justify="space-between">
 								<Grid item>
@@ -132,6 +150,20 @@ describe("SegmentPage", () => {
 								<Grid item>
 									<ComponentLabel />
 								</Grid>
+							</Grid>
+						</Item>
+
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSection</Grid>
+								<Grid item></Grid>
+							</Grid>
+						</Item>
+
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSectionBySelector</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 					</List>
@@ -173,6 +205,7 @@ describe("SegmentPage", () => {
 									<Grid item></Grid>
 								</Grid>
 							</Item>
+
 							<Item to="/foo/meep/entityIdValue/two" active>
 								<Grid container justify="space-between">
 									<Grid item>
@@ -182,6 +215,7 @@ describe("SegmentPage", () => {
 									<Grid item></Grid>
 								</Grid>
 							</Item>
+
 							<Item to="/foo/meep/entityIdValue/three">
 								<Grid container justify="space-between">
 									<Grid item>
@@ -190,6 +224,20 @@ describe("SegmentPage", () => {
 									<Grid item>
 										<ComponentLabel />
 									</Grid>
+								</Grid>
+							</Item>
+
+							<Item>
+								<Grid container justify="space-between">
+									<Grid item>DisabledSection</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+
+							<Item>
+								<Grid container justify="space-between">
+									<Grid item>DisabledSectionBySelector</Grid>
+									<Grid item></Grid>
 								</Grid>
 							</Item>
 						</List>
@@ -283,6 +331,7 @@ describe("SegmentPage", () => {
 								<Grid item></Grid>
 							</Grid>
 						</Item>
+
 						<Item to="/foo/meep/entityIdValue/two">
 							<Grid container justify="space-between">
 								<Grid item>
@@ -292,6 +341,7 @@ describe("SegmentPage", () => {
 								<Grid item></Grid>
 							</Grid>
 						</Item>
+
 						<Item to="/foo/meep/entityIdValue/three">
 							<Grid container justify="space-between">
 								<Grid item>
@@ -300,6 +350,20 @@ describe("SegmentPage", () => {
 								<Grid item>
 									<ComponentLabel />
 								</Grid>
+							</Grid>
+						</Item>
+
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSection</Grid>
+								<Grid item></Grid>
+							</Grid>
+						</Item>
+
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSectionBySelector</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 					</List>
