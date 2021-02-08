@@ -48,6 +48,11 @@ const TestComp7 = props => (
 		<PropStruct {...props} />
 	</div>
 );
+const TestComp8 = props => (
+	<div data-test-id="comp-8">
+		<PropStruct {...props} />
+	</div>
+);
 
 const makeTestComp = Comp => ({ modules }) => <Comp {...useNavigationState(modules)} />;
 
@@ -1022,7 +1027,7 @@ describe("useNavigationState", () => {
 });
 
 describe("getPageData", () => {
-	let module;
+	let module, module2;
 	beforeEach(() => {
 		module = {
 			icon: "thing",
@@ -1062,6 +1067,17 @@ describe("getPageData", () => {
 				},
 			},
 		};
+		module2 = {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {
+				"/:var/:var2": {
+					label: "Page 4",
+					component: TestComp8,
+				}
+			},
+		};
 	});
 
 	it("extracts the module page data for an empty path", () =>
@@ -1087,6 +1103,12 @@ describe("getPageData", () => {
 		expect(getPageData, "when called with", ["/thing", { var: "thing" }, module], "to satisfy", {
 			label: "Page 1",
 			component: TestComp2,
+		}));
+
+	it("handles multiple variable path steps", () =>
+		expect(getPageData, "when called with", ["/firstThing/secondThing", { var: "firstThing", var2: "secondThing" }, module2], "to satisfy", {
+			label: "Page 4",
+			component: TestComp8,
 		}));
 
 	it("handles missing page data", () =>
