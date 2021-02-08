@@ -30,5 +30,8 @@
 	"orc-shared.delete": "Supprimer",
 	"orc-shared.remove": "Retirer",
 	"orc-shared.showMoreLanguages": "Afficher moins de langues",
-	"orc-shared.showFewerLanguages": "Afficher plus de langues"
+	"orc-shared.showFewerLanguages": "Afficher plus de langues",
+	"orc-shared.next": "Suivant",
+	"orc-shared.back": "Arrière",
+	"orc-shared.saveAndClose": "Sauver et fermer"
 }

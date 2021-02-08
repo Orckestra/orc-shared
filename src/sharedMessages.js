@@ -130,6 +130,18 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.showFewerLanguages",
 		defaultMessage: "Show fewer languages",
 	},
+	next: {
+		id: "orc-shared.next",
+		defaultMessage: "Next",
+	},
+	back: {
+		id: "orc-shared.back",
+		defaultMessage: "Back",
+	},
+	saveAndClose: {
+		id: "orc-shared.saveAndClose",
+		defaultMessage: "Save And Close",
+	},
 });
 
 export default sharedMessages;
