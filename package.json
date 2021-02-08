@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "0.11.0-dev.89",
+	"version": "0.11.0-dev.91",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
@@ -20,7 +20,8 @@
 		"coveralls": "cat coverage/lcov.info | coveralls",
 		"prepublishOnly": "npm run build:clean --",
 		"icons": "orc-scripts buildIconsSheet",
-		"extract": "orc-scripts extract-messages"
+		"extract": "orc-scripts extract-messages",
+		"generateApi": "orc-scripts generateApi --outputFile src/actions/requestsApi.js"
 	},
 	"files": [
 		"src",
@@ -51,10 +52,10 @@
 		}
 	],
 	"devDependencies": {
-		"orc-scripts": "1.1.0-dev.17"
+		"orc-scripts": "1.1.0-dev.18"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.1.0-dev.17"
+		"orc-scripts": "1.1.0-dev.18"
 	},
 	"sideEffects": false,
 	"lint-staged": {

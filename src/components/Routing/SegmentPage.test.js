@@ -85,6 +85,22 @@ describe("SegmentPage", () => {
 				component: View5,
 				labelComponent: <ComponentLabel />,
 			},
+			"/four": {
+				label: "DisabledSection",
+				disabled: true,
+			},
+			"/five": {
+				label: "HiddenSection",
+				hide: true,
+			},
+			"/six": {
+				label: "DisabledSectionBySelector",
+				disabled: () => state => true,
+			},
+			"/seven": {
+				label: "HiddenBySelector",
+				hide: () => state => true,
+			},
 		};
 	});
 
@@ -132,6 +148,18 @@ describe("SegmentPage", () => {
 								<Grid item>
 									<ComponentLabel />
 								</Grid>
+							</Grid>
+						</Item>
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSection</Grid>
+								<Grid item></Grid>
+							</Grid>
+						</Item>
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSectionBySelector</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 					</List>
@@ -190,6 +218,18 @@ describe("SegmentPage", () => {
 									<Grid item>
 										<ComponentLabel />
 									</Grid>
+								</Grid>
+							</Item>
+							<Item>
+								<Grid container justify="space-between">
+									<Grid item>DisabledSection</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item>
+								<Grid container justify="space-between">
+									<Grid item>DisabledSectionBySelector</Grid>
+									<Grid item></Grid>
 								</Grid>
 							</Item>
 						</List>
@@ -300,6 +340,18 @@ describe("SegmentPage", () => {
 								<Grid item>
 									<ComponentLabel />
 								</Grid>
+							</Grid>
+						</Item>
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSection</Grid>
+								<Grid item></Grid>
+							</Grid>
+						</Item>
+						<Item>
+							<Grid container justify="space-between">
+								<Grid item>DisabledSectionBySelector</Grid>
+								<Grid item></Grid>
 							</Grid>
 						</Item>
 					</List>
