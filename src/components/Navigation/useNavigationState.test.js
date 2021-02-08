@@ -1075,7 +1075,7 @@ describe("getPageData", () => {
 				"/:var/:var2": {
 					label: "Page 4",
 					component: TestComp8,
-				}
+				},
 			},
 		};
 	});
@@ -1106,10 +1106,24 @@ describe("getPageData", () => {
 		}));
 
 	it("handles multiple variable path steps", () =>
-		expect(getPageData, "when called with", ["/firstThing/secondThing", { var: "firstThing", var2: "secondThing" }, module2], "to satisfy", {
-			label: "Page 4",
-			component: TestComp8,
-		}));
+		expect(
+			getPageData,
+			"when called with",
+			["/firstThing/secondThing", { var: "firstThing", var2: "secondThing" }, module2],
+			"to satisfy",
+			{
+				label: "Page 4",
+				component: TestComp8,
+			},
+		));
+
+	it("handles missing data with multiple variable path steps", () =>
+		expect(
+			getPageData,
+			"when called with",
+			["/firstThing/notHere", { var: "firstThing", var2: "secondThing" }, module2],
+			"to be undefined",
+		));
 
 	it("handles missing page data", () =>
 		expect(getPageData, "when called with", ["/page2/notHere", {}, module], "to be undefined"));
