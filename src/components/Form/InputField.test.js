@@ -10,21 +10,15 @@ import { FormContext } from "./Form";
 import { InputField } from "./InputField";
 import { MuiThemeProvider } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/core/styles";
-import { generateClassName, createMuiTheme } from "./../../utils/testUtils";
+import { TestWrapper, generateClassName, createMuiTheme } from "./../../utils/testUtils";
 
 const PatternWrapper = ({ store, children }) => {
 	const theme = createMuiTheme();
 
 	return (
-		<Provider store={store}>
-			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={theme}>
-					<IntlProvider locale="en-US">
-						<MemoryRouter>{children}</MemoryRouter>
-					</IntlProvider>
-				</MuiThemeProvider>
-			</StylesProvider>
-		</Provider>
+		<TestWrapper provider={{ store }} memoryRouter intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			{children}
+		</TestWrapper>
 	);
 };
 
