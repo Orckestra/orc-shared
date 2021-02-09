@@ -4,13 +4,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
 	datePickerWrapper: {
 		display: "flex",
 		width: "auto",
-		padding: theme.spacing(0.3, 0.5),
+		padding: props => (props.readOnly ? "0" : theme.spacing(0.3, 0.5)),
 		border: props => (props.readOnly ? "none" : `1px solid ${theme.palette.grey.borders}`),
 		borderRadius: theme.shape.borderRadius,
 		alignItems: "center",
@@ -30,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 			zIndex: 100,
 		},
 		"& .react-datepicker__input-container input": {
+			width: "inherit",
 			border: "none",
 			zIndex: 100,
 			backgroundColor: "inherit",
@@ -40,6 +40,14 @@ const useStyles = makeStyles(theme => ({
 	},
 	calendarIcon: {
 		fontSize: theme.fontSize,
+	},
+	datePickerContainer: {
+		width: "80%",
+	},
+	iconContainer: {
+		width: "20%",
+		display: "flex",
+		justifyContent: "flex-end",
 	},
 }));
 
@@ -68,7 +76,7 @@ const WrappedDatePicker = ({
 
 	return (
 		<label className={classes.datePickerWrapper}>
-			<Grid container item xs={10}>
+			<div className={classes.datePickerContainer}>
 				<DatePicker
 					{...props}
 					dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
@@ -81,11 +89,11 @@ const WrappedDatePicker = ({
 					readOnly={readOnly}
 					showTimeSelectOnly={showTimeSelectOnly}
 				/>
-			</Grid>
+			</div>
 			{!readOnly ? (
-				<Grid container item xs={2} justify="flex-end">
+				<div className={classes.iconContainer}>
 					<Icon className={classes.calendarIcon} id="calendar-date" />
-				</Grid>
+				</div>
 			) : null}
 		</label>
 	);
