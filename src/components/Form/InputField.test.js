@@ -8,14 +8,25 @@ import inputs from "./Inputs";
 import Field from "./Field";
 import { FormContext } from "./Form";
 import { InputField } from "./InputField";
+import { MuiThemeProvider } from "@material-ui/core";
+import { StylesProvider } from "@material-ui/core/styles";
+import { generateClassName, createMuiTheme } from "./../../utils/testUtils";
 
-const PatternWrapper = ({ store, children }) => (
-	<Provider store={store}>
-		<IntlProvider locale="en-US">
-			<MemoryRouter>{children}</MemoryRouter>
-		</IntlProvider>
-	</Provider>
-);
+const PatternWrapper = ({ store, children }) => {
+	const theme = createMuiTheme();
+
+	return (
+		<Provider store={store}>
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={theme}>
+					<IntlProvider locale="en-US">
+						<MemoryRouter>{children}</MemoryRouter>
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>
+		</Provider>
+	);
+};
 
 const SubjectWrapper = ({ store, values = {}, formName, index, children }) => {
 	const value = { values };

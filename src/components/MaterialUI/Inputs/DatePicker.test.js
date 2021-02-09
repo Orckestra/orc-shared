@@ -4,6 +4,8 @@ import DatePicker from "./DatePicker";
 import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
 import sinon from "sinon";
+import Grid from "@material-ui/core/Grid";
+import Icon from "../../Icon";
 
 describe("DatePicker", () => {
 	let updater;
@@ -23,12 +25,16 @@ describe("DatePicker", () => {
 			<IntlProvider locale="en-US">
 				<div>
 					<label>
-						<div className="react-datepicker-wrapper">
-							<div className="react-datepicker__input-container">
-								<input value="06/30/2020" onChange={() => {}} />
+						<Grid>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value="06/30/2020" onChange={() => {}} />
+								</div>
 							</div>
-						</div>
-						<Ignore />
+						</Grid>
+						<Grid>
+							<Icon id="calendar-date" />
+						</Grid>
 					</label>
 				</div>
 			</IntlProvider>,
@@ -46,12 +52,16 @@ describe("DatePicker", () => {
 			<IntlProvider locale="en-US">
 				<div>
 					<label>
-						<div className="react-datepicker-wrapper">
-							<div className="react-datepicker__input-container">
-								<input value="01/01/1970" onChange={() => {}} />
+						<Grid>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value="01/01/1970" onChange={() => {}} />
+								</div>
 							</div>
-						</div>
-						<Ignore />
+						</Grid>
+						<Grid>
+							<Icon id="calendar-date" />
+						</Grid>
 					</label>
 				</div>
 			</IntlProvider>,
@@ -71,12 +81,16 @@ describe("DatePicker", () => {
 			<IntlProvider locale="en-US">
 				<div>
 					<label>
-						<div className="react-datepicker-wrapper">
-							<div className="react-datepicker__input-container">
-								<input value={expectedDate} onChange={() => {}} />
+						<Grid>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedDate} onChange={() => {}} />
+								</div>
 							</div>
-						</div>
-						<Ignore />
+						</Grid>
+						<Grid>
+							<Icon id="calendar-date" />
+						</Grid>
 					</label>
 				</div>
 			</IntlProvider>,
@@ -97,12 +111,16 @@ describe("DatePicker", () => {
 			<IntlProvider locale="en-US">
 				<div>
 					<label>
-						<div className="react-datepicker-wrapper">
-							<div className="react-datepicker__input-container">
-								<input value={expectedDate} onChange={() => {}} />
+						<Grid>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedDate} onChange={() => {}} />
+								</div>
 							</div>
-						</div>
-						<Ignore />
+						</Grid>
+						<Grid>
+							<Icon id="calendar-date" />
+						</Grid>
 					</label>
 				</div>
 			</IntlProvider>,
@@ -123,12 +141,73 @@ describe("DatePicker", () => {
 			<IntlProvider locale="en-US">
 				<div>
 					<label>
-						<div className="react-datepicker-wrapper">
-							<div className="react-datepicker__input-container">
-								<input value={expectedDate} onChange={() => {}} />
+						<Grid>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedDate} onChange={() => {}} />
+								</div>
 							</div>
-						</div>
-						<Ignore />
+						</Grid>
+						<Grid>
+							<Icon id="calendar-date" />
+						</Grid>
+					</label>
+				</div>
+			</IntlProvider>,
+		);
+	});
+
+	it("sets up only time to locale with time 12am (en-US)", () => {
+		const date = new Date("2020-06-30T00:00:00");
+		const expectedTime = "12:00 AM";
+		expect(
+			<IntlProvider locale="en-US">
+				<div>
+					<DatePicker useTime={true} useDate={false} onChange={updater} value={date} />
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en-US">
+				<div>
+					<label>
+						<Grid>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedTime} onChange={() => {}} />
+								</div>
+							</div>
+						</Grid>
+						<Grid>
+							<Icon id="calendar-date" />
+						</Grid>
+					</label>
+				</div>
+			</IntlProvider>,
+		);
+	});
+
+	it("sets up a date to locale with time 12am when read only (en-US)", () => {
+		const date = new Date("2020-06-30T00:00:00");
+		const expectedDate = "06/30/2020 12:00 AM";
+		expect(
+			<IntlProvider locale="en-US">
+				<div>
+					<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en-US">
+				<div>
+					<label>
+						<Grid>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedDate} onChange={() => {}} />
+								</div>
+							</div>
+						</Grid>
 					</label>
 				</div>
 			</IntlProvider>,

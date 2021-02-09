@@ -3,6 +3,7 @@ import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
 import { DateInput } from "./Date";
+import Grid from "@material-ui/core/Grid";
 
 describe("DateInput", () => {
 	let update;
@@ -19,12 +20,16 @@ describe("DateInput", () => {
 			"to satisfy",
 			<IntlProvider locale="en-US">
 				<label>
-					<div className="react-datepicker-wrapper">
-						<div className="react-datepicker__input-container">
-							<input value="06/30/2020" onChange={() => {}} />
+					<Grid>
+						<div className="react-datepicker-wrapper">
+							<div className="react-datepicker__input-container">
+								<input value="06/30/2020" onChange={() => {}} />
+							</div>
 						</div>
-					</div>
-					<Ignore />
+					</Grid>
+					<Grid>
+						<Ignore />
+					</Grid>
 				</label>
 			</IntlProvider>,
 		));
