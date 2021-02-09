@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
+import classNames from "classnames";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "../Modal";
@@ -97,8 +98,10 @@ const StepperModal = ({ steps = [], title = "", open, closeCallback, confirmCall
 			{steps.map(({ title }, index) => (
 				<div
 					key={index}
-					className={[classes.step, index < currentStep && classes.done, index === currentStep && classes.active].join(
-						" ",
+					className={classNames(
+						classes.step,
+						index < currentStep && classes.done,
+						index === currentStep && classes.active,
 					)}
 				>
 					{title}
