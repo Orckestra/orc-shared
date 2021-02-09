@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "orc-shared/src/components/MaterialUI/DataDisplay/Modal";
-import ModalProps from "orc-shared/src/components/MaterialUI/DataDisplay/modalProps";
-import sharedMessages from "orc-shared/src/sharedMessages";
+import Modal from "../Modal";
+import ModalProps from "../modalProps";
+import sharedMessages from "./../../../../sharedMessages";
 
 const useStyles = makeStyles(theme => ({
 	actionPanel: {
@@ -17,13 +17,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	cancelButton: {
 		marginRight: theme.spacing(1),
-	},
-	title: {
-		fontSize: theme.typography.h3Size,
-		color: theme.palette.primary.main,
-		textTransform: theme.typography.button.textTransform,
-		fontFamily: theme.typography.button.fontFamily,
-		fontWeight: theme.typography.button.fontWeight,
 	},
 	step: {
 		position: "relative",
@@ -87,6 +80,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const StepperModal = ({ steps = [], title = "", open, closeCallback, confirmCallback, confirmTitle }) => {
+	const classes = useStyles();
 	const [currentStep, changeCurrentStep] = useState(0);
 
 	useEffect(() => {
@@ -95,13 +89,11 @@ const StepperModal = ({ steps = [], title = "", open, closeCallback, confirmCall
 		}
 	}, [open]);
 
-	const classes = useStyles();
-
 	const modalProps = new ModalProps();
 
 	const titleComponent = (
 		<div>
-			<div className={classes.step}>Wizard Title</div>
+			<div className={classes.step}>{title}</div>
 			{steps.map(({ title }, index) => (
 				<div
 					key={index}
