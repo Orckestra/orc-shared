@@ -23,7 +23,7 @@ const doesRestPathMatchParams = (params, paramPathSplit, restPath) => {
 	}
 
 	return restPathMatchParams;
-};
+}
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	let page = pages[pathStep];
@@ -38,10 +38,7 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 		if (firstStepMatchParams) {
 			if (paramPathSplit.length === 1) {
 				page = pages[paramPath];
-			} else if (
-				paramPathSplit.length - 1 === restPath.length &&
-				doesRestPathMatchParams(params, paramPathSplit, restPath)
-			) {
+			} else if (paramPathSplit.length - 1 === restPath.length && doesRestPathMatchParams(params, paramPathSplit, restPath)) {
 				return pages[paramPath];
 			}
 		}
