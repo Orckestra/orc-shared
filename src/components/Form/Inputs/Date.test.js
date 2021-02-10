@@ -1,9 +1,8 @@
 import React from "react";
-import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
 import { DateInput } from "./Date";
-import Grid from "@material-ui/core/Grid";
+import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("DateInput", () => {
 	let update;
@@ -11,26 +10,28 @@ describe("DateInput", () => {
 		update = sinon.spy().named("update");
 	});
 
+	const theme = createMuiTheme();
+
 	it("renders a three-part date input", () =>
 		expect(
-			<IntlProvider locale="en">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DateInput update={update} value="2020/06/30" otherProp />
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<label>
-					<Grid>
+					<div>
 						<div className="react-datepicker-wrapper">
 							<div className="react-datepicker__input-container">
 								<input value="06/30/2020" onChange={() => {}} />
 							</div>
 						</div>
-					</Grid>
-					<Grid>
+					</div>
+					<div>
 						<Ignore />
-					</Grid>
+					</div>
 				</label>
-			</IntlProvider>,
+			</TestWrapper>,
 		));
 });
