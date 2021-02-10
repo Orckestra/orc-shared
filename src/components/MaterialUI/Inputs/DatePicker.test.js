@@ -1,11 +1,9 @@
 import React from "react";
-import { IntlProvider } from "react-intl";
 import DatePicker from "./DatePicker";
-import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
 import sinon from "sinon";
-import Grid from "@material-ui/core/Grid";
 import Icon from "../../Icon";
+import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("DatePicker", () => {
 	let updater;
@@ -13,87 +11,89 @@ describe("DatePicker", () => {
 		updater = sinon.spy().named("updater");
 	});
 
+	const theme = createMuiTheme();
+
 	it("sets up a date to locale (en-US)", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<DatePicker onChange={updater} value={"2020/06/30"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
-						<Grid>
+						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
 									<input value="06/30/2020" onChange={() => {}} />
 								</div>
 							</div>
-						</Grid>
-						<Grid>
+						</div>
+						<div>
 							<Icon id="calendar-date" />
-						</Grid>
+						</div>
 					</label>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		));
 
 	it("sets up a default date to locale (en-US)", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<DatePicker onChange={updater} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
-						<Grid>
+						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
 									<input value="01/01/1970" onChange={() => {}} />
 								</div>
 							</div>
-						</Grid>
-						<Grid>
+						</div>
+						<div>
 							<Icon id="calendar-date" />
-						</Grid>
+						</div>
 					</label>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		));
 
 	it("sets up a date to locale with time 5am (en-US)", () => {
 		const date = new Date("2020-06-30T05:00:00");
 		const expectedDate = "06/30/2020 5:00 AM";
 		expect(
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<DatePicker useTime={true} onChange={updater} value={date} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
-						<Grid>
+						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
 									<input value={expectedDate} onChange={() => {}} />
 								</div>
 							</div>
-						</Grid>
-						<Grid>
+						</div>
+						<div>
 							<Icon id="calendar-date" />
-						</Grid>
+						</div>
 					</label>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 
@@ -101,29 +101,29 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T17:00:00");
 		const expectedDate = "06/30/2020 5:00 PM";
 		expect(
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<DatePicker useTime={true} onChange={updater} value={date} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
-						<Grid>
+						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
 									<input value={expectedDate} onChange={() => {}} />
 								</div>
 							</div>
-						</Grid>
-						<Grid>
+						</div>
+						<div>
 							<Icon id="calendar-date" />
-						</Grid>
+						</div>
 					</label>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 
@@ -131,29 +131,29 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<DatePicker useTime={true} onChange={updater} value={date} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
-						<Grid>
+						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
 									<input value={expectedDate} onChange={() => {}} />
 								</div>
 							</div>
-						</Grid>
-						<Grid>
+						</div>
+						<div>
 							<Icon id="calendar-date" />
-						</Grid>
+						</div>
 					</label>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 
@@ -161,29 +161,29 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedTime = "12:00 AM";
 		expect(
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<DatePicker useTime={true} useDate={false} onChange={updater} value={date} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
-						<Grid>
+						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
 									<input value={expectedTime} onChange={() => {}} />
 								</div>
 							</div>
-						</Grid>
-						<Grid>
+						</div>
+						<div>
 							<Icon id="calendar-date" />
-						</Grid>
+						</div>
 					</label>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 
@@ -191,26 +191,26 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US">
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
-						<Grid>
+						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
 									<input value={expectedDate} onChange={() => {}} />
 								</div>
 							</div>
-						</Grid>
+						</div>
 					</label>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 

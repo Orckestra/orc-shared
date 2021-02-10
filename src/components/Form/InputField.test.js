@@ -1,16 +1,11 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { IntlProvider } from "react-intl";
-import { MemoryRouter } from "react-router-dom";
 import { spyOnConsole } from "../../utils/testUtils";
 import inputs from "./Inputs";
 import Field from "./Field";
 import { FormContext } from "./Form";
 import { InputField } from "./InputField";
-import { MuiThemeProvider } from "@material-ui/core";
-import { StylesProvider } from "@material-ui/core/styles";
-import { TestWrapper, generateClassName, createMuiTheme } from "./../../utils/testUtils";
+import { TestWrapper, createMuiTheme } from "./../../utils/testUtils";
 
 const PatternWrapper = ({ store, children }) => {
 	const theme = createMuiTheme();
