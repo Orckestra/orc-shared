@@ -9,6 +9,15 @@ class TableProps extends ComponentProps {
 		classes: "classes",
 	};
 
+	static ruleNames = {
+		tableHeader: "tableHeader",
+		tableRow: "tableRow",
+		tableCell: "tableCell",
+		headerCell: "headerCell",
+		tableContainer: "tableContainer",
+		container: "container",
+	};
+
 	constructor() {
 		super();
 
@@ -17,6 +26,13 @@ class TableProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.selectMode, null);
 		this.componentProps.set(this.constructor.propNames.onRowClick, null);
 		this.componentProps.set(this.constructor.propNames.classes, null);
+
+		this.componentClasses.set(this.constructor.ruleNames.tableHeader, null);
+		this.componentClasses.set(this.constructor.ruleNames.tableRow, null);
+		this.componentClasses.set(this.constructor.ruleNames.tableCell, null);
+		this.componentClasses.set(this.constructor.ruleNames.headerCell, null);
+		this.componentClasses.set(this.constructor.ruleNames.tableContainer, null);
+		this.componentClasses.set(this.constructor.ruleNames.container, null);
 
 		this._isTableProps = true;
 	}

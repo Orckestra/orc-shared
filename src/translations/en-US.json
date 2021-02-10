@@ -1,4 +1,5 @@
 {
+
   "orc-shared.about": "About",
   "orc-shared.active": "Active",
   "orc-shared.allRightsReserved": "All rights reserved.",
@@ -31,5 +32,8 @@
   "orc-shared.sortOrder": "Sort Order",
   "orc-shared.status": "Status",
   "orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
-  "orc-shared.valueName": "Value Name"
+  "orc-shared.valueName": "Value Name",
+	"orc-shared.next": "Next",
+	"orc-shared.back": "Back",
+	"orc-shared.saveAndClose": "Save And Close"
 }

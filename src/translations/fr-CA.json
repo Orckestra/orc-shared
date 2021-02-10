@@ -31,5 +31,8 @@
   "orc-shared.sortOrder": "Ordre de tri",
   "orc-shared.status": "Statut",
   "orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?",
-  "orc-shared.valueName": "Nom de la valeur"
+  "orc-shared.valueName": "Nom de la valeur",
+	"orc-shared.next": "Suivant",
+	"orc-shared.back": "Arrière",
+	"orc-shared.saveAndClose": "Sauver et fermer"
 }

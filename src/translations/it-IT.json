@@ -31,5 +31,8 @@
   "orc-shared.sortOrder": "Ordinamento",
   "orc-shared.status": "Stato",
   "orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
-  "orc-shared.valueName": "Nome valore"
+  "orc-shared.valueName": "Nome valore",
+	"orc-shared.next": "Il prossimo",
+	"orc-shared.back": "Indietro",
+	"orc-shared.saveAndClose": "Salva e chiudi"
 }

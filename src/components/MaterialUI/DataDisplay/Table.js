@@ -260,6 +260,13 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	const withoutTopBorder = tableProps?.get(TableProps.propNames.withoutTopBorder) || false;
 	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
 
+	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
+	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
+	customClasses["tableCell"] = tableProps?.getStyle(TableProps.ruleNames.tableCell) || null;
+	customClasses["headerCell"] = tableProps?.getStyle(TableProps.ruleNames.headerCell) || null;
+	customClasses["tableContainer"] = tableProps?.getStyle(TableProps.ruleNames.tableContainer) || null;
+	customClasses["container"] = tableProps?.getStyle(TableProps.ruleNames.container) || null;
+
 	const refScrolled = useRef();
 
 	const [scrolled, setScrolled] = useState(0);
@@ -310,7 +317,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	const onResize = useCallback((width, height) => setTableSize({ width: width, height: height }), [setTableSize]);
 
 	return (
-		<TableContainer className={classes.container}>
+		<TableContainer className={classNames(classes.container, customClasses.container)}>
 			{tableInfo}
 			{stickerTableHeader}
 			<FullTable

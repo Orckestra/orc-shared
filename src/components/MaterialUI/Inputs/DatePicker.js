@@ -9,8 +9,8 @@ const useStyles = makeStyles(theme => ({
 	datePickerWrapper: {
 		display: "flex",
 		width: "auto",
-		padding: theme.spacing(0.3, 0.5),
-		border: `1px solid ${theme.palette.grey.borders}`,
+		padding: props => (props.readOnly ? "0" : theme.spacing(0.3, 0.5)),
+		border: props => (props.readOnly ? "none" : `1px solid ${theme.palette.grey.borders}`),
 		borderRadius: theme.shape.borderRadius,
 		alignItems: "center",
 		"&:focus, &:focus-within": {
@@ -29,9 +29,10 @@ const useStyles = makeStyles(theme => ({
 			zIndex: 100,
 		},
 		"& .react-datepicker__input-container input": {
-			width: theme.spacing(13.5),
+			width: "inherit",
 			border: "none",
 			zIndex: 100,
+			backgroundColor: "inherit",
 			"&:focus": {
 				outline: "none",
 			},
@@ -40,10 +41,29 @@ const useStyles = makeStyles(theme => ({
 	calendarIcon: {
 		fontSize: theme.fontSize,
 	},
+	datePickerContainer: {
+		width: "80%",
+	},
+	iconContainer: {
+		width: "20%",
+		display: "flex",
+		justifyContent: "flex-end",
+	},
 }));
 
-const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone, timeInputLabel, ...props }) => {
-	const classes = useStyles();
+const WrappedDatePicker = ({
+	value,
+	useTime,
+	useDate = true,
+	onChange,
+	dateFormat,
+	showTimeZone,
+	timeInputLabel,
+	readOnly,
+	showTimeSelectOnly,
+	...props
+}) => {
+	const classes = useStyles({ readOnly });
 	const parsedValue = new Date(value || "1970/01/01");
 	const [startDate, setStartDate] = useState(parsedValue);
 
@@ -56,17 +76,25 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 
 	return (
 		<label className={classes.datePickerWrapper}>
-			<DatePicker
-				{...props}
-				dateFormat={dateFormat || (useTime ? "P p" : "P")}
-				selected={startDate}
-				onChange={date => updateDate(date)}
-				showTimeInput={useTime ?? false}
-				useTime={useTime ?? false}
-				customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
-				timeInputLabel={timeInputLabel ?? ""}
-			/>
-			<Icon className={classes.calendarIcon} id="calendar-date" />
+			<div className={classes.datePickerContainer}>
+				<DatePicker
+					{...props}
+					dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
+					selected={startDate}
+					onChange={date => updateDate(date)}
+					showTimeInput={useTime ?? false}
+					useTime={useTime ?? false}
+					customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
+					timeInputLabel={timeInputLabel ?? ""}
+					readOnly={readOnly}
+					showTimeSelectOnly={showTimeSelectOnly}
+				/>
+			</div>
+			{!readOnly ? (
+				<div className={classes.iconContainer}>
+					<Icon className={classes.calendarIcon} id="calendar-date" />
+				</div>
+			) : null}
 		</label>
 	);
 };

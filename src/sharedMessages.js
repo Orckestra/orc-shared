@@ -134,6 +134,18 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.fieldIsRequired",
 		defaultMessage: "This field is required",
 	},
+	next: {
+		id: "orc-shared.next",
+		defaultMessage: "Next",
+	},
+	back: {
+		id: "orc-shared.back",
+		defaultMessage: "Back",
+	},
+	saveAndClose: {
+		id: "orc-shared.saveAndClose",
+		defaultMessage: "Save And Close",
+	},
 });
 
 export default sharedMessages;
