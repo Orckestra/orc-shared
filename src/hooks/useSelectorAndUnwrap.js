@@ -1,7 +1,7 @@
 import unwrapImmutalbe from "./../utils/unwrapImmutable";
 import { useSelector } from "react-redux";
 
-const useSelectorAndUnwrap = selector => {
+export const useSelectorAndUnwrap = selector => {
 	return unwrapImmutalbe(useSelector(selector));
 };
 

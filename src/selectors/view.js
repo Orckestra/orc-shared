@@ -109,3 +109,23 @@ export const getModifiedModels = entityId =>
 		}
 		return models;
 	});
+
+// the difference between this one and getModifiedModels (with 's' at the end) is that
+// this selector will retrieve you modified model for all the sections
+// so, the result won't be grouped by sections
+export const getModifiedModel = entityId =>
+	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
+		const model = {};
+		if (data != null) {
+			const dataJS = data.toJS();
+			const sections = dataJS[moduleName]?.[entityId];
+			if (sections != null) {
+				const sectionsKeys = Object.keys(sections);
+
+				sectionsKeys.forEach(sectionKey => {
+					Object.assign(model, sections[sectionKey].model);
+				});
+			}
+		}
+		return model;
+	});

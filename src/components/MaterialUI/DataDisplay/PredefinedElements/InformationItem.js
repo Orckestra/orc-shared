@@ -1,6 +1,5 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
@@ -26,10 +25,14 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.grey.dark,
 		fontFamily: theme.typography.fontFamily,
 	},
+	container: {
+		width: "100%",
+		marginTop: props => theme.spacing(props.mt),
+	},
 }));
 
-const InformationItem = ({ label, children, required, error, showNotAvailable = false }) => {
-	const classes = useStyles({ required, error });
+const InformationItem = ({ label, children, required, error, showNotAvailable = false, mt = 0 }) => {
+	const classes = useStyles({ required, error, mt });
 	const { formatMessage } = useIntl();
 
 	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
@@ -41,14 +44,14 @@ const InformationItem = ({ label, children, required, error, showNotAvailable = 
 	multipleLinesTextProps.set(TextProps.propNames.classes, classes.value);
 
 	return (
-		<Grid item className={classes.container}>
+		<div className={classes.container}>
 			{formattedLabel && <Typography className={classes.title} children={formattedLabel} />}
 			{isReactComponent(children) ? (
 				children
 			) : (
 				<MultipleLinesText textProps={multipleLinesTextProps} children={value} />
 			)}
-		</Grid>
+		</div>
 	);
 };
 

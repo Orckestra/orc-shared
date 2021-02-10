@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
-			maxWidth: theme.spacing(24),
 			maxHeight: theme.spacing(30),
 			paddingTop: 0,
 			paddingBottom: 0,

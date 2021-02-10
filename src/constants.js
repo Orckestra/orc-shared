@@ -12,7 +12,7 @@ export const platformRoles = {
 	Integrator: "Integrator",
 	Administrator: "Administrator",
 	Editor: "Editor",
-	Reader: "Reader"
+	Reader: "Reader",
 };
 
 export const roleGroups = {
@@ -32,5 +32,10 @@ export const roleGroups = {
 	FulfillmentApplication: "FulfillmentApplication",
 	Report: "Report",
 	Inventories: "Inventories",
-	Customer: "Customer"
+	Customer: "Customer",
+};
+
+export const validationErrorTypes = {
+	fieldIsRequired: "fieldIsRequired",
+	fieldHasWrongValue: "fieldHasWrongValue",
 };

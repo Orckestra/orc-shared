@@ -149,7 +149,7 @@ describe("Translations ", () => {
 
 		const input = mountedComponent.find("input");
 		input.at(0).simulate("change", { target: { value: aValue } });
-		expect(update, "to have calls satisfying", [{ args: [{ ["en-US"]: aValue }] }]);
+		expect(update, "to have calls satisfying", [{ args: [{ "en-US": aValue }] }]);
 	});
 
 	it("Compare translate strings", () => {
