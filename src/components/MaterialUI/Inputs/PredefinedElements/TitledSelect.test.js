@@ -20,16 +20,16 @@ describe("TitledSelect", () => {
 		selectProps.set(SelectProps.propNames.update, update);
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
-		const muiTheme = createMuiTheme();
+		const theme = createMuiTheme();
 
 		const component = (
-			<TestWrapper stylesProvider muiThemeProvider={{ muiTheme }}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<TitledSelect options={options} title={title} selectProps={selectProps} />
 			</TestWrapper>
 		);
 
 		const expected = (
-			<TestWrapper stylesProvider muiThemeProvider={{ muiTheme }}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<Typography children={title} />
 					<Select options={options} selectProps={selectProps} />

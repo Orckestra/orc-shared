@@ -130,6 +130,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.showFewerLanguages",
 		defaultMessage: "Show fewer languages",
 	},
+	fieldIsRequired: {
+		id: "orc-shared.fieldIsRequired",
+		defaultMessage: "This field is required",
+	},
 	next: {
 		id: "orc-shared.next",
 		defaultMessage: "Next",

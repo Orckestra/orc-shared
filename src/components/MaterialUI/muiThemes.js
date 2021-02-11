@@ -575,6 +575,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiInputBase,
 		root: {
 			...theme.root,
+			width: "100%",
 			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root": {
 				marginLeft: theme.spacing(1),
 			},
@@ -586,7 +587,6 @@ const setThemeOverrides = theme => ({
 			backgroundColor: theme.palette.background.paper,
 			border: `1px solid ${theme.palette.grey.borders}`,
 			fontSize: theme.typography.fontSize,
-			maxWidth: theme.spacing(20),
 			minWidth: theme.spacing(14),
 			padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
 			transition: theme.transitions.create(["border-color", "box-shadow"]),

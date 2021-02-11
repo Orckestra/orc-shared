@@ -3,6 +3,7 @@ import {
 	isEntityUnderEditing,
 	getModifiedSections,
 	getModifiedModels,
+	getModifiedModel,
 	getModifiedTabs,
 	getSectionsWithErrors,
 } from "./view";
@@ -224,6 +225,69 @@ describe("getModifiedModels", () => {
 
 	it("Retrieves empty array if edit is missing from the store", () => {
 		expect(getModifiedModels, "when called with", ["id2"], "called with", [stateWithEmptyEdit], "to satisfy", {});
+	});
+});
+
+describe("getModifiedModel", () => {
+	let state, stateWithEmptyEdit;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			view: {
+				edit: {
+					module1: {
+						id1: {
+							section1: {
+								model: {
+									key11: "value11",
+									key12: "value12",
+								},
+							},
+							section2: {
+								model: {
+									key21: "value21",
+									key22: "value22",
+									key23: {
+										key33: "value33",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			navigation: {
+				route: { match: { path: "/:scope/module1/id1/section1" } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+		});
+
+		stateWithEmptyEdit = Immutable.fromJS({
+			view: {},
+			navigation: {
+				route: { match: { path: "/:scope/module1/id1/section1" } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+		});
+	});
+
+	it("Retrieves modified sections", () => {
+		expect(getModifiedModel, "when called with", ["id1"], "called with", [state], "to satisfy", {
+			key11: "value11",
+			key12: "value12",
+			key21: "value21",
+			key22: "value22",
+			key23: {
+				key33: "value33",
+			},
+		});
+	});
+
+	it("Retrieves empty array if no sections found or no sections were modified", () => {
+		expect(getModifiedModel, "when called with", ["id2"], "called with", [state], "to satisfy", {});
+	});
+
+	it("Retrieves empty array if edit is missing from the store", () => {
+		expect(getModifiedModel, "when called with", ["id2"], "called with", [stateWithEmptyEdit], "to satisfy", {});
 	});
 });
 
