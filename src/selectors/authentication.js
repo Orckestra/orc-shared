@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import { platformRoles } from "./../constants";
+import { getCurrentScope } from "./navigation";
 
 const authData = state => state.get("authentication");
 
@@ -11,17 +12,23 @@ export const selectGroupRolesClaims = roleGroup =>
 	createSelector(selectRolesClaims, rolesClaims => rolesClaims.get(roleGroup) || null);
 
 export const hasEditorPermissions = roleGroup =>
-	createSelector(selectGroupRolesClaims(roleGroup), appRolesClaims => {
+	createSelector(selectGroupRolesClaims(roleGroup), getCurrentScope, (appRolesClaims, currentScope) => {
 		if (appRolesClaims != null) {
-			return appRolesClaims.getIn(["*", platformRoles.Editor]);
+			return (
+				!!appRolesClaims.getIn(["*", platformRoles.Editor]) ||
+				!!appRolesClaims.getIn([currentScope, platformRoles.Editor])
+			);
 		}
 		return false;
 	});
 
 export const hasAdministratorPermissions = roleGroup =>
-	createSelector(selectGroupRolesClaims(roleGroup), appRolesClaims => {
+	createSelector(selectGroupRolesClaims(roleGroup), getCurrentScope, (appRolesClaims, currentScope) => {
 		if (appRolesClaims != null) {
-			return appRolesClaims.getIn(["*", platformRoles.Administrator]);
+			return (
+				!!appRolesClaims.getIn(["*", platformRoles.Administrator]) ||
+				!!appRolesClaims.getIn([currentScope, platformRoles.Administrator])
+			);
 		}
 		return false;
 	});

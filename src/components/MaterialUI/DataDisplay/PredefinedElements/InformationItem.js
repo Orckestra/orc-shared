@@ -27,12 +27,12 @@ const useStyles = makeStyles(theme => ({
 	},
 	container: {
 		width: "100%",
-		marginTop: props => theme.spacing(props.mt),
+		marginTop: props => theme.spacing(props.marginTop),
 	},
 }));
 
-const InformationItem = ({ label, children, required, error, showNotAvailable = false, mt = 0 }) => {
-	const classes = useStyles({ required, error, mt });
+const InformationItem = ({ label, children, required, error, showNotAvailable = false, marginTop = 0 }) => {
+	const classes = useStyles({ required, error, marginTop });
 	const { formatMessage } = useIntl();
 
 	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;

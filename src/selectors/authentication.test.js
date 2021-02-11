@@ -113,6 +113,10 @@ describe("hasEditorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
 				}),
 			],
 			"to equal",
@@ -137,10 +141,73 @@ describe("hasEditorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
 				}),
 			],
 			"to equal",
 			false,
+		);
+	});
+
+	it("Retrieves true if user hasn't global editor permissions but, has in current scope in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Editor: false,
+				},
+				MyScope: {
+					Editor: true,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissions,
+			"when called with",
+			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has editor permissions just in specified scope", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Editor: true,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissions,
+			"when called with",
+			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
 		);
 	});
 
@@ -153,6 +220,10 @@ describe("hasEditorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: {} },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
 				}),
 			],
 			"to equal",
@@ -162,7 +233,7 @@ describe("hasEditorPermissions", () => {
 });
 
 describe("hasAdministratorPermissions", () => {
-	it("Retrieves true if user has administrator permissions in specified group", () => {
+	it("Retrieves true if user has global administrator permissions in specified group", () => {
 		const claims = Immutable.fromJS({
 			Orders: {
 				"*": {
@@ -179,6 +250,10 @@ describe("hasAdministratorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
 				}),
 			],
 			"to equal",
@@ -186,7 +261,7 @@ describe("hasAdministratorPermissions", () => {
 		);
 	});
 
-	it("Retrieves false if user has not editor permissions in specified group", () => {
+	it("Retrieves false if user has not global administrator permissions in specified group", () => {
 		const claims = Immutable.fromJS({
 			Orders: {
 				"*": {
@@ -203,10 +278,73 @@ describe("hasAdministratorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
 				}),
 			],
 			"to equal",
 			false,
+		);
+	});
+
+	it("Retrieves true if user hasn't global administrator permissions but, has in current scope in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Administrator: false,
+				},
+				MyScope: {
+					Administrator: true,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissions,
+			"when called with",
+			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has administrator permissions just in specified scope", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Administrator: true,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissions,
+			"when called with",
+			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
 		);
 	});
 
@@ -219,6 +357,10 @@ describe("hasAdministratorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: {} },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
 				}),
 			],
 			"to equal",
