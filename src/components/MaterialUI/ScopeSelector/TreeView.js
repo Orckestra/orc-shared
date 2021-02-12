@@ -3,49 +3,47 @@ import TreeViewMui from "@material-ui/lab/TreeView";
 import TreeItem from "./TreeItem";
 import { scopeTypes } from "./../../../constants";
 
-const TreeView = ({ rootId, getScope, selectedScope, closeSelector }) => {
+const TreeView = ({ rootId, getScope, selectedScope, closeSelector, multipleSelect, redirectOnSelect }) => {
 	const [expanded, setExpanded] = React.useState(selectedScope.scopePath);
-	const [selected, setSelected] = React.useState(selectedScope.id);
-
-	const virtualScopes = [];
+	const [selected, setSelected] = React.useState(multipleSelect ? [selectedScope.id] : selectedScope.id);
 
 	const handleToggle = (_, nodeIds) => {
 		setExpanded(nodeIds);
 	};
 
-	const handleSelect = (_, nodeId) => {
-		if (virtualScopes.includes(nodeId) === false) {
-			setSelected(nodeId);
-		}
+	const onScopeSelect = (_, nodeId) => {
+		const newSelected = !Array.isArray(selected)
+			? nodeId
+			: selected.includes(nodeId)
+			? selected.filter(id => id !== nodeId)
+			: [nodeId, ...selected];
+
+		setSelected(newSelected);
+		closeSelector(_, newSelected);
 	};
 
 	const renderTree = scopeId => {
 		const currentScope = getScope(scopeId);
 		if (currentScope == null) return null;
 
-		if (currentScope.type === scopeTypes.virtual) {
-			virtualScopes.push(currentScope.id);
-		}
-
 		return (
 			<TreeItem
 				key={`ScopeSelector-${currentScope.id}`}
 				scope={currentScope}
 				rootId={rootId}
-				closeSelector={closeSelector}
+				onScopeSelect={onScopeSelect}
+				redirectOnSelect={redirectOnSelect}
 			>
 				{currentScope.children.map(child => renderTree(child))}
 			</TreeItem>
 		);
 	};
 
-	const treeView = (
-		<TreeViewMui expanded={expanded} selected={selected} onNodeToggle={handleToggle} onNodeSelect={handleSelect}>
+	return (
+		<TreeViewMui expanded={expanded} selected={selected} onNodeToggle={handleToggle}>
 			{renderTree(rootId)}
 		</TreeViewMui>
 	);
-
-	return treeView;
 };
 
 export default TreeView;

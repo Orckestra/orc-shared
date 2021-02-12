@@ -52,6 +52,7 @@ const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, u
 					getScope={getScope}
 					selectedScope={selectedScope}
 					closeSelector={closeSelector}
+					redirectOnSelect={true}
 				/>
 			</div>
 		</>
