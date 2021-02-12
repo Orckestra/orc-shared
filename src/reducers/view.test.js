@@ -2,7 +2,6 @@ import Immutable from "immutable";
 import {
 	setValue,
 	setStateField,
-	createEditNode,
 	removeEditNode,
 	setEditModelField,
 	setEditModelFieldError,
@@ -50,38 +49,6 @@ describe("View state reducer", () => {
 			"test",
 			Immutable.fromJS({ stuff: "new value" }),
 		);
-	});
-
-	it("Creates edit node correctly", () => {
-		const oldState = Immutable.Map({});
-		const moduleName = "module1";
-
-		const modulesData = {
-			[moduleName]: {
-				pages: {
-					":id1": {
-						infoBar: {},
-						section11: {},
-						section12: {},
-					},
-				},
-			},
-		};
-		const entityId = "123456";
-
-		const expected = {
-			[moduleName]: {
-				[entityId]: {
-					infoBar: {},
-					section11: {},
-					section12: {},
-				},
-			},
-		};
-
-		const action = createEditNode(entityId, moduleName, modulesData);
-		const newState = viewReducer(oldState, action);
-		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
 	});
 
 	it("Sets edit field inside model correctly", () => {
