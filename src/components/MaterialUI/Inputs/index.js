@@ -10,7 +10,7 @@ export { default as Radio } from "./Radio";
 export { default as RadioProps } from "./RadioProps";
 
 export { default as StandaloneRadio } from "./StandaloneRadio";
-export { default as StandaloneRadioProps } from "./StandaloneRadioProps";
+export { default as StandaloneRadioProps } from "./standaloneRadioProps";
 
 export { default as Select } from "./Select";
 export { default as SelectProps } from "./SelectProps";
