@@ -118,6 +118,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.delete",
 		defaultMessage: "Delete",
 	},
+	add: {
+		id: "orc-shared.add",
+		defaultMessage: "Add",
+	},
 	remove: {
 		id: "orc-shared.remove",
 		defaultMessage: "Remove",
