@@ -17,16 +17,12 @@ describe("useEditState", () => {
 	const model = {
 		field: "value",
 	};
-	const modules = { modules: "modulesTree" };
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			navigation: {
 				route: { match: { path: `/:scope/${moduleName}/id/${sectionName}` } },
 				config: { prependPath: "/:scope/", prependHref: "/scope/" },
-			},
-			modules: {
-				tree: Immutable.fromJS(modules),
 			},
 			view: {
 				edit: {
