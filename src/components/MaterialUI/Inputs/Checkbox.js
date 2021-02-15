@@ -139,7 +139,7 @@ const Checkbox = ({ checkboxProps }) => {
 		/>
 	);
 
-	return label === null ? checkBoxMui : <FormControlLabel control={checkBoxMui} label={label} />;
+	return label == null ? checkBoxMui : <FormControlLabel control={checkBoxMui} label={label} />;
 };
 
 export default React.memo(Checkbox);

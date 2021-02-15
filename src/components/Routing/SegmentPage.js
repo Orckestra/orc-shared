@@ -136,7 +136,6 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 };
 
 const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
-	const classes = useStyles();
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
