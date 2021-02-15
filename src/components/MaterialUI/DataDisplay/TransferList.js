@@ -67,20 +67,24 @@ const formatState = (state, checked, from, to) => {
 	};
 };
 
-const formatSelectedItems = (selectedItems, value) => {
-	const currentIndex = selectedItems.indexOf(value);
-	const newChecked = [...selectedItems];
-
-	if (currentIndex === -1) {
-		newChecked.push(value);
-	} else {
-		newChecked.splice(currentIndex, 1);
-	}
-	return newChecked;
-};
-
-const CustomList = ({ items, checked, toggle }) => {
+const CustomList = ({ items, checked, setChecked }) => {
 	const classes = useStyles();
+
+	const handleToggle = useCallback(
+		value =>
+			setChecked(state => {
+				const currentIndex = state.indexOf(value);
+				const newChecked = [...state];
+
+				if (currentIndex === -1) {
+					newChecked.push(value);
+				} else {
+					newChecked.splice(currentIndex, 1);
+				}
+				return newChecked;
+			}),
+		[setChecked],
+	);
 
 	return (
 		<List component="div" role="list">
@@ -89,7 +93,7 @@ const CustomList = ({ items, checked, toggle }) => {
 					className={classNames(classes.item, checked.includes(id) && classes.selectedItem)}
 					key={id}
 					role="listitem"
-					onClick={!disabled ? () => toggle(id) : null}
+					onClick={!disabled ? () => handleToggle(id) : null}
 					disabled={disabled}
 				>
 					<ListItemText id={`transfer-list-item-${id}-label`} primary={title} />
@@ -109,11 +113,14 @@ const TransferList = ({
 }) => {
 	const classes = useStyles();
 	const [checked, setChecked] = useState([]);
-	const handleToggle = useCallback(value => setChecked(state => formatSelectedItems(state, value)), [setChecked]);
-	const onTopButtonClick = () =>
+	const onTopButtonClick = () => {
 		onChange(formatState({ right: rightListData.data, left: leftListData.data }, checked, "left", "right"));
-	const onBottomButtonClick = () =>
+		setChecked(checked.filter(check => !leftListData.data?.some(({ id }) => id === check)));
+	};
+	const onBottomButtonClick = () => {
 		onChange(formatState({ right: rightListData.data, left: leftListData.data }, checked, "right", "left"));
+		setChecked(checked.filter(check => !rightListData.data?.some(({ id }) => id === check)));
+	};
 
 	const rightSelected = rightListData.data?.some(({ id }) => checked.includes(id));
 	const leftSelected = leftListData.data?.some(({ id }) => checked.includes(id));
@@ -124,9 +131,9 @@ const TransferList = ({
 				<div className={classes.title}>{leftListData.title}</div>
 				<Paper className={classes.paper}>
 					{isReactComponent(customLeftComponent) ? (
-						customLeftComponent
+						<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
 					) : (
-						<CustomList items={leftListData.data} checked={checked} toggle={handleToggle} />
+						<CustomList items={leftListData.data} checked={checked} setChecked={setChecked} />
 					)}
 				</Paper>
 			</Grid>
@@ -157,7 +164,7 @@ const TransferList = ({
 			<Grid item>
 				<div className={classes.title}>{rightListData.title}</div>
 				<Paper className={classes.paper}>
-					<CustomList items={rightListData.data} checked={checked} toggle={handleToggle} />
+					<CustomList items={rightListData.data} checked={checked} setChecked={setChecked} />
 				</Paper>
 			</Grid>
 		</Grid>

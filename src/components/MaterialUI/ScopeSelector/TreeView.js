@@ -3,9 +3,16 @@ import TreeViewMui from "@material-ui/lab/TreeView";
 import TreeItem from "./TreeItem";
 import { scopeTypes } from "./../../../constants";
 
-const TreeView = ({ rootId, getScope, selectedScope, closeSelector, multipleSelect, redirectOnSelect }) => {
-	const [expanded, setExpanded] = React.useState(selectedScope.scopePath);
-	const [selected, setSelected] = React.useState(multipleSelect ? [selectedScope.id] : selectedScope.id);
+export const BaseTreeView = ({
+	rootId,
+	getScope,
+	closeSelector,
+	initExpanded,
+	selected,
+	setSelected,
+	redirectOnSelect,
+}) => {
+	const [expanded, setExpanded] = React.useState(initExpanded);
 
 	const handleToggle = (_, nodeIds) => {
 		setExpanded(nodeIds);
@@ -43,6 +50,22 @@ const TreeView = ({ rootId, getScope, selectedScope, closeSelector, multipleSele
 		<TreeViewMui expanded={expanded} selected={selected} onNodeToggle={handleToggle}>
 			{renderTree(rootId)}
 		</TreeViewMui>
+	);
+};
+
+const TreeView = ({ rootId, getScope, selectedScope, closeSelector, multipleSelect, redirectOnSelect = true }) => {
+	const [selected, setSelected] = React.useState(multipleSelect ? [selectedScope.id] : selectedScope.id);
+
+	return (
+		<BaseTreeView
+			rootId={rootId}
+			getScope={getScope}
+			closeSelector={closeSelector}
+			initExpanded={selectedScope.scopePath}
+			selected={selected}
+			setSelected={setSelected}
+			redirectOnSelect={redirectOnSelect}
+		/>
 	);
 };
 
