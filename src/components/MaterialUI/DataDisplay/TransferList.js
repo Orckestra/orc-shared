@@ -24,8 +24,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	paper: {
 		overflow: "auto",
-		width: theme.spacing(32.6),
-		height: theme.spacing(48),
+		height: props => theme.spacing(props.height),
 		border: `${theme.spacing(0.1)} solid ${theme.palette.primary.light}`,
 		borderRadius: theme.spacing(0.5),
 		boxShadow: "none",
@@ -43,6 +42,17 @@ const useStyles = makeStyles(theme => ({
 	paperLeft: {
 		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
 	},
+
+	button: {
+		margin: theme.spacing(0.5, 0),
+		fontSize: theme.spacing(1.3),
+		lineHeight: theme.spacing(1.4),
+		padding: theme.spacing(0.7),
+		minWidth: theme.spacing(8),
+	},
+}));
+
+const useListStyles = makeStyles(theme => ({
 	item: {
 		fontSize: theme.spacing(1.3),
 		color: theme.palette.text.primary,
@@ -56,14 +66,6 @@ const useStyles = makeStyles(theme => ({
 	itemTitle: {
 		fontWeight: theme.typography.fontWeightSemiBold,
 	},
-
-	button: {
-		margin: theme.spacing(0.5, 0),
-		fontSize: theme.spacing(1.3),
-		lineHeight: theme.spacing(1.4),
-		padding: theme.spacing(0.7),
-		minWidth: theme.spacing(8),
-	},
 }));
 
 const formatState = (state, checked, from, to) => {
@@ -75,7 +77,7 @@ const formatState = (state, checked, from, to) => {
 };
 
 const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
-	const classes = useStyles();
+	const classes = useListStyles();
 
 	const handleToggle = useCallback(
 		value =>
@@ -126,8 +128,9 @@ const TransferList = ({
 	removeButtonTitle,
 	customLeftComponent,
 	listItemFormatter,
+	height = 48,
 }) => {
-	const classes = useStyles();
+	const classes = useStyles({ height });
 	const [checked, setChecked] = useState([]);
 	const onAddButtonClick = () => {
 		onChange(formatState({ right: rightListData.data, left: leftListData.data }, checked, "left", "right"));
@@ -143,7 +146,7 @@ const TransferList = ({
 
 	return (
 		<Grid container spacing={1} justify="center" alignItems="center" className={classes.root}>
-			<Grid item>
+			<Grid item xs={5}>
 				<div className={classes.title}>{leftListData.title}</div>
 				<Paper className={classNames(classes.paper, classes.paperLeft)}>
 					{isReactComponent(customLeftComponent) ? (
@@ -158,7 +161,7 @@ const TransferList = ({
 					)}
 				</Paper>
 			</Grid>
-			<Grid item>
+			<Grid xs={2} item>
 				<Grid container direction="column" alignItems="center">
 					<Button
 						variant="outlined"
@@ -182,7 +185,7 @@ const TransferList = ({
 					</Button>
 				</Grid>
 			</Grid>
-			<Grid item>
+			<Grid item xs={5}>
 				<div className={classes.title}>{rightListData.title}</div>
 				<Paper className={classes.paper}>
 					<CustomList
