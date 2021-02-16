@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: theme.spacing(1.5),
 		},
 	},
+	paperLeft: {
+		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
+	},
 	item: {
 		fontSize: theme.spacing(1.3),
 		color: theme.palette.text.primary,
@@ -108,16 +111,16 @@ const TransferList = ({
 	leftListData,
 	onChange,
 	addButtonTitle,
-	deleteButtonTitle,
+	removeButtonTitle,
 	customLeftComponent,
 }) => {
 	const classes = useStyles();
 	const [checked, setChecked] = useState([]);
-	const onTopButtonClick = () => {
+	const onAddButtonClick = () => {
 		onChange(formatState({ right: rightListData.data, left: leftListData.data }, checked, "left", "right"));
 		setChecked(checked.filter(check => !leftListData.data?.some(({ id }) => id === check)));
 	};
-	const onBottomButtonClick = () => {
+	const onRemoveButtonClick = () => {
 		onChange(formatState({ right: rightListData.data, left: leftListData.data }, checked, "right", "left"));
 		setChecked(checked.filter(check => !rightListData.data?.some(({ id }) => id === check)));
 	};
@@ -129,7 +132,7 @@ const TransferList = ({
 		<Grid container spacing={1} justify="center" alignItems="center" className={classes.root}>
 			<Grid item>
 				<div className={classes.title}>{leftListData.title}</div>
-				<Paper className={classes.paper}>
+				<Paper className={classNames(classes.paper, classes.paperLeft)}>
 					{isReactComponent(customLeftComponent) ? (
 						<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
 					) : (
@@ -143,7 +146,7 @@ const TransferList = ({
 						variant="outlined"
 						size="small"
 						className={classes.button}
-						onClick={onTopButtonClick}
+						onClick={onAddButtonClick}
 						disabled={!leftSelected}
 						aria-label="move selected right"
 					>
@@ -153,11 +156,11 @@ const TransferList = ({
 						variant="outlined"
 						size="small"
 						className={classes.button}
-						onClick={onBottomButtonClick}
+						onClick={onRemoveButtonClick}
 						disabled={!rightSelected}
 						aria-label="move selected left"
 					>
-						&lt; {deleteButtonTitle || <FormattedMessage {...sharedMessages.remove} />}
+						&lt; {removeButtonTitle || <FormattedMessage {...sharedMessages.remove} />}
 					</Button>
 				</Grid>
 			</Grid>
