@@ -7,6 +7,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 import classNames from "classnames";
 import { isReactComponent } from "../../../utils/propertyValidator";
 import sharedMessages from "../../../sharedMessages";
@@ -70,7 +71,7 @@ const formatState = (state, checked, from, to) => {
 	};
 };
 
-const CustomList = ({ items, checked, setChecked }) => {
+const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
 	const classes = useStyles();
 
 	const handleToggle = useCallback(
@@ -91,15 +92,23 @@ const CustomList = ({ items, checked, setChecked }) => {
 
 	return (
 		<List component="div" role="list">
-			{items.map(({ id, title, disabled }) => (
+			{items.map(item => (
 				<ListItem
-					className={classNames(classes.item, checked.includes(id) && classes.selectedItem)}
-					key={id}
+					className={classNames(classes.item, checked.includes(item.id) && classes.selectedItem)}
+					key={item.id}
 					role="listitem"
-					onClick={!disabled ? () => handleToggle(id) : null}
-					disabled={disabled}
+					onClick={!item.disabled ? () => handleToggle(item.id) : null}
+					disabled={item.disabled}
 				>
-					<ListItemText id={`transfer-list-item-${id}-label`} primary={title} />
+					{listItemFormatter ? (
+						listItemFormatter(item)
+					) : (
+						<ListItemText
+							key={`transfer-list-item-${item.id}-label`}
+							primary={item.title}
+							secondary={<Typography color={"secondary"}>{item.subtitle}</Typography>}
+						/>
+					)}
 				</ListItem>
 			))}
 		</List>
@@ -113,6 +122,7 @@ const TransferList = ({
 	addButtonTitle,
 	removeButtonTitle,
 	customLeftComponent,
+	listItemFormatter,
 }) => {
 	const classes = useStyles();
 	const [checked, setChecked] = useState([]);
@@ -136,7 +146,12 @@ const TransferList = ({
 					{isReactComponent(customLeftComponent) ? (
 						<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
 					) : (
-						<CustomList items={leftListData.data} checked={checked} setChecked={setChecked} />
+						<CustomList
+							items={leftListData.data}
+							checked={checked}
+							setChecked={setChecked}
+							listItemFormatter={listItemFormatter}
+						/>
 					)}
 				</Paper>
 			</Grid>
@@ -167,7 +182,12 @@ const TransferList = ({
 			<Grid item>
 				<div className={classes.title}>{rightListData.title}</div>
 				<Paper className={classes.paper}>
-					<CustomList items={rightListData.data} checked={checked} setChecked={setChecked} />
+					<CustomList
+						items={rightListData.data}
+						checked={checked}
+						setChecked={setChecked}
+						listItemFormatter={listItemFormatter}
+					/>
 				</Paper>
 			</Grid>
 		</Grid>
