@@ -9,13 +9,9 @@ describe("useDispatchWithModulesData", () => {
 	let store, state;
 	const moduleName = "thing";
 	const sectionName = "mySection";
-	const modules = { modules: "modulesTree" };
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			modules: {
-				tree: Immutable.fromJS(modules),
-			},
 			navigation: {
 				route: { match: { path: `/:scope/${moduleName}/id/${sectionName}` } },
 				config: { prependPath: "/:scope/", prependHref: "/scope/" },
@@ -74,7 +70,7 @@ describe("useDispatchWithModulesData", () => {
 
 		const TestComp = () => {
 			const dispatch = useDispatchWithModulesData();
-			dispatch(actionSpy, [], { includeModulesTree: true, includeCurrentSection: true });
+			dispatch(actionSpy, [], { includeCurrentSection: true });
 			return null;
 		};
 
@@ -86,6 +82,6 @@ describe("useDispatchWithModulesData", () => {
 
 		mount(component);
 
-		expect(actionSpy, "to have a call satisfying", { args: [sectionName, moduleName, modules] });
+		expect(actionSpy, "to have a call satisfying", { args: [sectionName, moduleName] });
 	});
 });
