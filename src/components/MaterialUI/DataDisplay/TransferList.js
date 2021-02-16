@@ -53,6 +53,9 @@ const useStyles = makeStyles(theme => ({
 	selectedItem: {
 		backgroundColor: theme.palette.primary.light,
 	},
+	itemTitle: {
+		fontWeight: theme.typography.fontWeightSemiBold,
+	},
 
 	button: {
 		margin: theme.spacing(0.5, 0),
@@ -66,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 const formatState = (state, checked, from, to) => {
 	const fromSelectedItems = state[from].filter(({ id }) => checked.includes(id));
 	return {
-		[to]: [...state[to], ...fromSelectedItems].sort((a, b) => a.title.localeCompare(b.title)),
+		[to]: [...state[to], ...fromSelectedItems],
 		[from]: state[from].filter(({ id }) => !checked.includes(id)),
 	};
 };
@@ -105,8 +108,8 @@ const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
 					) : (
 						<ListItemText
 							key={`transfer-list-item-${item.id}-label`}
-							primary={item.title}
-							secondary={<Typography color={"secondary"}>{item.subtitle}</Typography>}
+							primary={<Typography className={classes.itemTitle}>{item.title}</Typography>}
+							secondary={<Typography>{item.subtitle}</Typography>}
 						/>
 					)}
 				</ListItem>
