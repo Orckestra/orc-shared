@@ -76,7 +76,7 @@ const formatState = (state, checked, from, to) => {
 	};
 };
 
-const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
+export const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
 	const classes = useListStyles();
 
 	const handleToggle = useCallback(
