@@ -145,58 +145,60 @@ const TransferList = ({
 	const leftSelected = leftListData.data?.some(({ id }) => checked.includes(id));
 
 	return (
-		<Grid container spacing={1} justify="center" alignItems="center" className={classes.root}>
-			<Grid item xs={5}>
-				<div className={classes.title}>{leftListData.title}</div>
-				<Paper className={classNames(classes.paper, classes.paperLeft)}>
-					{isReactComponent(customLeftComponent) ? (
-						<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
-					) : (
+		<div>
+			<Grid container spacing={1} justify="center" alignItems="center" className={classes.root}>
+				<Grid item xs={5}>
+					<div className={classes.title}>{leftListData.title}</div>
+					<Paper className={classNames(classes.paper, classes.paperLeft)}>
+						{isReactComponent(customLeftComponent) ? (
+							<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
+						) : (
+							<CustomList
+								items={leftListData.data}
+								checked={checked}
+								setChecked={setChecked}
+								listItemFormatter={listItemFormatter}
+							/>
+						)}
+					</Paper>
+				</Grid>
+				<Grid xs={2} item>
+					<Grid container direction="column" alignItems="center">
+						<Button
+							variant="outlined"
+							size="small"
+							className={classes.button}
+							onClick={onAddButtonClick}
+							disabled={!leftSelected}
+							aria-label="move selected right"
+						>
+							{addButtonTitle || <FormattedMessage {...sharedMessages.add} />} &gt;
+						</Button>
+						<Button
+							variant="outlined"
+							size="small"
+							className={classes.button}
+							onClick={onRemoveButtonClick}
+							disabled={!rightSelected}
+							aria-label="move selected left"
+						>
+							&lt; {removeButtonTitle || <FormattedMessage {...sharedMessages.remove} />}
+						</Button>
+					</Grid>
+				</Grid>
+				<Grid item xs={5}>
+					<div className={classes.title}>{rightListData.title}</div>
+					<Paper className={classes.paper}>
 						<CustomList
-							items={leftListData.data}
+							items={rightListData.data}
 							checked={checked}
 							setChecked={setChecked}
 							listItemFormatter={listItemFormatter}
 						/>
-					)}
-				</Paper>
-			</Grid>
-			<Grid xs={2} item>
-				<Grid container direction="column" alignItems="center">
-					<Button
-						variant="outlined"
-						size="small"
-						className={classes.button}
-						onClick={onAddButtonClick}
-						disabled={!leftSelected}
-						aria-label="move selected right"
-					>
-						{addButtonTitle || <FormattedMessage {...sharedMessages.add} />} &gt;
-					</Button>
-					<Button
-						variant="outlined"
-						size="small"
-						className={classes.button}
-						onClick={onRemoveButtonClick}
-						disabled={!rightSelected}
-						aria-label="move selected left"
-					>
-						&lt; {removeButtonTitle || <FormattedMessage {...sharedMessages.remove} />}
-					</Button>
+					</Paper>
 				</Grid>
 			</Grid>
-			<Grid item xs={5}>
-				<div className={classes.title}>{rightListData.title}</div>
-				<Paper className={classes.paper}>
-					<CustomList
-						items={rightListData.data}
-						checked={checked}
-						setChecked={setChecked}
-						listItemFormatter={listItemFormatter}
-					/>
-				</Paper>
-			</Grid>
-		</Grid>
+		</div>
 	);
 };
 

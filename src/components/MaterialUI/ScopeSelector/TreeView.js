@@ -18,7 +18,7 @@ export const BaseTreeView = ({
 		setExpanded(nodeIds);
 	};
 
-	const onScopeSelect = (_, nodeId) => {
+	const onScopeSelect = (event, nodeId) => {
 		const newSelected = !Array.isArray(selected)
 			? nodeId
 			: selected.includes(nodeId)
@@ -26,7 +26,7 @@ export const BaseTreeView = ({
 			: [nodeId, ...selected];
 
 		setSelected(newSelected);
-		closeSelector(_, newSelected);
+		closeSelector(event, newSelected);
 	};
 
 	const renderTree = scopeId => {
