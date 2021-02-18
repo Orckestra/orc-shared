@@ -128,8 +128,8 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	return label;
 };
 
-const TreeItem = ({ scope, rootId, closeSelector, children }) => {
-	const [scopeSelectHandler] = useScopeSelect(scope.id, closeSelector);
+const TreeItem = ({ scope, rootId, onScopeSelect, redirectOnSelect, children }) => {
+	const [navigate] = useScopeSelect(scope.id);
 
 	const isRootScope = scope.id === rootId;
 	const isVirtualScope = scope.type === scopeTypes.virtual;
@@ -142,11 +142,14 @@ const TreeItem = ({ scope, rootId, closeSelector, children }) => {
 	const onLabelClickHandler = event => {
 		event.preventDefault();
 		if (isVirtualScope === false) {
-			scopeSelectHandler(event);
+			if (redirectOnSelect) {
+				navigate(event);
+			}
+			onScopeSelect(event, scope.id);
 		}
 	};
 
-	const treeItem = (
+	return (
 		<TreeItemMui
 			nodeId={scope.id}
 			label={
@@ -171,8 +174,6 @@ const TreeItem = ({ scope, rootId, closeSelector, children }) => {
 			{children}
 		</TreeItemMui>
 	);
-
-	return treeItem;
 };
 
 export default TreeItem;

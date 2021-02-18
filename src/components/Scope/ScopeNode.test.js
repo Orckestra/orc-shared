@@ -2,9 +2,11 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
+import { mount } from "enzyme";
 import sinon from "sinon";
 import Icon from "../Icon";
 import { ScopeIcon, ContentLabel, ScopeNode, ScopeText } from "./ScopeNode";
+import { TestWrapper } from "../../utils/testUtils";
 
 describe("ScopeNode", () => {
 	let closeSelector, store;
@@ -115,6 +117,29 @@ describe("ScopeNode", () => {
 				<ScopeText>A scope</ScopeText>
 			</ContentLabel>,
 		));
+
+	it("Call onScopeSelect on Node click if scope type is not virtual", () => {
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter>
+				<ScopeNode name="A scope" type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
+			</TestWrapper>
+		);
+
+		const preventDefaultSpy = sinon.spy();
+
+		const mountedComponent = mount(component);
+
+		const event = {
+			preventDefault: preventDefaultSpy,
+		};
+
+		const node = mountedComponent.find(ContentLabel);
+
+		node.invoke("onClick")(event);
+
+		expect(preventDefaultSpy, "was called");
+		expect(closeSelector, "to have a call satisfying", { args: [event] });
+	});
 });
 
 describe("ContentLabel", () => {
