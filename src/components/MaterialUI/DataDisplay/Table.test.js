@@ -296,6 +296,102 @@ describe("Memoize components", () => {
 
 		expect(mountedHeaderColumnDefinition, "to equal", headers[0].cellElement.props.columnDefinition);
 	});
+
+	it("Updates table props when changed and deep comparation enabled", () => {
+		const elements = [
+			{ id: "1", column1: "test11", column2: "test12" },
+			{ id: "2", column1: "test21", column2: "test22" },
+		];
+
+		const initialColumnDefs = [
+			{
+				fieldName: "column1",
+				label: "column1",
+			},
+			{
+				fieldName: "column2",
+				label: "column2",
+			},
+		];
+
+		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
+
+		const updatedColumnRows = cloneDeep(rows);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.deepPropsComparation, true);
+
+		const mountedComponent = mount(<Table headers={headers} rows={rows} tableProps={tableProps} />);
+
+		console.log(mountedComponent.prop("rows"));
+
+		let mountedRow1 = mountedComponent.prop("rows")[0].element;
+		let mountedRow2 = mountedComponent.prop("rows")[1].element;
+
+		expect(mountedRow1, "to equal", elements[0]);
+		expect(mountedRow2, "to equal", elements[1]);
+
+		const elementsExpected = [
+			{ id: "1", column1: "newTest11", column2: "test12" },
+			{ id: "2", column1: "test21", column2: "newTest22" },
+		];
+
+		updatedColumnRows[0].element.column1 = "newTest11";
+		updatedColumnRows[1].element.column2 = "newTest22";
+
+		mountedComponent.setProps({ rows: updatedColumnRows });
+
+		let mountedRow1New = mountedComponent.prop("rows")[0].element;
+		let mountedRow2New = mountedComponent.prop("rows")[1].element;
+
+		expect(mountedRow1New, "to equal", elementsExpected[0]);
+		expect(mountedRow2New, "to equal", elementsExpected[1]);
+	});
+
+	it("Updates table props when not changed and deep comparation enabled", () => {
+		const elements = [
+			{ id: "1", column1: "test11", column2: "test12" },
+			{ id: "2", column1: "test21", column2: "test22" },
+		];
+
+		const initialColumnDefs = [
+			{
+				fieldName: "column1",
+				label: "column1",
+			},
+			{
+				fieldName: "column2",
+				label: "column2",
+			},
+		];
+
+		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
+
+		const updatedColumnRows = cloneDeep(rows);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.deepPropsComparation, true);
+
+		const mountedComponent = mount(<Table headers={headers} rows={rows} tableProps={tableProps} />);
+
+		console.log(mountedComponent.prop("rows"));
+
+		let mountedRow1 = mountedComponent.prop("rows")[0].element;
+		let mountedRow2 = mountedComponent.prop("rows")[1].element;
+
+		expect(mountedRow1, "to equal", elements[0]);
+		expect(mountedRow2, "to equal", elements[1]);
+
+		mountedComponent.setProps({ rows: updatedColumnRows });
+
+		let mountedRow1New = mountedComponent.prop("rows")[0].element;
+		let mountedRow2New = mountedComponent.prop("rows")[1].element;
+
+		expect(mountedRow1New, "to equal", elements[0]);
+		expect(mountedRow2New, "to equal", elements[1]);
+	});
 });
 
 describe("Table", () => {
@@ -509,6 +605,51 @@ describe("Table", () => {
 					<th>
 						<CheckboxMui />
 					</th>
+					<th>{headerLabels.column1}</th>
+					<th>{headerLabels.column2}</th>
+				</TableRow>
+			</TableHead>
+		);
+
+		const expected = (
+			<TableContainer>
+				<div>
+					<ResizeDetector />
+					<TableMui>
+						{expectedHeader}
+						<MemoTableBody dataRows={rows} tableRows={expectedTableRows} />
+					</TableMui>
+				</div>
+			</TableContainer>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Table with deep comparation", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.deepPropsComparation, true);
+
+		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
+		const expectedTableRows = (
+			<>
+				<MemoTableRow>
+					<td>{<TooltippedTypography noWrap children={elements[0].a1} titleValue={elements[0].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a2} titleValue={elements[0].a2} />}</td>
+				</MemoTableRow>
+				<MemoTableRow>
+					<td>{<TooltippedTypography noWrap children={elements[1].a1} titleValue={elements[1].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a2} titleValue={elements[1].a2} />}</td>
+				</MemoTableRow>
+			</>
+		);
+
+		const expectedHeader = (
+			<TableHead>
+				<TableRow>
 					<th>{headerLabels.column1}</th>
 					<th>{headerLabels.column2}</th>
 				</TableRow>

@@ -9,6 +9,7 @@ import { tableSelectionMode, useTableSelection } from "./useTableSelection";
 import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
 import ResizeDetector from "react-resize-detector";
+import { isEqual } from "lodash";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -110,16 +111,39 @@ function rowAreIdentical(prevRows, nextRows) {
 }
 
 function propsAreEqualRow(prev, next) {
+	if (prev.deepPropsComparation) {
+		return propsAreEqualDeeplyRow(prev, next);
+	}
 	return prev.selected === next.selected;
 }
 
-export const MemoTableRow = React.memo(TableRow, propsAreEqualRow);
-
-function propsAreEqualBody(prev, next) {
-	return prev.selectedNumber === next.selectedNumber && rowAreIdentical(prev.dataRows, next.dataRows);
+function propsAreEqualDeeplyRow(prev, next) {
+	if (prev.length) {
+		let equalRow = true;
+		prev.forEach((prevElem, index) => {
+			if (!isEqual(prevElem.element, next[index].element)) {
+				equalRow = false;
+			}
+		});
+		return equalRow;
+	}
 }
 
-const TableBody = props => {
+const TableRowMemo = ({ deepPropsComparation, ...props }) => {
+	return <TableRow {...props} />;
+};
+
+export const MemoTableRow = React.memo(TableRowMemo, propsAreEqualRow);
+
+function propsAreEqualBody(prev, next) {
+	let isEqualBody = prev.selectedNumber === next.selectedNumber && rowAreIdentical(prev.dataRows, next.dataRows);
+	if (prev.deepPropsComparation) {
+		isEqualBody = isEqualBody && propsAreEqualDeeplyRow(prev.dataRows, next.dataRows);
+	}
+	return isEqualBody;
+}
+
+const TableBody = ({ deepPropsComparation, ...props }) => {
 	return <tbody className={props.className}>{props.tableRows}</tbody>;
 };
 
@@ -189,7 +213,15 @@ const buildTableHeaders = (headers, classes, customClasses, selectMode, tableSel
 	);
 };
 
-const buildTableRows = (rows, classes, customClasses, selectMode, onRowClick, selectionHandlers) => {
+const buildTableRows = (
+	rows,
+	classes,
+	customClasses,
+	selectMode,
+	onRowClick,
+	selectionHandlers,
+	deepPropsComparation,
+) => {
 	const onClick = (evt, row) => {
 		if (evt.target.tagName !== "INPUT" && onRowClick != null) {
 			onRowClick(evt, row.element);
@@ -202,6 +234,7 @@ const buildTableRows = (rows, classes, customClasses, selectMode, onRowClick, se
 			key={row.key}
 			onClick={evt => onClick(evt, row)}
 			selected={selectionHandlers.isSelected(row.key)}
+			deepPropsComparation={deepPropsComparation}
 		>
 			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
 			{row.columns.map((cell, cellIndex) => (
@@ -242,6 +275,7 @@ const FullTable = React.forwardRef((props, ref) => {
 					dataRows={props.dataRows}
 					tableRows={props.tableRows}
 					selectedNumber={props.selectedNumber}
+					deepPropsComparation={props.deepPropsComparation}
 				/>
 			</TableMui>
 			{props.tableRows.length > 0 ? null : <div className={props.classes.placeholder}>{props.placeholder}</div>}
@@ -259,6 +293,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	const stickyHeader = tableProps?.get(TableProps.propNames.stickyHeader) || false;
 	const withoutTopBorder = tableProps?.get(TableProps.propNames.withoutTopBorder) || false;
 	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
+	const deepPropsComparation = tableProps?.get(TableProps.propNames.deepPropsComparation) || false;
 
 	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
 	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
@@ -306,7 +341,15 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 		selectionMethods,
 	);
 
-	const tableRows = buildTableRows(rows, classes, customClasses, selectMode, onRowClick, selectionMethods);
+	const tableRows = buildTableRows(
+		rows,
+		classes,
+		customClasses,
+		selectMode,
+		onRowClick,
+		selectionMethods,
+		deepPropsComparation,
+	);
 
 	const stickerTableHeader =
 		stickyHeader === true ? (
@@ -334,6 +377,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 				latestPage={latestPage}
 				pageLength={pageLength}
 				placeholder={placeholder}
+				deepPropsComparation={deepPropsComparation}
 			/>
 		</TableContainer>
 	);

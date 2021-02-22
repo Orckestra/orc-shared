@@ -7,6 +7,7 @@ class TableProps extends ComponentProps {
 		selectMode: "selectMode",
 		onRowClick: "onRowClick",
 		classes: "classes",
+		deepPropsComparation: "deepPropsComparation",
 	};
 
 	static ruleNames = {
@@ -26,6 +27,7 @@ class TableProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.selectMode, null);
 		this.componentProps.set(this.constructor.propNames.onRowClick, null);
 		this.componentProps.set(this.constructor.propNames.classes, null);
+		this.componentProps.set(this.constructor.propNames.deepPropsComparation, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.tableHeader, null);
 		this.componentClasses.set(this.constructor.ruleNames.tableRow, null);

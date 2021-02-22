@@ -2,13 +2,27 @@ import TableProps, { isTableProps } from "./TableProps";
 
 describe("TableProps Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["withoutTopBorder", "stickyHeader", "selectMode", "onRowClick", "classes"];
+		const propNames = [
+			"withoutTopBorder",
+			"stickyHeader",
+			"selectMode",
+			"onRowClick",
+			"classes",
+			"deepPropsComparation",
+		];
 
 		expect(TableProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["withoutTopBorder", "stickyHeader", "selectMode", "onRowClick", "classes"];
+		const propNames = [
+			"withoutTopBorder",
+			"stickyHeader",
+			"selectMode",
+			"onRowClick",
+			"classes",
+			"deepPropsComparation",
+		];
 
 		const tableProps = new TableProps();
 
