@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	tab: {
 		flex: "0 0 auto",
+		maxWidth: "unset",
 	},
 	tabWrapper: {
 		"& > *:first-child": {
