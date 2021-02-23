@@ -16,6 +16,8 @@ class CheckboxProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.readOnly, null);
 
 		this._isCheckboxProps = true;
+
+		//test
 	}
 }
 
