@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { scopeTypes } from "./../../../constants";
 import sinon from "sinon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import TreeItem from "./TreeItem";
 import TreeViewMui from "@material-ui/lab/TreeView";
 import TreeItemMui from "@material-ui/lab/TreeItem";
