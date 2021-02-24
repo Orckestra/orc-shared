@@ -1,23 +1,24 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import ResizeDetector from "react-resize-detector";
+import { useSelector } from "react-redux";
+import classNames from "classnames";
 import Tabs from "@material-ui/core/Tabs";
-import TabLabel from "./TabLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
-import { Link } from "react-router-dom";
+import TabLabel from "./TabLabel";
 import Select from "../Inputs/Select";
 import SelectProps from "../Inputs/SelectProps";
 import Icon from "../DataDisplay/Icon";
-import { useHistory } from "react-router-dom";
-import ResizeDetector from "react-resize-detector";
 import { isScrollVisible } from "./../../../utils/domHelper";
 import { getModifiedTabs } from "./../../../selectors/view";
-import { useSelector } from "react-redux";
 import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
 import { removeEditNode } from "./../../../actions/view";
 import { getValueFromUrlByKey, tryGetNewEntityIdKey } from "./../../../utils/urlHelper";
 import { useDispatchWithModulesData } from "./../../../hooks/useDispatchWithModulesData";
 import sharedMessages from "./../../../sharedMessages";
-import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -31,6 +32,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	tab: {
 		flex: "0 0 auto",
+	},
+	unsetMaxWidth: {
 		maxWidth: "unset",
 	},
 	tabWrapper: {
@@ -67,6 +70,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	labelContainer: {
 		position: "relative",
+		width: "100%",
 	},
 	modifiedLabel: {
 		fontWeight: theme.typography.fontWeightBold,
@@ -182,17 +186,15 @@ const MuiBar = ({ module, pages }) => {
 				}}
 				ref={tabs}
 			>
-				{pages.map(({ href, label, outsideScope, close, path, params }, index) => {
+				{pages.map(({ href, label, outsideScope, close, path, params, mustTruncate }, index) => {
 					let entityIdKey = Object.keys(params).find(p => p !== "scope");
 					if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
 					const isModified = modifiedTabs.includes(href);
 					const tabLabel = <TabLabel label={label} />;
-					const tabClassName = isModified
-						? `${classes.labelContainer} ${classes.modifiedLabel}`
-						: classes.labelContainer;
+					const tabClassName = classNames(classes.labelContainer, isModified && classes.modifiedLabel);
 					const wrappedTabLabel = (
 						<div className={tabClassName}>
-							<TabLabel label={label} />
+							<TabLabel label={label} mustTruncate={mustTruncate} />
 							{isModified === true ? <span className={classes.asterix}>*</span> : null}
 						</div>
 					);
@@ -211,7 +213,7 @@ const MuiBar = ({ module, pages }) => {
 					return (
 						<Tab
 							classes={{
-								root: classes.tab,
+								root: classNames(classes.tab, !mustTruncate && classes.unsetMaxWidth),
 							}}
 							component={TabLink}
 							label={wrappedTabLabel}
