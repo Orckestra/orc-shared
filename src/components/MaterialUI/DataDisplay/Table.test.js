@@ -392,6 +392,58 @@ describe("Memoize components", () => {
 		expect(mountedRow1New, "to equal", elements[0]);
 		expect(mountedRow2New, "to equal", elements[1]);
 	});
+
+	it("Updates table props when columns amount changed and deep comparation enabled", () => {
+		const elements = [
+			{ id: "1", column1: "test11", column2: "test12" },
+			{ id: "2", column1: "test21", column2: "test22" },
+		];
+
+		const initialColumnDefs = [
+			{
+				fieldName: "column1",
+				label: "column1",
+			},
+			{
+				fieldName: "column2",
+				label: "column2",
+			},
+		];
+
+		let { headers, rows } = buildHeaderAndRowFromConfig(initialColumnDefs, elements);
+
+		const updatedColumnRows = cloneDeep(rows);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.deepPropsComparation, true);
+
+		const mountedComponent = mount(<Table headers={headers} rows={rows} tableProps={tableProps} />);
+
+		console.log(mountedComponent.prop("rows"));
+
+		let mountedRow1 = mountedComponent.prop("rows")[0].element;
+		let mountedRow2 = mountedComponent.prop("rows")[1].element;
+
+		expect(mountedRow1, "to equal", elements[0]);
+		expect(mountedRow2, "to equal", elements[1]);
+
+		const elementsExpected = [
+			{ id: "1", column1: "test11", column2: "test12", column3: "test13" },
+			{ id: "2", column1: "test21", column2: "test22", column3: "test23" },
+		];
+
+		updatedColumnRows[0].element.column3 = "test13";
+		updatedColumnRows[1].element.column3 = "test23";
+
+		mountedComponent.setProps({ rows: updatedColumnRows });
+
+		let mountedRow1New = mountedComponent.prop("rows")[0].element;
+		let mountedRow2New = mountedComponent.prop("rows")[1].element;
+
+		expect(mountedRow1New, "to equal", elementsExpected[0]);
+		expect(mountedRow2New, "to equal", elementsExpected[1]);
+	});
 });
 
 describe("Table", () => {
