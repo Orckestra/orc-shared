@@ -38,9 +38,9 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	label: {
-		fontFamily: theme.typography.button.fontFamily,
-		fontWeight: theme.typography.button.fontWeight,
-		fontSize: theme.typography.button.fontSize,
+		fontSize: theme.typography.fontSize,
+		color: theme.palette.grey.dark,
+		fontFamily: theme.typography.fontFamily,
 	},
 	icon: {
 		right: theme.spacing(1),
