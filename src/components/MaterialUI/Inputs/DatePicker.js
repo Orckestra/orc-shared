@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
 			zIndex: 100,
 		},
 		"& .react-datepicker__input-container input": {
+			fontSize: theme.typography.fontSize,
+			color: theme.palette.grey.dark,
+			fontFamily: theme.typography.fontFamily,
 			width: "inherit",
 			border: "none",
 			zIndex: 100,
