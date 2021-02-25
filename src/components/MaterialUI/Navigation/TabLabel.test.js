@@ -3,6 +3,7 @@ import TabLabel from "./TabLabel";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Immutable from "immutable";
+import TooltippedTypography from "../DataDisplay/TooltippedElements/TooltippedTypography";
 
 describe("TabLabel", () => {
 	let store, state;
@@ -25,6 +26,8 @@ describe("TabLabel", () => {
 			</Provider>
 		);
 
-		expect(component, "when mounted", "to satisfy", message.defaultMessage);
+		const expected = <TooltippedTypography titleValue={message.defaultMessage} children={message.defaultMessage} />;
+
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 });
