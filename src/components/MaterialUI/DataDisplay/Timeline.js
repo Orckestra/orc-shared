@@ -21,12 +21,13 @@ const renderItems = items => {
 		const content = item.get(TimelineItemProps.propNames.content);
 		const contentOpposite = item.get(TimelineItemProps.propNames.contentOpposite);
 		const separatorIcon = item.get(TimelineItemProps.propNames.separatorIcon);
+		const outlined = item.get(TimelineItemProps.propNames.outlined);
 
 		count++;
 		timelineItems.push(
 			<TimelineItemMui key={count}>
 				{renderContentOpposite(contentOpposite)}
-				{renderSeparator(separatorIcon)}
+				{renderSeparator(separatorIcon, outlined)}
 				{renderContent(content)}
 			</TimelineItemMui>,
 		);
@@ -47,10 +48,11 @@ const renderContentOpposite = contentOpposite => {
 	return <TimelineOppositeContentMui>{contentOpposite}</TimelineOppositeContentMui>;
 };
 
-const renderSeparator = separatorIcon => {
+const renderSeparator = (separatorIcon, outlined) => {
+	var dotProps = outlined ? { variant: "outlined" } : {};
 	return (
 		<TimelineSeparatorMui>
-			<TimelineDotMui>{separatorIcon}</TimelineDotMui>
+			<TimelineDotMui {...dotProps}>{separatorIcon}</TimelineDotMui>
 		</TimelineSeparatorMui>
 	);
 };

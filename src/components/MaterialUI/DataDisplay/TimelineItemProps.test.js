@@ -2,13 +2,13 @@ import TimelineItemProps, { isTimelineItemProps } from "./TimelineItemProps";
 
 describe("TimelineItemProps Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["content", "contentOpposite", "separatorIcon"];
+		const propNames = ["content", "contentOpposite", "separatorIcon", "outlined"];
 
 		expect(TimelineItemProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["content", "contentOpposite", "separatorIcon"];
+		const propNames = ["content", "contentOpposite", "separatorIcon", "outlined"];
 		const timelineItemProps = new TimelineItemProps();
 		const keys = Array.from(timelineItemProps.componentProps.keys());
 

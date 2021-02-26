@@ -5,6 +5,7 @@ class TimelineItemProps extends ComponentProps {
 		content: "content",
 		contentOpposite: "contentOpposite",
 		separatorIcon: "separatorIcon",
+		outlined: "outlined",
 	};
 
 	constructor() {
@@ -12,6 +13,7 @@ class TimelineItemProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.content, null);
 		this.componentProps.set(this.constructor.propNames.contentOpposite, null);
 		this.componentProps.set(this.constructor.propNames.separatorIcon, null);
+		this.componentProps.set(this.constructor.propNames.outlined, null);
 
 		this._isTimelineItemProps = true;
 	}
