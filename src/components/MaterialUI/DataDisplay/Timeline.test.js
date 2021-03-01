@@ -27,6 +27,17 @@ describe("Timeline", () => {
 		});
 	});
 
+	it("Timeline with wrong TimeLineItemProps throws error", () => {
+		ignoreConsoleError(() => {
+			const timelineProps = new TimelineProps();
+			timelineProps.set(TimelineProps.propNames.items, ["Bad type"]);
+			const component = <Timeline timelineProps={timelineProps} />;
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "timelineItemProps property is not of type TimelineItemProps");
+			});
+		});
+	});
+
 	it("Renders Timeline with one content item", () => {
 		const timelineProps = new TimelineProps();
 		timelineProps.AddItem("content", null, null);
@@ -38,7 +49,7 @@ describe("Timeline", () => {
 
 	it("Renders Timeline with one contentOpposite item", () => {
 		const timelineProps = new TimelineProps();
-		timelineProps.AddItem(null, "contentOpposite", null);
+		timelineProps.AddItem(null, "contentOpposite", null, null);
 		const component = <Timeline timelineProps={timelineProps} />;
 
 		const mountedComponent = mount(component);
@@ -47,7 +58,7 @@ describe("Timeline", () => {
 
 	it("Renders Timeline with a content and contentOpposite item", () => {
 		const timelineProps = new TimelineProps();
-		timelineProps.AddItem("content", "contentOpposite", null);
+		timelineProps.AddItem("content", "contentOpposite", null, null);
 		const component = <Timeline timelineProps={timelineProps} />;
 
 		const mountedComponent = mount(component);
@@ -57,7 +68,18 @@ describe("Timeline", () => {
 
 	it("Renders Timeline with an icon item", () => {
 		const timelineProps = new TimelineProps();
-		timelineProps.AddItem("content", "contentOpposite", "icon");
+		timelineProps.AddItem("content", "contentOpposite", "icon", null);
+		const component = <Timeline timelineProps={timelineProps} />;
+
+		const mountedComponent = mount(component);
+		expect(mountedComponent.containsMatchingElement("content"), "to be truthy");
+		expect(mountedComponent.containsMatchingElement("contentOpposite"), "to be truthy");
+		expect(mountedComponent.containsMatchingElement("icon"), "to be truthy");
+	});
+
+	it("Renders Timeline with an outline", () => {
+		const timelineProps = new TimelineProps();
+		timelineProps.AddItem("content", "contentOpposite", "icon", true);
 		const component = <Timeline timelineProps={timelineProps} />;
 
 		const mountedComponent = mount(component);

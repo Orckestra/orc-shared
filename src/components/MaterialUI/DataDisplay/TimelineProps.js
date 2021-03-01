@@ -13,12 +13,13 @@ class TimelineProps extends ComponentProps {
 		this._isTimelineProps = true;
 	}
 
-	AddItem(content, contentOpposite, separatorIcon) {
+	AddItem(content, contentOpposite, separatorIcon, outlined) {
 		if (content || contentOpposite) {
 			const newItem = new TimelineItemProps();
 			newItem.set(TimelineItemProps.propNames.content, content);
 			newItem.set(TimelineItemProps.propNames.contentOpposite, contentOpposite);
 			newItem.set(TimelineItemProps.propNames.separatorIcon, separatorIcon);
+			newItem.set(TimelineItemProps.propNames.outlined, outlined);
 
 			const items = this.componentProps.get(this.constructor.propNames.items) ?? [];
 			items.push(newItem);
