@@ -45,13 +45,17 @@ export const ContentLabel = styled.div`
 `;
 
 export const ScopeNode = ({ type, name, id, isAuthorizedScope, closeSelector }) => {
-	const [onClick] = useScopeSelect(id, closeSelector);
+	const [navigate] = useScopeSelect(id);
+	const onClick =
+		isAuthorizedScope && type !== "Virtual"
+			? event => {
+					navigate(event);
+					closeSelector(event);
+			  }
+			: undefined;
+
 	return (
-		<ContentLabel
-			id={"selectorNode" + id}
-			isGlobal={type === "Global"}
-			onClick={isAuthorizedScope && type !== "Virtual" ? onClick : undefined}
-		>
+		<ContentLabel id={"selectorNode" + id} isGlobal={type === "Global"} onClick={onClick}>
 			<ScopeIcon type={type} />
 			<ScopeText>{name || id}</ScopeText>
 		</ContentLabel>

@@ -135,17 +135,24 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 	);
 };
 
-const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
-	const classes = useStyles();
-	const pattern = new UrlPattern(path);
-	const baseHref = pattern.stringify(match.params);
-	const pages = [],
-		subpages = [];
+const defaultEntityIdResolver = ({ match, baseHref }) => {
 	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
 	let entityId = match.params[entityIdKey];
 	if (!entityId) {
 		entityId = tryGetNewEntityIdKey(baseHref);
 	}
+
+	return entityId;
+};
+
+const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath, entityIdResolver }) => {
+	const pattern = new UrlPattern(path);
+	const baseHref = pattern.stringify(match.params);
+	const pages = [],
+		subpages = [];
+
+	const entityIdResolverParams = { match, baseHref };
+	const entityId = (entityIdResolver ?? defaultEntityIdResolver)(entityIdResolverParams);
 
 	const modifiedSections = useSelector(getModifiedSections(entityId));
 	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));

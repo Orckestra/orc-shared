@@ -126,6 +126,23 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Select component correctly with disabled prop", () => {
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.disabled, true);
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const expected = <TooltippedTypography noWrap children="aValue" titleValue="aValue" />;
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Sorts select options correctly without sorting and without showAll", () => {
 		const options = [
 			{ value: "c", label: "c", sortOrder: 3 },

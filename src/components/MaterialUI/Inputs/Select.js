@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
-			maxWidth: theme.spacing(24),
 			maxHeight: theme.spacing(30),
 			paddingTop: 0,
 			paddingBottom: 0,
@@ -39,9 +38,9 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	label: {
-		fontFamily: theme.typography.button.fontFamily,
-		fontWeight: theme.typography.button.fontWeight,
-		fontSize: theme.typography.button.fontSize,
+		fontSize: theme.typography.fontSize,
+		color: theme.palette.grey.dark,
+		fontFamily: theme.typography.fontFamily,
 	},
 	icon: {
 		right: theme.spacing(1),
@@ -111,6 +110,11 @@ const Select = ({ options, selectProps }) => {
 	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
 	const positionOverride = selectProps?.get(SelectProps.propNames.positionOverride) || {};
 	const isIconSelect = selectProps?.get(SelectProps.propNames.iconSelect) || false;
+	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
+
+	if (disabled) {
+		return <TooltippedTypography noWrap children={value} titleValue={value} />;
+	}
 
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>

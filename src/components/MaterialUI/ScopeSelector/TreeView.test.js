@@ -6,10 +6,11 @@ import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 import { mount } from "enzyme";
 import TreeItem from "./TreeItem";
 import TreeViewMui from "@material-ui/lab/TreeView";
+import TreeItemMui from "@material-ui/lab/TreeItem";
 import TreeView from "./TreeView";
 
 describe("TreeView", () => {
-	let store, state;
+	let store, state, closeSelectorSpy;
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -28,6 +29,7 @@ describe("TreeView", () => {
 			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 		};
+		closeSelectorSpy = sinon.spy();
 	});
 
 	const theme = createMuiTheme();
@@ -71,8 +73,6 @@ describe("TreeView", () => {
 	];
 
 	const getScope = id => scopes.find(scope => scope.id === id);
-
-	const closeSelectorSpy = sinon.spy();
 
 	it("Renders TreeView correctly with existing scopes ids", () => {
 		const component = (
@@ -145,53 +145,61 @@ describe("TreeView", () => {
 		expect(treeView.prop("expanded"), "to equal", scopes[1].scopePath);
 	});
 
-	it("Handles onNodeSelect correctly for virtual scope", () => {
+	it("Handles multiple select correctly", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
 				<TreeView
 					rootId={scopes[0].id}
 					getScope={getScope}
-					selectedScope={scopes[0]}
+					selectedScope={scopes[1]}
 					closeSelector={closeSelectorSpy}
+					multipleSelect={true}
 				/>
 			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
-
 		let treeView = mountedComponent.find(TreeViewMui);
+		let item = treeView.find(TreeItemMui).at(2);
 
-		expect(treeView.prop("selected"), "to equal", scopes[0].id);
+		const event = { preventDefault: sinon.spy() };
 
-		treeView.invoke("onNodeSelect")(null, scopes[1].id);
+		item.invoke("onLabelClick")(event);
 
+		expect(closeSelectorSpy, "to have calls satisfying", [{ args: [event, [scopes[3].id, scopes[1].id]] }]);
+
+		mountedComponent.update();
 		treeView = mountedComponent.find(TreeViewMui);
+		item = treeView.find(TreeItemMui).at(2);
 
-		expect(treeView.prop("selected"), "to equal", scopes[0].id);
+		item.invoke("onLabelClick")(event);
+
+		expect(closeSelectorSpy, "to have calls satisfying", [
+			{ args: [event, [scopes[3].id, scopes[1].id]] },
+			{ args: [event, [scopes[1].id]] },
+		]);
 	});
 
-	it("Handles onNodeSelect correctly for non virtual scope", () => {
+	it("Handles single select correctly", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
 				<TreeView
 					rootId={scopes[0].id}
 					getScope={getScope}
-					selectedScope={scopes[0]}
+					selectedScope={scopes[1]}
 					closeSelector={closeSelectorSpy}
 				/>
 			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
-
 		let treeView = mountedComponent.find(TreeViewMui);
+		let item = treeView.find(TreeItemMui).at(2);
 
-		expect(treeView.prop("selected"), "to equal", scopes[0].id);
+		const event = { preventDefault: sinon.spy() };
 
-		treeView.invoke("onNodeSelect")(null, scopes[3].id);
+		item.invoke("onLabelClick")(event);
 
-		treeView = mountedComponent.find(TreeViewMui);
-
-		expect(treeView.prop("selected"), "to equal", scopes[3].id);
+		expect(closeSelectorSpy, "to have calls satisfying", [{ args: [event, scopes[3].id] }]);
 	});
 });

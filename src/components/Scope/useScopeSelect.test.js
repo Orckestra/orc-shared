@@ -7,12 +7,12 @@ import sinon from "sinon";
 import useScopeSelect from "./useScopeSelect";
 
 describe("useScopeSelect", () => {
-	const TestComp = ({ id, closeSelector }) => {
-		const [onClick, active] = useScopeSelect(id, closeSelector);
-		return <div data-active={active} onClick={onClick} />;
+	const TestComp = ({ id }) => {
+		const [navigate, active] = useScopeSelect(id);
+		return <div data-active={active} onClick={navigate} />;
 	};
 
-	let history, state, store, closer;
+	let history, state, store;
 	beforeEach(() => {
 		history = createMemoryHistory();
 		sinon.spy(history, "push");
@@ -32,28 +32,17 @@ describe("useScopeSelect", () => {
 			getState: () => state,
 			dispatch: () => {},
 		};
-		closer = sinon.spy().named("closer");
 	});
 
 	it("it provides a click handler to the enhanced component", () =>
 		expect(
 			<Provider store={store}>
 				<Router history={history}>
-					<TestComp id="Feep" closeSelector={closer} />
+					<TestComp id="Feep" />
 				</Router>
 			</Provider>,
 			"when mounted",
 			"with event",
 			"click",
-		).then(() =>
-			expect([history.push, closer], "to have calls satisfying", [
-				{
-					spy: history.push,
-					args: ["/Feep/Bar"],
-				},
-				{
-					spy: closer,
-				},
-			]),
-		));
+		).then(() => expect(history.push, "to have a call satisfying", { args: ["/Feep/Bar"] })));
 });

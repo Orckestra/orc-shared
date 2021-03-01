@@ -1,21 +1,21 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { IntlProvider } from "react-intl";
-import { MemoryRouter } from "react-router-dom";
 import { spyOnConsole } from "../../utils/testUtils";
 import inputs from "./Inputs";
 import Field from "./Field";
 import { FormContext } from "./Form";
 import { InputField } from "./InputField";
+import { TestWrapper, createMuiTheme } from "./../../utils/testUtils";
 
-const PatternWrapper = ({ store, children }) => (
-	<Provider store={store}>
-		<IntlProvider locale="en-US">
-			<MemoryRouter>{children}</MemoryRouter>
-		</IntlProvider>
-	</Provider>
-);
+const PatternWrapper = ({ store, children }) => {
+	const theme = createMuiTheme();
+
+	return (
+		<TestWrapper provider={{ store }} memoryRouter intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			{children}
+		</TestWrapper>
+	);
+};
 
 const SubjectWrapper = ({ store, values = {}, formName, index, children }) => {
 	const value = { values };

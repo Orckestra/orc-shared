@@ -109,7 +109,7 @@ describe("TreeItem", () => {
 	it("Calls scope select handler on label click if scope type is not virtual", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeItem scope={saleScope} rootId={rootId} closeSelector={closeSelectorSpy} />
+				<TreeItem scope={saleScope} rootId={rootId} onScopeSelect={closeSelectorSpy} />
 			</TestWrapper>
 		);
 
@@ -126,13 +126,13 @@ describe("TreeItem", () => {
 		saleScopeLabel.invoke("onLabelClick")(event);
 
 		expect(preventDefaultSpy, "was called");
-		expect(closeSelectorSpy, "to have a call satisfying", { args: [event] });
+		expect(closeSelectorSpy, "to have a call satisfying", { args: [event, saleScope.id] });
 	});
 
 	it("Does not calls scope select handler on label click if scope type is virtual", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeItem scope={virtualScope} rootId={rootId} closeSelector={closeSelectorSpy} />
+				<TreeItem scope={virtualScope} rootId={rootId} onScopeSelect={closeSelectorSpy} />
 			</TestWrapper>
 		);
 

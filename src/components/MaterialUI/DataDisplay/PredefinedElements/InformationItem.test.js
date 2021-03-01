@@ -1,7 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
 import { IntlProvider } from "react-intl";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import InformationItem from "./InformationItem";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
@@ -23,10 +22,10 @@ describe("Information Item", () => {
 		);
 
 		const expected = (
-			<Grid item>
+			<div>
 				<Typography children={label} />
 				<MultipleLinesText>{value}</MultipleLinesText>
-			</Grid>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -43,10 +42,10 @@ describe("Information Item", () => {
 		);
 
 		const expected = (
-			<Grid item>
+			<div>
 				<Typography children={label} />
 				<MultipleLinesText>{""}</MultipleLinesText>
-			</Grid>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -67,10 +66,10 @@ describe("Information Item", () => {
 
 		const expected = (
 			<IntlProvider locale="en-US" messages={messages}>
-				<Grid item>
+				<div>
 					<Typography children={label} />
 					<MultipleLinesText>{stringifyWithoutQuotes(messages["orc-shared.notAvailable"])}</MultipleLinesText>
-				</Grid>
+				</div>
 			</IntlProvider>
 		);
 
@@ -88,10 +87,10 @@ describe("Information Item", () => {
 		);
 
 		const expected = (
-			<Grid item>
+			<div>
 				<Typography children={label} />
 				{value}
-			</Grid>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -106,7 +105,7 @@ describe("Information Item", () => {
 			</IntlProvider>
 		);
 
-		const expected = <Grid item>{value}</Grid>;
+		const expected = <div>{value}</div>;
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});
@@ -124,10 +123,10 @@ describe("Information Item", () => {
 		);
 
 		const expected = (
-			<Grid item>
+			<div>
 				<Typography children={label.defaultMessage} />
 				{value}
-			</Grid>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);

@@ -118,6 +118,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.delete",
 		defaultMessage: "Delete",
 	},
+	add: {
+		id: "orc-shared.add",
+		defaultMessage: "Add",
+	},
 	remove: {
 		id: "orc-shared.remove",
 		defaultMessage: "Remove",
@@ -129,6 +133,22 @@ const sharedMessages = defineMessages({
 	showFewerLanguages: {
 		id: "orc-shared.showFewerLanguages",
 		defaultMessage: "Show fewer languages",
+	},
+	fieldIsRequired: {
+		id: "orc-shared.fieldIsRequired",
+		defaultMessage: "This field is required",
+	},
+	next: {
+		id: "orc-shared.next",
+		defaultMessage: "Next",
+	},
+	back: {
+		id: "orc-shared.back",
+		defaultMessage: "Back",
+	},
+	saveAndClose: {
+		id: "orc-shared.saveAndClose",
+		defaultMessage: "Save And Close",
 	},
 });
 
