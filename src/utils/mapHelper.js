@@ -12,17 +12,25 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 	// 		modelName: "modelName2",
 	// 		domainName: "domainName2"
 	// 	},
+	// 	{
+	// 		modelName: "modelName3",
+	// 		transform: (model, modelValue, result) => { /* Custom mapping code. */ }
+	// 	},
 	// ]
 	// if you don't need this - just don't pass any value for that parameter
 
 	const result = cloneDeep(initialModel);
 
-	const modifiedFeilds = Object.keys(model);
+	const modifiedFields = Object.keys(model);
 
-	modifiedFeilds.forEach(modifiedFeild => {
+	modifiedFields.forEach(modifiedFeild => {
 		const tempRule = mappingRules.find(rule => rule.modelName === modifiedFeild);
 		if (tempRule != null) {
-			result[tempRule.domainName] = model[tempRule.modelName].value;
+			if (tempRule.transform) {
+				tempRule.transform(model, model[tempRule.modelName].value, result);
+			} else {
+				result[tempRule.domainName] = model[tempRule.modelName].value;
+			}
 		} else {
 			result[modifiedFeild] = model[modifiedFeild].value;
 		}
