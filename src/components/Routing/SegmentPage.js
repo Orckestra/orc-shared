@@ -8,6 +8,38 @@ import { TabBar } from "../Navigation/Bar";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
+import { getModifiedSections, getSectionsWithErrors } from "./../../selectors/view";
+import { useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { tryGetNewEntityIdKey } from "./../../utils/urlHelper";
+
+const useStyles = makeStyles(theme => ({
+	asterix: {
+		marginLeft: theme.spacing(0.5),
+	},
+	label: {
+		color: theme.palette.text.primary,
+		fontWeight: theme.typography.fontWeightSemiBold,
+		fontSize: theme.typography.fontSize,
+		maxWidth: theme.spacing(15),
+	},
+	modifiedLabel: {
+		color: theme.palette.text.primary,
+		fontWeight: theme.typography.fontWeightBold,
+	},
+	errorLabel: {
+		color: theme.palette.error.main,
+		fontWeight: theme.typography.fontWeightBold,
+	},
+	disabledLabel: {
+		color: theme.palette.grey.icon,
+	},
+	labelComponent: {
+		margin: `0 ${theme.spacing(1)}`,
+	},
+}));
 
 export const Wrapper = styled.div`
 	box-sizing: border-box;
@@ -29,7 +61,7 @@ export const List = styled.div`
 	flex-direction: column;
 `;
 
-const FilteredLink = ({ active, ...props }) => <Link {...props} />;
+const FilteredLink = ({ active, ...props }) => (props.to ? <Link {...props} /> : <div {...props} />);
 
 export const Item = styled(FilteredLink)`
 	display: block;
@@ -54,12 +86,71 @@ export const Item = styled(FilteredLink)`
 	)};
 `;
 
+export const SegmentItem = ({ isModified, isError, isActive, segpath, config, baseHref, params }) => {
+	const classes = useStyles();
+	let hideSelector = state => (typeof config.hide === "function" ? config.hide(params)(state) : config.hide ?? false);
+	const isHide = useSelector(hideSelector);
+	const asterix = <span className={classes.asterix}>*</span>;
+	const text = <Text message={config.label} />;
+	const basicLabel =
+		config.labelComponent != null ? (
+			<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} />
+		) : (
+			text
+		);
+	const getSectionLabelClassName = (isModified, isError, isDisabled) => {
+		let className = classes.label;
+		if (isModified) className = `${className} ${classes.modifiedLabel}`;
+		if (isError) className = `${className} ${classes.errorLabel}`;
+		if (isDisabled) className = `${className} ${classes.disabledLabel}`;
+
+		return className;
+	};
+
+	let disableSelector = state =>
+		typeof config.disabled === "function" ? config.disabled(params)(state) : config.disabled ?? false;
+	const isDisabled = useSelector(disableSelector);
+	const sectionLabelClassName = getSectionLabelClassName(isModified, isError, isDisabled);
+	const finalLabel = (
+		<Grid container justify="space-between">
+			<Grid item className={sectionLabelClassName}>
+				{basicLabel}
+				{isModified ? asterix : null}
+			</Grid>
+			<Grid item className={classes.labelComponent}>
+				{config.labelComponent}
+			</Grid>
+		</Grid>
+	);
+
+	return (
+		<>
+			{!isHide && isDisabled && <Item>{finalLabel}</Item>}
+			{!isHide && !isDisabled && (
+				<Item to={baseHref + segpath} active={isActive}>
+					{finalLabel}
+				</Item>
+			)}
+		</>
+	);
+};
+
 const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath }) => {
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
 		subpages = [];
-	const segmentElements = Object.entries(segments).map(([segpath, config]) => {
+	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
+	let entityId = match.params[entityIdKey];
+	if (!entityId) {
+		entityId = tryGetNewEntityIdKey(baseHref);
+	}
+
+	const modifiedSections = useSelector(getModifiedSections(entityId));
+	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
+	const segmentEntries = Object.entries(segments);
+
+	const segmentElements = segmentEntries.map(([segpath, config]) => {
 		if (config.pages) {
 			pages.push(
 				...Object.entries(config.pages).map(([subpath, pageConfig]) => {
@@ -106,6 +197,7 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 			/>
 		);
 	});
+
 	return (
 		<Switch>
 			{pages}
@@ -114,11 +206,23 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 					View ? <View key="View" /> : null,
 					<Wrapper key="Segments">
 						<List>
-							{Object.entries(segments).map(([segpath, config]) => (
-								<Item key={segpath} to={baseHref + segpath} active={location.pathname === baseHref + segpath}>
-									{React.isValidElement(config.label) === true ? config.label : <Text message={config.label} />}
-								</Item>
-							))}
+							{segmentEntries.map(([segpath, config]) => {
+								const isModified = modifiedSections.includes(segpath.replace("/", ""));
+								const isError = sectionsWithErrors.includes(segpath.replace("/", ""));
+								const isActive = location.pathname === baseHref + segpath;
+								return (
+									<SegmentItem
+										key={segpath}
+										isModified={isModified}
+										isError={isError}
+										segpath={segpath}
+										config={config}
+										isActive={isActive}
+										baseHref={baseHref}
+										params={match.params}
+									/>
+								);
+							})}
 						</List>
 						<Switch>
 							{segmentElements}

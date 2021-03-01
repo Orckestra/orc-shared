@@ -1,385 +1,668 @@
 import React from "react";
-import { mount } from "enzyme"
+import { mount } from "enzyme";
 import TabBar, { TabLink } from "./TabBar";
-import Tabs from '@material-ui/core/Tabs';
+import Tabs from "@material-ui/core/Tabs";
 import TabLabel from "./TabLabel";
-import Tab from '@material-ui/core/Tab';
+import Tab from "@material-ui/core/Tab";
 import Select from "../Inputs/Select";
 import SelectProps from "../Inputs/SelectProps";
 import Icon from "../DataDisplay/Icon";
-import { Provider } from "react-redux";
-import { IntlProvider } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import Immutable from "immutable";
-import { Router, MemoryRouter } from "react-router-dom";
 import ResizeDetector from "react-resize-detector";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
 import SelectMUI from "@material-ui/core/Select";
 import { Link } from "react-router-dom";
+import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
+import { removeEditNode } from "./../../../actions/view";
 import * as domHelper from "./../../../utils/domHelper";
+import * as useDispatchWithModulesData from "./../../../hooks/useDispatchWithModulesData";
+import * as ReactMock from "react";
+import sharedMessages from "./../../../sharedMessages";
+import { TestWrapper, createMuiTheme, extractMessages } from "./../../../utils/testUtils";
+
+const messages = extractMessages(sharedMessages);
 
 describe("TabBar", () => {
-  let store, state;
-  const history = createMemoryHistory({ initialEntries: ["/"] });
-  sinon.spy(history, "push");
+	let store, state;
+	const history = createMemoryHistory({ initialEntries: ["/"] });
+	sinon.spy(history, "push");
 
-  const messages = {
-    module1: { id: "module1", defaultMessage: "Module 1" },
-    page1: { id: "page1", defaultMessage: "Page 1" },
-    page2: { id: "page2", defaultMessage: "Page 2" },
-    page3: { id: "page3", defaultMessage: "Page 3" },
-  };
+	const module = {
+		icon: "cloud",
+		label: messages.module1,
+		href: "/Scope1/module1",
+		active: true,
+	};
 
-  const module = {
-    icon: 'cloud',
-    label: messages.module1,
-    href: '/Scope1/module1',
-    active: true,
-  };
+	const pages = [
+		{
+			label: messages.page1,
+			href: "/Scope1/module1/page1",
+			params: { scope: "Scope1", entityId: "page1" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/:entityId",
+		},
+		{
+			label: messages.page2,
+			href: "/Scope1/module1/page2",
+			params: { scope: "Scope1", entityId: "page2" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/:entityId",
+		},
+		{
+			label: messages.page3,
+			href: "/Scope1/module1/page3",
+			params: { scope: "Scope1", entityId: "page3" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/:entityId",
+		},
+		{
+			label: messages.pageNew,
+			href: "/Scope1/module1/new",
+			params: { scope: "Scope1" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/new",
+		},
+	];
 
-  const pages = [
-    {
-      label: messages.page1,
-      href: '/Scope1/module1/page1',
-      active: false,
-      close: sinon.spy()
-    },
-    {
-      label: messages.page2,
-      href: '/Scope1/module1/page2',
-      active: false,
-      close: sinon.spy()
-    },
-    {
-      label: messages.page3,
-      href: '/Scope1/module1/page3',
-      active: false,
-      close: sinon.spy()
-    },
-  ];
+	const closeIcon = <Icon id="close" />;
 
-  const closeIcon = <Icon id="close" />;
+	const moduleIcon = <Icon id={module.icon} />;
 
-  const moduleIcon = <Icon id={module.icon} />;
+	const moduleTabLabel = <TabLabel label={messages.module1} />;
+	const page1TabLabel = <TabLabel label={messages.page1} />;
+	const page2TabLabel = <TabLabel label={messages.page2} />;
+	const page3TabLabel = <TabLabel label={messages.page3} />;
+	const pageNewTabLabel = <TabLabel label={messages.pageNew} />;
 
-  const moduleTabLabel = <TabLabel label={messages.module1} />;
-  const page1TabLabel = <TabLabel label={messages.page1} />;
-  const page2TabLabel = <TabLabel label={messages.page2} />;
-  const page3TabLabel = <TabLabel label={messages.page3} />;
+	const selectProps = new SelectProps();
+	selectProps.set(SelectProps.propNames.iconSelect, true);
+	selectProps.set(SelectProps.propNames.value, "");
+	selectProps.set(SelectProps.propNames.update, jest.fn());
 
-  const selectProps = new SelectProps();
-  selectProps.set(SelectProps.propNames.iconSelect, true);
-  selectProps.set(SelectProps.propNames.value, '');
-  selectProps.set(SelectProps.propNames.update, jest.fn());
+	const tabLabels = [];
 
-  const tabLabels = [];
+	tabLabels.push({
+		value: 0,
+		label: page1TabLabel,
+		sortOrder: 0,
+		outsideScope: false,
+	});
+	tabLabels.push({
+		value: 1,
+		label: page2TabLabel,
+		sortOrder: 1,
+		outsideScope: true,
+	});
+	tabLabels.push({
+		value: 2,
+		label: page3TabLabel,
+		sortOrder: 2,
+		outsideScope: false,
+	});
+	tabLabels.push({
+		value: 3,
+		label: pageNewTabLabel,
+		sortOrder: 3,
+		outsideScope: false,
+	});
 
-  tabLabels.push({
-    value: 0,
-    label: page1TabLabel,
-    sortOrder: 0,
-    outsideScope: false
-  });
-  tabLabels.push({
-    value: 1,
-    label: page2TabLabel,
-    sortOrder: 1,
-    outsideScope: true,
-  });
-  tabLabels.push({
-    value: 2,
-    label: page3TabLabel,
-    sortOrder: 2,
-    outsideScope: false
-  });
+	const select = (
+		<div>
+			<Select options={tabLabels} selectProps={selectProps} />
+		</div>
+	);
 
-  const select = <div><Select options={tabLabels} selectProps={selectProps} /></div>;
+	const expectedModuleTab = (
+		<Tab label={moduleTabLabel} key={module.href} to={module.href} icon={moduleIcon} component={TabLink} />
+	);
 
-  const expectedModuleTab = (
-    <Tab
-      label={moduleTabLabel}
-      key={module.href}
-      to={module.href}
-      icon={moduleIcon}
-      component={TabLink}
-    />
-  );
+	const wrappedPage1TabLabel = (
+		<div>
+			<TabLabel label={messages.page1} />
+		</div>
+	);
+	const wrappedPage2TabLabel = (
+		<div>
+			<TabLabel label={messages.page2} />
+		</div>
+	);
+	const wrappedPage3TabLabel = (
+		<div>
+			<TabLabel label={messages.page3} />
+			<span>*</span>
+		</div>
+	);
+	const wrappedPageNewTabLabel = (
+		<div>
+			<TabLabel label={messages.pageNew} />
+			<span>*</span>
+		</div>
+	);
 
-  const expectedTabs = (
-    <Tabs
-      value={false}
-      variant="scrollable"
-      scrollButtons="auto"
-    >
-      <Tab
-        label={page1TabLabel}
-        key={pages[0].href}
-        to={pages[0].href}
-        value={0}
-        component={TabLink}
-        close={closeIcon}
-        disabled={pages[0].outsideScope}
-      />
-      <Tab
-        label={page2TabLabel}
-        key={pages[1].href}
-        to={pages[1].href}
-        value={1}
-        component={TabLink}
-        close={closeIcon}
-        disabled={pages[1].outsideScope}
-      />
-      <Tab
-        label={page3TabLabel}
-        key={pages[2].href}
-        to={pages[2].href}
-        value={2}
-        component={TabLink}
-        close={closeIcon}
-        disabled={pages[2].outsideScope}
-      />
-    </Tabs>
-  );
+	const expectedTabs = (
+		<Tabs value={false} variant="scrollable" scrollButtons="auto">
+			<Tab
+				label={wrappedPage1TabLabel}
+				key={pages[0].href}
+				to={pages[0].href}
+				value={0}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[0].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage2TabLabel}
+				key={pages[1].href}
+				to={pages[1].href}
+				value={1}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[1].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage3TabLabel}
+				key={pages[2].href}
+				to={pages[2].href}
+				value={2}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[2].outsideScope}
+			/>
+			<Tab
+				label={wrappedPageNewTabLabel}
+				key={pages[3].href}
+				to={pages[3].href}
+				value={3}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[3].outsideScope}
+			/>
+		</Tabs>
+	);
 
-  beforeEach(() => {
-    state = Immutable.fromJS({});
-    store = {
-      subscribe: () => { },
-      getState: () => state,
-      dispatch: () => { },
-    };
-  });
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			modules: {
+				tree: {},
+			},
+			view: {
+				edit: {
+					module1: {
+						page3: {
+							section1: {
+								model: {
+									field1: {
+										value: "smth",
+										wasModified: true,
+									},
+								},
+							},
+						},
+						new: {
+							section1: {
+								model: {
+									field1: {
+										value: "smth",
+										wasModified: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			navigation: {
+				route: {
+					match: {
+						url: "/Scope1/module1/page1",
+						path: "/:scope/module1/page1",
+						params: { scope: "Scope1" },
+					},
+				},
+				config: { prependPath: "/:scope/", prependHref: "/Scope1/" },
+			},
+		});
+		store = {
+			subscribe: () => {},
+			getState: () => state,
+			dispatch: () => {},
+		};
+	});
 
-  it("Renders TabBar correctly", () => {
-    const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </MemoryRouter>
-      </Provider>
-    );
+	const theme = createMuiTheme();
 
-    const expected = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <IntlProvider locale="en">
-            <div>
-              <ResizeDetector />
-              {expectedModuleTab}
-              {expectedTabs}
-            </div>
-          </IntlProvider>
-        </MemoryRouter>
-      </Provider>
-    );
+	it("Renders TabBar correctly", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		const expected = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<ResizeDetector />
+					{expectedModuleTab}
+					{expectedTabs}
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
+				</div>
+			</TestWrapper>
+		);
 
-  it("Contains proper Select element when it's visible", () => {
-    const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </MemoryRouter>
-      </Provider>
-    );
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 
-    const setState = jest.fn();
-    const useStateSpy = jest.spyOn(React, 'useState')
-    useStateSpy.mockImplementation(() => [true, setState]);
+	it("Contains proper Select and Modal elements when they are visible", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-    const expected = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <IntlProvider locale="en">
-            <div>
-              <ResizeDetector />
-              {expectedModuleTab}
-              {expectedTabs}
-              {select}
-            </div>
-          </IntlProvider>
-        </MemoryRouter>
-      </Provider>
-    );
+		const setState = jest.fn();
+		const useStateSpy = jest.spyOn(React, "useState");
+		useStateSpy.mockImplementation(() => [true, setState]);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		const expected = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<ResizeDetector />
+					{expectedModuleTab}
+					{expectedTabs}
+					{select}
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={true} />
+				</div>
+			</TestWrapper>
+		);
 
-  it("Calls history.push to module link when module tab is clicked", () => {
-    const component = (
-      <Provider store={store}>
-        <Router history={history}>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </Router>
-      </Provider>
-    );
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 
-    const mountedComponent = mount(component);
+	it("Calls history.push to module link when module tab is clicked", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-    const moduleTab = mountedComponent.find(Tab).at(0);
+		const mountedComponent = mount(component);
 
-    moduleTab.simulate("click");
+		const moduleTab = mountedComponent.find(Tab).at(0);
 
-    expect(history.push, "to have a call satisfying", { args: [module.href] });
-  });
+		moduleTab.simulate("click");
 
-  it("Calls history.push to page link when page tab is clicked", () => {
-    const component = (
-      <Provider store={store}>
-        <Router history={history}>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </Router>
-      </Provider>
-    );
+		expect(history.push, "to have a call satisfying", { args: [module.href] });
+	});
 
-    const mountedComponent = mount(component);
+	it("Calls history.push to page link when page tab is clicked", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-    const pageTab = mountedComponent.find(Tab).at(1);
+		const mountedComponent = mount(component);
 
-    pageTab.simulate("click");
+		const pageTab = mountedComponent.find(Tab).at(1);
 
-    expect(history.push, "to have a call satisfying", { args: [pages[0].href] });
-  });
+		pageTab.simulate("click");
 
-  it("Calls history.push to page link when page tab is selected via Select", () => {
-    const component = (
-      <Provider store={store}>
-        <Router history={history}>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </Router>
-      </Provider>
-    );
+		expect(history.push, "to have a call satisfying", { args: [pages[0].href] });
+	});
 
-    const setState = jest.fn();
-    const useStateSpy = jest.spyOn(React, 'useState')
-    useStateSpy.mockImplementation(() => [true, setState]);
+	it("Calls history.push to page link when page tab is selected via Select", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-    const mountedComponent = mount(component);
+		const setState = jest.fn();
+		const useStateSpy = jest.spyOn(React, "useState");
+		useStateSpy.mockImplementation(() => [true, setState]);
 
-    const select = mountedComponent.find(SelectMUI);
+		const mountedComponent = mount(component);
 
-    select.invoke("onChange")({ target: { value: 2 } });
+		const select = mountedComponent.find(SelectMUI);
 
-    expect(history.push, "to have a call satisfying", { args: [pages[2].href] });
-  });
+		select.invoke("onChange")({ target: { value: 2 } });
 
-  it("Calls correct close callback when close icon for specific page tab is clicked", () => {
-    const component = (
-      <Provider store={store}>
-        < MemoryRouter>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </MemoryRouter>
-      </Provider>
-    );
+		expect(history.push, "to have a call satisfying", { args: [pages[2].href] });
+	});
 
-    const mountedComponent = mount(component);
+	it("Calls correct close callback when close icon for specific page tab is clicked and tab was not modified", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-    const pageTab = mountedComponent.find(Tab).at(1);
-    const closeIcon = pageTab.find(Icon);
+		const mountedComponent = mount(component);
 
-    closeIcon.simulate("click");
+		const pageTab = mountedComponent.find(Tab).at(1);
+		const closeIcon = pageTab.find(Icon);
 
-    expect(pages[0].close, "was called")
-  });
+		closeIcon.simulate("click");
 
-  it("Handles onResize correct when isScrollVisible returns false", () => {
-    const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </MemoryRouter>
-      </Provider>
-    );
+		expect(pages[0].close, "was called");
+	});
 
-    const setState = sinon.spy();
-    const useStateSpy = jest.spyOn(React, 'useState')
-    useStateSpy.mockImplementation((value) => [value, setState]);
+	it("Calls correct close callback when close icon for specific page tab is clicked and tab was modified", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-    const isScrollVisibleStub = sinon.stub(domHelper, "isScrollVisible").returns(false);
+		const setState = sinon.spy();
+		const useStateSpy = jest.spyOn(React, "useState");
+		useStateSpy.mockImplementation(value => [value, setState]);
 
-    const mountedComponent = mount(component);
+		const mountedComponent = mount(component);
 
-    const resizeDetector = mountedComponent.find(ResizeDetector);
+		const pageTab = mountedComponent.find(Tab).at(3);
+		const closeIcon = pageTab.find(Icon);
 
-    resizeDetector.invoke("onResize")();
+		closeIcon.simulate("click");
 
-    expect(isScrollVisibleStub.getCall(0).args[0].className, "to equal", "MuiTabs-flexContainer");
+		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[2].close, href: pages[2].href }] });
 
-    expect(setState, "to have a call satisfying", { args: [false] });
+		expect(setState, "to have a call satisfying", { args: [true] });
+	});
 
-    isScrollVisibleStub.restore();
-  });
+	it("Handles onResize correct when isScrollVisible returns false", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
 
-  it("Handles onResize correct when isScrollVisible returns true", () => {
-    const component = (
-      <Provider store={store}>
-        <MemoryRouter>
-          <IntlProvider locale="en">
-            <TabBar module={module} pages={pages} />
-          </IntlProvider>
-        </MemoryRouter>
-      </Provider>
-    );
+		const setState = sinon.spy();
+		const useStateSpy = jest.spyOn(React, "useState");
+		useStateSpy.mockImplementation(value => [value, setState]);
 
-    const setState = sinon.spy();
-    const useStateSpy = jest.spyOn(React, 'useState')
-    useStateSpy.mockImplementation((value) => [value, setState]);
+		const isScrollVisibleStub = sinon.stub(domHelper, "isScrollVisible").returns(false);
 
-    const mountedComponent = mount(component);
+		const mountedComponent = mount(component);
 
-    const isScrollVisibleStub = sinon.stub(domHelper, "isScrollVisible").returns(true);
+		const resizeDetector = mountedComponent.find(ResizeDetector);
 
-    const resizeDetector = mountedComponent.find(ResizeDetector);
+		resizeDetector.invoke("onResize")();
 
-    resizeDetector.invoke("onResize")();
+		expect(isScrollVisibleStub.getCall(0).args[0].className, "to equal", "MuiTabs-flexContainer");
 
-    expect(isScrollVisibleStub.getCall(0).args[0].className, "to equal", "MuiTabs-flexContainer");
+		expect(setState, "to have a call satisfying", { args: [false] });
 
-    expect(setState, "to have a call satisfying", { args: [true] });
+		isScrollVisibleStub.restore();
+		useStateSpy.mockRestore();
+	});
 
-    isScrollVisibleStub.restore();
-  });
+	it("Handles onResize correct when isScrollVisible returns true", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const setState = sinon.spy();
+		const useStateSpy = jest.spyOn(React, "useState");
+		useStateSpy.mockImplementation(value => [value, setState]);
+
+		const mountedComponent = mount(component);
+
+		const isScrollVisibleStub = sinon.stub(domHelper, "isScrollVisible").returns(true);
+
+		const resizeDetector = mountedComponent.find(ResizeDetector);
+
+		resizeDetector.invoke("onResize")();
+
+		expect(isScrollVisibleStub.getCall(0).args[0].className, "to equal", "MuiTabs-flexContainer");
+
+		expect(setState, "to have a call satisfying", { args: [true] });
+
+		isScrollVisibleStub.restore();
+		useStateSpy.mockRestore();
+	});
+
+	it("Closes tab when ok callback in confirmation modal is triggered", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const dispatchSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesData, "useDispatchWithModulesData")
+			.returns(dispatchSpy);
+
+		const useStateStub = sinon.stub(ReactMock, "useState");
+		useStateStub.withArgs(undefined).returns([{ closeCallback: pages[2].close, href: pages[2].href }, jest.fn()]);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(3);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		let confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		confirmationModal.invoke("okCallback")();
+
+		confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		expect(confirmationModal.prop("open"), "to be false");
+		expect(pages[2].close, "was called");
+		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, [pages[2].params.entityId]] });
+
+		useDispatchWithModulesDataStub.restore();
+		useStateStub.restore();
+	});
+
+	it("Closes confirmation modal when cancelCallback is triggered", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(3);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		let confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		confirmationModal.invoke("cancelCallback")();
+
+		confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		expect(confirmationModal.prop("open"), "to be false");
+	});
+
+	it("Closes confirmation modal when backdropClickCallback is triggered", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(3);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		let confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		confirmationModal.invoke("backdropClickCallback")();
+
+		confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		expect(confirmationModal.prop("open"), "to be false");
+	});
+
+	it("Remove edit mode for new tab with modifications when close ok callback in confirmation modal is triggered", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const dispatchSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesData, "useDispatchWithModulesData")
+			.returns(dispatchSpy);
+
+		const useStateStub = sinon.stub(ReactMock, "useState");
+		useStateStub.withArgs(undefined).returns([{ closeCallback: pages[3].close, href: pages[3].href }, jest.fn()]);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(4);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		let confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		confirmationModal.invoke("okCallback")();
+
+		confirmationModal = mountedComponent.find(ConfirmationModal);
+
+		expect(confirmationModal.prop("open"), "to be false");
+		expect(pages[3].close, "was called");
+		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, ["new"]] });
+
+		useDispatchWithModulesDataStub.restore();
+		useStateStub.restore();
+	});
 });
 
 describe("TabLink", () => {
-  it("Renders TabLink correctly", () => {
-    const href = "link";
-    const child = <div>child</div>;
-    const close = <div>close</div>;
+	it("Renders TabLink correctly", () => {
+		const href = "link";
+		const child = <div>child</div>;
+		const close = <div>close</div>;
 
-    const component = (
-      <MemoryRouter>
-        <TabLink to={href} close={close}>
-          {child}
-        </TabLink>
-      </MemoryRouter>
-    );
+		const component = (
+			<TestWrapper memoryRouter>
+				<TabLink to={href} close={close}>
+					{child}
+				</TabLink>
+			</TestWrapper>
+		);
 
-    const expected = (
-      <MemoryRouter>
-        <Link to={href}>
-          {child}
-          {close}
-        </Link>
-      </MemoryRouter>
-    );
+		const expected = (
+			<TestWrapper memoryRouter>
+				<Link to={href}>
+					{child}
+					{close}
+				</Link>
+			</TestWrapper>
+		);
 
-    expect(component, "when mounted", "to satisfy", expected);
-  });
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 });

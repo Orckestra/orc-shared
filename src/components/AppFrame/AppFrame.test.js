@@ -142,7 +142,7 @@ describe("AppFrame", () => {
 				},
 			},
 			locale: {
-				locale: "en",
+				locale: "en-US",
 				supportedLocales: [],
 				cultures: {
 					"en-US": {
@@ -186,7 +186,7 @@ describe("AppFrame", () => {
 			toasts: { queue: [] },
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};

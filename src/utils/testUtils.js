@@ -3,6 +3,12 @@ import { isStyledComponent } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { Ignore } from "unexpected-reaction";
 import createThemes from "./../components/MaterialUI/muiThemes";
+import { Router, MemoryRouter } from "react-router-dom";
+import { MuiThemeProvider } from "@material-ui/core";
+import { StylesProvider } from "@material-ui/core/styles";
+import { IntlProvider } from "react-intl";
+import { Provider } from "react-redux";
+
 const sinon = require("sinon");
 
 /* istanbul ignore next */
@@ -67,8 +73,8 @@ export const PropStruct = React.forwardRef((props, ref) => (
 				value === undefined || value === null
 					? null
 					: value === "__ignore"
-						? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
-						: [
+					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
+					: [
 							<dt key={"dt-" + key}>{`${key}:`}</dt>,
 							<dd key={"dd-" + key}>
 								{key === "children" ? (
@@ -77,8 +83,8 @@ export const PropStruct = React.forwardRef((props, ref) => (
 									value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
 										"React <" + (value.type.name || value.type) + ">"
 									) : (
-											<PropStruct {...value} />
-										)
+										<PropStruct {...value} />
+									)
 								) : typeof value === "function" ? (
 									"Function"
 								) : typeof value === "string" ? (
@@ -86,17 +92,17 @@ export const PropStruct = React.forwardRef((props, ref) => (
 								) : typeof value === "symbol" ? (
 									`symbol ${value.toString()}`
 								) : (
-														typeof value + " " + value
-													)}
+									typeof value + " " + value
+								)}
 							</dd>,
-						],
+					  ],
 			)}
 	</dl>
 ));
 
 export const ignoreConsoleError = func => {
 	jest.spyOn(console, "error");
-	console.error.mockImplementation(() => { });
+	console.error.mockImplementation(() => {});
 
 	func();
 
@@ -129,4 +135,81 @@ export const createMuiTheme = () => {
 
 export const generateClassName = (rule, styleSheet) => {
 	return `${styleSheet.options.classNamePrefix}-${rule.key}`;
+};
+
+export function extractMessages() {
+	const extractedMessages = {};
+
+	for (let i = 0; i < arguments.length; i++) {
+		const messages = arguments[i];
+		for (const property in messages) {
+			const message = messages[property];
+			extractedMessages[message.id] = message.defaultMessage;
+		}
+	}
+	return extractedMessages;
+}
+
+export const TestWrapper = ({
+	provider,
+	intlProvider,
+	router,
+	memoryRouter,
+	stylesProvider,
+	muiThemeProvider,
+	children,
+}) => {
+	const ProviderWrapper = ({ children }) => {
+		if (provider == null) return children;
+
+		return <Provider store={provider.store}>{children}</Provider>;
+	};
+
+	const IntlProvderWrapper = ({ children }) => {
+		if (intlProvider == null) return children;
+
+		return (
+			<IntlProvider locale="en-US" timeZone="UTC" messages={intlProvider.messages}>
+				{children}
+			</IntlProvider>
+		);
+	};
+
+	const StylesProviderWrapper = ({ children }) => {
+		if (stylesProvider == null) return children;
+
+		return <StylesProvider generateClassName={generateClassName}>{children}</StylesProvider>;
+	};
+
+	const MuiThemeProviderWrapper = ({ children }) => {
+		if (muiThemeProvider == null) return children;
+
+		return <MuiThemeProvider theme={muiThemeProvider.theme}>{children}</MuiThemeProvider>;
+	};
+
+	const MemoryRouterWrapper = ({ children }) => {
+		if (memoryRouter == null) return children;
+
+		return <MemoryRouter initialEntries={memoryRouter.initialEntries}>{children}</MemoryRouter>;
+	};
+
+	const RouterWrapper = ({ children }) => {
+		if (router == null) return children;
+
+		return <Router history={router.history}>{children}</Router>;
+	};
+
+	return (
+		<ProviderWrapper>
+			<RouterWrapper>
+				<MemoryRouterWrapper>
+					<IntlProvderWrapper>
+						<StylesProviderWrapper>
+							<MuiThemeProviderWrapper>{children}</MuiThemeProviderWrapper>
+						</StylesProviderWrapper>
+					</IntlProvderWrapper>
+				</MemoryRouterWrapper>
+			</RouterWrapper>
+		</ProviderWrapper>
+	);
 };

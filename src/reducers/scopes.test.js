@@ -3,8 +3,7 @@ import { GET_SCOPES_SUCCESS } from "../actions/scopes";
 import reducer from "./scopes";
 
 describe("scopes", () => {
-	it("behaves as a reducer should", () =>
-		expect(reducer, "to be a reducer with initial state", {}));
+	it("behaves as a reducer should", () => expect(reducer, "to be a reducer with initial state", {}));
 
 	it("saves a normalized index of scopes with child lists, keys all lower case", () => {
 		const oldState = Immutable.Map({ Global: {} });
@@ -19,11 +18,7 @@ describe("scopes", () => {
 					},
 					{
 						id: "SecondChild",
-						children: [
-							{ id: "ThirdGrandchild" },
-							{ id: "FourthGrandchild" },
-							{ id: "FifthGrandchild" },
-						],
+						children: [{ id: "ThirdGrandchild" }, { id: "FourthGrandchild" }, { id: "FifthGrandchild" }],
 					},
 				],
 			},

@@ -26,16 +26,13 @@ const Divider = ({ dividerProps }) => {
 		throw new TypeError("dividerProps property is not of type DividerProps");
 	}
 
-	const orientation =
-		dividerProps?.get(DividerProps.propNames.orientation) || "horizontal";
+	const orientation = dividerProps?.get(DividerProps.propNames.orientation) || "horizontal";
 	const light = dividerProps?.get(DividerProps.propNames.light) || false;
 	const variant = dividerProps?.get(DividerProps.propNames.variant) || "fullWidth";
 	const flexItem = dividerProps?.get(DividerProps.propNames.flexItem) || false;
 
 	const fullWidthHorizontalStyle =
-		variant === "fullWidth" && orientation === "horizontal"
-			? classes.inheritedWidth
-			: null;
+		variant === "fullWidth" && orientation === "horizontal" ? classes.inheritedWidth : null;
 
 	return (
 		<DividerMui
@@ -49,14 +46,8 @@ const Divider = ({ dividerProps }) => {
 					fullWidthHorizontalStyle,
 					dividerProps?.getStyle(DividerProps.ruleNames.root),
 				),
-				light: classNames(
-					classes.dividerLight,
-					dividerProps?.getStyle(DividerProps.ruleNames.light),
-				),
-				vertical: classNames(
-					classes.dividerVertical,
-					dividerProps?.getStyle(DividerProps.ruleNames.vertical),
-				),
+				light: classNames(classes.dividerLight, dividerProps?.getStyle(DividerProps.ruleNames.light)),
+				vertical: classNames(classes.dividerVertical, dividerProps?.getStyle(DividerProps.ruleNames.vertical)),
 				middle: classNames(dividerProps?.getStyle(DividerProps.ruleNames.middle)),
 				inset: classNames(dividerProps?.getStyle(DividerProps.ruleNames.inset)),
 			}}

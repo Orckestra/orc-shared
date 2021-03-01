@@ -5,7 +5,7 @@ class DividerProps extends ComponentProps {
 		orientation: "orientation",
 		light: "light",
 		variant: "variant",
-		flexItem: "flexItem"
+		flexItem: "flexItem",
 	};
 
 	static ruleNames = {

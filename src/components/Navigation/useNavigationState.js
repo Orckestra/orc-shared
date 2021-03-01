@@ -12,14 +12,35 @@ import {
 import { scopeGetter } from "../../selectors/scope";
 import { getModuleNameFromHref } from "../../utils/parseHelper";
 
+const doesRestPathMatchParams = (params, paramPathSplit, restPath) => {
+	var restPathMatchParams = true;
+
+	for (var i = 1; i < paramPathSplit.length; i++) {
+		if (restPath[i - 1] !== "/" + params[paramPathSplit[i]]) {
+			restPathMatchParams = false;
+			break;
+		}
+	}
+
+	return restPathMatchParams;
+}
+
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	let page = pages[pathStep];
 	if (!page) {
 		const paramPath =
 			// Only one should exist
 			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || "";
-		if (pathStep === "/" + params[paramPath.replace(/^\/:/, "")]) {
-			page = pages[paramPath];
+
+		const paramPathSplit = paramPath.replace(/^\/:/, "").split("/:");
+		const firstStepMatchParams = pathStep === "/" + params[paramPathSplit[0]];
+
+		if (firstStepMatchParams) {
+			if (paramPathSplit.length === 1) {
+				page = pages[paramPath];
+			} else if (paramPathSplit.length - 1 === restPath.length && doesRestPathMatchParams(params, paramPathSplit, restPath)) {
+				return pages[paramPath];
+			}
 		}
 	}
 	if (restPath.length === 0 || !page) {
@@ -38,6 +59,7 @@ const redirectScopeWhenRequired = (isPageTab, pageScopeSelector, rawPage, curren
 	const scopeChanged = params.scope && params.scope !== currentScope;
 	const currentScopeDefinition = scopeDefinitionGetter(currentScope);
 	const currentScopePath = currentScopeDefinition ? currentScopeDefinition.scopePath : [];
+
 	let outsideScope = scopeChanged;
 
 	if (isPageTab && pageScopeSelector) {
@@ -135,15 +157,15 @@ export const useNavigationState = modules => {
 		// Modules do not have close functions
 		const close = isPageTab
 			? event => {
-				dispatch(removeTab(moduleName, page.href));
-				if (currentHref === href) {
-					dispatch(push(moduleHref));
-				}
-				if (event) {
-					event.stopPropagation();
-					event.preventDefault();
-				}
-			}
+					dispatch(removeTab(moduleName, page.href));
+					if (currentHref === href) {
+						dispatch(push(moduleHref));
+					}
+					if (event) {
+						event.stopPropagation();
+						event.preventDefault();
+					}
+			  }
 			: undefined;
 
 		return {

@@ -18,13 +18,7 @@ describe("SmallButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<SmallButton
-					id="testId"
-					update={update}
-					icon="test-icon"
-					altText="Alternative"
-					otherProp
-				/>
+				<SmallButton id="testId" update={update} icon="test-icon" altText="Alternative" otherProp />
 			</Provider>,
 			"when mounted",
 			"to satisfy",

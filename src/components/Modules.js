@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { getCurrentScope } from "../selectors/navigation";
+import { isCurrentScopeAuthorizedSelector } from "../selectors/scope";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 import { setHrefConfig } from "../actions/navigation";
-import { initializeEditTree } from "../actions/view";
 import { setModulesStructure } from "../actions/modules";
+import { defaultScopeSelector } from "../selectors/settings";
 
 export const Module = withErrorBoundary("Module")(({ config, path, error, location, match, modulePrependPath }) => {
 	return (
@@ -20,6 +22,11 @@ const getHrefFromPath = (path, scope) => path.replace(":scope", scope);
 export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } = {} }) => {
 	const dispatch = useDispatch();
 	const scope = useSelector(getCurrentScope);
+	const isAuthorizedScope = useSelector(isCurrentScopeAuthorizedSelector);
+	const defaultScope = useSelector(defaultScopeSelector);
+	const history = useHistory();
+	const location = useLocation();
+
 	const scopePath = "/:scope/";
 	const prependPath = customPath || scopePath;
 	const prependHref = getHrefFromPath(prependPath, scope);
@@ -36,9 +43,16 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 	const getModuleConfig = name => (otherConfigs && otherConfigs[name]) || { prependPath, prependHref };
 	const firstModuleName = Object.keys(modules)[0];
 
+	useEffect(() => {
+		const { pathname, search } = location;
+		if (!isAuthorizedScope && pathname.includes(scope) && defaultScope) {
+			history.push(pathname.replace(scope, defaultScope) + search);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isAuthorizedScope, defaultScope, history, scope]);
+
 	React.useEffect(() => {
 		dispatch(setModulesStructure(modules));
-		dispatch(initializeEditTree(modules));
 	}, [dispatch, modules]);
 
 	return (

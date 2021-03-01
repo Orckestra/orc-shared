@@ -10,7 +10,7 @@ import {
 	ExpansionPanelProps,
 	ExpansionPanelActionsProps,
 	isExpansionPanelProps,
-	isExpansionPanelActionsProps
+	isExpansionPanelActionsProps,
 } from "./expansionPanelProps";
 import useViewState from "../../../hooks/useViewState";
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		"&:focus": {
 			borderRadius: 0,
-		}
+		},
 	},
 	resetPadding: {
 		padding: "0 !important",

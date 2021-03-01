@@ -10,9 +10,7 @@ export const Relogin = () => {
 	if (!loggedOut) return null;
 	if (window.location.hostname === "localhost") {
 		console.log("%cYou have been logged out", "font-size: x-large");
-		console.log("Execute this function once logged in again to avoid interruption", () =>
-			clear(),
-		);
+		console.log("Execute this function once logged in again to avoid interruption", () => clear());
 		return null;
 	}
 	return <iframe title="relogin" src={window.location.origin} onLoad={clear} />;

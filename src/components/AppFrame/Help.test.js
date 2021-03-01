@@ -3,6 +3,11 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Help, { HelpLink } from "./Help";
+import { extractMessages } from "./../../utils/testUtils";
+import sharedMessages from "./../../sharedMessages";
+import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
+
+const messages = extractMessages(sharedMessages);
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -12,7 +17,7 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 describe("Help", () => {
-	let state, store, props, clicker, helpMessages, modalRoot;
+	let state, store, props, clicker, modalRoot;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			authentication: { name: "foo@bar.com" },
@@ -24,12 +29,8 @@ describe("Help", () => {
 			getState: () => state,
 		};
 		clicker = () => {};
-		helpMessages = {
-			help: { id: "msg.help", defaultMessage: "HELP" },
-		};
 		props = {
 			onClick: clicker,
-			messages: helpMessages,
 			helpUrl: "any_help_url.com",
 		};
 		modalRoot = document.createElement("div");
@@ -43,26 +44,24 @@ describe("Help", () => {
 	it("renders a help button", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
+				<IntlProvider locale="en-US" messages={messages}>
 					<Help {...props} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<HelpLink href="any_help_url.com">HELP</HelpLink>,
+			<HelpLink href="any_help_url.com">{stringifyWithoutQuotes(messages["orc-shared.help"])}</HelpLink>,
 		));
 
 	it("sets css for help button ", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
+				<IntlProvider locale="en-US" messages={messages}>
 					<Help {...props} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "cursor: pointer;")
-				.and("to contain", ":hover {color: #cccccc;}"),
+			expect.it("to contain", "cursor: pointer;").and("to contain", ":hover {color: #cccccc;}"),
 		));
 });

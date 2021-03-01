@@ -1,17 +1,15 @@
 import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { getThemeProp } from "../../utils";
 import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
-import Selector from "./Selector";
 import usePreviousModified from "../../hooks/usePreviousModified";
 import { unwrapImmutable } from "../../utils";
 import { defaultScopeSelector } from "../../selectors/settings";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import ScopeSelector from "./../MaterialUI/ScopeSelector/ScopeSelector";
 
 const useStyles = makeStyles(theme => ({
 	scopeButton: {
@@ -27,21 +25,23 @@ const useStyles = makeStyles(theme => ({
 		transform: "translateY(-50%)",
 		right: theme.spacing(2),
 	},
-	test: {
-		width: theme.spacing(20)
-	}
+	scopeBar: {
+		position: "relative",
+		borderBottom: `1px solid ${theme.palette.primary.main}`,
+		backgroundColor: theme.palette.grey.light,
+		width: "100%",
+		minHeight: theme.spacing(4.9),
+		userSelect: "none",
+	},
 }));
 
-export const Bar = styled.div`
-	position: relative;
-	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	background-color: ${getThemeProp(["colors", "bgLight"], "#efefef")};
-	width: 100%;
-	min-height: 49px;
-	user-select: none;
-`;
+export const Bar = props => {
+	const classes = useStyles();
 
-export const ScopeBar = ({ show, name, updateViewState }) => {
+	return <div className={classes.scopeBar}>{props.children}</div>;
+};
+
+export const ScopeBar = ({ show, name, updateViewState, disabled }) => {
 	const classes = useStyles();
 
 	const variant = show === true ? "contained" : "outlined";
@@ -52,30 +52,29 @@ export const ScopeBar = ({ show, name, updateViewState }) => {
 		<Bar>
 			<div className={classes.buttonContainer}>
 				<Button
+					disabled={disabled}
 					classes={{ root: classes.scopeButton, outlined: classes.outlinedButton }}
-					variant={variant} color="primary"
-					onClick={() => updateViewState("show", true)}>
-					<TooltippedTypography
-						noWrap
-						children={name}
-						titleValue={name}
-					/>
+					variant={variant}
+					color="primary"
+					onClick={() => updateViewState("show", true)}
+				>
+					<TooltippedTypography noWrap children={name} titleValue={name} />
 				</Button>
 			</div>
 		</Bar>
 	);
-}
+};
 
 ScopeBar.displayName = "ScopeBar";
 
-export const Scope = ({ children, filterPlaceholder }) => {
-	const name = "scopeSelector";
+export const SCOPE_SELECTOR_NAME = "scopeSelector";
+
+export const Scope = ({ children }) => {
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
-	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(name);
+	const [{ show = false, disabled, nodeState, filter }, updateViewState] = useViewState(SCOPE_SELECTOR_NAME);
 
 	const resetNodeState = useCallback(
-		current =>
-			current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
+		current => current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
 		[updateViewState, nodeState, defaultNodeState],
 	);
 	usePreviousModified(show, resetNodeState);
@@ -84,7 +83,7 @@ export const Scope = ({ children, filterPlaceholder }) => {
 		updateViewState("show", false);
 		event.stopPropagation();
 	};
-	const updateFilter = event => updateViewState("filter", event.target.value);
+	const updateFilter = event => updateViewState("filter", event);
 
 	return (
 		<React.Fragment>
@@ -93,10 +92,11 @@ export const Scope = ({ children, filterPlaceholder }) => {
 					name: currentScope.name,
 					show,
 					updateViewState,
+					disabled,
 				}}
 			/>
-			<Selector
-				name={name}
+			{/* <Selector
+				name={SCOPE_SELECTOR_NAME}
 				show={show}
 				reset={reset}
 				getScope={getScope}
@@ -104,7 +104,14 @@ export const Scope = ({ children, filterPlaceholder }) => {
 				currentScope={currentScope}
 				updateFilter={updateFilter}
 				defaultNodeState={{}}
-				filterPlaceholder={filterPlaceholder}
+			/> */}
+			<ScopeSelector
+				show={show}
+				getScope={getScope}
+				selectedScope={currentScope}
+				closeSelector={reset}
+				filter={filter}
+				updateFilter={updateFilter}
 			/>
 			{children}
 		</React.Fragment>

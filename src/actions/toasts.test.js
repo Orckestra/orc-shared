@@ -21,6 +21,5 @@ describe("pushToast", () => {
 });
 
 describe("shiftToast", () => {
-	it("creates a payloadless action", () =>
-		expect(shiftToast, "when called", "to equal", { type: SHIFT_TOAST }));
+	it("creates a payloadless action", () => expect(shiftToast, "when called", "to equal", { type: SHIFT_TOAST }));
 });

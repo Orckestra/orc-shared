@@ -36,7 +36,6 @@ PanelDrawer.defaultProps = {
 	width: "200px",
 };
 
-const Sidepanel = props =>
-	ReactDOM.createPortal(<PanelDrawer {...props} />, getModalRoot());
+const Sidepanel = props => ReactDOM.createPortal(<PanelDrawer {...props} />, getModalRoot());
 
 export default Sidepanel;

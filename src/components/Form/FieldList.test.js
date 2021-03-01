@@ -122,10 +122,7 @@ describe("FieldList", () => {
 				<List>
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values: {} }}>
-							<FieldElements
-								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-								labelOnly
-							/>
+							<FieldElements fields={[{ type: "TextInput", name: "data", label: "A label" }]} labelOnly />
 						</FormContext.Provider>
 					</IntlProvider>
 					<IntlProvider locale="en">
@@ -204,9 +201,7 @@ describe("FieldList", () => {
 								listIndex: 0,
 							}}
 						>
-							<FieldElements
-								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-							/>
+							<FieldElements fields={[{ type: "TextInput", name: "data", label: "A label" }]} />
 						</FormContext.Provider>
 					</IntlProvider>
 					<IntlProvider locale="en">
@@ -216,9 +211,7 @@ describe("FieldList", () => {
 								listIndex: 1,
 							}}
 						>
-							<FieldElements
-								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-							/>
+							<FieldElements fields={[{ type: "TextInput", name: "data", label: "A label" }]} />
 						</FormContext.Provider>
 					</IntlProvider>
 					<IntlProvider locale="en">
@@ -231,9 +224,7 @@ describe("FieldList", () => {
 								listIndex: 2,
 							}}
 						>
-							<FieldElements
-								fields={[{ type: "TextInput", name: "data", label: "A label" }]}
-							/>
+							<FieldElements fields={[{ type: "TextInput", name: "data", label: "A label" }]} />
 						</FormContext.Provider>
 					</IntlProvider>
 				</List>
@@ -273,9 +264,7 @@ describe("FieldList", () => {
 			{
 				type: "change",
 				value: "New Value",
-				target: `${getStyledClassSelector(
-					<List />,
-				)} > :nth-child(3) ${getStyledClassSelector(FormInput)}`,
+				target: `${getStyledClassSelector(<List />)} > :nth-child(3) ${getStyledClassSelector(FormInput)}`,
 			},
 		).then(() =>
 			expect(update, "to have calls satisfying", [
@@ -518,11 +507,7 @@ describe("FieldList", () => {
 							},
 						}}
 					>
-						<FieldList
-							name="testlistrowdel"
-							rowField={{ type: "TextInput", name: "data" }}
-							getUpdater={getUpdater}
-						/>
+						<FieldList name="testlistrowdel" rowField={{ type: "TextInput", name: "data" }} getUpdater={getUpdater} />
 					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
@@ -530,9 +515,7 @@ describe("FieldList", () => {
 			"with event",
 			{
 				type: "click",
-				target: `${getStyledClassSelector(
-					<List />,
-				)} > :nth-child(2) ${getStyledClassSelector(RoundButton)}`,
+				target: `${getStyledClassSelector(<List />)} > :nth-child(2) ${getStyledClassSelector(RoundButton)}`,
 			},
 		)
 			.then(() => clock.tick(1))
@@ -570,8 +553,6 @@ describe("List", () => {
 			<List tallRows />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to contain", "> .Field__FieldBox")
-				.and("to contain", "border-bottom: 1px solid"),
+			expect.it("to contain", "> .Field__FieldBox").and("to contain", "border-bottom: 1px solid"),
 		));
 });

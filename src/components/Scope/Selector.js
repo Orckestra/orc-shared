@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { injectIntl } from "react-intl";
 import { getThemeProp } from "../../utils";
 import Input from "../Input";
 import Treeview from "../Treeview";
 import ScopeNode from "./ScopeNode";
 import Sidepanel from "../Sidepanel";
 import withClickOutside from "../../hocs/withClickOutside";
+import { useIntl } from "react-intl";
+import sharedMessages from "./../../sharedMessages";
 
 export const Wrapper = withClickOutside(styled.div`
 	height: 100%;
@@ -36,42 +37,34 @@ export const SelectorPanel = styled(Sidepanel)`
 	z-index: 1000;
 `;
 
-export const Selector = ({
-	name,
-	show,
-	reset,
-	intl: renamedIntl,
-	getScope,
-	currentScope,
-	defaultNodeState,
-	filter,
-	updateFilter,
-	filterPlaceholder,
-}) => (
-	<SelectorPanel in={show} width="27vw" timeout={300}>
-		<Wrapper onClickOutside={reset}>
-			<InputBox>
-				<SearchInput
-					placeholder={filterPlaceholder && renamedIntl.formatMessage(filterPlaceholder)}
-					value={filter}
-					onChange={updateFilter}
+export const Selector = ({ name, show, reset, getScope, currentScope, defaultNodeState, filter, updateFilter }) => {
+	const { formatMessage } = useIntl();
+	return (
+		<SelectorPanel in={show} width="27vw" timeout={300}>
+			<Wrapper onClickOutside={reset}>
+				<InputBox>
+					<SearchInput
+						placeholder={formatMessage(sharedMessages.scopeFilterPlaceholder)}
+						value={filter}
+						onChange={updateFilter}
+					/>
+				</InputBox>
+				<Treeview
+					{...{
+						name,
+						Content: ScopeNode,
+						rootId: "Global",
+						getNode: getScope,
+						selectedNodeId: (currentScope && currentScope.id) || null,
+						openAll: !!filter,
+						closeSelector: reset,
+						dark: true,
+						defaultNodeState,
+					}}
 				/>
-			</InputBox>
-			<Treeview
-				{...{
-					name,
-					Content: ScopeNode,
-					rootId: "Global",
-					getNode: getScope,
-					selectedNodeId: (currentScope && currentScope.id) || null,
-					openAll: !!filter,
-					closeSelector: reset,
-					dark: true,
-					defaultNodeState,
-				}}
-			/>
-		</Wrapper>
-	</SelectorPanel>
-);
+			</Wrapper>
+		</SelectorPanel>
+	);
+};
 
-export default injectIntl(Selector);
+export default Selector;

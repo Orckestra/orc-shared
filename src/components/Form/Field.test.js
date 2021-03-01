@@ -142,13 +142,7 @@ describe("Label", () => {
 		));
 
 	it("when not flagged renders a label with bottom margin", () =>
-		expect(
-			<Label>A text</Label>,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"margin-bottom:",
-		));
+		expect(<Label>A text</Label>, "when mounted", "to have style rules satisfying", "to contain", "margin-bottom:"));
 
 	it("when flagged renders a label without margin", () =>
 		expect(

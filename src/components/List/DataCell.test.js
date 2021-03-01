@@ -251,12 +251,7 @@ describe("DataCell", () => {
 				<tbody>
 					<tr>
 						<TableData>
-							<Checkbox
-								id="select_rowIdent"
-								value={true}
-								data-row-id="rowIdent"
-								onChange={onChange}
-							/>
+							<Checkbox id="select_rowIdent" value={true} data-row-id="rowIdent" onChange={onChange} />
 						</TableData>
 					</tr>
 				</tbody>
@@ -290,13 +285,7 @@ describe("DataCell", () => {
 				<tbody>
 					<tr>
 						<TableData>
-							<Switch
-								id="switch0"
-								value={false}
-								data-row-id="rowIdent"
-								onColor="#ff00ff"
-								onChange={onChange}
-							/>
+							<Switch id="switch0" value={false} data-row-id="rowIdent" onColor="#ff00ff" onChange={onChange} />
 						</TableData>
 					</tr>
 				</tbody>

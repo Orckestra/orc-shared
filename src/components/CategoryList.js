@@ -15,8 +15,7 @@ import Row from "./List/Row";
 import HeadRow from "./List/HeadRow";
 import { useListState, Table, Placeholder, HEADER_HEIGHT } from "./List/List";
 
-const arrayToggle = (array, item) =>
-	array.includes(item) ? array.filter(x => x !== item) : array.concat(item);
+const arrayToggle = (array, item) => (array.includes(item) ? array.filter(x => x !== item) : array.concat(item));
 
 export const CategoryRow = styled.tr``;
 
@@ -95,19 +94,14 @@ export const CategoryList = ({
 	if (Object.keys(rowCategories).length === 0) {
 		if (placeholder) {
 			rowElements.push(
-				<Placeholder
-					key="placeholder"
-					width={columnDefs.length}
-					height={height - HEADER_HEIGHT}
-				>
+				<Placeholder key="placeholder" width={columnDefs.length} height={height - HEADER_HEIGHT}>
 					{placeholder}
 				</Placeholder>,
 			);
 		}
 	} else {
 		Object.entries(rowCategories).forEach(([key, rows]) => {
-			const clickHandler = () =>
-				updateViewState("closedCategories", arrayToggle(closedCategories, key));
+			const clickHandler = () => updateViewState("closedCategories", arrayToggle(closedCategories, key));
 			const closed = !openAll && closedCategories.includes(key);
 			rowElements.push(
 				<CategoryRow key={"category_" + key}>
@@ -141,9 +135,6 @@ export const CategoryList = ({
 	);
 };
 
-const StatefulCategoryList = compose(
-	setDisplayName("CategoryList"),
-	withScrollBox,
-)(CategoryList);
+const StatefulCategoryList = compose(setDisplayName("CategoryList"), withScrollBox)(CategoryList);
 
 export default StatefulCategoryList;

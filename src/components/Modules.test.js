@@ -1,15 +1,21 @@
 import React from "react";
-import { IntlProvider } from "react-intl";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import { mount } from "unexpected-reaction";
-import { Wrapper as SegmentWrapper, List as SegmentList, Item as SegmentItem } from "./Routing/SegmentPage";
+import SegmentPage from "./Routing/SegmentPage";
 import { Modules } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
+import { TestWrapper, createMuiTheme } from "./../utils/testUtils";
+import sinon from "sinon";
+import { createMemoryHistory } from "history";
 
 describe("Modules", () => {
 	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
+
+	const match = {
+		url: "/TestScope/users/page1",
+		path: "/:scope/users/page1",
+		params: { scope: "TestScope" },
+	};
 
 	beforeEach(() => {
 		Mod2 = () => <div id="Mod2" />;
@@ -54,11 +60,23 @@ describe("Modules", () => {
 				tabIndex: {},
 				moduleTabs: {},
 				mappedHrefs: {},
-				route: {},
+				route: {
+					match: match,
+				},
 				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			router: {
 				location: {},
+			},
+			modules: {
+				tree: {},
+			},
+			view: {
+				edit: {
+					users: {},
+					photos: {},
+					demos: {},
+				},
 			},
 			settings: {
 				defaultScope: "myScope",
@@ -70,6 +88,7 @@ describe("Modules", () => {
 					foo: false,
 					bar: false,
 					children: ["test2"],
+					isAuthorizedScope: true,
 				},
 			},
 			locale: {
@@ -87,15 +106,19 @@ describe("Modules", () => {
 		};
 	});
 
+	const theme = createMuiTheme();
+
 	it("renders a module table with navigation tabs", () => {
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<IntlProvider locale="en">
-						<Modules modules={modules} scope="TestScope" />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
 		);
 
 		const module = {
@@ -107,13 +130,15 @@ describe("Modules", () => {
 		};
 
 		const expected = [
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/demos"]}>
-					<IntlProvider locale="en">
-						<TabBar module={module} pages={[]} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={[]} />
+			</TestWrapper>,
 			<Mod3 />,
 		];
 
@@ -129,36 +154,41 @@ describe("Modules", () => {
 			active: true,
 		};
 
+		const location = {
+			pathname: "/TestScope/users/page1",
+		};
+
 		expect(
 			mount(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-						<IntlProvider locale="en">
-							<Modules modules={modules} scope="TestScope" />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<Modules modules={modules} scope="TestScope" />
+				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-						<IntlProvider locale="en">
-							<TabBar module={module} pages={[]} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
-				<MemoryRouter initialEntries={["/TestScope/users/page1"]}>
-					<SegmentWrapper>
-						<SegmentList>
-							<SegmentItem to="/TestScope/users/page1" active>
-								Page 1
-							</SegmentItem>
-							<SegmentItem to="/TestScope/users/page2">Page 2</SegmentItem>
-						</SegmentList>
-						<Page1 />
-					</SegmentWrapper>
-				</MemoryRouter>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<TabBar module={module} pages={[]} />
+				</TestWrapper>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/users/page1"] }}
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<SegmentPage path="/:scope/users" location={location} segments={modules.users.segments} match={match} />
+				</TestWrapper>,
 			],
 		);
 	});
@@ -174,23 +204,27 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/photos"]}>
-						<IntlProvider locale="en">
-							<Modules modules={modules} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/photos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<Modules modules={modules} />
+				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/photos"]}>
-						<IntlProvider locale="en">
-							<TabBar module={module} pages={[]} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/photos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<TabBar module={module} pages={[]} />
+				</TestWrapper>,
 				<Mod2 />,
 			],
 		);
@@ -207,23 +241,27 @@ describe("Modules", () => {
 
 		expect(
 			mount(
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/demos"]}>
-						<IntlProvider locale="en">
-							<Modules modules={modules} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<Modules modules={modules} />
+				</TestWrapper>,
 			).childNodes,
 			"to satisfy",
 			[
-				<Provider store={store}>
-					<MemoryRouter initialEntries={["/TestScope/demos"]}>
-						<IntlProvider locale="en">
-							<TabBar module={module} pages={[]} />
-						</IntlProvider>
-					</MemoryRouter>
-				</Provider>,
+				<TestWrapper
+					provider={{ store }}
+					memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+					intlProvider
+					stylesProvider
+					muiThemeProvider={{ theme }}
+				>
+					<TabBar module={module} pages={[]} />
+				</TestWrapper>,
 				<Mod3 />,
 			],
 		);
@@ -246,6 +284,14 @@ describe("Modules", () => {
 				settings: {
 					defaultScope: "myScope",
 				},
+				modules: {
+					tree: {},
+				},
+				view: {
+					edit: {
+						module: {},
+					},
+				},
 				scopes: {
 					TestScope: {
 						id: "TestScope",
@@ -253,6 +299,7 @@ describe("Modules", () => {
 						foo: false,
 						bar: false,
 						children: ["test2"],
+						isAuthorizedScope: true,
 					},
 				},
 				locale: {
@@ -265,6 +312,8 @@ describe("Modules", () => {
 			});
 		});
 
+		const theme = createMuiTheme();
+
 		it("renders a module table with custom prepend href ", () => {
 			const module = {
 				icon: "cloud",
@@ -276,26 +325,107 @@ describe("Modules", () => {
 
 			expect(
 				mount(
-					<Provider store={store}>
-						<MemoryRouter initialEntries={["/TestScope/demos"]}>
-							<IntlProvider locale="en">
-								<Modules modules={modules} pathConfig={{ customPath: "/", demos: { prependPath: "/:scope/" } }} />
-							</IntlProvider>
-						</MemoryRouter>
-					</Provider>,
+					<TestWrapper
+						provider={{ store }}
+						memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+						intlProvider
+						stylesProvider
+						muiThemeProvider={{ theme }}
+					>
+						<Modules modules={modules} pathConfig={{ customPath: "/", demos: { prependPath: "/:scope/" } }} />
+					</TestWrapper>,
 				).childNodes,
 				"to satisfy",
 				[
-					<Provider store={store}>
-						<MemoryRouter initialEntries={["/TestScope/demos"]}>
-							<IntlProvider locale="en">
-								<TabBar module={module} pages={[]} />
-							</IntlProvider>
-						</MemoryRouter>
-					</Provider>,
+					<TestWrapper
+						provider={{ store }}
+						memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+						intlProvider
+						stylesProvider
+						muiThemeProvider={{ theme }}
+					>
+						<TabBar module={module} pages={[]} />
+					</TestWrapper>,
 					<Mod3 />,
 				],
 			);
+		});
+	});
+
+	describe("check is scope authorized", () => {
+		let history;
+		beforeAll(() => {
+			history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
+			sinon.spy(history, "push");
+			history.push.named("history.push");
+		});
+
+		beforeEach(() => {
+			state = Immutable.fromJS({
+				navigation: {
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					route: {
+						match: {
+							url: "/TestScope/demos",
+							params: {
+								scope: "TestScope",
+							},
+						},
+					},
+					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
+				},
+				router: {
+					location: {},
+				},
+				settings: {
+					defaultScope: "TestScope2",
+				},
+				modules: {
+					tree: {},
+				},
+				view: {
+					edit: {
+						module: {},
+					},
+				},
+				scopes: {
+					TestScope: {
+						id: "TestScope",
+						name: { "en-CA": "Test 1" },
+						foo: false,
+						bar: false,
+						isAuthorizedScope: false,
+						children: ["TestScope2"],
+					},
+					TestScope2: {
+						id: "TestScope2",
+						name: { "en-CA": "Test 2" },
+						foo: false,
+						bar: false,
+						isAuthorizedScope: true,
+						children: [],
+					},
+				},
+				locale: {
+					locale: null,
+					supportedLocales: [
+						{ language: "English", cultureIso: "en-US" },
+						{ language: "Francais", cultureIso: "fr" },
+					],
+				},
+			});
+		});
+
+		it("renders a module table when scope not Authorized", () => {
+			mount(
+				<TestWrapper provider={{ store }} router={{ history }} intlProvider>
+					<Modules modules={modules} />
+				</TestWrapper>,
+			);
+
+			expect(history.push, "to have calls satisfying", [{ args: ["/TestScope2/demos?arg=data"] }]);
 		});
 	});
 });

@@ -9,6 +9,7 @@ import { tableSelectionMode, useTableSelection } from "./useTableSelection";
 import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
 import ResizeDetector from "react-resize-detector";
+import { isEqual } from "lodash";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -20,11 +21,6 @@ export const useStyles = makeStyles(theme => ({
 	tableContainer: {
 		overflowY: "auto",
 		position: "relative",
-		display: "flex",
-		flexGrow: 1,
-		flexShrink: 0,
-		flexBasis: "auto",
-		flexDirection: "column",
 	},
 	table: {
 		tableLayout: "fixed",
@@ -97,7 +93,7 @@ export const useStyles = makeStyles(theme => ({
 function headersAreIdentical(prevHeaders, nextHeaders) {
 	prevHeaders.forEach((prevHeader, index) => {
 		let prevSortOptions = prevHeader.cellElement.props.columnDefinition.sortOptions;
-		let nextSortOptions = nextHeaders[index].cellElement.props.columnDefinition.sortOptions;
+		let nextSortOptions = nextHeaders[index]?.cellElement.props.columnDefinition.sortOptions;
 		if (prevSortOptions != null && nextSortOptions != null) {
 			if (prevSortOptions.sortField !== nextSortOptions.sortField) {
 				return false;
@@ -115,29 +111,52 @@ function rowAreIdentical(prevRows, nextRows) {
 }
 
 function propsAreEqualRow(prev, next) {
+	if (prev.deepPropsComparation) {
+		return propsAreEqualDeeplyRow(prev, next);
+	}
 	return prev.selected === next.selected;
 }
 
-export const MemoTableRow = React.memo(TableRow, propsAreEqualRow);
-
-function propsAreEqualBody(prev, next) {
-	return prev.selectedNumber === next.selectedNumber && rowAreIdentical(prev.dataRows, next.dataRows);
+function propsAreEqualDeeplyRow(prev, next) {
+	if (prev.length) {
+		let equalRow = true;
+		prev.forEach((prevElem, index) => {
+			if (!isEqual(prevElem.element, next[index].element) || prevElem.columns.length !== next[index].columns.length) {
+				equalRow = false;
+			}
+		});
+		return equalRow;
+	}
 }
 
-const TableBody = props => {
+const TableRowMemo = ({ deepPropsComparation, ...props }) => {
+	return <TableRow {...props} />;
+};
+
+export const MemoTableRow = React.memo(TableRowMemo, propsAreEqualRow);
+
+function propsAreEqualBody(prev, next) {
+	let isEqualBody = prev.selectedNumber === next.selectedNumber && rowAreIdentical(prev.dataRows, next.dataRows);
+	if (prev.deepPropsComparation) {
+		isEqualBody = isEqualBody && propsAreEqualDeeplyRow(prev.dataRows, next.dataRows);
+	}
+	return isEqualBody;
+}
+
+const TableBody = ({ deepPropsComparation, ...props }) => {
 	return <tbody className={props.className}>{props.tableRows}</tbody>;
 };
 
 export const MemoTableBody = React.memo(TableBody, propsAreEqualBody);
 
-const TableCell = //withDeferredTooltip(
-	React.forwardRef((props, ref) => {
-		return (
-			<td className={props.className} ref={ref} {...props}>
-				{props.value}
-			</td>
-		);
-	});
+const TableCell = React.forwardRef((props, ref) => {
+	//withDeferredTooltip(
+	return (
+		<td className={props.className} ref={ref} {...props}>
+			{props.value}
+		</td>
+	);
+});
 //);
 
 const buildRowCheckbox = (classes, key, selectionHandlers) => {
@@ -184,31 +203,43 @@ const buildTableHeaders = (headers, classes, customClasses, selectMode, tableSel
 
 	return tableCheckbox.concat(
 		headers.map((header, index) => (
-			<th key={index} className={classNames(classes.headerCell, customClasses[header.className])}>
+			<th
+				key={index}
+				className={classNames(classes.headerCell, customClasses[header.className], customClasses.headerCell)}
+			>
 				{header.cellElement}
 			</th>
 		)),
 	);
 };
 
-const buildTableRows = (rows, classes, customClasses, selectMode, onRowClick, selectionHandlers) => {
+const buildTableRows = (
+	rows,
+	classes,
+	customClasses,
+	selectMode,
+	onRowClick,
+	selectionHandlers,
+	deepPropsComparation,
+) => {
 	const onClick = (evt, row) => {
-		if (evt.target.tagName !== "INPUT") {
+		if (evt.target.tagName !== "INPUT" && onRowClick != null) {
 			onRowClick(evt, row.element);
 		}
 	};
 
 	return rows.map(row => (
 		<MemoTableRow
-			className={classes.tableRow}
+			className={classNames(classes.tableRow, customClasses.tableRow)}
 			key={row.key}
 			onClick={evt => onClick(evt, row)}
 			selected={selectionHandlers.isSelected(row.key)}
+			deepPropsComparation={deepPropsComparation}
 		>
 			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
 			{row.columns.map((cell, cellIndex) => (
 				<TableCell
-					className={classNames(classes.tableCell, customClasses[cell.className])}
+					className={classNames(classes.tableCell, customClasses[cell.className], customClasses.tableCell)}
 					key={cellIndex}
 					value={cell.cellElement}
 				/>
@@ -228,17 +259,23 @@ const FullTable = React.forwardRef((props, ref) => {
 	};
 
 	return (
-		<div key="actualTable" className={props.classes.tableContainer} ref={ref} onScroll={scrollEvent}>
+		<div
+			key="actualTable"
+			className={classNames(props.classes.tableContainer, props.customClasses.tableContainer)}
+			ref={ref}
+			onScroll={scrollEvent}
+		>
 			<ResizeDetector onResize={props.onResize} />
-			<TableMui className={props.classes.table}>
-				<TableHead className={props.classes.tableHeader}>
+			<TableMui className={classNames(props.classes.table, props.customClasses.table)}>
+				<TableHead className={classNames(props.classes.tableHeader, props.customClasses.tableHeader)}>
 					<TableRow>{props.tableHeaders}</TableRow>
 				</TableHead>
 				<MemoTableBody
-					className={props.classes.tableBody}
+					className={classNames(props.classes.tableBody, props.customClasses.tableBody)}
 					dataRows={props.dataRows}
 					tableRows={props.tableRows}
 					selectedNumber={props.selectedNumber}
+					deepPropsComparation={props.deepPropsComparation}
 				/>
 			</TableMui>
 			{props.tableRows.length > 0 ? null : <div className={props.classes.placeholder}>{props.placeholder}</div>}
@@ -255,7 +292,16 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	const selectMode = tableProps?.get(TableProps.propNames.selectMode) || false;
 	const stickyHeader = tableProps?.get(TableProps.propNames.stickyHeader) || false;
 	const withoutTopBorder = tableProps?.get(TableProps.propNames.withoutTopBorder) || false;
-	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || false;
+	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
+	const deepPropsComparation = tableProps?.get(TableProps.propNames.deepPropsComparation) || false;
+
+	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
+	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
+	customClasses["tableCell"] = tableProps?.getStyle(TableProps.ruleNames.tableCell) || null;
+	customClasses["headerCell"] = tableProps?.getStyle(TableProps.ruleNames.headerCell) || null;
+	customClasses["tableContainer"] = tableProps?.getStyle(TableProps.ruleNames.tableContainer) || null;
+	customClasses["container"] = tableProps?.getStyle(TableProps.ruleNames.container) || null;
+	customClasses["table"] = tableProps?.getStyle(TableProps.ruleNames.table) || null;
 
 	const refScrolled = useRef();
 
@@ -296,7 +342,15 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 		selectionMethods,
 	);
 
-	const tableRows = buildTableRows(rows, classes, customClasses, selectMode, onRowClick, selectionMethods);
+	const tableRows = buildTableRows(
+		rows,
+		classes,
+		customClasses,
+		selectMode,
+		onRowClick,
+		selectionMethods,
+		deepPropsComparation,
+	);
 
 	const stickerTableHeader =
 		stickyHeader === true ? (
@@ -307,12 +361,13 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	const onResize = useCallback((width, height) => setTableSize({ width: width, height: height }), [setTableSize]);
 
 	return (
-		<TableContainer className={classes.container}>
+		<TableContainer className={classNames(classes.container, customClasses.container)}>
 			{tableInfo}
 			{stickerTableHeader}
 			<FullTable
 				ref={refScrolled}
 				classes={classes}
+				customClasses={customClasses}
 				onResize={onResize}
 				selectedNumber={selectedNumber}
 				scrollLoader={scrollLoader}
@@ -323,6 +378,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 				latestPage={latestPage}
 				pageLength={pageLength}
 				placeholder={placeholder}
+				deepPropsComparation={deepPropsComparation}
 			/>
 		</TableContainer>
 	);

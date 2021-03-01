@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
-			maxWidth: theme.spacing(24),
 			maxHeight: theme.spacing(30),
 			paddingTop: 0,
 			paddingBottom: 0,
@@ -39,9 +38,9 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	label: {
-		fontFamily: theme.typography.button.fontFamily,
-		fontWeight: theme.typography.button.fontWeight,
-		fontSize: theme.typography.button.fontSize,
+		fontSize: theme.typography.fontSize,
+		color: theme.palette.grey.dark,
+		fontFamily: theme.typography.fontFamily,
 	},
 	icon: {
 		right: theme.spacing(1),
@@ -51,8 +50,8 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 999,
 	},
 	displayNone: {
-		display: "none"
-	}
+		display: "none",
+	},
 }));
 
 const MenuProps = {
@@ -67,25 +66,24 @@ const MenuProps = {
 	},
 };
 
-const getIconButtonMenuProps = (anchorRef) => (
-	{
-		getContentAnchorEl: null,
-		anchorEl: anchorRef,
-		anchorOrigin: {
-			vertical: "bottom",
-			horizontal: "right",
-		},
-		transformOrigin: {
-			vertical: "top",
-			horizontal: "right",
-		},
-	});
+const getIconButtonMenuProps = anchorRef => ({
+	getContentAnchorEl: null,
+	anchorEl: anchorRef,
+	anchorOrigin: {
+		vertical: "bottom",
+		horizontal: "right",
+	},
+	transformOrigin: {
+		vertical: "top",
+		horizontal: "right",
+	},
+});
 
 const SelectIcon = props => {
 	return <Icon id="dropdown-chevron-down" {...props} />;
 };
 
-export const SelectIconButton = (props) => {
+export const SelectIconButton = props => {
 	const classes = useStyles();
 
 	return (
@@ -112,6 +110,11 @@ const Select = ({ options, selectProps }) => {
 	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
 	const positionOverride = selectProps?.get(SelectProps.propNames.positionOverride) || {};
 	const isIconSelect = selectProps?.get(SelectProps.propNames.iconSelect) || false;
+	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
+
+	if (disabled) {
+		return <TooltippedTypography noWrap children={value} titleValue={value} />;
+	}
 
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
@@ -138,18 +141,18 @@ const Select = ({ options, selectProps }) => {
 	const defaultMenuProps = {
 		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
 		...MenuProps,
-		...positionOverride
+		...positionOverride,
 	};
 
 	const iconSelectMenuProps = {
 		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
 		...positionOverride,
-		...getIconButtonMenuProps(ref.current)
+		...getIconButtonMenuProps(ref.current),
 	};
 
 	const items = options.map(option => (
 		<MenuItem key={option.value} value={option.value}>
-			<TooltippedTypography noWrap children={option.label} titleValue={option.label} />
+			<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
 		</MenuItem>
 	));
 
@@ -181,7 +184,7 @@ const Select = ({ options, selectProps }) => {
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
-				select: classes.displayNone
+				select: classes.displayNone,
 			}}
 			onClick={() => setOpen(!open)}
 		>

@@ -14,7 +14,8 @@ class SelectProps extends ComponentProps {
 		showAllValue: "showAllValue",
 		showAllLabel: "showAllLabel",
 		positionOverride: "positionOverride",
-		iconSelect: "iconSelect"
+		iconSelect: "iconSelect",
+		disabled: "disabled",
 	};
 
 	static ruleNames = {
@@ -31,6 +32,7 @@ class SelectProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.showAllLabel, null);
 		this.componentProps.set(this.constructor.propNames.positionOverride, null);
 		this.componentProps.set(this.constructor.propNames.iconSelect, null);
+		this.componentProps.set(this.constructor.propNames.disabled, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.paper, null);

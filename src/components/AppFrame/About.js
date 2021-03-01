@@ -12,6 +12,7 @@ import logoImage from "../../content/aboutLogo.png";
 import close from "../../content/close.png";
 import { getVersionSelector } from "../../selectors/versionInfo";
 import { currentLocaleOrDefault } from "../../selectors/locale";
+import sharedMessages from "./../../sharedMessages";
 
 export const ABOUT_NAME = "__aboutBox";
 
@@ -88,14 +89,12 @@ export const getClickOutsideHandler = ({ show }, updateViewState) => {
 		: () => {};
 };
 
-export const About = ({ messages, currentApplication }) => {
+export const About = ({ currentApplication }) => {
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
 	const version = useSelector(getVersionSelector);
 	const locale = useSelector(currentLocaleOrDefault);
 	const closeAboutBox = getClickOutsideHandler(viewState, updateViewState);
-	const aboutLinkUrl = "https://www.orckestra.com".concat(
-		locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "",
-	);
+	const aboutLinkUrl = "https://www.orckestra.com".concat(locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "");
 
 	return (
 		<AboutBox in={viewState.show} onClickOutside={closeAboutBox}>
@@ -106,7 +105,7 @@ export const About = ({ messages, currentApplication }) => {
 			<AboutParagraph>
 				<Text
 					message={{
-						...messages.ccVersion,
+						...sharedMessages.ccVersion,
 						values: { version: version },
 					}}
 				/>
@@ -125,7 +124,7 @@ export const About = ({ messages, currentApplication }) => {
 							<Text
 								key="orc-shared-version"
 								message={{
-									...messages.sharedVersion,
+									...sharedMessages.orcSharedVersion,
 									values: { version: DEPENDENCIES["orc-shared"] },
 								}}
 							/>,
@@ -137,7 +136,7 @@ export const About = ({ messages, currentApplication }) => {
 							<Text
 								key="orc-scripts-version"
 								message={{
-									...messages.scriptsVersion,
+									...sharedMessages.orcScriptsVersion,
 									values: { version: DEPENDENCIES["orc-scripts"] },
 								}}
 							/>,
@@ -149,7 +148,7 @@ export const About = ({ messages, currentApplication }) => {
 							<Text
 								key="orc-secret-version"
 								message={{
-									...messages.secretVersion,
+									...sharedMessages.orcSecretVersion,
 									values: { version: DEPENDENCIES["orc-secret"] },
 								}}
 							/>,
@@ -157,17 +156,17 @@ export const About = ({ messages, currentApplication }) => {
 					: null}
 			</AboutParagraph>
 			<AboutParagraph long>
-				<Text message={messages.copyrightTermsNotice} />
+				<Text message={sharedMessages.copyrightTermsNotice} />
 			</AboutParagraph>
 			<AboutParagraph>
 				<AboutLink href={aboutLinkUrl} target="_blank">
-					<Text message={messages.ccName} />
+					<Text message={sharedMessages.ccName} />
 				</AboutLink>
 			</AboutParagraph>
 			<AboutParagraph>
-				<Text message={messages.copyright} />
+				<Text message={sharedMessages.copyright} />
 				<br />
-				<Text message={messages.allRightsReserved} />
+				<Text message={sharedMessages.allRightsReserved} />
 			</AboutParagraph>
 		</AboutBox>
 	);

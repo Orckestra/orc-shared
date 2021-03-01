@@ -113,15 +113,7 @@ describe("ifFlag", () => {
 		));
 
 	it("returns empty string if no third parameter", () =>
-		expect(
-			ifFlag,
-			"when called with",
-			["noFlag", "no fooling"],
-			"when called with",
-			[props],
-			"to equal",
-			"",
-		));
+		expect(ifFlag, "when called with", ["noFlag", "no fooling"], "when called with", [props], "to equal", ""));
 
 	it("handles prop funcs as second parameter", () =>
 		expect(

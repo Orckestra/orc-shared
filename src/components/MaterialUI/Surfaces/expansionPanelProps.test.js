@@ -2,7 +2,7 @@ import {
 	ExpansionPanelProps,
 	ExpansionPanelActionsProps,
 	isExpansionPanelProps,
-	isExpansionPanelActionsProps
+	isExpansionPanelActionsProps,
 } from "./expansionPanelProps";
 
 describe("Expansion Panel Props", () => {

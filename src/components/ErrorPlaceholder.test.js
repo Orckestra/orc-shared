@@ -9,8 +9,8 @@ describe("ErrorPlaceholder", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => { },
-					dispatch: () => { },
+					subscribe: () => {},
+					dispatch: () => {},
 					getState: () => ({}),
 				}}
 			>
@@ -22,8 +22,8 @@ describe("ErrorPlaceholder", () => {
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => { },
-					dispatch: () => { },
+					subscribe: () => {},
+					dispatch: () => {},
 					getState: () => ({}),
 				}}
 			>
@@ -35,8 +35,8 @@ describe("ErrorPlaceholder", () => {
 		expect(
 			<Provider
 				store={{
-					subscribe: () => { },
-					dispatch: () => { },
+					subscribe: () => {},
+					dispatch: () => {},
 					getState: () => ({}),
 				}}
 			>
@@ -48,8 +48,8 @@ describe("ErrorPlaceholder", () => {
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => { },
-					dispatch: () => { },
+					subscribe: () => {},
+					dispatch: () => {},
 					getState: () => ({}),
 				}}
 			>
@@ -58,12 +58,12 @@ describe("ErrorPlaceholder", () => {
 		));
 
 	it("passes through an onClick handler", () => {
-		const handler = () => { };
+		const handler = () => {};
 		return expect(
 			<Provider
 				store={{
-					subscribe: () => { },
-					dispatch: () => { },
+					subscribe: () => {},
+					dispatch: () => {},
 					getState: () => ({}),
 				}}
 			>
@@ -75,8 +75,8 @@ describe("ErrorPlaceholder", () => {
 			"to satisfy",
 			<Provider
 				store={{
-					subscribe: () => { },
-					dispatch: () => { },
+					subscribe: () => {},
+					dispatch: () => {},
 					getState: () => ({}),
 				}}
 			>

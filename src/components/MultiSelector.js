@@ -45,7 +45,6 @@ export const MultiSelector = ({
 	const [isVisible, setIsVisible] = useState(false);
 	/* istanbul ignore next */
 	const toggleVisibility = () => {
-		console.log("Selector toggleVisibility called", isVisible);
 		setIsVisible(!isVisible);
 	};
 

@@ -1,11 +1,9 @@
 import React from "react";
-import { MemoryRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
 import Navigation from "./index";
 import TabBar from "../MaterialUI/Navigation/TabBar";
-import { IntlProvider } from "react-intl";
+import { TestWrapper, createMuiTheme } from "./../../utils/testUtils";
 
 jest.mock("./Tab", () => ({
 	__esModule: true,
@@ -46,6 +44,14 @@ describe("Navigation", () => {
 				},
 				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
+			modules: {
+				tree: {},
+			},
+			view: {
+				edit: {
+					test: {},
+				},
+			},
 			scopes: {
 				TestScope: {
 					id: "TestScope",
@@ -67,7 +73,7 @@ describe("Navigation", () => {
 			},
 		});
 		store = {
-			subscribe: () => { },
+			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
@@ -90,46 +96,47 @@ describe("Navigation", () => {
 		};
 	});
 
+	const theme = createMuiTheme();
+
 	it("renders a navigation tab bar with state-based props", () => {
 		const module = {
-			icon: 'thing',
-			label: 'Thing',
-			href: '/TestScope/test',
-			mappedFrom: '/TestScope/test',
-			active: false
+			icon: "thing",
+			label: "Thing",
+			href: "/TestScope/test",
+			mappedFrom: "/TestScope/test",
+			active: false,
 		};
 
 		const pages = [
 			{
-				label: 'Page 1',
-				href: '/TestScope/test/page1',
-				active: true
+				label: "Page 1",
+				href: "/TestScope/test/page1",
+				active: true,
+				params: { scope: "TestScope", entityId: "page1" },
 			},
 			{
-				label: 'Page 2',
-				href: '/TestScope/test/page2',
-				active: false
-			}
+				label: "Page 2",
+				href: "/TestScope/test/page2",
+				active: false,
+				params: { scope: "TestScope", entityId: "page2" },
+			},
 		];
 
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-					<IntlProvider locale="en">
-						<Navigation modules={modules} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/test/page1"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Navigation modules={modules} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-
-			<Provider store={store}>
-				<MemoryRouter>
-					<IntlProvider locale="en">
-						<TabBar module={module} pages={pages} />
-					</IntlProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper provider={{ store }} memoryRouter intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>,
 		);
 	});
 });

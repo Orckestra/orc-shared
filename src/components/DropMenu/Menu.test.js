@@ -88,9 +88,7 @@ describe("Menu", () => {
 					<Item>Foo</Item>
 				</List>
 			</Drawer>,
-		).then(() =>
-			Promise.all([expect(reset, "was called"), expect(handler, "was called")]),
-		);
+		).then(() => Promise.all([expect(reset, "was called"), expect(handler, "was called")]));
 	});
 
 	describe("Drawer", () => {

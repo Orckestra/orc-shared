@@ -17,6 +17,7 @@ import { currentLocaleOrDefault, cultureOptionList } from "../../selectors/local
 import { defaultAppId } from "../../selectors/settings";
 import withClickOutside from "../../hocs/withClickOutside";
 import { resetVersionInfo } from "../../actions/versionInfo";
+import sharedMessages from "./../../sharedMessages";
 
 export const PREFS_NAME = "__prefsDialog";
 
@@ -73,9 +74,7 @@ export const PrefButton = styled(Button)`
 	min-width: 110px;
 `;
 
-export const createGetUpdater = memoize(update =>
-	memoize(name => value => update(name, value)),
-);
+export const createGetUpdater = memoize(update => memoize(name => value => update(name, value)));
 
 const usePreferenceSetup = () => {
 	const dispatch = useDispatch();
@@ -112,34 +111,26 @@ export const clickOutsideHandler = e => {
 	e.stopPropagation();
 };
 
-export const Preferences = ({ messages }) => {
-	const {
-		show,
-		getUpdater,
-		save,
-		clear,
-		languageOptions,
-		applicationOptions,
-		values,
-	} = usePreferenceSetup();
+export const Preferences = () => {
+	const { show, getUpdater, save, clear, languageOptions, applicationOptions, values } = usePreferenceSetup();
 	return (
 		<PrefPanel in={show} width="380px" timeout={400}>
 			<Wrapper onClickOutside={clickOutsideHandler}>
 				<Header>
-					<Text message={messages.preferences} />
+					<Text message={sharedMessages.preferences} />
 				</Header>
 				<PrefForm>
 					<FormContext.Provider value={{ values }}>
 						<FieldElements
 							fields={[
 								{
-									label: messages.language,
+									label: sharedMessages.displayLanguage,
 									type: "Selector",
 									name: "language",
 									options: languageOptions,
 								},
 								{
-									label: messages.defaultApp,
+									label: sharedMessages.defaultApp,
 									type: "Selector",
 									name: "application",
 									options: applicationOptions,
@@ -151,10 +142,10 @@ export const Preferences = ({ messages }) => {
 				</PrefForm>
 				<Footer>
 					<PrefButton id="cancelPrefs" onClick={clear}>
-						<Text message={messages.cancel} />
+						<Text message={sharedMessages.cancel} />
 					</PrefButton>
 					<PrefButton id="savePrefs" primary onClick={save}>
-						<Text message={messages.save} />
+						<Text message={sharedMessages.save} />
 					</PrefButton>
 				</Footer>
 			</Wrapper>

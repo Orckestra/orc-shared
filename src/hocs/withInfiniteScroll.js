@@ -3,21 +3,13 @@ import { debounce } from "../utils";
 
 export const getOnScroll = (
 	_,
-	{
-		onScroll = () => {},
-		scrollLoader,
-		loadTrigger = 200,
-		length = 0,
-		latestPage = 1,
-		pageLength = 20,
-	},
+	{ onScroll = () => {}, scrollLoader, loadTrigger = 200, length = 0, latestPage = 1, pageLength = 20 },
 ) => {
 	const scrollCheck = debounce(
 		event => {
 			if (
 				// Are we scrolled far enough?
-				event.target.scrollHeight - (event.target.scrollTop + event.target.offsetHeight) <
-					loadTrigger &&
+				event.target.scrollHeight - (event.target.scrollTop + event.target.offsetHeight) < loadTrigger &&
 				// Are we already loading?
 				length === latestPage * pageLength
 			) {

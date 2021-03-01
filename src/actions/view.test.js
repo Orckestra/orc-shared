@@ -3,16 +3,12 @@ import {
 	setStateField,
 	VIEW_SET,
 	VIEW_SET_FIELD,
-	VIEW_INITIALIZE_EDIT_TREE,
 	VIEW_CREATE_EDIT_NODE,
-	VIEW_SET_EDIT_MODEL,
 	VIEW_REMOVE_EDIT_NODE,
 	VIEW_SET_EDIT_MODEL_FIELD,
-	initializeEditTree,
 	createEditNode,
 	removeEditNode,
-	setEditModel,
-	setEditModelField
+	setEditModelField,
 } from "./view";
 
 describe("setValue", () => {
@@ -39,15 +35,6 @@ describe("setStateField", () => {
 		}));
 });
 
-describe("setStateField", () => {
-	it("creates an action object", () => {
-		expect(initializeEditTree, "when called with", ["modules"], "to equal", {
-			type: VIEW_INITIALIZE_EDIT_TREE,
-			payload: "modules",
-		});
-	});
-});
-
 describe("createEditNode", () => {
 	it("creates an action object", () => {
 		expect(createEditNode, "when called with", ["entityId", "moduleName", "modules"], "to equal", {
@@ -56,17 +43,6 @@ describe("createEditNode", () => {
 		});
 	});
 });
-
-
-describe("setEditModel", () => {
-	it("creates an action object", () => {
-		expect(setEditModel, "when called with", ["model", "entityId", "sectionName", "moduleName"], "to equal", {
-			type: VIEW_SET_EDIT_MODEL,
-			payload: { model: "model", entityId: "entityId", sectionName: "sectionName", moduleName: "moduleName" },
-		});
-	});
-});
-
 
 describe("removeEditNode", () => {
 	it("creates an action object", () => {
@@ -79,9 +55,22 @@ describe("removeEditNode", () => {
 
 describe("setEditModelField", () => {
 	it("creates an action object", () => {
-		expect(setEditModelField, "when called with", ["keys", "value", "entityId", "sectionName", "moduleName"], "to equal", {
-			type: VIEW_SET_EDIT_MODEL_FIELD,
-			payload: { keys: "keys", value: "value", entityId: "entityId", sectionName: "sectionName", moduleName: "moduleName" },
-		});
+		expect(
+			setEditModelField,
+			"when called with",
+			["keys", "value", "storeValue", "entityId", "sectionName", "moduleName"],
+			"to equal",
+			{
+				type: VIEW_SET_EDIT_MODEL_FIELD,
+				payload: {
+					keys: "keys",
+					value: "value",
+					storeValue: "storeValue",
+					entityId: "entityId",
+					sectionName: "sectionName",
+					moduleName: "moduleName",
+				},
+			},
+		);
 	});
 });

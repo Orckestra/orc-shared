@@ -72,11 +72,28 @@ describe("setTranslation", () => {
 		));
 
 	it("returns if no object passed", () =>
+		expect(setTranslation, "when called with", ["de", undefined, ["hat", "name"]], "to equal", undefined));
+
+	it("returns first not empty string if the given language is unavailable", () =>
 		expect(
 			setTranslation,
 			"when called with",
-			["de", undefined, ["hat", "name"]],
+			[
+				"fr",
+				Immutable.fromJS({
+					hat: {
+						name: {
+							en: "",
+							fr: "",
+							it: "it-name",
+						},
+					},
+				}),
+				["hat", "name"],
+			],
 			"to equal",
-			undefined,
+			Immutable.fromJS({
+				hat: { name: "it-name" },
+			}),
 		));
 });

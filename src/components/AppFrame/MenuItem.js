@@ -6,14 +6,7 @@ import { getThemeProp, ifFlag } from "../../utils";
 import Text from "../Text";
 import Icon from "../Icon";
 
-const FilteredLink = ({
-	menuToggle,
-	staticContext,
-	dispatch,
-	active,
-	component,
-	...props
-}) => <Link {...props} />;
+const FilteredLink = ({ menuToggle, staticContext, dispatch, active, component, ...props }) => <Link {...props} />;
 
 export const Block = styled(FilteredLink)`
 	display: block;
@@ -123,15 +116,7 @@ export const Label = styled.span`
 	opacity: ${ifFlag("show", 1, 0)};
 `;
 
-const MenuItem = ({
-	open = false,
-	label = "",
-	icon,
-	alert,
-	pageScopeSelector,
-	href,
-	...props
-}) => {
+const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, href, ...props }) => {
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;

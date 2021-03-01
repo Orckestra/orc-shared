@@ -1,10 +1,14 @@
 import React from "react";
 import { mount } from "enzyme";
 import { IntlProvider } from "react-intl";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import InformationItem from "./InformationItem";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
+import { stringifyWithoutQuotes } from "./../../../../utils/parseHelper";
+import sharedMessages from "./../../../../sharedMessages";
+import { extractMessages } from "./../../../../utils/testUtils";
+
+const messages = extractMessages(sharedMessages);
 
 describe("Information Item", () => {
 	it("Renders Information Item properly", () => {
@@ -18,10 +22,55 @@ describe("Information Item", () => {
 		);
 
 		const expected = (
-			<Grid item>
+			<div>
 				<Typography children={label} />
 				<MultipleLinesText>{value}</MultipleLinesText>
-			</Grid>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item with null value and showNotAvailable property is false", () => {
+		const label = "label";
+		const value = null;
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label}>{value}</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<Typography children={label} />
+				<MultipleLinesText>{""}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item with null value and showNotAvailable property is true", () => {
+		const label = "label";
+		const value = null;
+		const notAvailable = true;
+
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<InformationItem label={label} showNotAvailable={notAvailable}>
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<Typography children={label} />
+					<MultipleLinesText>{stringifyWithoutQuotes(messages["orc-shared.notAvailable"])}</MultipleLinesText>
+				</div>
+			</IntlProvider>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -38,10 +87,10 @@ describe("Information Item", () => {
 		);
 
 		const expected = (
-			<Grid item>
+			<div>
 				<Typography children={label} />
 				{value}
-			</Grid>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -56,7 +105,7 @@ describe("Information Item", () => {
 			</IntlProvider>
 		);
 
-		const expected = <Grid item>{value}</Grid>;
+		const expected = <div>{value}</div>;
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});
@@ -74,10 +123,10 @@ describe("Information Item", () => {
 		);
 
 		const expected = (
-			<Grid item>
+			<div>
 				<Typography children={label.defaultMessage} />
 				{value}
-			</Grid>
+			</div>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);

@@ -9,8 +9,6 @@ import TabBar from "../MaterialUI/Navigation/TabBar";
 // Grey out other-scoped tabs, change scope when opened?
 // Warn when changing scopes, close out-scope tabs?
 
-const Navigation = withErrorBoundary("Navigation")(({ modules }) => (
-	<TabBar {...useNavigationState(modules)} />
-));
+const Navigation = withErrorBoundary("Navigation")(({ modules }) => <TabBar {...useNavigationState(modules)} />);
 
 export default Navigation;

@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import Select, { SelectIconButton } from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import sinon from "sinon";
-import { ignoreConsoleError, createMuiTheme } from "../../../utils/testUtils";
+import { ignoreConsoleError, createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import SelectProps, { sortTypeEnum } from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import { MuiThemeProvider } from "@material-ui/core";
@@ -30,11 +30,13 @@ describe("Select Component", () => {
 				</MuiThemeProvider>
 			);
 
-			expect(() => mount(component), "to throw a", TypeError).then((error) => {
-				expect(error, "to have message", "selectProps property is not of type SelectProps")
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "selectProps property is not of type SelectProps");
 			});
 		});
 	});
+
+	const theme = createMuiTheme();
 
 	it("Renders Select component without errors", () => {
 		const options = [
@@ -47,12 +49,10 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.update, update);
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
-		const theme = createMuiTheme();
-
 		const component = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const ChevronDown = props => {
@@ -60,7 +60,7 @@ describe("Select Component", () => {
 		};
 
 		const expected = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
@@ -69,7 +69,7 @@ describe("Select Component", () => {
 						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
 					</MenuItem>
 				</SelectMUI>
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -101,9 +101,9 @@ describe("Select Component", () => {
 		const theme = createMuiTheme();
 
 		const component = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const ChevronDown = props => {
@@ -111,7 +111,7 @@ describe("Select Component", () => {
 		};
 
 		const expected = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
@@ -120,8 +120,25 @@ describe("Select Component", () => {
 						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
 					</MenuItem>
 				</SelectMUI>
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Select component correctly with disabled prop", () => {
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.disabled, true);
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const expected = <TooltippedTypography noWrap children="aValue" titleValue="aValue" />;
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});
@@ -138,9 +155,9 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.value, "b");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -168,9 +185,9 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -199,9 +216,9 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -230,9 +247,9 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -263,9 +280,9 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.value, "aValue");
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);
@@ -298,19 +315,14 @@ describe("Select Component", () => {
 		const theme = createMuiTheme();
 
 		const component = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const expected = (
-			<MuiThemeProvider theme={theme}>
-				<SelectMUI
-					open={false}
-					value="aValue"
-					disableUnderline={true}
-					IconComponent={SelectIconButton}
-				>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI open={false} value="aValue" disableUnderline={true} IconComponent={SelectIconButton}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
 					</MenuItem>
@@ -318,7 +330,7 @@ describe("Select Component", () => {
 						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
 					</MenuItem>
 				</SelectMUI>
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -339,9 +351,9 @@ describe("Select Component", () => {
 		const theme = createMuiTheme();
 
 		const component = (
-			<MuiThemeProvider theme={theme}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select options={options} selectProps={selectProps} />
-			</MuiThemeProvider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);

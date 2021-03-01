@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 	label: {
 		fontSize: theme.typography.h2Size,
 		fontFamily: theme.typography.fontFamily,
-		fontWeight: theme.typography.fontWeightMedium
+		fontWeight: theme.typography.fontWeightMedium,
 	},
 }));
 

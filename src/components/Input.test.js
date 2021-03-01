@@ -27,10 +27,7 @@ describe("Input", () => {
 
 	it("fails on attempt to translate intl message outside an IntlProvider", () =>
 		expect(
-			() =>
-				mount(
-					<Input placeholder={{ id: "placeholder", defaultMessage: "A placeholder" }} />,
-				),
+			() => mount(<Input placeholder={{ id: "placeholder", defaultMessage: "A placeholder" }} />),
 			"to throw",
 			"Attempting to translate message placeholder outside of Intl context",
 		));

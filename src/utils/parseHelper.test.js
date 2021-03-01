@@ -3,6 +3,7 @@ import {
 	concatObjectPropsWithDelimeter,
 	getAllAfterPrependHref,
 	getModuleNameFromHref,
+	stringifyWithoutQuotes,
 } from "./parseHelper";
 
 describe("parseGuid", () => {
@@ -159,5 +160,19 @@ describe("getModuleNameFromHref", () => {
 
 		expect(moduleName, "to be", "");
 		expect(moduleHref, "to be", "");
+	});
+});
+
+describe("stringifyWithoutQuotes", () => {
+	it("Removes quotes", () => {
+		const value = "asd";
+
+		const obj = { a: value };
+
+		const stringifiedObj = stringifyWithoutQuotes(obj);
+
+		const expected = "{a:asd}";
+
+		expect(stringifiedObj, "to equal", expected);
 	});
 });

@@ -122,12 +122,7 @@ describe("List", () => {
 		const columnDefs = [{ fieldName: "a" }];
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={() => {}}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} rowOnClick={() => {}} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -165,12 +160,7 @@ describe("List", () => {
 		const colorGetter = row => colorMap[row.key];
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} rowBackgroundGetter={colorGetter} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -203,12 +193,7 @@ describe("List", () => {
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowBackgroundGetter={colorGetter}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} rowBackgroundGetter={colorGetter} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -244,12 +229,7 @@ describe("List", () => {
 		const selection = ["a"];
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					selection={selection}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} selection={selection} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -354,23 +334,7 @@ describe("List", () => {
 		it("renders a header with all rows identified when virtual", () => {
 			const rows = generateRows(15);
 			const columnDefs = [{ type: "select", fieldName: "select" }];
-			selection = [
-				"1",
-				"2",
-				"3",
-				"4",
-				"5",
-				"6",
-				"7",
-				"8",
-				"9",
-				"10",
-				"11",
-				"12",
-				"13",
-				"14",
-				"15",
-			];
+			selection = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
 			return expect(
 				<Provider store={store}>
 					<List

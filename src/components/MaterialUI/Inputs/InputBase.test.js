@@ -5,9 +5,6 @@ import InputBaseMUI from "@material-ui/core/InputBase";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import InputBaseProps from "./InputBaseProps";
-import CollapsableListProps from "../DataDisplay/collapsableListProps";
-import CollapsableList from "../DataDisplay/CollapsableList";
-import Icon from "../DataDisplay/Icon";
 
 describe("InputBase Component", () => {
 	let update, container;
@@ -39,6 +36,7 @@ describe("InputBase Component", () => {
 		inputProps.set(InputBaseProps.propNames.value, aValue);
 		inputProps.set(InputBaseProps.propNames.label, aLabel);
 		inputProps.set(InputBaseProps.propNames.type, "text");
+		inputProps.set(InputBaseProps.propNames.disabled, true);
 
 		const component = <InputBase inputProps={inputProps} />;
 

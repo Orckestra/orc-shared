@@ -9,7 +9,7 @@ import {
 	ExpansionPanelProps,
 	ExpansionPanelActionsProps,
 	isExpansionPanelProps,
-	isExpansionPanelActionsProps
+	isExpansionPanelActionsProps,
 } from "./expansionPanelProps";
 import Icon from "./../DataDisplay/Icon";
 
@@ -22,13 +22,13 @@ const useStyles = makeStyles(theme => ({
 			minHeight: 0,
 			margin: 0,
 		},
-		borderColor: theme.palette.grey.borders
+		borderColor: theme.palette.grey.borders,
 	},
 	expandIcon: {
 		hight: theme.spacing(1),
-		width: theme.spacing(1)
+		width: theme.spacing(1),
 	},
-	headerPanelExpanded: {}
+	headerPanelExpanded: {},
 }));
 
 const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansionPanelActionsProps }) => {
@@ -66,14 +66,14 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 			expanded={expanded}
 			onChange={internalOnChange}
 			classes={{
-				root: expansionPanelRootStyle
+				root: expansionPanelRootStyle,
 			}}
 		>
 			<AccordionSummary
 				expandIcon={<Icon id="chevron-down" className={classes.expandIcon} />}
 				classes={{
 					root: classNames(classes.expansionPanelHeader),
-					expanded: classes.headerPanelExpanded
+					expanded: classes.headerPanelExpanded,
 				}}
 			>
 				{header}

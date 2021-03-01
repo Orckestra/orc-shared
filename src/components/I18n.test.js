@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl";
 import { spyOnConsole } from "../utils/testUtils";
 import I18n from "./I18n";
 
-jest.mock("translations/en.json", () => ({
+jest.mock("translations/en-US.json", () => ({
 	WORD: "Word",
 }));
 
@@ -16,8 +16,8 @@ describe("I18n", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
-				locale: "en",
-				supportedLocales: ["en"],
+				locale: "en-US",
+				supportedLocales: ["en-US"],
 			},
 		});
 		store = {

@@ -28,11 +28,7 @@ const DropMenu = ({ id, initOpen, menuItems, alignRight, className = "", childre
 					typeof child === "object" ? React.cloneElement(child, { open }) : child,
 				)}
 			</AnchorWrapper>
-			<Menu
-				id={id + "Dropdown"}
-				{...{ open, menuItems, reset }}
-				alignRight={alignRight}
-			/>
+			<Menu id={id + "Dropdown"} {...{ open, menuItems, reset }} alignRight={alignRight} />
 		</Wrapper>
 	);
 };

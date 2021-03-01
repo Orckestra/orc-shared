@@ -2,19 +2,40 @@ import TableProps, { isTableProps } from "./TableProps";
 
 describe("TableProps Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["withoutTopBorder", "stickyHeader", "selectMode", "onRowClick", "classes"];
+		const propNames = [
+			"withoutTopBorder",
+			"stickyHeader",
+			"selectMode",
+			"onRowClick",
+			"classes",
+			"deepPropsComparation",
+		];
+
+		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];
 
 		expect(TableProps.propNames, "to have keys", propNames);
+		expect(TableProps.ruleNames, "to have keys", ruleNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["withoutTopBorder", "stickyHeader", "selectMode", "onRowClick", "classes"];
+		const propNames = [
+			"withoutTopBorder",
+			"stickyHeader",
+			"selectMode",
+			"onRowClick",
+			"classes",
+			"deepPropsComparation",
+		];
+
+		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];
 
 		const tableProps = new TableProps();
 
 		const keys = Array.from(tableProps.componentProps.keys());
+		const keysRuleNames = Array.from(tableProps.componentClasses.keys());
 
 		expect(keys, "to equal", propNames);
+		expect(keysRuleNames, "to equal", ruleNames);
 	});
 });
 

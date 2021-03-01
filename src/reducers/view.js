@@ -2,12 +2,12 @@ import Immutable from "immutable";
 import {
 	VIEW_SET,
 	VIEW_SET_FIELD,
-	VIEW_INITIALIZE_EDIT_TREE,
-	VIEW_CREATE_EDIT_NODE,
 	VIEW_REMOVE_EDIT_NODE,
-	VIEW_SET_EDIT_MODEL,
 	VIEW_SET_EDIT_MODEL_FIELD,
+	VIEW_SET_EDIT_MODEL_FIELD_ERRORS,
+	VIEW_SET_EDIT_MODEL_ERRORS,
 } from "../actions/view";
+import { isEqual } from "lodash";
 
 const initialState = Immutable.Map({});
 
@@ -17,56 +17,35 @@ const viewStateReducer = (state = initialState, action) => {
 			return state.set(action.payload.name, Immutable.fromJS(action.payload.value));
 		}
 		case VIEW_SET_FIELD: {
-			return state.setIn(
-				[action.payload.name, action.payload.field],
-				Immutable.fromJS(action.payload.value),
-			);
-		}
-		case VIEW_INITIALIZE_EDIT_TREE: {
-			const modules = action.payload;
-			const moduleNames = Object.keys(modules);
-			const editTree = {};
-			for (const moduleName of moduleNames) {
-				editTree[moduleName] = {};
-			}
-
-			return state.set("edit", Immutable.fromJS(editTree));
-		}
-		case VIEW_CREATE_EDIT_NODE: {
-			const { moduleName, entityId, modulesData } = action.payload;
-
-			const pages = modulesData[moduleName].pages;
-
-			const pageKeys = Object.keys(pages)
-			// if at some point it will be possible that there could be more than 1 page per module
-			// it will be necessary to remake this part and to receive page key as a property
-			const sections = pages[pageKeys[0]];
-
-			const sectionsKeys = Object.keys(sections);
-
-			for (const sectionKey of sectionsKeys) {
-				sections[sectionKey].wasEdited = false;
-			}
-			return state.setIn(["edit", moduleName, entityId], Immutable.fromJS(sections));
+			return state.setIn([action.payload.name, action.payload.field], Immutable.fromJS(action.payload.value));
 		}
 		case VIEW_REMOVE_EDIT_NODE: {
 			const { moduleName, entityId } = action.payload;
 
 			return state.removeIn(["edit", moduleName, entityId]);
 		}
-		case VIEW_SET_EDIT_MODEL: {
-			const { moduleName, entityId, sectionName, model } = action.payload;
-
-			return state.setIn(["edit", moduleName, entityId, sectionName, "model"], Immutable.fromJS(model))
-				.setIn(["edit", moduleName, entityId, sectionName, "wasEdited"], true);
-		}
 		case VIEW_SET_EDIT_MODEL_FIELD: {
-			const { keys, value, entityId, sectionName, moduleName } = action.payload;
+			const { keys, value, storeValue, entityId, sectionName, moduleName } = action.payload;
 
 			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
 
-			return state.setIn(path, value)
-				.setIn(["edit", moduleName, entityId, sectionName, "wasEdited"], true);
+			return state.setIn(path, Immutable.fromJS({ value, wasModified: !isEqual(value, storeValue) }));
+		}
+		case VIEW_SET_EDIT_MODEL_FIELD_ERRORS: {
+			const { keys, error, entityId, sectionName, moduleName } = action.payload;
+			const path = ["edit", moduleName, entityId, sectionName, "model", ...keys, "error"];
+			return state.setIn(path, error);
+		}
+		case VIEW_SET_EDIT_MODEL_ERRORS: {
+			const { errors, entityId, sectionName, moduleName } = action.payload;
+			errors.forEach(item => {
+				if (item.keys) {
+					const path = ["edit", moduleName, entityId, sectionName, "model", ...item.keys, "error"];
+					state = state.setIn(path, item.error);
+				}
+			});
+
+			return state;
 		}
 		default:
 			return state;

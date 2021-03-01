@@ -121,7 +121,6 @@ const setThemeOverrides = theme => ({
 			borderColor: theme.palette.grey.borders,
 			borderWidth: 1,
 			boxSizing: "border-box",
-			minWidth: 64,
 			padding: theme.spacing(1, 2),
 			borderRadius: theme.shape.borderRadius,
 			color: theme.palette.text.primary,
@@ -154,6 +153,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiButton,
 		root: {
 			padding: `${theme.spacing(0.8)} ${theme.spacing(1)}`,
+			height: theme.spacing(3),
 		},
 		/* Styles applied to the span element that wraps the children. */
 		label: {
@@ -441,8 +441,8 @@ const setThemeOverrides = theme => ({
 		...theme.MuiListItem,
 		root: {
 			"&.Mui-selected": {
-				backgroundColor: theme.palette.primary.light
-			}
+				backgroundColor: theme.palette.primary.light,
+			},
 		},
 		button: {
 			...theme.button,
@@ -484,6 +484,10 @@ const setThemeOverrides = theme => ({
 			position: "relative",
 			minHeight: "auto",
 		},
+		indicator: {
+			...theme.indicator,
+			backgroundColor: "transparent",
+		},
 	},
 	MuiTab: {
 		...theme.MuiTab,
@@ -499,6 +503,7 @@ const setThemeOverrides = theme => ({
 			padding: `${theme.spacing(1.4)} ${theme.spacing(2)}`,
 			textTransform: "uppercase",
 			flexGrow: 0,
+			borderBottom: `1px solid ${theme.palette.primary.main}`,
 			[theme.breakpoints.up("sm")]: {
 				minWidth: 0,
 			},
@@ -517,7 +522,6 @@ const setThemeOverrides = theme => ({
 				borderBottom: `1px solid ${theme.palette.common.white}`,
 			},
 			"&.MuiTab-labelIcon svg": {
-
 				marginRight: theme.spacing(1),
 			},
 			"& .MuiTab-wrapper": {
@@ -525,7 +529,7 @@ const setThemeOverrides = theme => ({
 			},
 			"&.MuiButtonBase-root:focus, &.MuiButtonBase-root:active": {
 				boxShadow: "none",
-				borderRadius: `4px 4px 0 0`
+				borderRadius: `4px 4px 0 0`,
 			},
 		},
 		labelIcon: {
@@ -537,7 +541,7 @@ const setThemeOverrides = theme => ({
 			},
 			"& .MuiTab-wrapper > *:first-child": {
 				marginBottom: theme.spacing(0),
-			}
+			},
 		},
 	},
 	MuiTable: {
@@ -571,6 +575,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiInputBase,
 		root: {
 			...theme.root,
+			width: "100%",
 			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root": {
 				marginLeft: theme.spacing(1),
 			},
@@ -582,7 +587,6 @@ const setThemeOverrides = theme => ({
 			backgroundColor: theme.palette.background.paper,
 			border: `1px solid ${theme.palette.grey.borders}`,
 			fontSize: theme.typography.fontSize,
-			maxWidth: theme.spacing(20),
 			minWidth: theme.spacing(14),
 			padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
 			transition: theme.transitions.create(["border-color", "box-shadow"]),
@@ -701,6 +705,13 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiAccordion: {
+		...theme.MuiAccordion,
+		root: {
+			...theme.root,
+			boxShadow: "none",
+		},
+	},
 	MuiAccordionSummary: {
 		...theme.MuiAccordionSummary,
 		expandIcon: {
@@ -728,6 +739,10 @@ const setThemeOverrides = theme => ({
 				border: "1px solid",
 				borderColor: theme.palette.grey.icon,
 			},
+		},
+		popper: {
+			...theme.popper,
+			zIndex: 10000,
 		},
 	},
 	MuiRadio: {
@@ -804,14 +819,58 @@ const setThemeOverrides = theme => ({
 			justifyContent: "left",
 			texTransform: "capitalize",
 			"&.Mui-disabled": {
-				opacity: 1
-			}
+				opacity: 1,
+			},
 		},
 		label: {
 			...theme.label,
 			paddingLeft: theme.spacing(1),
 			paddingRight: theme.spacing(1),
-		}
+		},
+	},
+	MuiTreeItem: {
+		...theme.MuiTreeItem,
+		root: {
+			...theme.root,
+			position: "relative",
+			marginBottom: theme.spacing(1),
+		},
+		label: {
+			...theme.label,
+			padding: 0,
+		},
+		content: {
+			...theme.content,
+			width: "auto",
+			"& > .MuiTreeItem-label": {
+				"&:hover": {
+					backgroundColor: `${theme.palette.primary.light}`,
+				},
+			},
+		},
+		selected: {
+			...theme.selected,
+			"& > .MuiTreeItem-content .MuiTreeItem-label": {
+				border: `1px solid ${theme.palette.primary.main}`,
+				backgroundColor: `${theme.palette.primary.light} !important`,
+			},
+		},
+		group: {
+			...theme.group,
+			borderLeft: `1px solid ${theme.palette.grey.icon}`,
+			"& > *": {
+				marginLeft: theme.spacing(2),
+				marginTop: theme.spacing(1.5),
+			},
+		},
+		iconContainer: {
+			...theme.iconContainer,
+			marginRight: theme.spacing(0.6),
+			width: "auto",
+			"& svg": {
+				fontSize: "10px",
+			},
+		},
 	},
 });
 

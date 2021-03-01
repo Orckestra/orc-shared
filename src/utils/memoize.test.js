@@ -7,8 +7,7 @@ describe("memoize", () => {
 		func = sinon.spy(x => x + 1).named("testFunc");
 	});
 
-	it("returns a function", () =>
-		expect(memoize, "when called with", [func], "to be a function"));
+	it("returns a function", () => expect(memoize, "when called with", [func], "to be a function"));
 
 	it("returns correct results but only calls the function if new params given", () =>
 		expect(memoize, "when called with", [func])

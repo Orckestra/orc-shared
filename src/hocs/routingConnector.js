@@ -9,7 +9,6 @@ const deprecate = Comp => {
 	return Comp;
 };
 
-const routingConnector = (...connectArgs) =>
-	compose(deprecate, withRouter, connect(...connectArgs));
+const routingConnector = (...connectArgs) => compose(deprecate, withRouter, connect(...connectArgs));
 
 export default routingConnector;

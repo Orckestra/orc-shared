@@ -2,13 +2,35 @@ import InputBaseProps, { isInputProps } from "./InputBaseProps";
 
 describe("InputBase Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["update", "value", "placeholder", "type", "label", "error", "errorPosition", "inputAttributes"];
+		const propNames = [
+			"update",
+			"value",
+			"placeholder",
+			"type",
+			"label",
+			"error",
+			"errorPosition",
+			"inputAttributes",
+			"disabled",
+			"multiline",
+		];
 
 		expect(InputBaseProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["update", "value", "placeholder", "type", "label", "error", "errorPosition", "inputAttributes"];
+		const propNames = [
+			"update",
+			"value",
+			"placeholder",
+			"type",
+			"label",
+			"error",
+			"errorPosition",
+			"inputAttributes",
+			"disabled",
+			"multiline",
+		];
 
 		const inputProps = new InputBaseProps();
 

@@ -47,13 +47,7 @@ export const Error = ({ requestError, needLogin }) => {
 };
 
 const Authenticate = ({ children }) => {
-	const {
-		loading,
-		defaultScope,
-		authedUser,
-		requestError,
-		needLogin,
-	} = useAuthenticationData();
+	const { loading, defaultScope, authedUser, requestError, needLogin } = useAuthenticationData();
 	if (loading || defaultScope === null) {
 		return <Loader />;
 	}

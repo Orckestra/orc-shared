@@ -25,8 +25,14 @@ export const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey.light,
 		whiteSpace: "nowrap",
 	},
+	disabledPrepend: {
+		border: 0,
+		padding: theme.spacing(0.8),
+		height: theme.spacing(2.8),
+		backgroundColor: theme.palette.grey.borders,
+	},
 	controlInput: {
-		height: theme.spacing(1.6),
+		minHeight: theme.spacing(1.6),
 		maxWidth: "unset",
 		minWidth: 0,
 		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
@@ -38,10 +44,10 @@ export const useStyles = makeStyles(theme => ({
 		},
 	},
 	errorInput: {
-		"& input": {
+		"& input, & textarea": {
 			border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
 
-			"&:focus": {
+			"&:focus, &:active": {
 				border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
 				boxShadow: `${theme.spacing(0, 0, 0.4)} ${theme.palette.error.main}`,
 			},
@@ -53,6 +59,23 @@ export const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fieldLabelSize,
 		float: props => (props.errorPosition === "right" ? "right" : "left"),
 	},
+	disabled: {
+		"& input, & textarea": {
+			color: theme.palette.text.primary,
+			backgroundColor: theme.palette.grey.light,
+			border: 0,
+			"&:focus, &:active": {
+				border: 0,
+				boxShadow: 0,
+			},
+		},
+	},
+	multiline: {
+		padding: 0,
+	},
+	inputMultiline: {
+		padding: theme.spacing(0.6, 0.6, 0.6, 0.85),
+	},
 }));
 
 const InputBase = ({ inputProps }) => {
@@ -60,30 +83,46 @@ const InputBase = ({ inputProps }) => {
 		throw new TypeError("inputProps property is not of type InputBaseProps");
 	}
 
+	const multiline = inputProps?.get(InputBaseProps.propNames.multiline) || false;
 	const update = inputProps?.get(InputBaseProps.propNames.update);
 	const value = inputProps?.get(InputBaseProps.propNames.value) ?? "";
-	const label = inputProps?.get(InputBaseProps.propNames.label);
+	const label = !multiline && inputProps?.get(InputBaseProps.propNames.label);
 	const type = inputProps?.get(InputBaseProps.propNames.type) || "text";
 	const inputAttributes = inputProps?.get(InputBaseProps.propNames.inputAttributes) || {};
 	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
 	const error = inputProps?.get(InputBaseProps.propNames.error);
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
+	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) || false;
 
 	const classes = useStyles({ label, errorPosition });
+
+	const onChangeHandler = event => {
+		event.persist();
+		update(event.target.value);
+	};
 
 	return (
 		<div className={classes.container}>
 			<div className={classes.inputContainer}>
-				{label && <label className={classes.prepend}>{label}</label>}
+				{label && <label className={`${classes.prepend} ${disabled && classes.disabledPrepend}`}>{label}</label>}
 				<InputBaseMUI
-					classes={{ input: classes.controlInput, error: classes.errorInput }}
+					classes={{
+						input: classes.controlInput,
+						error: classes.errorInput,
+						disabled: classes.disabled,
+						multiline: classes.multiline,
+						inputMultiline: classes.inputMultiline,
+					}}
 					type={type}
 					placeholder={placeholder}
 					value={value}
 					fullWidth={true}
-					onChange={e => update(e.target.value)}
+					onChange={event => onChangeHandler(event)}
 					error={!!error}
 					inputProps={inputAttributes}
+					disabled={disabled}
+					multiline={multiline}
+					rows={4}
 				/>
 			</div>
 			{error && <div className={classes.errorText}>{error}</div>}
@@ -94,6 +133,7 @@ const InputBase = ({ inputProps }) => {
 const compareInputBase = (prev, next) =>
 	prev.inputProps.get(InputBaseProps.propNames.value) === next.inputProps.get(InputBaseProps.propNames.value) &&
 	prev.inputProps.get(InputBaseProps.propNames.error) === next.inputProps.get(InputBaseProps.propNames.error) &&
-	prev.inputProps.get(InputBaseProps.propNames.update) === next.inputProps.get(InputBaseProps.propNames.update);
+	prev.inputProps.get(InputBaseProps.propNames.update) === next.inputProps.get(InputBaseProps.propNames.update) &&
+	prev.inputProps.get(InputBaseProps.propNames.disabled) === next.inputProps.get(InputBaseProps.propNames.disabled);
 
 export default React.memo(InputBase, compareInputBase);
