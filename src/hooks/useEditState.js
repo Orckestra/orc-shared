@@ -1,45 +1,59 @@
 import { useSelector } from "react-redux";
-import { unwrapImmutable } from "../utils";
-import { selectCurrentModuleName, selectCurrentSectionName } from "./../selectors/navigation";
+import { selectCurrentModuleName } from "./../selectors/navigation";
 import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesData";
 import { setEditModelField, setEditModelFieldError } from "./../actions/view";
 import { validationRules } from "../utils/modelValidationHelper";
+import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
 
-export const useEditState = (entityId, keys, initialValue) => {
+// if you need to override default validation rules just pass new rules with default keys
+// as properties of extendedValidationRules
+export const useEditState = (entityId, sectionName, extendedValidationRules = {}) => {
 	const currentModuleName = useSelector(selectCurrentModuleName);
-	const currentSectionName = useSelector(selectCurrentSectionName);
 	const dispatch = useDispatchWithModulesData();
 
-	const editState = unwrapImmutable(
-		useSelector(state =>
-			state.getIn(["view", "edit", currentModuleName, entityId, currentSectionName, "model", ...keys]),
-		),
-	);
+	const mergedValidationRules = { ...validationRules, ...extendedValidationRules };
 
-	// if you need to override default validation rules just pass new rules with default keys
-	// as properties of extendedValidationRules
-	const updateEditState = (newValue, errorTypes = [], extendedValidationRules = {}) => {
-		dispatch(setEditModelField, [keys, newValue, initialValue, entityId], {
-			includeCurrentSection: true,
-		});
+	const useFieldState = (keys, initialValue, errorTypes = []) => {
+		const editState = useSelectorAndUnwrap(state =>
+			state.getIn(["view", "edit", currentModuleName, entityId, sectionName, "model", ...keys]),
+		) || { value: initialValue };
 
-		const mergedValidationRules = { ...validationRules, ...extendedValidationRules };
+		const updateEditState = newValue => {
+			dispatch(setEditModelField, [keys, newValue, initialValue, entityId, sectionName]);
 
-		errorTypes.forEach(errorType => {
-			const isValid = mergedValidationRules[errorType](newValue);
+			isEditStateValid(newValue);
+		};
 
-			if (isValid === false) {
-				dispatch(setEditModelFieldError, [keys, errorType, entityId], { includeCurrentSection: true });
-			}
-		});
+		const resetEditState = () => {
+			dispatch(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
+		};
+
+		const isEditStateValid = value => {
+			const valueToValidate = value ?? editState.value;
+			let hasAnyValidationErrors = false;
+			errorTypes.forEach(errorType => {
+				const isValid = mergedValidationRules[errorType](valueToValidate);
+
+				if (isValid === false) {
+					dispatch(setEditModelFieldError, [keys, errorType, entityId, sectionName]);
+
+					hasAnyValidationErrors = true;
+					return;
+				}
+			});
+
+			return !hasAnyValidationErrors;
+		};
+
+		return {
+			state: editState,
+			update: updateEditState,
+			reset: resetEditState,
+			isValid: isEditStateValid,
+		};
 	};
 
-	const resetEditState = () =>
-		dispatch(setEditModelField, [keys, initialValue, initialValue, entityId], {
-			includeCurrentSection: true,
-		});
-
-	return [editState, updateEditState, resetEditState];
+	return useFieldState;
 };
 
 export default useEditState;

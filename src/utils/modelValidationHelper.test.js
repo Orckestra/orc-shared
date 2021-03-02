@@ -1,5 +1,6 @@
 import { validationErrorTypes } from "../constants";
 import { validationRules, showError, hasValidationErrors } from "./modelValidationHelper";
+import sinon from "sinon";
 
 describe("validationRules", () => {
 	it("validates fieldIsRequired rule correctly when its value is empty", () => {
@@ -22,8 +23,8 @@ describe("showError", () => {
 		expect(show, "to be false");
 	});
 
-	it("Retrieves true if field has value and error", () => {
-		const show = showError({ value: "someValue", error: "someError" });
+	it("Retrieves true if field has error", () => {
+		const show = showError({ error: "someError" });
 
 		expect(show, "to be true");
 	});
@@ -33,48 +34,47 @@ describe("showError", () => {
 
 		expect(show, "to be false");
 	});
-
-	it("Retrieves false if field has no value", () => {
-		const show = showError({ error: "something" });
-
-		expect(show, "to be false");
-	});
-
-	it("Retrieves false if field has no value or error", () => {
-		const show = showError({});
-
-		expect(show, "to be false");
-	});
 });
 
 describe("hasValidationErrors", () => {
 	it("Retrieves true if any field has error", () => {
-		const model = {
+		const editState = {
 			field1: {
-				value: "something",
+				state: {
+					value: "something",
+				},
+				isValid: () => false,
 			},
 			field2: {
-				value: "another",
-				error: "someError",
+				state: {
+					value: "another",
+				},
+				isValid: () => true,
 			},
 		};
 
-		const show = hasValidationErrors(model);
+		const show = hasValidationErrors(editState);
 
 		expect(show, "to be true");
 	});
 
 	it("Retrieves false if none of fields has an error", () => {
-		const model = {
+		const editState = {
 			field1: {
-				value: "something",
+				state: {
+					value: "something",
+				},
+				isValid: () => true,
 			},
 			field2: {
-				value: "another",
+				state: {
+					value: "another",
+				},
+				isValid: () => true,
 			},
 		};
 
-		const show = hasValidationErrors(model);
+		const show = hasValidationErrors(editState);
 
 		expect(show, "to be false");
 	});

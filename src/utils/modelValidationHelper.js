@@ -9,23 +9,22 @@ export const validationRules = {
 export const showError = field => {
 	if (field == null) return false;
 
-	return field.value != null && field.error != null;
+	return field.error != null;
 };
 
-export const hasValidationErrors = model => {
-	// if model is empty we will return true
-	// because of the context of usage of this helper function
-	// since it's expected to be used as a condition to decide
-	// if we should or shouldn't send request to API
-	if (isEmpty(model)) return true;
+export const hasValidationErrors = editState => {
+	if (isEmpty(editState)) return true;
 
-	const fields = Object.keys(model);
+	const fields = Object.keys(editState);
 
-	for (const field of fields) {
-		if (model[field].error != null) {
-			return true;
+	let hasAnyValidationErrors = false;
+
+	fields.forEach(field => {
+		const isValid = editState[field].isValid();
+		if (isValid === false) {
+			hasAnyValidationErrors = true;
 		}
-	}
+	});
 
-	return false;
+	return hasAnyValidationErrors;
 };

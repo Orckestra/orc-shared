@@ -39,3 +39,9 @@ export const validationErrorTypes = {
 	fieldIsRequired: "fieldIsRequired",
 	fieldHasWrongValue: "fieldHasWrongValue",
 };
+
+export const mode = {
+	edit: "edit",
+	read: "read",
+	create: "create",
+};
