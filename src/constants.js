@@ -40,7 +40,7 @@ export const validationErrorTypes = {
 	fieldHasWrongValue: "fieldHasWrongValue",
 };
 
-export const mode = {
+export const displayMode = {
 	edit: "edit",
 	read: "read",
 	create: "create",

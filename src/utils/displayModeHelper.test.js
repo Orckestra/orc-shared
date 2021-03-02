@@ -1,9 +1,9 @@
-import { isReadMode, isEditMode, isCreateMode, isMutationMode } from "./modeHelper";
-import { mode } from "./../constants";
+import { isReadMode, isEditMode, isCreateMode, isMutationMode } from "./displayModeHelper";
+import { displayMode } from "../constants";
 
 describe("isReadMode", () => {
 	it("Returns true if mode is read", () => {
-		const result = isReadMode(mode.read);
+		const result = isReadMode(displayMode.read);
 
 		expect(result, "to be true");
 	});
@@ -17,7 +17,7 @@ describe("isReadMode", () => {
 
 describe("isEditMode", () => {
 	it("Returns true if mode is edit", () => {
-		const result = isEditMode(mode.edit);
+		const result = isEditMode(displayMode.edit);
 
 		expect(result, "to be true");
 	});
@@ -31,7 +31,7 @@ describe("isEditMode", () => {
 
 describe("isCreateMode", () => {
 	it("Returns true if mode is create", () => {
-		const result = isCreateMode(mode.create);
+		const result = isCreateMode(displayMode.create);
 
 		expect(result, "to be true");
 	});
@@ -45,13 +45,13 @@ describe("isCreateMode", () => {
 
 describe("isMutationMode", () => {
 	it("Returns true if mode is edit", () => {
-		const result = isMutationMode(mode.edit);
+		const result = isMutationMode(displayMode.edit);
 
 		expect(result, "to be true");
 	});
 
 	it("Returns true if mode is create", () => {
-		const result = isMutationMode(mode.create);
+		const result = isMutationMode(displayMode.create);
 
 		expect(result, "to be true");
 	});

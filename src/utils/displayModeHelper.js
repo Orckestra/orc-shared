@@ -1,15 +1,15 @@
-import { mode } from "./../constants";
+import { displayMode } from "../constants";
 
 export const isReadMode = modeToCheck => {
-	return modeToCheck === mode.read;
+	return modeToCheck === displayMode.read;
 };
 
 export const isEditMode = modeToCheck => {
-	return modeToCheck === mode.edit;
+	return modeToCheck === displayMode.edit;
 };
 
 export const isCreateMode = modeToCheck => {
-	return modeToCheck === mode.create;
+	return modeToCheck === displayMode.create;
 };
 
 export const isMutationMode = modeToCheck => {
