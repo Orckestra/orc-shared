@@ -52,4 +52,27 @@ describe("mapModel", () => {
 
 		expect(resultModel, "to equal", expectedResultModel);
 	});
+
+	it("Maps using a custom mapper", () => {
+		const mapRules = [
+			{
+				modelName: "field2",
+				transform: (model, modelValue, result) => {
+					result.otherField = modelValue;
+				},
+			},
+		];
+
+		const resultModel = mapModel(model, initialModel, mapRules);
+
+		const expectedResultModel = {
+			field1: "Hello",
+			name: "Carl",
+			field3: false,
+			field4: "Prop to add",
+			otherField: "Bob",
+		};
+
+		expect(resultModel, "to equal", expectedResultModel);
+	});
 });
