@@ -28,6 +28,19 @@ describe("TimelineProps Props", () => {
 
 		expect(items, "to equal", [timelineItemProps, timelineItemProps]);
 	});
+
+	it("Adds TimelineItemProps to items with no content renders no items", () => {
+		const timelineProps = new TimelineProps();
+		timelineProps.AddItem(null, null, null);
+		timelineProps.AddItem("content", "contentOpposite", null);
+		const items = timelineProps.get(TimelineProps.propNames.items);
+
+		const timelineItemProps = new TimelineItemProps();
+		timelineItemProps.set(TimelineItemProps.propNames.content, "content");
+		timelineItemProps.set(TimelineItemProps.propNames.contentOpposite, "contentOpposite");
+
+		expect(items, "to equal", [timelineItemProps]);
+	});
 });
 
 describe("isTimelineProps", () => {
