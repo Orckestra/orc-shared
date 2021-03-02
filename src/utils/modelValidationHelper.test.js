@@ -1,6 +1,5 @@
 import { validationErrorTypes } from "../constants";
 import { validationRules, showError, hasValidationErrors } from "./modelValidationHelper";
-import sinon from "sinon";
 
 describe("validationRules", () => {
 	it("validates fieldIsRequired rule correctly when its value is empty", () => {
