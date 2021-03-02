@@ -112,4 +112,48 @@ describe("Fullpage", () => {
 			</Provider>,
 		);
 	});
+
+	it("entityIdResolver is passed to SegmentPage", () => {
+		const location = {
+			pathname: "/meep/snap/stuff",
+		};
+
+		const segments = { "/stuff": { component: View2, label: "Two" } };
+		const customResolver = () => "customId";
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/meep/snap"]}>
+					<div>
+						<FullPage
+							path="/meep/snap"
+							config={{
+								component: View1,
+								segments: segments,
+								entityIdResolver: customResolver,
+							}}
+							location={location}
+							match={match}
+						/>
+					</div>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
+					<div>
+						<div id="view1"></div>
+						<SegmentPage
+							path="/:scope/snap"
+							location={location}
+							segments={segments}
+							match={match}
+							entityIdResolver={customResolver}
+						/>
+					</div>
+				</MemoryRouter>
+			</Provider>,
+		);
+	});
 });

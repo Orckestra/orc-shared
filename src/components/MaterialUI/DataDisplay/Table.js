@@ -93,7 +93,7 @@ export const useStyles = makeStyles(theme => ({
 function headersAreIdentical(prevHeaders, nextHeaders) {
 	prevHeaders.forEach((prevHeader, index) => {
 		let prevSortOptions = prevHeader.cellElement.props.columnDefinition.sortOptions;
-		let nextSortOptions = nextHeaders[index].cellElement.props.columnDefinition.sortOptions;
+		let nextSortOptions = nextHeaders[index]?.cellElement.props.columnDefinition.sortOptions;
 		if (prevSortOptions != null && nextSortOptions != null) {
 			if (prevSortOptions.sortField !== nextSortOptions.sortField) {
 				return false;
@@ -121,7 +121,7 @@ function propsAreEqualDeeplyRow(prev, next) {
 	if (prev.length) {
 		let equalRow = true;
 		prev.forEach((prevElem, index) => {
-			if (!isEqual(prevElem.element, next[index].element)) {
+			if (!isEqual(prevElem.element, next[index].element) || prevElem.columns.length !== next[index].columns.length) {
 				equalRow = false;
 			}
 		});
@@ -301,6 +301,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 	customClasses["headerCell"] = tableProps?.getStyle(TableProps.ruleNames.headerCell) || null;
 	customClasses["tableContainer"] = tableProps?.getStyle(TableProps.ruleNames.tableContainer) || null;
 	customClasses["container"] = tableProps?.getStyle(TableProps.ruleNames.container) || null;
+	customClasses["table"] = tableProps?.getStyle(TableProps.ruleNames.table) || null;
 
 	const refScrolled = useRef();
 

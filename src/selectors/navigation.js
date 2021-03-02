@@ -62,8 +62,21 @@ export const selectCurrentModuleName = createSelector(selectPrependPathConfig, s
 	new RegExp(`^${prependPath}`).test(path) ? path.replace(new RegExp(`^${prependPath}([^/]+)(/.*)?$`), "$1") : "",
 );
 
-export const selectCurrentSectionName = createSelector(selectPrependPathConfig, selectRoutePath, (prependPath, path) =>
-	path.replace(prependPath, "").replace(new RegExp(`^([^/]*/){2}`), "").replace(new RegExp(`/.*$`), ""),
+export const selectCurrentSectionName = createSelector(
+	selectPrependPathConfig,
+	selectRoutePath,
+	(prependPath, path) => {
+		//strips the scope and module
+		let segmentPath = path.replace(prependPath, "").replace(new RegExp(`^([^/]*/){1}`), "");
+
+		//strips param paths
+		while (segmentPath.includes(":")) {
+			segmentPath = segmentPath.replace(new RegExp(`^([^/]*/){1}`), "");
+		}
+
+		//strips entity id and deeper pages
+		return segmentPath.replace(new RegExp(`^([^/]*/){1}`), "").replace(new RegExp(`/.*$`), "");
+	},
 );
 
 const selectCurrentModuleList = createSelector(

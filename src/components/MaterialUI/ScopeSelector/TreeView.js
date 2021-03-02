@@ -1,7 +1,6 @@
 import React from "react";
 import TreeViewMui from "@material-ui/lab/TreeView";
 import TreeItem from "./TreeItem";
-import { scopeTypes } from "./../../../constants";
 
 export const BaseTreeView = ({
 	rootId,
