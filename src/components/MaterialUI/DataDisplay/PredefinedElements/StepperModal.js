@@ -136,7 +136,7 @@ const StepperModal = ({ steps = [], title = "", open, closeCallback, confirmCall
 				)}
 				{currentStep === steps.length - 1 && (
 					<Button variant="contained" color="primary" onClick={confirmCallback}>
-						{confirmTitle || <FormattedMessage {...sharedMessages.saveAndClose} />}
+						{confirmTitle || <FormattedMessage {...sharedMessages.applyChanges} />}
 					</Button>
 				)}
 			</div>
