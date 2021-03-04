@@ -13,7 +13,7 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 
 	const mergedValidationRules = { ...validationRules, ...extendedValidationRules };
 
-	const useFieldState = (keys, initialValue, errorTypes = []) => {
+	const useFieldState = (keys, initialValue = "", errorTypes = []) => {
 		const editState = useSelectorAndUnwrap(state =>
 			state.getIn(["view", "edit", currentModuleName, entityId, sectionName, "model", ...keys]),
 		) || { value: initialValue };
