@@ -146,9 +146,9 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.back",
 		defaultMessage: "Back",
 	},
-	saveAndClose: {
-		id: "orc-shared.saveAndClose",
-		defaultMessage: "Save And Close",
+	applyChanges: {
+		id: "orc-shared.applyChanges",
+		defaultMessage: "Apply Changes",
 	},
 });
 

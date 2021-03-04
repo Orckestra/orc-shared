@@ -57,7 +57,7 @@ const useListStyles = makeStyles(theme => ({
 		fontSize: theme.spacing(1.3),
 		color: theme.palette.text.primary,
 		fontFamily: theme.typography.fontFamily,
-		padding: theme.spacing(0, 1.6),
+		padding: theme.spacing(0.4, 1.6),
 		cursor: "pointer",
 	},
 	selectedItem: {
@@ -65,6 +65,7 @@ const useListStyles = makeStyles(theme => ({
 	},
 	itemTitle: {
 		fontWeight: theme.typography.fontWeightSemiBold,
+		marginBottom: theme.spacing(0.4),
 	},
 }));
 
