@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
 		borderBottom: `1px solid ${theme.palette.primary.light}`,
 		display: "flex",
 		alignItems: "center",
+		fontSize: theme.typography.h3Size,
+		textTransform: theme.typography.button.textTransform,
+		fontFamily: theme.typography.button.fontFamily,
+		fontWeight: theme.typography.button.fontWeight,
 	},
 	message: {
 		minHeight: theme.spacing(10),

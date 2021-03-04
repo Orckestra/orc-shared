@@ -118,6 +118,22 @@ describe("selectCurrentSectionName", () => {
 			"mySection",
 		));
 
+	it("finds the section name in the routing result with multiple params", () =>
+		expect(
+			selectCurrentSectionName,
+			"called with",
+			[
+				Immutable.fromJS({
+					navigation: {
+						route: { match: { path: "/:scope/thing/:param1/:param2/id/mySection" } },
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
+				}),
+			],
+			"to be",
+			"mySection",
+		));
+
 	it("finds the section name in the routing result when route is deeper than just section", () =>
 		expect(
 			selectCurrentSectionName,
@@ -126,6 +142,22 @@ describe("selectCurrentSectionName", () => {
 				Immutable.fromJS({
 					navigation: {
 						route: { match: { path: "/:scope/thing/id/mySection/foo/boo" } },
+						config: { prependPath: "/:scope/", prependHref: "/scope/" },
+					},
+				}),
+			],
+			"to be",
+			"mySection",
+		));
+
+	it("finds the section name in the routing result when route is deeper than just section with multiple params", () =>
+		expect(
+			selectCurrentSectionName,
+			"called with",
+			[
+				Immutable.fromJS({
+					navigation: {
+						route: { match: { path: "/:scope/thing/:param1/:param2/id/mySection/foo/boo" } },
 						config: { prependPath: "/:scope/", prependHref: "/scope/" },
 					},
 				}),
