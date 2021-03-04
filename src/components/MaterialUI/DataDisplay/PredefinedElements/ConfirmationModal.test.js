@@ -22,7 +22,7 @@ describe("ConfirmationModal", () => {
 		const cancelCallback = jest.fn();
 		const modalProps = new ModalProps();
 
-		const titleComponent = <Typography children={stringifyWithoutQuotes(messages["orc-shared.confirmation"])} />;
+		const titleComponent = stringifyWithoutQuotes(messages["orc-shared.confirmation"]);
 		const messageComponent = (
 			<div>
 				<Typography children={message} />

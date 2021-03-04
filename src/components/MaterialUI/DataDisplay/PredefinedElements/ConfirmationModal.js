@@ -18,13 +18,6 @@ const useStyles = makeStyles(theme => ({
 	cancelButton: {
 		marginRight: theme.spacing(1),
 	},
-	title: {
-		fontSize: theme.typography.h3Size,
-		color: theme.palette.primary.main,
-		textTransform: theme.typography.button.textTransform,
-		fontFamily: theme.typography.button.fontFamily,
-		fontWeight: theme.typography.button.fontWeight,
-	},
 }));
 
 const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdropClickCallback }) => {
@@ -32,9 +25,7 @@ const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdrop
 
 	const modalProps = new ModalProps();
 
-	const titleComponent = (
-		<Typography className={classes.title} children={<FormattedMessage {...sharedMessages.confirmation} />} />
-	);
+	const titleComponent = <FormattedMessage {...sharedMessages.confirmation} />;
 	const messageComponent = (
 		<div className={classes.message}>
 			<Typography children={message} />
