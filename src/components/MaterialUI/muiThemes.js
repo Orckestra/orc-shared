@@ -162,6 +162,9 @@ const setThemeOverrides = theme => ({
 			display: "inherit",
 			alignItems: "inherit",
 			justifyContent: "inherit",
+			"& .MuiTypography-root": {
+				fontFamily: theme.typography.button.fontFamily,
+			},
 		},
 		/* Styles applied to the root element if `variant="text"`. */
 		text: {
@@ -530,6 +533,9 @@ const setThemeOverrides = theme => ({
 			"&.MuiButtonBase-root:focus, &.MuiButtonBase-root:active": {
 				boxShadow: "none",
 				borderRadius: `4px 4px 0 0`,
+			},
+			"& .MuiTypography-root": {
+				fontFamily: theme.typography.button.fontFamily,
 			},
 		},
 		labelIcon: {
