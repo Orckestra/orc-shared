@@ -7,16 +7,17 @@ const colors = {
 	oms: {
 		base: "#1f5b7f",
 		primary: "#b4cfe3",
-		highlight: "#34719d",
+		highlight: "#b4cfe3",
 		select: "#b4cfe3",
 	},
-	marketing: { base: "#fd6b35" },
+	marketing: { base: "#fd6b35", highlight: "#fd6b35" },
 	analytics: { base: "#ffa205", dark: "#cf8409", highlight: "#f1eae0" },
 };
 
 const getThemeOverrides = appName => {
 	const application = colors[appName] || {
 		base: "#ff00ff", // Deliberately godawful default value
+		highlight: "#efefef",
 	};
 	return {
 		colors: { ...colors, application },
