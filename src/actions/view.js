@@ -17,11 +17,6 @@ export const setStateField = (name, field, value) => ({
 	payload: { name, field, value },
 });
 
-export const createEditNode = (entityId, moduleName, modulesData) => ({
-	type: VIEW_CREATE_EDIT_NODE,
-	payload: { entityId, moduleName, modulesData },
-});
-
 export const removeEditNode = (entityId, moduleName) => ({
 	type: VIEW_REMOVE_EDIT_NODE,
 	payload: { entityId, moduleName },

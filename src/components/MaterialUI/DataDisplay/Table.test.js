@@ -324,8 +324,6 @@ describe("Memoize components", () => {
 
 		const mountedComponent = mount(<Table headers={headers} rows={rows} tableProps={tableProps} />);
 
-		console.log(mountedComponent.prop("rows"));
-
 		let mountedRow1 = mountedComponent.prop("rows")[0].element;
 		let mountedRow2 = mountedComponent.prop("rows")[1].element;
 
@@ -375,8 +373,6 @@ describe("Memoize components", () => {
 		tableProps.set(TableProps.propNames.deepPropsComparation, true);
 
 		const mountedComponent = mount(<Table headers={headers} rows={rows} tableProps={tableProps} />);
-
-		console.log(mountedComponent.prop("rows"));
 
 		let mountedRow1 = mountedComponent.prop("rows")[0].element;
 		let mountedRow2 = mountedComponent.prop("rows")[1].element;
