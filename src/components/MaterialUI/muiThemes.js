@@ -116,7 +116,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiButtonBase,
 		root: {
 			...theme.root,
-			flexGrow: 1,
+			flexGrow: 0,
 			backgroundColor: "transparent",
 			borderColor: theme.palette.grey.borders,
 			borderWidth: 1,
@@ -146,6 +146,9 @@ const setThemeOverrides = theme => ({
 				borderColor: theme.palette.focus,
 				boxShadow: `0 0 4px ${theme.palette.focus}`,
 				outline: "none",
+			},
+			"& + &": {
+				marginLeft: theme.spacing(1),
 			},
 		},
 	},
