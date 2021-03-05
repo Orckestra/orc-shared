@@ -4,8 +4,6 @@ import { Switch, Route, Redirect, Link } from "react-router-dom";
 import UrlPattern from "url-pattern";
 import { ifFlag, getThemeProp } from "../../utils";
 import Text from "../Text";
-import { TabBar } from "../Navigation/Bar";
-import { AppFrame } from "../AppFrame/AppFrame";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
