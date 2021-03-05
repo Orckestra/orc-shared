@@ -19,7 +19,7 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 	// ]
 	// if you don't need this - just don't pass any value for that parameter
 
-	const result = cloneDeep(initialModel);
+	const result = initialModel != null ? cloneDeep(initialModel) : {};
 
 	const modifiedFields = Object.keys(model);
 

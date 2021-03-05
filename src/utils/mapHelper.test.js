@@ -75,4 +75,16 @@ describe("mapModel", () => {
 
 		expect(resultModel, "to equal", expectedResultModel);
 	});
+
+	it("Maps correctly when initial model is null", () => {
+		const resultModel = mapModel(model);
+
+		const expectedResultModel = {
+			field1: "Hello",
+			field2: "Bob",
+			field3: false,
+		};
+
+		expect(resultModel, "to equal", expectedResultModel);
+	});
 });
