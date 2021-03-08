@@ -83,7 +83,7 @@ const setApplicationColors = theme => {
 		theme.colors.application.primary = theme.colors.application.base;
 	}
 	if (!theme.colors.application.highlight) {
-		theme.colors.application.highlight = tint(0.25, theme.colors.application.base);
+		theme.colors.application.highlight = tint(0.86, theme.colors.application.base);
 	}
 	if (!theme.colors.application.select) {
 		theme.colors.application.select = tint(0.7, theme.colors.application.base);

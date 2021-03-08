@@ -116,7 +116,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiButtonBase,
 		root: {
 			...theme.root,
-			flexGrow: 1,
+			flexGrow: 0,
 			backgroundColor: "transparent",
 			borderColor: theme.palette.grey.borders,
 			borderWidth: 1,
@@ -147,6 +147,9 @@ const setThemeOverrides = theme => ({
 				boxShadow: `0 0 4px ${theme.palette.focus}`,
 				outline: "none",
 			},
+			"& + &": {
+				marginLeft: theme.spacing(1),
+			},
 		},
 	},
 	MuiButton: {
@@ -162,6 +165,9 @@ const setThemeOverrides = theme => ({
 			display: "inherit",
 			alignItems: "inherit",
 			justifyContent: "inherit",
+			"& .MuiTypography-root": {
+				fontFamily: theme.typography.button.fontFamily,
+			},
 		},
 		/* Styles applied to the root element if `variant="text"`. */
 		text: {
@@ -194,6 +200,7 @@ const setThemeOverrides = theme => ({
 		outlined: {
 			padding: theme.spacing(0.5, 1),
 			border: `1px solid ${theme.palette.type === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)"}`,
+			backgroundColor: "white",
 			"&$disabled": {
 				border: `1px solid ${theme.palette.action.disabledBackground}`,
 			},
@@ -205,6 +212,7 @@ const setThemeOverrides = theme => ({
 		outlinedPrimary: {
 			color: theme.palette.primary.main,
 			border: `1px solid ${fade(theme.palette.primary.main, 0.5)}`,
+			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.primary.main}`,
 				backgroundColor: fade(theme.palette.primary.main, theme.palette.action.hoverOpacity),
@@ -218,6 +226,7 @@ const setThemeOverrides = theme => ({
 		outlinedSecondary: {
 			color: theme.palette.secondary.main,
 			border: `1px solid ${fade(theme.palette.secondary.main, 0.5)}`,
+			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.secondary.main}`,
 				backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
@@ -530,6 +539,12 @@ const setThemeOverrides = theme => ({
 			"&.MuiButtonBase-root:focus, &.MuiButtonBase-root:active": {
 				boxShadow: "none",
 				borderRadius: `4px 4px 0 0`,
+			},
+			"& .MuiTypography-root": {
+				fontFamily: theme.typography.button.fontFamily,
+			},
+			"& + &": {
+				marginLeft: `0 !important`,
 			},
 		},
 		labelIcon: {

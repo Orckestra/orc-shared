@@ -4,7 +4,6 @@ import { Switch, Route, Redirect, Link } from "react-router-dom";
 import UrlPattern from "url-pattern";
 import { ifFlag, getThemeProp } from "../../utils";
 import Text from "../Text";
-import { TabBar } from "../Navigation/Bar";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
@@ -49,8 +48,8 @@ export const Wrapper = styled.div`
 	height: calc(100% - 90px);
 	min-height: 0;
 
-	${TabBar} + & {
-		margin-top: 30px;
+	div[class^="AppFrame__ViewPort"] > div&:nth-child(3) {
+		margin-top: 60px;
 	}
 `;
 
