@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fieldLabelSize,
 		color: props => (!props.error ? theme.palette.text.hint : theme.palette.error.main),
 		fontFamily: theme.typography.fontFamily,
-		marginBottom: theme.spacing(0.7),
+		marginBottom: theme.spacing(1),
 
 		"&:after": {
 			content: props => props.required && '" *"',
@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
 	container: {
 		width: "100%",
 		marginTop: props => theme.spacing(props.marginTop),
+		"& + &": {
+			marginTop: theme.spacing(2),
+		},
 	},
 }));
 
