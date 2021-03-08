@@ -543,6 +543,9 @@ const setThemeOverrides = theme => ({
 			"& .MuiTypography-root": {
 				fontFamily: theme.typography.button.fontFamily,
 			},
+			"& + &": {
+				marginLeft: `0 !important`,
+			},
 		},
 		labelIcon: {
 			...theme.labelIcon,
