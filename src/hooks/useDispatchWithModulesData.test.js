@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatchWithModulesData } from "./useDispatchWithModulesData";
 import sinon from "sinon";
 import { mount } from "enzyme";
-import * as reactRedux from "react-redux";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
 
