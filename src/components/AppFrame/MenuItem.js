@@ -15,7 +15,7 @@ export const Block = styled(FilteredLink)`
 	margin-bottom: 35px;
 	color: ${ifFlag(
 		"active",
-		getThemeProp(["colors", "application", "base"], "#ffffff"),
+		getThemeProp(["colors", "application", "highlight"]),
 		getThemeProp(["colors", "textMedium"], "#999999"),
 	)};
 	text-decoration: none;
@@ -26,7 +26,7 @@ export const Block = styled(FilteredLink)`
 		"",
 		css`
 			&:hover {
-				color: ${getThemeProp(["colors", "application", "base"], "#ffffff")};
+				color: ${getThemeProp(["colors", "application", "highlight"], "#ffffff")};
 			}
 		`,
 	)};
