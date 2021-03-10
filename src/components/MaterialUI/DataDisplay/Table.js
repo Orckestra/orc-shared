@@ -62,22 +62,22 @@ export const useStyles = makeStyles(theme => ({
 		},
 	},
 	tableCell: {
-		padding: theme.spacing(2, 1.6),
+		padding: theme.spacing(2),
 	},
 	tableCellSelect: {
-		padding: theme.spacing(1.7, 1.6),
+		padding: theme.spacing(2),
 		width: theme.spacing(5),
 	},
 	headerCell: {
-		padding: theme.spacing(1.1, 1.6),
+		padding: theme.spacing(1, 2),
 		textAlign: "left",
-		fontWeight: theme.typography.fontWeightBold,
+		fontWeight: theme.typography.fontWeightSemiBold,
 	},
 	headerCellSelect: {
-		padding: theme.spacing(0.8, 1.6),
+		padding: theme.spacing(1, 2),
 		width: theme.spacing(5),
 		textAlign: "left",
-		fontWeight: theme.typography.fontWeightBold,
+		fontWeight: theme.typography.fontWeightSemiBold,
 	},
 	rowSelectCheckbox: {
 		padding: 0,

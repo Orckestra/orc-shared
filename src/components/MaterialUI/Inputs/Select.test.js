@@ -143,6 +143,26 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Select component correctly without props", () => {
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={[]} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI value="" disableUnderline={true} IconComponent={ChevronDown} />
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Sorts select options correctly without sorting and without showAll", () => {
 		const options = [
 			{ value: "c", label: "c", sortOrder: 3 },
