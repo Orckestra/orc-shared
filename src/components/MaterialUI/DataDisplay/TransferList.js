@@ -77,7 +77,7 @@ const formatState = (state, checked, from, to) => {
 	};
 };
 
-const ScrollableСustomList = React.forwardRef((props, ref) => {
+export const ScrollableСustomList = React.forwardRef((props, ref) => {
 	const scrollEvent = evt => {
 		if (!props.onScroll) return;
 
