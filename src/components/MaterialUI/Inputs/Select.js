@@ -104,7 +104,7 @@ const Select = ({ options, selectProps }) => {
 	const classes = useStyles();
 
 	const update = selectProps?.get(SelectProps.propNames.update);
-	const value = selectProps?.get(SelectProps.propNames.value) || "";
+	const value = selectProps?.get(SelectProps.propNames.value) ?? "";
 	const sortType = selectProps?.get(SelectProps.propNames.sortType) || sortTypeEnum.none;
 	const showAllValue = selectProps?.get(SelectProps.propNames.showAllValue);
 	const showAllLabel = selectProps?.get(SelectProps.propNames.showAllLabel);
