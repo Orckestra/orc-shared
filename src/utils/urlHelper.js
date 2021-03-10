@@ -1,7 +1,8 @@
 export const getValueFromUrlByKey = (url, path, key) => {
 	const valuesFromUrl = url.split("/");
 
-	const keysFromPath = path.split("/");
+	// remove the regex of the parameters, the part between parentheses (path to regex syntax)
+	const keysFromPath = path.replace(/(\([^\/]+?\))/g, "").split("/");
 
 	const keyIndex = keysFromPath.indexOf(key);
 
