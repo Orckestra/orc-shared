@@ -77,13 +77,13 @@ const formatState = (state, checked, from, to) => {
 	};
 };
 
-export const ScrollableСustomList = React.forwardRef((props, ref) => {
+const ScrollableСustomList = React.forwardRef((props, ref) => {
 	const scrollEvent = evt => {
 		if (!props.onScroll) return;
 
 		if (
 			evt.target.scrollHeight - (evt.target.scrollTop + evt.target.offsetHeight) < 50 &&
-			props.items.length === props.currentPage * props.pageSize
+			props.currentTotal === props.currentPage * props.pageSize
 		) {
 			props.onScroll(props.currentPage + 1);
 		}
@@ -154,6 +154,7 @@ const TransferList = ({
 	customLeftComponent,
 	listItemFormatter,
 	onScroll,
+	currentTotal,
 	currentPage = 1,
 	pageSize = 20,
 	height = 48,
@@ -187,6 +188,7 @@ const TransferList = ({
 							ref={refScrollableList}
 							onScroll={onScroll}
 							currentPage={currentPage}
+							currentTotal={currentTotal}
 							pageSize={pageSize}
 							classes={classes}
 							items={leftListData.data}
