@@ -22,7 +22,7 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 	const mapModifiedData = model => {
 		const mapModifiedObj = obj => {
 			if (typeof obj !== "object" || Array.isArray(obj)) return obj;
-			if (obj.wasModified !== undefined) return mapModifiedObj(obj.value);
+			if (obj.wasModified != null) return mapModifiedObj(obj.value);
 
 			return mapModifiedData(obj);
 		};
