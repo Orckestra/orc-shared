@@ -53,6 +53,11 @@ const TestComp8 = props => (
 		<PropStruct {...props} />
 	</div>
 );
+const TestComp9 = props => (
+	<div data-test-id="comp-9">
+		<PropStruct {...props} />
+	</div>
+);
 
 const makeTestComp = Comp => ({ modules }) => <Comp {...useNavigationState(modules)} />;
 
@@ -1027,7 +1032,7 @@ describe("useNavigationState", () => {
 });
 
 describe("getPageData", () => {
-	let module, module2;
+	let module, module2, module3;
 	beforeEach(() => {
 		module = {
 			icon: "thing",
@@ -1078,6 +1083,17 @@ describe("getPageData", () => {
 				},
 			},
 		};
+		module3 = {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {
+				"/:var2(abc\\d{1,2})": {
+					label: "Page 5",
+					component: TestComp9,
+				},
+			},
+		};
 	});
 
 	it("extracts the module page data for an empty path", () =>
@@ -1103,6 +1119,12 @@ describe("getPageData", () => {
 		expect(getPageData, "when called with", ["/thing", { var: "thing" }, module], "to satisfy", {
 			label: "Page 1",
 			component: TestComp2,
+		}));
+
+	it("handles variable path steps which uses 'path to regex'", () =>
+		expect(getPageData, "when called with", ["/abc99", { var2: "abc99" }, module3], "to satisfy", {
+			label: "Page 5",
+			component: TestComp9,
 		}));
 
 	it("handles multiple variable path steps", () =>

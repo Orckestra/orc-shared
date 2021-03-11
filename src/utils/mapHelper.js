@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, merge } from "lodash";
 
 export const mapModel = (model, initialModel, mappingRules = []) => {
 	// if need to map fields with different model and domain keys then
@@ -19,22 +19,33 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 	// ]
 	// if you don't need this - just don't pass any value for that parameter
 
-	const result = initialModel != null ? cloneDeep(initialModel) : {};
+	const mapModifiedData = model => {
+		const mapModifiedObj = obj => {
+			if (typeof obj !== "object" || Array.isArray(obj)) return obj;
+			if (obj.wasModified != null) return mapModifiedObj(obj.value);
 
-	const modifiedFields = Object.keys(model);
+			return mapModifiedData(obj);
+		};
 
-	modifiedFields.forEach(modifiedFeild => {
-		const tempRule = mappingRules.find(rule => rule.modelName === modifiedFeild);
-		if (tempRule != null) {
-			if (tempRule.transform) {
-				tempRule.transform(model, model[tempRule.modelName].value, result);
+		const result = {};
+
+		const modifiedFields = Object.keys(model);
+
+		modifiedFields.forEach(modifiedField => {
+			const tempRule = mappingRules.find(rule => rule.modelName === modifiedField);
+			if (tempRule != null) {
+				if (tempRule.transform) {
+					tempRule.transform(model, model[tempRule.modelName].value, result);
+				} else {
+					result[tempRule.domainName] = mapModifiedObj(model[tempRule.modelName]);
+				}
 			} else {
-				result[tempRule.domainName] = model[tempRule.modelName].value;
+				result[modifiedField] = mapModifiedObj(model[modifiedField]);
 			}
-		} else {
-			result[modifiedFeild] = model[modifiedFeild].value;
-		}
-	});
+		});
 
-	return result;
+		return result;
+	};
+
+	return merge({}, initialModel, mapModifiedData(model));
 };
