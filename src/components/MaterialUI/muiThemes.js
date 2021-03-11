@@ -452,6 +452,9 @@ const setThemeOverrides = theme => ({
 			"&.Mui-selected": {
 				backgroundColor: theme.palette.primary.light,
 			},
+			"& + &": {
+				marginLeft: 0,
+			},
 		},
 		button: {
 			...theme.button,
