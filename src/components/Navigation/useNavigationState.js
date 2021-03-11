@@ -23,7 +23,7 @@ const doesRestPathMatchParams = (params, paramPathSplit, restPath) => {
 	}
 
 	return restPathMatchParams;
-}
+};
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	let page = pages[pathStep];
@@ -32,13 +32,22 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 			// Only one should exist
 			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || "";
 
-		const paramPathSplit = paramPath.replace(/^\/:/, "").split("/:");
+		// removes the first '/:' from the URL
+		// remove the regex of the parameters, the part between parentheses (path to regex syntax)
+		// split on the remaining '/:'
+		const paramPathSplit = paramPath
+			.replace(/^\/:/, "")
+			.replace(/(\([^\/]+?\))/g, "")
+			.split("/:");
 		const firstStepMatchParams = pathStep === "/" + params[paramPathSplit[0]];
 
 		if (firstStepMatchParams) {
 			if (paramPathSplit.length === 1) {
 				page = pages[paramPath];
-			} else if (paramPathSplit.length - 1 === restPath.length && doesRestPathMatchParams(params, paramPathSplit, restPath)) {
+			} else if (
+				paramPathSplit.length - 1 === restPath.length &&
+				doesRestPathMatchParams(params, paramPathSplit, restPath)
+			) {
 				return pages[paramPath];
 			}
 		}
