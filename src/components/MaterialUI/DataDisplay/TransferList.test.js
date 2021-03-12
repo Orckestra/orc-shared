@@ -175,4 +175,71 @@ describe("TransferList", () => {
 
 		expect(addButton.prop("disabled"), "to be true");
 	});
+
+	it("handle scrolling event", () => {
+		const addButtonTitle = "add";
+		const removeButtonTitle = "remove";
+
+		const onScroll = sinon.spy().named("onScroll");
+
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<TransferList
+					rightListData={{ title: rightTitle, data: [{ id: "id1", disabled: true, title: "item1" }] }}
+					leftListData={{ title: leftTitle, data: leftList }}
+					addButtonTitle={addButtonTitle}
+					removeButtonTitle={removeButtonTitle}
+					currentTotal={20}
+					currentPage={1}
+					onScroll={onScroll}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scrollEvent = document.createEvent("MouseEvents");
+		scrollEvent.initEvent("scroll", true, false);
+
+		const leftSide = mountedComponent.find(Paper).at(0);
+
+		leftSide.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 40, offsetHeight: 100 },
+		});
+
+		expect(onScroll, "was not called");
+
+		leftSide.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 860, offsetHeight: 100 },
+		});
+
+		expect(onScroll, "to have calls satisfying", [{ args: [2] }]);
+	});
+
+	it("do not fail when onScroll is not specified", () => {
+		const addButtonTitle = "add";
+		const removeButtonTitle = "remove";
+
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<TransferList
+					rightListData={{ title: rightTitle, data: [{ id: "id1", disabled: true, title: "item1" }] }}
+					leftListData={{ title: leftTitle, data: leftList }}
+					addButtonTitle={addButtonTitle}
+					removeButtonTitle={removeButtonTitle}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scrollEvent = document.createEvent("MouseEvents");
+		scrollEvent.initEvent("scroll", true, false);
+
+		const leftSide = mountedComponent.find(Paper).at(0);
+
+		leftSide.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 40, offsetHeight: 100 },
+		});
+	});
 });
