@@ -6,6 +6,7 @@ import {
 	setEditModelField,
 	setEditModelFieldError,
 	setEditModelErrors,
+	removeEditModel,
 } from "../actions/view";
 import viewReducer from "./view";
 
@@ -117,6 +118,107 @@ describe("View state reducer", () => {
 		};
 
 		const action = removeEditNode(entityId, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Removes edit model correctly when model has more than one property", () => {
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "sectionName2";
+		const keys = ["id", "prop1"];
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {},
+								prop2: {},
+							},
+							id2: {
+								prop1: {},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop2: {},
+							},
+							id2: {
+								prop1: {},
+							},
+						},
+					},
+				},
+			},
+		};
+
+		const action = removeEditModel(keys, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Removes edit model correctly when model has one property", () => {
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "sectionName2";
+		const keys = ["id2", "prop1"];
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {},
+								prop2: {},
+							},
+							id2: {
+								prop1: {},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {},
+								prop2: {},
+							},
+							id2: {},
+						},
+					},
+				},
+			},
+		};
+
+		const action = removeEditModel(keys, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
