@@ -152,6 +152,35 @@ describe("Memoize components", () => {
 		});
 	});
 
+	it("Updates table row props if context is different", () => {
+		ignoreConsoleError(() => {
+			const mountedComponent = mount(<MemoTableRow context="Something" />);
+
+			expect(mountedComponent.prop("context"), "to equal", "Something");
+
+			mountedComponent.setProps({ context: "Another" });
+
+			expect(mountedComponent.prop("context"), "to equal", "Another");
+		});
+	});
+
+	it("Updates table row props if context is different and deepPropsComparation is set", () => {
+		ignoreConsoleError(() => {
+			const mountedComponent = mount(<MemoTableRow deepPropsComparation={true} context="Something" />);
+			const mountedComponent1 = mount(<MemoTableRow deepPropsComparation={true} context="Something" />);
+
+			expect(mountedComponent.prop("context"), "to equal", "Something");
+
+			mountedComponent.setProps({ context: "Another" });
+
+			mountedComponent1.setProps({ context: "Something" });
+
+			expect(mountedComponent.prop("context"), "to equal", "Another");
+
+			expect(mountedComponent1.prop("context"), "to equal", "Something");
+		});
+	});
+
 	it("Updates table body props", () => {
 		ignoreConsoleError(() => {
 			const mountedComponent = mount(<MemoTableBody selectedNumber={4} rows={[]} />);
@@ -415,8 +444,6 @@ describe("Memoize components", () => {
 		tableProps.set(TableProps.propNames.deepPropsComparation, true);
 
 		const mountedComponent = mount(<Table headers={headers} rows={rows} tableProps={tableProps} />);
-
-		console.log(mountedComponent.prop("rows"));
 
 		let mountedRow1 = mountedComponent.prop("rows")[0].element;
 		let mountedRow2 = mountedComponent.prop("rows")[1].element;

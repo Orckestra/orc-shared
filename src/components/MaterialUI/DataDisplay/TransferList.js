@@ -77,6 +77,57 @@ const formatState = (state, checked, from, to) => {
 	};
 };
 
+export const ScrollableСustomList = React.forwardRef((props, ref) => {
+	const scrollEvent = evt => {
+		if (!props.onScroll) return;
+
+		if (
+			evt.target.scrollHeight - (evt.target.scrollTop + evt.target.offsetHeight) < 50 &&
+			props.currentTotal === props.currentPage * props.pageSize
+		) {
+			props.onScroll(props.currentPage + 1);
+		}
+	};
+
+	return (
+		<Paper ref={ref} onScroll={scrollEvent} className={classNames(props.classes.paper, props.classes.paperLeft)}>
+			<CustomList
+				items={props.items}
+				checked={props.checked}
+				setChecked={props.setChecked}
+				listItemFormatter={props.listItemFormatter}
+			/>
+		</Paper>
+	);
+});
+
+const compareListItem = (prev, next) => {
+	return prev.item.id === next.item.id && prev.isChecked === next.isChecked;
+};
+
+const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, classes }) => {
+	return (
+		<ListItem
+			className={classNames(classes.item, isChecked && classes.selectedItem)}
+			role="listitem"
+			onClick={!item.disabled ? () => handleToggle(item.id) : null}
+			disabled={item.disabled}
+		>
+			{listItemFormatter ? (
+				listItemFormatter(item)
+			) : (
+				<ListItemText
+					key={`transfer-list-item-${item.id}-label`}
+					primary={<Typography className={classes.itemTitle}>{item.title}</Typography>}
+					secondary={<Typography>{item.subtitle}</Typography>}
+				/>
+			)}
+		</ListItem>
+	);
+};
+
+const MemoListItem = React.memo(ListItemWrapper, compareListItem);
+
 export const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
 	const classes = useListStyles();
 
@@ -99,23 +150,14 @@ export const CustomList = ({ items, checked, setChecked, listItemFormatter }) =>
 	return (
 		<List component="div" role="list">
 			{items.map(item => (
-				<ListItem
-					className={classNames(classes.item, checked.includes(item.id) && classes.selectedItem)}
+				<MemoListItem
 					key={item.id}
-					role="listitem"
-					onClick={!item.disabled ? () => handleToggle(item.id) : null}
-					disabled={item.disabled}
-				>
-					{listItemFormatter ? (
-						listItemFormatter(item)
-					) : (
-						<ListItemText
-							key={`transfer-list-item-${item.id}-label`}
-							primary={<Typography className={classes.itemTitle}>{item.title}</Typography>}
-							secondary={<Typography>{item.subtitle}</Typography>}
-						/>
-					)}
-				</ListItem>
+					isChecked={checked.includes(item.id)}
+					item={item}
+					listItemFormatter={listItemFormatter}
+					classes={classes}
+					handleToggle={handleToggle}
+				/>
 			))}
 		</List>
 	);
@@ -129,10 +171,15 @@ const TransferList = ({
 	removeButtonTitle,
 	customLeftComponent,
 	listItemFormatter,
+	onScroll,
+	currentTotal,
+	currentPage = 1,
+	pageSize = 20,
 	height = 48,
 }) => {
 	const classes = useStyles({ height });
 	const [checked, setChecked] = useState([]);
+	const refScrollableList = React.useRef();
 	const onAddButtonClick = () => {
 		onChange(formatState({ right: rightListData.data, left: leftListData.data }, checked, "left", "right"));
 		setChecked(checked.filter(check => !leftListData.data?.some(({ id }) => id === check)));
@@ -150,18 +197,24 @@ const TransferList = ({
 			<Grid container spacing={1} justify="center" alignItems="center" className={classes.root}>
 				<Grid item xs={5}>
 					<div className={classes.title}>{leftListData.title}</div>
-					<Paper className={classNames(classes.paper, classes.paperLeft)}>
-						{isReactComponent(customLeftComponent) ? (
+					{isReactComponent(customLeftComponent) ? (
+						<Paper className={classNames(classes.paper, classes.paperLeft)}>
 							<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
-						) : (
-							<CustomList
-								items={leftListData.data}
-								checked={checked}
-								setChecked={setChecked}
-								listItemFormatter={listItemFormatter}
-							/>
-						)}
-					</Paper>
+						</Paper>
+					) : (
+						<ScrollableСustomList
+							ref={refScrollableList}
+							onScroll={onScroll}
+							currentPage={currentPage}
+							currentTotal={currentTotal}
+							pageSize={pageSize}
+							classes={classes}
+							items={leftListData.data}
+							checked={checked}
+							setChecked={setChecked}
+							listItemFormatter={listItemFormatter}
+						/>
+					)}
 				</Grid>
 				<Grid xs={2} item>
 					<Grid container direction="column" alignItems="center">

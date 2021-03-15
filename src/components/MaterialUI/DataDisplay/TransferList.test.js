@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import TransferList, { CustomList } from "./TransferList";
+import TransferList, { CustomList, ScrollableСustomList } from "./TransferList";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { extractMessages, TestWrapper } from "../../../utils/testUtils";
@@ -43,9 +43,7 @@ describe("TransferList", () => {
 					<Grid>
 						<Grid>
 							<div>{leftTitle}</div>
-							<Paper>
-								<CustomList checked={[]} items={leftList} />
-							</Paper>
+							<ScrollableСustomList checked={[]} items={leftList} classes={{}} />
 						</Grid>
 						<Grid>
 							<Grid>
@@ -176,5 +174,72 @@ describe("TransferList", () => {
 		const addButton = mountedComponent.find(Button).at(0);
 
 		expect(addButton.prop("disabled"), "to be true");
+	});
+
+	it("handle scrolling event", () => {
+		const addButtonTitle = "add";
+		const removeButtonTitle = "remove";
+
+		const onScroll = sinon.spy().named("onScroll");
+
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<TransferList
+					rightListData={{ title: rightTitle, data: [{ id: "id1", disabled: true, title: "item1" }] }}
+					leftListData={{ title: leftTitle, data: leftList }}
+					addButtonTitle={addButtonTitle}
+					removeButtonTitle={removeButtonTitle}
+					currentTotal={20}
+					currentPage={1}
+					onScroll={onScroll}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scrollEvent = document.createEvent("MouseEvents");
+		scrollEvent.initEvent("scroll", true, false);
+
+		const leftSide = mountedComponent.find(Paper).at(0);
+
+		leftSide.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 40, offsetHeight: 100 },
+		});
+
+		expect(onScroll, "was not called");
+
+		leftSide.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 860, offsetHeight: 100 },
+		});
+
+		expect(onScroll, "to have calls satisfying", [{ args: [2] }]);
+	});
+
+	it("do not fail when onScroll is not specified", () => {
+		const addButtonTitle = "add";
+		const removeButtonTitle = "remove";
+
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<TransferList
+					rightListData={{ title: rightTitle, data: [{ id: "id1", disabled: true, title: "item1" }] }}
+					leftListData={{ title: leftTitle, data: leftList }}
+					addButtonTitle={addButtonTitle}
+					removeButtonTitle={removeButtonTitle}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scrollEvent = document.createEvent("MouseEvents");
+		scrollEvent.initEvent("scroll", true, false);
+
+		const leftSide = mountedComponent.find(Paper).at(0);
+
+		leftSide.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 40, offsetHeight: 100 },
+		});
 	});
 });

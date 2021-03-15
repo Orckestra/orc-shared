@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentModuleName, selectCurrentSectionName } from "./../selectors/navigation";
 
@@ -9,19 +10,22 @@ export const useDispatchWithModulesData = () => {
 	const currentModuleName = useSelector(selectCurrentModuleName);
 	const currentSectionName = useSelector(selectCurrentSectionName);
 
-	const dispatch = (action, params, options) => {
-		const predefinedParams = [];
-		if (options?.includeCurrentSection === true) {
-			predefinedParams.push(currentSectionName);
-		}
-		predefinedParams.push(currentModuleName);
-		if (params != null) {
-			const actionParams = params.concat(predefinedParams);
-			baseDispatch(action.apply(null, actionParams));
-		} else {
-			baseDispatch(action.apply(null, predefinedParams));
-		}
-	};
+	const dispatch = useCallback(
+		(action, params, options) => {
+			const predefinedParams = [];
+			if (options?.includeCurrentSection === true) {
+				predefinedParams.push(currentSectionName);
+			}
+			predefinedParams.push(currentModuleName);
+			if (params != null) {
+				const actionParams = params.concat(predefinedParams);
+				baseDispatch(action.apply(null, actionParams));
+			} else {
+				baseDispatch(action.apply(null, predefinedParams));
+			}
+		},
+		[baseDispatch, currentModuleName, currentSectionName],
+	);
 
 	return dispatch;
 };

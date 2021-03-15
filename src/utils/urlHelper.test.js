@@ -12,6 +12,18 @@ describe("getEntityIdFromUrl", () => {
 	});
 });
 
+describe("getEntityIdFromUrl (path to regex)", () => {
+	it("Retrieves entity id from url", () => {
+		const url = "/prependPath/module/entityId123/section";
+
+		const path = "/:scope/module/:entityId(.*\\d{3})/section";
+
+		const entityId = getValueFromUrlByKey(url, path, ":entityId");
+
+		expect(entityId, "to equal", "entityId123");
+	});
+});
+
 describe("tryGetNewEntityIdKey", () => {
 	it("should return undefined when new without / at begin", () => {
 		let url = "new";

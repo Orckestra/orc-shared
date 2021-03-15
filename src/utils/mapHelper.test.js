@@ -4,12 +4,21 @@ describe("mapModel", () => {
 	const model = {
 		field1: {
 			value: "Hello",
+			wasModified: true,
 		},
 		field2: {
 			value: "Bob",
+			wasModified: true,
 		},
 		field3: {
 			value: false,
+			wasModified: true,
+		},
+		nestedField: {
+			field: {
+				value: "nestedValue",
+				wasModified: true,
+			},
 		},
 	};
 
@@ -28,6 +37,7 @@ describe("mapModel", () => {
 			field3: false,
 			field4: "Prop to add",
 			name: "Carl",
+			nestedField: { field: "nestedValue" },
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);
@@ -48,6 +58,7 @@ describe("mapModel", () => {
 			name: "Bob",
 			field3: false,
 			field4: "Prop to add",
+			nestedField: { field: "nestedValue" },
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);
@@ -71,6 +82,20 @@ describe("mapModel", () => {
 			field3: false,
 			field4: "Prop to add",
 			otherField: "Bob",
+			nestedField: { field: "nestedValue" },
+		};
+
+		expect(resultModel, "to equal", expectedResultModel);
+	});
+
+	it("Maps correctly when initial model is null", () => {
+		const resultModel = mapModel(model);
+
+		const expectedResultModel = {
+			field1: "Hello",
+			field2: "Bob",
+			field3: false,
+			nestedField: { field: "nestedValue" },
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);

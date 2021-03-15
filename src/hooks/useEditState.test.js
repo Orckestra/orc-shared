@@ -49,6 +49,7 @@ describe("useEditState", () => {
 	const TestComp = () => {
 		const createEditState = useEditState(entityId, sectionName, { customRule: value => value === "custom" });
 		const field = createEditState(["field"], initialFieldValue, [validationErrorTypes.fieldIsRequired, "customRule"]);
+		const fieldWithUndefinedInitialValue = createEditState(["anotherField"]);
 
 		const createEditStateWithoutCustomRules = useEditState(entityId, sectionName);
 		const fieldWithoutVaidationRules = createEditStateWithoutCustomRules(["field"], initialFieldValue);
@@ -56,6 +57,7 @@ describe("useEditState", () => {
 		return (
 			<div>
 				<div id="field">{field.state.value}</div>
+				<div id="fieldWithUndefinedInitialValue">{fieldWithUndefinedInitialValue.state.value}</div>
 				<div id="update" onClick={e => field.update(e.target.value)} />
 				<div id="updateWithDefaultValidation" onClick={e => field.update(e.target.value)} />
 				<div id="updateWithCustomValidation" onClick={e => field.update(e.target.value)} />
@@ -94,6 +96,20 @@ describe("useEditState", () => {
 		const fieldValue = mountedComponent.find("#field").prop("children");
 
 		expect(fieldValue, "to equal", model.value);
+	});
+
+	it("Sets initial value to empty string as default value", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#fieldWithUndefinedInitialValue").prop("children");
+
+		expect(fieldValue, "to equal", "");
 	});
 
 	it("Updates edit view value correctly without validation", () => {
