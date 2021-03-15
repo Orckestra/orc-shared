@@ -70,7 +70,7 @@ export const selectCurrentSectionName = createSelector(
 		let segmentPath = path.replace(prependPath, "").replace(new RegExp(`^([^/]*/){1}`), "");
 
 		//strips param paths
-		while (segmentPath.includes(":")) {
+		while (segmentPath.includes(":") && segmentPath.includes("/")) {
 			segmentPath = segmentPath.replace(new RegExp(`^([^/]*/){1}`), "");
 		}
 
