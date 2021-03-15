@@ -46,7 +46,7 @@ const ListItem = ({ isChecked, item, onChange, listItemFormatter, classes }) => 
 		<ListItemMui
 			className={classNames(classes.item, isChecked && classes.selectedItem)}
 			role="listitem"
-			onClick={!item.disabled ? () => onChange([item]) : null}
+			onClick={!item.disabled ? () => onChange([item]) : () => null}
 			disabled={item.disabled}
 		>
 			{listItemFormatter ? (
@@ -61,7 +61,7 @@ const ListItem = ({ isChecked, item, onChange, listItemFormatter, classes }) => 
 		</ListItemMui>
 	);
 };
-const compareListItem = (prev, next) => prev.item.id === next.item.id && prev.isChecked === next.isChecked;
+export const compareListItem = (prev, next) => prev.item.id === next.item.id && prev.isChecked === next.isChecked;
 const MemoListItemMui = React.memo(ListItem, compareListItem);
 
 export const ScrollableList = React.forwardRef((props, ref) => {
