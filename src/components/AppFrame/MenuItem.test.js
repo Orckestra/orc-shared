@@ -168,6 +168,26 @@ describe("MenuItem", () => {
 			</MemoryRouter>,
 		));
 
+	it("shows nothing if hide is true", () => {
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={true}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to equal",
+			null,
+		);
+	});
+
 	it("shows nothing if hide selector returns true", () => {
 		const hide = state => true;
 
@@ -187,6 +207,38 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to equal",
 			null,
+		);
+	});
+
+	it("shows properly if hide selector returns false", () => {
+		const hide = state => false;
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={hide}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert type="warn">
+						<AlertMessage in type="warn">
+							Test message
+						</AlertMessage>
+					</Alert>
+					<Label>Test</Label>
+				</Block>
+			</MemoryRouter>,
 		);
 	});
 

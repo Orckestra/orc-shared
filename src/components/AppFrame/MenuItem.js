@@ -119,7 +119,7 @@ export const Label = styled.span`
 
 const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, hide, href, ...props }) => {
 	let hideSelector = state => (typeof hide === "function" ? hide(state) : hide ?? false);
-	const isHide = useSelector(hideSelector);
+	const isHidden = useSelector(hideSelector);
 
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
@@ -130,7 +130,7 @@ const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, hi
 		alertMessage.current = alert.message;
 	}
 	return (
-		!isHide && (
+		!isHidden && (
 			<ItemWrapper to={href} {...props}>
 				<MenuIcon id={icon} />
 				{alert ? (
