@@ -168,6 +168,28 @@ describe("MenuItem", () => {
 			</MemoryRouter>,
 		));
 
+	it("shows nothing if hide selector returns true", () => {
+		const hide = state => true;
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={hide}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to equal",
+			null,
+		);
+	});
+
 	describe("Block", () => {
 		it("sets text color to highlight if active", () =>
 			expect(
