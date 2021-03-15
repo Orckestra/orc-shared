@@ -110,23 +110,26 @@ function rowAreIdentical(prevRows, nextRows) {
 	);
 }
 
+function contextIsIdentical(prevContext, nextContext) {
+	return isEqual(prevContext, nextContext);
+}
+
 function propsAreEqualRow(prev, next) {
 	if (prev.deepPropsComparation) {
-		return propsAreEqualDeeplyRow(prev, next);
+		return propsAreEqualDeeplyRow(prev, next) && contextIsIdentical(prev.context, next.context);
 	}
-	return prev.selected === next.selected;
+	return prev.selected === next.selected && contextIsIdentical(prev.context, next.context);
 }
 
 function propsAreEqualDeeplyRow(prev, next) {
 	if (prev.length) {
-		let equalRow = true;
 		prev.forEach((prevElem, index) => {
 			if (!isEqual(prevElem.element, next[index].element) || prevElem.columns.length !== next[index].columns.length) {
-				equalRow = false;
+				return false;
 			}
 		});
-		return equalRow;
 	}
+	return true;
 }
 
 const TableRowMemo = ({ deepPropsComparation, ...props }) => {
@@ -221,6 +224,7 @@ const buildTableRows = (
 	onRowClick,
 	selectionHandlers,
 	deepPropsComparation,
+	context,
 ) => {
 	const onClick = (evt, row) => {
 		if (evt.target.tagName !== "INPUT" && onRowClick != null) {
@@ -235,6 +239,7 @@ const buildTableRows = (
 			onClick={evt => onClick(evt, row)}
 			selected={selectionHandlers.isSelected(row.key)}
 			deepPropsComparation={deepPropsComparation}
+			context={context}
 		>
 			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
 			{row.columns.map((cell, cellIndex) => (
@@ -276,6 +281,7 @@ const FullTable = React.forwardRef((props, ref) => {
 					tableRows={props.tableRows}
 					selectedNumber={props.selectedNumber}
 					deepPropsComparation={props.deepPropsComparation}
+					context={props.context}
 				/>
 			</TableMui>
 			{props.tableRows.length > 0 ? null : <div className={props.classes.placeholder}>{props.placeholder}</div>}
@@ -283,7 +289,17 @@ const FullTable = React.forwardRef((props, ref) => {
 	);
 });
 
-const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength, placeholder, tableProps }) => {
+const Table = ({
+	tableInfo,
+	headers,
+	rows,
+	scrollLoader,
+	latestPage,
+	pageLength,
+	placeholder,
+	tableProps,
+	context,
+}) => {
 	if (isTableProps(tableProps) === false) {
 		throw new TypeError("tableProps property is not of type TableProps");
 	}
@@ -350,6 +366,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 		onRowClick,
 		selectionMethods,
 		deepPropsComparation,
+		context,
 	);
 
 	const stickerTableHeader =
@@ -379,6 +396,7 @@ const Table = ({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength,
 				pageLength={pageLength}
 				placeholder={placeholder}
 				deepPropsComparation={deepPropsComparation}
+				context={context}
 			/>
 		</TableContainer>
 	);
