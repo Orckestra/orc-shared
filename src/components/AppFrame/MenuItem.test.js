@@ -242,6 +242,36 @@ describe("MenuItem", () => {
 		);
 	});
 
+	it("shows properly if hide is undefined", () => {
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={undefined}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert type="warn">
+						<AlertMessage in type="warn">
+							Test message
+						</AlertMessage>
+					</Alert>
+					<Label>Test</Label>
+				</Block>
+			</MemoryRouter>,
+		);
+	});
+
 	describe("Block", () => {
 		it("sets text color to highlight if active", () =>
 			expect(
