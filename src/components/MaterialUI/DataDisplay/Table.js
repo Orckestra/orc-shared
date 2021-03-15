@@ -139,7 +139,10 @@ const TableRowMemo = ({ deepPropsComparation, ...props }) => {
 export const MemoTableRow = React.memo(TableRowMemo, propsAreEqualRow);
 
 function propsAreEqualBody(prev, next) {
-	let isEqualBody = prev.selectedNumber === next.selectedNumber && rowAreIdentical(prev.dataRows, next.dataRows);
+	let isEqualBody =
+		contextIsIdentical(prev.context, next.context) &&
+		prev.selectedNumber === next.selectedNumber &&
+		rowAreIdentical(prev.dataRows, next.dataRows);
 	if (prev.deepPropsComparation) {
 		isEqualBody = isEqualBody && propsAreEqualDeeplyRow(prev.dataRows, next.dataRows);
 	}
