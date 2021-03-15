@@ -103,12 +103,13 @@ describe("createInput", () => {
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				{createInput(inputTypes.select, { value: options[0].value, options })}
+				{createInput(inputTypes.select, { value: options[0].value, options, root: "root-Style" })}
 			</TestWrapper>
 		);
 
 		const selectProps = new SelectProps();
 		selectProps.set(SelectProps.propNames.value, options[0].value);
+		selectProps.setStyle(SelectProps.ruleNames.root, "root-Style");
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
