@@ -101,6 +101,33 @@ export const ScrollableСustomList = React.forwardRef((props, ref) => {
 	);
 });
 
+const compareListItem = (prev, next) => {
+	return prev.item.id === next.item.id && prev.isChecked === next.isChecked;
+};
+
+const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, classes }) => {
+	return (
+		<ListItem
+			className={classNames(classes.item, isChecked && classes.selectedItem)}
+			role="listitem"
+			onClick={!item.disabled ? () => handleToggle(item.id) : null}
+			disabled={item.disabled}
+		>
+			{listItemFormatter ? (
+				listItemFormatter(item)
+			) : (
+				<ListItemText
+					key={`transfer-list-item-${item.id}-label`}
+					primary={<Typography className={classes.itemTitle}>{item.title}</Typography>}
+					secondary={<Typography>{item.subtitle}</Typography>}
+				/>
+			)}
+		</ListItem>
+	);
+};
+
+const MemoListItem = React.memo(ListItemWrapper, compareListItem);
+
 export const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
 	const classes = useListStyles();
 
@@ -123,23 +150,14 @@ export const CustomList = ({ items, checked, setChecked, listItemFormatter }) =>
 	return (
 		<List component="div" role="list">
 			{items.map(item => (
-				<ListItem
-					className={classNames(classes.item, checked.includes(item.id) && classes.selectedItem)}
+				<MemoListItem
 					key={item.id}
-					role="listitem"
-					onClick={!item.disabled ? () => handleToggle(item.id) : null}
-					disabled={item.disabled}
-				>
-					{listItemFormatter ? (
-						listItemFormatter(item)
-					) : (
-						<ListItemText
-							key={`transfer-list-item-${item.id}-label`}
-							primary={<Typography className={classes.itemTitle}>{item.title}</Typography>}
-							secondary={<Typography>{item.subtitle}</Typography>}
-						/>
-					)}
-				</ListItem>
+					isChecked={checked.includes(item.id)}
+					item={item}
+					listItemFormatter={listItemFormatter}
+					classes={classes}
+					handleToggle={handleToggle}
+				/>
 			))}
 		</List>
 	);

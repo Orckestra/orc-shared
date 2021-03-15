@@ -60,6 +60,8 @@ export const createInput = (inputType, { ...props }) => {
 	propKeys.forEach(propKey => {
 		if (propsClasses[inputType].propNames[propKey] != null) {
 			typePropsInstance.set(propKey, props[propKey]);
+		} else if (propsClasses[inputType].ruleNames?.[propKey] != null) {
+			typePropsInstance.setStyle(propKey, props[propKey]);
 		} else {
 			otherProps[propKey] = props[propKey];
 		}
