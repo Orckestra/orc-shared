@@ -118,7 +118,7 @@ export const Label = styled.span`
 `;
 
 const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, hide, href, ...props }) => {
-	let hideSelector = state => (typeof hide === "function" ? hide : hide ?? false);
+	let hideSelector = state => (typeof hide === "function" ? hide(state) : hide ?? false);
 	const isHide = useSelector(hideSelector);
 
 	let ItemWrapper = Block;
