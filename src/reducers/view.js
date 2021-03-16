@@ -6,6 +6,7 @@ import {
 	VIEW_SET_EDIT_MODEL_FIELD,
 	VIEW_SET_EDIT_MODEL_FIELD_ERRORS,
 	VIEW_SET_EDIT_MODEL_ERRORS,
+	VIEW_REMOVE_EDIT_MODEL,
 } from "../actions/view";
 import { isEqual } from "lodash";
 
@@ -23,6 +24,13 @@ const viewStateReducer = (state = initialState, action) => {
 			const { moduleName, entityId } = action.payload;
 
 			return state.removeIn(["edit", moduleName, entityId]);
+		}
+		case VIEW_REMOVE_EDIT_MODEL: {
+			const { moduleName, sectionName, entityId, keys } = action.payload;
+
+			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
+
+			return state.removeIn(path);
 		}
 		case VIEW_SET_EDIT_MODEL_FIELD: {
 			const { keys, value, storeValue, entityId, sectionName, moduleName } = action.payload;

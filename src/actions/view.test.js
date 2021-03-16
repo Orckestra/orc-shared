@@ -7,6 +7,8 @@ import {
 	VIEW_SET_EDIT_MODEL_FIELD,
 	removeEditNode,
 	setEditModelField,
+	removeEditModel,
+	VIEW_REMOVE_EDIT_MODEL,
 } from "./view";
 
 describe("setValue", () => {
@@ -61,5 +63,19 @@ describe("setEditModelField", () => {
 				},
 			},
 		);
+	});
+});
+
+describe("removeEditModel", () => {
+	it("creates an action object", () => {
+		expect(removeEditModel, "when called with", ["keys", "entityId", "sectionName", "moduleName"], "to equal", {
+			type: VIEW_REMOVE_EDIT_MODEL,
+			payload: {
+				keys: "keys",
+				entityId: "entityId",
+				sectionName: "sectionName",
+				moduleName: "moduleName",
+			},
+		});
 	});
 });
