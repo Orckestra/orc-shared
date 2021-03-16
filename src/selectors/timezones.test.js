@@ -1,5 +1,5 @@
 import Immutable from "immutable";
-import { localizedTimezone } from "./timezones";
+import { localizedTimezone, timezonesSelector } from "./timezones";
 
 export const timezonesPayload = [
 	{
@@ -9,11 +9,19 @@ export const timezonesPayload = [
 		id: "Eastern Standard Time",
 		propertyBag: {},
 	},
+	{
+		displayName: "(UTC) Coordinated Universal Time",
+		baseUtcOffset: 0,
+		supportsDaylightSavingTime: false,
+		id: "UTC",
+		propertyBag: {},
+	},
 ];
 
 export const timezonesListPayload = {
 	timezones: {
 		"Eastern Standard Time": timezonesPayload[0],
+		UTC: timezonesPayload[1],
 	},
 };
 
@@ -41,5 +49,9 @@ describe("Timezones Selectors", () => {
 	it("Retrieves null if timezone id is not found", () => {
 		const timezoneId = "Wrong Id";
 		expect(localizedTimezone, "when called with", [timezoneId], "called with", [state], "to satisfy", null);
+	});
+
+	it("Retrieves all timezones", () => {
+		expect(timezonesSelector, "when called with", [state], "to satisfy", timezonesPayload);
 	});
 });
