@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { Link } from "react-router-dom";
@@ -116,7 +117,10 @@ export const Label = styled.span`
 	opacity: ${ifFlag("show", 1, 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, href, ...props }) => {
+const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, hide, href, ...props }) => {
+	let hideSelector = state => (typeof hide === "function" ? hide(state) : hide ?? false);
+	const isHidden = useSelector(hideSelector);
+
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;
@@ -126,19 +130,21 @@ const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, hr
 		alertMessage.current = alert.message;
 	}
 	return (
-		<ItemWrapper to={href} {...props}>
-			<MenuIcon id={icon} />
-			{alert ? (
-				<Alert type={alert.type}>
-					<AlertMessage in={!!alert.message} type={alert.type}>
-						<Text message={alertMessage.current} />
-					</AlertMessage>
-				</Alert>
-			) : null}
-			<Label show={open}>
-				<Text message={label} />
-			</Label>
-		</ItemWrapper>
+		!isHidden && (
+			<ItemWrapper to={href} {...props}>
+				<MenuIcon id={icon} />
+				{alert ? (
+					<Alert type={alert.type}>
+						<AlertMessage in={!!alert.message} type={alert.type}>
+							<Text message={alertMessage.current} />
+						</AlertMessage>
+					</Alert>
+				) : null}
+				<Label show={open}>
+					<Text message={label} />
+				</Label>
+			</ItemWrapper>
+		)
 	);
 };
 
