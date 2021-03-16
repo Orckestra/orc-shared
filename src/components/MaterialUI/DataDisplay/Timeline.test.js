@@ -1,90 +1,25 @@
 import React from "react";
 import Timeline from "./Timeline";
-import TimelineProps from "./TimelineProps";
-import { mount } from "enzyme";
-import { ignoreConsoleError } from "~/utils/testUtils";
+import TimelineItem from "./TimelineItem";
 
 describe("Timeline", () => {
-	it("Renders Timeline without props", () => {
+	it("Renders Timeline without items", () => {
 		const component = <Timeline />;
 
 		expect(component, "when mounted", "not to equal", null);
 	});
 
-	it("Renders Timeline with props", () => {
-		const timelineProps = new TimelineProps();
-		const component = <Timeline timelineProps={timelineProps} />;
+	it("Renders Timeline with one item", () => {
+		const items = [<TimelineItem key="1" content="test" />];
+		const component = <Timeline items={items} />;
 
 		expect(component, "when mounted", "not to equal", null);
 	});
 
-	it("Timeline with wrong props throws error", () => {
-		ignoreConsoleError(() => {
-			const component = <Timeline timelineProps={"wrong"} />;
-			expect(() => mount(component), "to throw a", TypeError).then(error => {
-				expect(error, "to have message", "timelineProps property is not of type TimelineProps");
-			});
-		});
-	});
+	it("Renders Timeline with items", () => {
+		const items = [<TimelineItem key="1" content="test" />, <TimelineItem key="2" content="test2" />];
+		const component = <Timeline items={items} />;
 
-	it("Timeline with wrong TimeLineItemProps throws error", () => {
-		ignoreConsoleError(() => {
-			const timelineProps = new TimelineProps();
-			timelineProps.set(TimelineProps.propNames.items, ["Bad type"]);
-			const component = <Timeline timelineProps={timelineProps} />;
-			expect(() => mount(component), "to throw a", TypeError).then(error => {
-				expect(error, "to have message", "timelineItemProps property is not of type TimelineItemProps");
-			});
-		});
-	});
-
-	it("Renders Timeline with one content item", () => {
-		const timelineProps = new TimelineProps();
-		timelineProps.AddItem("content", null, null);
-		const component = <Timeline timelineProps={timelineProps} />;
-
-		const mountedComponent = mount(component);
-		expect(mountedComponent.containsMatchingElement("content"), "to be truthy");
-	});
-
-	it("Renders Timeline with one contentOpposite item", () => {
-		const timelineProps = new TimelineProps();
-		timelineProps.AddItem(null, "contentOpposite", null, null);
-		const component = <Timeline timelineProps={timelineProps} />;
-
-		const mountedComponent = mount(component);
-		expect(mountedComponent.containsMatchingElement("contentOpposite"), "to be truthy");
-	});
-
-	it("Renders Timeline with a content and contentOpposite item", () => {
-		const timelineProps = new TimelineProps();
-		timelineProps.AddItem("content", "contentOpposite", null, null);
-		const component = <Timeline timelineProps={timelineProps} />;
-
-		const mountedComponent = mount(component);
-		expect(mountedComponent.containsMatchingElement("content"), "to be truthy");
-		expect(mountedComponent.containsMatchingElement("contentOpposite"), "to be truthy");
-	});
-
-	it("Renders Timeline with an icon item", () => {
-		const timelineProps = new TimelineProps();
-		timelineProps.AddItem("content", "contentOpposite", "icon", null);
-		const component = <Timeline timelineProps={timelineProps} />;
-
-		const mountedComponent = mount(component);
-		expect(mountedComponent.containsMatchingElement("content"), "to be truthy");
-		expect(mountedComponent.containsMatchingElement("contentOpposite"), "to be truthy");
-		expect(mountedComponent.containsMatchingElement("icon"), "to be truthy");
-	});
-
-	it("Renders Timeline with an outline", () => {
-		const timelineProps = new TimelineProps();
-		timelineProps.AddItem("content", "contentOpposite", "icon", true);
-		const component = <Timeline timelineProps={timelineProps} />;
-
-		const mountedComponent = mount(component);
-		expect(mountedComponent.containsMatchingElement("content"), "to be truthy");
-		expect(mountedComponent.containsMatchingElement("contentOpposite"), "to be truthy");
-		expect(mountedComponent.containsMatchingElement("icon"), "to be truthy");
+		expect(component, "when mounted", "not to equal", null);
 	});
 });
