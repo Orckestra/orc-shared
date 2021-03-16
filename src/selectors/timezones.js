@@ -8,3 +8,5 @@ export const localizedTimezone = timezoneId => {
 		return timezoneDisplayName || null;
 	});
 };
+
+export const timezonesSelector = createSelector(timezonesData, timezones => timezones.valueSeq().toArray());
