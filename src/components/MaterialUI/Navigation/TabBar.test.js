@@ -392,6 +392,11 @@ describe("TabBar", () => {
 			</TestWrapper>
 		);
 
+		const dispatchSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesData, "useDispatchWithModulesData")
+			.returns(dispatchSpy);
+
 		const mountedComponent = mount(component);
 
 		const pageTab = mountedComponent.find(Tab).at(1);
@@ -400,6 +405,10 @@ describe("TabBar", () => {
 		closeIcon.simulate("click");
 
 		expect(pages[0].close, "was called");
+
+		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, [pages[0].params.entityId]] });
+
+		useDispatchWithModulesDataStub.restore();
 	});
 
 	it("Calls correct close callback when close icon for specific page tab is clicked and tab was modified", () => {

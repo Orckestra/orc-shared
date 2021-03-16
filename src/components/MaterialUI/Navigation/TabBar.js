@@ -139,16 +139,20 @@ const MuiBar = ({ module, pages }) => {
 			setShowConfirmationModal(true);
 		} else {
 			closeCallback();
+			removeEditState(href, entityIdKey, path);
 		}
 	};
 
 	const closeTab = () => {
 		setShowConfirmationModal(false);
 		currentCloseData.closeCallback();
-		let newKey = tryGetNewEntityIdKey(currentCloseData.href);
-		const key =
-			currentCloseData.entityIdKey === newKey ? currentCloseData.entityIdKey : `:${currentCloseData.entityIdKey}`;
-		const entityId = getValueFromUrlByKey(currentCloseData.href, currentCloseData.path, key);
+		removeEditState(currentCloseData.href, currentCloseData.entityIdKey, currentCloseData.path);
+	};
+
+	const removeEditState = (href, entityIdKey, path) => {
+		let newKey = tryGetNewEntityIdKey(href);
+		const key = entityIdKey === newKey ? entityIdKey : `:${entityIdKey}`;
+		const entityId = getValueFromUrlByKey(href, path, key);
 		dispatch(removeEditNode, [entityId]);
 	};
 
