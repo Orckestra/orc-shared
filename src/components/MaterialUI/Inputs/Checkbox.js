@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
 			boxShadow: `0 0 4px ${theme.palette.focus}`,
 			outline: "none",
 		},
+		backgroundColor: theme.palette.background.default,
 	},
 	checkBoxIconChecked: {
 		backgroundColor: "currentColor",
@@ -117,7 +118,7 @@ const Checkbox = ({ checkboxProps }) => {
 	const checkBoxMui = (
 		<CheckboxMUI
 			checked={value}
-			onChange={handleChange}
+			onChange={!readOnly ? handleChange : null}
 			color="primary"
 			checkedIcon={
 				<span
