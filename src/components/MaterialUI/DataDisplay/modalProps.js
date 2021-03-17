@@ -6,6 +6,7 @@ class ModalProps extends ComponentProps {
 		title: "title",
 		actionPanel: "actionPanel",
 		backdropClickCallback: "backdropClickCallback",
+		type: "type",
 	};
 
 	constructor() {
@@ -15,7 +16,7 @@ class ModalProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.title, null);
 		this.componentProps.set(this.constructor.propNames.actionPanel, null);
 		this.componentProps.set(this.constructor.propNames.backdropClickCallback, null);
-
+		this.componentProps.set(this.constructor.propNames.type, null);
 		this._isModalProps = true;
 	}
 }
