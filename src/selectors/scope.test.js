@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+import { status } from "../constants";
 import { resetLastScope } from "./navigation";
 import {
 	currentScopeSelector,
@@ -58,6 +59,7 @@ beforeEach(() => {
 				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
 				parentScopeId: "Global",
 				isAuthorizedScope: true,
+				isActive: true,
 				currency: {
 					isoCode: "USD",
 					displayName: {
@@ -275,6 +277,7 @@ describe("selectLocalizedScopes", () => {
 		const expectedSecondChild = stateAsJS.scopes.SecondChild;
 		expectedSecondChild.displayName = "Deuxième fils";
 		expectedSecondChild.displayCurrency = "[USD]";
+		expectedSecondChild.status = status.active.label;
 
 		expect(selectLocalizedScopes, "when called with", [scopes], "called with", [state], "to equal", [
 			expectedSecondChild,

@@ -4,6 +4,7 @@ import { getCurrentScope } from "./navigation";
 import { currentLocaleOrDefault } from "./locale";
 import { normalizeForSearch, setTranslation, memoize } from "../utils";
 import { getLocalization } from "../utils/localizationHelper";
+import { status } from "../constants";
 
 const scopeData = state => state.get("scopes");
 
@@ -60,6 +61,7 @@ export const selectLocalizedScopes = memoize(scopeIds =>
 			if (scope != null) {
 				scope.displayName = getLocalization(scope.name, locale, scope.name);
 				scope.displayCurrency = getLocalization(scope.currency.displayName, locale, scope.currency.isoCode);
+				scope.status = scope.isActive === true ? status.active.label : status.inactive.label;
 				localizedScopes.push(scope);
 			}
 		});

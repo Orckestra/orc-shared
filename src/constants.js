@@ -7,6 +7,18 @@ export const scopeTypes = {
 	sale: "Sale",
 };
 
+export const status = {
+	active: {
+		label: "Active",
+		value: "active",
+		booleanValue: 1,
+	},
+	inactive: {
+		label: "Inactive",
+		value: "inactive",
+		booleanValue: 0,
+	},
+};
 export const platformRoles = {
 	Picker: "Picker",
 	Integrator: "Integrator",
