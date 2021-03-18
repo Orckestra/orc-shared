@@ -93,6 +93,26 @@ export const getModifiedTabs = tabsParams =>
 		return modifiedTabs;
 	});
 
+export const getTabsWithErrors = tabsParams =>
+	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
+		const tabsWithErrors = [];
+
+		tabsParams.forEach(tabParams => {
+			let newEntityId = tryGetNewEntityIdKey(tabParams.href);
+			if (newEntityId) tabParams.params.push(newEntityId);
+
+			for (let i = 0; i < tabParams.params.length; i++) {
+				const sectionsWithErrors = getSectionsWithErrorsFromModule(data, moduleName, tabParams.params[i]);
+				if (sectionsWithErrors.length > 0) {
+					tabsWithErrors.push(tabParams.href);
+					break;
+				}
+			}
+		});
+
+		return tabsWithErrors;
+	});
+
 export const getModifiedModels = entityId =>
 	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
 		const models = {};
