@@ -16,7 +16,7 @@
 		"watch": "npm run build -- --watch",
 		"lint": "eslint src",
 		"test": "orc-scripts test",
-		"coverage": "orc-scripts test --coverage",
+		"coverage": "orc-scripts test --coverage --config jest.coverageconfig.js",
 		"coveralls": "cat coverage/lcov.info | coveralls",
 		"prepublishOnly": "npm run build:clean --",
 		"icons": "orc-scripts buildIconsSheet",
