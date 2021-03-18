@@ -1,5 +1,10 @@
 import { validationErrorTypes } from "../constants";
-import { validationRules, showError, hasValidationErrors } from "./modelValidationHelper";
+import {
+	validationRules,
+	showError,
+	hasValidationErrors,
+	hasMultipleFieldValidationErrors,
+} from "./modelValidationHelper";
 
 describe("validationRules", () => {
 	it("validates fieldIsRequired rule correctly when its value is empty", () => {
@@ -88,5 +93,64 @@ describe("hasValidationErrors", () => {
 		const show = hasValidationErrors();
 
 		expect(show, "to be true");
+	});
+});
+
+describe("hasMultipleFieldValidationErrors", () => {
+	it("Retrieves false if model is empty", function () {
+		const result = hasMultipleFieldValidationErrors({});
+		expect(result, "to be false");
+	});
+
+	it("Retrieves false if model is not defined", function () {
+		const result = hasMultipleFieldValidationErrors(undefined);
+		expect(result, "to be false");
+	});
+
+	it("Retrieves false if model is null", function () {
+		const result = hasMultipleFieldValidationErrors(null);
+		expect(result, "to be false");
+	});
+
+	it("Retrieves false if model is valid", function () {
+		const editStates = {
+			group: {
+				field1: {
+					state: {
+						value: "something",
+					},
+					isValid: () => true,
+				},
+				field2: {
+					state: {
+						value: "another",
+					},
+					isValid: () => true,
+				},
+			},
+		};
+		const result = hasMultipleFieldValidationErrors(editStates);
+		expect(result, "to be false");
+	});
+
+	it("Retrieves true if model is invalid", function () {
+		const editStates = {
+			group: {
+				field1: {
+					state: {
+						value: "something",
+					},
+					isValid: () => true,
+				},
+				field2: {
+					state: {
+						value: "another",
+					},
+					isValid: () => false,
+				},
+			},
+		};
+		const result = hasMultipleFieldValidationErrors(editStates);
+		expect(result, "to be true");
 	});
 });
