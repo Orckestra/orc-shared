@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { validationRules } from "~/utils/modelValidationHelper";
-import { getModifiedModels } from "~/selectors/view";
-import { setEditModelField, setEditModelFieldError } from "~/actions/view";
+import { validationRules } from "../utils/modelValidationHelper";
+import { getModifiedModels } from "../selectors/view";
+import { setEditModelField, setEditModelFieldError } from "../actions/view";
 import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesData";
 
 /* This hook is used when a component has a dynamic number of fields that can be edited (e.g.: Orders' Custom Configuration Parameters).
