@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
 		border: props => (props.readOnly ? "none" : `1px solid ${theme.palette.grey.borders}`),
 		borderRadius: theme.shape.borderRadius,
 		alignItems: "center",
+		backgroundColor: props => (props.readOnly ? "inherit" : theme.palette.background.default),
 		"&:focus, &:focus-within": {
 			borderRadius: theme.shape.borderRadius,
 			borderColor: theme.palette.focus,
@@ -95,7 +96,7 @@ const WrappedDatePicker = ({
 			</div>
 			{!readOnly ? (
 				<div className={classes.iconContainer}>
-					<Icon className={classes.calendarIcon} id="calendar-date" />
+					<Icon className={classes.calendarIcon} id={showTimeSelectOnly ? "clock" : "calendar-date"} />
 				</div>
 			) : null}
 		</label>

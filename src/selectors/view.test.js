@@ -6,6 +6,7 @@ import {
 	getModifiedModel,
 	getModifiedTabs,
 	getSectionsWithErrors,
+	getTabsWithErrors,
 } from "./view";
 
 describe("isEntityUnderEditing", () => {
@@ -383,5 +384,88 @@ describe("getModifiedTabs", () => {
 		expect(getModifiedTabs, "when called with", [tabParams], "called with", [state], "to satisfy", [
 			"/Global/module1/new/section1",
 		]);
+	});
+});
+
+describe("getTabsWithErrors", () => {
+	let state, stateWithEmptyEdit;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			view: {
+				edit: {
+					module1: {
+						id1: {
+							section1: {},
+							section2: {
+								model: {
+									field1: {
+										value: "smth",
+										error: "smth",
+										wasModified: true,
+									},
+								},
+							},
+						},
+						id2: {
+							section1: {},
+							section2: {},
+						},
+						new: {
+							section1: {
+								model: {
+									field1: {
+										value: "smth",
+										wasModified: true,
+									},
+								},
+							},
+							section2: {},
+						},
+					},
+				},
+			},
+			navigation: {
+				route: { match: { path: "/:scope/module1/id1/section1" } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+		});
+
+		stateWithEmptyEdit = Immutable.fromJS({
+			view: {},
+			navigation: {
+				route: { match: { path: "/:scope/module1/id1/section1" } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+		});
+	});
+
+	it("Retrieves tabs with errors correctly when error is present in one section", () => {
+		const tabParams = [
+			{
+				href: "id1Href",
+				params: ["Global", "id1"],
+			},
+			{
+				href: "id2Href",
+				params: ["Global", "id2"],
+			},
+		];
+
+		expect(getTabsWithErrors, "when called with", [tabParams], "called with", [state], "to satisfy", ["id1Href"]);
+	});
+
+	it("Retrieves empty array when edit is empty", () => {
+		const tabParams = [
+			{
+				href: "id1Href",
+				params: ["Global", "id1"],
+			},
+			{
+				href: "id2Href",
+				params: ["Global", "id2"],
+			},
+		];
+
+		expect(getTabsWithErrors, "when called with", [tabParams], "called with", [stateWithEmptyEdit], "to satisfy", []);
 	});
 });

@@ -116,23 +116,21 @@ function contextIsIdentical(prevContext, nextContext) {
 
 function propsAreEqualRow(prev, next) {
 	if (prev.deepPropsComparation) {
-		return propsAreEqualDeeplyRow(prev, next) && contextIsIdentical(prev.context, next.context);
+		return propsAreEqualDeeplyRow(prev.dataRows, next.dataRows) && contextIsIdentical(prev.context, next.context);
 	}
 	return prev.selected === next.selected && contextIsIdentical(prev.context, next.context);
 }
 
-function propsAreEqualDeeplyRow(prev, next) {
-	if (prev.length) {
-		prev.forEach((prevElem, index) => {
-			if (!isEqual(prevElem.element, next[index].element) || prevElem.columns.length !== next[index].columns.length) {
-				return false;
-			}
-		});
+function propsAreEqualDeeplyRow(prevRow, nextRow) {
+	for (let i = 0; i < prevRow.length; i++) {
+		if (!isEqual(prevRow[i].element, nextRow[i].element) || prevRow[i].columns.length !== nextRow[i].columns.length) {
+			return false;
+		}
 	}
 	return true;
 }
 
-const TableRowMemo = ({ deepPropsComparation, ...props }) => {
+const TableRowMemo = ({ deepPropsComparation, dataRows, ...props }) => {
 	return <TableRow {...props} />;
 };
 
@@ -235,7 +233,7 @@ const buildTableRows = (
 		}
 	};
 
-	return rows.map(row => (
+	const mappedRows = rows.map(row => (
 		<MemoTableRow
 			className={classNames(classes.tableRow, customClasses.tableRow)}
 			key={row.key}
@@ -243,6 +241,7 @@ const buildTableRows = (
 			selected={selectionHandlers.isSelected(row.key)}
 			deepPropsComparation={deepPropsComparation}
 			context={context}
+			dataRows={rows}
 		>
 			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
 			{row.columns.map((cell, cellIndex) => (
@@ -254,6 +253,8 @@ const buildTableRows = (
 			))}
 		</MemoTableRow>
 	));
+
+	return mappedRows;
 };
 
 const FullTable = React.forwardRef((props, ref) => {
