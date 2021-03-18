@@ -31,13 +31,11 @@ export const hasValidationErrors = editState => {
 
 export const hasMultipleFieldValidationErrors = editStates => {
 	if (editStates) {
-		for (const id in editStates) {
-			if (editStates.hasOwnProperty(id)) {
-				const groupedStates = editStates[id];
+		for (const id of Object.keys(editStates)) {
+			const groupedStates = editStates[id];
 
-				if (hasValidationErrors(groupedStates) !== false) {
-					return true;
-				}
+			if (hasValidationErrors(groupedStates) !== false) {
+				return true;
 			}
 		}
 	}
