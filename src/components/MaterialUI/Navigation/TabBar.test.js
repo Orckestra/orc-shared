@@ -210,6 +210,7 @@ describe("TabBar", () => {
 								model: {
 									field1: {
 										value: "smth",
+										error: "smth",
 										wasModified: true,
 									},
 								},
