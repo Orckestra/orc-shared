@@ -108,6 +108,7 @@ const Checkbox = ({ checkboxProps }) => {
 	const value = checkboxProps?.get(CheckboxProps.propNames.value);
 	const label = checkboxProps?.get(CheckboxProps.propNames.label);
 	const readOnly = checkboxProps?.get(CheckboxProps.propNames.readOnly) || false;
+	const disabled = checkboxProps?.get(CheckboxProps.propNames.disabled) || false;
 
 	const handleChange = event => {
 		update(event.target.checked);
@@ -119,6 +120,7 @@ const Checkbox = ({ checkboxProps }) => {
 		<CheckboxMUI
 			checked={value}
 			onChange={!readOnly ? handleChange : null}
+			disabled={disabled}
 			color="primary"
 			checkedIcon={
 				<span
