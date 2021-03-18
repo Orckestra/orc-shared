@@ -41,14 +41,19 @@ describe("useEditState", () => {
 
 		store = {
 			subscribe: () => {},
-			dispatch: () => sinon.spy("dispatch"),
+			dispatch: () => sinon.spy(),
 			getState: () => state,
 		};
 	});
 
-	const TestComp = () => {
+	const TestComp = ({ saveInitialValueToEditState = false }) => {
 		const createEditState = useEditState(entityId, sectionName, { customRule: value => value === "custom" });
-		const field = createEditState(["field"], initialFieldValue, [validationErrorTypes.fieldIsRequired, "customRule"]);
+		const field = createEditState(
+			["field"],
+			initialFieldValue,
+			[validationErrorTypes.fieldIsRequired, "customRule"],
+			saveInitialValueToEditState,
+		);
 		const fieldWithUndefinedInitialValue = createEditState(["anotherField"]);
 
 		const createEditStateWithoutCustomRules = useEditState(entityId, sectionName);
@@ -110,6 +115,48 @@ describe("useEditState", () => {
 		const fieldValue = mountedComponent.find("#fieldWithUndefinedInitialValue").prop("children");
 
 		expect(fieldValue, "to equal", "");
+	});
+
+	it("Not saves initial value to edit state if saveInitialValueToEditState is false", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		mount(component);
+
+		expect(useDispatchWithModulesDataSpy, "not to have calls satisfying", {
+			args: [setEditModelField, [["field"], initialFieldValue, initialFieldValue, entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Saves initial value to edit state if saveInitialValueToEditState is false", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp saveInitialValueToEditState />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		mount(component);
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [setEditModelField, [["field"], initialFieldValue, initialFieldValue, entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
 	});
 
 	it("Updates edit view value correctly without validation", () => {
