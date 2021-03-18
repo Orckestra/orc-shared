@@ -166,8 +166,8 @@ describe("Memoize components", () => {
 
 	it("Updates table row props if context is different and deepPropsComparation is set", () => {
 		ignoreConsoleError(() => {
-			const mountedComponent = mount(<MemoTableRow deepPropsComparation={true} context="Something" />);
-			const mountedComponent1 = mount(<MemoTableRow deepPropsComparation={true} context="Something" />);
+			const mountedComponent = mount(<MemoTableRow deepPropsComparation={true} dataRows={{}} context="Something" />);
+			const mountedComponent1 = mount(<MemoTableRow deepPropsComparation={true} dataRows={{}} context="Something" />);
 
 			expect(mountedComponent.prop("context"), "to equal", "Something");
 
