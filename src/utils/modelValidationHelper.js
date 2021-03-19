@@ -28,3 +28,17 @@ export const hasValidationErrors = editState => {
 
 	return hasAnyValidationErrors;
 };
+
+export const hasMultipleFieldValidationErrors = editStates => {
+	if (editStates) {
+		for (const id of Object.keys(editStates)) {
+			const groupedStates = editStates[id];
+
+			if (hasValidationErrors(groupedStates) !== false) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+};
