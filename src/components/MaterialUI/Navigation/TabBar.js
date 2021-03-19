@@ -208,7 +208,7 @@ const MuiBar = ({ module, pages }) => {
 					);
 					const wrappedTabLabel = (
 						<div className={tabClassName}>
-							<TabLabel label={label} mustTruncate={mustTruncate} />
+							<TabLabel label={label} mustTruncate={mustTruncate} classes={{ root: tabClassName }} />
 							{isModified === true ? <span className={classes.asterix}>*</span> : null}
 						</div>
 					);
