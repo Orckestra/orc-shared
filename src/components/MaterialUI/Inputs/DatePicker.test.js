@@ -187,6 +187,36 @@ describe("DatePicker", () => {
 		);
 	});
 
+	it("sets up only time to locale with time 12am (en-US) and show only time select", () => {
+		const date = new Date("2020-06-30T00:00:00");
+		const expectedTime = "12:00 AM";
+		expect(
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<DatePicker useTime={true} useDate={false} onChange={updater} value={date} showTimeSelectOnly={true} />
+				</div>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<label>
+						<div>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedTime} onChange={() => {}} />
+								</div>
+							</div>
+						</div>
+						<div>
+							<Icon id="clock" />
+						</div>
+					</label>
+				</div>
+			</TestWrapper>,
+		);
+	});
+
 	it("sets up a date to locale with time 12am when read only (en-US)", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedDate = "06/30/2020 12:00 AM";

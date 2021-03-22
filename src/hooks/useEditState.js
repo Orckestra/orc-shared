@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentModuleName } from "./../selectors/navigation";
 import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesData";
@@ -9,23 +10,31 @@ import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
 // as properties of extendedValidationRules
 export const useEditState = (entityId, sectionName, extendedValidationRules = {}) => {
 	const currentModuleName = useSelector(selectCurrentModuleName);
-	const dispatch = useDispatchWithModulesData();
+	const dispatchWithModulesData = useDispatchWithModulesData();
 
 	const mergedValidationRules = { ...validationRules, ...extendedValidationRules };
 
-	const useFieldState = (keys, initialValue = "", errorTypes = []) => {
-		const editState = useSelectorAndUnwrap(state =>
+	const useFieldState = (keys, initialValue = "", errorTypes = [], saveInitialValueToEditState = false) => {
+		const stateValue = useSelectorAndUnwrap(state =>
 			state.getIn(["view", "edit", currentModuleName, entityId, sectionName, "model", ...keys]),
-		) || { value: initialValue };
+		);
+
+		useEffect(() => {
+			if (saveInitialValueToEditState && stateValue == null) {
+				dispatchWithModulesData(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
+			}
+		}, [initialValue]);
+
+		const editState = stateValue || { value: initialValue };
 
 		const updateEditState = newValue => {
-			dispatch(setEditModelField, [keys, newValue, initialValue, entityId, sectionName]);
+			dispatchWithModulesData(setEditModelField, [keys, newValue, initialValue, entityId, sectionName]);
 
 			isEditStateValid(newValue);
 		};
 
 		const resetEditState = () => {
-			dispatch(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
+			dispatchWithModulesData(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
 		};
 
 		const isEditStateValid = value => {
@@ -35,7 +44,7 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 				const isValid = mergedValidationRules[errorType](valueToValidate);
 
 				if (isValid === false) {
-					dispatch(setEditModelFieldError, [keys, errorType, entityId, sectionName]);
+					dispatchWithModulesData(setEditModelFieldError, [keys, errorType, entityId, sectionName]);
 
 					hasAnyValidationErrors = true;
 					return;

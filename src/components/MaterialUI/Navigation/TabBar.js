@@ -13,7 +13,7 @@ import Select from "../Inputs/Select";
 import SelectProps from "../Inputs/SelectProps";
 import Icon from "../DataDisplay/Icon";
 import { isScrollVisible } from "./../../../utils/domHelper";
-import { getModifiedTabs } from "./../../../selectors/view";
+import { getModifiedTabs, getTabsWithErrors } from "./../../../selectors/view";
 import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
 import { removeEditNode } from "./../../../actions/view";
 import { getValueFromUrlByKey, tryGetNewEntityIdKey } from "./../../../utils/urlHelper";
@@ -75,6 +75,10 @@ const useStyles = makeStyles(theme => ({
 	modifiedLabel: {
 		fontWeight: theme.typography.fontWeightBold,
 	},
+	errorLabel: {
+		color: theme.palette.error.main,
+		fontWeight: theme.typography.fontWeightBold,
+	},
 	asterix: {
 		position: "absolute",
 		top: theme.spacing(-0.5),
@@ -108,6 +112,7 @@ const MuiBar = ({ module, pages }) => {
 	}));
 
 	const modifiedTabs = useSelector(getModifiedTabs(pagesParams));
+	const tabsWithErrors = useSelector(getTabsWithErrors(pagesParams));
 
 	const handleChange = (_, value) => {
 		if (value === false) {
@@ -194,11 +199,16 @@ const MuiBar = ({ module, pages }) => {
 					let entityIdKey = Object.keys(params).find(p => p !== "scope");
 					if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
 					const isModified = modifiedTabs.includes(href);
+					const isError = tabsWithErrors.includes(href);
 					const tabLabel = <TabLabel label={label} />;
-					const tabClassName = classNames(classes.labelContainer, isModified && classes.modifiedLabel);
+					const tabClassName = classNames(
+						classes.labelContainer,
+						isModified && classes.modifiedLabel,
+						isError && classes.errorLabel,
+					);
 					const wrappedTabLabel = (
 						<div className={tabClassName}>
-							<TabLabel label={label} mustTruncate={mustTruncate} />
+							<TabLabel label={label} mustTruncate={mustTruncate} classes={{ root: tabClassName }} />
 							{isModified === true ? <span className={classes.asterix}>*</span> : null}
 						</div>
 					);

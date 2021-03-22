@@ -2,13 +2,13 @@ import CheckboxProps, { isCheckboxProps } from "./CheckboxProps";
 
 describe("Checkbox Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["update", "value", "label", "readOnly"];
+		const propNames = ["update", "value", "label", "readOnly", "disabled"];
 
 		expect(CheckboxProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["update", "value", "label", "readOnly"];
+		const propNames = ["update", "value", "label", "readOnly", "disabled"];
 
 		const checkboxProps = new CheckboxProps();
 
