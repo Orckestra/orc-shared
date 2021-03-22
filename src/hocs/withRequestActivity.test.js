@@ -24,7 +24,9 @@ describe("withRequestActivity", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			requests: {
-				ONGOING: true,
+				actives: {
+					ONGOING: true,
+				},
 			},
 		});
 		store = {

@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputBaseMUI from "@material-ui/core/InputBase";
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
+import classNames from "classnames";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -88,11 +89,12 @@ const InputBase = ({ inputProps }) => {
 	const value = inputProps?.get(InputBaseProps.propNames.value) ?? "";
 	const label = !multiline && inputProps?.get(InputBaseProps.propNames.label);
 	const type = inputProps?.get(InputBaseProps.propNames.type) || "text";
-	const inputAttributes = inputProps?.get(InputBaseProps.propNames.inputAttributes) || {};
+	const inputAttributes = inputProps?.get(InputBaseProps.propNames.inputAttributes);
 	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
 	const error = inputProps?.get(InputBaseProps.propNames.error);
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
 	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) || false;
+	const onBlur = inputProps?.get(InputBaseProps.propNames.onBlur) || (() => {});
 
 	const classes = useStyles({ label, errorPosition });
 
@@ -107,12 +109,13 @@ const InputBase = ({ inputProps }) => {
 				{label && <label className={`${classes.prepend} ${disabled && classes.disabledPrepend}`}>{label}</label>}
 				<InputBaseMUI
 					classes={{
-						input: classes.controlInput,
+						input: classNames(classes.controlInput, inputProps?.getStyle(InputBaseProps.ruleNames.input)),
 						error: classes.errorInput,
 						disabled: classes.disabled,
 						multiline: classes.multiline,
 						inputMultiline: classes.inputMultiline,
 					}}
+					onBlur={onBlur}
 					type={type}
 					placeholder={placeholder}
 					value={value}

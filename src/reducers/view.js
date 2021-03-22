@@ -10,7 +10,7 @@ import {
 } from "../actions/view";
 import { isEqual } from "lodash";
 
-const initialState = Immutable.Map({});
+const initialState = Immutable.Map();
 
 const viewStateReducer = (state = initialState, action) => {
 	switch (action.type) {

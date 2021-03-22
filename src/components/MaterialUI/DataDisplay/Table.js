@@ -108,7 +108,7 @@ function editingMode(prevTableProps, nextTableProps) {
 	const prevEditingMode = prevTableProps?.get(TableProps.propNames.isEditingMode) || false;
 	const nextEditingMode = nextTableProps?.get(TableProps.propNames.isEditingMode) || false;
 
-	return prevEditingMode === nextEditingMode;
+	return isEditingModeComparison(prevEditingMode, nextEditingMode);
 }
 
 function rowAreIdentical(prevRows, nextRows) {
@@ -122,15 +122,11 @@ function contextIsIdentical(prevContext, nextContext) {
 }
 
 function propsAreEqualRow(prev, next) {
-	const hasEditingModeChanged = prev.isEditingMode !== next.isEditingMode;
-	if (prev.deepPropsComparation) {
-		return (
-			propsAreEqualDeeplyRow(prev.dataRows, next.dataRows) &&
-			contextIsIdentical(prev.context, next.context) &&
-			!hasEditingModeChanged
-		);
+	const hasEditingModeEqual = isEditingModeComparison(prev.isEditingMode, next.isEditingMode);
+	if (prev.deepPropsComparation && hasEditingModeEqual) {
+		return propsAreEqualDeeplyRow(prev.dataRows, next.dataRows) && contextIsIdentical(prev.context, next.context);
 	}
-	return prev.selected === next.selected && contextIsIdentical(prev.context, next.context) && !hasEditingModeChanged;
+	return prev.selected === next.selected && contextIsIdentical(prev.context, next.context) && hasEditingModeEqual;
 }
 
 function propsAreEqualDeeplyRow(prevRow, nextRow) {
@@ -148,9 +144,15 @@ const TableRowMemo = ({ deepPropsComparation, dataRows, isEditingMode, ...props 
 
 export const MemoTableRow = React.memo(TableRowMemo, (prev, next) => propsAreEqualRow(prev, next));
 
+function isEditingModeComparison(prevIsEditingMode, nextIsEditingMode) {
+	// In editing mode, we need to re-render everytime has cell value may have changed
+	return prevIsEditingMode === nextIsEditingMode && !nextIsEditingMode;
+}
+
 function propsAreEqualBody(prev, next) {
 	let isEqualBody =
 		contextIsIdentical(prev.context, next.context) &&
+		isEditingModeComparison(prev.isEditingMode, next.isEditingMode) &&
 		prev.selectedNumber === next.selectedNumber &&
 		rowAreIdentical(prev.dataRows, next.dataRows);
 	if (prev.deepPropsComparation) {
@@ -159,7 +161,7 @@ function propsAreEqualBody(prev, next) {
 	return isEqualBody;
 }
 
-const TableBody = ({ deepPropsComparation, ...props }) => {
+const TableBody = ({ deepPropsComparation, isEditingMode, ...props }) => {
 	return <tbody className={props.className}>{props.tableRows}</tbody>;
 };
 
@@ -299,6 +301,7 @@ const FullTable = React.forwardRef((props, ref) => {
 					tableRows={props.tableRows}
 					selectedNumber={props.selectedNumber}
 					deepPropsComparation={props.deepPropsComparation}
+					isEditingMode={props.isEditingMode}
 					context={props.context}
 				/>
 			</TableMui>
@@ -416,6 +419,7 @@ const Table = ({
 				pageLength={pageLength}
 				placeholder={placeholder}
 				deepPropsComparation={deepPropsComparation}
+				isEditingMode={isEditingMode}
 				context={context}
 			/>
 		</TableContainer>
@@ -424,5 +428,8 @@ const Table = ({
 
 export default React.memo(
 	Table,
-	(prev, next) => false, //editingMode(prev.tableProps, next.tableProps) && rowAreIdentical(prev.rows, next.rows) && headersAreIdentical(prev.headers, next.headers),
+	(prev, next) =>
+		editingMode(prev.tableProps, next.tableProps) &&
+		rowAreIdentical(prev.rows, next.rows) &&
+		headersAreIdentical(prev.headers, next.headers),
 );

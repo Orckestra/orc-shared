@@ -8,10 +8,10 @@ import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 import { ERROR, LOGOUT } from "../reducers/request";
 
 export const useAuthenticationData = () => ({
-	loading: useSelector(state => state.getIn(["requests", GET_AUTHENTICATION_PROFILE])),
+	loading: useSelector(state => state.getIn(["requests", "actives", GET_AUTHENTICATION_PROFILE])),
 	defaultScope: useSelector(state => state.getIn(["settings", "defaultScope"])) || null,
 	authedUser: useSelector(state => state.getIn(["authentication", "name"])),
-	requestError: unwrapImmutable(useSelector(state => state.getIn(["requests", ERROR]))),
+	requestError: unwrapImmutable(useSelector(state => state.getIn(["requests", ERROR]) || null)),
 	needLogin: useSelector(state => state.getIn(["requests", LOGOUT])),
 });
 
@@ -51,7 +51,7 @@ const Authenticate = ({ children }) => {
 	if (loading || defaultScope === null) {
 		return <Loader />;
 	}
-	if (!authedUser) {
+	if (!authedUser || requestError) {
 		return <Error {...{ requestError, needLogin }} />;
 	} else {
 		return React.Children.only(children);

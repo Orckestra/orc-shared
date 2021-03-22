@@ -1,4 +1,5 @@
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
+import TableProps from "../DataDisplay/TableProps";
 
 describe("InputBase Props", () => {
 	it("Contains necessary props keys", () => {
@@ -30,13 +31,18 @@ describe("InputBase Props", () => {
 			"inputAttributes",
 			"disabled",
 			"multiline",
+			"onBlur",
 		];
+
+		const ruleNames = ["input"];
 
 		const inputProps = new InputBaseProps();
 
 		const keys = Array.from(inputProps.componentProps.keys());
+		const keysRuleNames = Array.from(inputProps.componentClasses.keys());
 
 		expect(keys, "to equal", propNames);
+		expect(keysRuleNames, "to equal", ruleNames);
 	});
 });
 
