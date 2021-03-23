@@ -164,6 +164,20 @@ describe("Memoize components", () => {
 		});
 	});
 
+	it("Updates table row props when row in editing mode", () => {
+		ignoreConsoleError(() => {
+			const mountedComponent = mount(<MemoTableRow isEditingMode={true} somethingElse={"test 1"} />);
+
+			expect(mountedComponent.prop("isEditingMode"), "to equal", true);
+			expect(mountedComponent.prop("somethingElse"), "to equal", "test 1");
+
+			mountedComponent.setProps({ isEditingMode: true, somethingElse: "test changed" });
+
+			expect(mountedComponent.prop("isEditingMode"), "to equal", true);
+			expect(mountedComponent.prop("somethingElse"), "to equal", "test changed");
+		});
+	});
+
 	it("Updates table row props if context is different and deepPropsComparation is set", () => {
 		ignoreConsoleError(() => {
 			const mountedComponent = mount(<MemoTableRow deepPropsComparation={true} dataRows={{}} context="Something" />);
@@ -498,6 +512,48 @@ describe("Table", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
 
 		const component = <Table rows={rows} headers={headers} />;
+
+		const expectedTableRows = (
+			<>
+				<MemoTableRow>
+					<td>{<TooltippedTypography noWrap children={elements[0].a1} titleValue={elements[0].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[0].a2} titleValue={elements[0].a2} />}</td>
+				</MemoTableRow>
+				<MemoTableRow>
+					<td>{<TooltippedTypography noWrap children={elements[1].a1} titleValue={elements[1].a1} />}</td>
+					<td>{<TooltippedTypography noWrap children={elements[1].a2} titleValue={elements[1].a2} />}</td>
+				</MemoTableRow>
+			</>
+		);
+
+		const expectedHeader = (
+			<TableHead>
+				<TableRow>
+					<th>{headerLabels.column1}</th>
+					<th>{headerLabels.column2}</th>
+				</TableRow>
+			</TableHead>
+		);
+
+		const expected = (
+			<TableContainer>
+				<div>
+					<ResizeDetector />
+					<TableMui>
+						{expectedHeader}
+						<MemoTableBody dataRows={rows} tableRows={expectedTableRows} />
+					</TableMui>
+				</div>
+			</TableContainer>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Table in editing mode", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements, false);
+
+		const component = <Table rows={rows} headers={headers} isEditingMode={true} />;
 
 		const expectedTableRows = (
 			<>

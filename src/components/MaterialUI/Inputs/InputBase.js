@@ -89,12 +89,12 @@ const InputBase = ({ inputProps }) => {
 	const value = inputProps?.get(InputBaseProps.propNames.value) ?? "";
 	const label = !multiline && inputProps?.get(InputBaseProps.propNames.label);
 	const type = inputProps?.get(InputBaseProps.propNames.type) || "text";
-	const inputAttributes = inputProps?.get(InputBaseProps.propNames.inputAttributes);
+	const inputAttributes = inputProps?.get(InputBaseProps.propNames.inputAttributes) || {};
 	const placeholder = inputProps?.get(InputBaseProps.propNames.placeholder);
 	const error = inputProps?.get(InputBaseProps.propNames.error);
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
 	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) || false;
-	const onBlur = inputProps?.get(InputBaseProps.propNames.onBlur) || (() => {});
+	const onBlur = inputProps?.get(InputBaseProps.propNames.onBlur) || null;
 
 	const classes = useStyles({ label, errorPosition });
 

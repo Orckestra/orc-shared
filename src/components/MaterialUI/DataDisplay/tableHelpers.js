@@ -11,9 +11,9 @@ import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 
 const defaultRendering = (e, def, rowId, readOnly, transformedValue) => {
-	return transformedValue != null
-		? [<TooltippedTypography noWrap children={transformedValue} titleValue={transformedValue} />]
-		: [null];
+	return transformedValue != null ? (
+		<TooltippedTypography noWrap children={transformedValue} titleValue={transformedValue} />
+	) : null;
 };
 
 const renderByType = (e, def, rowId, readOnly, transformedValue) => {
@@ -86,7 +86,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			return [<StandaloneRadio radioProps={radioProps} />];
 
 		default:
-			return defaultRendering(e, def, rowId, readOnly, transformedValue);
+			return [defaultRendering(e, def, rowId, readOnly, transformedValue)];
 	}
 };
 

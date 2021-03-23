@@ -21,7 +21,9 @@ const LoadingScreen = () => {
 
 	useEffect(() => {
 		if (loadingScreen) {
-			const timeout = setTimeout(() => setProgressState(true), 250);
+			const timeout = setTimeout(() => {
+				return setProgressState(true);
+			}, 250);
 			return () => clearTimeout(timeout);
 		}
 

@@ -29,8 +29,6 @@ import {
 	GET_VERSION_INFO_SUCCESS,
 } from "../../actions/versionInfo";
 import LoadingScreen from "../MaterialUI/Feedback/loadingScreen";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
