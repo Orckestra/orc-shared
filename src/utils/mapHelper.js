@@ -1,4 +1,4 @@
-import { cloneDeep, merge } from "lodash";
+import { merge } from "lodash";
 
 export const mapModel = (model, initialModel, mappingRules = []) => {
 	// if need to map fields with different model and domain keys then

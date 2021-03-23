@@ -23,7 +23,7 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 			if (saveInitialValueToEditState && stateValue == null) {
 				dispatchWithModulesData(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
 			}
-		}, [initialValue]);
+		}, [initialValue, keys, saveInitialValueToEditState, stateValue]);
 
 		const editState = stateValue || { value: initialValue };
 
