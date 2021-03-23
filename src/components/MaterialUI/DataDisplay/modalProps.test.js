@@ -2,13 +2,29 @@ import ModalProps, { isModalProps } from "./modalProps";
 
 describe("Modal Props", () => {
 	it("Contains necessary props and rules keys", () => {
-		const propNames = ["open", "title", "actionPanel", "backdropClickCallback", "type"];
+		const propNames = [
+			"open",
+			"title",
+			"actionPanel",
+			"backdropClickCallback",
+			"type",
+			"okButtonLabel",
+			"cancelButtonLabel",
+		];
 
 		expect(ModalProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props and rules map", () => {
-		const propNames = ["open", "title", "actionPanel", "backdropClickCallback", "type"];
+		const propNames = [
+			"open",
+			"title",
+			"actionPanel",
+			"backdropClickCallback",
+			"type",
+			"okButtonLabel",
+			"cancelButtonLabel",
+		];
 		const chipProps = new ModalProps();
 
 		const propKeys = Array.from(chipProps.componentProps.keys());

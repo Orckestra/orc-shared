@@ -89,7 +89,7 @@ describe("ConfirmationModal", () => {
 		expect(cancelCallbackSpy, "was called");
 	});
 
-	it("Calls cancelCallback when ok button is pressed", () => {
+	it("Calls okCallback when ok button is pressed", () => {
 		const open = true;
 		const okCallbackSpy = sinon.spy();
 		const modalProps = new ModalProps();
@@ -109,5 +109,66 @@ describe("ConfirmationModal", () => {
 		okButton.invoke("onClick")();
 
 		expect(okCallbackSpy, "was called");
+	});
+
+	it("Renders ConfirmationModal correctly when set buttons' labels", () => {
+		const open = true;
+		const message = "message";
+		const okButtonlabel = sharedMessages.yes;
+		const cancelButtonlabel = sharedMessages.no;
+		const backdropClickCallback = jest.fn();
+		const okCallback = jest.fn();
+		const cancelCallback = jest.fn();
+		const modalProps = new ModalProps();
+
+		const titleComponent = stringifyWithoutQuotes(messages["orc-shared.confirmation"]);
+		const okButtonlabelComponent = stringifyWithoutQuotes(messages["orc-shared.yes"]);
+		const cancelButtonlabelComponent = stringifyWithoutQuotes(messages["orc-shared.no"]);
+		const messageComponent = (
+			<div>
+				<Typography children={message} />
+			</div>
+		);
+
+		modalProps.set(ModalProps.propNames.title, titleComponent);
+		modalProps.set(ModalProps.propNames.open, open);
+		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
+		modalProps.set(ModalProps.propNames.okButtonLabel, okButtonlabelComponent);
+		modalProps.set(ModalProps.propNames.cancelButtonLabel, cancelButtonlabelComponent);
+
+		const actionPanel = (
+			<div>
+				<Button variant="outlined" onClick={() => cancelCallback()}>
+					{cancelButtonlabelComponent}
+				</Button>
+				<Button variant="contained" color="primary" onClick={() => okCallback()}>
+					{okButtonlabelComponent}
+				</Button>
+			</div>
+		);
+
+		modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<ConfirmationModal
+					message={message}
+					open={open}
+					okCallback={okCallback}
+					cancelCallback={cancelCallback}
+					backdropClickCallback={backdropClickCallback}
+					okButtonLabel={okButtonlabel}
+					cancelButtonLabel={cancelButtonlabel}
+				/>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<Modal message={messageComponent} modalProps={modalProps} />
+			</IntlProvider>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 });
