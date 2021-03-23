@@ -51,7 +51,7 @@ const Authenticate = ({ children }) => {
 	if (loading || defaultScope === null) {
 		return <Loader />;
 	}
-	if (!authedUser || requestError) {
+	if (!authedUser) {
 		return <Error {...{ requestError, needLogin }} />;
 	} else {
 		return React.Children.only(children);

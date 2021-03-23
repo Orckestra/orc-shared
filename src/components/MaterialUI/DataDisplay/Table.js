@@ -123,7 +123,7 @@ function contextIsIdentical(prevContext, nextContext) {
 
 function propsAreEqualRow(prev, next) {
 	const isReadOnly = isInReadOnlyMode(prev.isEditingMode, next.isEditingMode);
-	if (prev.deepPropsComparation && isInReadOnlyMode) {
+	if (prev.deepPropsComparation && isReadOnly) {
 		return propsAreEqualDeeplyRow(prev.dataRows, next.dataRows) && contextIsIdentical(prev.context, next.context);
 	}
 	return prev.selected === next.selected && contextIsIdentical(prev.context, next.context) && isReadOnly;
@@ -253,7 +253,7 @@ const buildTableRows = (
 			className={classNames(classes.tableRow, customClasses.tableRow)}
 			key={row.key}
 			onClick={evt => onClick(evt, row)}
-			selected={selectionHandlers.isSelected(row.key) || isEditingMode}
+			selected={selectionHandlers.isSelected(row.key)}
 			deepPropsComparation={deepPropsComparation}
 			context={context}
 			isEditingMode={isEditingMode}

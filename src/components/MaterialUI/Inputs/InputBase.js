@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import InputBaseMUI from "@material-ui/core/InputBase";
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
 import classNames from "classnames";
+import { ExpansionPanelProps } from "../Surfaces/expansionPanelProps";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -103,13 +104,15 @@ const InputBase = ({ inputProps }) => {
 		update(event.target.value);
 	};
 
+	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);
+
 	return (
 		<div className={classes.container}>
 			<div className={classes.inputContainer}>
 				{label && <label className={`${classes.prepend} ${disabled && classes.disabledPrepend}`}>{label}</label>}
 				<InputBaseMUI
 					classes={{
-						input: classNames(classes.controlInput, inputProps?.getStyle(InputBaseProps.ruleNames.input)),
+						input: classNames(classes.controlInput, inputBaseInputStyle),
 						error: classes.errorInput,
 						disabled: classes.disabled,
 						multiline: classes.multiline,
