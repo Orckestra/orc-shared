@@ -2,8 +2,7 @@ export const getValueFromUrlByKey = (url, path, key) => {
 	const valuesFromUrl = url.split("/");
 
 	// remove the regex of the parameters, the part between parentheses (path to regex syntax)
-	// eslint-disable-next-line no-useless-escape
-	const keysFromPath = path.replace(/(\([^\/]+?\))/g, "").split("/");
+	const keysFromPath = path.replace(/(\([^/]+?\))/g, "").split("/");
 
 	const keyIndex = keysFromPath.indexOf(key);
 

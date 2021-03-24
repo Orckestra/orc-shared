@@ -4,7 +4,6 @@ import LoadingScreen from "./loadingScreen";
 import Backdrop from "@material-ui/core/Backdrop";
 import { act } from "react-dom/test-utils";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { mount } from "enzyme";
 import { createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import Immutable from "immutable";
 import sinon from "sinon";

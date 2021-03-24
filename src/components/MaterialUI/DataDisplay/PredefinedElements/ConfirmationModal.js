@@ -20,8 +20,18 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdropClickCallback }) => {
+const ConfirmationModal = ({
+	message,
+	open,
+	okCallback,
+	cancelCallback,
+	backdropClickCallback,
+	okButtonLabel,
+	cancelButtonLabel,
+}) => {
 	const classes = useStyles();
+	const okLabel = okButtonLabel ?? sharedMessages.close;
+	const cancelLabel = cancelButtonLabel ?? sharedMessages.cancel;
 
 	const modalProps = new ModalProps();
 
@@ -39,10 +49,10 @@ const ConfirmationModal = ({ message, open, okCallback, cancelCallback, backdrop
 	const actionPanel = (
 		<div className={classes.actionPanel}>
 			<Button className={classes.cancelButton} variant="outlined" onClick={() => cancelCallback()}>
-				<FormattedMessage {...sharedMessages.cancel} />
+				<FormattedMessage {...cancelLabel} />
 			</Button>
 			<Button variant="contained" color="primary" onClick={() => okCallback()}>
-				<FormattedMessage {...sharedMessages.close} />
+				<FormattedMessage {...okLabel} />
 			</Button>
 		</div>
 	);

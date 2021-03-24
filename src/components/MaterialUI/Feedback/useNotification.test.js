@@ -3,8 +3,7 @@ import { useNotification } from "./useNotification";
 import { mount } from "enzyme";
 
 const TestComp = () => {
-	// eslint-disable-next-line no-unused-vars
-	const { snackPack, setSnackPack, addNotification } = useNotification();
+	const { snackPack, addNotification } = useNotification();
 	return (
 		<div>
 			<div id="notification" snacks={snackPack} onClick={(message, type) => addNotification(message, type)} />

@@ -1,7 +1,10 @@
 {
 	"orc-shared.about": "About",
 	"orc-shared.active": "Attivo",
+	"orc-shared.add": "Inserisci",
 	"orc-shared.allRightsReserved": "Tutti i diritti riservati.",
+	"orc-shared.applyChanges": "Applica i cambiamenti",
+	"orc-shared.back": "Indietro",
 	"orc-shared.cancel": "Annulla",
 	"orc-shared.ccName": "Orckestra Commerce Cloud",
 	"orc-shared.ccVersion": "Commerce Cloud {version}",
@@ -17,12 +20,13 @@
 	"orc-shared.fieldIsRequired": "Richiesto",
 	"orc-shared.help": "Guida",
 	"orc-shared.inactive": "Inattivo",
+	"orc-shared.next": "Il prossimo",
+	"orc-shared.no": "No",
 	"orc-shared.notAvailable": "N/A",
 	"orc-shared.orcScriptsVersion": "Orc-Scripts Framework {version}",
 	"orc-shared.orcSecretVersion": "Orc-Secret Framework {version}",
 	"orc-shared.orcSharedVersion": "Orc-Shared Framework {version}",
 	"orc-shared.preferences": "Preferences",
-	"orc-shared.add": "Inserisci",
 	"orc-shared.remove": "Rimuovi",
 	"orc-shared.save": "Salva",
 	"orc-shared.scopeFilterPlaceholder": "Type a scope name",
@@ -33,7 +37,5 @@
 	"orc-shared.status": "Stato",
 	"orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
 	"orc-shared.valueName": "Nome valore",
-	"orc-shared.next": "Il prossimo",
-	"orc-shared.back": "Indietro",
-	"orc-shared.applyChanges": "Applica i cambiamenti"
+	"orc-shared.yes": "Si"
 }

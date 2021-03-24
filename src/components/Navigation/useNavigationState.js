@@ -30,7 +30,6 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 	if (!page) {
 		const paramPath =
 			// Only one should exist
-			// eslint-disable-next-line no-useless-escape
 			Object.keys(pages).filter(path => /^\/:/.test(path))[0] || "";
 
 		// removes the first '/:' from the URL
@@ -38,8 +37,7 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 		// split on the remaining '/:'
 		const paramPathSplit = paramPath
 			.replace(/^\/:/, "")
-			// eslint-disable-next-line no-useless-escape
-			.replace(/(\([^\/]+?\))/g, "")
+			.replace(/(\([^/]+?\))/g, "")
 			.split("/:");
 		const firstStepMatchParams = pathStep === "/" + params[paramPathSplit[0]];
 

@@ -1,7 +1,10 @@
 {
 	"orc-shared.about": "À propos d'Orckestra",
 	"orc-shared.active": "Actif",
+	"orc-shared.add": "Ajouter",
 	"orc-shared.allRightsReserved": "Tout droits réservés.",
+	"orc-shared.applyChanges": "Appliquer les modifications",
+	"orc-shared.back": "Arrière",
 	"orc-shared.cancel": "Annuler",
 	"orc-shared.ccName": "Orckestra Commerce Cloud",
 	"orc-shared.ccVersion": "Commerce Cloud {version}",
@@ -17,12 +20,13 @@
 	"orc-shared.fieldIsRequired": "Est requis",
 	"orc-shared.help": "Aide",
 	"orc-shared.inactive": "Inactif",
+	"orc-shared.next": "Suivant",
+	"orc-shared.no": "Non",
 	"orc-shared.notAvailable": "N/A",
 	"orc-shared.orcScriptsVersion": "Infrastructure Orc-Scripts {version}",
 	"orc-shared.orcSecretVersion": "Infrastructure Orc-Secret {version}",
 	"orc-shared.orcSharedVersion": "Infrastructure Orc-Shared {version}",
 	"orc-shared.preferences": "Préférences",
-	"orc-shared.add": "Ajouter",
 	"orc-shared.remove": "Retirer",
 	"orc-shared.save": "Sauvegarder",
 	"orc-shared.scopeFilterPlaceholder": "Entrez un nom de Scope",
@@ -33,7 +37,5 @@
 	"orc-shared.status": "Statut",
 	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?",
 	"orc-shared.valueName": "Nom de la valeur",
-	"orc-shared.next": "Suivant",
-	"orc-shared.back": "Arrière",
-	"orc-shared.applyChanges": "Appliquer les modifications"
+	"orc-shared.yes": "Oui"
 }
