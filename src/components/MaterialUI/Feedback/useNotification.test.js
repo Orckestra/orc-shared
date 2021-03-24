@@ -3,7 +3,9 @@ import { useNotification } from "./useNotification";
 import { mount } from "enzyme";
 
 const TestComp = () => {
-	const { snackPack, addNotification } = useNotification();
+	const [snackPack, setSnackPack] = React.useState([]);
+
+	const addNotification = useNotification(snackPack, setSnackPack);
 	return (
 		<div>
 			<div id="notification" snacks={snackPack} onClick={(message, type) => addNotification(message, type)} />

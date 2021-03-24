@@ -1,8 +1,6 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 
-export const useNotification = () => {
-	const [snackPack, setSnackPack] = React.useState([]);
-
+export const useNotification = (snackPack, setSnackPack) => {
 	const addNotification = useCallback(
 		(message, type) => {
 			const snack = {
@@ -15,7 +13,7 @@ export const useNotification = () => {
 		[snackPack, setSnackPack],
 	);
 
-	return { snackPack, setSnackPack, addNotification };
+	return addNotification;
 };
 
 export default useNotification;
