@@ -85,14 +85,14 @@ const Modal = ({ message, modalProps }) => {
 	const modalType = modalProps?.get(ModalProps.propNames.type) ?? "normal";
 
 	var containerCls = clsx({
-		[classes.containerNormal]: modalType == "normal",
-		[classes.containerWide]: modalType == "wide",
-		[classes.containerFullwidth]: modalType == "fullwidth",
+		[classes.containerNormal]: modalType === "normal",
+		[classes.containerWide]: modalType === "wide",
+		[classes.containerFullwidth]: modalType === "fullwidth",
 	});
 
 	var messageCls = clsx({
-		[classes.message]: modalType == "normal",
-		[classes.messageWide]: modalType == "wide" || modalType == "fullwidth",
+		[classes.message]: modalType === "normal",
+		[classes.messageWide]: modalType === "wide" || modalType === "fullwidth",
 	});
 
 	const model = (

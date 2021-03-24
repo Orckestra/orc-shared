@@ -37,7 +37,7 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 		// split on the remaining '/:'
 		const paramPathSplit = paramPath
 			.replace(/^\/:/, "")
-			.replace(/(\([^\/]+?\))/g, "")
+			.replace(/(\([^/]+?\))/g, "")
 			.split("/:");
 		const firstStepMatchParams = pathStep === "/" + params[paramPathSplit[0]];
 
