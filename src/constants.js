@@ -45,3 +45,10 @@ export const displayMode = {
 	read: "read",
 	create: "create",
 };
+
+export const requestStates = {
+	processing: "processing",
+	success: "success",
+	fail: "fail",
+	idle: "idle",
+};
