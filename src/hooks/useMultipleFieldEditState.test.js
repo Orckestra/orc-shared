@@ -8,7 +8,6 @@ import * as useDispatchWithModulesDataMock from "./useDispatchWithModulesData";
 import { setEditModelField, setEditModelFieldError } from "./../actions/view";
 import { validationErrorTypes } from "./../constants";
 import _ from "lodash";
-import { initializePaymentRequest } from "~/actions/requestsApi";
 
 describe("useMultipleFieldEditState", () => {
 	let store, state;
@@ -91,6 +90,7 @@ describe("useMultipleFieldEditState", () => {
 			? { customRule: (value, id, fieldName) => value === "custom" && id === "id1" && fieldName === "prop1" }
 			: undefined;
 
+		// eslint-disable-next-line no-unused-vars
 		const [createEditState, modifiedStates] = useMultipleFieldEditState(
 			entityId,
 			sectionName,
@@ -459,7 +459,6 @@ describe("useMultipleFieldEditState", () => {
 
 			fieldComponent.invoke("onClick")();
 
-			const comparaison = failsCustomValidation ? "to have a call satisfying" : "to have no calls satisfying";
 			expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
 				args: [setEditModelFieldError, [[id, fieldName], "customRule", entityId, sectionName]],
 			});

@@ -649,6 +649,9 @@ const setThemeOverrides = theme => ({
 			...theme.select,
 			minWidth: theme.spacing(13),
 			borderRadius: theme.shape.borderRadius,
+			"&.MuiSelect-select": {
+				flexShrink: 1,
+			},
 		},
 		outlined: {
 			padding: theme.spacing(0.4, 0.6, 0.4, 0.6),
