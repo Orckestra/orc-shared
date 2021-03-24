@@ -133,8 +133,6 @@ describe("ConfirmationModal", () => {
 		modalProps.set(ModalProps.propNames.title, titleComponent);
 		modalProps.set(ModalProps.propNames.open, open);
 		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
-		modalProps.set(ModalProps.propNames.okButtonLabel, okButtonlabelComponent);
-		modalProps.set(ModalProps.propNames.cancelButtonLabel, cancelButtonlabelComponent);
 
 		const actionPanel = (
 			<div>
