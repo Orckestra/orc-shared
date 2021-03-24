@@ -150,6 +150,14 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.applyChanges",
 		defaultMessage: "Apply Changes",
 	},
+	yes: {
+		id: "orc-shared.yes",
+		defaultMessage: "Yes",
+	},
+	no: {
+		id: "orc-shared.no",
+		defaultMessage: "No",
+	},
 });
 
 export default sharedMessages;
