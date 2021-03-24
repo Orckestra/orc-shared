@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import InputBaseMUI from "@material-ui/core/InputBase";
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
 import classNames from "classnames";
-import { ExpansionPanelProps } from "../Surfaces/expansionPanelProps";
 
 export const useStyles = makeStyles(theme => ({
 	container: {

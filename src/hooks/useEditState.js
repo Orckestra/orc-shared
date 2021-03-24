@@ -23,6 +23,7 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 			if (saveInitialValueToEditState && stateValue == null) {
 				dispatchWithModulesData(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
 			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [initialValue]);
 
 		const editState = stateValue || { value: initialValue };

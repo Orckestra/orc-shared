@@ -1,20 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import LoadingScreen from "./loadingScreen";
-import { Provider } from "react-redux";
 import Backdrop from "@material-ui/core/Backdrop";
 import { act } from "react-dom/test-utils";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { mount } from "enzyme";
-import { createMuiTheme, getStyledClassSelector, TestWrapper } from "../../../utils/testUtils";
+import { createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import Immutable from "immutable";
 import sinon from "sinon";
-import DropMenu, { AnchorWrapper } from "../../DropMenu";
-import { List } from "../../DropMenu/Menu";
-import Placeholder from "../DataDisplay/PredefinedElements/Placeholder";
-import Icon from "../DataDisplay/Icon";
-import { ToastBox } from "../../ToastList";
-import { Ignore } from "../../ToastList.test";
 
 describe("loadingScreen", () => {
 	let store, state;

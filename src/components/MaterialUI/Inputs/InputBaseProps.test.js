@@ -1,5 +1,4 @@
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
-import TableProps from "../DataDisplay/TableProps";
 
 describe("InputBase Props", () => {
 	it("Contains necessary props keys", () => {

@@ -38,6 +38,7 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 		// split on the remaining '/:'
 		const paramPathSplit = paramPath
 			.replace(/^\/:/, "")
+			// eslint-disable-next-line no-useless-escape
 			.replace(/(\([^\/]+?\))/g, "")
 			.split("/:");
 		const firstStepMatchParams = pathStep === "/" + params[paramPathSplit[0]];
