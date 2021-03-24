@@ -104,6 +104,13 @@ function headersAreIdentical(prevHeaders, nextHeaders) {
 	});
 }
 
+function readOnlyMode(prevTableProps, nextTableProps) {
+	const prevEditingMode = prevTableProps?.get(TableProps.propNames.isEditingMode) ?? false;
+	const nextEditingMode = nextTableProps?.get(TableProps.propNames.isEditingMode) ?? false;
+
+	return isInReadOnlyMode(prevEditingMode, nextEditingMode);
+}
+
 function rowAreIdentical(prevRows, nextRows) {
 	return (
 		prevRows.length === nextRows.length && prevRows.findIndex((pr, index) => pr.key !== nextRows[index].key) === -1
@@ -115,10 +122,11 @@ function contextIsIdentical(prevContext, nextContext) {
 }
 
 function propsAreEqualRow(prev, next) {
-	if (prev.deepPropsComparation) {
+	const isReadOnly = isInReadOnlyMode(prev.isEditingMode, next.isEditingMode);
+	if (prev.deepPropsComparation && isReadOnly) {
 		return propsAreEqualDeeplyRow(prev.dataRows, next.dataRows) && contextIsIdentical(prev.context, next.context);
 	}
-	return prev.selected === next.selected && contextIsIdentical(prev.context, next.context);
+	return prev.selected === next.selected && isReadOnly && contextIsIdentical(prev.context, next.context);
 }
 
 function propsAreEqualDeeplyRow(prevRow, nextRow) {
@@ -130,15 +138,21 @@ function propsAreEqualDeeplyRow(prevRow, nextRow) {
 	return true;
 }
 
-const TableRowMemo = ({ deepPropsComparation, dataRows, ...props }) => {
+const TableRowMemo = ({ deepPropsComparation, dataRows, isEditingMode, ...props }) => {
 	return <TableRow {...props} />;
 };
 
 export const MemoTableRow = React.memo(TableRowMemo, propsAreEqualRow);
 
+function isInReadOnlyMode(prevIsEditingMode, nextIsEditingMode) {
+	// In editing mode, we need to re-render everytime has cell value may have changed
+	return prevIsEditingMode === nextIsEditingMode && !nextIsEditingMode;
+}
+
 function propsAreEqualBody(prev, next) {
 	let isEqualBody =
 		contextIsIdentical(prev.context, next.context) &&
+		isInReadOnlyMode(prev.isEditingMode, next.isEditingMode) &&
 		prev.selectedNumber === next.selectedNumber &&
 		rowAreIdentical(prev.dataRows, next.dataRows);
 	if (prev.deepPropsComparation) {
@@ -147,7 +161,7 @@ function propsAreEqualBody(prev, next) {
 	return isEqualBody;
 }
 
-const TableBody = ({ deepPropsComparation, ...props }) => {
+const TableBody = ({ deepPropsComparation, isEditingMode, ...props }) => {
 	return <tbody className={props.className}>{props.tableRows}</tbody>;
 };
 
@@ -226,6 +240,7 @@ const buildTableRows = (
 	selectionHandlers,
 	deepPropsComparation,
 	context,
+	isEditingMode,
 ) => {
 	const onClick = (evt, row) => {
 		if (evt.target.tagName !== "INPUT" && onRowClick != null) {
@@ -241,6 +256,7 @@ const buildTableRows = (
 			selected={selectionHandlers.isSelected(row.key)}
 			deepPropsComparation={deepPropsComparation}
 			context={context}
+			isEditingMode={isEditingMode}
 			dataRows={rows}
 		>
 			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
@@ -285,6 +301,7 @@ const FullTable = React.forwardRef((props, ref) => {
 					tableRows={props.tableRows}
 					selectedNumber={props.selectedNumber}
 					deepPropsComparation={props.deepPropsComparation}
+					isEditingMode={props.isEditingMode}
 					context={props.context}
 				/>
 			</TableMui>
@@ -314,6 +331,7 @@ const Table = ({
 	const withoutTopBorder = tableProps?.get(TableProps.propNames.withoutTopBorder) || false;
 	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
 	const deepPropsComparation = tableProps?.get(TableProps.propNames.deepPropsComparation) || false;
+	const isEditingMode = tableProps?.get(TableProps.propNames.isEditingMode) || false;
 
 	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
 	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
@@ -371,6 +389,7 @@ const Table = ({
 		selectionMethods,
 		deepPropsComparation,
 		context,
+		isEditingMode,
 	);
 
 	const stickerTableHeader =
@@ -400,6 +419,7 @@ const Table = ({
 				pageLength={pageLength}
 				placeholder={placeholder}
 				deepPropsComparation={deepPropsComparation}
+				isEditingMode={isEditingMode}
 				context={context}
 			/>
 		</TableContainer>
@@ -408,5 +428,8 @@ const Table = ({
 
 export default React.memo(
 	Table,
-	(prev, next) => rowAreIdentical(prev.rows, next.rows) && headersAreIdentical(prev.headers, next.headers),
+	(prev, next) =>
+		readOnlyMode(prev.tableProps, next.tableProps) &&
+		rowAreIdentical(prev.rows, next.rows) &&
+		headersAreIdentical(prev.headers, next.headers),
 );

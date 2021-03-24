@@ -10,12 +10,16 @@ import StandaloneRadio from "../Inputs/StandaloneRadio";
 import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 
-const renderByType = (e, def, rowId, readOnly) => {
-	const transformedValue = def.transform ? def.transform(e[def.fieldName]) : e[def.fieldName];
+const defaultRendering = (e, def, rowId, readOnly, transformedValue) => {
+	return transformedValue != null ? (
+		<TooltippedTypography noWrap children={transformedValue} titleValue={transformedValue} />
+	) : null;
+};
 
+const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 	switch (def.type) {
 		case "custom": {
-			return [def.builder(e, readOnly, def.fieldName)];
+			return [def.builder(e, readOnly, def.fieldName) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
 		}
 
 		case "currency": {
@@ -82,10 +86,17 @@ const renderByType = (e, def, rowId, readOnly) => {
 			return [<StandaloneRadio radioProps={radioProps} />];
 
 		default:
-			return transformedValue != null
-				? [<TooltippedTypography noWrap children={transformedValue} titleValue={transformedValue} />]
-				: [null];
+			return [defaultRendering(e, def, rowId, readOnly, transformedValue)];
 	}
+};
+
+const renderByTypeInEditingMode = (e, def, rowId, readOnly, transformedValue) => {
+	if ((def.editingBuilder || null) !== null)
+		return [
+			def.editingBuilder(e, readOnly, def.fieldName) || defaultRendering(e, def, rowId, readOnly, transformedValue),
+		];
+
+	return renderByType(e, def, rowId, readOnly, transformedValue);
 };
 
 export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnly = true, keyField = "id") => {
@@ -104,7 +115,11 @@ export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnl
 			key: rowId,
 			element: e,
 			columns: columnDefinitions.map(def => {
-				const [cellElement, title] = renderByType(e, def, rowId, readOnly);
+				const transformedValue = def.transform ? def.transform(e[def.fieldName]) : e[def.fieldName];
+
+				const [cellElement, title] = readOnly
+					? renderByType(e, def, rowId, readOnly, transformedValue)
+					: renderByTypeInEditingMode(e, def, rowId, readOnly, transformedValue);
 
 				return {
 					title: def.tooltipable !== false ? (title === undefined ? cellElement : title) : null,

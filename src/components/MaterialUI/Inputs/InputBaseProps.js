@@ -12,6 +12,11 @@ class InputBaseProps extends ComponentProps {
 		inputAttributes: "inputAttributes",
 		disabled: "disabled",
 		multiline: "multiline",
+		onBlur: "onBlur",
+	};
+
+	static ruleNames = {
+		input: "input",
 	};
 
 	constructor() {
@@ -26,6 +31,9 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.inputAttributes, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.multiline, null);
+		this.componentProps.set(this.constructor.propNames.onBlur, null);
+
+		this.componentClasses.set(this.constructor.ruleNames.input, null);
 
 		this._isInputProps = true;
 	}

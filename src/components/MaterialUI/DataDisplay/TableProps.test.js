@@ -25,6 +25,7 @@ describe("TableProps Props", () => {
 			"onRowClick",
 			"classes",
 			"deepPropsComparation",
+			"isEditingMode",
 		];
 
 		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];

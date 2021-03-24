@@ -73,7 +73,12 @@ describe("makeOrcApiAction", () => {
 	describe("bailout", () => {
 		it("bails out if same request active", () => {
 			const bailout = makeOrcApiAction("TEST_ACTION", "https://orc-oco.api.test/")[RSAA].bailout;
-			return expect(bailout, "when called with", [Immutable.fromJS({ requests: { TEST_ACTION: true } })], "to be true");
+			return expect(
+				bailout,
+				"when called with",
+				[Immutable.fromJS({ requests: { actives: { TEST_ACTION: true } } })],
+				"to be true",
+			);
 		});
 
 		it("does not bail out if same request inactive", () => {
