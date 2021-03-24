@@ -105,8 +105,8 @@ function headersAreIdentical(prevHeaders, nextHeaders) {
 }
 
 function readOnlyMode(prevTableProps, nextTableProps) {
-	const prevEditingMode = prevTableProps?.get(TableProps.propNames.isEditingMode) || false;
-	const nextEditingMode = nextTableProps?.get(TableProps.propNames.isEditingMode) || false;
+	const prevEditingMode = prevTableProps?.get(TableProps.propNames.isEditingMode) ?? false;
+	const nextEditingMode = nextTableProps?.get(TableProps.propNames.isEditingMode) ?? false;
 
 	return isInReadOnlyMode(prevEditingMode, nextEditingMode);
 }
@@ -126,7 +126,7 @@ function propsAreEqualRow(prev, next) {
 	if (prev.deepPropsComparation && isReadOnly) {
 		return propsAreEqualDeeplyRow(prev.dataRows, next.dataRows) && contextIsIdentical(prev.context, next.context);
 	}
-	return prev.selected === next.selected && contextIsIdentical(prev.context, next.context) && isReadOnly;
+	return prev.selected === next.selected && isReadOnly && contextIsIdentical(prev.context, next.context);
 }
 
 function propsAreEqualDeeplyRow(prevRow, nextRow) {
@@ -142,7 +142,7 @@ const TableRowMemo = ({ deepPropsComparation, dataRows, isEditingMode, ...props 
 	return <TableRow {...props} />;
 };
 
-export const MemoTableRow = React.memo(TableRowMemo, (prev, next) => propsAreEqualRow(prev, next));
+export const MemoTableRow = React.memo(TableRowMemo, propsAreEqualRow);
 
 function isInReadOnlyMode(prevIsEditingMode, nextIsEditingMode) {
 	// In editing mode, we need to re-render everytime has cell value may have changed
