@@ -1,5 +1,4 @@
-import React, { createContext, useState } from "react";
-import { useNotification } from "./useNotification";
+import React from "react";
 import Notification from "./../DataDisplay/Notification";
 import { NotificationContext, NotificationContextProvider } from "./NotificationContext";
 
