@@ -28,6 +28,7 @@ import {
 	GET_VERSION_INFO_REQUEST,
 	GET_VERSION_INFO_SUCCESS,
 } from "../../actions/versionInfo";
+import LoadingScreen from "../MaterialUI/Feedback/loadingScreen";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -184,6 +185,11 @@ describe("AppFrame", () => {
 			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 			view: { scopeSelector: { filter: "1" }, __prefsDialog: { show: false } },
 			toasts: { queue: [] },
+			requests: {
+				actives: Immutable.Map(),
+				logout: false,
+				error: null,
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -250,6 +256,7 @@ describe("AppFrame", () => {
 								<TestComp3 key="3" />
 							</ViewPort>
 							<About messages={props.aboutMessages} />
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
@@ -310,6 +317,7 @@ describe("AppFrame", () => {
 								<TestComp3 key="3" />
 							</ViewPort>
 							<About messages={props.aboutMessages} />
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
@@ -371,6 +379,7 @@ describe("AppFrame", () => {
 								<TestComp3 key="3" />
 							</ViewPort>
 							<About messages={props.aboutMessages} />
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
@@ -431,6 +440,7 @@ describe("AppFrame", () => {
 								<TestComp2 />
 								<TestComp3 />
 							</ViewPort>
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
@@ -462,6 +472,7 @@ describe("AppFrame", () => {
 				<ThemeProvider theme={{}}>
 					<MemoryRouter initialEntries={["/Foo/bar"]}>
 						<Base preferencesOpen={true}>
+							<Ignore />
 							<Ignore />
 							<Ignore />
 							<Ignore />
@@ -506,6 +517,7 @@ describe("AppFrame", () => {
 						<ViewPort open>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,
@@ -532,6 +544,7 @@ describe("AppFrame", () => {
 						<ViewPort>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,
@@ -558,6 +571,7 @@ describe("AppFrame", () => {
 						<ViewPort open>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,
@@ -584,6 +598,7 @@ describe("AppFrame", () => {
 						<ViewPort>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,

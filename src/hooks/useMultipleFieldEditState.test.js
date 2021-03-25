@@ -90,13 +90,7 @@ describe("useMultipleFieldEditState", () => {
 			? { customRule: (value, id, fieldName) => value === "custom" && id === "id1" && fieldName === "prop1" }
 			: undefined;
 
-		// eslint-disable-next-line no-unused-vars
-		const [createEditState, modifiedStates] = useMultipleFieldEditState(
-			entityId,
-			sectionName,
-			fieldInitialValues,
-			customRules,
-		);
+		const [createEditState] = useMultipleFieldEditState(entityId, sectionName, fieldInitialValues, customRules);
 		const idsToRender = _.keys(fieldInitialValues);
 
 		const errorTypes = [validationErrorTypes.fieldIsRequired];

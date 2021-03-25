@@ -893,6 +893,47 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiTimeline: {
+		root: {
+			...theme.root,
+			padding: 0,
+			marginTop: 0,
+		},
+	},
+	MuiTimelineContent: {
+		root: {
+			...theme.root,
+			flex: 13,
+			padding: theme.spacing(0, 2, 1),
+		},
+	},
+	MuiTimelineOppositeContent: {
+		root: {
+			...theme.root,
+			flex: 1,
+			padding: theme.spacing(0, 2, 1),
+		},
+	},
+	MuiTimelineDot: {
+		root: {
+			...theme.root,
+			marginTop: 0,
+			marginBottom: 0,
+			padding: theme.spacing(0.8),
+			borderWidth: "1px",
+		},
+		outlinedGrey: {
+			...theme.outlinedGrey,
+			borderColor: theme.palette.grey.icon,
+		},
+	},
+	MuiTimelineConnector: {
+		root: {
+			...theme.root,
+			width: "1px",
+			backgroundColor: theme.palette.grey.icon,
+		},
+	},
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {

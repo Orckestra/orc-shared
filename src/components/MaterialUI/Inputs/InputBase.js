@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputBaseMUI from "@material-ui/core/InputBase";
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
+import classNames from "classnames";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -93,6 +94,7 @@ const InputBase = ({ inputProps }) => {
 	const error = inputProps?.get(InputBaseProps.propNames.error);
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
 	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) || false;
+	const onBlur = inputProps?.get(InputBaseProps.propNames.onBlur) || null;
 
 	const classes = useStyles({ label, errorPosition });
 
@@ -101,18 +103,21 @@ const InputBase = ({ inputProps }) => {
 		update(event.target.value);
 	};
 
+	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);
+
 	return (
 		<div className={classes.container}>
 			<div className={classes.inputContainer}>
 				{label && <label className={`${classes.prepend} ${disabled && classes.disabledPrepend}`}>{label}</label>}
 				<InputBaseMUI
 					classes={{
-						input: classes.controlInput,
+						input: classNames(classes.controlInput, inputBaseInputStyle),
 						error: classes.errorInput,
 						disabled: classes.disabled,
 						multiline: classes.multiline,
 						inputMultiline: classes.inputMultiline,
 					}}
+					onBlur={onBlur}
 					type={type}
 					placeholder={placeholder}
 					value={value}

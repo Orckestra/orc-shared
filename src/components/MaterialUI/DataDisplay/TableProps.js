@@ -8,6 +8,7 @@ class TableProps extends ComponentProps {
 		onRowClick: "onRowClick",
 		classes: "classes",
 		deepPropsComparation: "deepPropsComparation",
+		isEditingMode: "isEditingMode",
 	};
 
 	static ruleNames = {
@@ -29,6 +30,7 @@ class TableProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.onRowClick, null);
 		this.componentProps.set(this.constructor.propNames.classes, null);
 		this.componentProps.set(this.constructor.propNames.deepPropsComparation, null);
+		this.componentProps.set(this.constructor.propNames.isEditingMode, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.tableHeader, null);
 		this.componentClasses.set(this.constructor.ruleNames.tableRow, null);
