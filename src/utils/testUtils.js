@@ -8,6 +8,7 @@ import { MuiThemeProvider } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/core/styles";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
+import { NotificationContextProvider } from "./../components/MaterialUI/Feedback/NotificationContext";
 
 const sinon = require("sinon");
 
@@ -205,7 +206,9 @@ export const TestWrapper = ({
 				<MemoryRouterWrapper>
 					<IntlProvderWrapper>
 						<StylesProviderWrapper>
-							<MuiThemeProviderWrapper>{children}</MuiThemeProviderWrapper>
+							<MuiThemeProviderWrapper>
+								<NotificationContextProvider>{children}</NotificationContextProvider>
+							</MuiThemeProviderWrapper>
 						</StylesProviderWrapper>
 					</IntlProvderWrapper>
 				</MemoryRouterWrapper>

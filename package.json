@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "0.11.0-dev.123",
+	"version": "0.11.0-dev.129",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
@@ -52,10 +52,10 @@
 		}
 	],
 	"devDependencies": {
-		"orc-scripts": "1.1.0-dev.19"
+		"orc-scripts": "1.1.0-dev.20"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.1.0-dev.19"
+		"orc-scripts": "1.1.0-dev.20"
 	},
 	"sideEffects": false,
 	"lint-staged": {
@@ -64,6 +64,9 @@
 		],
 		"*.js": [
 			"eslint"
+		],
+		"./src/translations/*.json": [
+			"npx orc-scripts validateTranslations"
 		]
 	},
 	"husky": {

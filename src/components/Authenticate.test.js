@@ -42,7 +42,7 @@ describe("Authenticate", () => {
 		));
 
 	it("shows a load indicator component if authentication is ongoing", () => {
-		state = state.setIn(["requests", GET_AUTHENTICATION_PROFILE], true);
+		state = state.setIn(["requests", "actives", GET_AUTHENTICATION_PROFILE], true);
 		return expect(
 			<Provider store={store(state)}>
 				<ThemeProvider theme={{}}>

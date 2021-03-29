@@ -343,6 +343,56 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].title, "to equal", "44 a value from builder");
 	});
 
+	it("build table rows as expected with a custom builder returning not valid component", () => {
+		const columnDef = [
+			{
+				fieldName: "test",
+				type: "custom",
+				builder: () => undefined,
+				label: messages.a_label,
+			},
+		];
+		const elements = [
+			{ id: "an_id1", test: 123, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: 44, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+		expect(
+			rows[0].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+
+		expect(rows[1].columns.length, "to equal", 1);
+		expect(rows[1].element, "to equal", elements[1]);
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+		expect(
+			rows[1].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+	});
+
 	it("build table rows as expected with currency", () => {
 		const columnDef = [{ fieldName: "test", label: messages.a_label, type: "currency", currency: "USD" }];
 		const elements = [
@@ -877,5 +927,178 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id2");
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("checked"), "to equal", true);
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
+	});
+
+	it("build table headers and rows as expected when not in readonly mode", () => {
+		const columnDef = [
+			{ fieldName: "test", label: messages.a_label, className: "aClassXYZ" },
+			{ fieldName: "another", label: messages.another },
+		];
+		const elements = [
+			{
+				id: "an_id1",
+				test: "A text row 1",
+				another: "another 1",
+				extraneous: "Don't show 1",
+			},
+			{
+				id: "an_id2",
+				test: "A text row 2",
+				another: "another 2",
+				extraneous: "Don't show 2",
+			},
+			{
+				id: "an_id3",
+				test: null,
+				another: null,
+				extraneous: "Don't show 2",
+			},
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements, false);
+
+		expect(headers.length, "to equal", 2);
+		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
+		expect(headers[0].className, "to equal", columnDef[0].className);
+		expect(headers[1].cellElement.props.columnDefinition, "to equal", columnDef[1]);
+		expect(headers[1].className, "to be undefined");
+
+		expect(rows.length, "to equal", 3);
+		expect(rows[0].columns.length, "to equal", 2);
+
+		expect(rows[0].key, "to equal", "an_id1");
+		expect(rows[0].element, "to equal", elements[0]);
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
+		expect(
+			rows[0].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+		expect(
+			rows[0].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
+		);
+		expect(rows[0].columns[1].className, "to be undefined");
+		expect(
+			rows[0].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].another} titleValue={elements[0].another} />,
+		);
+
+		expect(rows[1].columns.length, "to equal", 2);
+
+		expect(rows[1].key, "to equal", "an_id2");
+		expect(rows[1].element, "to equal", elements[1]);
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
+		expect(
+			rows[1].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+		expect(
+			rows[1].columns[1].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
+		);
+		expect(rows[1].columns[1].className, "to be undefined");
+		expect(
+			rows[1].columns[1].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].another} titleValue={elements[1].another} />,
+		);
+
+		expect(rows[2].key, "to equal", "an_id3");
+		expect(rows[2].element, "to equal", elements[2]);
+		expect(rows[2].columns[0].cellElement, "to be", null);
+		expect(rows[2].columns[1].cellElement, "to be", null);
+	});
+
+	it("build table headers and rows as expected when not in readonly mode with editing builder", () => {
+		const columnDef = [
+			{ fieldName: "test", label: messages.a_label, className: "aClassXYZ", editingBuilder: () => null },
+			{ fieldName: "another", label: messages.another, editingBuilder: e => e.another + " a value from builder" },
+		];
+		const elements = [
+			{
+				id: "an_id1",
+				test: "A text row 1",
+				another: "another 1",
+				extraneous: "Don't show 1",
+			},
+			{
+				id: "an_id2",
+				test: "A text row 2",
+				another: "another 2",
+				extraneous: "Don't show 2",
+			},
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements, false);
+
+		expect(headers.length, "to equal", 2);
+		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
+		expect(headers[0].className, "to equal", columnDef[0].className);
+		expect(headers[1].cellElement.props.columnDefinition, "to equal", columnDef[1]);
+		expect(headers[1].className, "to be undefined");
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 2);
+
+		expect(rows[0].key, "to equal", "an_id1");
+		expect(rows[0].element, "to equal", elements[0]);
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
+		expect(
+			rows[0].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+		expect(rows[0].columns[1].cellElement, "to equal", "another 1 a value from builder");
+		expect(rows[0].columns[1].title, "to equal", "another 1 a value from builder");
+
+		expect(rows[1].columns.length, "to equal", 2);
+
+		expect(rows[1].key, "to equal", "an_id2");
+		expect(rows[1].element, "to equal", elements[1]);
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
+		expect(
+			rows[1].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+		expect(rows[1].columns[1].cellElement, "to equal", "another 2 a value from builder");
+		expect(rows[1].columns[1].title, "to equal", "another 2 a value from builder");
 	});
 });
