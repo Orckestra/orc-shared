@@ -241,16 +241,17 @@ const setThemeOverrides = theme => ({
 		},
 		/* Styles applied to the root element if `variant="contained"`. */
 		contained: {
-			color: theme.palette.getContrastText(theme.palette.grey[300]),
-			backgroundColor: theme.palette.grey[300],
+			color: theme.palette.getContrastText(theme.palette.grey.light),
+			backgroundColor: theme.palette.grey.light,
+			border: `1px solid ${theme.palette.grey.borders}`,
 			boxShadow: theme.shadows[2],
 			"&:hover": {
-				backgroundColor: theme.palette.grey.A100,
+				backgroundColor: darken(theme.palette.grey.light, theme.palette.action.hoverOpacity),
 				boxShadow: theme.shadows[4],
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					boxShadow: theme.shadows[2],
-					backgroundColor: theme.palette.grey[300],
+					backgroundColor: theme.palette.grey.light,
 				},
 				"&$disabled": {
 					backgroundColor: theme.palette.action.disabledBackground,
