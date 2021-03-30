@@ -50,7 +50,8 @@ const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, u
 					className={classes.test}
 					rootId="Global"
 					getScope={getScope}
-					selected={selectedScope}
+					selected={selectedScope.id}
+					expanded={selectedScope.scopePath}
 					onSelected={closeSelector}
 				/>
 			</div>

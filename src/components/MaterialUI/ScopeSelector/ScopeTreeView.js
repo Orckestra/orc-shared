@@ -53,9 +53,16 @@ export const BaseScopeTreeView = ({
 	);
 };
 
-const ScopeTreeView = ({ rootId, getScope, selected, onSelected, multipleSelect, redirectOnSelect = true }) => {
-	const initialSelected = Array.isArray(selected) ? selected.map(i => i.id) : selected ? [selected.id] : [];
-	const initExpanded = (Array.isArray(selected) ? selected[0] : selected)?.scopePath;
+const ScopeTreeView = ({
+	rootId,
+	getScope,
+	selected,
+	expanded,
+	onSelected,
+	multipleSelect,
+	redirectOnSelect = true,
+}) => {
+	const initialSelected = Array.isArray(selected) ? selected : selected ? [selected] : [];
 	const [currentSelected, setCurrentSelected] = React.useState(initialSelected);
 
 	return (
@@ -63,7 +70,7 @@ const ScopeTreeView = ({ rootId, getScope, selected, onSelected, multipleSelect,
 			rootId={rootId}
 			getScope={getScope}
 			onSelected={onSelected}
-			initExpanded={initExpanded}
+			initExpanded={expanded}
 			selected={currentSelected}
 			setSelected={setCurrentSelected}
 			redirectOnSelect={redirectOnSelect}

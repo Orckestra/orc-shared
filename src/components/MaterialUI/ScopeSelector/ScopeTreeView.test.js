@@ -77,13 +77,18 @@ describe("ScopeTreeView", () => {
 	it("Renders ScopeTreeView correctly with existing scopes ids", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<ScopeTreeView rootId={scopes[0].id} getScope={getScope} selected={scopes[0]} />
+				<ScopeTreeView
+					rootId={scopes[0].id}
+					getScope={getScope}
+					selected={scopes[0].id}
+					expanded={scopes[0].scopePath}
+				/>
 			</TestWrapper>
 		);
 
 		const expected = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeViewMui expanded={scopes[0].scopePath} selected={scopes[0].id}>
+				<TreeViewMui expanded={scopes[0].scopePath} selected={[scopes[0].id]}>
 					<TreeItem scope={scopes[0]} rootId={scopes[0].id}>
 						<TreeItem scope={scopes[1]} rootId={scopes[0].id}>
 							<TreeItem scope={scopes[3]} rootId={scopes[0].id} />
@@ -102,13 +107,13 @@ describe("ScopeTreeView", () => {
 	it("Renders ScopeTreeView correctly with non existing scope id", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<ScopeTreeView rootId="WrongId" getScope={getScope} selected={scopes[0]} />
+				<ScopeTreeView rootId="WrongId" getScope={getScope} selected={scopes[0].id} expanded={scopes[0].scopePath} />
 			</TestWrapper>
 		);
 
 		const expected = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeViewMui expanded={scopes[0].scopePath} selected={scopes[0].id} />
+				<TreeViewMui expanded={scopes[0].scopePath} selected={[scopes[0].id]} />
 			</TestWrapper>
 		);
 
@@ -136,7 +141,13 @@ describe("ScopeTreeView", () => {
 	it("Handles onNodeToggle correctly", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<ScopeTreeView rootId={scopes[0].id} getScope={getScope} selected={scopes[0]} onSelected={onSelectedSpy} />
+				<ScopeTreeView
+					rootId={scopes[0].id}
+					getScope={getScope}
+					selected={scopes[0].id}
+					expanded={scopes[0].scopePath}
+					onSelected={onSelectedSpy}
+				/>
 			</TestWrapper>
 		);
 
@@ -159,7 +170,8 @@ describe("ScopeTreeView", () => {
 				<ScopeTreeView
 					rootId={scopes[0].id}
 					getScope={getScope}
-					selected={[scopes[1]]}
+					selected={[scopes[1].id]}
+					expanded={scopes[1].scopePath}
 					multipleSelect={true}
 					onSelected={onSelectedSpy}
 				/>
@@ -191,7 +203,13 @@ describe("ScopeTreeView", () => {
 	it("Handles single select correctly", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<ScopeTreeView rootId={scopes[0].id} getScope={getScope} selected={scopes[1]} onSelected={onSelectedSpy} />
+				<ScopeTreeView
+					rootId={scopes[0].id}
+					getScope={getScope}
+					selected={scopes[1].id}
+					expanded={scopes[1].scopePath}
+					onSelected={onSelectedSpy}
+				/>
 			</TestWrapper>
 		);
 

@@ -94,7 +94,8 @@ describe("ScopeSelected", () => {
 										<ScopeTreeView
 											rootId="Global"
 											getScope={getScope}
-											selected={selectedScope}
+											selected={selectedScope.id}
+											expanded={selectedScope.scopePath}
 											onSelected={closeSelector}
 										/>
 									</div>
