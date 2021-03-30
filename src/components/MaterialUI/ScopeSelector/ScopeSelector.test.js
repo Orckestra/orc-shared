@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import sinon from "sinon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 import { mount } from "enzyme";
-import TreeView from "./TreeView";
+import ScopeTreeView from "./ScopeTreeView";
 import ScopeSelector from "./ScopeSelector";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import InputBase from "./../Inputs/InputBase";
@@ -91,11 +91,11 @@ describe("ScopeSelected", () => {
 										<InputBase inputProps={inputBaseProps} />
 									</div>
 									<div>
-										<TreeView
+										<ScopeTreeView
 											rootId="Global"
 											getScope={getScope}
-											selectedScope={selectedScope}
-											closeSelector={closeSelector}
+											selected={selectedScope}
+											onSelected={closeSelector}
 										/>
 									</div>
 								</>

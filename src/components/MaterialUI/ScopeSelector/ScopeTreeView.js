@@ -2,14 +2,15 @@ import React from "react";
 import TreeViewMui from "@material-ui/lab/TreeView";
 import TreeItem from "./TreeItem";
 
-export const BaseTreeView = ({
+export const BaseScopeTreeView = ({
 	rootId,
 	getScope,
-	closeSelector,
+	onSelected,
 	initExpanded,
 	selected,
 	setSelected,
 	redirectOnSelect,
+	multipleSelect,
 }) => {
 	const [expanded, setExpanded] = React.useState(initExpanded);
 
@@ -18,14 +19,14 @@ export const BaseTreeView = ({
 	};
 
 	const onScopeSelect = (event, nodeId) => {
-		const newSelected = !Array.isArray(selected)
+		const newSelected = !multipleSelect
 			? nodeId
 			: selected.includes(nodeId)
 			? selected.filter(id => id !== nodeId)
 			: [nodeId, ...selected];
 
 		setSelected(newSelected);
-		closeSelector(event, newSelected);
+		onSelected(event, newSelected);
 	};
 
 	const renderTree = scopeId => {
@@ -52,20 +53,23 @@ export const BaseTreeView = ({
 	);
 };
 
-const TreeView = ({ rootId, getScope, selectedScope, closeSelector, multipleSelect, redirectOnSelect = true }) => {
-	const [selected, setSelected] = React.useState(multipleSelect ? [selectedScope.id] : selectedScope.id);
+const ScopeTreeView = ({ rootId, getScope, selected, onSelected, multipleSelect, redirectOnSelect = true }) => {
+	const initialSelected = Array.isArray(selected) ? selected.map(i => i.id) : selected ? [selected.id] : [];
+	const initExpanded = (Array.isArray(selected) ? selected[0] : selected)?.scopePath;
+	const [currentSelected, setCurrentSelected] = React.useState(initialSelected);
 
 	return (
-		<BaseTreeView
+		<BaseScopeTreeView
 			rootId={rootId}
 			getScope={getScope}
-			closeSelector={closeSelector}
-			initExpanded={selectedScope.scopePath}
-			selected={selected}
-			setSelected={setSelected}
+			onSelected={onSelected}
+			initExpanded={initExpanded}
+			selected={currentSelected}
+			setSelected={setCurrentSelected}
 			redirectOnSelect={redirectOnSelect}
+			multipleSelect={multipleSelect}
 		/>
 	);
 };
 
-export default TreeView;
+export default ScopeTreeView;
