@@ -276,6 +276,10 @@ const setThemeOverrides = theme => ({
 					backgroundColor: theme.palette.primary.main,
 				},
 			},
+			"&.Mui-disabled": {
+				backgroundColor: fade(theme.palette.primary.main, 0.4),
+				color: theme.palette.primary.contrastText,
+			},
 		},
 		/* Styles applied to the root element if `variant="contained"` and `color="secondary"`. */
 		containedSecondary: {
