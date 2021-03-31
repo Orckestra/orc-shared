@@ -6,7 +6,7 @@ export const BaseScopeTreeView = ({
 	rootId,
 	getScope,
 	onSelected,
-	initExpanded,
+	initExpanded = [],
 	selected,
 	setSelected,
 	redirectOnSelect,
