@@ -43,8 +43,12 @@ const useStyles = makeStyles(theme => ({
 		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
 	},
 
+	customContainer: {
+		margin: theme.spacing(1.5, 1),
+	},
+
 	button: {
-		margin: theme.spacing(0.5, 0),
+		margin: theme.spacing(0.5, 1),
 		fontSize: theme.spacing(1.3),
 		lineHeight: theme.spacing(1.4),
 		padding: theme.spacing(0.7),
@@ -77,7 +81,7 @@ const formatState = (state, checked, from, to) => {
 	};
 };
 
-export const ScrollableСustomList = React.forwardRef((props, ref) => {
+export const ScrollableCustomList = React.forwardRef((props, ref) => {
 	const scrollEvent = evt => {
 		if (!props.onScroll) return;
 
@@ -199,10 +203,12 @@ const TransferList = ({
 					<div className={classes.title}>{leftListData.title}</div>
 					{isReactComponent(customLeftComponent) ? (
 						<Paper className={classNames(classes.paper, classes.paperLeft)}>
-							<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
+							<div className={classes.customContainer}>
+								<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
+							</div>
 						</Paper>
 					) : (
-						<ScrollableСustomList
+						<ScrollableCustomList
 							ref={refScrollableList}
 							onScroll={onScroll}
 							currentPage={currentPage}

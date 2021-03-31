@@ -104,6 +104,7 @@ const InputBase = ({ inputProps }) => {
 	};
 
 	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);
+	const errorTextStyle = inputProps?.getStyle(InputBaseProps.ruleNames.errorText);
 
 	return (
 		<div className={classes.container}>
@@ -130,7 +131,7 @@ const InputBase = ({ inputProps }) => {
 					rows={4}
 				/>
 			</div>
-			{error && <div className={classes.errorText}>{error}</div>}
+			{error && <div className={classNames(classes.errorText, errorTextStyle)}>{error}</div>}
 		</div>
 	);
 };

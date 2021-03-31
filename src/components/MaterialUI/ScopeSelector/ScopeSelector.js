@@ -1,5 +1,5 @@
 import React from "react";
-import TreeView from "./TreeView";
+import ScopeTreeView from "./ScopeTreeView";
 import { makeStyles } from "@material-ui/core/styles";
 import Sidepanel from "./../../Sidepanel";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -46,12 +46,13 @@ const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, u
 				<InputBase inputProps={inputBaseProps} />
 			</div>
 			<div className={classes.scopeSelector}>
-				<TreeView
+				<ScopeTreeView
 					className={classes.test}
 					rootId="Global"
 					getScope={getScope}
-					selectedScope={selectedScope}
-					closeSelector={closeSelector}
+					selected={selectedScope.id}
+					expanded={selectedScope.scopePath}
+					onSelected={closeSelector}
 				/>
 			</div>
 		</>
