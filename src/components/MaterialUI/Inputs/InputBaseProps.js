@@ -17,6 +17,7 @@ class InputBaseProps extends ComponentProps {
 
 	static ruleNames = {
 		input: "input",
+		errorText: "errorText",
 	};
 
 	constructor() {
@@ -34,6 +35,7 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.onBlur, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.input, null);
+		this.componentClasses.set(this.constructor.ruleNames.errorText, null);
 
 		this._isInputProps = true;
 	}
