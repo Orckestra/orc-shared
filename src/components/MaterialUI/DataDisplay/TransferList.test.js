@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import TransferList, { CustomList, ScrollableСustomList } from "./TransferList";
+import TransferList, { CustomList, ScrollableCustomList } from "./TransferList";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { extractMessages, TestWrapper } from "../../../utils/testUtils";
@@ -43,7 +43,7 @@ describe("TransferList", () => {
 					<Grid>
 						<Grid>
 							<div>{leftTitle}</div>
-							<ScrollableСustomList checked={[]} items={leftList} classes={{}} />
+							<ScrollableCustomList checked={[]} items={leftList} classes={{}} />
 						</Grid>
 						<Grid>
 							<Grid>
