@@ -91,7 +91,9 @@ describe("TransferList", () => {
 						<Grid>
 							<div>{leftTitle}</div>
 							<Paper>
-								<TestComp />
+								<div>
+									<TestComp />
+								</div>
 							</Paper>
 						</Grid>
 						<Grid>
