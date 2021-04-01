@@ -113,7 +113,13 @@ const Select = ({ options, selectProps }) => {
 	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
 
 	if (disabled) {
-		return <TooltippedTypography noWrap children={value} titleValue={value} />;
+		return (
+			<TooltippedTypography
+				noWrap
+				children={options?.find(o => o.value === value)?.label || value}
+				titleValue={value}
+			/>
+		);
 	}
 
 	if (sortType === sortTypeEnum.numeric) {
