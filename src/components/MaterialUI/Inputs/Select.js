@@ -114,7 +114,11 @@ const Select = ({ options, selectProps }) => {
 
 	if (disabled) {
 		return (
-			<TooltippedTypography noWrap children={options.find(o => o.value === value)?.label || value} titleValue={value} />
+			<TooltippedTypography
+				noWrap
+				children={options?.find(o => o.value === value)?.label || value}
+				titleValue={value}
+			/>
 		);
 	}
 

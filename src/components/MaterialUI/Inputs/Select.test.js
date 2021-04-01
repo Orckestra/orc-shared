@@ -132,6 +132,25 @@ describe("Select Component", () => {
 		selectProps.set(SelectProps.propNames.value, "aValue");
 		selectProps.set(SelectProps.propNames.disabled, true);
 
+		const options = [{ label: "aLabel", value: "aValue" }];
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select selectProps={selectProps} options={options} />
+			</TestWrapper>
+		);
+
+		const expected = <TooltippedTypography noWrap children="aLabel" titleValue="aValue" />;
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Select component correctly with disabled prop without options", () => {
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.disabled, true);
+
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Select selectProps={selectProps} />
