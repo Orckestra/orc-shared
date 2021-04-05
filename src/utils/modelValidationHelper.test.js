@@ -168,14 +168,6 @@ describe("hasValidationErrors", () => {
 	});
 
 	it("Retrieves true if model with specified validation map rules is not valid for one of nested paths", () => {
-		const generalIsValid = (_, path, __) => {
-			if (path === "field2.field3.d.e") {
-				return false;
-			} else {
-				return true;
-			}
-		};
-
 		const editState = {
 			field1: {
 				state: {

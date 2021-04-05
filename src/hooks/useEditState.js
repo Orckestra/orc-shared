@@ -6,7 +6,6 @@ import { setEditModelField, setEditModelFieldError } from "./../actions/view";
 import { validationRules } from "../utils/modelValidationHelper";
 import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
 import { get } from "lodash";
-import Immutable from "immutable";
 
 // if you need to override default validation rules just pass new rules with default keys
 // as properties of extendedValidationRules

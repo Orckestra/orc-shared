@@ -1,6 +1,6 @@
 import { isStringNullOrWhitespace } from "./propertyValidator";
 import { validationErrorTypes } from "../constants";
-import { isEmpty, get } from "lodash";
+import { isEmpty } from "lodash";
 
 export const validationRules = {
 	[validationErrorTypes.fieldIsRequired]: value => (isStringNullOrWhitespace(value) ? false : true),
@@ -11,17 +11,6 @@ export const showError = field => {
 
 	return field.error != null;
 };
-
-// export const test1 = {
-// 	some: {
-// 		map: [
-// 			{
-// 				path: "a.b",
-// 				elementsPath: ["c", "d"],
-// 			},
-// 		],
-// 	},
-// };
 
 export const hasValidationErrors = (editState, validationMap) => {
 	if (isEmpty(editState)) return true;
