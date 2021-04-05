@@ -59,16 +59,6 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fieldLabelSize,
 		float: "left",
 	},
-	errorInput: {
-		"& input, & textarea": {
-			border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
-
-			"&:focus, &:active": {
-				border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
-				boxShadow: `${theme.spacing(0, 0, 0.4)} ${theme.palette.error.main}`,
-			},
-		},
-	},
 	displayNone: {
 		display: "none",
 	},
