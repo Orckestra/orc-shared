@@ -13,6 +13,8 @@ class InputBaseProps extends ComponentProps {
 		disabled: "disabled",
 		multiline: "multiline",
 		onBlur: "onBlur",
+		startAdornment: "startAdornment",
+		endAdornment: "endAdornment",
 	};
 
 	static ruleNames = {
@@ -33,6 +35,8 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.multiline, null);
 		this.componentProps.set(this.constructor.propNames.onBlur, null);
+		this.componentProps.set(this.constructor.propNames.startAdornment, null);
+		this.componentProps.set(this.constructor.propNames.endAdornment, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.input, null);
 		this.componentClasses.set(this.constructor.ruleNames.errorText, null);

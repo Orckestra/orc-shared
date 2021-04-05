@@ -9,6 +9,10 @@ import Icon from "./../DataDisplay/Icon";
 import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
+	container: {
+		display: "flex",
+		flexDirection: "column",
+	},
 	selectPaper: {
 		border: `1px solid ${theme.palette.grey.borders}`,
 		"& ul": {
@@ -48,6 +52,22 @@ const useStyles = makeStyles(theme => ({
 		padding: `${theme.spacing(0.5)} 0`,
 		color: theme.palette.primary.main,
 		zIndex: 999,
+	},
+	errorText: {
+		marginTop: theme.spacing(0.5),
+		color: theme.palette.error.main,
+		fontSize: theme.typography.fieldLabelSize,
+		float: "left",
+	},
+	errorInput: {
+		"& input, & textarea": {
+			border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
+
+			"&:focus, &:active": {
+				border: `${theme.spacing(0.1)} solid ${theme.palette.error.main}`,
+				boxShadow: `${theme.spacing(0, 0, 0.4)} ${theme.palette.error.main}`,
+			},
+		},
 	},
 	displayNone: {
 		display: "none",
@@ -111,6 +131,7 @@ const Select = ({ options, selectProps }) => {
 	const positionOverride = selectProps?.get(SelectProps.propNames.positionOverride) || {};
 	const isIconSelect = selectProps?.get(SelectProps.propNames.iconSelect) || false;
 	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
+	const error = selectProps?.get(SelectProps.propNames.error);
 
 	if (disabled) {
 		return (
@@ -198,7 +219,17 @@ const Select = ({ options, selectProps }) => {
 		</SelectMUI>
 	);
 
-	return isIconSelect ? iconSelect : defaultSelect;
+	const select = isIconSelect ? iconSelect : defaultSelect;
+
+	return (
+		(error && (
+			<div className={classes.container}>
+				{select}
+				<div className={classNames(classes.errorText)}>{error}</div>
+			</div>
+		)) ||
+		select
+	);
 };
 
 export default Select;
