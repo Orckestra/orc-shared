@@ -33,7 +33,7 @@ describe("InputBase Props", () => {
 			"onBlur",
 		];
 
-		const ruleNames = ["input"];
+		const ruleNames = ["input", "errorText"];
 
 		const inputProps = new InputBaseProps();
 

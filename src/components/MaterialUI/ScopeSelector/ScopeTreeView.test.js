@@ -7,10 +7,10 @@ import { mount } from "enzyme";
 import TreeItem from "./TreeItem";
 import TreeViewMui from "@material-ui/lab/TreeView";
 import TreeItemMui from "@material-ui/lab/TreeItem";
-import TreeView from "./TreeView";
+import ScopeTreeView from "./ScopeTreeView";
 
-describe("TreeView", () => {
-	let store, state, closeSelectorSpy;
+describe("ScopeTreeView", () => {
+	let store, state, onSelectedSpy;
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -29,7 +29,7 @@ describe("TreeView", () => {
 			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 		};
-		closeSelectorSpy = sinon.spy();
+		onSelectedSpy = sinon.spy();
 	});
 
 	const theme = createMuiTheme();
@@ -74,27 +74,27 @@ describe("TreeView", () => {
 
 	const getScope = id => scopes.find(scope => scope.id === id);
 
-	it("Renders TreeView correctly with existing scopes ids", () => {
+	it("Renders ScopeTreeView correctly with existing scopes ids", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeView
+				<ScopeTreeView
 					rootId={scopes[0].id}
 					getScope={getScope}
-					selectedScope={scopes[0]}
-					closeSelector={closeSelectorSpy}
+					selected={scopes[0].id}
+					expanded={scopes[0].scopePath}
 				/>
 			</TestWrapper>
 		);
 
 		const expected = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeViewMui expanded={scopes[0].scopePath} selected={scopes[0].id}>
-					<TreeItem scope={scopes[0]} rootId={scopes[0].id} closeSelector={closeSelectorSpy}>
-						<TreeItem scope={scopes[1]} rootId={scopes[0].id} closeSelector={closeSelectorSpy}>
-							<TreeItem scope={scopes[3]} rootId={scopes[0].id} closeSelector={closeSelectorSpy} />
+				<TreeViewMui expanded={scopes[0].scopePath} selected={[scopes[0].id]}>
+					<TreeItem scope={scopes[0]} rootId={scopes[0].id}>
+						<TreeItem scope={scopes[1]} rootId={scopes[0].id}>
+							<TreeItem scope={scopes[3]} rootId={scopes[0].id} />
 						</TreeItem>
-						<TreeItem scope={scopes[2]} rootId={scopes[0].id} closeSelector={closeSelectorSpy}>
-							<TreeItem scope={scopes[4]} rootId={scopes[0].id} closeSelector={closeSelectorSpy} />
+						<TreeItem scope={scopes[2]} rootId={scopes[0].id}>
+							<TreeItem scope={scopes[4]} rootId={scopes[0].id} />
 						</TreeItem>
 					</TreeItem>
 				</TreeViewMui>
@@ -104,16 +104,34 @@ describe("TreeView", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Renders TreeView correctly with non existing scope id", () => {
+	it("Renders ScopeTreeView correctly with non existing scope id", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeView rootId="WrongId" getScope={getScope} selectedScope={scopes[0]} closeSelector={closeSelectorSpy} />
+				<ScopeTreeView rootId="WrongId" getScope={getScope} selected={scopes[0].id} expanded={scopes[0].scopePath} />
 			</TestWrapper>
 		);
 
 		const expected = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeViewMui expanded={scopes[0].scopePath} selected={scopes[0].id} />
+				<TreeViewMui expanded={scopes[0].scopePath} selected={[scopes[0].id]} />
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders ScopeTreeView correctly with non existing selected", () => {
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<ScopeTreeView rootId={scopes[0].id} getScope={getScope} />
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<TreeViewMui selected={[]}>
+					<TreeItem scope={scopes[0]} rootId={scopes[0].id} />
+				</TreeViewMui>
 			</TestWrapper>
 		);
 
@@ -123,11 +141,12 @@ describe("TreeView", () => {
 	it("Handles onNodeToggle correctly", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeView
+				<ScopeTreeView
 					rootId={scopes[0].id}
 					getScope={getScope}
-					selectedScope={scopes[0]}
-					closeSelector={closeSelectorSpy}
+					selected={scopes[0].id}
+					expanded={scopes[0].scopePath}
+					onSelected={onSelectedSpy}
 				/>
 			</TestWrapper>
 		);
@@ -148,12 +167,13 @@ describe("TreeView", () => {
 	it("Handles multiple select correctly", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeView
+				<ScopeTreeView
 					rootId={scopes[0].id}
 					getScope={getScope}
-					selectedScope={scopes[1]}
-					closeSelector={closeSelectorSpy}
+					selected={[scopes[1].id]}
+					expanded={scopes[1].scopePath}
 					multipleSelect={true}
+					onSelected={onSelectedSpy}
 				/>
 			</TestWrapper>
 		);
@@ -166,7 +186,7 @@ describe("TreeView", () => {
 
 		item.invoke("onLabelClick")(event);
 
-		expect(closeSelectorSpy, "to have calls satisfying", [{ args: [event, [scopes[3].id, scopes[1].id]] }]);
+		expect(onSelectedSpy, "to have calls satisfying", [{ args: [event, [scopes[3].id, scopes[1].id]] }]);
 
 		mountedComponent.update();
 		treeView = mountedComponent.find(TreeViewMui);
@@ -174,7 +194,7 @@ describe("TreeView", () => {
 
 		item.invoke("onLabelClick")(event);
 
-		expect(closeSelectorSpy, "to have calls satisfying", [
+		expect(onSelectedSpy, "to have calls satisfying", [
 			{ args: [event, [scopes[3].id, scopes[1].id]] },
 			{ args: [event, [scopes[1].id]] },
 		]);
@@ -183,11 +203,12 @@ describe("TreeView", () => {
 	it("Handles single select correctly", () => {
 		const component = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
-				<TreeView
+				<ScopeTreeView
 					rootId={scopes[0].id}
 					getScope={getScope}
-					selectedScope={scopes[1]}
-					closeSelector={closeSelectorSpy}
+					selected={scopes[1].id}
+					expanded={scopes[1].scopePath}
+					onSelected={onSelectedSpy}
 				/>
 			</TestWrapper>
 		);
@@ -200,6 +221,6 @@ describe("TreeView", () => {
 
 		item.invoke("onLabelClick")(event);
 
-		expect(closeSelectorSpy, "to have calls satisfying", [{ args: [event, scopes[3].id] }]);
+		expect(onSelectedSpy, "to have calls satisfying", [{ args: [event, scopes[3].id] }]);
 	});
 });
