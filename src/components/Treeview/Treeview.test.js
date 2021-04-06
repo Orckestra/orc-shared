@@ -332,11 +332,7 @@ describe("TreeView", () => {
 			{
 				type: "click",
 				target:
-					getStyledClassSelector(Branch) +
-					" " +
-					getStyledClassSelector(Leaf) +
-					" " +
-					getStyledClassSelector(Indicator),
+					getStyledClassSelector(Branch) + " " + getStyledClassSelector(Leaf) + " " + getStyledClassSelector(Indicator),
 			},
 			"to satisfy",
 			<Wrapper>

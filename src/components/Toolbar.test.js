@@ -205,12 +205,12 @@ describe("toolComponents.input", () => {
 	it("renders a styled input", () =>
 		expect(
 			<IntlProvider locale="en">
-				<ToolInput random={4} oddProp="Test" onChange={console.log} things={{ stuff: "nonsense" }} />
+				<ToolInput random={4} oddProp="Test" onChange={jest.fn()} things={{ stuff: "nonsense" }} />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
 			<IntlProvider locale="en">
-				<ToolbarInput random={4} oddProp="Test" onChange={console.log} things={{ stuff: "nonsense" }} />
+				<ToolbarInput random={4} oddProp="Test" onChange={jest.fn()} things={{ stuff: "nonsense" }} />
 			</IntlProvider>,
 		));
 });
@@ -273,7 +273,7 @@ describe("toolComponents.button", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ToolButton onClick={console.log} label={{ text: "A label" }} />
+				<ToolButton onClick={jest.fn()} label={{ text: "A label" }} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -284,7 +284,7 @@ describe("toolComponents.button", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ToolbarButton onClick={console.log} label="A label" />
+				<ToolbarButton onClick={jest.fn()} label="A label" />
 			</Provider>,
 		));
 
@@ -439,7 +439,7 @@ describe("toolComponents.radio", () => {
 		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
 		radioProps.set(RadioProps.propNames.defaultVal, "option1");
 		radioProps.set(RadioProps.propNames.value, "option1");
-		radioProps.set(RadioProps.propNames.update, console.log);
+		radioProps.set(RadioProps.propNames.update, jest.fn());
 		radioProps.set(RadioProps.propNames.radios, radios);
 		radioProps.set(RadioProps.propNames.row, true);
 	});
@@ -458,7 +458,7 @@ describe("toolComponents.radio", () => {
 					label="aRadioLabel"
 					value="option1"
 					defaultVal="option1"
-					update={console.log}
+					update={jest.fn()}
 					radios={radios}
 					row={true}
 				/>

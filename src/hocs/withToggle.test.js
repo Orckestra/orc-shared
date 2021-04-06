@@ -28,9 +28,7 @@ describe("withToggle", () => {
 		));
 
 	it("provides toggle and toggledOn props, handling state", () =>
-		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
-			TestComp,
-		]).then(Comp => {
+		expect(withToggle, "when called with", ["toggledOn"], "when called with", [TestComp]).then(Comp => {
 			const element = mount(<Comp />);
 			expect(element, "to satisfy", <TestComp toggledOn={false} />);
 			expect(element, "to satisfy", <div onClick={expect.it("to be a function")}>0</div>);
@@ -41,9 +39,7 @@ describe("withToggle", () => {
 		}));
 
 	it("handles multiple components of the same type", () =>
-		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
-			TestComp,
-		]).then(Comp => {
+		expect(withToggle, "when called with", ["toggledOn"], "when called with", [TestComp]).then(Comp => {
 			const element = mount(
 				<div>
 					<Comp id="c1" />
@@ -91,21 +87,12 @@ describe("withToggle", () => {
 		}));
 
 	it("allows initializing the toggled parameter", () =>
-		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
-			TestComp,
-		]).then(Comp =>
-			expect(
-				<Comp toggledOnInit={true} />,
-				"when mounted",
-				"to satisfy",
-				<TestComp toggledOn={true} />,
-			),
+		expect(withToggle, "when called with", ["toggledOn"], "when called with", [TestComp]).then(Comp =>
+			expect(<Comp toggledOnInit={true} />, "when mounted", "to satisfy", <TestComp toggledOn={true} />),
 		));
 
 	it("can be reset by calling that function", () =>
-		expect(withToggle, "when called with", ["toggledOn"], "when called with", [
-			TestComp,
-		]).then(Comp => {
+		expect(withToggle, "when called with", ["toggledOn"], "when called with", [TestComp]).then(Comp => {
 			const element = mount(<Comp />);
 			simulate(element, "click");
 			expect(element, "to satisfy", <div>1</div>);

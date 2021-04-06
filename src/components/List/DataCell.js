@@ -33,28 +33,13 @@ const renderByType = (value, def, rowId, selected, row) => {
 		case "datetime":
 			return (
 				<React.Fragment>
-					<FormattedDate value={transformedValue} />{" "}
-					<FormattedTime value={transformedValue} />
+					<FormattedDate value={transformedValue} /> <FormattedTime value={transformedValue} />
 				</React.Fragment>
 			);
 		case "select":
-			return (
-				<Checkbox
-					id={"select_" + rowId}
-					value={selected}
-					data-row-id={rowId}
-					onChange={def.onChange}
-				/>
-			);
+			return <Checkbox id={"select_" + rowId} value={selected} data-row-id={rowId} onChange={def.onChange} />;
 		case "switch":
-			return (
-				<Switch
-					value={!!transformedValue}
-					{...def.switch}
-					data-row-id={rowId}
-					onChange={def.onChange}
-				/>
-			);
+			return <Switch value={!!transformedValue} {...def.switch} data-row-id={rowId} onChange={def.onChange} />;
 		default:
 			return transformedValue ? <Text message={transformedValue} /> : null;
 	}

@@ -3,16 +3,32 @@ import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import FullPage from "./FullPage";
-import { Wrapper, Item, List } from "./SegmentPage";
+import SegmentPage from "./SegmentPage";
 
 const View1 = () => <div id="view1" />;
 const View2 = () => <div id="view2" />;
 
 describe("Fullpage", () => {
 	let state, store;
+	const match = {
+		url: "/meep/snap/stuff",
+		path: "/:scope/snap/stuff",
+		params: { scope: "meep" },
+	};
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
-			navigation: { route: {} },
+			view: {
+				edit: {
+					snap: {},
+				},
+			},
+			navigation: {
+				route: {
+					match: match,
+				},
+				config: { prependPath: "/:scope/", prependHref: "/meep/" },
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -61,7 +77,13 @@ describe("Fullpage", () => {
 			<View2 />,
 		));
 
-	it("shows a segment page if segments", () =>
+	it("shows a segment page if segments", () => {
+		const location = {
+			pathname: "/meep/snap/stuff",
+		};
+
+		const segments = { "/stuff": { component: View2, label: "Two" } };
+
 		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/meep/snap"]}>
@@ -70,26 +92,68 @@ describe("Fullpage", () => {
 							path="/meep/snap"
 							config={{
 								component: View1,
-								segments: { "/stuff": { component: View2, label: "Two" } },
+								segments: segments,
 							}}
-							location={{ location: true }}
-							match={{ match: true }}
+							location={location}
+							match={match}
 						/>
 					</div>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<div>
-				<View1 />
-				<Wrapper>
-					<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
-						<List>
-							<Item to="/meep/snap/stuff">Two</Item>
-						</List>
-					</MemoryRouter>
-					<View2 />
-				</Wrapper>
-			</div>,
-		));
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
+					<div>
+						<div id="view1"></div>
+						<SegmentPage path="/:scope/snap" location={location} segments={segments} match={match} />
+					</div>
+				</MemoryRouter>
+			</Provider>,
+		);
+	});
+
+	it("entityIdResolver is passed to SegmentPage", () => {
+		const location = {
+			pathname: "/meep/snap/stuff",
+		};
+
+		const segments = { "/stuff": { component: View2, label: "Two" } };
+		const customResolver = () => "customId";
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/meep/snap"]}>
+					<div>
+						<FullPage
+							path="/meep/snap"
+							config={{
+								component: View1,
+								segments: segments,
+								entityIdResolver: customResolver,
+							}}
+							location={location}
+							match={match}
+						/>
+					</div>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
+					<div>
+						<div id="view1"></div>
+						<SegmentPage
+							path="/:scope/snap"
+							location={location}
+							segments={segments}
+							match={match}
+							entityIdResolver={customResolver}
+						/>
+					</div>
+				</MemoryRouter>
+			</Provider>,
+		);
+	});
 });

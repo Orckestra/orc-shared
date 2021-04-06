@@ -3,4 +3,9 @@ node_modules/
 coverage/
 .env
 babel.tmp.json
-.idea/
+
+# WebStorm specific changes
+.idea
+/.run
+/jest.config.js
+/webpack.config.js

@@ -1,12 +1,4 @@
-export const logProfiler = (
-	profilerId,
-	phase,
-	actualTime,
-	baseTime,
-	startTime,
-	commitTime,
-	interactions,
-) => {
+export const logProfiler = (profilerId, phase, actualTime, baseTime, startTime, commitTime, interactions) => {
 	console.log({
 		_title: profilerId, // Renamed the property to be the first one to be displayed
 		phase,

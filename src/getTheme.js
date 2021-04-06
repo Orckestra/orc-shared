@@ -44,32 +44,33 @@ const baseTheme = {
 	icons: {
 		indicators: {
 			up: "chevron-up",
-			down: "chevron-down",
-			right: "chevron-right",
-			left: "chevron-left",
+			down: "dropdown-chevron-down",
+			right: "dropdown-chevron-right",
+			more: "arrow-more",
 		},
 		scopeTypes: {
-			Global: "earth",
-			Virtual: "folder-open-2",
-			Sale: "cart",
-			Dependant: "paste",
+			Global: "global-scope",
+			Virtual: "virtual-scope",
+			Sale: "sales-scope",
+			Dependant: "dependent-scope",
 		},
-		toast: {
-			confirm: "checkmark-circle",
-			warn: "warning",
-			error: "cross-circle",
-		},
-		prev: "previous",
-		next: "next",
-		menu: "placeholder",
-		sidebarOpen: "versioning-compare",
-		sidebarClosed: "menu",
+		// toast: {
+		// 	confirm: "checkmark-circle",
+		// 	warn: "warning",
+		// 	error: "cross-circle",
+		// },
+		prev: "arrow-small-left",
+		next: "arrow-small-right",
+		menu: "app-list",
+		sidebarOpen: "collapse",
+		sidebarClosed: "expand",
 		close: "close",
-		date: "calendar-full",
+		date: "calendar-generic",
 		time: "clock",
-		backArrow: "arrow-left",
+		backArrow: "arrow-large-left",
 		loading: "sync",
-		error: "error",
+		error: "warning",
+		reportProblem: "report-problem-triangle",
 	},
 	fonts: {
 		base: "Open Sans, sans-serif",
@@ -82,7 +83,7 @@ const setApplicationColors = theme => {
 		theme.colors.application.primary = theme.colors.application.base;
 	}
 	if (!theme.colors.application.highlight) {
-		theme.colors.application.highlight = tint(0.25, theme.colors.application.base);
+		theme.colors.application.highlight = tint(0.86, theme.colors.application.base);
 	}
 	if (!theme.colors.application.select) {
 		theme.colors.application.select = tint(0.7, theme.colors.application.base);
@@ -96,9 +97,7 @@ const setApplicationColors = theme => {
 const appHighlightColor_IS_DEPRECATED = { appHighlightColor: "#ff00ff" };
 
 const getTheme = (overrides = {}) => {
-	return setApplicationColors(
-		merge({}, baseTheme, overrides, appHighlightColor_IS_DEPRECATED),
-	);
+	return setApplicationColors(merge({}, baseTheme, overrides, appHighlightColor_IS_DEPRECATED));
 };
 
 export default getTheme;

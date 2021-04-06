@@ -148,20 +148,12 @@ describe("withWaypointing", () => {
 				return expect(
 					<Provider store={store}>
 						<Router history={history}>
-							<Route
-								path="/foo/bar"
-								render={props => <EnhancedView {...props} mapFrom="/foo" />}
-							/>
+							<Route path="/foo/bar" render={props => <EnhancedView {...props} mapFrom="/foo" />} />
 						</Router>
 					</Provider>,
 					"when mounted",
 					"to satisfy",
-					<PropStruct
-						history="__ignore"
-						location="__ignore"
-						match="__ignore"
-						mapFrom="/foo"
-					/>,
+					<PropStruct history="__ignore" location="__ignore" match="__ignore" mapFrom="/foo" />,
 				);
 			})
 			.then(() =>

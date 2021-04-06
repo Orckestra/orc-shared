@@ -14,7 +14,7 @@ import {
 	GET_APPLICATIONS_SUCCESS,
 	GET_APPLICATIONS_FAILURE,
 } from "../../actions/applications";
-import { Bar as ScopeBar, AlignedButton } from "../Scope";
+import { ScopeBar, Bar as BarWrapper } from "../Scope";
 import AppFrame, { Base, ViewPort } from "./AppFrame";
 import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
@@ -28,6 +28,7 @@ import {
 	GET_VERSION_INFO_REQUEST,
 	GET_VERSION_INFO_SUCCESS,
 } from "../../actions/versionInfo";
+import LoadingScreen from "../MaterialUI/Feedback/loadingScreen";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -137,9 +138,12 @@ describe("AppFrame", () => {
 						params: { scope: "test1" },
 					},
 				},
+				config: {
+					prependHref: "/test1/",
+				},
 			},
 			locale: {
-				locale: "en",
+				locale: "en-US",
 				supportedLocales: [],
 				cultures: {
 					"en-US": {
@@ -181,6 +185,11 @@ describe("AppFrame", () => {
 			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 			view: { scopeSelector: { filter: "1" }, __prefsDialog: { show: false } },
 			toasts: { queue: [] },
+			requests: {
+				actives: Immutable.Map(),
+				logout: false,
+				error: null,
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -201,12 +210,8 @@ describe("AppFrame", () => {
 			{ id: "test2", component: TestComp2, route: "/test2" },
 			{ id: "test3", component: TestComp3, route: "/test3" },
 		];
-		props.children = [
-			<TestComp1 key="1" />,
-			<TestComp2 key="2" />,
-			<TestComp3 key="3" />,
-		];
-		return expect(
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
+		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/Foo/bar"]}>
 					<ThemeProvider theme={{}}>
@@ -245,19 +250,20 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar>
-									<AlignedButton>Test 1</AlignedButton>
-								</ScopeBar>
+								<ScopeBar name="Test 1" />
 								<TestComp1 key="1" />
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />
 							</ViewPort>
 							<About messages={props.aboutMessages} />
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
 		);
+
+		expect(document.title, "to equal", "Marketing Legacy");
 	});
 
 	it("renders a viewport with scope selector, top bar and sidebar when no current application", () => {
@@ -266,12 +272,8 @@ describe("AppFrame", () => {
 			{ id: "test2", component: TestComp2, route: "/test2" },
 			{ id: "test3", component: TestComp3, route: "/test3" },
 		];
-		props.children = [
-			<TestComp1 key="1" />,
-			<TestComp2 key="2" />,
-			<TestComp3 key="3" />,
-		];
-		return expect(
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
+		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/Foo/bar"]}>
 					<ThemeProvider theme={{}}>
@@ -309,19 +311,20 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar>
-									<AlignedButton>Test 1</AlignedButton>
-								</ScopeBar>
+								<ScopeBar name="Test 1" />
 								<TestComp1 key="1" />
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />
 							</ViewPort>
 							<About messages={props.aboutMessages} />
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
 		);
+
+		expect(document.title, "to equal", "other");
 	});
 
 	it("renders a viewport with scope selector, top bar and sidebar when no applications at all", () => {
@@ -330,13 +333,9 @@ describe("AppFrame", () => {
 			{ id: "test2", component: TestComp2, route: "/test2" },
 			{ id: "test3", component: TestComp3, route: "/test3" },
 		];
-		props.children = [
-			<TestComp1 key="1" />,
-			<TestComp2 key="2" />,
-			<TestComp3 key="3" />,
-		];
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		state = state.setIn(["applications", "list"], Immutable.fromJS([]));
-		return expect(
+		expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/Foo/bar"]}>
 					<ThemeProvider theme={{}}>
@@ -374,19 +373,20 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar>
-									<AlignedButton>Test 1</AlignedButton>
-								</ScopeBar>
+								<ScopeBar name="Test 1" />
 								<TestComp1 key="1" />
 								<TestComp2 key="2" />
 								<TestComp3 key="3" />
 							</ViewPort>
 							<About messages={props.aboutMessages} />
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
 			</Provider>,
 		);
+
+		expect(document.title, "to equal", "other");
 	});
 
 	it("renders a viewport without scope selector", () => {
@@ -395,11 +395,7 @@ describe("AppFrame", () => {
 			{ id: "test2", component: TestComp2, route: "/test2" },
 			{ id: "test3", component: TestComp3, route: "/test3" },
 		];
-		props.children = [
-			<TestComp1 key="1" />,
-			<TestComp2 key="2" />,
-			<TestComp3 key="3" />,
-		];
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/Foo/bar"]}>
@@ -439,11 +435,12 @@ describe("AppFrame", () => {
 								<Logo />
 							</SideBar>
 							<ViewPort>
-								<ScopeBar />
-								<TestComp1 key="1" />
-								<TestComp2 key="2" />
-								<TestComp3 key="3" />
+								<BarWrapper />
+								<TestComp1 />
+								<TestComp2 />
+								<TestComp3 />
 							</ViewPort>
+							<LoadingScreen />
 						</Base>
 					</MemoryRouter>
 				</ThemeProvider>
@@ -458,11 +455,7 @@ describe("AppFrame", () => {
 			{ id: "test2", component: TestComp2, route: "/test2" },
 			{ id: "test3", component: TestComp3, route: "/test3" },
 		];
-		props.children = [
-			<TestComp1 key="1" />,
-			<TestComp2 key="2" />,
-			<TestComp3 key="3" />,
-		];
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/Foo/bar"]}>
@@ -479,6 +472,7 @@ describe("AppFrame", () => {
 				<ThemeProvider theme={{}}>
 					<MemoryRouter initialEntries={["/Foo/bar"]}>
 						<Base preferencesOpen={true}>
+							<Ignore />
 							<Ignore />
 							<Ignore />
 							<Ignore />
@@ -523,6 +517,7 @@ describe("AppFrame", () => {
 						<ViewPort open>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,
@@ -549,6 +544,7 @@ describe("AppFrame", () => {
 						<ViewPort>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,
@@ -575,6 +571,7 @@ describe("AppFrame", () => {
 						<ViewPort open>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,
@@ -601,6 +598,7 @@ describe("AppFrame", () => {
 						<ViewPort>
 							<Ignore />
 						</ViewPort>
+						<LoadingScreen />
 					</Base>
 				</ThemeProvider>
 			</Provider>,
@@ -627,11 +625,7 @@ describe("AppFrame", () => {
 					args: [
 						{
 							[RSAA]: {
-								types: [
-									GET_APPLICATIONS_REQUEST,
-									GET_APPLICATIONS_SUCCESS,
-									GET_APPLICATIONS_FAILURE,
-								],
+								types: [GET_APPLICATIONS_REQUEST, GET_APPLICATIONS_SUCCESS, GET_APPLICATIONS_FAILURE],
 								endpoint: "URL",
 								method: "GET",
 							},
@@ -662,11 +656,7 @@ describe("AppFrame", () => {
 					args: [
 						{
 							[RSAA]: {
-								types: [
-									GET_VERSION_INFO_REQUEST,
-									GET_VERSION_INFO_SUCCESS,
-									GET_VERSION_INFO_FAILURE,
-								],
+								types: [GET_VERSION_INFO_REQUEST, GET_VERSION_INFO_SUCCESS, GET_VERSION_INFO_FAILURE],
 								endpoint: "URL",
 								method: "GET",
 							},
@@ -680,13 +670,7 @@ describe("AppFrame", () => {
 
 describe("ViewPort", () => {
 	it("does not translate when closed", () =>
-		expect(
-			<ViewPort />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"width: calc(100% - 50px)",
-		));
+		expect(<ViewPort />, "when mounted", "to have style rules satisfying", "to contain", "width: calc(100% - 50px)"));
 
 	it("translates to the side when open", () =>
 		expect(
@@ -700,13 +684,7 @@ describe("ViewPort", () => {
 
 describe("Base", () => {
 	it("pointer-events should be to default when preferences is hidden", () =>
-		expect(
-			<Base />,
-			"when mounted",
-			"to have style rules satisfying",
-			"not to contain",
-			"pointer-events: none;",
-		));
+		expect(<Base />, "when mounted", "to have style rules satisfying", "not to contain", "pointer-events: none;"));
 
 	it("pointer-events should be none when preferences is shown", () =>
 		expect(

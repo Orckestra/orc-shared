@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
 	popper: {
-		zIndex: 1,
+		zIndex: 9999,
 		'&[x-placement*="bottom"] $arrow': {
 			top: 0,
 			left: "50%",
@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
 		border: "1px solid",
 		backgroundColor: theme.palette.background.paper,
 	},
+	popperContainer: {
+		cursor: "pointer",
+	},
 }));
 
 export const Arrow = ({ arrowClass }) => {
@@ -78,6 +81,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
 			isDisplayed: isDisplayed,
 			anchorElement: anchorElement,
 		});
+		event.stopPropagation();
 	};
 
 	const clickAwayHandler = function () {
@@ -89,7 +93,7 @@ const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
 
 	return (
 		<ClickAwayListener onClickAway={() => clickAwayHandler()}>
-			<div>
+			<div className={classes.popperContainer}>
 				{defaultComponent}
 				<Popper
 					className={classes.popper}

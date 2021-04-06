@@ -12,11 +12,7 @@ export const Leaf = styled(Root)`
 	&:last-child::after {
 		/* blocker - hides lowest part of vertical branch */
 		content: " ";
-		background-color: ${ifFlag(
-			"dark",
-			getThemeProp(["colors", "bgDark"], "#333333"),
-			"#fff",
-		)};
+		background-color: ${ifFlag("dark", getThemeProp(["colors", "bgDark"], "#333333"), "#fff")};
 		position: absolute;
 		top: calc(50%);
 		left: -${props => branchLength(props) + 1}px;

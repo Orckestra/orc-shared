@@ -6,7 +6,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
-import RadioProps from "./RadioProps.js";
+import RadioProps, { isRadioProps } from "./RadioProps.js";
 
 const useStyles = makeStyles(theme => ({
 	/* Radio Button */
@@ -35,11 +35,14 @@ const useStyles = makeStyles(theme => ({
 			transform: "translate(-50%, -50%)",
 		},
 	},
+	radioFormControl: {
+		minWidth: theme.spacing(30),
+	},
 }));
 
 const extractAndValidateProps = radioProps => {
-	if (radioProps == null || radioProps instanceof RadioProps === false) {
-		throw new TypeError("radioProps is missing or wrong type");
+	if (isRadioProps(radioProps) === false) {
+		throw new TypeError("radioProps property is not of type RadioProps");
 	}
 
 	const name = radioProps.get(RadioProps.propNames.name);
@@ -47,8 +50,9 @@ const extractAndValidateProps = radioProps => {
 	const defaultVal = radioProps.get(RadioProps.propNames.defaultVal);
 	const value = radioProps.get(RadioProps.propNames.value) ?? defaultVal;
 	const update = radioProps.get(RadioProps.propNames.update);
-	const row = radioProps.get(RadioProps.propNames.row);
+	const row = radioProps.get(RadioProps.propNames.row) ?? true;
 	const radios = radioProps.get(RadioProps.propNames.radios);
+	const disabled = radioProps.get(RadioProps.propNames.disabled) ?? false;
 
 	if (!radios || radios.length < 2) {
 		throw new Error("Radio component must have at least two options");
@@ -70,16 +74,16 @@ const extractAndValidateProps = radioProps => {
 		throw new Error("Radio component must not have duplicated radio values");
 	}
 
-	return { name, label, defaultVal, value, update, row, radios };
+	return { name, label, defaultVal, value, update, row, radios, disabled };
 };
 
 const Radio = ({ radioProps }) => {
 	const classes = useStyles();
-	const { name, label, defaultVal, value, update, row, radios } = extractAndValidateProps(radioProps);
+	const { name, label, defaultVal, value, update, row, radios, disabled } = extractAndValidateProps(radioProps);
 	const handleChange = update ? event => update(event.target.value) : null;
 
 	return (
-		<FormControl component="fieldset">
+		<FormControl component="fieldset" className={classes.radioFormControl}>
 			<FormLabel component="legend">{label}</FormLabel>
 			<RadioGroupMui
 				row={row}
@@ -98,6 +102,7 @@ const Radio = ({ radioProps }) => {
 							name={radio.value}
 							value={radio.value}
 							label={radio.label}
+							disabled={disabled}
 							control={
 								<RadioMui
 									color="primary"

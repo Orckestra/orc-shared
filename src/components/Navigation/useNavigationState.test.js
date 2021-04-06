@@ -11,6 +11,7 @@ import { resetLastScope } from "../../selectors/navigation";
 import useNavigationState, { getPageData } from "./useNavigationState";
 import Bar from "./Bar";
 import { PropStruct } from "../../utils/testUtils";
+import { cloneDeep } from "lodash";
 
 const TestComp1 = props => (
 	<div data-test-id="comp-1">
@@ -44,6 +45,16 @@ const TestComp6 = props => (
 );
 const TestComp7 = props => (
 	<div data-test-id="comp-7">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp8 = props => (
+	<div data-test-id="comp-8">
+		<PropStruct {...props} />
+	</div>
+);
+const TestComp9 = props => (
+	<div data-test-id="comp-9">
 		<PropStruct {...props} />
 	</div>
 );
@@ -89,14 +100,7 @@ describe("useNavigationState", () => {
 					},
 				},
 				moduleTabs: {
-					test: [
-						"test",
-						"test/page1",
-						"test/foo",
-						"test/bar",
-						"test/page3",
-						"test/notexist",
-					],
+					test: ["test", "test/page1", "test/foo", "test/bar", "test/page3", "test/notexist"],
 				},
 				mappedHrefs: {},
 				route: {
@@ -106,6 +110,7 @@ describe("useNavigationState", () => {
 						params: { scope: "TestScope", page2: "bar" },
 					},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 			},
 			scopes: {
 				Global: {
@@ -304,14 +309,10 @@ describe("useNavigationState", () => {
 		).then(() =>
 			expect(console.warn, "to have calls satisfying", [
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 			]),
 		));
@@ -413,17 +414,127 @@ describe("useNavigationState", () => {
 		).then(() =>
 			expect(console.warn, "to have calls satisfying", [
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 				{
-					args: [
-						"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-					],
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 				},
 			]),
 		));
+
+	it("provides state information about navigation when redirection is needed and currentScopeDefinition is undefined", () => {
+		let stateWithEmptyScopes = cloneDeep(state);
+		stateWithEmptyScopes = stateWithEmptyScopes.setIn(["scopes"], Immutable.Map());
+		const storeWithEmptyScopes = {
+			subscribe: () => {},
+			dispatch: sinon.spy().named("dispatch"),
+			getState: () => stateWithEmptyScopes,
+		};
+
+		expect(
+			<Provider store={storeWithEmptyScopes}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modulesWithSelector} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={storeWithEmptyScopes}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<Bar
+							module={{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test",
+								mappedFrom: "/TestScope/test",
+								active: false,
+							}}
+							pages={[
+								{
+									label: "Page 1",
+									href: "/TestScope/test/page1",
+									mappedFrom: "/TestScope/test/page1",
+									active: true,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
+									scopeNotSupported: false,
+								},
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "11",
+										},
+									},
+									href: "/TestScope/test/foo",
+									mappedFrom: "/TestScope/test/foo",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									mustTruncate: true,
+									outsideScope: true,
+									scopeNotSupported: true,
+								},
+								{
+									label: {
+										id: "page2",
+										defaultMessage: "Page 2 {someField}",
+										values: {
+											someField: "22",
+										},
+									},
+									href: "/TestScope/test/bar",
+									mappedFrom: "/TestScope/test/bar",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									mustTruncate: true,
+									outsideScope: true,
+									scopeNotSupported: true,
+								},
+								{
+									label: {
+										id: "page3",
+										defaultMessage: "Page 3 {someField}",
+										values: { someField: "22" },
+									},
+									href: "/TestScope/test/page3",
+									mappedFrom: "/TestScope/test/page3",
+									active: false,
+									params: "__ignore",
+									path: "__ignore",
+									outsideScope: false,
+									scopeNotSupported: false,
+								},
+								{
+									href: "/TestScope/test/notexist",
+									mappedFrom: "/TestScope/test/notexist",
+									label: "[Not found]",
+									active: false,
+								},
+							]}
+							moduleName="test"
+							moduleHref="/TestScope/test"
+						/>
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+		).then(() =>
+			expect(console.warn, "to have calls satisfying", [
+				{
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
+				},
+				{
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
+				},
+			]),
+		);
+	});
 
 	it("handles incomplete paths", () => {
 		state.setIn(
@@ -478,6 +589,7 @@ describe("useNavigationState", () => {
 							params: { scope: "TestScope" },
 						},
 					},
+					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 				},
 				scopes: {
 					TestScope: {
@@ -599,6 +711,7 @@ describe("useNavigationState", () => {
 							params: { scope: "TestScope", page2: "bar" },
 						},
 					},
+					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
 				},
 				scopes: {
 					TestScope: {
@@ -828,14 +941,10 @@ describe("useNavigationState", () => {
 			).then(() =>
 				expect(console.warn, "to have calls satisfying", [
 					{
-						args: [
-							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-						],
+						args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 					},
 					{
-						args: [
-							"Using dataPath label value pointers is deprecated, use labelValueSelector instead",
-						],
+						args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
 					},
 				]),
 			);
@@ -923,7 +1032,7 @@ describe("useNavigationState", () => {
 });
 
 describe("getPageData", () => {
-	let module;
+	let module, module2, module3;
 	beforeEach(() => {
 		module = {
 			icon: "thing",
@@ -963,6 +1072,28 @@ describe("getPageData", () => {
 				},
 			},
 		};
+		module2 = {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {
+				"/:var/:var2": {
+					label: "Page 4",
+					component: TestComp8,
+				},
+			},
+		};
+		module3 = {
+			icon: "thing",
+			label: "Thing",
+			component: TestComp1,
+			pages: {
+				"/:var2(abc\\d{1,2})": {
+					label: "Page 5",
+					component: TestComp9,
+				},
+			},
+		};
 	});
 
 	it("extracts the module page data for an empty path", () =>
@@ -985,22 +1116,37 @@ describe("getPageData", () => {
 		}));
 
 	it("handles variable path steps", () =>
+		expect(getPageData, "when called with", ["/thing", { var: "thing" }, module], "to satisfy", {
+			label: "Page 1",
+			component: TestComp2,
+		}));
+
+	it("handles variable path steps which uses 'path to regex'", () =>
+		expect(getPageData, "when called with", ["/abc99", { var2: "abc99" }, module3], "to satisfy", {
+			label: "Page 5",
+			component: TestComp9,
+		}));
+
+	it("handles multiple variable path steps", () =>
 		expect(
 			getPageData,
 			"when called with",
-			["/thing", { var: "thing" }, module],
+			["/firstThing/secondThing", { var: "firstThing", var2: "secondThing" }, module2],
 			"to satisfy",
 			{
-				label: "Page 1",
-				component: TestComp2,
+				label: "Page 4",
+				component: TestComp8,
 			},
 		));
 
-	it("handles missing page data", () =>
+	it("handles missing data with multiple variable path steps", () =>
 		expect(
 			getPageData,
 			"when called with",
-			["/page2/notHere", {}, module],
+			["/firstThing/notHere", { var: "firstThing", var2: "secondThing" }, module2],
 			"to be undefined",
 		));
+
+	it("handles missing page data", () =>
+		expect(getPageData, "when called with", ["/page2/notHere", {}, module], "to be undefined"));
 });

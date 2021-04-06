@@ -90,9 +90,7 @@ describe("Wrapper", () => {
 			<Wrapper value={true} />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to match", /\scolor: #ffffff;.*::after/)
-				.and("to match", /\sbackground-color: #ff0000;.*::after/),
+			expect.it("to match", /\scolor: #ffffff;.*::after/).and("to match", /\sbackground-color: #ff0000;.*::after/),
 		));
 
 	it("sets background color according to theme when on", () =>
@@ -118,9 +116,7 @@ describe("Wrapper", () => {
 			<Wrapper value={false} />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect
-				.it("to match", /\scolor: #333333;.*::after/)
-				.and("to match", /\sbackground-color: #cccccc;.*::after/),
+			expect.it("to match", /\scolor: #333333;.*::after/).and("to match", /\sbackground-color: #cccccc;.*::after/),
 		));
 
 	it("sets custom background color when off", () =>

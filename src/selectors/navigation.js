@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 import Immutable from "immutable";
 import { defaultScopeSelector } from "./settings";
+import { getAllAfterPrependHref } from "../utils/parseHelper";
 
 const getNavigationState = state => state.get("navigation");
 
@@ -10,25 +11,13 @@ const selectRoute = createSelector(getNavigationState, nav => nav.get("route"));
 // 	selectRoute,
 // 	route => route.get("location") || Immutable.Map(),
 // );
-const selectMatch = createSelector(
-	selectRoute,
-	route => route.get("match") || Immutable.Map(),
-);
+const selectMatch = createSelector(selectRoute, route => route.get("match") || Immutable.Map());
 
-export const selectRouteParams = createSelector(
-	selectMatch,
-	match => match.get("params") || Immutable.Map(),
-);
+export const selectRouteParams = createSelector(selectMatch, match => match.get("params") || Immutable.Map());
 
-export const selectRoutePath = createSelector(
-	selectMatch,
-	match => match.get("path") || "",
-);
+export const selectRoutePath = createSelector(selectMatch, match => match.get("path") || "");
 
-export const selectRouteHref = createSelector(
-	selectMatch,
-	match => match.get("url") || "",
-);
+export const selectRouteHref = createSelector(selectMatch, match => match.get("url") || "");
 
 // Not a selector, as previous calls can change the result.
 let lastScope;
@@ -50,21 +39,44 @@ export const getCurrentScope = createSelector(
 	(id, defaultScope) => id || defaultScope || "Global",
 );
 
-export const getCurrentScopeFromRoute = createSelector(
-	getLastRouteScope,
-	scope => scope || null,
-);
+export const getCurrentScopeFromRoute = createSelector(getLastRouteScope, scope => scope || null);
 
 const selectTabs = createSelector(getNavigationState, nav => nav.get("tabIndex"));
 
 export const selectTabGetter = createSelector(selectTabs, tabs => path => tabs.get(path));
 
-const selectModuleLists = createSelector(getNavigationState, nav =>
-	nav.get("moduleTabs"),
+const selectModuleLists = createSelector(getNavigationState, nav => nav.get("moduleTabs"));
+const selectHrefConfig = createSelector(getNavigationState, state => state.get("config"));
+const selectCurrentPrependPath = createSelector(getNavigationState, state => state.get("currentPrependPath"));
+
+export const selectPrependPathConfig = createSelector(
+	selectHrefConfig,
+	selectCurrentPrependPath,
+	(config, currentPath) => currentPath || config.get("prependPath"),
+);
+export const selectPrependHrefConfig = createSelector(selectHrefConfig, config => name =>
+	config.getIn([name, "prependHref"]) || config.get("prependHref"),
 );
 
-export const selectCurrentModuleName = createSelector(selectRoutePath, path =>
-	/^\/:scope\//.test(path) ? path.replace(/^\/:scope\/([^/]+)(\/.*)?$/, "$1") : "",
+export const selectCurrentModuleName = createSelector(selectPrependPathConfig, selectRoutePath, (prependPath, path) =>
+	new RegExp(`^${prependPath}`).test(path) ? path.replace(new RegExp(`^${prependPath}([^/]+)(/.*)?$`), "$1") : "",
+);
+
+export const selectCurrentSectionName = createSelector(
+	selectPrependPathConfig,
+	selectRoutePath,
+	(prependPath, path) => {
+		//strips the scope and module
+		let segmentPath = path.replace(prependPath, "").replace(new RegExp(`^([^/]*/){1}`), "");
+
+		//strips param paths
+		while (segmentPath.includes(":") && segmentPath.includes("/")) {
+			segmentPath = segmentPath.replace(new RegExp(`^([^/]*/){1}`), "");
+		}
+
+		//strips entity id and deeper pages
+		return segmentPath.replace(new RegExp(`^([^/]*/){1}`), "").replace(new RegExp(`/.*$`), "");
+	},
 );
 
 const selectCurrentModuleList = createSelector(
@@ -73,20 +85,20 @@ const selectCurrentModuleList = createSelector(
 	(lists, module) => lists.get(module) || Immutable.List(),
 );
 
-export const selectMappedCurrentModuleList = createSelector(
-	selectCurrentModuleList,
-	selectTabGetter,
-	(list, getTab) => list.map(getTab),
+export const selectMappedCurrentModuleList = createSelector(selectCurrentModuleList, selectTabGetter, (list, getTab) =>
+	list.map(getTab),
 );
 
-const segmentHrefMap = createSelector(getNavigationState, state =>
-	state.get("mappedHrefs"),
+const segmentHrefMap = createSelector(getNavigationState, state => state.get("mappedHrefs"));
+
+export const selectSegmentHrefMapper = createSelector(
+	selectPrependPathConfig,
+	segmentHrefMap,
+	(prependPath, map) => href => {
+		const otherPath = getAllAfterPrependHref(prependPath, href);
+		const newPrependPath = href.replace(otherPath, "");
+
+		const hrefMap = map.get(otherPath);
+		return hrefMap ? newPrependPath.concat(hrefMap) : href;
+	},
 );
-
-export const selectSegmentHrefMapper = createSelector(segmentHrefMap, map => href => {
-	const [global = "", scope = "", remainingSection = ""] =
-		href.match(/^((?:[^/]*[/]){2})([^/]+.*)$/) || [];
-
-	const hrefMap = map.get(remainingSection);
-	return hrefMap ? scope.concat(hrefMap) : global;
-});

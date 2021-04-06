@@ -108,7 +108,9 @@ describe("Divider", () => {
 	it("Fails if dividerProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = <Divider dividerProps="Wrong Type" />;
-			expect(() => mount(component), "to throw a", TypeError);
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "dividerProps property is not of type DividerProps");
+			});
 		});
 	});
 
@@ -119,5 +121,6 @@ describe("Divider", () => {
 		expect(mountedComponent.prop("light"), "to equal", false);
 		expect(mountedComponent.prop("orientation"), "to equal", "horizontal");
 		expect(mountedComponent.prop("variant"), "to equal", "fullWidth");
+		expect(mountedComponent.prop("flexItem"), "to equal", false);
 	});
 });

@@ -1,9 +1,5 @@
 import Immutable from "immutable";
-import {
-	getApplicationHelpUrlSelector,
-	getHelpUrlDefaultSelector,
-	getVersionSelector,
-} from "./versionInfo";
+import { getApplicationHelpUrlSelector, getHelpUrlDefaultSelector, getVersionSelector } from "./versionInfo";
 
 let state;
 
@@ -26,24 +22,12 @@ beforeEach(() => {
 
 describe("getVersionSelector", () => {
 	it("gets the version of the current OCC platform", () =>
-		expect(
-			getVersionSelector,
-			"called with",
-			[state],
-			"to equal",
-			Immutable.fromJS("4.3.2.1"),
-		));
+		expect(getVersionSelector, "called with", [state], "to equal", Immutable.fromJS("4.3.2.1")));
 });
 
 describe("getHelpUrlDefaultSelector", () => {
 	it("gets the default help URL for the OCC platform", () =>
-		expect(
-			getHelpUrlDefaultSelector,
-			"called with",
-			[state],
-			"to equal",
-			Immutable.fromJS("the_help_url_default"),
-		));
+		expect(getHelpUrlDefaultSelector, "called with", [state], "to equal", Immutable.fromJS("the_help_url_default")));
 });
 
 describe("getApplicationHelpUrlSelector", () => {

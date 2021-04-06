@@ -28,10 +28,6 @@ describe("withLocaleSwitch", () => {
 				"when mounted",
 				"with event",
 				{ type: "click" },
-			).then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [changeLocale("en")] },
-				]),
-			),
+			).then(() => expect(store.dispatch, "to have calls satisfying", [{ args: [changeLocale("en")] }])),
 		));
 });

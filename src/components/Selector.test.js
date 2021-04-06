@@ -1,15 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import Selector, {
-	InnerSelect,
-	Wrapper,
-	SelectBox,
-	SelectedValue,
-	Dropdown,
-	Option,
-	Placeholder,
-} from "./Selector";
+import Selector, { InnerSelect, Wrapper, SelectBox, SelectedValue, Dropdown, Option, Placeholder } from "./Selector";
 
 describe("Selector", () => {
 	let updater;

@@ -9,6 +9,7 @@ class RadioProps extends ComponentProps {
 		row: "row",
 		name: "name",
 		radios: "radios",
+		disabled: "disabled",
 	};
 
 	constructor() {
@@ -17,10 +18,18 @@ class RadioProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.value, null);
 		this.componentProps.set(this.constructor.propNames.defaultVal, null);
 		this.componentProps.set(this.constructor.propNames.label, null);
-		this.componentProps.set(this.constructor.propNames.row, true);
+		this.componentProps.set(this.constructor.propNames.row, null);
 		this.componentProps.set(this.constructor.propNames.name, null);
 		this.componentProps.set(this.constructor.propNames.radios, null);
+		this.componentProps.set(this.constructor.propNames.disabled, null);
+
+		this._isRadioProps = true;
 	}
 }
+
+export const isRadioProps = function (value) {
+	if (value == null) return false;
+	return typeof value === "object" && (value instanceof RadioProps || value._isRadioProps === true);
+};
 
 export default RadioProps;

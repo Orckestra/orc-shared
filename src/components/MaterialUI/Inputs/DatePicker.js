@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { getThemeProp } from "../../../utils";
 import Icon from "../../Icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,27 +9,65 @@ const useStyles = makeStyles(theme => ({
 	datePickerWrapper: {
 		display: "flex",
 		width: "auto",
-		paddingLeft: theme.spacing(0.5),
+		padding: props => (props.readOnly ? "0" : theme.spacing(0.3, 0.5)),
+		border: props => (props.readOnly ? "none" : `1px solid ${theme.palette.grey.borders}`),
+		borderRadius: theme.shape.borderRadius,
+		alignItems: "center",
+		backgroundColor: props => (props.readOnly ? "inherit" : theme.palette.background.default),
+		"&:focus, &:focus-within": {
+			borderRadius: theme.shape.borderRadius,
+			borderColor: theme.palette.focus,
+			boxShadow: `0 0 4px ${theme.palette.focus}`,
+			outline: "none",
+		},
 		"& .react-datepicker": {
 			fontFamily: theme.fontFamily,
+		},
+		"& .react-datepicker__input-time-container": {
+			margin: theme.spacing(0.5, 0, 1, 0),
 		},
 		"& .react-datepicker-popper": {
 			zIndex: 100,
 		},
 		"& .react-datepicker__input-container input": {
-			width: theme.spacing(13.5),
-			border: `1px solid ${theme.palette.grey.borders}`,
+			fontSize: theme.typography.fontSize,
+			color: theme.palette.grey.dark,
+			fontFamily: theme.typography.fontFamily,
+			width: "inherit",
+			border: "none",
 			zIndex: 100,
+			backgroundColor: "inherit",
+			"&:focus": {
+				outline: "none",
+			},
 		},
 	},
 	calendarIcon: {
 		fontSize: theme.fontSize,
-		padding: theme.spacing(0.3, 0.3, 0.3, 0.3),
+	},
+	datePickerContainer: {
+		width: "80%",
+	},
+	iconContainer: {
+		width: "20%",
+		display: "flex",
+		justifyContent: "flex-end",
 	},
 }));
 
-const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone, timeInputLabel, ...props }) => {
-	const classes = useStyles();
+const WrappedDatePicker = ({
+	value,
+	useTime,
+	useDate = true,
+	onChange,
+	dateFormat,
+	showTimeZone,
+	timeInputLabel,
+	readOnly,
+	showTimeSelectOnly,
+	...props
+}) => {
+	const classes = useStyles({ readOnly });
 	const parsedValue = new Date(value || "1970/01/01");
 	const [startDate, setStartDate] = useState(parsedValue);
 
@@ -43,17 +80,25 @@ const WrappedDatePicker = ({ value, useTime, onChange, dateFormat, showTimeZone,
 
 	return (
 		<label className={classes.datePickerWrapper}>
-			<DatePicker
-				{...props}
-				dateFormat={dateFormat || (useTime ? "P p" : "P")}
-				selected={startDate}
-				onChange={date => updateDate(date)}
-				showTimeInput={useTime ?? false}
-				useTime={useTime ?? false}
-				customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
-				timeInputLabel={timeInputLabel ?? ""}
-			/>
-			<Icon className={classes.calendarIcon} id={getThemeProp(["icons", "calendar"], "date")(props)} />
+			<div className={classes.datePickerContainer}>
+				<DatePicker
+					{...props}
+					dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
+					selected={startDate}
+					onChange={date => updateDate(date)}
+					showTimeInput={useTime ?? false}
+					useTime={useTime ?? false}
+					customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
+					timeInputLabel={timeInputLabel ?? ""}
+					readOnly={readOnly}
+					showTimeSelectOnly={showTimeSelectOnly}
+				/>
+			</div>
+			{!readOnly ? (
+				<div className={classes.iconContainer}>
+					<Icon className={classes.calendarIcon} id={showTimeSelectOnly ? "clock" : "calendar-date"} />
+				</div>
+			) : null}
 		</label>
 	);
 };

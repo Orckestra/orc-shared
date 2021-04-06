@@ -12,7 +12,7 @@ const fakeStore = {
 	getState: () =>
 		Immutable.fromJS({
 			locale: {
-				locale: "en",
+				locale: "en-US",
 			},
 			authentication: {
 				name: "foo@bar.com",
@@ -55,8 +55,7 @@ describe("Provision", () => {
 		).then(() => expect(console.error, "was not called")));
 
 	it("handles getting no mui theme", () => {
-		let mountedComponent = () =>
-			expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted");
+		let mountedComponent = () => expect(<Provision store={fakeStore} theme={fakeTheme} />, "when mounted");
 
 		expect(mountedComponent, "to throw");
 	});
@@ -88,12 +87,7 @@ describe("Provision", () => {
 					<div />
 				</Provision>,
 			);
-			return expect(
-				"html",
-				"as a selector to have style rules",
-				"to contain",
-				"height: 100%;",
-			);
+			return expect("html", "as a selector to have style rules", "to contain", "height: 100%;");
 		});
 
 		it("ensures required body styling", () => {
@@ -116,12 +110,7 @@ describe("Provision", () => {
 					<div />
 				</Provision>,
 			);
-			return expect(
-				"#app",
-				"as a selector to have style rules",
-				"to match",
-				/#app\s*\{\s*height: 100%;\s*\}/,
-			);
+			return expect("#app", "as a selector to have style rules", "to match", /#app\s*\{\s*height: 100%;\s*\}/);
 		});
 	});
 });

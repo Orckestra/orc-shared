@@ -17,11 +17,7 @@ describe("TooltippedTypography", () => {
 		const className = "class";
 
 		const tooltippedTypography = (
-			<TooltippedTypography
-				children={children}
-				className={className}
-				titleValue={titleValue}
-			/>
+			<TooltippedTypography children={children} className={className} titleValue={titleValue} />
 		);
 
 		const mountedComponent = shallow(tooltippedTypography);

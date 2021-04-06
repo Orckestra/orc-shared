@@ -40,7 +40,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ThemeProvider theme={{ icons: { error: "skull" } }}>
+				<ThemeProvider theme={{ icons: { error: "error" } }}>
 					<ErrorPlaceholder message="Error" description="This failed" />
 				</ThemeProvider>
 			</Provider>,
@@ -53,7 +53,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Placeholder icon="skull" warn title="Error" subtitle="This failed" />
+				<Placeholder icon="error" warn title="Error" subtitle="This failed" />
 			</Provider>,
 		));
 

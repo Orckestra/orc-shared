@@ -117,12 +117,7 @@ describe("usePreviousModified", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<TestComp
-						initCount={10}
-						value={14}
-						effectAction={effectAction}
-						predicate={predicate}
-					/>
+					<TestComp initCount={10} value={14} effectAction={effectAction} predicate={predicate} />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",

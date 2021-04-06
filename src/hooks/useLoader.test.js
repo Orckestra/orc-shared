@@ -53,9 +53,7 @@ describe("useLoader", () => {
 			"when mounted",
 			"to satisfy",
 			<div>0</div>,
-		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [{ args: [loader] }]),
-		));
+		).then(() => expect(store.dispatch, "to have calls satisfying", [{ args: [loader] }])));
 
 	it("does not dispatch loader if cutout returns truthy", () =>
 		expect(
@@ -80,19 +78,13 @@ describe("useLoader", () => {
 			.then(() =>
 				expect(console.warn, "to have calls satisfying", [
 					{
-						args: [
-							"useLoader hook called without cutout selector, loader will never be dispatched.",
-						],
+						args: ["useLoader hook called without cutout selector, loader will never be dispatched."],
 					},
 				]),
 			));
 
 	it("dispatches multiple loader actions", () => {
-		const loaderSeries = [
-			{ type: "TEST_ACTION1" },
-			{ type: "TEST_ACTION2" },
-			{ type: "TEST_ACTION3" },
-		];
+		const loaderSeries = [{ type: "TEST_ACTION1" }, { type: "TEST_ACTION2" }, { type: "TEST_ACTION3" }];
 		return expect(
 			<Provider store={store}>
 				<TestComp loader={loaderSeries} cutout={state => state.get("live")} />
@@ -125,9 +117,7 @@ describe("useLoader", () => {
 			"click",
 			"to satisfy",
 			<div>4</div>,
-		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [{ args: [loader] }]),
-		));
+		).then(() => expect(store.dispatch, "to have calls satisfying", [{ args: [loader] }])));
 
 	it("fires loader if cutout is falsy, but not again if it becomes truthy", () => {
 		const selector = state => state.get("live");

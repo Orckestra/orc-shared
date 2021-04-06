@@ -14,13 +14,19 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexWrap: "wrap",
 		width: "100%",
+		alignItems: "center",
 	},
 	timePickerSegmentWrapper: {
 		fontFamily: theme.fontFamily,
 		fontSize: theme.fontSize,
 		color: "#333333",
-		marginLeft: "0.5em",
-		marginRight: theme.spacing(0.3),
+		marginLeft: theme.spacing(0.5),
+		marginRight: theme.spacing(0.5),
+		padding: theme.spacing(0.5, 1.5, 0.5, 1),
+		borderRadius: theme.shape.borderRadius,
+		"&:first-child": {
+			marginLeft: 0,
+		},
 	},
 }));
 
@@ -46,7 +52,8 @@ const ampmOptions = [
 	{ value: "PM", label: "PM" },
 ];
 
-const isBrowserUsingAMPM = () => !!new Date(Date.UTC(2020, 7, 30, 3, 0, 0)).toLocaleTimeString().match(/am|pm/i);
+const isBrowserUsingAMPM = () =>
+	!!new Date(Date.UTC(2020, 7, 30, 3, 0, 0)).toLocaleTimeString().match(/am|a.m|pm|p.m/i);
 
 const parseTime = timeStr => {
 	var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
@@ -93,10 +100,10 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM }) => {
 	const setHours = (hours, isAMTime) => {
 		if (!showAMPM) {
 			time.setHours(hours);
-		} else if (hours === 12) {
+		} else if (parseInt(hours) === 12) {
 			time.setHours(isAMTime ? 0 : 12);
 		} else {
-			time.setHours(hours + (isAMTime ? 0 : 12));
+			time.setHours(parseInt(hours) + parseInt(isAMTime ? 0 : 12));
 		}
 	};
 

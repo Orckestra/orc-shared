@@ -6,23 +6,12 @@ import { RSAA } from "redux-api-middleware";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { VIEW_STATE_SET_FIELD } from "../../actions/view";
-import {
-	SIGN_OUT_REQUEST,
-	SIGN_OUT_SUCCESS,
-	SIGN_OUT_FAILURE,
-} from "../../actions/authentication";
+import { SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
 import { Wrapper as MenuWrapper } from "../DropMenu";
-import Topbar, {
-	Wrapper,
-	AppBox,
-	CurrentApp,
-	AppLabel,
-	AppLogo,
-	useMenuProps,
-} from "./Topbar";
+import Topbar, { Wrapper, AppBox, CurrentApp, AppLabel, AppLogo, useMenuProps } from "./Topbar";
 import { HelpLink } from "./Help";
 
 jest.mock("../../utils/buildUrl", () => {
@@ -202,13 +191,13 @@ describe("useMenuProps", () => {
 						id: "userMenuSignOut",
 						label: "Sign out",
 						handler: () => {},
-						icon: "logout-1",
+						icon: "logout",
 					},
 					{
 						id: "userMenuPrefsMenu",
 						label: "Preferences",
 						handler: () => {},
-						icon: "settings-cogwheel",
+						icon: "cogwheel",
 					},
 					{
 						id: "userMenuAbout",

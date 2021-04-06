@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Text from "../Text";
 import { getThemeProp } from "../../utils";
+import sharedMessages from "./../../sharedMessages";
 
 export const HelpLink = styled.a`
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
@@ -18,10 +19,10 @@ export const HelpLink = styled.a`
 	}
 `;
 
-const Help = ({ messages, helpUrl }) => {
+const Help = ({ helpUrl }) => {
 	return (
 		<HelpLink href={helpUrl} target="_blank">
-			<Text message={messages.help} />
+			<Text message={sharedMessages.help} />
 		</HelpLink>
 	);
 };

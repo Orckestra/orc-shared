@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { defineMessages } from "react-intl";
 import {
 	getElmClasses,
 	getClassName,
@@ -10,7 +11,8 @@ import {
 	spyOnConsole,
 	ignoreConsoleError,
 	createMuiTheme,
-	generateClassName
+	generateClassName,
+	extractMessages,
 } from "./testUtils";
 
 const TestComp = ({ children, id = "tc1", ...props }) => (
@@ -283,7 +285,7 @@ describe("PropStruct", () => {
 
 	it("handles function props (if poorly)", () =>
 		expect(
-			<PropStruct func={() => { }} />,
+			<PropStruct func={() => {}} />,
 			"when mounted",
 			"to satisfy",
 			<dl>
@@ -298,13 +300,13 @@ describe("PropStruct", () => {
 			"when mounted",
 			"to satisfy",
 			"<dl>" +
-			"<dt>alpha:</dt>" +
-			'<dd>string "yes"</dd>' +
-			"<!-- ignore -->" +
-			"<!-- ignore -->" +
-			"<dt>gamma:</dt>" +
-			'<dd>string "no"</dd>' +
-			"</dl>",
+				"<dt>alpha:</dt>" +
+				'<dd>string "yes"</dd>' +
+				"<!-- ignore -->" +
+				"<!-- ignore -->" +
+				"<dt>gamma:</dt>" +
+				'<dd>string "no"</dd>' +
+				"</dl>",
 		));
 
 	describe("comparator", () => {
@@ -373,16 +375,44 @@ describe("generateClassName", () => {
 	it("Generates proper class name", () => {
 		const styleSheet = {
 			options: {
-				classNamePrefix: "prefix"
-			}
+				classNamePrefix: "prefix",
+			},
 		};
 
 		const rule = {
-			key: "key"
+			key: "key",
 		};
 
 		const generatedClassname = generateClassName(rule, styleSheet);
 
 		expect(generatedClassname, "to equal", "prefix-key");
+	});
+});
+
+describe("extractMessages", () => {
+	const testMessagesA = defineMessages({
+		test1: "test1",
+		test2: "test2",
+	});
+
+	const testMessagesB = defineMessages({
+		test3: "test3",
+		test4: "test4",
+	});
+
+	it("extracts messages out from one defineMessages", () => {
+		expect(extractMessages(testMessagesA), "to equal", {
+			"utils.testUtils.test1": "test1",
+			"utils.testUtils.test2": "test2",
+		});
+	});
+
+	it("extracts messages out from two defineMessages", () => {
+		expect(extractMessages(testMessagesA, testMessagesB), "to equal", {
+			"utils.testUtils.test1": "test1",
+			"utils.testUtils.test2": "test2",
+			"utils.testUtils.test3": "test3",
+			"utils.testUtils.test4": "test4",
+		});
 	});
 });

@@ -21,12 +21,7 @@ const FieldElements = ({ fields, labelOnly, getUpdater = () => {}, ...elementPro
 				case "Combination": {
 					return (
 						<Combination key={key} label={label} proportions={props.proportions}>
-							<FieldElements
-								getUpdater={getUpdater}
-								labelOnly={labelOnly}
-								{...elementProps}
-								{...props}
-							/>
+							<FieldElements getUpdater={getUpdater} labelOnly={labelOnly} {...elementProps} {...props} />
 						</Combination>
 					);
 				}

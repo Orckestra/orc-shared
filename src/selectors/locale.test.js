@@ -8,6 +8,7 @@ import {
 	orderedCultureList,
 	cultureOptionList,
 	currentLocale,
+	cultureNameByIsoCode,
 } from "./locale";
 
 describe("default locale selector", () => {
@@ -23,8 +24,7 @@ describe("default locale selector", () => {
 		});
 	});
 
-	it("gets the first supported locale", () =>
-		expect(defaultLocale, "when called with", [state], "to equal", "en"));
+	it("gets the first supported locale", () => expect(defaultLocale, "when called with", [state], "to equal", "en"));
 
 	it("returns 'en' if no supported locales", () => {
 		state = state.deleteIn(["locale", "supportedLocales"]);
@@ -43,8 +43,7 @@ describe("locale selector", () => {
 		});
 	});
 
-	it("gets the currently selected locale", () =>
-		expect(currentLocale, "when called with", [state], "to equal", "fr"));
+	it("gets the currently selected locale", () => expect(currentLocale, "when called with", [state], "to equal", "fr"));
 
 	it("gets null locale if none set", () => {
 		state = state.setIn(["locale", "locale"], null);
@@ -68,13 +67,7 @@ describe("locale or default selector", () => {
 
 	it("gets first supported locale if none set", () => {
 		state = state.deleteIn(["locale", "locale"]);
-		return expect(
-			currentLocaleOrDefault,
-			"when called with",
-			[state],
-			"to equal",
-			"en-US",
-		);
+		return expect(currentLocaleOrDefault, "when called with", [state], "to equal", "en-US");
 	});
 });
 
@@ -154,13 +147,7 @@ describe("supported cultures list selector", () => {
 	});
 
 	it("gets a Seq of supported culture IETF tags", () =>
-		expect(
-			cultureList,
-			"called with",
-			[state],
-			"to equal",
-			Immutable.Seq(["en-US", "fr-FR", "fr-CA"]),
-		));
+		expect(cultureList, "called with", [state], "to equal", Immutable.Seq(["en-US", "fr-FR", "fr-CA"])));
 });
 
 describe("default culture selector", () => {
@@ -173,8 +160,7 @@ describe("default culture selector", () => {
 		});
 	});
 
-	it("gets the default culture", () =>
-		expect(defaultCulture, "called with", [state], "to equal", "fr-FR"));
+	it("gets the default culture", () => expect(defaultCulture, "called with", [state], "to equal", "fr-FR"));
 });
 
 describe("orderedCultureList", () => {
@@ -254,4 +240,54 @@ describe("cultureOptionList", () => {
 		state = state.deleteIn(["locale", "supportedLocales"]);
 		expect(cultureOptionList, "called with", [state], "to satisfy", Immutable.List([]));
 	});
+});
+
+describe("cultureNameByIsoCode", () => {
+	let state;
+
+	const culturesList = [
+		{
+			cultureIso: "en-US",
+			cultureName: "English - United States",
+			sortOrder: 0,
+			isDefault: false,
+		},
+		{
+			cultureIso: "fr-FR",
+			cultureName: "French - France",
+			sortOrder: 0,
+			isDefault: true,
+		},
+	];
+	beforeEach(() => {
+		const cultures = Immutable.Map()
+			.set(culturesList[0].cultureIso, culturesList[0])
+			.set(culturesList[1].cultureIso, culturesList[1]);
+
+		state = Immutable.fromJS({
+			locale: {
+				cultures: cultures,
+			},
+		});
+	});
+
+	it("return culture name by culture iso code", () =>
+		expect(
+			cultureNameByIsoCode,
+			"when called with",
+			["en-US"],
+			"called with",
+			[state],
+			"to equal",
+			"English - United States",
+		));
+
+	it("return culture iso code if it is not found", () =>
+		expect(cultureNameByIsoCode, "when called with", ["it-IT"], "called with", [state], "to equal", "[it-IT]"));
+
+	it("return null if iso code is undefined", () =>
+		expect(cultureNameByIsoCode, "when called with", [undefined], "called with", [state], "to equal", null));
+
+	it("return null if iso code is null", () =>
+		expect(cultureNameByIsoCode, "when called with", [null], "called with", [state], "to equal", null));
 });

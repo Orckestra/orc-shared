@@ -22,7 +22,9 @@ describe("Checkbox Component", () => {
 	it("Fails if checkboxProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = <Checkbox checkboxProps="Wrong type" />;
-			expect(() => mount(component), "to throw a", TypeError);
+			expect(() => mount(component), "to throw a", TypeError).then(error => {
+				expect(error, "to have message", "checkboxProps property is not of type CheckboxProps");
+			});
 		});
 	});
 
@@ -33,6 +35,7 @@ describe("Checkbox Component", () => {
 		checkboxProps.set(CheckboxProps.propNames.update, update);
 		checkboxProps.set(CheckboxProps.propNames.value, true);
 		checkboxProps.set(CheckboxProps.propNames.label, aLabel);
+		checkboxProps.set(CheckboxProps.propNames.readOnly, false);
 
 		const component = <Checkbox checkboxProps={checkboxProps} />;
 
@@ -48,6 +51,7 @@ describe("Checkbox Component", () => {
 
 		checkboxProps.set(CheckboxProps.propNames.update, update);
 		checkboxProps.set(CheckboxProps.propNames.value, true);
+		checkboxProps.set(CheckboxProps.propNames.readOnly, false);
 
 		const component = <Checkbox checkboxProps={checkboxProps} />;
 
@@ -64,6 +68,7 @@ describe("Checkbox Component", () => {
 		checkboxProps.set(CheckboxProps.propNames.update, update);
 		checkboxProps.set(CheckboxProps.propNames.value, false);
 		checkboxProps.set(CheckboxProps.propNames.label, aLabel);
+		checkboxProps.set(CheckboxProps.propNames.readOnly, false);
 
 		ReactDOM.render(<Checkbox checkboxProps={checkboxProps} />, container);
 
@@ -82,6 +87,7 @@ describe("Checkbox Component", () => {
 		checkboxProps.set(CheckboxProps.propNames.update, update);
 		checkboxProps.set(CheckboxProps.propNames.value, true);
 		checkboxProps.set(CheckboxProps.propNames.label, aLabel);
+		checkboxProps.set(CheckboxProps.propNames.readOnly, false);
 
 		ReactDOM.render(<Checkbox checkboxProps={checkboxProps} />, container);
 
@@ -91,5 +97,23 @@ describe("Checkbox Component", () => {
 		const element = container.querySelector(".MuiCheckbox-root ");
 		element.dispatchEvent(clickEvent);
 		expect(update, "to have calls satisfying", [{ args: [false] }]);
+	});
+
+	it("Renders Checkbox readonly true component without errors", () => {
+		const checkboxProps = new CheckboxProps();
+		const aLabel = "aLabel";
+
+		checkboxProps.set(CheckboxProps.propNames.update, update);
+		checkboxProps.set(CheckboxProps.propNames.value, true);
+		checkboxProps.set(CheckboxProps.propNames.label, aLabel);
+		checkboxProps.set(CheckboxProps.propNames.readOnly, true);
+
+		const component = <Checkbox checkboxProps={checkboxProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <CheckboxMUI checked={true} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+		expect(mountedComponent.children().first().props().label, "to equal", "aLabel");
 	});
 });

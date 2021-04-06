@@ -4,18 +4,11 @@ import { selectRoutePath, selectRouteParams } from "../../selectors/navigation";
 import useNavigationHandler from "../../hooks/useNavigationHandler";
 import { unwrapImmutable } from "../../utils";
 
-const useScopeSelect = (id, closeSelector) => {
+export const useScopeSelect = id => {
 	const pattern = new UrlPattern(useSelector(selectRoutePath));
 	const params = unwrapImmutable(useSelector(selectRouteParams));
 	params.scope = id;
-	const [navigate, active] = useNavigationHandler(pattern.stringify(params));
-	return [
-		event => {
-			navigate(event);
-			closeSelector(event);
-		},
-		active,
-	];
+	return useNavigationHandler(pattern.stringify(params));
 };
 
 export default useScopeSelect;

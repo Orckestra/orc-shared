@@ -13,14 +13,11 @@ const makeOrcApiAction = (name, endpoint, method = "GET", configuration = {}) =>
 		"Content-Type": "application/json",
 	};
 	return makeApiAction(name, endpoint, method, {
+		// Bail out if an instance of this request is already running (or if passed bailout returns true)
+		bailout: state => state.getIn(["requests", "actives", name]) === true,
 		...configuration,
 		// Include authentication cookies
 		credentials: "include",
-		// Bail out if an instance of this request is already running (or if passed bailout returns true)
-		bailout: state =>
-			(typeof configuration.bailout === "function"
-				? !!configuration.bailout(state)
-				: !!configuration.bailout) || !!state.getIn(["requests", name]),
 		headers,
 		options,
 	});

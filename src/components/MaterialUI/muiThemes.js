@@ -116,12 +116,11 @@ const setThemeOverrides = theme => ({
 		...theme.MuiButtonBase,
 		root: {
 			...theme.root,
-			flexGrow: 1,
+			flexGrow: 0,
 			backgroundColor: "transparent",
 			borderColor: theme.palette.grey.borders,
 			borderWidth: 1,
 			boxSizing: "border-box",
-			minWidth: 64,
 			padding: theme.spacing(1, 2),
 			borderRadius: theme.shape.borderRadius,
 			color: theme.palette.text.primary,
@@ -148,10 +147,17 @@ const setThemeOverrides = theme => ({
 				boxShadow: `0 0 4px ${theme.palette.focus}`,
 				outline: "none",
 			},
+			"& + &": {
+				marginLeft: theme.spacing(1),
+			},
 		},
 	},
 	MuiButton: {
 		...theme.MuiButton,
+		root: {
+			padding: `${theme.spacing(0.8)} ${theme.spacing(1)}`,
+			height: theme.spacing(3),
+		},
 		/* Styles applied to the span element that wraps the children. */
 		label: {
 			...theme.label,
@@ -159,6 +165,9 @@ const setThemeOverrides = theme => ({
 			display: "inherit",
 			alignItems: "inherit",
 			justifyContent: "inherit",
+			"& .MuiTypography-root": {
+				fontFamily: theme.typography.button.fontFamily,
+			},
 		},
 		/* Styles applied to the root element if `variant="text"`. */
 		text: {
@@ -191,6 +200,7 @@ const setThemeOverrides = theme => ({
 		outlined: {
 			padding: theme.spacing(0.5, 1),
 			border: `1px solid ${theme.palette.type === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)"}`,
+			backgroundColor: "white",
 			"&$disabled": {
 				border: `1px solid ${theme.palette.action.disabledBackground}`,
 			},
@@ -202,6 +212,7 @@ const setThemeOverrides = theme => ({
 		outlinedPrimary: {
 			color: theme.palette.primary.main,
 			border: `1px solid ${fade(theme.palette.primary.main, 0.5)}`,
+			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.primary.main}`,
 				backgroundColor: fade(theme.palette.primary.main, theme.palette.action.hoverOpacity),
@@ -215,6 +226,7 @@ const setThemeOverrides = theme => ({
 		outlinedSecondary: {
 			color: theme.palette.secondary.main,
 			border: `1px solid ${fade(theme.palette.secondary.main, 0.5)}`,
+			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.secondary.main}`,
 				backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
@@ -436,6 +448,14 @@ const setThemeOverrides = theme => ({
 	},
 	MuiListItem: {
 		...theme.MuiListItem,
+		root: {
+			"&.Mui-selected": {
+				backgroundColor: theme.palette.primary.light,
+			},
+			"& + &": {
+				marginLeft: 0,
+			},
+		},
 		button: {
 			...theme.button,
 			color: theme.palette.grey.icon,
@@ -449,9 +469,9 @@ const setThemeOverrides = theme => ({
 		root: {
 			...theme.root,
 			...theme.typography.button,
-			color: theme.palette.grey.icon,
+			color: theme.palette.grey.dark,
 			"&:hover, &:hover .MuiListItemIcon-root, &hover .MuiListItemText-root": {
-				color: theme.palette.primary.light,
+				color: theme.palette.grey.dark,
 			},
 		},
 	},
@@ -473,21 +493,12 @@ const setThemeOverrides = theme => ({
 		root: {
 			...theme.root,
 			backgroundColor: theme.palette.grey.light,
-			paddingTop: theme.spacing(2),
 			position: "relative",
-			borderRadius: theme.spacing(1, 0, 0, 0),
-			"&:before": {
-				content: '""',
-				display: "flex",
-				position: "absolute",
-				borderBottom: `1px solid ${theme.palette.primary.main}`,
-				width: "100%",
-				bottom: 0,
-				zIndex: 10,
-			},
-			"& > .MuiTabs-scroller": {
-				marginLeft: theme.spacing(2),
-			},
+			minHeight: "auto",
+		},
+		indicator: {
+			...theme.indicator,
+			backgroundColor: "transparent",
 		},
 	},
 	MuiTab: {
@@ -499,10 +510,12 @@ const setThemeOverrides = theme => ({
 			border: `1px solid ${theme.palette.grey.borders}`,
 			borderRadius: theme.spacing(0.5, 0.5, 0, 0),
 			zIndex: 10,
+			height: theme.spacing(4.3),
+			minHeight: theme.spacing(4.3),
+			padding: `${theme.spacing(1.4)} ${theme.spacing(2)}`,
 			textTransform: "uppercase",
-			height: theme.spacing(4.8),
-			minHeight: theme.spacing(2.4),
 			flexGrow: 0,
+			borderBottom: `1px solid ${theme.palette.primary.main}`,
 			[theme.breakpoints.up("sm")]: {
 				minWidth: 0,
 			},
@@ -518,24 +531,34 @@ const setThemeOverrides = theme => ({
 			"&.Mui-selected": {
 				color: theme.palette.primary.main,
 				borderColor: theme.palette.primary.main,
-				zIndex: 10000,
 				borderBottom: `1px solid ${theme.palette.common.white}`,
-				marginBottom: -1,
 			},
 			"&.MuiTab-labelIcon svg": {
-				marginBottom: theme.spacing(0),
 				marginRight: theme.spacing(1),
 			},
 			"& .MuiTab-wrapper": {
 				flexDirection: "row",
 			},
+			"&.MuiButtonBase-root:focus, &.MuiButtonBase-root:active": {
+				boxShadow: "none",
+				borderRadius: `4px 4px 0 0`,
+			},
+			"& .MuiTypography-root": {
+				fontFamily: theme.typography.button.fontFamily,
+			},
+			"& + &": {
+				marginLeft: `0 !important`,
+			},
 		},
 		labelIcon: {
 			...theme.labelIcon,
-			height: theme.spacing(4.8),
-			minHeight: theme.spacing(2.4),
+			minHeight: theme.spacing(4.3),
+			padding: `${theme.spacing(1.4)} ${theme.spacing(2)} !important`,
 			"& path:not([fill='none'])": {
 				fill: "currentColor",
+			},
+			"& .MuiTab-wrapper > *:first-child": {
+				marginBottom: theme.spacing(0),
 			},
 		},
 	},
@@ -570,6 +593,7 @@ const setThemeOverrides = theme => ({
 		...theme.MuiInputBase,
 		root: {
 			...theme.root,
+			width: "100%",
 			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root": {
 				marginLeft: theme.spacing(1),
 			},
@@ -581,7 +605,6 @@ const setThemeOverrides = theme => ({
 			backgroundColor: theme.palette.background.paper,
 			border: `1px solid ${theme.palette.grey.borders}`,
 			fontSize: theme.typography.fontSize,
-			maxWidth: theme.spacing(20),
 			minWidth: theme.spacing(14),
 			padding: theme.spacing(0.6, 0.6, 0.6, 0.6),
 			transition: theme.transitions.create(["border-color", "box-shadow"]),
@@ -626,6 +649,9 @@ const setThemeOverrides = theme => ({
 			...theme.select,
 			minWidth: theme.spacing(13),
 			borderRadius: theme.shape.borderRadius,
+			"&.MuiSelect-select": {
+				flexShrink: 1,
+			},
 		},
 		outlined: {
 			padding: theme.spacing(0.4, 0.6, 0.4, 0.6),
@@ -700,6 +726,13 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiAccordion: {
+		...theme.MuiAccordion,
+		root: {
+			...theme.root,
+			boxShadow: "none",
+		},
+	},
 	MuiAccordionSummary: {
 		...theme.MuiAccordionSummary,
 		expandIcon: {
@@ -727,6 +760,10 @@ const setThemeOverrides = theme => ({
 				border: "1px solid",
 				borderColor: theme.palette.grey.icon,
 			},
+		},
+		popper: {
+			...theme.popper,
+			zIndex: 10000,
 		},
 	},
 	MuiRadio: {
@@ -798,11 +835,105 @@ const setThemeOverrides = theme => ({
 		...theme.MuiChip,
 		root: {
 			...theme.root,
+			height: theme.spacing(1.7),
+			fontSize: theme.spacing(1.1),
+			justifyContent: "left",
+			texTransform: "capitalize",
 			"&.Mui-disabled": {
-				opacity: 1
-			}
-		}
-	}
+				opacity: 1,
+			},
+		},
+		label: {
+			...theme.label,
+			paddingLeft: theme.spacing(1),
+			paddingRight: theme.spacing(1),
+		},
+	},
+	MuiTreeItem: {
+		...theme.MuiTreeItem,
+		root: {
+			...theme.root,
+			position: "relative",
+			marginBottom: theme.spacing(1),
+		},
+		label: {
+			...theme.label,
+			padding: 0,
+		},
+		content: {
+			...theme.content,
+			width: "auto",
+			"& > .MuiTreeItem-label": {
+				"&:hover": {
+					backgroundColor: `${theme.palette.primary.light}`,
+				},
+			},
+		},
+		selected: {
+			...theme.selected,
+			"& > .MuiTreeItem-content .MuiTreeItem-label": {
+				border: `1px solid ${theme.palette.primary.main}`,
+				backgroundColor: `${theme.palette.primary.light} !important`,
+			},
+		},
+		group: {
+			...theme.group,
+			borderLeft: `1px solid ${theme.palette.grey.icon}`,
+			"& > *": {
+				marginLeft: theme.spacing(2),
+				marginTop: theme.spacing(1.5),
+			},
+		},
+		iconContainer: {
+			...theme.iconContainer,
+			marginRight: theme.spacing(0.6),
+			width: "auto",
+			"& svg": {
+				fontSize: "10px",
+			},
+		},
+	},
+	MuiTimeline: {
+		root: {
+			...theme.root,
+			padding: 0,
+			marginTop: 0,
+		},
+	},
+	MuiTimelineContent: {
+		root: {
+			...theme.root,
+			flex: 13,
+			padding: theme.spacing(0, 2, 1),
+		},
+	},
+	MuiTimelineOppositeContent: {
+		root: {
+			...theme.root,
+			flex: 1,
+			padding: theme.spacing(0, 2, 1),
+		},
+	},
+	MuiTimelineDot: {
+		root: {
+			...theme.root,
+			marginTop: 0,
+			marginBottom: 0,
+			padding: theme.spacing(0.8),
+			borderWidth: "1px",
+		},
+		outlinedGrey: {
+			...theme.outlinedGrey,
+			borderColor: theme.palette.grey.icon,
+		},
+	},
+	MuiTimelineConnector: {
+		root: {
+			...theme.root,
+			width: "1px",
+			backgroundColor: theme.palette.grey.icon,
+		},
+	},
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {
