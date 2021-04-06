@@ -94,6 +94,234 @@ describe("hasValidationErrors", () => {
 
 		expect(show, "to be true");
 	});
+
+	it("Retrieves false if model with specified validation map rules is valid", () => {
+		const editState = {
+			field1: {
+				state: {
+					value: "something",
+				},
+				isValid: () => true,
+			},
+			field2: {
+				state: {
+					field3: {
+						b: {
+							c: {
+								p4: {
+									value: "qwe4",
+								},
+								p6: {
+									i1: {
+										value: "xzc1",
+									},
+									i2: {
+										value: "zxc2",
+									},
+								},
+							},
+						},
+						d: {
+							e: {
+								value: "123",
+							},
+						},
+					},
+				},
+				isValid: (_, path, __) => true,
+			},
+		};
+
+		const validationMap = {
+			field2: {
+				map: [
+					{
+						path: "field3.b.c",
+						elements: [
+							{
+								path: "p4",
+								errorTypes: ["firstSpecificErrorType"],
+							},
+							{
+								path: "p6.pi1",
+								errorTypes: ["thirdSpecificErrorType"],
+							},
+							{
+								path: "p6.pi2",
+								errorTypes: ["fourthSpecificErrorType"],
+							},
+						],
+						errorTypes: ["secondGeneralErrorType"],
+					},
+					{
+						path: "field3.d.e",
+						errorTypes: ["thirdGeneralErrorType"],
+					},
+				],
+				errorTypes: ["globalErrorType"],
+			},
+		};
+
+		const hasErrors = hasValidationErrors(editState, validationMap);
+
+		expect(hasErrors, "to be false");
+	});
+
+	it("Retrieves true if model with specified validation map rules is not valid for one of nested paths", () => {
+		const editState = {
+			field1: {
+				state: {
+					value: "something",
+				},
+				isValid: () => true,
+			},
+			field2: {
+				state: {
+					field3: {
+						b: {
+							c: {
+								p4: {
+									value: "qwe4",
+								},
+								p6: {
+									i1: {
+										value: "xzc1",
+									},
+									i2: {
+										value: "zxc2",
+									},
+								},
+							},
+						},
+						d: {
+							e: {
+								value: "123",
+							},
+						},
+					},
+				},
+				isValid: (_, path, __) => {
+					if (path === "field2.field3.b.c.p6.pi2") {
+						return false;
+					} else {
+						return true;
+					}
+				},
+			},
+		};
+
+		const validationMap = {
+			field2: {
+				map: [
+					{
+						path: "field3.b.c",
+						elements: [
+							{
+								path: "p4",
+								errorTypes: ["firstSpecificErrorType"],
+							},
+							{
+								path: "p6.pi1",
+								errorTypes: ["thirdSpecificErrorType"],
+							},
+							{
+								path: "p6.pi2",
+								errorTypes: ["fourthSpecificErrorType"],
+							},
+						],
+						errorTypes: ["secondGeneralErrorType"],
+					},
+					{
+						path: "field3.d.e",
+						errorTypes: ["thirdGeneralErrorType"],
+					},
+				],
+				errorTypes: ["globalErrorType"],
+			},
+		};
+
+		const hasErrors = hasValidationErrors(editState, validationMap);
+
+		expect(hasErrors, "to be true");
+	});
+
+	it("Retrieves true if model with specified validation map rules is not valid", () => {
+		const editState = {
+			field1: {
+				state: {
+					value: "something",
+				},
+				isValid: () => true,
+			},
+			field2: {
+				state: {
+					field3: {
+						b: {
+							c: {
+								p4: {
+									value: "qwe4",
+								},
+								p6: {
+									i1: {
+										value: "xzc1",
+									},
+									i2: {
+										value: "zxc2",
+									},
+								},
+							},
+						},
+						d: {
+							e: {
+								value: "123",
+							},
+						},
+					},
+				},
+				isValid: (_, path, __) => {
+					if (path === "field2.field3.d.e") {
+						return false;
+					} else {
+						return true;
+					}
+				},
+			},
+		};
+
+		const validationMap = {
+			field2: {
+				map: [
+					{
+						path: "field3.b.c",
+						elements: [
+							{
+								path: "p4",
+								errorTypes: ["firstSpecificErrorType"],
+							},
+							{
+								path: "p6.pi1",
+								errorTypes: ["thirdSpecificErrorType"],
+							},
+							{
+								path: "p6.pi2",
+								errorTypes: ["fourthSpecificErrorType"],
+							},
+						],
+						errorTypes: ["secondGeneralErrorType"],
+					},
+					{
+						path: "field3.d.e",
+						errorTypes: ["thirdGeneralErrorType"],
+					},
+				],
+				errorTypes: ["globalErrorType"],
+			},
+		};
+
+		const hasErrors = hasValidationErrors(editState, validationMap);
+
+		expect(hasErrors, "to be true");
+	});
 });
 
 describe("hasMultipleFieldValidationErrors", () => {
