@@ -11,6 +11,7 @@ describe("Select Props", () => {
 			"positionOverride",
 			"iconSelect",
 			"disabled",
+			"error",
 		];
 
 		expect(SelectProps.propNames, "to have keys", propNames);
@@ -26,6 +27,7 @@ describe("Select Props", () => {
 			"positionOverride",
 			"iconSelect",
 			"disabled",
+			"error",
 		];
 
 		const selectProps = new SelectProps();

@@ -95,6 +95,8 @@ const InputBase = ({ inputProps }) => {
 	const errorPosition = inputProps?.get(InputBaseProps.propNames.errorPosition);
 	const disabled = inputProps?.get(InputBaseProps.propNames.disabled) || false;
 	const onBlur = inputProps?.get(InputBaseProps.propNames.onBlur) || null;
+	const startAdornment = inputProps?.get(InputBaseProps.propNames.startAdornment);
+	const endAdornment = inputProps?.get(InputBaseProps.propNames.endAdornment);
 
 	const classes = useStyles({ label, errorPosition });
 
@@ -128,6 +130,8 @@ const InputBase = ({ inputProps }) => {
 					inputProps={inputAttributes}
 					disabled={disabled}
 					multiline={multiline}
+					startAdornment={startAdornment}
+					endAdornment={endAdornment}
 					rows={4}
 				/>
 			</div>

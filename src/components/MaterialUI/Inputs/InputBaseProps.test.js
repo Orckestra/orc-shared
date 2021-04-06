@@ -13,6 +13,9 @@ describe("InputBase Props", () => {
 			"inputAttributes",
 			"disabled",
 			"multiline",
+			"onBlur",
+			"startAdornment",
+			"endAdornment",
 		];
 
 		expect(InputBaseProps.propNames, "to have keys", propNames);
@@ -31,6 +34,8 @@ describe("InputBase Props", () => {
 			"disabled",
 			"multiline",
 			"onBlur",
+			"startAdornment",
+			"endAdornment",
 		];
 
 		const ruleNames = ["input", "errorText"];
