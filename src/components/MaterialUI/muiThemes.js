@@ -144,7 +144,7 @@ const setThemeOverrides = theme => ({
 			"&$disabled": {
 				color: theme.palette.action.disabled,
 			},
-			"&:focus, &:active": {
+			"&:focus, &:active, &.Mui-focusVisible": {
 				borderRadius: theme.shape.borderRadius,
 				borderColor: theme.palette.focus,
 				boxShadow: `0 0 4px ${theme.palette.focus}`,

@@ -55,7 +55,6 @@ const ExpectComponentToBeRenderedProperly = radioProps => {
 					x.key === `radiobutton_${radio.value}` &&
 					x.props &&
 					x.props.control.type.options.name === "MuiRadio" &&
-					x.props.name === radio.value &&
 					x.props.value === radio.value &&
 					x.props.label === radio.label &&
 					x.props.disabled === disabled,
