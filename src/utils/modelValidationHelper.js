@@ -1,9 +1,14 @@
-import { isStringNullOrWhitespace } from "./propertyValidator";
+import { isStringNullOrWhitespace, isString, isPropertyBagAttribute } from "./propertyValidator";
 import { validationErrorTypes } from "../constants";
 import { isEmpty } from "lodash";
 
 export const validationRules = {
-	[validationErrorTypes.fieldIsRequired]: value => (isStringNullOrWhitespace(value) ? false : true),
+	[validationErrorTypes.fieldIsRequired]: value => {
+		if (isString(value) && isStringNullOrWhitespace(value)) return false;
+		if (isPropertyBagAttribute(value) && isString(value.value) && isStringNullOrWhitespace(value.value)) return false;
+
+		return true;
+	},
 };
 
 export const showError = field => {

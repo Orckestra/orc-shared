@@ -18,6 +18,27 @@ describe("validationRules", () => {
 
 		expect(isValid, "to be true");
 	});
+
+	it("validates fieldIsRequired rule correctly when its value is Attribute and not empty", () => {
+		const isValid = validationRules[validationErrorTypes.fieldIsRequired]({
+			value: "something",
+			__type: "ValueOfInt32",
+		});
+
+		expect(isValid, "to be true");
+	});
+
+	it("validates fieldIsRequired rule correctly when its value is Attribut and empty", () => {
+		const isValid = validationRules[validationErrorTypes.fieldIsRequired]({ value: "", __type: "ValueOfInt32" });
+
+		expect(isValid, "to be false");
+	});
+
+	it("validates fieldIsRequired rule correctly when its value is Attribut and undefined", () => {
+		const isValid = validationRules[validationErrorTypes.fieldIsRequired]({ value: undefined, __type: "ValueOfInt32" });
+
+		expect(isValid, "to be false");
+	});
 });
 
 describe("showError", () => {

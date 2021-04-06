@@ -1,4 +1,10 @@
-import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "./propertyValidator";
+import {
+	isString,
+	isObject,
+	isStringNullOrWhitespace,
+	isReactComponent,
+	isPropertyBagAttribute,
+} from "./propertyValidator";
 import React from "react";
 
 describe("isString", () => {
@@ -69,5 +75,19 @@ describe("isReactComponent", () => {
 		expect(isReactComponent(null), "to be false");
 
 		expect(isReactComponent(notReactComponent), "to be false");
+	});
+});
+
+describe("isPropertyBagAttribute", () => {
+	it("Retrives true when passed value is Attribute", () => {
+		const value = { value: "value", __type: "ValueOfInt32" };
+
+		expect(isPropertyBagAttribute(value), "to be true");
+	});
+
+	it("Retrives false when passed value is not an Attribute", () => {
+		const value = ["not attribute"];
+
+		expect(isPropertyBagAttribute(value), "to be false");
 	});
 });
