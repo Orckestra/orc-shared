@@ -244,7 +244,7 @@ const setThemeOverrides = theme => ({
 		},
 		/* Styles applied to the root element if `variant="contained"`. */
 		contained: {
-			color: theme.palette.getContrastText(theme.palette.grey.light),
+			color: theme.palette.grey.dark,
 			backgroundColor: theme.palette.grey.light,
 			border: `1px solid ${theme.palette.grey.borders}`,
 			boxShadow: theme.shadows[2],
