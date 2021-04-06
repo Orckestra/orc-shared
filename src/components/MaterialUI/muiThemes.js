@@ -249,7 +249,7 @@ const setThemeOverrides = theme => ({
 			border: `1px solid ${theme.palette.grey.borders}`,
 			boxShadow: theme.shadows[2],
 			"&:hover": {
-				backgroundColor: darken(theme.palette.grey.light, theme.palette.action.hoverOpacity),
+				backgroundColor: "#D9D9D9",
 				boxShadow: theme.shadows[4],
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
