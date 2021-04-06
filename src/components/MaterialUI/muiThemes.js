@@ -94,6 +94,9 @@ const commonPalette = {
 		tabs: "#EFEFEF",
 		app: "#333",
 	},
+	action: {
+		disabledBackground: "#EFEFEF",
+	},
 };
 
 const setThemeProps = theme => ({

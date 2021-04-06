@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import clsx from "clsx";
 import Icon from "../../Icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -42,6 +43,10 @@ const useStyles = makeStyles(theme => ({
 			},
 		},
 	},
+	disabled: {
+		border: `1px solid ${theme.palette.grey.light} !important`,
+		backgroundColor: `${theme.palette.grey.light} !important`,
+	},
 	calendarIcon: {
 		fontSize: theme.fontSize,
 	},
@@ -70,6 +75,7 @@ const WrappedDatePicker = ({
 	const classes = useStyles({ readOnly });
 	const parsedValue = new Date(value || "1970/01/01");
 	const [startDate, setStartDate] = useState(parsedValue);
+	var disabledCls = clsx({ [classes.disabled]: props.disabled });
 
 	const updateDate = date => {
 		if (onChange) {
@@ -79,7 +85,7 @@ const WrappedDatePicker = ({
 	};
 
 	return (
-		<label className={classes.datePickerWrapper}>
+		<label className={clsx(classes.datePickerWrapper, disabledCls)}>
 			<div className={classes.datePickerContainer}>
 				<DatePicker
 					{...props}
