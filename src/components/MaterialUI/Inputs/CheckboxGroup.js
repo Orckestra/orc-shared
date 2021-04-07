@@ -33,7 +33,7 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 	const error = checkboxGroupProps?.get(CheckboxGroupProps.propNames.error);
 	const readOnly = checkboxGroupProps?.get(CheckboxGroupProps.propNames.readOnly) || false;
 	const disabled = checkboxGroupProps?.get(CheckboxGroupProps.propNames.disabled) || false;
-	const options = checkboxGroupProps?.get(CheckboxGroupProps.propNames.options);
+	const options = checkboxGroupProps?.get(CheckboxGroupProps.propNames.options) ?? [];
 
 	const handleGroupUpdate = (checked, value, newValue) => {
 		let values = value ? value.split("|") : [];
@@ -52,14 +52,14 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 	const checkBoxGroup = (
 		<div className={classes.container}>
 			<div className={classes.checkBoxContainer}>
-				{options.map(option => {
+				{options.map((option, index) => {
 					const checkboxProps = new CheckboxProps();
 					checkboxProps.set(CheckboxProps.propNames.update, checked => handleGroupUpdate(checked, value, option.value));
 					checkboxProps.set(CheckboxProps.propNames.value, value?.includes(option.value));
-					checkboxProps.set(CheckboxProps.propNames.label, option.label);
+					checkboxProps.set(CheckboxProps.propNames.label, option.label ?? option.value);
 					checkboxProps.set(CheckboxProps.propNames.readOnly, readOnly);
 					checkboxProps.set(CheckboxProps.propNames.disabled, disabled);
-					return <Checkbox checkboxProps={checkboxProps} />;
+					return <Checkbox key={index} checkboxProps={checkboxProps} />;
 				})}
 			</div>
 			{error && <div className={classes.errorText}>{error}</div>}

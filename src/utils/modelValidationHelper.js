@@ -1,4 +1,4 @@
-import { isStringNullOrWhitespace, isString, isPropertyBagAttribute } from "./propertyValidator";
+import { isStringNullOrWhitespace, isString } from "./propertyValidator";
 import { validationErrorTypes } from "../constants";
 import { isEmpty } from "lodash";
 
@@ -6,7 +6,6 @@ export const validationRules = {
 	[validationErrorTypes.fieldIsRequired]: value => {
 		if (value === null || value === undefined) return false;
 		if (isString(value) && isStringNullOrWhitespace(value)) return false;
-		if (isPropertyBagAttribute(value) && isString(value.value) && isStringNullOrWhitespace(value.value)) return false;
 
 		return true;
 	},

@@ -77,17 +77,3 @@ describe("isReactComponent", () => {
 		expect(isReactComponent(notReactComponent), "to be false");
 	});
 });
-
-describe("isPropertyBagAttribute", () => {
-	it("Retrives true when passed value is Attribute", () => {
-		const value = { value: "value", __type: "ValueOfInt32" };
-
-		expect(isPropertyBagAttribute(value), "to be true");
-	});
-
-	it("Retrives false when passed value is not an Attribute", () => {
-		const value = ["not attribute"];
-
-		expect(isPropertyBagAttribute(value), "to be false");
-	});
-});
