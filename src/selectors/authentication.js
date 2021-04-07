@@ -32,3 +32,15 @@ export const hasAdministratorPermissions = roleGroup =>
 		}
 		return false;
 	});
+
+export const hasReaderPermissions = roleGroup =>
+	createSelector(selectGroupRolesClaims(roleGroup), getCurrentScope, (appRolesClaims, currentScope) => {
+		if (appRolesClaims != null) {
+			console.log("appRolesClaims", appRolesClaims);
+			return (
+				!!appRolesClaims.getIn(["*", platformRoles.Reader]) ||
+				!!appRolesClaims.getIn([currentScope, platformRoles.Reader])
+			);
+		}
+		return false;
+	});
