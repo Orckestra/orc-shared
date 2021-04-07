@@ -52,6 +52,7 @@
 		}
 	],
 	"devDependencies": {
+  "jest": "^26.1.0",
 		"orc-scripts": "1.1.0-dev.22"
 	},
 	"peerDependencies": {
