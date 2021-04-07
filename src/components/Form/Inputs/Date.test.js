@@ -20,18 +20,20 @@ describe("DateInput", () => {
 			"when mounted",
 			"to satisfy",
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<label>
-					<div>
-						<div className="react-datepicker-wrapper">
-							<div className="react-datepicker__input-container">
-								<input value="06/30/2020" onChange={() => {}} />
+				<div>
+					<label>
+						<div>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value="06/30/2020" onChange={() => {}} />
+								</div>
 							</div>
 						</div>
-					</div>
-					<div>
-						<Ignore />
-					</div>
-				</label>
+						<div>
+							<Ignore />
+						</div>
+					</label>
+				</div>
 			</TestWrapper>,
 		));
 });

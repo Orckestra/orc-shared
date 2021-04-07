@@ -1,10 +1,4 @@
-import {
-	isString,
-	isObject,
-	isStringNullOrWhitespace,
-	isReactComponent,
-	isPropertyBagAttribute,
-} from "./propertyValidator";
+import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "./propertyValidator";
 import React from "react";
 
 describe("isString", () => {
