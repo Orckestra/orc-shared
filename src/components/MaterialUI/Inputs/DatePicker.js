@@ -79,14 +79,12 @@ const WrappedDatePicker = ({
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
-	const parsedValue = value ? new Date(value) : null;
-	const [startDate, setStartDate] = useState(parsedValue);
+	const startDate = value ? new Date(value) : null;
 
 	const updateDate = date => {
 		if (onChange) {
 			onChange(date);
 		}
-		setStartDate(date);
 	};
 
 	return (
