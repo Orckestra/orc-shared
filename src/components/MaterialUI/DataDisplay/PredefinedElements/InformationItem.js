@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fontSize,
 		color: theme.palette.grey.dark,
 		fontFamily: theme.typography.fontFamily,
+		minHeight: theme.spacing(1.8),
 	},
 	container: {
 		width: "100%",

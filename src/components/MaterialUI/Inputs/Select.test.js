@@ -75,6 +75,47 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Select component with an error message", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.error, "an error message");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<div>
+				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+					<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
+						<MenuItem key="aValue" value="aValue">
+							<TooltippedTypography children="aLabel" titleValue="aLabel" />
+						</MenuItem>
+						<MenuItem key="anotherValue" value="anotherValue">
+							<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+						</MenuItem>
+					</SelectMUI>
+				</TestWrapper>
+				<div>an error message</div>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Renders Select component with position override without errors", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },

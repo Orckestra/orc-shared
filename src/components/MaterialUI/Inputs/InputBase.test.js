@@ -120,4 +120,42 @@ describe("InputBase Component", () => {
 
 		expect(errorContainer, "when mounted", "to have style rules satisfying", "to contain", "float: right");
 	});
+
+	it("Renders InputBase with start adornment", () => {
+		const inputProps = new InputBaseProps();
+		const aValue = "value";
+		const aPlaceholder = "placeholder";
+		const aStart = "$ ";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.placeholder, aPlaceholder);
+		inputProps.set(InputBaseProps.propNames.startAdornment, aStart);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} placeholder={aPlaceholder} startAdornment={aStart} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders InputBase with end adornment", () => {
+		const inputProps = new InputBaseProps();
+		const aValue = "value";
+		const aPlaceholder = "placeholder";
+		const anEnd = " $";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.placeholder, aPlaceholder);
+		inputProps.set(InputBaseProps.propNames.endAdornment, anEnd);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} placeholder={aPlaceholder} endAdornment={anEnd} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
 });
