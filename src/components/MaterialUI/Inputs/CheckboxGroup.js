@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 		marginTop: theme.spacing(0.5),
 		color: theme.palette.error.main,
 		fontSize: theme.typography.fieldLabelSize,
-		float: props => (props.errorPosition === "right" ? "right" : "left"),
+		float: "left",
 	},
 }));
 

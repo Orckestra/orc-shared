@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { mount } from "enzyme";
 import CheckboxGroup from "./CheckboxGroup";
 import Checkbox from "./Checkbox";
-import CheckboxMUI from "@material-ui/core/Checkbox";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import CheckboxGroupProps from "./CheckboxGroupProps";
@@ -42,7 +41,6 @@ describe("CheckboxGroup Component", () => {
 		props.set(CheckboxGroupProps.propNames.options, options);
 		const component = <CheckboxGroup checkboxGroupProps={props} />;
 
-		//const mountedComponent = mount(component);
 		const checkbox1Props = new CheckboxProps();
 		checkbox1Props.set(CheckboxProps.propNames.update, update);
 		checkbox1Props.set(CheckboxProps.propNames.value, true);
@@ -66,5 +64,87 @@ describe("CheckboxGroup Component", () => {
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders CheckboxGroup component without errors when options are not specified", () => {
+		const props = new CheckboxGroupProps();
+
+		props.set(CheckboxGroupProps.propNames.update, update);
+		props.set(CheckboxGroupProps.propNames.value, "option1");
+
+		const component = <CheckboxGroup checkboxGroupProps={props} />;
+
+		const expected = (
+			<div>
+				<div></div>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders CheckboxGroup component with error", () => {
+		const props = new CheckboxGroupProps();
+
+		props.set(CheckboxGroupProps.propNames.update, update);
+		props.set(CheckboxGroupProps.propNames.value, "option1");
+		props.set(CheckboxGroupProps.propNames.error, "some error");
+
+		const component = <CheckboxGroup checkboxGroupProps={props} />;
+
+		const expected = (
+			<div>
+				<div></div>
+				<div>{"some error"}</div>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders CheckboxGroup component with label", () => {
+		const props = new CheckboxGroupProps();
+
+		props.set(CheckboxGroupProps.propNames.update, update);
+		props.set(CheckboxGroupProps.propNames.value, "option1");
+		props.set(CheckboxGroupProps.propNames.label, "aLabel");
+
+		const component = <CheckboxGroup checkboxGroupProps={props} />;
+		const mountedComponent = mount(component);
+		expect(mountedComponent.children().first().props().label, "to equal", "aLabel");
+	});
+
+	it("CheckboxGroup component handles uncheck", async () => {
+		const checkboxProps = new CheckboxGroupProps();
+		const options = [{ value: "option1", sortOrder: 1 }];
+		checkboxProps.set(CheckboxGroupProps.propNames.update, update);
+		checkboxProps.set(CheckboxGroupProps.propNames.value, "option1");
+		checkboxProps.set(CheckboxGroupProps.propNames.options, options);
+
+		ReactDOM.render(<CheckboxGroup checkboxGroupProps={checkboxProps} />, container);
+
+		const clickEvent = document.createEvent("MouseEvents");
+		clickEvent.initEvent("click", true, false);
+
+		const element = container.querySelector(".MuiCheckbox-root ");
+		element.dispatchEvent(clickEvent);
+		expect(update, "to have calls satisfying", [{ args: [""] }]);
+	});
+
+	it("CheckboxGroup component handles check", async () => {
+		const checkboxProps = new CheckboxGroupProps();
+		const options = [{ value: "option1", sortOrder: 1 }];
+		checkboxProps.set(CheckboxGroupProps.propNames.update, update);
+		checkboxProps.set(CheckboxGroupProps.propNames.value, "");
+		checkboxProps.set(CheckboxGroupProps.propNames.options, options);
+
+		ReactDOM.render(<CheckboxGroup checkboxGroupProps={checkboxProps} />, container);
+
+		const clickEvent = document.createEvent("MouseEvents");
+		clickEvent.initEvent("click", true, false);
+
+		const element = container.querySelector(".MuiCheckbox-root ");
+		element.dispatchEvent(clickEvent);
+		expect(update, "to have calls satisfying", [{ args: ["option1"] }]);
 	});
 });
