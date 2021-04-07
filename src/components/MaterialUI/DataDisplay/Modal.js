@@ -24,7 +24,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	containerWide: {
 		minWidth: theme.spacing(106.4),
-		maxHeight: `calc(100% - 80px)`,
+		height: `calc(100% - 80px)`,
+		maxHeight: theme.spacing(73),
 	},
 	containerFullwidth: {
 		minWidth: `calc(100% - 80px)`,
