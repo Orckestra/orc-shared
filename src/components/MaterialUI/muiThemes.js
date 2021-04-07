@@ -413,13 +413,25 @@ const setThemeOverrides = theme => ({
 			padding: theme.spacing(0.4, 1, 0.3, 1),
 			color: theme.palette.grey.icon,
 			borderRadius: theme.shape.borderRadius,
-			border: `1px solid ${theme.palette.grey.borders}`,
+			border: `1px solid ${theme.palette.grey.icon}`,
 			minWidth: "auto",
 			"& g:not([id*='Close']) path:not([fill='none'])": {
 				fill: "currentColor",
 			},
 			"& + .MuiButton-root, & + .MuiIconButton-root, & + .MuiInputBase-root": {
 				marginLeft: theme.spacing(1),
+			},
+			"&[variant='outlined']": {
+				backgroundColor: "#fff",
+				"&:hover": {
+					backgroundColor: theme.palette.grey.lighter,
+				},
+			},
+			"&[variant='contained']": {
+				backgroundColor: theme.palette.grey.light,
+				"&:hover": {
+					backgroundColor: theme.palette.grey.borders,
+				},
 			},
 		},
 		label: {
