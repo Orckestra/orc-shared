@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 		width: theme.spacing(1.6),
 		height: theme.spacing(1.6),
 		borderRadius: "50%",
-		".MuiRadio-root:focus &, .MuiRadio-root:active &": {
+		".MuiRadio-root:focus &, .MuiRadio-root:active &, .MuiRadio-root.Mui-focusVisible &": {
 			boxShadow: `0 0 4px ${theme.palette.focus}`,
 			outline: "none",
 		},
@@ -99,7 +99,6 @@ const Radio = ({ radioProps }) => {
 					return (
 						<FormControlLabel
 							key={`radiobutton_${radio.value}`}
-							name={radio.value}
 							value={radio.value}
 							label={radio.label}
 							disabled={disabled}
