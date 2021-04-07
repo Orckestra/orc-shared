@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import classNames from "classnames";
 import Icon from "../../Icon";
 import DatePicker from "react-datepicker";
@@ -7,6 +7,10 @@ import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
+	container: {
+		display: "flex",
+		flexDirection: "column",
+	},
 	datePickerWrapper: {
 		display: "flex",
 		width: "auto",
@@ -58,6 +62,12 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		justifyContent: "flex-end",
 	},
+	errorText: {
+		marginTop: theme.spacing(0.5),
+		color: theme.palette.error.main,
+		fontSize: theme.typography.fieldLabelSize,
+		float: props => (props.errorPosition === "right" ? "right" : "left"),
+	},
 }));
 
 const WrappedDatePicker = ({
@@ -70,42 +80,44 @@ const WrappedDatePicker = ({
 	timeInputLabel,
 	readOnly,
 	showTimeSelectOnly,
+	error,
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
-	const parsedValue = new Date(value || "1970/01/01");
-	const [startDate, setStartDate] = useState(parsedValue);
+	const startDate = value ? new Date(value) : null;
 	var disabledCls = classNames({ [classes.disabled]: props.disabled });
 
 	const updateDate = date => {
 		if (onChange) {
 			onChange(date);
 		}
-		setStartDate(date);
 	};
 
 	return (
-		<label className={classNames(classes.datePickerWrapper, disabledCls)}>
-			<div className={classes.datePickerContainer}>
-				<DatePicker
-					{...props}
-					dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
-					selected={startDate}
-					onChange={date => updateDate(date)}
-					showTimeInput={useTime ?? false}
-					useTime={useTime ?? false}
-					customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
-					timeInputLabel={timeInputLabel ?? ""}
-					readOnly={readOnly}
-					showTimeSelectOnly={showTimeSelectOnly}
-				/>
-			</div>
-			{!readOnly ? (
-				<div className={classes.iconContainer}>
-					<Icon className={classes.calendarIcon} id={showTimeSelectOnly ? "clock" : "calendar-date"} />
+		<div className={classes.container}>
+			<label className={classNames(classes.datePickerWrapper, disabledCls)}>
+				<div className={classes.datePickerContainer}>
+					<DatePicker
+						{...props}
+						dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
+						selected={startDate}
+						onChange={date => updateDate(date)}
+						showTimeInput={useTime ?? false}
+						useTime={useTime ?? false}
+						customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
+						timeInputLabel={timeInputLabel ?? ""}
+						readOnly={readOnly}
+						showTimeSelectOnly={showTimeSelectOnly}
+					/>
 				</div>
-			) : null}
-		</label>
+				{!readOnly ? (
+					<div className={classes.iconContainer}>
+						<Icon className={classes.calendarIcon} id={showTimeSelectOnly ? "clock" : "calendar-date"} />
+					</div>
+				) : null}
+			</label>
+			{error && <div className={classes.errorText}>{error}</div>}
+		</div>
 	);
 };
 

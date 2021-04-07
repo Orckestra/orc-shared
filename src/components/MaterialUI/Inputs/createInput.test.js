@@ -3,12 +3,14 @@ import { createInput, inputTypes } from "./createInput";
 import {
 	InputBase,
 	Checkbox,
+	CheckboxGroup,
 	Radio,
 	Select,
 	StandaloneRadio,
 	Switch,
 	InputBaseProps,
 	CheckboxProps,
+	CheckboxGroupProps,
 	RadioProps,
 	SelectProps,
 	StandaloneRadioProps,
@@ -51,6 +53,34 @@ describe("createInput", () => {
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<Checkbox checkboxProps={checkboxProps} />
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Creates CheckboxGroup correctly", () => {
+		const options = [
+			{ value: "option1", sortOrder: 1 },
+			{ value: "option2", sortOrder: 2 },
+			{ value: "option3", sortOrder: 3 },
+		];
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				{createInput(inputTypes.checkboxGroup, {
+					value: "option1|option2",
+					options,
+				})}
+			</TestWrapper>
+		);
+
+		const checkboxGroupProps = new CheckboxGroupProps();
+		checkboxGroupProps.set(CheckboxGroupProps.propNames.value, "option1|option2");
+		checkboxGroupProps.set(CheckboxGroupProps.propNames.options, options);
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<CheckboxGroup checkboxGroupProps={checkboxGroupProps} />
 			</TestWrapper>
 		);
 

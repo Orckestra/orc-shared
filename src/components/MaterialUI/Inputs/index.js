@@ -1,6 +1,9 @@
 export { default as Checkbox } from "./Checkbox";
 export { default as CheckboxProps } from "./CheckboxProps";
 
+export { default as CheckboxGroup } from "./CheckboxGroup";
+export { default as CheckboxGroupProps } from "./CheckboxGroupProps";
+
 export { default as DatePicker } from "./DatePicker";
 
 export { default as InputBase } from "./InputBase";

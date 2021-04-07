@@ -16,9 +16,7 @@ describe("DatePicker", () => {
 	it("sets up a date to locale (en-US)", () =>
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker onChange={updater} value={"2020/06/30"} />
-				</div>
+				<DatePicker onChange={updater} value={"2020/06/30"} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -40,12 +38,10 @@ describe("DatePicker", () => {
 			</TestWrapper>,
 		));
 
-	it("sets up a default date to locale (en-US)", () =>
+	it("sets up a default empty date", () =>
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker onChange={updater} />
-				</div>
+				<DatePicker onChange={updater} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -55,7 +51,7 @@ describe("DatePicker", () => {
 						<div>
 							<div className="react-datepicker-wrapper">
 								<div className="react-datepicker__input-container">
-									<input value="01/01/1970" onChange={() => {}} />
+									<input value="" onChange={() => {}} />
 								</div>
 							</div>
 						</div>
@@ -72,9 +68,7 @@ describe("DatePicker", () => {
 		const expectedDate = "06/30/2020 5:00 AM";
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker useTime={true} onChange={updater} value={date} />
-				</div>
+				<DatePicker useTime={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -102,9 +96,7 @@ describe("DatePicker", () => {
 		const expectedDate = "06/30/2020 5:00 PM";
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker useTime={true} onChange={updater} value={date} />
-				</div>
+				<DatePicker useTime={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -132,9 +124,7 @@ describe("DatePicker", () => {
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker useTime={true} onChange={updater} value={date} />
-				</div>
+				<DatePicker useTime={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -162,9 +152,7 @@ describe("DatePicker", () => {
 		const expectedTime = "12:00 AM";
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker useTime={true} useDate={false} onChange={updater} value={date} />
-				</div>
+				<DatePicker useTime={true} useDate={false} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -192,9 +180,7 @@ describe("DatePicker", () => {
 		const expectedTime = "12:00 AM";
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker useTime={true} useDate={false} onChange={updater} value={date} showTimeSelectOnly={true} />
-				</div>
+				<DatePicker useTime={true} useDate={false} onChange={updater} value={date} showTimeSelectOnly={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -222,9 +208,7 @@ describe("DatePicker", () => {
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
 			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
-				</div>
+				<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -246,11 +230,12 @@ describe("DatePicker", () => {
 
 	it("should call onChange prop", () => {
 		const onChangeMock = jest.fn();
+		const date = new Date("2020-06-30T00:00:00");
 		const event = {
 			preventDefault() {},
 			target: { value: "" },
 		};
-		const component = mount(<DatePicker onChange={onChangeMock} />);
+		const component = mount(<DatePicker onChange={onChangeMock} value={date} />);
 
 		const input = component.find("input");
 		expect(input.length, "to equal", 1);
