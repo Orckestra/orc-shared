@@ -2,12 +2,14 @@ import React from "react";
 import {
 	InputBase,
 	Checkbox,
+	CheckboxGroup,
 	Radio,
 	Select,
 	StandaloneRadio,
 	Switch,
 	InputBaseProps,
 	CheckboxProps,
+	CheckboxGroupProps,
 	RadioProps,
 	SelectProps,
 	StandaloneRadioProps,
@@ -17,6 +19,7 @@ import {
 export const inputTypes = {
 	inputBase: "inputBase",
 	checkbox: "checkbox",
+	checkboxGroup: "checkboxGroup",
 	radio: "radio",
 	select: "select",
 	standaloneRadio: "standaloneRadio",
@@ -26,6 +29,7 @@ export const inputTypes = {
 const propsClasses = {
 	[inputTypes.inputBase]: InputBaseProps,
 	[inputTypes.checkbox]: CheckboxProps,
+	[inputTypes.checkboxGroup]: CheckboxGroupProps,
 	[inputTypes.radio]: RadioProps,
 	[inputTypes.select]: SelectProps,
 	[inputTypes.standaloneRadio]: StandaloneRadioProps,
@@ -35,6 +39,7 @@ const propsClasses = {
 const inputComponents = {
 	[inputTypes.inputBase]: InputBase,
 	[inputTypes.checkbox]: Checkbox,
+	[inputTypes.checkboxGroup]: CheckboxGroup,
 	[inputTypes.radio]: Radio,
 	[inputTypes.select]: Select,
 	[inputTypes.standaloneRadio]: StandaloneRadio,
@@ -44,6 +49,7 @@ const inputComponents = {
 const propsPropertyName = {
 	[inputTypes.inputBase]: "inputProps",
 	[inputTypes.checkbox]: "checkboxProps",
+	[inputTypes.checkboxGroup]: "checkboxGroupProps",
 	[inputTypes.radio]: "radioProps",
 	[inputTypes.select]: "selectProps",
 	[inputTypes.standaloneRadio]: "radioProps",
