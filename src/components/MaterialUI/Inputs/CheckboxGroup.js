@@ -23,6 +23,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CheckboxGroup = ({ checkboxGroupProps }) => {
+	const classes = useStyles();
+
 	if (isCheckboxGroupProps(checkboxGroupProps) === false) {
 		throw new TypeError("checkboxGroupProps property is not of type CheckboxGroupProps");
 	}
@@ -36,8 +38,8 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 	const options = checkboxGroupProps?.get(CheckboxGroupProps.propNames.options) ?? [];
 
 	const handleGroupUpdate = (checked, value, newValue) => {
-		let values = value ? value.split("|") : [];
-		let position = values.indexOf(newValue);
+		const values = value ? value.split("|") : [];
+		const position = values.indexOf(newValue);
 		if (checked && position === -1) {
 			values.push(newValue);
 		}
@@ -48,7 +50,6 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 		update(values.join("|"));
 	};
 
-	const classes = useStyles();
 	const checkBoxGroup = (
 		<div className={classes.container}>
 			<div className={classes.checkBoxContainer}>
