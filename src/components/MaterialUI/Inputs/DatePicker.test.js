@@ -147,6 +147,35 @@ describe("DatePicker", () => {
 		);
 	});
 
+	it("should render error", () => {
+		const date = new Date("2020-06-30T00:00:00");
+		const expectedDate = "06/30/2020 12:00 AM";
+		expect(
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<DatePicker useTime={true} onChange={updater} value={date} error="some error" />
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<label>
+						<div>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedDate} onChange={() => {}} />
+								</div>
+							</div>
+						</div>
+						<div>
+							<Icon id="calendar-date" />
+						</div>
+					</label>
+					<div>{"some error"}</div>
+				</div>
+			</TestWrapper>,
+		);
+	});
+
 	it("sets up only time to locale with time 12am (en-US)", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedTime = "12:00 AM";
@@ -249,7 +278,8 @@ describe("DatePicker", () => {
 			preventDefault() {},
 			target: { value: "" },
 		};
-		const component = mount(<DatePicker />);
+		const date = new Date("2020-06-30T00:00:00");
+		const component = mount(<DatePicker value={date} />);
 
 		const input = component.find("input");
 		expect(input.length, "to equal", 1);
