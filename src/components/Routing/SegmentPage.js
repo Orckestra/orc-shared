@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 import { tryGetNewEntityIdKey } from "./../../utils/urlHelper";
+import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	asterix: {
@@ -37,6 +38,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
+	},
+	labelContainer: {
+		display: "flex",
 	},
 }));
 
@@ -91,12 +95,6 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 	const isHide = useSelector(hideSelector);
 	const asterix = <span className={classes.asterix}>*</span>;
 	const text = <Text message={config.label} />;
-	const basicLabel =
-		config.labelComponent != null ? (
-			<TooltippedTypography titleValue={text} children={text} noWrap className={classes.label} />
-		) : (
-			text
-		);
 	const getSectionLabelClassName = (isModified, isError, isDisabled) => {
 		let className = classes.label;
 		if (isModified) className = `${className} ${classes.modifiedLabel}`;
@@ -110,9 +108,20 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 		typeof config.disabled === "function" ? config.disabled(params)(state) : config.disabled ?? false;
 	const isDisabled = useSelector(disableSelector);
 	const sectionLabelClassName = getSectionLabelClassName(isModified, isError, isDisabled);
+
+	const basicLabel =
+		config.labelComponent != null ? (
+			<TooltippedTypography titleValue={text} children={text} noWrap className={sectionLabelClassName} />
+		) : (
+			text
+		);
+
 	const finalLabel = (
 		<Grid container justify="space-between">
-			<Grid item className={sectionLabelClassName}>
+			<Grid
+				item
+				className={classNames(sectionLabelClassName, config.labelComponent != null ? classes.labelContainer : null)}
+			>
 				{basicLabel}
 				{isModified ? asterix : null}
 			</Grid>
