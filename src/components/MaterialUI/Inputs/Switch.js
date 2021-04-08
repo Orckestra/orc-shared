@@ -89,16 +89,18 @@ const Switch = ({ switchProps }) => {
 	const offCaption = switchProps?.get(SwitchProps.propNames.offCaption);
 	const disabled = switchProps?.get(SwitchProps.propNames.disabled) || false;
 	const readOnly = switchProps?.get(SwitchProps.propNames.readOnly);
+	const className = switchProps?.get(SwitchProps.propNames.className) || "";
 
 	const formattedOnCaption = onCaption != null ? formatMessage(onCaption) : "";
 	const formattedOffCaption = offCaption != null ? formatMessage(offCaption) : "";
 
 	const classes = useStyles({ formattedOnCaption, formattedOffCaption, readOnly });
+	const switchClasses = { ...classes, ...className };
 
 	return (
 		<SwitchMui
 			disabled={disabled}
-			classes={classes}
+			classes={switchClasses}
 			checked={value}
 			onChange={e => (!readOnly ? update(e.target.checked) : null)}
 			color={"primary"}
