@@ -90,6 +90,7 @@ const Switch = ({ switchProps }) => {
 	const disabled = switchProps?.get(SwitchProps.propNames.disabled) || false;
 	const readOnly = switchProps?.get(SwitchProps.propNames.readOnly);
 	const className = switchProps?.get(SwitchProps.propNames.className) || "";
+	const id = switchProps?.get(SwitchProps.propNames.id) || null;
 
 	const formattedOnCaption = onCaption != null ? formatMessage(onCaption) : "";
 	const formattedOffCaption = offCaption != null ? formatMessage(offCaption) : "";
@@ -102,7 +103,7 @@ const Switch = ({ switchProps }) => {
 			disabled={disabled}
 			classes={switchClasses}
 			checked={value}
-			onChange={e => (!readOnly ? update(e.target.checked) : null)}
+			onChange={e => (!readOnly ? update(e.target.checked, id) : null)}
 			color={"primary"}
 		/>
 	);

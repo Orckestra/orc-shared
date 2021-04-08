@@ -19,7 +19,7 @@ const defaultRendering = (e, def, rowId, readOnly, transformedValue) => {
 const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 	switch (def.type) {
 		case "custom": {
-			return [def.builder(e, readOnly, def.fieldName) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
+			return [def.builder(e, readOnly, def) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
 		}
 
 		case "currency": {
@@ -70,6 +70,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			switchProps.set(SwitchProps.propNames.readOnly, readOnly);
 			switchProps.set(SwitchProps.propNames.update, def.onChange);
 			switchProps.set(SwitchProps.propNames.className, def.switch?.className);
+			switchProps.set(SwitchProps.propNames.id, { id: rowId, name: def.fieldName });
 
 			return transformedValue != null ? [<Switch data-row-id={rowId} switchProps={switchProps} />] : [null];
 
