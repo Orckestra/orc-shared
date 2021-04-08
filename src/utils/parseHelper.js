@@ -1,22 +1,5 @@
-export const parseGuid = guid => {
-	if (guid.length !== 32) return "";
-
-	const partsLength = [8, 4, 4, 4, 12];
-	let parsedGuid = "";
-
-	let lastIndex = 0;
-
-	for (let i = 0; i < partsLength.length; i++) {
-		parsedGuid += guid.substring(lastIndex, lastIndex + partsLength[i]);
-		lastIndex += partsLength[i];
-
-		if (i !== partsLength.length - 1) {
-			parsedGuid += "-";
-		}
-	}
-
-	return parsedGuid;
-};
+export const parseGuid = guid =>
+	guid.length === 32 ? guid?.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5") : "";
 
 export const concatObjectPropsWithDelimeter = (object, propsToUse, delimeter = ",", useSpace = true) => {
 	let concatedString = "";
