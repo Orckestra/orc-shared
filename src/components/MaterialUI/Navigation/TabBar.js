@@ -196,7 +196,7 @@ const MuiBar = ({ module, pages }) => {
 				ref={tabs}
 			>
 				{pages.map(({ href, label, outsideScope, close, path, params, mustTruncate }, index) => {
-					let entityIdKey = Object.keys(params).find(p => p !== "scope");
+					let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
 					if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
 					const isModified = modifiedTabs.includes(href);
 					const isError = tabsWithErrors.includes(href);
