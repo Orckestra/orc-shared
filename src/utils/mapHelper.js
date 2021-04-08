@@ -47,11 +47,10 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 	const modifiedModel = mapModifiedData(model);
 	mergedModel = merge(mergedModel, modifiedModel);
 	mappingRules.forEach(rule => {
-		let tempField = get(mergedModel, rule.modelName);
+		let initialField = get(mergedModel, rule.modelName);
 		let modifiedField = get(modifiedModel, rule.modelName);
 		if (modifiedField !== undefined) {
-			const transform = rule.transform(tempField, modifiedField, mergedModel, modifiedModel);
-			tempField = mergeWith(tempField, modifiedField, transform);
+			rule.transform(initialField, modifiedField, mergedModel, modifiedModel);
 		}
 	});
 
