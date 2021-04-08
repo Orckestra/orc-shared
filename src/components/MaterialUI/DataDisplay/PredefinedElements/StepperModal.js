@@ -16,9 +16,6 @@ const useStyles = makeStyles(theme => ({
 		height: theme.spacing(56),
 		wordWrap: "normal",
 	},
-	cancelButton: {
-		marginRight: theme.spacing(1),
-	},
 	step: {
 		position: "relative",
 		display: "inline-block",
@@ -121,21 +118,21 @@ const StepperModal = ({ steps = [], title = "", open, closeCallback, confirmCall
 	const actionPanel = (
 		<>
 			{!!currentStep && (
-				<Button variant="contained" color="primary" onClick={backClick}>
+				<Button variant="contained" color="primary" onClick={backClick} disableElevation>
 					<FormattedMessage {...sharedMessages.back} />
 				</Button>
 			)}
 			<div className={classes.actionPanel}>
-				<Button className={classes.cancelButton} variant="outlined" onClick={closeCallback}>
+				<Button variant="outlined" onClick={closeCallback}>
 					<FormattedMessage {...sharedMessages.cancel} />
 				</Button>
 				{currentStep < steps.length - 1 && (
-					<Button variant="contained" color="primary" onClick={nextClick}>
+					<Button variant="contained" color="primary" onClick={nextClick} disableElevation>
 						<FormattedMessage {...sharedMessages.next} />
 					</Button>
 				)}
 				{currentStep === steps.length - 1 && (
-					<Button variant="contained" color="primary" onClick={confirmCallback}>
+					<Button variant="contained" color="primary" onClick={confirmCallback} disableElevation>
 						{confirmTitle || <FormattedMessage {...sharedMessages.applyChanges} />}
 					</Button>
 				)}

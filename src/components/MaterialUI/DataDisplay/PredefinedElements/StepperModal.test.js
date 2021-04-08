@@ -39,7 +39,7 @@ describe("StepperModal", () => {
 				<Button variant="outlined" onClick={() => cancelCallback()}>
 					{sharedMessages.cancel.defaultMessage}
 				</Button>
-				<Button variant="contained" color="primary" onClick={() => {}}>
+				<Button variant="contained" color="primary" onClick={() => {}} disableElevation>
 					{sharedMessages.next.defaultMessage}
 				</Button>
 			</div>

@@ -122,7 +122,7 @@ describe("ScopeBar", () => {
 		const expected = (
 			<div>
 				<div>
-					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
+					<Button variant="outlined" color="primary" onClick={() => updateViewState("show", true)} disableElevation>
 						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
@@ -138,7 +138,13 @@ describe("ScopeBar", () => {
 		const expected = (
 			<div>
 				<div>
-					<Button disabled variant="outlined" color="primary" onClick={() => updateViewState("show", true)}>
+					<Button
+						disabled
+						variant="outlined"
+						color="primary"
+						onClick={() => updateViewState("show", true)}
+						disableElevation
+					>
 						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
@@ -154,7 +160,7 @@ describe("ScopeBar", () => {
 		const expected = (
 			<div>
 				<div>
-					<Button variant="contained" color="primary" onClick={() => updateViewState("show", true)}>
+					<Button variant="contained" color="primary" onClick={() => updateViewState("show", true)} disableElevation>
 						<TooltippedTypography noWrap children="Scope name" titleValue="Scope name" />
 					</Button>
 				</div>
