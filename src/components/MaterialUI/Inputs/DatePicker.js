@@ -62,6 +62,13 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		justifyContent: "flex-end",
 	},
+	errorInput: {
+		border: `${theme.spacing(0.1)} solid ${theme.palette.error.main} !important`,
+		"&:focus, &:focus-within": {
+			border: `${theme.spacing(0.1)} solid ${theme.palette.error.main} !important`,
+			boxShadow: `${theme.spacing(0, 0, 0.4)} ${theme.palette.error.main} !important`,
+		},
+	},
 	errorText: {
 		marginTop: theme.spacing(0.5),
 		color: theme.palette.error.main,
@@ -80,6 +87,7 @@ const WrappedDatePicker = ({
 	timeInputLabel,
 	readOnly,
 	showTimeSelectOnly,
+	id,
 	error,
 	...props
 }) => {
@@ -87,21 +95,21 @@ const WrappedDatePicker = ({
 	const startDate = value ? new Date(value) : null;
 	var disabledCls = classNames({ [classes.disabled]: props.disabled });
 
-	const updateDate = date => {
+	const updateDate = (date, id) => {
 		if (onChange) {
-			onChange(date);
+			onChange(date, id);
 		}
 	};
 
 	return (
 		<div className={classes.container}>
-			<label className={classNames(classes.datePickerWrapper, disabledCls)}>
+			<label className={classNames(classes.datePickerWrapper, disabledCls, error ? classes.errorInput : null)}>
 				<div className={classes.datePickerContainer}>
 					<DatePicker
 						{...props}
 						dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
 						selected={startDate}
-						onChange={date => updateDate(date)}
+						onChange={date => updateDate(date, id)}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}

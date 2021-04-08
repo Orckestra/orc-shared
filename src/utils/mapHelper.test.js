@@ -68,8 +68,8 @@ describe("mapModel", () => {
 		const mapRules = [
 			{
 				modelName: "field2",
-				transform: (model, modelValue, result) => {
-					result.otherField = modelValue;
+				transform: (objValue, srcValue, object) => {
+					object.otherField = srcValue;
 				},
 			},
 		];
@@ -82,7 +82,44 @@ describe("mapModel", () => {
 			field3: false,
 			field4: "Prop to add",
 			otherField: "Bob",
+			field2: "Bob",
 			nestedField: { field: "nestedValue" },
+		};
+
+		expect(resultModel, "to equal", expectedResultModel);
+	});
+
+	it("Maps using a custom mapper with several rules", () => {
+		const mapRules = [
+			{
+				modelName: "nestedField.field",
+				transform: (objValue, srcValue, object) => {
+					object.nestedField.field = `${srcValue} updated`;
+				},
+			},
+			{
+				modelName: "field1",
+				transform: (objValue, srcValue, object) => {
+					object.field1 = `${srcValue} updated`;
+				},
+			},
+			{
+				modelName: "field2",
+				transform: (objValue, srcValue, object) => {
+					object.name = srcValue;
+				},
+			},
+		];
+
+		const resultModel = mapModel(model, initialModel, mapRules);
+
+		const expectedResultModel = {
+			field1: "Hello updated",
+			name: "Bob",
+			field3: false,
+			field4: "Prop to add",
+			field2: "Bob",
+			nestedField: { field: "nestedValue updated" },
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);

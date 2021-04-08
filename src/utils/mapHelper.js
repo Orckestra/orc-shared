@@ -1,4 +1,4 @@
-import { merge } from "lodash";
+import { cloneDeep, merge, mergeWith, get } from "lodash";
 
 export const mapModel = (model, initialModel, mappingRules = []) => {
 	// if need to map fields with different model and domain keys then
@@ -14,7 +14,7 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 	// 	},
 	// 	{
 	// 		modelName: "modelName3",
-	// 		transform: (model, modelValue, result) => { /* Custom mapping code. */ }
+	// 		transform: (objValue, srcValue, object, source) => { /* Custom mapping code. */ }
 	// 	},
 	// ]
 	// if you don't need this - just don't pass any value for that parameter
@@ -33,12 +33,8 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 
 		modifiedFields.forEach(modifiedField => {
 			const tempRule = mappingRules.find(rule => rule.modelName === modifiedField);
-			if (tempRule != null) {
-				if (tempRule.transform) {
-					tempRule.transform(model, model[tempRule.modelName].value, result);
-				} else {
-					result[tempRule.domainName] = mapModifiedObj(model[tempRule.modelName]);
-				}
+			if (tempRule != null && tempRule.domainName) {
+				result[tempRule.domainName] = mapModifiedObj(model[tempRule.modelName]);
 			} else {
 				result[modifiedField] = mapModifiedObj(model[modifiedField]);
 			}
@@ -47,5 +43,17 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 		return result;
 	};
 
-	return merge({}, initialModel, mapModifiedData(model));
+	let mergedModel = cloneDeep(initialModel);
+	const modifiedModel = mapModifiedData(model);
+	mergedModel = merge(mergedModel, modifiedModel);
+	mappingRules.forEach(rule => {
+		let tempField = get(mergedModel, rule.modelName);
+		let modifiedField = get(modifiedModel, rule.modelName);
+		if (modifiedField !== undefined) {
+			const transform = rule.transform(tempField, modifiedField, mergedModel, modifiedModel);
+			tempField = mergeWith(tempField, modifiedField, transform);
+		}
+	});
+
+	return merge({}, mergedModel);
 };
