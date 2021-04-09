@@ -12,7 +12,7 @@ export const mapModel = (model, initialModel, mappingRules = []) => {
 	// 		modelName: "modelName2",
 	// 		domainName: "domainName2"
 	// 	},
-	// notice you need to define full pass to you property to get it correctly
+	// notice you need to define a full pass to you property to get it correctly
 	// 	{
 	// 		modelName: "modelName3.path1.path2",
 	// 		transform: (objValue, srcValue, object, source) => { /* Custom mapping code. */ }

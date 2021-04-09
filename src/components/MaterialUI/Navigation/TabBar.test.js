@@ -62,6 +62,22 @@ describe("TabBar", () => {
 			path: "/:scope/module1/:entityId",
 		},
 		{
+			label: messages.page4,
+			href: "/Scope1/module1/aParamPath/page4",
+			params: { scope: "Scope1", someParamPath: "aParamPath", someEntityId: "page4" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/:someParamPath/:someEntityId",
+		},
+		{
+			label: messages.page5,
+			href: "/Scope1/module1/aParamPath/page5",
+			params: { scope: "Scope1", someParamPath: "aParamPath", someEntityId: "page5" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/:someParamPath/:someEntityId",
+		},
+		{
 			label: messages.pageNew,
 			href: "/Scope1/module1/new",
 			params: { scope: "Scope1" },
@@ -79,6 +95,8 @@ describe("TabBar", () => {
 	const page1TabLabel = <TabLabel label={messages.page1} />;
 	const page2TabLabel = <TabLabel label={messages.page2} />;
 	const page3TabLabel = <TabLabel label={messages.page3} />;
+	const page4TabLabel = <TabLabel label={messages.page4} />;
+	const page5TabLabel = <TabLabel label={messages.page5} />;
 	const pageNewTabLabel = <TabLabel label={messages.pageNew} />;
 
 	const selectProps = new SelectProps();
@@ -108,8 +126,20 @@ describe("TabBar", () => {
 	});
 	tabLabels.push({
 		value: 3,
-		label: pageNewTabLabel,
+		label: page4TabLabel,
 		sortOrder: 3,
+		outsideScope: false,
+	});
+	tabLabels.push({
+		value: 4,
+		label: page5TabLabel,
+		sortOrder: 4,
+		outsideScope: false,
+	});
+	tabLabels.push({
+		value: 5,
+		label: pageNewTabLabel,
+		sortOrder: 5,
 		outsideScope: false,
 	});
 
@@ -136,6 +166,17 @@ describe("TabBar", () => {
 	const wrappedPage3TabLabel = (
 		<div>
 			<TabLabel label={messages.page3} />
+			<span>*</span>
+		</div>
+	);
+	const wrappedPage4TabLabel = (
+		<div>
+			<TabLabel label={messages.page4} />
+		</div>
+	);
+	const wrappedPage5TabLabel = (
+		<div>
+			<TabLabel label={messages.page5} />
 			<span>*</span>
 		</div>
 	);
@@ -176,13 +217,31 @@ describe("TabBar", () => {
 				disabled={pages[2].outsideScope}
 			/>
 			<Tab
-				label={wrappedPageNewTabLabel}
+				label={wrappedPage4TabLabel}
 				key={pages[3].href}
 				to={pages[3].href}
 				value={3}
 				component={TabLink}
 				close={closeIcon}
 				disabled={pages[3].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage5TabLabel}
+				key={pages[4].href}
+				to={pages[4].href}
+				value={4}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[4].outsideScope}
+			/>
+			<Tab
+				label={wrappedPageNewTabLabel}
+				key={pages[5].href}
+				to={pages[5].href}
+				value={5}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[5].outsideScope}
 			/>
 		</Tabs>
 	);
@@ -196,6 +255,16 @@ describe("TabBar", () => {
 				edit: {
 					module1: {
 						page3: {
+							section1: {
+								model: {
+									field1: {
+										value: "smth",
+										wasModified: true,
+									},
+								},
+							},
+						},
+						page5: {
 							section1: {
 								model: {
 									field1: {
@@ -412,6 +481,38 @@ describe("TabBar", () => {
 		useDispatchWithModulesDataStub.restore();
 	});
 
+	it("Calls correct close callback when close icon for specific page tab with multiple params is clicked and tab was not modified", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const dispatchSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesData, "useDispatchWithModulesData")
+			.returns(dispatchSpy);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(4);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		expect(pages[3].close, "was called");
+
+		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, [pages[3].params.someEntityId]] });
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
 	it("Calls correct close callback when close icon for specific page tab is clicked and tab was modified", () => {
 		const component = (
 			<TestWrapper
@@ -437,6 +538,35 @@ describe("TabBar", () => {
 		closeIcon.simulate("click");
 
 		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[2].close, href: pages[2].href }] });
+
+		expect(setState, "to have a call satisfying", { args: [true] });
+	});
+
+	it("Calls correct close callback when close icon for specific page tab with multiple params is clicked and tab was modified", () => {
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const setState = sinon.spy();
+		const useStateSpy = jest.spyOn(React, "useState");
+		useStateSpy.mockImplementation(value => [value, setState]);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(5);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[4].close, href: pages[4].href }] });
 
 		expect(setState, "to have a call satisfying", { args: [true] });
 	});
@@ -626,11 +756,11 @@ describe("TabBar", () => {
 			.returns(dispatchSpy);
 
 		const useStateStub = sinon.stub(ReactMock, "useState");
-		useStateStub.withArgs(undefined).returns([{ closeCallback: pages[3].close, href: pages[3].href }, jest.fn()]);
+		useStateStub.withArgs(undefined).returns([{ closeCallback: pages[5].close, href: pages[5].href }, jest.fn()]);
 
 		const mountedComponent = mount(component);
 
-		const pageTab = mountedComponent.find(Tab).at(4);
+		const pageTab = mountedComponent.find(Tab).at(6);
 		const closeIcon = pageTab.find(Icon);
 
 		closeIcon.simulate("click");
@@ -642,7 +772,7 @@ describe("TabBar", () => {
 		confirmationModal = mountedComponent.find(ConfirmationModal);
 
 		expect(confirmationModal.prop("open"), "to be false");
-		expect(pages[3].close, "was called");
+		expect(pages[5].close, "was called");
 		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, ["new"]] });
 
 		useDispatchWithModulesDataStub.restore();
