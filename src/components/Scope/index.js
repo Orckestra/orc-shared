@@ -53,10 +53,10 @@ export const ScopeBar = ({ show, name, updateViewState, disabled }) => {
 			<div className={classes.buttonContainer}>
 				<Button
 					disabled={disabled}
-					classes={{ root: classes.scopeButton, outlined: classes.outlinedButton }}
 					variant={variant}
 					color="primary"
 					onClick={() => updateViewState("show", true)}
+					disableElevation
 				>
 					<TooltippedTypography noWrap children={name} titleValue={name} />
 				</Button>

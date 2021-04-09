@@ -15,9 +15,6 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: "480px",
 		wordWrap: "normal",
 	},
-	cancelButton: {
-		marginRight: theme.spacing(1),
-	},
 }));
 
 const ConfirmationModal = ({
@@ -48,10 +45,10 @@ const ConfirmationModal = ({
 
 	const actionPanel = (
 		<div className={classes.actionPanel}>
-			<Button className={classes.cancelButton} variant="outlined" onClick={() => cancelCallback()}>
+			<Button variant="outlined" onClick={() => cancelCallback()}>
 				<FormattedMessage {...cancelLabel} />
 			</Button>
-			<Button variant="contained" color="primary" onClick={() => okCallback()}>
+			<Button variant="contained" color="primary" onClick={() => okCallback()} disableElevation>
 				<FormattedMessage {...okLabel} />
 			</Button>
 		</div>

@@ -272,6 +272,7 @@ const setThemeOverrides = theme => ({
 		containedPrimary: {
 			color: theme.palette.primary.contrastText,
 			backgroundColor: theme.palette.primary.main,
+			border: "none",
 			"&:hover": {
 				backgroundColor: theme.palette.primary.dark,
 				// Reset on touch devices, it doesn't add specificity

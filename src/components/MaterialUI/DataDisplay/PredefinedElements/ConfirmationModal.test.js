@@ -38,7 +38,7 @@ describe("ConfirmationModal", () => {
 				<Button variant="outlined" onClick={() => cancelCallback()}>
 					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
 				</Button>
-				<Button variant="contained" color="primary" onClick={() => okCallback()}>
+				<Button variant="contained" color="primary" onClick={() => okCallback()} disableElevation>
 					{stringifyWithoutQuotes(messages["orc-shared.close"])}
 				</Button>
 			</div>
