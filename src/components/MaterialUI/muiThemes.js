@@ -437,6 +437,7 @@ const setThemeOverrides = theme => ({
 		},
 		label: {
 			...theme.label,
+			maxHeight: theme.spacing(2.1),
 		},
 	},
 	MuiDrawer: {
