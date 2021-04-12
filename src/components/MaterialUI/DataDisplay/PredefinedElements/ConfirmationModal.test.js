@@ -139,7 +139,7 @@ describe("ConfirmationModal", () => {
 				<Button variant="outlined" onClick={() => cancelCallback()}>
 					{cancelButtonlabelComponent}
 				</Button>
-				<Button variant="contained" color="primary" onClick={() => okCallback()}>
+				<Button variant="contained" color="primary" onClick={() => okCallback()} disableElevation>
 					{okButtonlabelComponent}
 				</Button>
 			</div>

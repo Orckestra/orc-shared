@@ -171,6 +171,9 @@ const setThemeOverrides = theme => ({
 			"& .MuiTypography-root": {
 				fontFamily: theme.typography.button.fontFamily,
 			},
+			"& .MuiSvgIcon-root": {
+				fontSize: theme.spacing(2.1),
+			},
 		},
 		/* Styles applied to the root element if `variant="text"`. */
 		text: {
@@ -434,9 +437,15 @@ const setThemeOverrides = theme => ({
 					backgroundColor: theme.palette.grey.borders,
 				},
 			},
+			"&[outlineColor='primary']": {
+				borderColor: theme.palette.primary.main,
+			},
 		},
 		label: {
 			...theme.label,
+			"& > .MuiSvgIcon-root": {
+				maxHeight: theme.spacing(2.1),
+			},
 		},
 	},
 	MuiDrawer: {
