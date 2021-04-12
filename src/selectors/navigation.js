@@ -102,3 +102,13 @@ export const selectSegmentHrefMapper = createSelector(
 		return hrefMap ? newPrependPath.concat(hrefMap) : href;
 	},
 );
+
+export const hasOpenedTabs = createSelector(selectModuleLists, lists => {
+	if (!lists) {
+		return false;
+	}
+
+	return lists.some((module, key) => {
+		return module.some(tab => tab !== key);
+	});
+});

@@ -9,6 +9,8 @@ import {
 	GET_MY_SCOPE_FAILURE,
 	getDefaultScope,
 	validateOvertureModule,
+	APPLICATION_SCOPE_HAS_CHANGED,
+	applicationScopeHasChanged,
 } from "./scopes";
 
 jest.mock("../utils/buildUrl", () => {
@@ -63,5 +65,17 @@ describe("getScopes", () => {
 			"to throw",
 			'"overtureModule.name" is missing in the configuration.',
 		);
+	});
+});
+
+describe("applicationScopeHasChanged", () => {
+	it("creates an action object", () => {
+		expect(applicationScopeHasChanged, "when called with", ["oldScope", "newScope"], "to equal", {
+			type: APPLICATION_SCOPE_HAS_CHANGED,
+			payload: {
+				previousScope: "oldScope",
+				newScope: "newScope",
+			},
+		});
 	});
 });

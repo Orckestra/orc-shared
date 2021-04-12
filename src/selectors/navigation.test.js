@@ -12,6 +12,8 @@ import {
 	selectRouteHref,
 	selectRoutePath,
 	selectPrependPathConfig,
+	selectPrependHrefConfig,
+	hasOpenedTabs,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -362,5 +364,110 @@ describe("route selectors", () => {
 				"to equal",
 				"",
 			));
+	});
+
+	describe("selectPrependHrefConfig", () => {
+		it("finds the prepend href in named config", () =>
+			expect(
+				selectPrependHrefConfig,
+				"called with",
+				[
+					Immutable.fromJS({
+						navigation: {
+							config: {
+								prependPath: "/:scope/",
+								prependHref: "/scope/",
+								section: { prependPath: "/:scopeSection/", prependHref: "/scopeSection/" },
+							},
+						},
+					}),
+				],
+				"called with",
+				["section"],
+				"to be",
+				"/scopeSection/",
+			));
+
+		it("finds the prepend href for unknown named config", () =>
+			expect(
+				selectPrependHrefConfig,
+				"called with",
+				[
+					Immutable.fromJS({
+						navigation: {
+							config: {
+								prependPath: "/:scope/",
+								prependHref: "/scope/",
+								section: { prependPath: "/:scopeSection/", prependHref: "/scopeSection/" },
+							},
+						},
+					}),
+				],
+				"called with",
+				["unknownSection"],
+				"to be",
+				"/scope/",
+			));
+	});
+
+	describe("hasOpenedTabs", () => {
+		it("return true when one tab is open", () => {
+			const tabsState = Immutable.fromJS({
+				navigation: {
+					moduleTabs: { locations: ["locations/id"] },
+				},
+			});
+
+			return expect(hasOpenedTabs, "when called with", [tabsState], "to equal", true);
+		});
+
+		it("return true when multiple tabs are open", () => {
+			const tabsState = Immutable.fromJS({
+				navigation: {
+					moduleTabs: {
+						locations: ["locations/id"],
+						providers: ["providers/id"],
+					},
+				},
+			});
+
+			return expect(hasOpenedTabs, "when called with", [tabsState], "to equal", true);
+		});
+
+		it("return false when no tabs are open", () => {
+			const tabsState = Immutable.fromJS({
+				navigation: {
+					moduleTabs: {
+						locations: [],
+						providers: [],
+					},
+				},
+			});
+
+			return expect(hasOpenedTabs, "when called with", [tabsState], "to equal", false);
+		});
+
+		it("return false when modules are not defined", () => {
+			const tabsState = Immutable.fromJS({
+				navigation: {
+					moduleTabs: null,
+				},
+			});
+
+			return expect(hasOpenedTabs, "when called with", [tabsState], "to equal", false);
+		});
+
+		it("return false when only module tab is open", () => {
+			const tabsState = Immutable.fromJS({
+				navigation: {
+					moduleTabs: {
+						locations: ["locations"],
+						providers: ["providers"],
+					},
+				},
+			});
+
+			return expect(hasOpenedTabs, "when called with", [tabsState], "to equal", false);
+		});
 	});
 });

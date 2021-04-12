@@ -1,6 +1,7 @@
 import Immutable from "immutable";
 import { SET_ROUTE, MAP_HREF, REMOVE_TAB, SET_HREF_CONFIG, SET_CURRENT_PREPEND_PATH } from "../actions/navigation";
 import { getAllAfterPrependHref } from "../utils/parseHelper";
+import { APPLICATION_SCOPE_HAS_CHANGED } from "../actions/scopes";
 
 const initialState = Immutable.fromJS({
 	route: {},
@@ -68,6 +69,13 @@ const navigationReducer = (state = initialState, action) => {
 			return state.set("config", Immutable.fromJS(action.payload));
 		case SET_CURRENT_PREPEND_PATH:
 			return state.set("currentPrependPath", action.payload);
+		case APPLICATION_SCOPE_HAS_CHANGED:
+			return state.withMutations(s => {
+				return s
+					.set("moduleTabs", Immutable.fromJS({}))
+					.set("tabIndex", Immutable.fromJS({}))
+					.set("mappedHrefs", Immutable.fromJS({}));
+			});
 		default:
 			return state;
 	}

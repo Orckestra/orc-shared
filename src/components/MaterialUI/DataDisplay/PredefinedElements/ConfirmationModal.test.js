@@ -169,4 +169,58 @@ describe("ConfirmationModal", () => {
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});
+
+	it("Renders ConfirmationModal correctly with non default title", () => {
+		const open = true;
+		const title = "title";
+		const message = "message";
+		const backdropClickCallback = jest.fn();
+		const okCallback = jest.fn();
+		const cancelCallback = jest.fn();
+		const modalProps = new ModalProps();
+
+		const messageComponent = (
+			<div>
+				<Typography children={message} />
+			</div>
+		);
+
+		modalProps.set(ModalProps.propNames.title, title);
+		modalProps.set(ModalProps.propNames.open, open);
+		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
+
+		const actionPanel = (
+			<div>
+				<Button variant="outlined" onClick={() => cancelCallback()}>
+					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
+				</Button>
+				<Button variant="contained" color="primary" onClick={() => okCallback()} disableElevation>
+					{stringifyWithoutQuotes(messages["orc-shared.close"])}
+				</Button>
+			</div>
+		);
+
+		modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<ConfirmationModal
+					title={title}
+					message={message}
+					open={open}
+					okCallback={okCallback}
+					cancelCallback={cancelCallback}
+					backdropClickCallback={backdropClickCallback}
+				/>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<Modal message={messageComponent} modalProps={modalProps} />
+			</IntlProvider>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 });

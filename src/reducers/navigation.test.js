@@ -1,6 +1,7 @@
 import Immutable from "immutable";
 import { setRoute, removeTab, mapHref, setHrefConfig, setCurrentPrependPath } from "../actions/navigation";
 import reducer from "./navigation";
+import { applicationScopeHasChanged } from "../actions/scopes";
 
 describe("Navigation reducer", () => {
 	it("behaves as a reducer should", () =>
@@ -311,6 +312,38 @@ describe("Navigation reducer", () => {
 				"to satisfy",
 				Immutable.fromJS({
 					currentPrependPath: "/scope/",
+				}),
+			);
+		});
+	});
+
+	describe("APPLICATION_SCOPE_HAS_CHANGED", () => {
+		it("reset the tabs to their initial values", () => {
+			const oldState = Immutable.fromJS({
+				tabIndex: {
+					id: 123,
+				},
+				moduleTabs: {
+					id: 123,
+				},
+				mappedHrefs: {
+					id: 123,
+				},
+				config: {
+					id: "ThisValueShouldRemain",
+				},
+			});
+			const action = applicationScopeHasChanged("oldScope", "newScope");
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to exhaustively satisfy",
+				Immutable.fromJS({
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					config: {
+						id: "ThisValueShouldRemain",
+					},
 				}),
 			);
 		});

@@ -149,3 +149,15 @@ export const getModifiedModel = entityId =>
 		}
 		return model;
 	});
+
+export const hasUnsavedDataSelector = createSelector(editData, data => {
+	if (!data) {
+		return false;
+	}
+
+	return data.some((module, moduleName) => {
+		return module.some((moduleData, entityId) => {
+			return getModifiedSectionsFromModule(data, moduleName, entityId).length > 0;
+		});
+	});
+});

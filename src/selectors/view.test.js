@@ -7,6 +7,7 @@ import {
 	getModifiedTabs,
 	getSectionsWithErrors,
 	getTabsWithErrors,
+	hasUnsavedDataSelector,
 } from "./view";
 
 describe("isEntityUnderEditing", () => {
@@ -467,5 +468,93 @@ describe("getTabsWithErrors", () => {
 		];
 
 		expect(getTabsWithErrors, "when called with", [tabParams], "called with", [stateWithEmptyEdit], "to satisfy", []);
+	});
+});
+
+describe("hasUnsavedDataSelector", () => {
+	it("Returns false when no edit data is present", () => {
+		const state = Immutable.fromJS({ view: {} });
+
+		expect(hasUnsavedDataSelector, "called with", [state], "to be", false);
+	});
+
+	it("Returns false when there are no modified models", () => {
+		const state = Immutable.fromJS({
+			view: {
+				edit: {
+					module1: {
+						id1: {
+							section1: {},
+							section2: {
+								model: {
+									field1: {
+										value: "smth",
+										error: "smth",
+										wasModified: false,
+									},
+								},
+							},
+						},
+						id2: {
+							section1: {},
+							section2: {},
+						},
+						new: {
+							section1: {
+								model: {
+									field1: {
+										value: "smth",
+										wasModified: false,
+									},
+								},
+							},
+							section2: {},
+						},
+					},
+				},
+			},
+		});
+
+		expect(hasUnsavedDataSelector, "called with", [state], "to be", false);
+	});
+
+	it("Returns true when a model is modified", () => {
+		const state = Immutable.fromJS({
+			view: {
+				edit: {
+					module1: {
+						id1: {
+							section1: {},
+							section2: {
+								model: {
+									field1: {
+										value: "smth",
+										error: "smth",
+										wasModified: false,
+									},
+								},
+							},
+						},
+						id2: {
+							section1: {},
+							section2: {},
+						},
+						new: {
+							section1: {
+								model: {
+									field1: {
+										value: "smth",
+										wasModified: true,
+									},
+								},
+							},
+							section2: {},
+						},
+					},
+				},
+			},
+		});
+
+		expect(hasUnsavedDataSelector, "called with", [state], "to be", true);
 	});
 });

@@ -10,6 +10,8 @@ import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ScopeSelector from "./../MaterialUI/ScopeSelector/ScopeSelector";
+import ScopeModificationConfirmationDialog from "./ScopeModificationConfirmationDialog";
+import useScopeConfirmationModalState from "./useScopeConfirmationModalState";
 
 const useStyles = makeStyles(theme => ({
 	scopeButton: {
@@ -85,6 +87,19 @@ export const Scope = ({ children }) => {
 	};
 	const updateFilter = event => updateViewState("filter", event);
 
+	const [
+		isModalOpened,
+		closeModal,
+		scopeDialogType,
+		acceptScopeChange,
+		selectNewScope,
+	] = useScopeConfirmationModalState();
+
+	const onScopeSelectorClose = (event, newSelection) => {
+		reset(event);
+		selectNewScope(newSelection);
+	};
+
 	return (
 		<React.Fragment>
 			<ScopeBar
@@ -109,9 +124,15 @@ export const Scope = ({ children }) => {
 				show={show}
 				getScope={getScope}
 				selectedScope={currentScope}
-				closeSelector={reset}
+				closeSelector={onScopeSelectorClose}
 				filter={filter}
 				updateFilter={updateFilter}
+			/>
+			<ScopeModificationConfirmationDialog
+				isModalOpened={isModalOpened}
+				scopeDialogType={scopeDialogType}
+				closeModalCallback={closeModal}
+				okCallback={acceptScopeChange}
 			/>
 			{children}
 		</React.Fragment>

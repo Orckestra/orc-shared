@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { mount } from "enzyme";
+import { act } from "unexpected-reaction";
 import { Provider } from "react-redux";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import Immutable from "immutable";
@@ -36,6 +37,7 @@ beforeEach(() => {
 		},
 		navigation: {
 			route: { location: {}, match: { path: "/:scope/Bar", params: { scope: "test1" } } },
+			config: { prependPath: "/:scope/", prependHref: "/test1/" },
 		},
 		scopes: {
 			test1: {
@@ -286,7 +288,7 @@ describe("Scope", () => {
 			stopPropagation: stopPropagationSpy,
 		};
 
-		scopeSelector.prop("closeSelector")(event);
+		act(() => scopeSelector.prop("closeSelector")(event));
 
 		expect(store.dispatch, "to have calls satisfying", [
 			{
@@ -399,6 +401,7 @@ describe("RoutedScope", () => {
 	};
 
 	it("renders within a matched route", () => {
+		state = state.setIn(["navigation", "config"], Immutable.fromJS({}));
 		ReactDOM.render(
 			<Provider store={store}>
 				<MemoryRouter initialEntries={["/test1/foo"]} initialIndex={0}>
