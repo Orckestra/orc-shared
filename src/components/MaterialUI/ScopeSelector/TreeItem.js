@@ -7,7 +7,6 @@ import MultipleLinesText from "./../DataDisplay/TooltippedElements/MultipleLines
 import TextProps from "./../textProps";
 import classNames from "classnames";
 import { scopeTypes } from "./../../../constants";
-import useScopeSelect from "./../../Scope/useScopeSelect";
 
 const useStyles = makeStyles(theme => ({
 	group: {
@@ -128,9 +127,7 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	return label;
 };
 
-const TreeItem = ({ scope, rootId, onScopeSelect, redirectOnSelect, children }) => {
-	const [navigate] = useScopeSelect(scope.id);
-
+const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
 	const isRootScope = scope.id === rootId;
 	const isVirtualScope = scope.type === scopeTypes.virtual;
 	const hasChildren = scope.children.length > 0;
@@ -142,9 +139,6 @@ const TreeItem = ({ scope, rootId, onScopeSelect, redirectOnSelect, children }) 
 	const onLabelClickHandler = event => {
 		event.preventDefault();
 		if (isVirtualScope === false) {
-			if (redirectOnSelect) {
-				navigate(event);
-			}
 			onScopeSelect(event, scope.id);
 		}
 	};

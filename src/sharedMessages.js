@@ -158,6 +158,22 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.no",
 		defaultMessage: "No",
 	},
+	scopeChangeWithOpenedTabsConfirmation: {
+		id: "orc-shared.scopeChangeWithOpenedTabsConfirmation",
+		defaultMessage: "One or more entities opened will be closed. Would you like to change scope now?",
+	},
+	scopeChangeWithOpenedTabsTitle: {
+		id: "orc-shared.scopeChangeWithOpenedTabsTitle",
+		defaultMessage: "Confirm scope change",
+	},
+	scopeChangeWithUnsavedDataConfirmation: {
+		id: "orc-shared.scopeChangeWithUnsavedDataConfirmation",
+		defaultMessage: "One or more entities opened will be closed with unsaved data. Would you like to change scope?",
+	},
+	scopeChangeWithUnsavedDataTitle: {
+		id: "orc-shared.scopeChangeWithUnsavedDataTitle",
+		defaultMessage: "Confirm scope change without saving data",
+	},
 });
 
 export default sharedMessages;

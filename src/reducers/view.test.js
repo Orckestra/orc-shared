@@ -9,6 +9,7 @@ import {
 	removeEditModel,
 } from "../actions/view";
 import viewReducer from "./view";
+import { applicationScopeHasChanged } from "../actions/scopes";
 
 describe("View state reducer", () => {
 	it("behaves as a reducer should", () => expect(viewReducer, "to be a reducer with initial state", {}));
@@ -353,5 +354,26 @@ describe("View state reducer", () => {
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Reset the edit state when the application scope changes", () => {
+		const oldState = Immutable.fromJS({
+			edit: {
+				id: 123,
+			},
+			anotherKey: {
+				id: "ThisValueShouldRemain",
+			},
+		});
+		const action = applicationScopeHasChanged("oldScope", "newScope");
+		const newState = viewReducer(oldState, action);
+		return expect(newState, "not to be", oldState).and(
+			"to exhaustively satisfy",
+			Immutable.fromJS({
+				anotherKey: {
+					id: "ThisValueShouldRemain",
+				},
+			}),
+		);
 	});
 });

@@ -21,3 +21,15 @@ export const GET_MY_SCOPE = "GET_MY_SCOPE";
 export const [GET_MY_SCOPE_REQUEST, GET_MY_SCOPE_SUCCESS, GET_MY_SCOPE_FAILURE] = makeActionTypes(GET_MY_SCOPE);
 
 export const getDefaultScope = () => makeOrcApiAction(GET_MY_SCOPE, getUserScopeRequest.buildUrl(OVERTURE_MODULE));
+
+export const APPLICATION_SCOPE_HAS_CHANGED = "APPLICATION_SCOPE_HAS_CHANGED";
+
+export const applicationScopeHasChanged = (previousScope, newScope) => {
+	return {
+		type: APPLICATION_SCOPE_HAS_CHANGED,
+		payload: {
+			previousScope,
+			newScope,
+		},
+	};
+};

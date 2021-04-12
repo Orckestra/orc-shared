@@ -52,3 +52,9 @@ export const requestStates = {
 	fail: "fail",
 	idle: "idle",
 };
+
+export const scopeConfirmationDialogTypes = {
+	none: "None",
+	hasUnsavedDataMessage: "HasUnsavedDataMessage",
+	scopeChangeConfirmation: "ScopeChangeConfirmation",
+};

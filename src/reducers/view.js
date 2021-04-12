@@ -8,6 +8,7 @@ import {
 	VIEW_SET_EDIT_MODEL_ERRORS,
 	VIEW_REMOVE_EDIT_MODEL,
 } from "../actions/view";
+import { APPLICATION_SCOPE_HAS_CHANGED } from "../actions/scopes";
 import { isEqual } from "lodash";
 
 const initialState = Immutable.Map({});
@@ -54,6 +55,9 @@ const viewStateReducer = (state = initialState, action) => {
 			});
 
 			return state;
+		}
+		case APPLICATION_SCOPE_HAS_CHANGED: {
+			return state.remove("edit");
 		}
 		default:
 			return state;

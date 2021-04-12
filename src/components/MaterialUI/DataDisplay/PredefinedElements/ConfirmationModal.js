@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ConfirmationModal = ({
+	title,
 	message,
 	open,
 	okCallback,
@@ -32,7 +33,7 @@ const ConfirmationModal = ({
 
 	const modalProps = new ModalProps();
 
-	const titleComponent = <FormattedMessage {...sharedMessages.confirmation} />;
+	const titleComponent = title || <FormattedMessage {...sharedMessages.confirmation} />;
 	const messageComponent = (
 		<div className={classes.message}>
 			<Typography children={message} />
