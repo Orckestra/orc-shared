@@ -113,9 +113,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 
 const renderByTypeInEditingMode = (e, def, rowId, readOnly, transformedValue) => {
 	if ((def.editingBuilder || null) !== null)
-		return [
-			def.editingBuilder(e, readOnly, def.fieldName) || defaultRendering(e, def, rowId, readOnly, transformedValue),
-		];
+		return [def.editingBuilder(e, readOnly, def) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
 
 	return renderByType(e, def, rowId, readOnly, transformedValue);
 };
