@@ -20,6 +20,38 @@ describe("mapModel", () => {
 				wasModified: true,
 			},
 		},
+		nestedField2: {
+			field: {
+				value: [
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: {
+							value: {
+								nestedLevel2Prop1: {
+									value: "testLevel2Value",
+									wasModified: true,
+								},
+								nestedLevel2Prop2: "testLevel2",
+							},
+							wasModified: true,
+						},
+					},
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: [
+							{
+								nestedLevel2Prop1: {
+									value: "testLevel2Value",
+									wasModified: true,
+								},
+								nestedLevel2Prop2: "testLevel2",
+							},
+						],
+					},
+				],
+				wasModified: true,
+			},
+		},
 	};
 
 	const initialModel = {
@@ -38,27 +70,26 @@ describe("mapModel", () => {
 			field4: "Prop to add",
 			name: "Carl",
 			nestedField: { field: "nestedValue" },
-		};
-
-		expect(resultModel, "to equal", expectedResultModel);
-	});
-
-	it("Maps correctly when map rules are specified", () => {
-		const mapRules = [
-			{
-				modelName: "field2",
-				domainName: "name",
+			nestedField2: {
+				field: [
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: {
+							nestedLevel2Prop1: "testLevel2Value",
+							nestedLevel2Prop2: "testLevel2",
+						},
+					},
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: [
+							{
+								nestedLevel2Prop1: "testLevel2Value",
+								nestedLevel2Prop2: "testLevel2",
+							},
+						],
+					},
+				],
 			},
-		];
-
-		const resultModel = mapModel(model, initialModel, mapRules);
-
-		const expectedResultModel = {
-			field1: "Hello",
-			name: "Bob",
-			field3: false,
-			field4: "Prop to add",
-			nestedField: { field: "nestedValue" },
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);
@@ -84,6 +115,26 @@ describe("mapModel", () => {
 			otherField: "Bob",
 			field2: "Bob",
 			nestedField: { field: "nestedValue" },
+			nestedField2: {
+				field: [
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: {
+							nestedLevel2Prop1: "testLevel2Value",
+							nestedLevel2Prop2: "testLevel2",
+						},
+					},
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: [
+							{
+								nestedLevel2Prop1: "testLevel2Value",
+								nestedLevel2Prop2: "testLevel2",
+							},
+						],
+					},
+				],
+			},
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);
@@ -120,6 +171,70 @@ describe("mapModel", () => {
 			field4: "Prop to add",
 			field2: "Bob",
 			nestedField: { field: "nestedValue updated" },
+			nestedField2: {
+				field: [
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: {
+							nestedLevel2Prop1: "testLevel2Value",
+							nestedLevel2Prop2: "testLevel2",
+						},
+					},
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: [
+							{
+								nestedLevel2Prop1: "testLevel2Value",
+								nestedLevel2Prop2: "testLevel2",
+							},
+						],
+					},
+				],
+			},
+		};
+
+		expect(resultModel, "to equal", expectedResultModel);
+	});
+
+	it("Maps using a custom mapper rule where modeName is not correct", () => {
+		const mapRules = [
+			{
+				modelName: "wrongField",
+				transform: (objValue, srcValue, object) => {
+					object.name = srcValue;
+				},
+			},
+		];
+
+		const resultModel = mapModel(model, initialModel, mapRules);
+
+		const expectedResultModel = {
+			field1: "Hello",
+			field2: "Bob",
+			field3: false,
+			field4: "Prop to add",
+			name: "Carl",
+			nestedField: { field: "nestedValue" },
+			nestedField2: {
+				field: [
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: {
+							nestedLevel2Prop1: "testLevel2Value",
+							nestedLevel2Prop2: "testLevel2",
+						},
+					},
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: [
+							{
+								nestedLevel2Prop1: "testLevel2Value",
+								nestedLevel2Prop2: "testLevel2",
+							},
+						],
+					},
+				],
+			},
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);
@@ -133,6 +248,26 @@ describe("mapModel", () => {
 			field2: "Bob",
 			field3: false,
 			nestedField: { field: "nestedValue" },
+			nestedField2: {
+				field: [
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: {
+							nestedLevel2Prop1: "testLevel2Value",
+							nestedLevel2Prop2: "testLevel2",
+						},
+					},
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: [
+							{
+								nestedLevel2Prop1: "testLevel2Value",
+								nestedLevel2Prop2: "testLevel2",
+							},
+						],
+					},
+				],
+			},
 		};
 
 		expect(resultModel, "to equal", expectedResultModel);

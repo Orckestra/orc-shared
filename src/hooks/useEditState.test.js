@@ -482,9 +482,10 @@ describe("useDynamicEditState", () => {
 
 		return (
 			<div>
-				<div id="field" val={field.state().value} />
-				<div id="fieldInStore" val={fieldInStore.state().value} />
-				<div id="fieldWithUndefinedInitialValue" val={fieldWithUndefinedInitialValue.state().value} />
+				<div id="field" val={field.getState()} />
+				<div id="fieldWithPath" val={field.getState(["c", "d"])} />
+				<div id="fieldInStore" val={fieldInStore.getState()} />
+				<div id="fieldWithUndefinedInitialValue" val={fieldWithUndefinedInitialValue.getState()} />
 				<div id="update" onClick={e => field.update(e.target.value, ["c", "d"])} />
 				<div id="updateWithDefaultPath" onClick={e => field.update(e.target.value)} />
 				<div
@@ -521,6 +522,20 @@ describe("useDynamicEditState", () => {
 		const fieldValue = mountedComponent.find("#field").prop("val");
 
 		expect(fieldValue, "to equal", initialFieldValue);
+	});
+
+	it("Provides an access to field by path in edit view", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#fieldWithPath").prop("val");
+
+		expect(fieldValue, "to equal", "dynamic");
 	});
 
 	it("Provides an access to actual value in edit view", () => {

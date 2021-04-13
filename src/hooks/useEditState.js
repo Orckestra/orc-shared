@@ -6,6 +6,7 @@ import { setEditModelField, setEditModelFieldError } from "./../actions/view";
 import { validationRules } from "../utils/modelValidationHelper";
 import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
 import { get } from "lodash";
+import { mapModifiedData } from "../utils/mapHelper";
 
 // if you need to override default validation rules just pass new rules with default keys
 // as properties of extendedValidationRules
@@ -87,8 +88,11 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 
 		const editState = (path = []) => {
 			const keyPath = path.join(".");
+			const value = stateValue?.value ?? initialValue;
+			const resultValue = path.length === 0 ? value : get(value, keyPath, value);
+			const result = mapModifiedData(resultValue);
 
-			return get(stateValue?.value, keyPath) || { value: initialValue };
+			return result;
 		};
 
 		const updateEditState = (newValue, path = [], errorTypes = []) => {
@@ -105,7 +109,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		};
 
 		const isEditStateValid = (value, path = [], errorTypes = []) => {
-			const valueToValidate = value ?? editState(path).value;
+			const valueToValidate = value ?? editState(path);
 			let hasAnyValidationErrors = false;
 			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...path];
 
@@ -124,7 +128,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		};
 
 		return {
-			state: editState,
+			getState: editState,
 			update: updateEditState,
 			reset: resetEditState,
 			isValid: isEditStateValid,
