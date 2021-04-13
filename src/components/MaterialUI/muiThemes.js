@@ -408,7 +408,7 @@ const setThemeOverrides = theme => ({
 			height: "1em",
 			fill: "currentColor",
 			stroke: "currentColor",
-			color: theme.palette.grey.icon,
+			color: theme.palette.grey.dark,
 			"& path:not([fill='none'])": {
 				fill: "currentColor",
 			},
@@ -425,7 +425,7 @@ const setThemeOverrides = theme => ({
 		root: {
 			...theme.root,
 			padding: theme.spacing(0.4, 1, 0.3, 1),
-			color: theme.palette.grey.icon,
+			color: theme.palette.grey.dark,
 			borderRadius: theme.shape.borderRadius,
 			border: `1px solid ${theme.palette.grey.icon}`,
 			minWidth: "auto",

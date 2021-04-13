@@ -74,6 +74,7 @@ export const Item = styled(FilteredLink)`
 	font-weight: bold;
 	font-size: 13px;
 	text-decoration: none;
+	cursor: pointer;
 	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
