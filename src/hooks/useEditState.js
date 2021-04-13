@@ -86,7 +86,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			}
 		}, [initialValue, keys, saveInitialValueToEditState, stateValue]);
 
-		const editState = (path = []) => {
+		const getEditState = (path = []) => {
 			const keyPath = path.join(".");
 			const value = stateValue?.value ?? initialValue;
 			const resultValue = path.length === 0 ? value : get(value, keyPath, value);
@@ -109,7 +109,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		};
 
 		const isEditStateValid = (value, path = [], errorTypes = []) => {
-			const valueToValidate = value ?? editState(path);
+			const valueToValidate = value ?? getEditState(path);
 			let hasAnyValidationErrors = false;
 			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...path];
 
@@ -128,7 +128,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		};
 
 		return {
-			getState: editState,
+			getState: getEditState,
 			update: updateEditState,
 			reset: resetEditState,
 			isValid: isEditStateValid,
