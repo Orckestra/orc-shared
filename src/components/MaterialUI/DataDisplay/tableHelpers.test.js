@@ -274,7 +274,9 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			{
 				fieldName: "another",
 				label: messages.a_label,
-				transform: v => v + "_transformation",
+				transform: {
+					value: v => v + "_transformation",
+				},
 			},
 		];
 		const elements = [
@@ -631,6 +633,49 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].title, "to be null");
 	});
 
+	it("build table rows as expected with select with transform", () => {
+		const changeEvent = jest.fn();
+
+		const columnDef = [
+			{
+				fieldName: "test",
+				label: messages.a_label,
+				type: "select",
+				onChange: changeEvent,
+				transform: {
+					readOnly: (e, readOnly) => false,
+				},
+			},
+		];
+		const elements = [
+			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		const checkboxProps = new CheckboxProps();
+		checkboxProps.set(CheckboxProps.propNames.update, changeEvent);
+		checkboxProps.set(CheckboxProps.propNames.value, true);
+		checkboxProps.set(CheckboxProps.propNames.readOnly, false);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(rows[0].columns[0].cellElement.props["data-row-id"], "to equal", "an_id1");
+		expect(rows[0].columns[0].cellElement.props.checkboxProps.componentProps.get("value"), "to equal", true);
+		expect(rows[0].columns[0].cellElement.props.checkboxProps.componentProps.get("update"), "to equal", changeEvent);
+		expect(rows[0].columns[0].title, "to be null");
+
+		expect(rows[1].columns[0].cellElement.props["data-row-id"], "to equal", "an_id2");
+		expect(rows[1].columns[0].cellElement.props.checkboxProps.componentProps.get("value"), "to equal", false);
+		expect(rows[1].columns[0].cellElement.props.checkboxProps.componentProps.get("update"), "to equal", changeEvent);
+		expect(rows[1].columns[0].title, "to be null");
+	});
+
 	it("build table rows as expected with switch", () => {
 		const changeEvent = jest.fn();
 
@@ -676,7 +721,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
 					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProp={switchProps1} />
+						<Switch switchProps={switchProps1} />
 					</IntlProvider>
 				</MuiThemeProvider>
 			</StylesProvider>,
@@ -695,7 +740,86 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
 					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProp={switchProps2} />
+						<Switch switchProps={switchProps2} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+	});
+
+	it("build table rows as expected with transform", () => {
+		const changeEvent = jest.fn();
+
+		const columnDef = [
+			{
+				fieldName: "test",
+				label: messages.a_label,
+				type: "switch",
+				onChange: changeEvent,
+				transform: {
+					disabled: e => !e.test,
+					readOnly: (e, readOnly) => false,
+				},
+			},
+		];
+		const elements = [
+			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		const switchProps1 = new SwitchProps();
+		switchProps1.set(SwitchProps.propNames.update, changeEvent);
+		switchProps1.set(SwitchProps.propNames.value, true);
+		switchProps1.set(SwitchProps.propNames.disabled, false);
+		switchProps1.set(SwitchProps.propNames.readOnly, false);
+
+		const switchProps2 = new SwitchProps();
+		switchProps2.set(SwitchProps.propNames.update, changeEvent);
+		switchProps2.set(SwitchProps.propNames.value, false);
+		switchProps2.set(SwitchProps.propNames.disabled, true);
+		switchProps2.set(SwitchProps.propNames.readOnly, false);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[0].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<Switch switchProps={switchProps1} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[1].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<Switch switchProps={switchProps2} />
 					</IntlProvider>
 				</MuiThemeProvider>
 			</StylesProvider>,
@@ -757,7 +881,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
 					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProp={switchProps1} />
+						<Switch switchProps={switchProps1} />
 					</IntlProvider>
 				</MuiThemeProvider>
 			</StylesProvider>,
@@ -776,7 +900,7 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 			<StylesProvider generateClassName={generateClassName}>
 				<MuiThemeProvider theme={createMuiTheme()}>
 					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProp={switchProps2} />
+						<Switch switchProps={switchProps2} />
 					</IntlProvider>
 				</MuiThemeProvider>
 			</StylesProvider>,
@@ -927,6 +1051,51 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id2");
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("checked"), "to equal", true);
 		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
+	});
+
+	it("build table rows as expected with radio and transform", () => {
+		const changeEvent = jest.fn();
+
+		const columnDef = [
+			{
+				type: "radio",
+				fieldName: "id",
+				onChangeCallback: changeEvent,
+				groupName: "preferredStore",
+				selectedValue: "an_id2",
+				label: messages.a_label,
+				transform: {
+					checked: e => false,
+					readOnly: e => true,
+					name: e => "name transformed",
+				},
+			},
+		];
+
+		const elements = [
+			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("name"), "to equal", "name transformed");
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id1");
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("checked"), "to equal", false);
+		expect(rows[0].columns[0].cellElement.props.radioProps.componentProps.get("readOnly"), "to equal", true);
+
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("name"), "to equal", "name transformed");
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("value"), "to equal", "an_id2");
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("checked"), "to equal", false);
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("onChange"), "to equal", changeEvent);
+		expect(rows[1].columns[0].cellElement.props.radioProps.componentProps.get("readOnly"), "to equal", true);
 	});
 
 	it("build table headers and rows as expected when not in readonly mode", () => {

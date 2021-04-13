@@ -58,7 +58,10 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			const checkboxProps = new CheckboxProps();
 			checkboxProps.set(CheckboxProps.propNames.update, def.onChange);
 			checkboxProps.set(CheckboxProps.propNames.value, !!transformedValue);
-			checkboxProps.set(CheckboxProps.propNames.readOnly, readOnly);
+			checkboxProps.set(
+				CheckboxProps.propNames.readOnly,
+				def.transform?.readOnly != null ? def.transform.readOnly(e, readOnly, def) : readOnly,
+			);
 
 			return [<Checkbox id={"select_" + transformedValue} data-row-id={rowId} checkboxProps={checkboxProps} />, null];
 
@@ -67,7 +70,14 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			switchProps.set(SwitchProps.propNames.value, !!transformedValue);
 			switchProps.set(SwitchProps.propNames.onCaption, def.switch?.onCaption);
 			switchProps.set(SwitchProps.propNames.offCaption, def.switch?.offCaption);
-			switchProps.set(SwitchProps.propNames.readOnly, readOnly);
+			switchProps.set(
+				SwitchProps.propNames.readOnly,
+				def.transform?.readOnly != null ? def.transform.readOnly(e, readOnly, def) : readOnly,
+			);
+			switchProps.set(
+				SwitchProps.propNames.disabled,
+				def.transform?.disabled != null ? def.transform.disabled(e, readOnly, def) : def.disabled,
+			);
 			switchProps.set(SwitchProps.propNames.update, def.onChange);
 			switchProps.set(SwitchProps.propNames.className, def.switch?.className);
 			switchProps.set(SwitchProps.propNames.id, { id: rowId, name: def.fieldName });
@@ -80,11 +90,20 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			const groupName = def.groupName;
 
 			const radioProps = new StandaloneRadioProps();
-			radioProps.set(StandaloneRadioProps.propNames.checked, selectedValue === transformedValue);
+			radioProps.set(
+				StandaloneRadioProps.propNames.checked,
+				def.transform?.checked != null ? def.transform.checked(e, readOnly, def) : selectedValue === transformedValue,
+			);
 			radioProps.set(StandaloneRadioProps.propNames.value, transformedValue);
-			radioProps.set(StandaloneRadioProps.propNames.name, groupName);
+			radioProps.set(
+				StandaloneRadioProps.propNames.name,
+				def.transform?.name != null ? def.transform.name(e, readOnly, def) : groupName,
+			);
 			radioProps.set(StandaloneRadioProps.propNames.onChange, onChange);
-			radioProps.set(StandaloneRadioProps.propNames.readOnly, readOnly);
+			radioProps.set(
+				StandaloneRadioProps.propNames.readOnly,
+				def.transform?.readOnly != null ? def.transform.readOnly(e, readOnly, def) : readOnly,
+			);
 			return [<StandaloneRadio radioProps={radioProps} />];
 
 		default:
@@ -117,7 +136,7 @@ export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnl
 			key: rowId,
 			element: e,
 			columns: columnDefinitions.map(def => {
-				const transformedValue = def.transform ? def.transform(e[def.fieldName]) : e[def.fieldName];
+				const transformedValue = def.transform?.value ? def.transform.value(e[def.fieldName]) : e[def.fieldName];
 
 				const [cellElement, title] = readOnly
 					? renderByType(e, def, rowId, readOnly, transformedValue)
