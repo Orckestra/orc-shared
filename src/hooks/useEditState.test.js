@@ -440,15 +440,6 @@ describe("useDynamicEditState", () => {
 		},
 	};
 
-	const initialModifiedModel = {
-		a: "model",
-		b: "value",
-		c: {
-			d: "dynamic",
-			e: "object",
-		},
-	};
-
 	const modelWithModifications = {
 		a: "model",
 		b: "value",
