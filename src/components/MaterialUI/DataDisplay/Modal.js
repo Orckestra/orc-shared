@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 		minWidth: theme.spacing(48),
 	},
 	containerWide: {
-		minWidth: theme.spacing(106.4),
+		width: theme.spacing(106.4),
 		height: `calc(100% - 80px)`,
 		maxHeight: theme.spacing(73),
 	},
