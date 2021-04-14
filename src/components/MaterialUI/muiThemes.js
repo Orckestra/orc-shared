@@ -940,6 +940,12 @@ const setThemeOverrides = theme => ({
 			marginTop: 0,
 		},
 	},
+	MuiTimelineItem: {
+		root: {
+			...theme.root,
+			minHeight: "auto",
+		},
+	},
 	MuiTimelineContent: {
 		root: {
 			...theme.root,
