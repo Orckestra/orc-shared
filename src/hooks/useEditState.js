@@ -5,7 +5,7 @@ import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesDat
 import { setEditModelField, setEditModelFieldError } from "./../actions/view";
 import { validationRules } from "../utils/modelValidationHelper";
 import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
-import { get } from "lodash";
+import { get, has, cloneDeep } from "lodash";
 import { mapModifiedData } from "../utils/mapHelper";
 
 // if you need to override default validation rules just pass new rules with default keys
@@ -89,42 +89,73 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		const getEditState = (path = []) => {
 			const keyPath = path.join(".");
 			const value = stateValue?.value ?? initialValue;
-			const resultValue = path.length === 0 ? value : get(value, keyPath, value);
-			const result = mapModifiedData(resultValue);
+			const resultValue = mapModifiedData(value);
+			const result = path.length === 0 ? resultValue : get(resultValue, keyPath, resultValue);
 
 			return result;
 		};
 
-		const updateEditState = (newValue, path = [], errorTypes = []) => {
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...path];
+		const getValidPath = path => {
+			let result = [];
+			const value = stateValue?.value ?? initialValue;
 
-			dispatchWithModulesData(setEditModelField, [fullPath, newValue, initialValue, entityId, sectionName]);
+			const checkPath = obj => {
+				if (has(obj, "value")) {
+					result.push("value");
+					return obj.value;
+				}
+				return obj;
+			};
 
-			isEditStateValid(newValue, path, errorTypes);
+			let valueItem = cloneDeep(value);
+
+			path.forEach((item, index) => {
+				result.push(item);
+				if (index !== path.length - 1) {
+					valueItem = checkPath(valueItem[item]);
+				}
+			});
+
+			return result;
 		};
 
-		const resetEditState = (path = []) => {
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...path];
-			dispatchWithModulesData(setEditModelField, [fullPath, initialValue, initialValue, entityId, sectionName]);
-		};
-
-		const isEditStateValid = (value, path = [], errorTypes = []) => {
-			const valueToValidate = value ?? getEditState(path);
+		const hasAnyValidationErrors = (value, path, errorTypes) => {
 			let hasAnyValidationErrors = false;
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...path];
-
 			errorTypes.forEach(errorType => {
-				const isValid = mergedValidationRules[errorType](valueToValidate);
+				const isValid = mergedValidationRules[errorType](value);
 
 				if (isValid === false) {
-					dispatchWithModulesData(setEditModelFieldError, [fullPath, errorType, entityId, sectionName]);
+					dispatchWithModulesData(setEditModelFieldError, [path, errorType, entityId, sectionName]);
 
 					hasAnyValidationErrors = true;
 					return;
 				}
 			});
 
-			return !hasAnyValidationErrors;
+			return hasAnyValidationErrors;
+		};
+
+		const updateEditState = (newValue, path = [], errorTypes = []) => {
+			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
+
+			dispatchWithModulesData(setEditModelField, [fullPath, newValue, initialValue, entityId, sectionName]);
+
+			hasAnyValidationErrors(newValue, fullPath, errorTypes);
+		};
+
+		const resetEditState = (path = []) => {
+			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
+			dispatchWithModulesData(setEditModelField, [fullPath, initialValue, initialValue, entityId, sectionName]);
+		};
+
+		const isEditStateValid = (value, path = [], errorTypes = []) => {
+			const validPath = getValidPath(path);
+			const valueToValidate = value ?? getEditState(validPath);
+			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...validPath];
+
+			const hasValidationErrors = hasAnyValidationErrors(valueToValidate, fullPath, errorTypes);
+
+			return !hasValidationErrors;
 		};
 
 		return {
