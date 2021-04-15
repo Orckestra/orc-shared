@@ -2,7 +2,13 @@ import { createSelector } from "reselect";
 import Immutable from "immutable";
 import { getCurrentScope } from "./navigation";
 import { currentLocaleOrDefault } from "./locale";
-import { normalizeForSearch, setTranslation, memoize } from "../utils";
+import {
+	normalizeForSearch,
+	setTranslation,
+	setTranslationWithFallbackValue,
+	setTranslationWithFallbackField,
+	memoize,
+} from "../utils";
 import { getLocalization } from "../utils/localizationHelper";
 
 const scopeData = state => state.get("scopes");
@@ -10,7 +16,7 @@ const scopeData = state => state.get("scopes");
 const localizedScopesSelector = createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) =>
 	scopes.map(scope =>
 		scope.withMutations(s => {
-			setTranslation(locale, s, "name");
+			setTranslationWithFallbackField(locale, s, "id", "name");
 			setTranslation(locale, s, "description");
 			setTranslation(locale, s, "currency", "displayName");
 		}),
@@ -50,21 +56,25 @@ export const scopeGetter = createSelector(filteredScopesSelector, scopes => id =
 	return scope.toJS();
 });
 
-export const selectLocalizedScopes = memoize(scopeIds =>
+export const localizedScopesSelectorByIds = memoize(scopeIds =>
 	createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) => {
-		const localizedScopes = [];
-
+		let scopesMap = Immutable.Map();
 		scopeIds.forEach(scopeId => {
-			const scope = scopes.get(scopeId)?.toJS();
-
+			let scope = scopes.get(scopeId);
 			if (scope != null) {
-				scope.displayName = getLocalization(scope.name, locale, scope.name);
-				scope.displayCurrency = getLocalization(scope.currency.displayName, locale, scope.currency.isoCode);
-				localizedScopes.push(scope);
+				scope = setTranslationWithFallbackField(locale, scope, "id", "name");
+				scope = setTranslationWithFallbackValue(
+					locale,
+					scope,
+					scope.getIn(["currency", "isoCode"]),
+					"currency",
+					"displayName",
+				);
+				scopesMap = scopesMap.set(scopeId, scope);
 			}
 		});
 
-		return localizedScopes;
+		return scopesMap;
 	}),
 );
 

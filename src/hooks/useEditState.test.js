@@ -417,7 +417,7 @@ describe("useEditState", () => {
 });
 
 describe("useDynamicEditState", () => {
-	let store, state;
+	let store, state, stateWithModifications, storeWithModifications;
 	const moduleName = "thing";
 	const sectionName = "mySection";
 	const entityId = "entityId";
@@ -437,6 +437,21 @@ describe("useDynamicEditState", () => {
 				d: "dynamic",
 				e: "object",
 			},
+		},
+	};
+
+	const modelWithModifications = {
+		a: "model",
+		b: "value",
+		c: {
+			value: {
+				d: {
+					value: "dynamic",
+					wasModified: true,
+				},
+				e: "object",
+			},
+			wasModified: true,
 		},
 	};
 
@@ -464,6 +479,30 @@ describe("useDynamicEditState", () => {
 			dispatch: () => sinon.spy(),
 			getState: () => state,
 		};
+
+		stateWithModifications = Immutable.fromJS({
+			navigation: {
+				route: { match: { path: `/:scope/${moduleName}/id/${sectionName}` } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+			view: {
+				edit: {
+					[moduleName]: {
+						[entityId]: {
+							[sectionName]: {
+								value: modelWithModifications,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		storeWithModifications = {
+			subscribe: () => {},
+			dispatch: () => sinon.spy(),
+			getState: () => stateWithModifications,
+		};
 	});
 
 	const TestComp = ({ saveInitialValueToEditState = false }) => {
@@ -473,6 +512,7 @@ describe("useDynamicEditState", () => {
 		const field = createDynamicEditState(["field"], initialFieldValue, saveInitialValueToEditState);
 		const fieldWithUndefinedInitialValue = createDynamicEditState(["anotherField"]);
 		const fieldInStore = createDynamicEditState(["field"], model, true);
+		const fieldWithModifications = createDynamicEditState(["field"], modelWithModifications, true);
 
 		const createDynamicEditStateWithoutCustomRules = useDynamicEditState(entityId, sectionName);
 		const fieldWithoutVaidationRules = createDynamicEditStateWithoutCustomRules(
@@ -487,6 +527,8 @@ describe("useDynamicEditState", () => {
 				<div id="fieldInStore" val={fieldInStore.getState()} />
 				<div id="fieldWithUndefinedInitialValue" val={fieldWithUndefinedInitialValue.getState()} />
 				<div id="update" onClick={e => field.update(e.target.value, ["c", "d"])} />
+				<div id="fieldWithPathWithModifications" val={fieldWithModifications.getState(["c", "d"])} />
+				<div id="updateWithModifications" onClick={e => fieldWithModifications.update(e.target.value, ["c", "d"])} />
 				<div id="updateWithDefaultPath" onClick={e => field.update(e.target.value)} />
 				<div
 					id="updateWithDefaultValidation"
@@ -522,6 +564,20 @@ describe("useDynamicEditState", () => {
 		const fieldValue = mountedComponent.find("#field").prop("val");
 
 		expect(fieldValue, "to equal", initialFieldValue);
+	});
+
+	it("Provides an access to value in edit view if has modifications", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#fieldWithPathWithModifications").prop("val");
+
+		expect(fieldValue, "to equal", "dynamic");
 	});
 
 	it("Provides an access to field by path in edit view", () => {
@@ -634,6 +690,40 @@ describe("useDynamicEditState", () => {
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
 			args: [setEditModelField, [["field", "value", "c", "d"], "newValue", initialFieldValue, entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Updates edit view value correctly without validation if has modifications", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#updateWithModifications");
+
+		const event = {
+			target: {
+				value: "newValue",
+			},
+		};
+
+		fieldComponent.invoke("onClick")(event);
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [
+				setEditModelField,
+				[["field", "value", "c", "value", "d"], "newValue", modelWithModifications, entityId, sectionName],
+			],
 		});
 
 		useDispatchWithModulesDataStub.restore();

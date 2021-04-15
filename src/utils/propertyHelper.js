@@ -37,6 +37,8 @@ export function getPropertyOrDefault(obj, property, defaultValue, ignoreCase = f
 }
 
 export const isObjectContainsPropertyWithValue = (obj, propertyName, value) => {
+	if (!obj) return false;
+
 	if (obj.hasOwnProperty(propertyName) && obj[propertyName] === value) {
 		return true;
 	}
@@ -51,6 +53,8 @@ export const isObjectContainsPropertyWithValue = (obj, propertyName, value) => {
 };
 
 export const isObjectContainsPropertyWithAnyValue = (obj, propertyName) => {
+	if (!obj) return false;
+
 	if (obj.hasOwnProperty(propertyName) && obj[propertyName]) {
 		return true;
 	}
