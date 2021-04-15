@@ -85,13 +85,13 @@ const Modal = ({ message, modalProps }) => {
 	const backdropClickCallback = modalProps?.get(ModalProps.propNames.backdropClickCallback);
 	const modalType = modalProps?.get(ModalProps.propNames.type) ?? "normal";
 
-	var containerCls = clsx({
+	const containerCls = clsx({
 		[classes.containerNormal]: modalType === "normal",
 		[classes.containerWide]: modalType === "wide",
 		[classes.containerFullwidth]: modalType === "fullwidth",
 	});
 
-	var messageCls = clsx({
+	const messageCls = clsx({
 		[classes.message]: modalType === "normal",
 		[classes.messageWide]: modalType === "wide" || modalType === "fullwidth",
 	});
@@ -103,7 +103,7 @@ const Modal = ({ message, modalProps }) => {
 			disableAutoFocus
 			open={open}
 			className={classes.modal}
-			onBackdropClick={backdropClickCallback != null ? () => backdropClickCallback() : null}
+			onBackdropClick={backdropClickCallback != null ? e => backdropClickCallback(e) : null}
 		>
 			<div className={clsx(classes.baseContainer, containerCls)}>
 				<div className={classes.title}>{title}</div>
