@@ -9,6 +9,8 @@ import TableHeaderCell from "./TableHeaderCell";
 import StandaloneRadio from "../Inputs/StandaloneRadio";
 import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
+import InputBase from "./../Inputs/InputBase";
+import InputBaseProps from "./../Inputs/InputBaseProps";
 
 const defaultRendering = (e, def, rowId, readOnly, transformedValue) => {
 	return transformedValue != null ? (
@@ -106,6 +108,21 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			);
 			return [<StandaloneRadio radioProps={radioProps} />];
 
+		case "textInput":
+			const inputBaseProps = new InputBaseProps();
+			inputBaseProps.set(InputBaseProps.propNames.value, transformedValue);
+			inputBaseProps.set(
+				InputBaseProps.propNames.disabled,
+				def.transform?.disabled != null ? def.transform.disabled(e, readOnly, def) : def.disabled,
+			);
+			inputBaseProps.set(InputBaseProps.propNames.update, def.onChange);
+			inputBaseProps.set(InputBaseProps.propNames.placeholder, def.placeholder);
+			inputBaseProps.set(
+				InputBaseProps.propNames.error,
+				def.transform?.error != null ? def.transform.error(e, readOnly, def) : def.error,
+			);
+			inputBaseProps.set(InputBaseProps.propNames.inputAttributes, def.inputAttributes);
+			return [<InputBase inputProps={inputBaseProps} />];
 		default:
 			return [defaultRendering(e, def, rowId, readOnly, transformedValue)];
 	}
