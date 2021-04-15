@@ -1,5 +1,5 @@
 import React from "react";
-import clsx from "clsx";
+import classNames from "classnames";
 import ModalMui from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import ModalProps, { isModalProps } from "./modalProps";
@@ -85,13 +85,13 @@ const Modal = ({ message, modalProps }) => {
 	const backdropClickCallback = modalProps?.get(ModalProps.propNames.backdropClickCallback);
 	const modalType = modalProps?.get(ModalProps.propNames.type) ?? "normal";
 
-	const containerCls = clsx({
+	const containerCls = classNames({
 		[classes.containerNormal]: modalType === "normal",
 		[classes.containerWide]: modalType === "wide",
 		[classes.containerFullwidth]: modalType === "fullwidth",
 	});
 
-	const messageCls = clsx({
+	const messageCls = classNames({
 		[classes.message]: modalType === "normal",
 		[classes.messageWide]: modalType === "wide" || modalType === "fullwidth",
 	});
@@ -105,7 +105,7 @@ const Modal = ({ message, modalProps }) => {
 			className={classes.modal}
 			onBackdropClick={backdropClickCallback != null ? e => backdropClickCallback(e) : null}
 		>
-			<div className={clsx(classes.baseContainer, containerCls)}>
+			<div className={classNames(classes.baseContainer, containerCls)}>
 				<div className={classes.title}>{title}</div>
 				<div className={messageCls}>{message}</div>
 				<div className={classes.actionPanel}>{actionPanel}</div>
