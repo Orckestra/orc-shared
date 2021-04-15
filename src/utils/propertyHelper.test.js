@@ -108,6 +108,23 @@ describe("isObjectContainsPropertyWithValue", () => {
 
 		expect(result, "to be false");
 	});
+
+	it("Does not fail if some property has Null value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: null,
+				},
+			},
+			prop2: {
+				m: "Hello Bob",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithValue(obj, "m", "Bye Bob");
+
+		expect(result, "to be false");
+	});
 });
 
 describe("isObjectContainsPropertyWithAnyValue", () => {
@@ -133,6 +150,23 @@ describe("isObjectContainsPropertyWithAnyValue", () => {
 			prop1: {
 				a: {
 					m: "Hello",
+				},
+			},
+			prop2: {
+				m: "Hello Bob",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithAnyValue(obj, "error");
+
+		expect(result, "to be false");
+	});
+
+	it("Does not fail if some property has Null value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: null,
 				},
 			},
 			prop2: {
