@@ -43,7 +43,7 @@ describe("withScopeData", () => {
 				},
 				test2: {
 					id: "test2",
-					name: { "en-US": "Test 2" },
+					name: { "en-US": "Test 2", "en-CA": "Test 2" },
 					foo: false,
 					bar: true,
 					parentScopeId: "test1",
@@ -58,7 +58,7 @@ describe("withScopeData", () => {
 				},
 				test4: {
 					id: "test4",
-					name: { "en-US": "Test 4" },
+					name: { "en-US": "Test 4", "en-CA": "Test 4" },
 					foo: true,
 					bar: true,
 					parentScopeId: "test2",

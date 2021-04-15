@@ -4,7 +4,7 @@ import {
 	currentScopeSelector,
 	scopeGetter,
 	localizedScopeSelector,
-	selectLocalizedScopes,
+	localizedScopesSelectorByIds,
 	isCurrentScopeAuthorizedSelector,
 } from "./scope";
 
@@ -61,7 +61,7 @@ beforeEach(() => {
 				currency: {
 					isoCode: "USD",
 					displayName: {
-						en: "Euro",
+						en: "US Dollar",
 					},
 				},
 			},
@@ -109,7 +109,7 @@ describe("currentScopeSelector", () => {
 				children: ["ThirdGrandchild", "FourthGrandchild", "FifthGrandchild"],
 				parentScopeId: "Global",
 				isAuthorizedScope: true,
-				currency: { isoCode: "USD", displayName: "Euro" },
+				currency: { isoCode: "USD", displayName: "US Dollar" },
 			}),
 		));
 
@@ -247,24 +247,26 @@ describe("localizedScopeSelector", () => {
 	});
 });
 
-describe("selectLocalizedScopes", () => {
+describe("localizedScopesSelectorByIds", () => {
 	it("Retrieves localized scopes", () => {
 		const scopes = ["Global", "FirstChild"];
 
 		const stateAsJS = state.toJS();
 
 		const expectedGlobal = stateAsJS.scopes.Global;
-		expectedGlobal.displayName = "Global";
-		expectedGlobal.displayCurrency = "Euro";
+		expectedGlobal.name = "Global";
+		expectedGlobal.currency.displayName = "Euro";
 
 		const expectedFirstChild = stateAsJS.scopes.FirstChild;
-		expectedFirstChild.displayName = "Premier fils";
-		expectedFirstChild.displayCurrency = "US Dollar";
+		expectedFirstChild.name = "Premier fils";
+		expectedFirstChild.currency.displayName = "US Dollar";
 
-		expect(selectLocalizedScopes, "when called with", [scopes], "called with", [state], "to equal", [
-			expectedGlobal,
-			expectedFirstChild,
-		]);
+		const expected = Immutable.fromJS({
+			Global: expectedGlobal,
+			FirstChild: expectedFirstChild,
+		});
+
+		expect(localizedScopesSelectorByIds, "when called with", [scopes], "called with", [state], "to equal", expected);
 	});
 
 	it("Retrieves localized scopes with fallback currency", () => {
@@ -273,12 +275,14 @@ describe("selectLocalizedScopes", () => {
 		const stateAsJS = state.toJS();
 
 		const expectedSecondChild = stateAsJS.scopes.SecondChild;
-		expectedSecondChild.displayName = "Deuxième fils";
-		expectedSecondChild.displayCurrency = "[USD]";
+		expectedSecondChild.name = "Deuxième fils";
+		expectedSecondChild.currency.displayName = "USD";
 
-		expect(selectLocalizedScopes, "when called with", [scopes], "called with", [state], "to equal", [
-			expectedSecondChild,
-		]);
+		const expected = Immutable.fromJS({
+			SecondChild: expectedSecondChild,
+		});
+
+		expect(localizedScopesSelectorByIds, "when called with", [scopes], "called with", [state], "to equal", expected);
 	});
 
 	it("Not adds scope in result array if it does not exist", () => {
@@ -287,9 +291,13 @@ describe("selectLocalizedScopes", () => {
 		const stateAsJS = state.toJS();
 
 		const expectedGlobal = stateAsJS.scopes.Global;
-		expectedGlobal.displayName = "Global";
-		expectedGlobal.displayCurrency = "Euro";
+		expectedGlobal.name = "Global";
+		expectedGlobal.currency.displayName = "Euro";
 
-		expect(selectLocalizedScopes, "when called with", [scopes], "called with", [state], "to equal", [expectedGlobal]);
+		const expected = Immutable.fromJS({
+			Global: expectedGlobal,
+		});
+
+		expect(localizedScopesSelectorByIds, "when called with", [scopes], "called with", [state], "to equal", expected);
 	});
 });

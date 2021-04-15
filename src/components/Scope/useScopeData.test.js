@@ -39,14 +39,14 @@ describe("useScopeData", () => {
 			scopes: {
 				test1: {
 					id: "test1",
-					name: { "en-CA": "Test 1" },
+					name: { "en-CA": "Test 1", "en-US": "Test 1" },
 					foo: false,
 					bar: false,
 					children: ["test2"],
 				},
 				test2: {
 					id: "test2",
-					name: { "en-US": "Test 2" },
+					name: { "en-US": "Test 2", "en-CA": "Test 2" },
 					foo: false,
 					bar: true,
 					parentScopeId: "test1",

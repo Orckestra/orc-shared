@@ -5,6 +5,7 @@ import logPass from "./logPass";
 import normalizeForSearch from "./normalizeForSearch";
 import { flatten, flattenObj } from "./flatten";
 import setTranslation from "./setTranslation";
+import { setTranslationWithFallbackValue, setTranslationWithFallbackField } from "./setTranslationWithFallback";
 import debounce from "./debounce";
 import stripKey from "./stripKey";
 import memoize from "./memoize";
@@ -26,6 +27,8 @@ export {
 	normalizeForSearch,
 	safeGet,
 	setTranslation,
+	setTranslationWithFallbackValue,
+	setTranslationWithFallbackField,
 	stripKey,
 	switchEnum,
 	unwrapImmutable,

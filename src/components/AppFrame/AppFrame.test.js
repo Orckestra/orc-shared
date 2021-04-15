@@ -158,7 +158,7 @@ describe("AppFrame", () => {
 			scopes: {
 				test1: {
 					id: "test1",
-					name: { "en-CA": "Test 1" },
+					name: { "en-CA": "Test 1", "en-US": "Test 1" },
 					foo: false,
 					bar: false,
 				},
@@ -170,7 +170,7 @@ describe("AppFrame", () => {
 				},
 				test3: {
 					id: "test3",
-					name: { "en-CA": "Test 3" },
+					name: { "en-CA": "Test 3", "en-US": "Test 3" },
 					foo: true,
 					bar: false,
 				},
