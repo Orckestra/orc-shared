@@ -109,6 +109,57 @@ describe("isObjectContainsPropertyWithValue", () => {
 		expect(result, "to be false");
 	});
 
+	it("Returns true if object contains specified property with boolean false value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: false,
+				},
+			},
+			prop2: {
+				m: "Hello Bobbina",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithValue(obj, "m", false);
+
+		expect(result, "to be true");
+	});
+
+	it("Returns false if object doesn't contain specified property with boolean False value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: true,
+				},
+			},
+			prop2: {
+				m: "Hello Bobbina",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithValue(obj, "m", false);
+
+		expect(result, "to be false");
+	});
+
+	it("Returns true if object contains specified property with boolean True value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: true,
+				},
+			},
+			prop2: {
+				m: "Hello Bobbina",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithValue(obj, "m", true);
+
+		expect(result, "to be true");
+	});
+
 	it("Does not fail if some property has Null value", () => {
 		const obj = {
 			prop1: {
@@ -177,5 +228,56 @@ describe("isObjectContainsPropertyWithAnyValue", () => {
 		const result = propertyHelper.isObjectContainsPropertyWithAnyValue(obj, "error");
 
 		expect(result, "to be false");
+	});
+
+	it("Return true of property has Null value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: null,
+				},
+			},
+			prop2: {
+				m: "Hello Bob",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithAnyValue(obj, "m");
+
+		expect(result, "to be true");
+	});
+
+	it("Return true of property has False value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: false,
+				},
+			},
+			prop2: {
+				m: "Hello Bob",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithAnyValue(obj, "m");
+
+		expect(result, "to be true");
+	});
+
+	it("Return true of property has True value", () => {
+		const obj = {
+			prop1: {
+				a: {
+					m: true,
+				},
+			},
+			prop2: {
+				m: "Hello Bob",
+			},
+		};
+
+		const result = propertyHelper.isObjectContainsPropertyWithAnyValue(obj, "m");
+
+		expect(result, "to be true");
 	});
 });

@@ -2,6 +2,7 @@ import { cloneDeep, merge, get } from "lodash";
 
 export const mapModifiedData = model => {
 	const mapModifiedObj = obj => {
+		if (obj === null || obj === undefined) return obj;
 		if (obj.wasModified != null) return mapModifiedObj(obj.value);
 
 		return mapModifiedData(obj);

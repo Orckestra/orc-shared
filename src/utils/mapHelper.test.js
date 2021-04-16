@@ -272,4 +272,40 @@ describe("mapModel", () => {
 
 		expect(resultModel, "to equal", expectedResultModel);
 	});
+
+	it("Maps correctly when some modified values are null", () => {
+		const modelWithNull = { ...model, ...{ field1: { value: null, wasModified: true } } };
+		const resultModel = mapModel(modelWithNull, initialModel);
+
+		const expectedResultModel = {
+			field1: null,
+			field2: "Bob",
+			field3: false,
+			field4: "Prop to add",
+			name: "Carl",
+			nestedField: { field: "nestedValue" },
+			nestedField2: {
+				field: [
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: {
+							nestedLevel2Prop1: "testLevel2Value",
+							nestedLevel2Prop2: "testLevel2",
+						},
+					},
+					{
+						nestedLevel1Prop1: "test",
+						nestedLevel1Prop2: [
+							{
+								nestedLevel2Prop1: "testLevel2Value",
+								nestedLevel2Prop2: "testLevel2",
+							},
+						],
+					},
+				],
+			},
+		};
+
+		expect(resultModel, "to equal", expectedResultModel);
+	});
 });

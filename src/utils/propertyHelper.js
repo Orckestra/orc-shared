@@ -37,7 +37,7 @@ export function getPropertyOrDefault(obj, property, defaultValue, ignoreCase = f
 }
 
 export const isObjectContainsPropertyWithValue = (obj, propertyName, value) => {
-	if (!obj) return false;
+	if (obj === null || obj === undefined) return false;
 
 	if (obj.hasOwnProperty(propertyName) && obj[propertyName] === value) {
 		return true;
