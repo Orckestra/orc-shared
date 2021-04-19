@@ -64,6 +64,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 				CheckboxProps.propNames.readOnly,
 				def.transform?.readOnly != null ? def.transform.readOnly(e, readOnly, def) : readOnly,
 			);
+			checkboxProps.set(CheckboxProps.propNames.metadata, { id: rowId, name: def.fieldName });
 
 			return [<Checkbox id={"select_" + transformedValue} data-row-id={rowId} checkboxProps={checkboxProps} />, null];
 
@@ -122,6 +123,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 				def.transform?.error != null ? def.transform.error(e, readOnly, def) : def.error,
 			);
 			inputBaseProps.set(InputBaseProps.propNames.inputAttributes, def.inputAttributes);
+			inputBaseProps.set(InputBaseProps.propNames.metadata, { id: rowId, name: def.fieldName });
 			return [<InputBase inputProps={inputBaseProps} />];
 		default:
 			return [defaultRendering(e, def, rowId, readOnly, transformedValue)];

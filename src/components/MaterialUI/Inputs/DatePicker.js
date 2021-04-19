@@ -87,7 +87,7 @@ const WrappedDatePicker = ({
 	timeInputLabel,
 	readOnly,
 	showTimeSelectOnly,
-	id,
+	metadata,
 	error,
 	...props
 }) => {
@@ -95,9 +95,9 @@ const WrappedDatePicker = ({
 	const startDate = value ? new Date(value) : null;
 	var disabledCls = classNames({ [classes.disabled]: props.disabled });
 
-	const updateDate = (date, id) => {
+	const updateDate = (date, metadata) => {
 		if (onChange) {
-			onChange(date, id);
+			onChange(date, metadata);
 		}
 	};
 
@@ -109,7 +109,7 @@ const WrappedDatePicker = ({
 						{...props}
 						dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
 						selected={startDate}
-						onChange={date => updateDate(date, id)}
+						onChange={date => updateDate(date, metadata)}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}

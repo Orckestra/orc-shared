@@ -15,6 +15,7 @@ class InputBaseProps extends ComponentProps {
 		onBlur: "onBlur",
 		startAdornment: "startAdornment",
 		endAdornment: "endAdornment",
+		metadata: "metadata",
 	};
 
 	static ruleNames = {
@@ -37,6 +38,7 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.onBlur, null);
 		this.componentProps.set(this.constructor.propNames.startAdornment, null);
 		this.componentProps.set(this.constructor.propNames.endAdornment, null);
+		this.componentProps.set(this.constructor.propNames.metadata, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.input, null);
 		this.componentClasses.set(this.constructor.ruleNames.errorText, null);
