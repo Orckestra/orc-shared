@@ -26,6 +26,8 @@ describe("TableProps Props", () => {
 			"classes",
 			"deepPropsComparation",
 			"isEditingMode",
+			"selectedRows",
+			"selectedRowsChanged",
 		];
 
 		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];

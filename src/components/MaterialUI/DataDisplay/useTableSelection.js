@@ -1,19 +1,14 @@
 import { useState } from "react";
 
-export const staticTableSelectionMethods = {
-	selectionHandler: null,
-	isSelected: null,
-};
-
 export const tableSelectionMode = Object.freeze({ none: 1, indeterminate: 2, all: 3 });
 
-export const useTableSelection = rows => {
-	const [selected, setSelected] = useState({});
-	const selectedNumber = Object.keys(selected).length;
+export const useTableSelection = (rows, selectedRows = null, selectedRowsChanged = null) => {
+	const [selected, setSelected] = useState({}); // Default internal management of selected rows if none are specified
+	const selectedNumber = Object.keys(selectedRows ? selectedRows : selected).length;
 
-	staticTableSelectionMethods.selectionHandler = (event, key) => {
+	const selectionHandler = (event, key) => {
 		const newSelection = {
-			...(key === null ? {} : selected),
+			...(key === null ? {} : selectedRows ? selectedRows : selected),
 		};
 
 		if (key === null) {
@@ -26,9 +21,13 @@ export const useTableSelection = rows => {
 		}
 
 		setSelected(newSelection);
+
+		if (selectedRowsChanged !== null) {
+			selectedRowsChanged(newSelection);
+		}
 	};
 
-	staticTableSelectionMethods.isSelected = key => selected[key] === true;
+	const isSelected = key => selected[key] === true || (selectedRows || {})[key] === true;
 
 	const tableSelectionStatus =
 		selectedNumber === 0
@@ -37,8 +36,7 @@ export const useTableSelection = rows => {
 			? tableSelectionMode.all
 			: tableSelectionMode.indeterminate;
 
-	// static object is to improve IE performance as it had a huge impact when returning new functions everytime
-	return [selectedNumber, tableSelectionStatus, staticTableSelectionMethods];
+	return [selectedNumber, tableSelectionStatus, { selectionHandler, isSelected }];
 };
 
 export default useTableSelection;

@@ -1343,4 +1343,71 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[1].cellElement, "to equal", "another 2 a value from builder");
 		expect(rows[1].columns[1].title, "to equal", "another 2 a value from builder");
 	});
+
+	it("build table headers and rows as expected when a column should not be visible", () => {
+		const editingBuilder = (e, readOnly, def) =>
+			def.fieldName === "test" ? null : e.another + " a value from builder";
+
+		const columnDef = [
+			{ fieldName: "test", label: messages.a_label, className: "aClassXYZ", editingBuilder: editingBuilder },
+			{ fieldName: "another", label: messages.another, editingBuilder: editingBuilder, visible: false },
+		];
+		const elements = [
+			{
+				id: "an_id1",
+				test: "A text row 1",
+				another: "another 1",
+				extraneous: "Don't show 1",
+			},
+			{
+				id: "an_id2",
+				test: "A text row 2",
+				another: "another 2",
+				extraneous: "Don't show 2",
+			},
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements, false);
+
+		expect(headers.length, "to equal", 1);
+		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
+		expect(headers[0].className, "to equal", columnDef[0].className);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+
+		expect(rows[0].key, "to equal", "an_id1");
+		expect(rows[0].element, "to equal", elements[0]);
+		expect(
+			rows[0].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+		expect(rows[0].columns[0].className, "to equal", columnDef[0].className);
+		expect(
+			rows[0].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[0].test} titleValue={elements[0].test} />,
+		);
+
+		expect(rows[1].columns.length, "to equal", 1);
+
+		expect(rows[1].key, "to equal", "an_id2");
+		expect(rows[1].element, "to equal", elements[1]);
+		expect(
+			rows[1].columns[0].cellElement,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+		expect(rows[1].columns[0].className, "to equal", columnDef[0].className);
+		expect(
+			rows[1].columns[0].title,
+			"when mounted",
+			"to satisfy",
+			<TooltippedTypography noWrap children={elements[1].test} titleValue={elements[1].test} />,
+		);
+	});
 });
