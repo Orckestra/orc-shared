@@ -80,7 +80,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			);
 			switchProps.set(SwitchProps.propNames.update, def.onChange);
 			switchProps.set(SwitchProps.propNames.className, def.switch?.className);
-			switchProps.set(SwitchProps.propNames.id, { id: rowId, name: def.fieldName });
+			switchProps.set(SwitchProps.propNames.metadata, { id: rowId, name: def.fieldName });
 
 			return transformedValue != null ? [<Switch data-row-id={rowId} switchProps={switchProps} />] : [null];
 

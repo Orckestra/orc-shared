@@ -10,6 +10,7 @@ class SwitchProps extends ComponentProps {
 		readOnly: "readOnly",
 		className: "className",
 		id: "id",
+		metadata: "metadata",
 	};
 
 	constructor() {
@@ -22,6 +23,7 @@ class SwitchProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.readOnly, null);
 		this.componentProps.set(this.constructor.propNames.className, null);
 		this.componentProps.set(this.constructor.propNames.id, null);
+		this.componentProps.set(this.constructor.propNames.metadata, null);
 
 		this._isSwitchProps = true;
 	}

@@ -62,7 +62,7 @@ describe("Switch Component", () => {
 
 		switchProps.set(SwitchProps.propNames.update, update);
 		switchProps.set(SwitchProps.propNames.value, false);
-		switchProps.set(SwitchProps.propNames.id, "id");
+		switchProps.set(SwitchProps.propNames.metadata, {});
 
 		const component = (
 			<IntlProvider locale="en-US">
@@ -74,7 +74,7 @@ describe("Switch Component", () => {
 
 		const switchMui = mountedComponent.find(SwitchMUI).find("input");
 		switchMui.simulate("change", { target: { checked: true } });
-		expect(update, "to have calls satisfying", [{ args: [true, "id"] }]);
+		expect(update, "to have calls satisfying", [{ args: [true, {}] }]);
 	});
 
 	it("Checkbox component handles uncheck", () => {
@@ -82,7 +82,7 @@ describe("Switch Component", () => {
 
 		switchProps.set(SwitchProps.propNames.update, update);
 		switchProps.set(SwitchProps.propNames.value, true);
-		switchProps.set(SwitchProps.propNames.id, "id");
+		switchProps.set(SwitchProps.propNames.metadata, {});
 
 		const component = (
 			<IntlProvider locale="en-US">
@@ -94,7 +94,7 @@ describe("Switch Component", () => {
 
 		const switchMui = mountedComponent.find(SwitchMUI).find("input");
 		switchMui.simulate("change", { target: { checked: false } });
-		expect(update, "to have calls satisfying", [{ args: [false, "id"] }]);
+		expect(update, "to have calls satisfying", [{ args: [false, {}] }]);
 	});
 
 	it("Checkbox component not handles check if it's read only", () => {

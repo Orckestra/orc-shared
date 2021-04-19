@@ -442,12 +442,13 @@ describe("useDynamicEditState", () => {
 
 	const modelWithModifications = {
 		a: "model",
-		b: "value",
+		b: ["a", "b", "c"],
 		c: {
 			value: {
 				d: {
 					value: "dynamic",
 					wasModified: true,
+					error: "this is error",
 				},
 				e: "object",
 			},
@@ -520,6 +521,11 @@ describe("useDynamicEditState", () => {
 			initialFieldValue,
 		);
 
+		const createDynamicEditStateWithDependencies = useDynamicEditState(entityId, sectionName, {
+			customRule: (value, dependencies) => value !== dependencies.value,
+		});
+		const fieldWithCustomRules = createDynamicEditStateWithDependencies(["field"], modelWithModifications, true);
+
 		return (
 			<div>
 				<div id="field" val={field.getState()} />
@@ -547,6 +553,20 @@ describe("useDynamicEditState", () => {
 					onClick={e =>
 						fieldWithoutVaidationRules.update(e.target.value, ["c", "d"], validationErrorTypes.fieldIsRequired)
 					}
+				/>
+				<div id="getError" val={fieldWithModifications.getError(["c", "d"])} />
+				<div id="getErrorWithoutPath" val={fieldWithModifications.getError()} />
+				<div
+					id="updateWithCustomValidationAndDependencies"
+					onClick={e => fieldWithCustomRules.update(e.target.value, ["c", "d"], ["customRule"], { value: "Test" })}
+				/>
+				<div
+					id="isValidWhenValueNotObject"
+					onClick={e => fieldWithCustomRules.isValid(e.target.value, ["c", "e"], ["customRule"], { value: "Test" })}
+				/>
+				<div
+					id="isValidWhenValueIsArray"
+					onClick={e => fieldWithCustomRules.isValid(null, ["b"], ["customRule"], { value: "Test" })}
 				/>
 			</div>
 		);
@@ -689,7 +709,10 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")(event);
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [setEditModelField, [["field", "value", "c", "d"], "newValue", initialFieldValue, entityId, sectionName]],
+			args: [
+				setEditModelField,
+				[["field", "value", "c", "d"], "newValue", initialFieldValue.c.d, entityId, sectionName],
+			],
 		});
 
 		useDispatchWithModulesDataStub.restore();
@@ -722,7 +745,7 @@ describe("useDynamicEditState", () => {
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
 			args: [
 				setEditModelField,
-				[["field", "value", "c", "value", "d"], "newValue", modelWithModifications, entityId, sectionName],
+				[["field", "value", "c", "value", "d"], "newValue", modelWithModifications.c.value.d, entityId, sectionName],
 			],
 		});
 
@@ -785,7 +808,10 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")(event);
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [setEditModelField, [["field", "value", "c", "d"], "newValue", initialFieldValue, entityId, sectionName]],
+			args: [
+				setEditModelField,
+				[["field", "value", "c", "d"], "newValue", initialFieldValue.c.d, entityId, sectionName],
+			],
 		});
 
 		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
@@ -823,7 +849,7 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")(event);
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [setEditModelField, [["field", "value", "c", "d"], "", initialFieldValue, entityId, sectionName]],
+			args: [setEditModelField, [["field", "value", "c", "d"], "", initialFieldValue.c.d, entityId, sectionName]],
 		});
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
@@ -861,7 +887,7 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")(event);
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [setEditModelField, [["field", "value", "c", "d"], "custom", initialFieldValue, entityId, sectionName]],
+			args: [setEditModelField, [["field", "value", "c", "d"], "custom", initialFieldValue.c.d, entityId, sectionName]],
 		});
 
 		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
@@ -898,7 +924,7 @@ describe("useDynamicEditState", () => {
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
 			args: [
 				setEditModelField,
-				[["field", "value", "c", "d"], "anotherValue", initialFieldValue, entityId, sectionName],
+				[["field", "value", "c", "d"], "anotherValue", initialFieldValue.c.d, entityId, sectionName],
 			],
 		});
 
@@ -1012,6 +1038,173 @@ describe("useDynamicEditState", () => {
 
 		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
 			args: [setEditModelFieldError, [["field"], "customRule", entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Gets error by path", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#getError").prop("val");
+
+		expect(fieldValue, "to equal", "this is error");
+	});
+
+	it("Gets error without path", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#getErrorWithoutPath").prop("val");
+
+		expect(fieldValue, "to equal", undefined);
+	});
+
+	it("Updates edit view value correctly with custom validation rules and dependencies when validation was passed", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#updateWithCustomValidationAndDependencies");
+
+		const event = {
+			target: {
+				value: "valid",
+			},
+		};
+
+		fieldComponent.invoke("onClick")(event);
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [
+				setEditModelField,
+				[["field", "value", "c", "value", "d"], "valid", modelWithModifications.c.value.d, entityId, sectionName],
+			],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
+			args: [setEditModelFieldError, [["field", "value", "c", "value", "d"], "customRule", entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Updates edit view value correctly with custom validation rules and dependencies when validation was not passed", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#updateWithCustomValidationAndDependencies");
+
+		const event = {
+			target: {
+				value: "Test",
+			},
+		};
+
+		fieldComponent.invoke("onClick")(event);
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [
+				setEditModelField,
+				[["field", "value", "c", "value", "d"], "Test", modelWithModifications.c.value.d, entityId, sectionName],
+			],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [setEditModelFieldError, [["field", "value", "c", "value", "d"], "customRule", entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Validates edit state value correctly when it is not an object", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#isValidWhenValueNotObject");
+
+		const event = {
+			target: {
+				value: "Test",
+			},
+		};
+		fieldComponent.invoke("onClick")(event);
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [setEditModelField, [["field", "value", "c", "value", "e"], "Test", "Test", entityId, sectionName]],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [setEditModelFieldError, [["field", "value", "c", "value", "e"], "customRule", entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Validates edit state value correctly when it is an array", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#isValidWhenValueIsArray");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [setEditModelField, [["field", "value", "b"], ["a", "b", "c"], ["a", "b", "c"], entityId, sectionName]],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
+			args: [setEditModelFieldError, [["field", "value", "b"], "customRule", entityId, sectionName]],
 		});
 
 		useDispatchWithModulesDataStub.restore();

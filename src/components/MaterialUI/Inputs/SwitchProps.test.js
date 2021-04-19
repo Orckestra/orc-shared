@@ -2,13 +2,33 @@ import SwitchProps, { isSwitchProps } from "./SwitchProps";
 
 describe("Switch Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["update", "value", "onCaption", "offCaption", "disabled", "readOnly", "className", "id"];
+		const propNames = [
+			"update",
+			"value",
+			"onCaption",
+			"offCaption",
+			"disabled",
+			"readOnly",
+			"className",
+			"id",
+			"metadata",
+		];
 
 		expect(SwitchProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["update", "value", "onCaption", "offCaption", "disabled", "readOnly", "className", "id"];
+		const propNames = [
+			"update",
+			"value",
+			"onCaption",
+			"offCaption",
+			"disabled",
+			"readOnly",
+			"className",
+			"id",
+			"metadata",
+		];
 
 		const switchProps = new SwitchProps();
 
