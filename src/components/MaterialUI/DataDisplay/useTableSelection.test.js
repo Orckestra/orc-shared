@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTableSelection } from "./useTableSelection";
 
-const TestComp = ({ elements }) => {
-	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(elements);
+const TestComp = ({ elements, selectedRows, selectedRowsChanged }) => {
+	const [selection, setSelection] = useState(selectedRows);
+
+	const selectedRowsChangedHandler = selection => {
+		setSelection(selection);
+
+		if (selectedRowsChanged) selectedRowsChanged(selection);
+	};
+
+	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(
+		elements,
+		selection,
+		selectedRows ? selectedRowsChangedHandler : undefined,
+	);
 
 	const onClick = evt => {
 		selectionMethods.selectionHandler({ target: { checked: evt.value } }, evt.element);
@@ -132,5 +144,60 @@ describe("useTableSelection", () => {
 				<div>a,b,c,d</div>
 			</div>,
 		);
+	});
+
+	it("selection handlers initialize correctly with provided selected rows", () => {
+		expect(
+			<TestComp elements={elements} selectedRows={{ a: true, c: true, d: true }} />,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<div>3</div>
+				<div>2</div>
+				<div>a,c,d</div>
+			</div>,
+		);
+	});
+
+	it("selection handlers works successfully with provided selected rows", () => {
+		const selectedRows = { a: true, c: true, d: true };
+
+		expect(
+			<TestComp elements={elements} selectedRows={selectedRows} />,
+			"when mounted",
+			"with event",
+			{ type: "click", data: { element: "c", value: false } },
+			"to satisfy",
+			<div>
+				<div>2</div>
+				<div>2</div>
+				<div>a,d</div>
+			</div>,
+		);
+	});
+
+	it("Ensure custom selection handlers is invoked correctly", () => {
+		const selectedRows = { a: true, c: true, d: true };
+
+		const selectedRowsChanged = jest.fn();
+
+		expect(
+			<TestComp elements={elements} selectedRows={selectedRows} selectedRowsChanged={selectedRowsChanged} />,
+			"when mounted",
+			"with event",
+			{ type: "click", data: { element: "c", value: false } },
+			"with event",
+			{ type: "click", data: { element: "a", value: false } },
+			"with event",
+			{ type: "click", data: { element: "b", value: true } },
+			"to satisfy",
+			<div>
+				<div>2</div>
+				<div>2</div>
+				<div>b,d</div>
+			</div>,
+		);
+
+		expect(selectedRowsChanged.mock.calls.length, "to be", 3);
 	});
 });
