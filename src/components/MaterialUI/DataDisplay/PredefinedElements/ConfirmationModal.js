@@ -46,10 +46,10 @@ const ConfirmationModal = ({
 
 	const actionPanel = (
 		<div className={classes.actionPanel}>
-			<Button variant="outlined" onClick={() => cancelCallback()}>
+			<Button variant="outlined" onClick={e => cancelCallback(e)}>
 				<FormattedMessage {...cancelLabel} />
 			</Button>
-			<Button variant="contained" color="primary" onClick={() => okCallback()} disableElevation>
+			<Button variant="contained" color="primary" onClick={e => okCallback(e)} disableElevation>
 				<FormattedMessage {...okLabel} />
 			</Button>
 		</div>
