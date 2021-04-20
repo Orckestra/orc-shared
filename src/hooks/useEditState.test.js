@@ -5,7 +5,12 @@ import Immutable from "immutable";
 import sinon from "sinon";
 import { mount } from "enzyme";
 import * as useDispatchWithModulesDataMock from "./useDispatchWithModulesData";
-import { setEditModelField, setEditModelFieldError } from "./../actions/view";
+import {
+	setEditModelField,
+	setEditModelFieldError,
+	removeEditModel,
+	removeEditModelFieldError,
+} from "./../actions/view";
 import { validationErrorTypes } from "./../constants";
 
 describe("useEditState", () => {
@@ -451,6 +456,11 @@ describe("useDynamicEditState", () => {
 					error: "this is error",
 				},
 				e: "object",
+				n: [
+					{
+						nProp: "test",
+					},
+				],
 			},
 			wasModified: true,
 		},
@@ -568,6 +578,14 @@ describe("useDynamicEditState", () => {
 					id="isValidWhenValueIsArray"
 					onClick={e => fieldWithCustomRules.isValid(null, ["b"], ["customRule"], { value: "Test" })}
 				/>
+				<div
+					id="isValidWhenValueIsObject"
+					onClick={e => fieldWithCustomRules.isValid(null, ["c", "d"], ["customRule"], { value: "Test" })}
+				/>
+				<div id="deleteElementByPath" onClick={e => fieldWithCustomRules.delete(["c", "e"])} />
+				<div id="deleteElementByPathWhenObject" onClick={e => fieldWithCustomRules.delete(["c", "d"])} />
+				<div id="deleteElementByPathWhenArray" onClick={e => fieldWithCustomRules.delete(["c", "n"])} />
+				<div id="deleteElementWithNoPath" onClick={e => fieldWithCustomRules.delete()} />
 			</div>
 		);
 	};
@@ -1205,6 +1223,164 @@ describe("useDynamicEditState", () => {
 
 		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
 			args: [setEditModelFieldError, [["field", "value", "b"], "customRule", entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Validates edit state value correctly when it is an object and reset error", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#isValidWhenValueIsObject");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
+			args: [setEditModelField, [["field", "value", "c", "value", "d"], "dynamic", "dynamic", entityId, sectionName]],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have no calls satisfying", {
+			args: [setEditModelFieldError, [["field", "value", "c", "value", "d"], "customRule", entityId, sectionName]],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [removeEditModelFieldError, [["field", "value", "c", "value", "d"], entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Delete value in edit view by path when value is object", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#deleteElementByPathWhenObject");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [removeEditModel, [["field", "value", "c", "value", "d"], entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Delete value in edit view by path", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#deleteElementByPath");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [removeEditModel, [["field", "value", "c", "value", "e"], entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Delete value in edit view by path when value is object", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#deleteElementByPathWhenObject");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [removeEditModel, [["field", "value", "c", "value", "d"], entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Delete value in edit view by path when value is array", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#deleteElementByPathWhenArray");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [removeEditModel, [["field", "value", "c", "value", "n"], entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Delete value in edit view with no path", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#deleteElementWithNoPath");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [removeEditModel, [["field"], entityId, sectionName]],
 		});
 
 		useDispatchWithModulesDataStub.restore();
