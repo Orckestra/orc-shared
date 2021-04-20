@@ -17,6 +17,7 @@ export const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fontSize,
 		display: "flex",
 		flexDirection: "column",
+		userSelect: "none",
 	},
 	tableContainer: {
 		overflowY: "auto",
