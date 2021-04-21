@@ -332,6 +332,8 @@ const Table = ({
 	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
 	const deepPropsComparation = tableProps?.get(TableProps.propNames.deepPropsComparation) || false;
 	const isEditingMode = tableProps?.get(TableProps.propNames.isEditingMode) || false;
+	const selectedRows = tableProps?.get(TableProps.propNames.selectedRows) || null;
+	const selectedRowsChanged = tableProps?.get(TableProps.propNames.selectedRowsChanged) || null;
 
 	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
 	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
@@ -346,7 +348,11 @@ const Table = ({
 	const [scrolled, setScrolled] = useState(0);
 	const [tableSize, setTableSize] = useState({ width: 0, height: 0 });
 
-	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(rows);
+	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(
+		rows,
+		selectedRows,
+		selectedRowsChanged,
+	);
 
 	const classes = useStyles({
 		withoutTopBorder,

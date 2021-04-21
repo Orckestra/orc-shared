@@ -142,29 +142,33 @@ export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnl
 		throw new Error("Only one active sort column can exist at the same time");
 	}
 
-	const headers = columnDefinitions.map(def => ({
-		cellElement: <TableHeaderCell columnDefinition={def} />,
-		className: def.className,
-	}));
+	const headers = columnDefinitions
+		.filter(def => def.visible !== false)
+		.map(def => ({
+			cellElement: <TableHeaderCell columnDefinition={def} />,
+			className: def.className,
+		}));
 
 	const rows = elements.map(e => {
 		const rowId = e[keyField];
 		return {
 			key: rowId,
 			element: e,
-			columns: columnDefinitions.map(def => {
-				const transformedValue = def.transform?.value ? def.transform.value(e[def.fieldName]) : e[def.fieldName];
+			columns: columnDefinitions
+				.filter(def => def.visible !== false)
+				.map(def => {
+					const transformedValue = def.transform?.value ? def.transform.value(e[def.fieldName]) : e[def.fieldName];
 
-				const [cellElement, title] = readOnly
-					? renderByType(e, def, rowId, readOnly, transformedValue)
-					: renderByTypeInEditingMode(e, def, rowId, readOnly, transformedValue);
+					const [cellElement, title] = readOnly
+						? renderByType(e, def, rowId, readOnly, transformedValue)
+						: renderByTypeInEditingMode(e, def, rowId, readOnly, transformedValue);
 
-				return {
-					title: def.tooltipable !== false ? (title === undefined ? cellElement : title) : null,
-					cellElement: cellElement,
-					className: def.className,
-				};
-			}),
+					return {
+						title: def.tooltipable !== false ? (title === undefined ? cellElement : title) : null,
+						cellElement: cellElement,
+						className: def.className,
+					};
+				}),
 		};
 	});
 

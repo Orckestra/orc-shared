@@ -10,7 +10,6 @@ import TableRow from "@material-ui/core/TableRow";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import Placeholder from "../../Placeholder";
 import TableInfoBar from "./PredefinedElements/TableInfoBar";
-import { staticTableSelectionMethods } from "./useTableSelection";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import TableProps from "./TableProps";
 import { MuiThemeProvider } from "@material-ui/core";
@@ -805,15 +804,16 @@ describe("Table", () => {
 	it("Table row selection handler is invoked", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
 
+		const selectionHandler = sinon.spy().named("selectionHandler");
+
 		const tableProps = new TableProps();
 
 		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.selectedRowsChanged, selectionHandler);
 
 		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
 
 		const mountedComponent = mount(component);
-
-		staticTableSelectionMethods.selectionHandler = sinon.spy().named("selectionHandler");
 
 		const body = mountedComponent.find("tbody");
 
@@ -823,21 +823,22 @@ describe("Table", () => {
 		checkboxes.at(0).simulate("change");
 		checkboxes.at(1).simulate("change");
 
-		expect(staticTableSelectionMethods.selectionHandler, "was called twice");
+		expect(selectionHandler, "was called twice");
 	});
 
 	it("Table header selection handler is invoked", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
 
+		const selectionHandler = sinon.spy().named("selectionHandler");
+
 		const tableProps = new TableProps();
 
 		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.selectedRowsChanged, selectionHandler);
 
 		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
 
 		const mountedComponent = mount(component);
-
-		staticTableSelectionMethods.selectionHandler = sinon.spy().named("selectionHandler");
 
 		const tableHead = mountedComponent.find(TableHead);
 		expect(tableHead.length, "to equal", 1);
@@ -847,7 +848,7 @@ describe("Table", () => {
 
 		checkboxes.at(0).simulate("change");
 
-		expect(staticTableSelectionMethods.selectionHandler, "was called once");
+		expect(selectionHandler, "was called once");
 	});
 
 	it("onRowClick is invoked when clicking on a table row", () => {

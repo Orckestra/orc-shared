@@ -2,7 +2,12 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentModuleName } from "./../selectors/navigation";
 import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesData";
-import { setEditModelField, setEditModelFieldError } from "./../actions/view";
+import {
+	setEditModelField,
+	setEditModelFieldError,
+	removeEditModel,
+	removeEditModelFieldError,
+} from "./../actions/view";
 import { validationRules } from "../utils/modelValidationHelper";
 import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
 import { get, has, cloneDeep } from "lodash";
@@ -128,6 +133,8 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 
 					hasAnyValidationErrors = true;
 					return;
+				} else {
+					dispatchWithModulesData(removeEditModelFieldError, [path, entityId, sectionName]);
 				}
 			});
 
@@ -145,18 +152,27 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			hasAnyValidationErrors(newValue, fullPath, errorTypes, dependencies);
 		};
 
+		const deleteEditState = (path = []) => {
+			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
+
+			dispatchWithModulesData(removeEditModel, [fullPath, entityId, sectionName]);
+		};
+
 		const resetEditState = (path = []) => {
 			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
 			dispatchWithModulesData(setEditModelField, [fullPath, initialValue, initialValue, entityId, sectionName]);
 		};
 
 		const isEditStateValid = (value, path = [], errorTypes = [], dependencies = {}) => {
-			const valueToValidate = value ?? getEditState(path);
+			const pathToField = getValidPath(path);
+			const fullValue = value ?? get(stateValue?.value ?? initialValue, pathToField);
 			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
 
-			if (typeof valueToValidate !== "object" || Array.isArray(valueToValidate)) {
-				dispatchWithModulesData(setEditModelField, [fullPath, valueToValidate, valueToValidate, entityId, sectionName]);
+			if (typeof fullValue !== "object" || Array.isArray(fullValue)) {
+				dispatchWithModulesData(setEditModelField, [fullPath, fullValue, fullValue, entityId, sectionName]);
 			}
+
+			const valueToValidate = value ?? getEditState(path);
 			const hasValidationErrors = hasAnyValidationErrors(valueToValidate, fullPath, errorTypes, dependencies);
 
 			return !hasValidationErrors;
@@ -177,6 +193,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			reset: resetEditState,
 			isValid: isEditStateValid,
 			getError: getError,
+			delete: deleteEditState,
 		};
 	};
 
