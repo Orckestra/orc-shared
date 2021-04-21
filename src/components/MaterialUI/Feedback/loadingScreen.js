@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const onMouseDownHandler = event => {
-	// We want to disable clicking on the bakdrop, as it causes strange user selections to occur
+	// We want to disable clicking on the backdrop, as it causes strange user selections to occur
 	event.preventDefault();
 	event.stopPropagation();
 };
@@ -35,7 +35,13 @@ const LoadingScreen = () => {
 	}, [loadingScreen, setProgressState]);
 
 	return (
-		<Backdrop className={classes.backdrop} invisible={true} open={loadingScreen} onMouseDown={onMouseDownHandler}>
+		<Backdrop
+			data-qa={"backdroploadingscreen"}
+			className={classes.backdrop}
+			invisible={true}
+			open={loadingScreen}
+			onMouseDown={onMouseDownHandler}
+		>
 			{progressState && <CircularProgress className={classes.progress} size={100} color="inherit" />}
 		</Backdrop>
 	);
