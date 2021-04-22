@@ -109,9 +109,10 @@ const Checkbox = ({ checkboxProps }) => {
 	const label = checkboxProps?.get(CheckboxProps.propNames.label);
 	const readOnly = checkboxProps?.get(CheckboxProps.propNames.readOnly) || false;
 	const disabled = checkboxProps?.get(CheckboxProps.propNames.disabled) || false;
+	const metadata = checkboxProps?.get(CheckboxProps.propNames.metadata);
 
 	const handleChange = event => {
-		update(event.target.checked);
+		update(event.target.checked, metadata);
 	};
 
 	const classes = useStyles();

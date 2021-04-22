@@ -9,6 +9,8 @@ import TableHeaderCell from "./TableHeaderCell";
 import StandaloneRadio from "../Inputs/StandaloneRadio";
 import StandaloneRadioProps from "../Inputs/standaloneRadioProps";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
+import InputBase from "./../Inputs/InputBase";
+import InputBaseProps from "./../Inputs/InputBaseProps";
 
 const defaultRendering = (e, def, rowId, readOnly, transformedValue) => {
 	return transformedValue != null ? (
@@ -62,12 +64,13 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 				CheckboxProps.propNames.readOnly,
 				def.transform?.readOnly != null ? def.transform.readOnly(e, readOnly, def) : readOnly,
 			);
+			checkboxProps.set(CheckboxProps.propNames.metadata, { id: rowId, name: def.fieldName });
 
 			return [<Checkbox id={"select_" + transformedValue} data-row-id={rowId} checkboxProps={checkboxProps} />, null];
 
 		case "switch":
 			const switchProps = new SwitchProps();
-			switchProps.set(SwitchProps.propNames.value, !!transformedValue);
+			switchProps.set(SwitchProps.propNames.value, def.reversed ? !transformedValue : !!transformedValue);
 			switchProps.set(SwitchProps.propNames.onCaption, def.switch?.onCaption);
 			switchProps.set(SwitchProps.propNames.offCaption, def.switch?.offCaption);
 			switchProps.set(
@@ -106,6 +109,22 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 			);
 			return [<StandaloneRadio radioProps={radioProps} />];
 
+		case "textInput":
+			const inputBaseProps = new InputBaseProps();
+			inputBaseProps.set(InputBaseProps.propNames.value, transformedValue);
+			inputBaseProps.set(
+				InputBaseProps.propNames.disabled,
+				def.transform?.disabled != null ? def.transform.disabled(e, readOnly, def) : def.disabled,
+			);
+			inputBaseProps.set(InputBaseProps.propNames.update, def.onChange);
+			inputBaseProps.set(InputBaseProps.propNames.placeholder, def.placeholder);
+			inputBaseProps.set(
+				InputBaseProps.propNames.error,
+				def.transform?.error != null ? def.transform.error(e, readOnly, def) : def.error,
+			);
+			inputBaseProps.set(InputBaseProps.propNames.inputAttributes, def.inputAttributes);
+			inputBaseProps.set(InputBaseProps.propNames.metadata, { id: rowId, name: def.fieldName });
+			return [<InputBase inputProps={inputBaseProps} />];
 		default:
 			return [defaultRendering(e, def, rowId, readOnly, transformedValue)];
 	}

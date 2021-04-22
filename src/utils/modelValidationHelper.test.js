@@ -5,6 +5,7 @@ import {
 	hasValidationErrors,
 	hasMultipleFieldValidationErrors,
 } from "./modelValidationHelper";
+import { isEqual } from "lodash";
 
 describe("validationRules", () => {
 	it("validates fieldIsRequired rule correctly when its value is empty", () => {
@@ -210,7 +211,7 @@ describe("hasValidationErrors", () => {
 					},
 				},
 				isValid: (_, path, __) => {
-					if (path === "field2.field3.b.c.p6.pi2") {
+					if (isEqual(path, ["field3", "b", "c", "p6", "pi2"])) {
 						return false;
 					} else {
 						return true;
@@ -223,25 +224,25 @@ describe("hasValidationErrors", () => {
 			field2: {
 				map: [
 					{
-						path: "field3.b.c",
+						path: ["field3", "b", "c"],
 						elements: [
 							{
-								path: "p4",
+								path: ["p4"],
 								errorTypes: ["firstSpecificErrorType"],
 							},
 							{
-								path: "p6.pi1",
+								path: ["p6", "pi1"],
 								errorTypes: ["thirdSpecificErrorType"],
 							},
 							{
-								path: "p6.pi2",
+								path: ["p6", "pi2"],
 								errorTypes: ["fourthSpecificErrorType"],
 							},
 						],
 						errorTypes: ["secondGeneralErrorType"],
 					},
 					{
-						path: "field3.d.e",
+						path: ["field3", "d", "e"],
 						errorTypes: ["thirdGeneralErrorType"],
 					},
 				],
@@ -288,7 +289,7 @@ describe("hasValidationErrors", () => {
 					},
 				},
 				isValid: (_, path, __) => {
-					if (path === "field2.field3.d.e") {
+					if (isEqual(path, ["field3", "b", "c", "p6", "pi1"])) {
 						return false;
 					} else {
 						return true;
@@ -301,25 +302,99 @@ describe("hasValidationErrors", () => {
 			field2: {
 				map: [
 					{
-						path: "field3.b.c",
+						path: ["field3", "b", "c"],
 						elements: [
 							{
-								path: "p4",
+								path: ["p4"],
 								errorTypes: ["firstSpecificErrorType"],
 							},
 							{
-								path: "p6.pi1",
+								path: ["p6", "pi1"],
 								errorTypes: ["thirdSpecificErrorType"],
 							},
 							{
-								path: "p6.pi2",
+								path: ["p6", "pi2"],
 								errorTypes: ["fourthSpecificErrorType"],
 							},
 						],
 						errorTypes: ["secondGeneralErrorType"],
 					},
 					{
-						path: "field3.d.e",
+						path: ["field3", "d", "e"],
+					},
+				],
+			},
+		};
+
+		const hasErrors = hasValidationErrors(editState, validationMap);
+
+		expect(hasErrors, "to be true");
+	});
+
+	it("Retrieves true if model with specified validation map rules is not valid and ", () => {
+		const editState = {
+			field1: {
+				state: {
+					value: "something",
+				},
+				isValid: () => true,
+			},
+			field2: {
+				state: {
+					field3: {
+						b: {
+							c: {
+								p4: {
+									value: "qwe4",
+								},
+								p6: {
+									i1: {
+										value: "xzc1",
+									},
+									i2: {
+										value: "zxc2",
+									},
+								},
+							},
+						},
+						d: {
+							e: {
+								value: "123",
+							},
+						},
+					},
+				},
+				isValid: (_, path, __) => {
+					if (isEqual(path, ["field3", "d", "e"])) {
+						return false;
+					} else {
+						return true;
+					}
+				},
+			},
+		};
+
+		const validationMap = {
+			field2: {
+				map: [
+					{
+						path: ["field3", "b", "c"],
+						elements: [
+							{
+								path: ["p4"],
+								errorTypes: ["firstSpecificErrorType"],
+							},
+							{
+								path: ["p6", "pi1"],
+								errorTypes: ["thirdSpecificErrorType"],
+							},
+							{
+								path: ["p6", "pi2"],
+							},
+						],
+					},
+					{
+						path: ["field3", "d", "e"],
 						errorTypes: ["thirdGeneralErrorType"],
 					},
 				],
@@ -330,6 +405,20 @@ describe("hasValidationErrors", () => {
 		const hasErrors = hasValidationErrors(editState, validationMap);
 
 		expect(hasErrors, "to be true");
+	});
+
+	it("Retrieves false if isValid property is not undefined", () => {
+		const editState = {
+			field1: {
+				state: {
+					value: "something",
+				},
+			},
+		};
+
+		const hasErrors = hasValidationErrors(editState);
+
+		expect(hasErrors, "to be false");
 	});
 });
 

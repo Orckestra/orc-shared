@@ -96,16 +96,21 @@ describe("InputBase Component", () => {
 		const aLabel = "aLabel";
 		const aValue = "value";
 
+		const metadata = {
+			test: "value",
+		};
+
 		inputProps.set(InputBaseProps.propNames.value, "");
 		inputProps.set(InputBaseProps.propNames.update, update);
 		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
 
 		const component = <InputBase inputProps={inputProps} />;
 		const mountedComponent = mount(component);
 
 		const input = mountedComponent.find("input");
 		input.simulate("change", { target: { value: aValue } });
-		expect(update, "to have calls satisfying", [{ args: [aValue] }]);
+		expect(update, "to have calls satisfying", [{ args: [aValue, metadata] }]);
 	});
 
 	it("Renders InputBase when error position is 'right'", () => {

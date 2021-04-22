@@ -7,6 +7,7 @@ class CheckboxProps extends ComponentProps {
 		label: "label",
 		readOnly: "readOnly",
 		disabled: "disabled",
+		metadata: "metadata",
 	};
 
 	constructor() {
@@ -16,6 +17,7 @@ class CheckboxProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.label, null);
 		this.componentProps.set(this.constructor.propNames.readOnly, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
+		this.componentProps.set(this.constructor.propNames.metadata, null);
 
 		this._isCheckboxProps = true;
 	}

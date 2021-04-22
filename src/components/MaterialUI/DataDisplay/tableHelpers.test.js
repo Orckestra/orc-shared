@@ -8,6 +8,8 @@ import SwitchProps from "../Inputs/SwitchProps";
 import { IntlProvider } from "react-intl";
 import { MuiThemeProvider } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/core/styles";
+import InputBaseProps from "../Inputs/InputBaseProps";
+import InputBase from "../Inputs/InputBase";
 
 describe("table helpers buildHeaderAndRowFromConfig", () => {
 	const messages = {
@@ -901,6 +903,241 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				<MuiThemeProvider theme={createMuiTheme()}>
 					<IntlProvider messages={captionMessages} locale="en-US">
 						<Switch switchProps={switchProps2} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+	});
+
+	it("build table rows as expected with reversed switch", () => {
+		const changeEvent = jest.fn();
+
+		const aSwitch = {
+			onCaption: messages.captionOn,
+			offCaption: messages.captionOff,
+		};
+
+		const columnDef = [
+			{
+				fieldName: "test",
+				label: messages.a_label,
+				type: "switch",
+				onChange: changeEvent,
+				switch: aSwitch,
+				reversed: true,
+			},
+		];
+		const elements = [
+			{ id: "an_id1", test: false, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: true, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		const switchProps1 = new SwitchProps();
+		switchProps1.set(SwitchProps.propNames.update, changeEvent);
+		switchProps1.set(SwitchProps.propNames.value, true);
+		switchProps1.set(SwitchProps.propNames.onCaption, aSwitch.onCaption);
+		switchProps1.set(SwitchProps.propNames.offCaption, aSwitch.offCaption);
+
+		const switchProps2 = new SwitchProps();
+		switchProps2.set(SwitchProps.propNames.update, changeEvent);
+		switchProps2.set(SwitchProps.propNames.value, false);
+		switchProps2.set(SwitchProps.propNames.onCaption, aSwitch.onCaption);
+		switchProps2.set(SwitchProps.propNames.offCaption, aSwitch.offCaption);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[0].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<Switch switchProps={switchProps1} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[1].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<Switch switchProps={switchProps2} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+	});
+
+	it("build table rows as expected with textInput", () => {
+		const changeEvent = jest.fn();
+
+		const columnDef = [
+			{
+				fieldName: "another",
+				label: messages.a_label,
+				type: "textInput",
+				onChange: changeEvent,
+				disabled: false,
+			},
+		];
+		const elements = [
+			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		const inputBaseProps1 = new InputBaseProps();
+		inputBaseProps1.set(InputBaseProps.propNames.update, changeEvent);
+		inputBaseProps1.set(InputBaseProps.propNames.value, "another 1");
+
+		const inputBaseProps2 = new InputBaseProps();
+		inputBaseProps2.set(InputBaseProps.propNames.update, changeEvent);
+		inputBaseProps2.set(InputBaseProps.propNames.value, "another 2");
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[0].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<InputBase inputProps={inputBaseProps1} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[1].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<InputBase inputProps={inputBaseProps2} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+	});
+
+	it("build table rows as expected with textInput and transformed disabled and error", () => {
+		const changeEvent = jest.fn();
+		const disabledCallback = jest.fn().mockReturnValue(true);
+		const errorCallback = jest.fn().mockReturnValue(false);
+
+		const columnDef = [
+			{
+				fieldName: "another",
+				label: messages.a_label,
+				type: "textInput",
+				onChange: changeEvent,
+				transform: {
+					disabled: disabledCallback,
+					error: errorCallback,
+				},
+			},
+		];
+		const elements = [
+			{ id: "an_id1", test: true, another: "another 1", extraneous: "Don't show 1" },
+			{ id: "an_id2", test: false, another: "another 2", extraneous: "Don't show 2" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+
+		const inputBaseProps1 = new InputBaseProps();
+		inputBaseProps1.set(InputBaseProps.propNames.update, changeEvent);
+		inputBaseProps1.set(InputBaseProps.propNames.value, "another 1");
+		inputBaseProps1.set(InputBaseProps.propNames.error, false);
+		inputBaseProps1.set(InputBaseProps.propNames.disabled, true);
+
+		const inputBaseProps2 = new InputBaseProps();
+		inputBaseProps2.set(InputBaseProps.propNames.update, changeEvent);
+		inputBaseProps2.set(InputBaseProps.propNames.value, "another 2");
+		inputBaseProps2.set(InputBaseProps.propNames.error, false);
+		inputBaseProps2.set(InputBaseProps.propNames.disabled, true);
+
+		expect(headers.length, "to equal", 1);
+
+		expect(rows.length, "to equal", 2);
+		expect(rows[0].columns.length, "to equal", 1);
+		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[0].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<InputBase inputProps={inputBaseProps1} />
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+		);
+
+		expect(
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						{rows[1].columns[0].cellElement}
+					</IntlProvider>
+				</MuiThemeProvider>
+			</StylesProvider>,
+			"when mounted",
+			"to satisfy",
+			<StylesProvider generateClassName={generateClassName}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<IntlProvider messages={captionMessages} locale="en-US">
+						<InputBase inputProps={inputBaseProps2} />
 					</IntlProvider>
 				</MuiThemeProvider>
 			</StylesProvider>,

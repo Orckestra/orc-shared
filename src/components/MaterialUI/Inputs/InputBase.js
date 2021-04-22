@@ -97,12 +97,13 @@ const InputBase = ({ inputProps }) => {
 	const onBlur = inputProps?.get(InputBaseProps.propNames.onBlur) || null;
 	const startAdornment = inputProps?.get(InputBaseProps.propNames.startAdornment);
 	const endAdornment = inputProps?.get(InputBaseProps.propNames.endAdornment);
+	const metadata = inputProps?.get(InputBaseProps.propNames.metadata);
 
 	const classes = useStyles({ label, errorPosition });
 
 	const onChangeHandler = event => {
 		event.persist();
-		update(event.target.value);
+		update(event.target.value, metadata);
 	};
 
 	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);

@@ -65,10 +65,15 @@ describe("Checkbox Component", () => {
 		const checkboxProps = new CheckboxProps();
 		const aLabel = "aLabel";
 
+		const metadata = {
+			test: "value",
+		};
+
 		checkboxProps.set(CheckboxProps.propNames.update, update);
 		checkboxProps.set(CheckboxProps.propNames.value, false);
 		checkboxProps.set(CheckboxProps.propNames.label, aLabel);
 		checkboxProps.set(CheckboxProps.propNames.readOnly, false);
+		checkboxProps.set(CheckboxProps.propNames.metadata, metadata);
 
 		ReactDOM.render(<Checkbox checkboxProps={checkboxProps} />, container);
 
@@ -77,17 +82,22 @@ describe("Checkbox Component", () => {
 
 		const element = container.querySelector(".MuiCheckbox-root ");
 		element.dispatchEvent(clickEvent);
-		expect(update, "to have calls satisfying", [{ args: [true] }]);
+		expect(update, "to have calls satisfying", [{ args: [true, metadata] }]);
 	});
 
 	it("Checkbox component handles uncheck", async () => {
 		const checkboxProps = new CheckboxProps();
 		const aLabel = "aLabel";
 
+		const metadata = {
+			test: "Value",
+		};
+
 		checkboxProps.set(CheckboxProps.propNames.update, update);
 		checkboxProps.set(CheckboxProps.propNames.value, true);
 		checkboxProps.set(CheckboxProps.propNames.label, aLabel);
 		checkboxProps.set(CheckboxProps.propNames.readOnly, false);
+		checkboxProps.set(CheckboxProps.propNames.metadata, metadata);
 
 		ReactDOM.render(<Checkbox checkboxProps={checkboxProps} />, container);
 
@@ -96,7 +106,7 @@ describe("Checkbox Component", () => {
 
 		const element = container.querySelector(".MuiCheckbox-root ");
 		element.dispatchEvent(clickEvent);
-		expect(update, "to have calls satisfying", [{ args: [false] }]);
+		expect(update, "to have calls satisfying", [{ args: [false, metadata] }]);
 	});
 
 	it("Renders Checkbox readonly true component without errors", () => {
