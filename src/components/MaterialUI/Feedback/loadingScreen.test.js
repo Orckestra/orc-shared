@@ -7,6 +7,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import Immutable from "immutable";
 import sinon from "sinon";
+import { mount } from "enzyme";
 
 describe("loadingScreen", () => {
 	let store, state;
@@ -109,5 +110,27 @@ describe("loadingScreen", () => {
 			document.body.removeChild(menuNode);
 			clock.restore();
 		}
+	});
+
+	it("Handles the onMouseDown event without error", () => {
+		state = state.setIn(["requests", "actives", "aRequest"], true);
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }} provider={{ store }}>
+				<LoadingScreen />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+		const backdrop = mountedComponent.find("[data-qa='backdroploadingscreen']").first();
+
+		const event = {
+			preventDefault: jest.fn(),
+			stopPropagation: jest.fn(),
+		};
+		backdrop.invoke("onMouseDown")(event);
+
+		expect(event.preventDefault.mock.calls.length, "to equal", 1);
+		expect(event.stopPropagation.mock.calls.length, "to equal", 1);
 	});
 });

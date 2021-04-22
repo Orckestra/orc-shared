@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
 	radioIcon: {
 		border: "1px solid",
 		borderColor: theme.palette.grey.borders,
+		backgroundColor: theme.palette.background.paper,
 		width: theme.spacing(1.6),
 		height: theme.spacing(1.6),
 		borderRadius: "50%",
