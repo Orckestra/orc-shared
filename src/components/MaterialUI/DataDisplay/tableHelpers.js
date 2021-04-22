@@ -70,7 +70,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 
 		case "switch":
 			const switchProps = new SwitchProps();
-			switchProps.set(SwitchProps.propNames.value, !!transformedValue);
+			switchProps.set(SwitchProps.propNames.value, def.reversed ? !transformedValue : !!transformedValue);
 			switchProps.set(SwitchProps.propNames.onCaption, def.switch?.onCaption);
 			switchProps.set(SwitchProps.propNames.offCaption, def.switch?.offCaption);
 			switchProps.set(

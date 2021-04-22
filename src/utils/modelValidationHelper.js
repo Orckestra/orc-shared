@@ -25,7 +25,7 @@ export const hasValidationErrors = (editState, validationMap) => {
 	let hasAnyValidationErrors = false;
 
 	fields.forEach(field => {
-		const isValid = editState[field].isValid();
+		const isValid = editState[field].isValid ? editState[field].isValid() : true;
 		if (isValid === false) {
 			hasAnyValidationErrors = true;
 		}
@@ -35,20 +35,41 @@ export const hasValidationErrors = (editState, validationMap) => {
 		const mapKeys = Object.keys(validationMap);
 		mapKeys.forEach(mapKey => {
 			validationMap[mapKey].map.forEach(node => {
-				const fullNodePath = mapKey.concat(".", node.path);
-
 				if (node.elements) {
 					node.elements.forEach(element => {
-						const fullElementPath = `${fullNodePath}.${element.path}`;
-						const errorTypes = [...validationMap[mapKey].errorTypes, ...node.errorTypes, ...element.errorTypes];
-						const isValid = editState[mapKey].isValid(null, fullElementPath, errorTypes);
+						const fullElementPath = [...node.path, ...element.path];
+
+						const errorTypes = [];
+
+						if (validationMap[mapKey].errorTypes) {
+							errorTypes.push(validationMap[mapKey].errorTypes);
+						}
+
+						if (node.errorTypes) {
+							errorTypes.push(node.errorTypes);
+						}
+
+						if (element.errorTypes) {
+							errorTypes.push(element.errorTypes);
+						}
+
+						const isValid = editState[mapKey].isValid(null, fullElementPath, errorTypes, element.dependencies);
+
 						if (isValid === false) {
 							hasAnyValidationErrors = true;
 						}
 					});
 				} else {
-					const errorTypes = [...validationMap[mapKey].errorTypes, ...node.errorTypes];
-					const isValid = editState[mapKey].isValid(null, fullNodePath, errorTypes);
+					const errorTypes = [];
+
+					if (validationMap[mapKey].errorTypes) {
+						errorTypes.push(validationMap[mapKey].errorTypes);
+					}
+
+					if (node.errorTypes) {
+						errorTypes.push(node.errorTypes);
+					}
+					const isValid = editState[mapKey].isValid(null, node.path, errorTypes);
 					if (isValid === false) {
 						hasAnyValidationErrors = true;
 					}

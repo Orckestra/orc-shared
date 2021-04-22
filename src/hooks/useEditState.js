@@ -113,12 +113,18 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 
 			let valueItem = cloneDeep(value);
 
-			path.forEach((item, index) => {
-				result.push(item);
-				if (index !== path.length - 1) {
-					valueItem = checkPath(valueItem[item]);
+			for (let i = 0; i < path.length; i++) {
+				result.push(path[i]);
+				if (i !== path.length - 1) {
+					valueItem = checkPath(valueItem[path[i]]);
 				}
-			});
+			}
+			// path.forEach((item, index) => {
+			// 	result.push(item);
+			// 	if (index !== path.length - 1) {
+			// 		valueItem = checkPath(valueItem[item]);
+			// 	}
+			// });
 
 			return result;
 		};
@@ -168,7 +174,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			const fullValue = value ?? get(stateValue?.value ?? initialValue, pathToField);
 			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
 
-			if (typeof fullValue !== "object" || Array.isArray(fullValue)) {
+			if (fullValue != null && (typeof fullValue !== "object" || Array.isArray(fullValue))) {
 				dispatchWithModulesData(setEditModelField, [fullPath, fullValue, fullValue, entityId, sectionName]);
 			}
 

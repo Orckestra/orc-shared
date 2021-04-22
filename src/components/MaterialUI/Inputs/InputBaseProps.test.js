@@ -16,6 +16,7 @@ describe("InputBase Props", () => {
 			"onBlur",
 			"startAdornment",
 			"endAdornment",
+			"metadata",
 		];
 
 		expect(InputBaseProps.propNames, "to have keys", propNames);
@@ -36,6 +37,7 @@ describe("InputBase Props", () => {
 			"onBlur",
 			"startAdornment",
 			"endAdornment",
+			"metadata",
 		];
 
 		const ruleNames = ["input", "errorText"];
