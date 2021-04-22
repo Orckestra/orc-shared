@@ -119,12 +119,6 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 					valueItem = checkPath(valueItem[path[i]]);
 				}
 			}
-			// path.forEach((item, index) => {
-			// 	result.push(item);
-			// 	if (index !== path.length - 1) {
-			// 		valueItem = checkPath(valueItem[item]);
-			// 	}
-			// });
 
 			return result;
 		};
