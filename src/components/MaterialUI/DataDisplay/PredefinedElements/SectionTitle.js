@@ -18,8 +18,6 @@ const SectionTitle = ({ title }) => {
 	const classes = useStyles();
 	if (title !== null) {
 		return <Typography className={classes.title} children={title} />;
-	} else {
-		return;
 	}
 };
 
