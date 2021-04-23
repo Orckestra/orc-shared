@@ -15,4 +15,14 @@ describe("SectionTitle", () => {
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be true");
 	});
+
+	it("Renders empty section title with null value", () => {
+		const value = null;
+
+		const sectionTitle = <SectionTitle title={value} />;
+
+		const mountedComponent = shallow(sectionTitle);
+
+		expect(mountedComponent.type(), "to be null");
+	});
 });

@@ -436,7 +436,7 @@ const setThemeOverrides = theme => ({
 			},
 			"&[variant='outlined']": {
 				border: `1px solid ${theme.palette.grey.icon}`,
-				backgroundColor: "#fff",
+				backgroundColor: theme.palette.background.default,
 				"&:hover": {
 					backgroundColor: theme.palette.grey.lighter,
 				},
@@ -450,7 +450,37 @@ const setThemeOverrides = theme => ({
 			},
 			"&[outlinecolor='primary']": {
 				border: `1px solid ${theme.palette.primary.main}`,
-				backgroundColor: "#fff",
+				backgroundColor: theme.palette.background.default,
+				color: theme.palette.primary.main,
+				"&:hover": {
+					backgroundColor: theme.palette.primary.dark,
+				},
+			},
+		},
+		colorPrimary: {
+			border: `1px solid ${theme.palette.primary.main}`,
+			backgroundColor: theme.palette.background.default,
+			"&:hover": {
+				backgroundColor: theme.palette.grey.lighter,
+			},
+			"&[variant='contained']": {
+				border: `1px solid ${theme.palette.primary.main}`,
+				backgroundColor: theme.palette.primary.main,
+				color: theme.palette.primary.contrastText,
+				"& .MuiSvgIcon-root": {
+					color: theme.palette.primary.contrastText,
+				},
+				"&:hover": {
+					backgroundColor: theme.palette.primary.dark,
+				},
+			},
+			"&[variant='outlined']": {
+				border: `1px solid ${theme.palette.primary.main}`,
+				backgroundColor: theme.palette.background.default,
+				color: theme.palette.primary.main,
+				"& .MuiSvgIcon-root": {
+					color: theme.palette.primary.main,
+				},
 				"&:hover": {
 					backgroundColor: theme.palette.grey.lighter,
 				},
