@@ -16,8 +16,11 @@ const useStyles = makeStyles(theme => ({
 
 const SectionTitle = ({ title }) => {
 	const classes = useStyles();
-
-	return <Typography className={classes.title} children={title} />;
+	if (title !== null) {
+		return <Typography className={classes.title} children={title} />;
+	} else {
+		return;
+	}
 };
 
 export default SectionTitle;
