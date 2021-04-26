@@ -62,6 +62,11 @@ const useStyles = makeStyles(theme => ({
 	displayNone: {
 		display: "none",
 	},
+	disabled: {
+		color: theme.palette.text.primary,
+		backgroundColor: theme.palette.grey.light,
+		border: 0,
+	},
 }));
 
 const MenuProps = {
@@ -123,16 +128,6 @@ const Select = ({ options, selectProps }) => {
 	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
 	const error = selectProps?.get(SelectProps.propNames.error);
 
-	if (disabled) {
-		return (
-			<TooltippedTypography
-				noWrap
-				children={options?.find(o => o.value === value)?.label || value}
-				titleValue={value}
-			/>
-		);
-	}
-
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
 			a.sortOrder.localeCompare(b.sortOrder, undefined, {
@@ -180,9 +175,11 @@ const Select = ({ options, selectProps }) => {
 			disableUnderline={true}
 			IconComponent={SelectIcon}
 			MenuProps={defaultMenuProps}
+			disabled={disabled}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
+				disabled: classes.disabled,
 			}}
 		>
 			{items}
@@ -198,10 +195,12 @@ const Select = ({ options, selectProps }) => {
 			disableUnderline={true}
 			IconComponent={SelectIconButton}
 			MenuProps={iconSelectMenuProps}
+			disabled={disabled}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
 				select: classes.displayNone,
+				disabled: classes.disabled,
 			}}
 			onClick={() => setOpen(!open)}
 		>
