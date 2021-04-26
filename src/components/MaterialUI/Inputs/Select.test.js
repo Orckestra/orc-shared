@@ -181,7 +181,19 @@ describe("Select Component", () => {
 			</TestWrapper>
 		);
 
-		const expected = <TooltippedTypography noWrap children="aLabel" titleValue="aValue" />;
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI value="aValue" disableUnderline={true} disabled={true} IconComponent={ChevronDown}>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</TestWrapper>
+		);
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});
@@ -198,7 +210,15 @@ describe("Select Component", () => {
 			</TestWrapper>
 		);
 
-		const expected = <TooltippedTypography noWrap children="aValue" titleValue="aValue" />;
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI value="aValue" disableUnderline={true} disabled={true} IconComponent={ChevronDown} />
+			</TestWrapper>
+		);
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});

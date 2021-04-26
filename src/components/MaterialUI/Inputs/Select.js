@@ -162,7 +162,7 @@ const Select = ({ options, selectProps }) => {
 		...getIconButtonMenuProps(ref.current),
 	};
 
-	const items = options.map(option => (
+	const items = options?.map(option => (
 		<MenuItem key={option.value} value={option.value}>
 			<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
 		</MenuItem>
