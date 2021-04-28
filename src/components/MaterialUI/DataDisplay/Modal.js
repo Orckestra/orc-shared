@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	containerNormal: {
-		minWidth: theme.spacing(48),
+		width: theme.spacing(48),
 	},
 	containerWide: {
 		width: theme.spacing(106.4),
