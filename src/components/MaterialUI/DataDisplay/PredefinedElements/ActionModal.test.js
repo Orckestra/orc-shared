@@ -1,7 +1,6 @@
 import React from "react";
 import Modal from "./../Modal";
 import ModalProps from "./../modalProps";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { mount } from "enzyme";
 import sinon from "sinon";
