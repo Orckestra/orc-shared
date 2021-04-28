@@ -26,11 +26,6 @@ describe("ActionModal", () => {
 		const modalProps = new ModalProps();
 
 		const titleComponent = stringifyWithoutQuotes(messages["orc-shared.confirmation"]);
-		const messageComponent = (
-			<div>
-				<Typography children={message} />
-			</div>
-		);
 
 		modalProps.set(ModalProps.propNames.title, titleComponent);
 		modalProps.set(ModalProps.propNames.open, open);
@@ -65,7 +60,7 @@ describe("ActionModal", () => {
 
 		const expected = (
 			<IntlProvider locale="en-US" messages={messages}>
-				<Modal message={messageComponent} modalProps={modalProps} />
+				<Modal message={message} modalProps={modalProps} />
 			</IntlProvider>
 		);
 
@@ -83,12 +78,6 @@ describe("ActionModal", () => {
 
 		const backdropClickCallback = jest.fn();
 		const modalProps = new ModalProps();
-
-		const messageComponent = (
-			<div>
-				<Typography children={message} />
-			</div>
-		);
 
 		modalProps.set(ModalProps.propNames.title, title);
 		modalProps.set(ModalProps.propNames.open, open);
@@ -124,7 +113,7 @@ describe("ActionModal", () => {
 
 		const expected = (
 			<IntlProvider locale="en-US" messages={messages}>
-				<Modal message={messageComponent} modalProps={modalProps} />
+				<Modal message={message} modalProps={modalProps} />
 			</IntlProvider>
 		);
 
