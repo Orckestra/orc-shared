@@ -167,9 +167,7 @@ export const useNavigationState = modules => {
 		const close = isPageTab
 			? event => {
 					if (moduleData.closingTabHandler?.handler) {
-						const context = moduleData.closingTabHandler.contextSelector
-							? moduleData.closingTabHandler.contextSelector(store.getState(), params)
-							: null;
+						const context = moduleData.closingTabHandler.contextSelector?.(store.getState(), params) ?? null;
 						moduleData.closingTabHandler.handler(dispatch, params, context);
 					}
 					dispatch(removeTab(moduleName, page.href));
