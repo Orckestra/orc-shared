@@ -16,6 +16,7 @@ const ActionModal = ({
 	title,
 	message,
 	open,
+	type,
 	actions, // Array of objects containing three properties: label, handler, isPrimary
 	backdropClickCallback,
 }) => {
@@ -27,6 +28,7 @@ const ActionModal = ({
 
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, open);
+	modalProps.set(ModalProps.propNames.type, type);
 	modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
 
 	const actionPanel = (

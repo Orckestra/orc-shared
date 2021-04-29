@@ -117,7 +117,17 @@ export const Label = styled.span`
 	opacity: ${ifFlag("show", 1, 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, alert, pageScopeSelector, hide, href, ...props }) => {
+const MenuItem = ({
+	open = false,
+	label = "",
+	icon,
+	alert,
+	pageScopeSelector,
+	closingTabHandler,
+	hide,
+	href,
+	...props
+}) => {
 	let hideSelector = state => (typeof hide === "function" ? hide(state) : hide ?? false);
 	const isHidden = useSelector(hideSelector);
 
