@@ -100,7 +100,7 @@ describe("Select Component", () => {
 		const expected = (
 			<div>
 				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-					<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
+					<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={true}>
 						<MenuItem key="aValue" value="aValue">
 							<TooltippedTypography children="aLabel" titleValue="aLabel" />
 						</MenuItem>
