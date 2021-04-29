@@ -1,5 +1,14 @@
-export const parseGuid = guid =>
-	guid.length === 32 ? guid?.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5") : "";
+export const parseGuid = guid => {
+	if (guid?.length === 32) {
+		return guid.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5");
+	}
+
+	if (guid?.length === 36 && /(.{8})-(.{4})-(.{4})-(.{4})-(.{12})/.test(guid)) {
+		return guid;
+	}
+
+	return "";
+};
 
 export const concatObjectPropsWithDelimeter = (object, propsToUse, delimeter = ",", useSpace = true) => {
 	let concatedString = "";
