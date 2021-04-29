@@ -693,6 +693,9 @@ const setThemeOverrides = theme => ({
 				border: "none",
 				backgroundColor: "transparent",
 			},
+			".Mui-error &": {
+				borderColor: theme.palette.error.main,
+			},
 		},
 		adornedStart: {
 			"& > .MuiOutlinedInput-root:first-child, & > .MuiButtonBase-root:first-child": {
@@ -846,6 +849,7 @@ const setThemeOverrides = theme => ({
 		root: {
 			...theme.root,
 			border: "none",
+			backgroundColor: "transparent",
 			"&.Mui-checked": {
 				"& .MuiSvgIcon-root": {
 					color: "inherit",

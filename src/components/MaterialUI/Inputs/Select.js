@@ -7,6 +7,7 @@ import classNames from "classnames";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "./../DataDisplay/Icon";
 import IconButton from "@material-ui/core/IconButton";
+import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "./../../../utils/propertyValidator";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -108,6 +109,20 @@ export const SelectIconButton = props => {
 	);
 };
 
+const hasError = error => {
+	if (error === false) return false;
+
+	if (isString(error) && isStringNullOrWhitespace(error)) {
+		return false;
+	}
+
+	if (isObject(error) && isReactComponent(error) === false) {
+		return false;
+	}
+
+	return true;
+};
+
 const Select = ({ options, selectProps }) => {
 	if (isSelectProps(selectProps) === false) {
 		throw new TypeError("selectProps property is not of type SelectProps");
@@ -176,6 +191,7 @@ const Select = ({ options, selectProps }) => {
 			IconComponent={SelectIcon}
 			MenuProps={defaultMenuProps}
 			disabled={disabled}
+			error={hasError(error)}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
@@ -196,6 +212,7 @@ const Select = ({ options, selectProps }) => {
 			IconComponent={SelectIconButton}
 			MenuProps={iconSelectMenuProps}
 			disabled={disabled}
+			error={hasError(error)}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
