@@ -127,6 +127,7 @@ const Select = ({ options, selectProps }) => {
 	const isIconSelect = selectProps?.get(SelectProps.propNames.iconSelect) || false;
 	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
 	const error = selectProps?.get(SelectProps.propNames.error);
+	const hasError = !!error;
 
 	if (sortType === sortTypeEnum.numeric) {
 		options.sort((a, b) =>
@@ -176,6 +177,7 @@ const Select = ({ options, selectProps }) => {
 			IconComponent={SelectIcon}
 			MenuProps={defaultMenuProps}
 			disabled={disabled}
+			error={hasError}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
@@ -196,6 +198,7 @@ const Select = ({ options, selectProps }) => {
 			IconComponent={SelectIconButton}
 			MenuProps={iconSelectMenuProps}
 			disabled={disabled}
+			error={hasError}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),

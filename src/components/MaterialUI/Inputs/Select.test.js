@@ -61,7 +61,7 @@ describe("Select Component", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={false}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
 					</MenuItem>
@@ -100,7 +100,7 @@ describe("Select Component", () => {
 		const expected = (
 			<div>
 				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-					<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
+					<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={true}>
 						<MenuItem key="aValue" value="aValue">
 							<TooltippedTypography children="aLabel" titleValue="aLabel" />
 						</MenuItem>
@@ -153,7 +153,7 @@ describe("Select Component", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={false}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
 					</MenuItem>
@@ -187,7 +187,7 @@ describe("Select Component", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SelectMUI value="aValue" disableUnderline={true} disabled={true} IconComponent={ChevronDown}>
+				<SelectMUI value="aValue" disableUnderline={true} disabled={true} IconComponent={ChevronDown} error={false}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
 					</MenuItem>
@@ -216,7 +216,7 @@ describe("Select Component", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SelectMUI value="aValue" disableUnderline={true} disabled={true} IconComponent={ChevronDown} />
+				<SelectMUI value="aValue" disableUnderline={true} disabled={true} IconComponent={ChevronDown} error={false} />
 			</TestWrapper>
 		);
 
@@ -236,7 +236,7 @@ describe("Select Component", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SelectMUI value="" disableUnderline={true} IconComponent={ChevronDown} />
+				<SelectMUI value="" disableUnderline={true} IconComponent={ChevronDown} error={false} />
 			</TestWrapper>
 		);
 
@@ -422,7 +422,7 @@ describe("Select Component", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SelectMUI open={false} value="aValue" disableUnderline={true} IconComponent={SelectIconButton}>
+				<SelectMUI open={false} value="aValue" disableUnderline={true} IconComponent={SelectIconButton} error={false}>
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
 					</MenuItem>
