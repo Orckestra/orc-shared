@@ -166,6 +166,10 @@ export const useNavigationState = modules => {
 		// Modules do not have close functions
 		const close = isPageTab
 			? event => {
+					if (moduleData.closingTabHandler?.handler) {
+						const context = moduleData.closingTabHandler.contextSelector?.(store.getState(), params) ?? null;
+						moduleData.closingTabHandler.handler(dispatch, params, context);
+					}
 					dispatch(removeTab(moduleName, page.href));
 					if (currentHref === href) {
 						dispatch(push(moduleHref));
