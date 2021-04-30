@@ -54,9 +54,14 @@ const extractAndValidateProps = radioProps => {
 	const row = radioProps.get(RadioProps.propNames.row) ?? true;
 	const radios = radioProps.get(RadioProps.propNames.radios);
 	const disabled = radioProps.get(RadioProps.propNames.disabled) ?? false;
+	const allowSingleRadio = radioProps.get(RadioProps.propNames.allowSingleRadio) ?? false;
 
-	if (!radios || radios.length < 2) {
+	if (!radios || (radios.length < 2 && !allowSingleRadio)) {
 		throw new Error("Radio component must have at least two options");
+	}
+
+	if (radios.length < 1) {
+		throw new Error("Radio component must have at least one option");
 	}
 
 	if (!name || name.length === 0) {

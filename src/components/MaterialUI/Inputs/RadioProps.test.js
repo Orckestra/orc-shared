@@ -1,7 +1,7 @@
 import RadioProps, { isRadioProps } from "./RadioProps";
 
 describe("Select Props", () => {
-	const propNames = ["update", "value", "defaultVal", "label", "row", "name", "radios", "disabled"];
+	const propNames = ["update", "value", "defaultVal", "label", "row", "name", "radios", "disabled", "allowSingleRadio"];
 
 	it("Contains necessary props keys", () => expect(RadioProps.propNames, "to have keys", propNames));
 
