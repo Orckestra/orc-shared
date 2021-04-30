@@ -42,9 +42,9 @@ const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new Dr
 		setAnchorEl(null);
 	};
 
-	const onMenuItemClick = action => event => {
+	const onMenuItemClick = (action, itemContext) => event => {
 		onClose(event);
-		action(payload);
+		action(payload, itemContext);
 	};
 
 	const onOpenClick = event => {
@@ -75,11 +75,11 @@ const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new Dr
 				autoFocus={autoFocus}
 				anchorEl={anchorEl}
 			>
-				{menuItems.map(({ title, disabled, action }, key) => (
+				{menuItems.map(({ title, disabled, action, itemContext }, key) => (
 					<MenuItem
 						classes={{ root: classes.menuItem }}
 						key={key}
-						onClick={onMenuItemClick(action)}
+						onClick={onMenuItemClick(action, itemContext)}
 						disabled={disabled}
 					>
 						<Text message={title} />
