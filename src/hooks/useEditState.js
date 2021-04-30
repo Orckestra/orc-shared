@@ -5,8 +5,9 @@ import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesDat
 import {
 	setEditModelField,
 	setEditModelFieldError,
-	removeEditModel,
 	removeEditModelFieldError,
+	removeEditModelField,
+	removeEditModel,
 } from "./../actions/view";
 import { validationRules } from "../utils/modelValidationHelper";
 import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
@@ -153,9 +154,14 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		};
 
 		const deleteEditState = (path = []) => {
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
-
-			dispatchWithModulesData(removeEditModel, [fullPath, entityId, sectionName]);
+			let fullPath;
+			if (path.length === 0) {
+				fullPath = [...keys];
+				dispatchWithModulesData(removeEditModel, [fullPath, entityId, sectionName]);
+			} else {
+				fullPath = [...keys, "value", ...getValidPath(path)];
+				dispatchWithModulesData(removeEditModelField, [fullPath, entityId, sectionName]);
+			}
 		};
 
 		const resetEditState = (path = []) => {
@@ -166,7 +172,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		const isEditStateValid = (value, path = [], errorTypes = [], dependencies = {}) => {
 			const pathToField = getValidPath(path);
 			const fullValue = value ?? get(stateValue?.value ?? initialValue, pathToField);
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
+			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...pathToField];
 
 			if (fullValue != null && (typeof fullValue !== "object" || Array.isArray(fullValue))) {
 				dispatchWithModulesData(setEditModelField, [fullPath, fullValue, fullValue, entityId, sectionName]);

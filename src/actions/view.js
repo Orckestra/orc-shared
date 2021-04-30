@@ -8,6 +8,7 @@ export const VIEW_SET_EDIT_MODEL_ERRORS = "VIEW_SET_EDIT_MODEL_ERRORS";
 export const VIEW_SET_EDIT_MODEL_FIELD_ERRORS = "VIEW_SET_EDIT_MODEL_FIELD_ERRORS";
 export const VIEW_REMOVE_EDIT_MODEL = "VIEW_REMOVE_EDIT_MODEL";
 export const VIEW_REMOVE_EDIT_MODEL_FIELD_ERRORS = "VIEW_REMOVE_EDIT_MODEL_FIELD_ERRORS";
+export const VIEW_REMOVE_EDIT_MODEL_FIELD = "VIEW_REMOVE_EDIT_MODEL_FIELD";
 
 export const setValue = (name, value) => ({
 	type: VIEW_SET,
@@ -32,6 +33,11 @@ export const removeEditModel = (keys, entityId, sectionName, moduleName) => ({
 export const setEditModelField = (keys, value, storeValue, entityId, sectionName, moduleName) => ({
 	type: VIEW_SET_EDIT_MODEL_FIELD,
 	payload: { keys, value, storeValue, entityId, sectionName, moduleName },
+});
+
+export const removeEditModelField = (keys, entityId, sectionName, moduleName) => ({
+	type: VIEW_REMOVE_EDIT_MODEL_FIELD,
+	payload: { keys, entityId, sectionName, moduleName },
 });
 
 export const setEditModelErrors = (errors, entityId, sectionName, moduleName) => ({
