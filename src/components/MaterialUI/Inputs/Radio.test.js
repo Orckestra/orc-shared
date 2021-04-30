@@ -119,6 +119,13 @@ describe("Radio Component", () => {
 		);
 	});
 
+	it("Fails if less than one options", () => {
+		radioProps.set(RadioProps.propNames.radios, []);
+		radioProps.set(RadioProps.propNames.allowSingleRadio, true);
+
+		expect(() => mount(<Radio radioProps={radioProps} />), "to throw", "Radio component must have at least one option");
+	});
+
 	it("Fails if two options with same value", () => {
 		radioProps.set(RadioProps.propNames.radios, [
 			{ label: "Option 1", value: "option1" },
@@ -169,6 +176,18 @@ describe("Radio Component", () => {
 		radioProps.set(RadioProps.propNames.radios, radios);
 		radioProps.set(RadioProps.propNames.row, true);
 		radioProps.set(RadioProps.propNames.disabled, true);
+
+		ExpectComponentToBeRenderedProperly(radioProps);
+	});
+
+	it("Renders Radio component properly with one option", () => {
+		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
+		radioProps.set(RadioProps.propNames.defaultVal, "option1");
+		radioProps.set(RadioProps.propNames.value, "option1");
+		radioProps.set(RadioProps.propNames.radios, radios.slice(0, 1));
+		radioProps.set(RadioProps.propNames.row, true);
+		radioProps.set(RadioProps.propNames.disabled, true);
+		radioProps.set(RadioProps.propNames.allowSingleRadio, true);
 
 		ExpectComponentToBeRenderedProperly(radioProps);
 	});
