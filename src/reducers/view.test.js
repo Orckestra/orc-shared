@@ -8,6 +8,7 @@ import {
 	setEditModelErrors,
 	removeEditModel,
 	removeEditModelFieldError,
+	removeEditModelField,
 } from "../actions/view";
 import viewReducer from "./view";
 import { applicationScopeHasChanged } from "../actions/scopes";
@@ -427,5 +428,164 @@ describe("View state reducer", () => {
 				},
 			}),
 		);
+	});
+
+	it("Removes edit model field correctly", () => {
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "sectionName2";
+		const keys = ["id", "prop1", "prop3"];
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {
+									prop3: {},
+								},
+								prop2: {},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {
+									value: {},
+									wasModified: true,
+								},
+								prop2: {},
+							},
+						},
+					},
+				},
+			},
+		};
+
+		const action = removeEditModelField(keys, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Removes edit model field correctly when prop to delete is inside value", () => {
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "sectionName2";
+		const keys = ["id", "prop1", "value", "prop3"];
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {
+									value: {
+										prop3: {},
+									},
+								},
+								prop2: {},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {
+									value: {},
+									wasModified: true,
+								},
+								prop2: {},
+							},
+						},
+					},
+				},
+			},
+		};
+
+		const action = removeEditModelField(keys, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
+	});
+
+	it("Removes edit model field correctly when prop to delete is inside value and value is an array", () => {
+		const entityId = "entityId";
+		const moduleName = "module1";
+		const sectionName = "sectionName2";
+		const keys = ["id", "prop1", "value", 0];
+
+		const modules = Immutable.fromJS({
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {
+									value: [
+										{
+											prop3: {},
+										},
+									],
+								},
+								prop2: {},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		const oldState = Immutable.Map({
+			edit: modules,
+		});
+
+		const expected = {
+			[moduleName]: {
+				[entityId]: {
+					[sectionName]: {
+						model: {
+							id: {
+								prop1: {
+									value: [],
+									wasModified: true,
+								},
+								prop2: {},
+							},
+						},
+					},
+				},
+			},
+		};
+
+		const action = removeEditModelField(keys, entityId, sectionName, moduleName);
+		const newState = viewReducer(oldState, action);
+
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
 	});
 });

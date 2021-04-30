@@ -5,8 +5,9 @@ import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesDat
 import {
 	setEditModelField,
 	setEditModelFieldError,
-	removeEditModel,
 	removeEditModelFieldError,
+	removeEditModelField,
+	removeEditModel,
 } from "./../actions/view";
 import { validationRules } from "../utils/modelValidationHelper";
 import { useSelectorAndUnwrap } from "./useSelectorAndUnwrap";
@@ -95,7 +96,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			const keyPath = path.join(".");
 			const value = stateValue?.value ?? initialValue;
 			const resultValue = mapModifiedData(value);
-			const result = path.length === 0 ? resultValue : get(resultValue, keyPath, resultValue);
+			const result = !path.length ? resultValue : get(resultValue, keyPath, resultValue);
 
 			return result;
 		};
@@ -143,9 +144,9 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 
 		const updateEditState = (newValue, path = [], errorTypes = [], dependencies = {}) => {
 			const pathToField = getValidPath(path);
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...pathToField];
+			const fullPath = !path.length ? [...keys] : [...keys, "value", ...pathToField];
 
-			const initialFieldValue = path.length === 0 ? initialValue : get(initialValue, pathToField);
+			const initialFieldValue = !path.length ? initialValue : get(initialValue, pathToField);
 
 			dispatchWithModulesData(setEditModelField, [fullPath, newValue, initialFieldValue, entityId, sectionName]);
 
@@ -153,20 +154,21 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		};
 
 		const deleteEditState = (path = []) => {
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
+			const fullPath = !path.length ? [...keys] : [...keys, "value", ...getValidPath(path)];
+			const action = !path.length ? removeEditModel : removeEditModelField;
 
-			dispatchWithModulesData(removeEditModel, [fullPath, entityId, sectionName]);
+			dispatchWithModulesData(action, [fullPath, entityId, sectionName]);
 		};
 
 		const resetEditState = (path = []) => {
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
+			const fullPath = !path.length ? [...keys] : [...keys, "value", ...getValidPath(path)];
 			dispatchWithModulesData(setEditModelField, [fullPath, initialValue, initialValue, entityId, sectionName]);
 		};
 
 		const isEditStateValid = (value, path = [], errorTypes = [], dependencies = {}) => {
 			const pathToField = getValidPath(path);
 			const fullValue = value ?? get(stateValue?.value ?? initialValue, pathToField);
-			const fullPath = path.length === 0 ? [...keys] : [...keys, "value", ...getValidPath(path)];
+			const fullPath = !path.length ? [...keys] : [...keys, "value", ...pathToField];
 
 			if (fullValue != null && (typeof fullValue !== "object" || Array.isArray(fullValue))) {
 				dispatchWithModulesData(setEditModelField, [fullPath, fullValue, fullValue, entityId, sectionName]);
@@ -182,7 +184,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			const validPath = getValidPath(path);
 			const keyPath = validPath.join(".");
 			const value = stateValue?.value ?? initialValue;
-			const result = path.length === 0 ? value : get(value, keyPath);
+			const result = !path.length ? value : get(value, keyPath);
 
 			return result?.error;
 		};

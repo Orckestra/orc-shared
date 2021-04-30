@@ -9,6 +9,8 @@ import {
 	setEditModelField,
 	removeEditModel,
 	VIEW_REMOVE_EDIT_MODEL,
+	removeEditModelField,
+	VIEW_REMOVE_EDIT_MODEL_FIELD,
 } from "./view";
 
 describe("setValue", () => {
@@ -70,6 +72,20 @@ describe("removeEditModel", () => {
 	it("creates an action object", () => {
 		expect(removeEditModel, "when called with", ["keys", "entityId", "sectionName", "moduleName"], "to equal", {
 			type: VIEW_REMOVE_EDIT_MODEL,
+			payload: {
+				keys: "keys",
+				entityId: "entityId",
+				sectionName: "sectionName",
+				moduleName: "moduleName",
+			},
+		});
+	});
+});
+
+describe("removeEditModelField", () => {
+	it("creates an action object", () => {
+		expect(removeEditModelField, "when called with", ["keys", "entityId", "sectionName", "moduleName"], "to equal", {
+			type: VIEW_REMOVE_EDIT_MODEL_FIELD,
 			payload: {
 				keys: "keys",
 				entityId: "entityId",

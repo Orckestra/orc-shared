@@ -10,6 +10,7 @@ import {
 	setEditModelFieldError,
 	removeEditModel,
 	removeEditModelFieldError,
+	removeEditModelField,
 } from "./../actions/view";
 import { validationErrorTypes } from "./../constants";
 
@@ -1261,31 +1262,6 @@ describe("useDynamicEditState", () => {
 		useDispatchWithModulesDataStub.restore();
 	});
 
-	it("Delete value in edit view by path when value is object", () => {
-		const component = (
-			<TestWrapper provider={{ store: storeWithModifications }}>
-				<TestComp />
-			</TestWrapper>
-		);
-
-		const useDispatchWithModulesDataSpy = sinon.spy();
-		const useDispatchWithModulesDataStub = sinon
-			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
-			.returns(useDispatchWithModulesDataSpy);
-
-		const mountedComponent = mount(component);
-
-		const fieldComponent = mountedComponent.find("#deleteElementByPathWhenObject");
-
-		fieldComponent.invoke("onClick")();
-
-		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModel, [["field", "value", "c", "value", "d"], entityId, sectionName]],
-		});
-
-		useDispatchWithModulesDataStub.restore();
-	});
-
 	it("Delete value in edit view by path", () => {
 		const component = (
 			<TestWrapper provider={{ store: storeWithModifications }}>
@@ -1305,7 +1281,7 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModel, [["field", "value", "c", "value", "e"], entityId, sectionName]],
+			args: [removeEditModelField, [["field", "value", "c", "value", "e"], entityId, sectionName]],
 		});
 
 		useDispatchWithModulesDataStub.restore();
@@ -1330,7 +1306,7 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModel, [["field", "value", "c", "value", "d"], entityId, sectionName]],
+			args: [removeEditModelField, [["field", "value", "c", "value", "d"], entityId, sectionName]],
 		});
 
 		useDispatchWithModulesDataStub.restore();
@@ -1355,7 +1331,7 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModel, [["field", "value", "c", "value", "n"], entityId, sectionName]],
+			args: [removeEditModelField, [["field", "value", "c", "value", "n"], entityId, sectionName]],
 		});
 
 		useDispatchWithModulesDataStub.restore();
