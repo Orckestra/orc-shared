@@ -13,8 +13,8 @@ describe("DropDownMenu", () => {
 	let store, menuItems, container;
 	beforeEach(() => {
 		menuItems = [
-			{ title: "asd", action: sinon.spy().named("action") },
-			{ title: "asd2", action: sinon.spy().named("action") },
+			{ title: "asd", action: sinon.spy().named("action"), itemContext: "aContext" },
+			{ title: "asd2", action: sinon.spy().named("action"), itemContext: "myContext" },
 		];
 		store = {
 			subscribe: () => {},
@@ -87,7 +87,9 @@ describe("DropDownMenu", () => {
 		const items = document.querySelectorAll(".MuiListItem-root");
 
 		items[0].dispatchEvent(clickEvent);
+		items[1].dispatchEvent(clickEvent);
 
-		expect(menuItems[0].action, "to have calls satisfying", [{ args: [payload] }]);
+		expect(menuItems[0].action, "to have calls satisfying", [{ args: [payload, "aContext"] }]);
+		expect(menuItems[1].action, "to have calls satisfying", [{ args: [payload, "myContext"] }]);
 	});
 });
