@@ -33,6 +33,7 @@ describe("StepperModal", () => {
 		modalProps.set(ModalProps.propNames.title, titleComponent);
 		modalProps.set(ModalProps.propNames.open, open);
 		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
+		modalProps.set(ModalProps.propNames.type, "wide");
 
 		const actionPanel = (
 			<div>
