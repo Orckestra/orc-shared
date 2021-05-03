@@ -77,7 +77,15 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const StepperModal = ({ steps = [], title = "", open, closeCallback, confirmCallback, confirmTitle }) => {
+const StepperModal = ({
+	steps = [],
+	title = "",
+	open,
+	closeCallback,
+	confirmCallback,
+	confirmTitle,
+	type = "wide",
+}) => {
 	const classes = useStyles();
 	const [currentStep, changeCurrentStep] = useState(0);
 
@@ -111,6 +119,7 @@ const StepperModal = ({ steps = [], title = "", open, closeCallback, confirmCall
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, open);
 	modalProps.set(ModalProps.propNames.backdropClickCallback, closeCallback);
+	modalProps.set(ModalProps.propNames.type, type);
 
 	const nextClick = useCallback(() => changeCurrentStep(step => step + 1), []);
 	const backClick = useCallback(() => changeCurrentStep(step => step - 1), []);
