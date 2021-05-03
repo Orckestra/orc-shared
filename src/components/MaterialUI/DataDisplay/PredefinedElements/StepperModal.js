@@ -84,7 +84,7 @@ const StepperModal = ({
 	closeCallback,
 	confirmCallback,
 	confirmTitle,
-	type = "normal",
+	type = "wide",
 }) => {
 	const classes = useStyles();
 	const [currentStep, changeCurrentStep] = useState(0);
