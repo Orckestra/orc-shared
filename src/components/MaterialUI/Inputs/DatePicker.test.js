@@ -2,7 +2,7 @@ import React from "react";
 import DatePicker from "./DatePicker";
 import { mount } from "enzyme";
 import sinon from "sinon";
-import Icon from "../../Icon";
+import Icon from "../DataDisplay/Icon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 
 describe("DatePicker", () => {

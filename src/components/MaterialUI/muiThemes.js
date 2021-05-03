@@ -989,14 +989,14 @@ const setThemeOverrides = theme => ({
 		root: {
 			...theme.root,
 			flex: 13,
-			padding: theme.spacing(0, 2, 1),
+			padding: theme.spacing(0, 2, 2),
 		},
 	},
 	MuiTimelineOppositeContent: {
 		root: {
 			...theme.root,
 			flex: 1,
-			padding: theme.spacing(0, 2, 1),
+			padding: theme.spacing(0, 2, 2),
 		},
 	},
 	MuiTimelineDot: {
