@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import Icon from "../../Icon";
+import Icon from "../DataDisplay/Icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
