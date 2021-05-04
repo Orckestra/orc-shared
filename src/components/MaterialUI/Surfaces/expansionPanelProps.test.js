@@ -8,7 +8,7 @@ import {
 describe("Expansion Panel Props", () => {
 	it("Contains necessary prop and rule keys", () => {
 		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange"];
-		const rulesNames = ["root"];
+		const rulesNames = ["root", "summaryRoot", "summaryExpanded", "details", "actions"];
 
 		expect(ExpansionPanelProps.propNames, "to have keys", propNames);
 		expect(ExpansionPanelProps.ruleNames, "to have keys", rulesNames);
@@ -16,7 +16,7 @@ describe("Expansion Panel Props", () => {
 
 	it("Puts keys in component prop and rule maps", () => {
 		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange"];
-		const rulesNames = ["root"];
+		const rulesNames = ["root", "summaryRoot", "summaryExpanded", "details", "actions"];
 
 		const expansionPanelProps = new ExpansionPanelProps();
 
