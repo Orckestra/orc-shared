@@ -175,6 +175,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 	const searchSection = (
 		<IconButton
 			data-qa="searchButton"
+			variant="contained"
 			classes={{ root: classes.searchButton }}
 			onClick={() => {
 				onSearch(searchOption, inputRef.current.value);
