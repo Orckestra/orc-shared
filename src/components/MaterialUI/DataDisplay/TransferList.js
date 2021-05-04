@@ -118,12 +118,8 @@ const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, cla
 			) : (
 				<ListItemText
 					key={`transfer-list-item-${item.id}-label`}
-					primary={
-						<Typography component="span" className={classes.itemTitle}>
-							{item.title}
-						</Typography>
-					}
-					secondary={<Typography component="span">{item.subtitle}</Typography>}
+					primary={<Typography className={classes.itemTitle}>{item.title}</Typography>}
+					secondary={<Typography>{item.subtitle}</Typography>}
 				/>
 			)}
 		</ListItem>
