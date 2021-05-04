@@ -13,10 +13,6 @@ import { isReactComponent } from "../../../utils/propertyValidator";
 import sharedMessages from "../../../sharedMessages";
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		margin: "auto",
-	},
-
 	title: {
 		color: theme.palette.text.hint,
 		fontSize: theme.spacing(1.2),
@@ -201,68 +197,66 @@ const TransferList = ({
 	const leftSelected = leftListData.data?.some(({ id }) => checked.includes(id));
 
 	return (
-		<div>
-			<Grid container spacing={1} justify="center" alignItems="center" className={classes.root}>
-				<Grid item xs={5}>
-					<div className={classes.title}>{leftListData.title}</div>
-					{isReactComponent(customLeftComponent) ? (
-						<Paper className={classNames(classes.paper, classes.paperLeft)}>
-							<div className={classes.customContainer}>
-								<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
-							</div>
-						</Paper>
-					) : (
-						<ScrollableCustomList
-							ref={refScrollableList}
-							onScroll={onScroll}
-							currentPage={currentPage}
-							currentTotal={currentTotal}
-							pageSize={pageSize}
-							classes={classes}
-							items={leftListData.data}
-							checked={checked}
-							setChecked={setChecked}
-							listItemFormatter={listItemFormatter}
-						/>
-					)}
-				</Grid>
-				<Grid xs={2} item>
-					<Grid container direction="column" alignItems="center">
-						<Button
-							variant="outlined"
-							size="small"
-							className={classes.button}
-							onClick={onAddButtonClick}
-							disabled={!leftSelected}
-							aria-label="move selected right"
-						>
-							{addButtonTitle || <FormattedMessage {...sharedMessages.add} />} &gt;
-						</Button>
-						<Button
-							variant="outlined"
-							size="small"
-							className={classes.button}
-							onClick={onRemoveButtonClick}
-							disabled={!rightSelected}
-							aria-label="move selected left"
-						>
-							&lt; {removeButtonTitle || <FormattedMessage {...sharedMessages.remove} />}
-						</Button>
-					</Grid>
-				</Grid>
-				<Grid item xs={5}>
-					<div className={classes.title}>{rightListData.title}</div>
-					<Paper className={classes.paper}>
-						<CustomList
-							items={rightListData.data}
-							checked={checked}
-							setChecked={setChecked}
-							listItemFormatter={listItemFormatter}
-						/>
+		<Grid container spacing={2} justify="center" alignItems="center">
+			<Grid item xs={5}>
+				<div className={classes.title}>{leftListData.title}</div>
+				{isReactComponent(customLeftComponent) ? (
+					<Paper className={classNames(classes.paper, classes.paperLeft)}>
+						<div className={classes.customContainer}>
+							<customLeftComponent.type selected={checked} setSelected={setChecked} {...customLeftComponent.props} />
+						</div>
 					</Paper>
+				) : (
+					<ScrollableCustomList
+						ref={refScrollableList}
+						onScroll={onScroll}
+						currentPage={currentPage}
+						currentTotal={currentTotal}
+						pageSize={pageSize}
+						classes={classes}
+						items={leftListData.data}
+						checked={checked}
+						setChecked={setChecked}
+						listItemFormatter={listItemFormatter}
+					/>
+				)}
+			</Grid>
+			<Grid xs={2} item>
+				<Grid container direction="column" alignItems="center">
+					<Button
+						variant="outlined"
+						size="small"
+						className={classes.button}
+						onClick={onAddButtonClick}
+						disabled={!leftSelected}
+						aria-label="move selected right"
+					>
+						{addButtonTitle || <FormattedMessage {...sharedMessages.add} />} &gt;
+					</Button>
+					<Button
+						variant="outlined"
+						size="small"
+						className={classes.button}
+						onClick={onRemoveButtonClick}
+						disabled={!rightSelected}
+						aria-label="move selected left"
+					>
+						&lt; {removeButtonTitle || <FormattedMessage {...sharedMessages.remove} />}
+					</Button>
 				</Grid>
 			</Grid>
-		</div>
+			<Grid item xs={5}>
+				<div className={classes.title}>{rightListData.title}</div>
+				<Paper className={classes.paper}>
+					<CustomList
+						items={rightListData.data}
+						checked={checked}
+						setChecked={setChecked}
+						listItemFormatter={listItemFormatter}
+					/>
+				</Paper>
+			</Grid>
+		</Grid>
 	);
 };
 
