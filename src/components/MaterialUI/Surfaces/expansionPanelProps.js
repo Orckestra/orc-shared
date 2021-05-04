@@ -10,6 +10,10 @@ class ExpansionPanelProps extends ComponentProps {
 
 	static ruleNames = {
 		root: "root",
+		summaryRoot: "summaryRoot",
+		summaryExpanded: "summaryExpanded",
+		details: "details",
+		actions: "actions",
 	};
 
 	constructor() {
@@ -20,6 +24,10 @@ class ExpansionPanelProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.onChange, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
+		this.componentClasses.set(this.constructor.ruleNames.summaryRoot, null);
+		this.componentClasses.set(this.constructor.ruleNames.summaryExpanded, null);
+		this.componentClasses.set(this.constructor.ruleNames.details, null);
+		this.componentClasses.set(this.constructor.ruleNames.actions, null);
 
 		this._isExpansionPanelProps = true;
 	}
