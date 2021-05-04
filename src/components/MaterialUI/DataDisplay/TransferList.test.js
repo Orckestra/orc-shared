@@ -39,30 +39,28 @@ describe("TransferList", () => {
 
 		const expected = (
 			<TestWrapper intlProvider={{ messages }}>
-				<div>
+				<Grid>
+					<Grid>
+						<div>{leftTitle}</div>
+						<ScrollableCustomList checked={[]} items={leftList} classes={{}} />
+					</Grid>
 					<Grid>
 						<Grid>
-							<div>{leftTitle}</div>
-							<ScrollableCustomList checked={[]} items={leftList} classes={{}} />
-						</Grid>
-						<Grid>
-							<Grid>
-								<Button variant="outlined" size="small" disabled={true}>
-									{addButtonTitle} &gt;
-								</Button>
-								<Button variant="outlined" size="small" disabled={true}>
-									&lt; {removeButtonTitle}
-								</Button>
-							</Grid>
-						</Grid>
-						<Grid>
-							<div>{rightTitle}</div>
-							<Paper>
-								<CustomList checked={[]} items={rightList} />
-							</Paper>
+							<Button variant="outlined" size="small" disabled={true}>
+								{addButtonTitle} &gt;
+							</Button>
+							<Button variant="outlined" size="small" disabled={true}>
+								&lt; {removeButtonTitle}
+							</Button>
 						</Grid>
 					</Grid>
-				</div>
+					<Grid>
+						<div>{rightTitle}</div>
+						<Paper>
+							<CustomList checked={[]} items={rightList} />
+						</Paper>
+					</Grid>
+				</Grid>
 			</TestWrapper>
 		);
 
@@ -86,38 +84,36 @@ describe("TransferList", () => {
 
 		const expected = (
 			<TestWrapper intlProvider={{ messages }}>
-				<div>
+				<Grid>
+					<Grid>
+						<div>{leftTitle}</div>
+						<Paper>
+							<div>
+								<TestComp />
+							</div>
+						</Paper>
+					</Grid>
 					<Grid>
 						<Grid>
-							<div>{leftTitle}</div>
-							<Paper>
-								<div>
-									<TestComp />
-								</div>
-							</Paper>
-						</Grid>
-						<Grid>
-							<Grid>
-								<Button variant="outlined" size="small" disabled={true}>
-									{sharedMessages.add.defaultMessage} &gt;
-								</Button>
-								<Button variant="outlined" size="small" disabled={true}>
-									&lt; {sharedMessages.remove.defaultMessage}
-								</Button>
-							</Grid>
-						</Grid>
-						<Grid>
-							<div>{rightTitle}</div>
-							<Paper>
-								<List component="div" role="list">
-									{rightList.map(item => (
-										<ListItem>{listItemFormatter(item)}</ListItem>
-									))}
-								</List>
-							</Paper>
+							<Button variant="outlined" size="small" disabled={true}>
+								{sharedMessages.add.defaultMessage} &gt;
+							</Button>
+							<Button variant="outlined" size="small" disabled={true}>
+								&lt; {sharedMessages.remove.defaultMessage}
+							</Button>
 						</Grid>
 					</Grid>
-				</div>
+					<Grid>
+						<div>{rightTitle}</div>
+						<Paper>
+							<List component="div" role="list">
+								{rightList.map(item => (
+									<ListItem>{listItemFormatter(item)}</ListItem>
+								))}
+							</List>
+						</Paper>
+					</Grid>
+				</Grid>
 			</TestWrapper>
 		);
 
