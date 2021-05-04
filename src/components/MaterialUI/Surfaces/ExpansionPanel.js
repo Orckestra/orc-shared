@@ -53,6 +53,10 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 	};
 
 	const expansionPanelRootStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.root);
+	const panelSummaryRootStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.summaryRoot);
+	const panelSummaryExpandedStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.summaryExpanded);
+	const panelDetailsStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.details);
+	const panelActionsStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.actions);
 
 	// Expansion panel summary props
 
@@ -72,15 +76,20 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 			<AccordionSummary
 				expandIcon={<Icon id="chevron-down" className={classes.expandIcon} />}
 				classes={{
-					root: classNames(classes.expansionPanelHeader),
-					expanded: classes.headerPanelExpanded,
+					root: classNames(classes.expansionPanelHeader, panelSummaryRootStyle),
+					expanded: classNames(classes.headerPanelExpanded, panelSummaryExpandedStyle),
 				}}
 			>
 				{header}
 			</AccordionSummary>
-			<AccordionDetails>{content}</AccordionDetails>
+			<AccordionDetails classes={{ root: panelDetailsStyle }}>{content}</AccordionDetails>
 			{actions != null ? (
-				<AccordionActions disableSpacing={disableSpacing == null ? false : disableSpacing}>{actions}</AccordionActions>
+				<AccordionActions
+					classes={{ root: panelActionsStyle }}
+					disableSpacing={disableSpacing == null ? false : disableSpacing}
+				>
+					{actions}
+				</AccordionActions>
 			) : null}
 		</Accordion>
 	);
