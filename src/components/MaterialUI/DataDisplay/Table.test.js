@@ -16,7 +16,7 @@ import { MuiThemeProvider } from "@material-ui/core";
 import { createMuiTheme } from "./../../../utils/testUtils";
 import TableContainer from "@material-ui/core/TableContainer";
 import ResizeDetector from "react-resize-detector";
-import CheckboxMui from "@material-ui/core/Checkbox";
+import CheckboxMui from "../Inputs/Checkbox";
 import { cloneDeep } from "lodash";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 

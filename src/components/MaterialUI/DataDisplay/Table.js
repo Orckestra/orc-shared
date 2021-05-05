@@ -4,7 +4,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { makeStyles } from "@material-ui/core/styles";
-import { createInput, inputTypes } from "orc-shared/src/components/MaterialUI/Inputs/createInput";
+import { createInput, inputTypes } from "../Inputs/createInput";
 import { tableSelectionMode, useTableSelection } from "./useTableSelection";
 import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";

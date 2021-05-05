@@ -130,7 +130,7 @@ const Checkbox = ({ checkboxProps }) => {
 	}
 
 	const onChange = checkboxProps?.get(CheckboxProps.propNames.onChange);
-	const indeterminate = checkboxProps?.get(CheckboxProps.propNames.indeterminate);
+	const indeterminate = checkboxProps?.get(CheckboxProps.propNames.indeterminate) || false;
 	const update = checkboxProps?.get(CheckboxProps.propNames.update);
 	const value = checkboxProps?.get(CheckboxProps.propNames.value);
 	const label = checkboxProps?.get(CheckboxProps.propNames.label);
