@@ -4,7 +4,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { makeStyles } from "@material-ui/core/styles";
-import CheckboxMui from "@material-ui/core/Checkbox";
+import { createInput, inputTypes } from "orc-shared/src/components/MaterialUI/Inputs/createInput";
 import { tableSelectionMode, useTableSelection } from "./useTableSelection";
 import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
@@ -182,11 +182,11 @@ const buildRowCheckbox = (classes, key, selectionHandlers) => {
 
 	return (
 		<td className={classes.tableCellSelect} selected={rowSelected}>
-			<CheckboxMui
-				className={classes.rowSelectCheckbox}
-				checked={rowSelected}
-				onChange={event => selectionHandlers.selectionHandler(event, key)}
-			/>
+			{createInput(inputTypes.checkbox, {
+				value: rowSelected,
+				disabled: false,
+				onChange: event => selectionHandlers.selectionHandler(event, key),
+			})}
 		</td>
 	);
 };
@@ -194,12 +194,12 @@ const buildRowCheckbox = (classes, key, selectionHandlers) => {
 const buildTableCheckbox = (classes, tableSelectionStatus, selectionMethods) => {
 	return (
 		<th key="tableSelector" className={classes.headerCellSelect}>
-			<CheckboxMui
-				className={classes.rowSelectCheckbox}
-				checked={tableSelectionStatus === tableSelectionMode.all}
-				indeterminate={tableSelectionStatus === tableSelectionMode.indeterminate}
-				onChange={event => selectionMethods.selectionHandler(event, null)}
-			/>
+			{createInput(inputTypes.checkbox, {
+				value: tableSelectionStatus === tableSelectionMode.all,
+				disabled: false,
+				indeterminate: tableSelectionStatus === tableSelectionMode.indeterminate,
+				onChange: event => selectionMethods.selectionHandler(event, null),
+			})}
 		</th>
 	);
 };
