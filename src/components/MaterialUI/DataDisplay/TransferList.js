@@ -96,6 +96,8 @@ export const ScrollableCustomList = React.forwardRef((props, ref) => {
 				checked={props.checked}
 				setChecked={props.setChecked}
 				listItemFormatter={props.listItemFormatter}
+				checkMode={props.checkMode}
+				onChange={props.onChange}
 			/>
 		</Paper>
 	);
@@ -119,11 +121,11 @@ const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, cla
 				<ListItemText
 					key={`transfer-list-item-${item.id}-label`}
 					primary={
-						<Typography component="span" className={classes.itemTitle}>
+						<Typography component="div" className={classes.itemTitle}>
 							{item.title}
 						</Typography>
 					}
-					secondary={<Typography component="span">{item.subtitle}</Typography>}
+					secondary={<Typography component="div">{item.subtitle}</Typography>}
 				/>
 			)}
 		</ListItem>
@@ -132,23 +134,34 @@ const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, cla
 
 const MemoListItem = React.memo(ListItemWrapper, compareListItem);
 
-export const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
+export const CustomList = ({ items, checked, setChecked, listItemFormatter, checkMode = "multiple", onChange }) => {
 	const classes = useListStyles();
 
 	const handleToggle = useCallback(
 		value =>
 			setChecked(state => {
 				const currentIndex = state.indexOf(value);
-				const newChecked = [...state];
+				let newChecked = [...state];
 
-				if (currentIndex === -1) {
-					newChecked.push(value);
-				} else {
-					newChecked.splice(currentIndex, 1);
+				switch (checkMode) {
+					case "single":
+						newChecked = [value];
+						break;
+					default:
+						if (currentIndex === -1) {
+							newChecked.push(value);
+						} else {
+							newChecked.splice(currentIndex, 1);
+						}
+						break;
+				}
+
+				if (onChange) {
+					onChange(newChecked);
 				}
 				return newChecked;
 			}),
-		[setChecked],
+		[setChecked, checkMode, onChange],
 	);
 
 	return (
