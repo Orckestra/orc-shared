@@ -97,6 +97,31 @@ const useStyles = makeStyles(theme => ({
 			cursor: "auto",
 		},
 	},
+	indeterminateIconChecked: {
+		backgroundColor: "currentColor",
+		borderColor: "currentColor",
+		"&:before": {
+			content: `" "`,
+			position: "absolute",
+			left: theme.spacing(0.8),
+			top: theme.spacing(1.3),
+			width: theme.spacing(1),
+			height: theme.spacing(0.2),
+			backgroundColor: "white",
+		},
+	},
+
+	indeterminateIconReadOnly: {
+		"&:before": {
+			content: `" "`,
+			position: "absolute",
+			left: theme.spacing(0.8),
+			top: theme.spacing(1.3),
+			width: theme.spacing(1),
+			height: theme.spacing(0.2),
+			backgroundColor: theme.palette.grey.dark,
+		},
+	},
 }));
 
 const Checkbox = ({ checkboxProps }) => {
@@ -104,6 +129,8 @@ const Checkbox = ({ checkboxProps }) => {
 		throw new TypeError("checkboxProps property is not of type CheckboxProps");
 	}
 
+	const onChange = checkboxProps?.get(CheckboxProps.propNames.onChange);
+	const indeterminate = checkboxProps?.get(CheckboxProps.propNames.indeterminate) || false;
 	const update = checkboxProps?.get(CheckboxProps.propNames.update);
 	const value = checkboxProps?.get(CheckboxProps.propNames.value);
 	const label = checkboxProps?.get(CheckboxProps.propNames.label);
@@ -115,12 +142,21 @@ const Checkbox = ({ checkboxProps }) => {
 		update(event.target.checked, metadata);
 	};
 
+	const onUseChange = event => {
+		if (onChange) {
+			onChange(event);
+		} else {
+			handleChange(event);
+		}
+	};
+
 	const classes = useStyles();
 
 	const checkBoxMui = (
 		<CheckboxMUI
 			checked={value}
-			onChange={!readOnly ? handleChange : null}
+			onChange={!readOnly ? onUseChange : null}
+			indeterminate={indeterminate}
 			disabled={disabled}
 			color="primary"
 			checkedIcon={
@@ -137,6 +173,15 @@ const Checkbox = ({ checkboxProps }) => {
 					className={classNames({
 						[`${classes.checkBoxIcon}`]: !readOnly,
 						[`${classes.checkBoxIconReadOnly}`]: readOnly && !value,
+					})}
+				/>
+			}
+			indeterminateIcon={
+				<span
+					className={classNames({
+						[`${classes.checkBoxIcon}`]: !readOnly,
+						[`${classes.indeterminateIconChecked}`]: !readOnly && indeterminate,
+						[`${classes.indeterminateIconReadOnly}`]: readOnly && indeterminate,
 					})}
 				/>
 			}

@@ -2,6 +2,8 @@ import ComponentProps from "../componentProps";
 
 class CheckboxProps extends ComponentProps {
 	static propNames = {
+		onChange: "onChange",
+		indeterminate: "indeterminate",
 		update: "update",
 		value: "value",
 		label: "label",
@@ -12,6 +14,8 @@ class CheckboxProps extends ComponentProps {
 
 	constructor() {
 		super();
+		this.componentProps.set(this.constructor.propNames.onChange, null);
+		this.componentProps.set(this.constructor.propNames.indeterminate, null);
 		this.componentProps.set(this.constructor.propNames.update, null);
 		this.componentProps.set(this.constructor.propNames.value, null);
 		this.componentProps.set(this.constructor.propNames.label, null);

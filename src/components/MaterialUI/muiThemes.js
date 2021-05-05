@@ -803,6 +803,13 @@ const setThemeOverrides = theme => ({
 				boxShadow: "none",
 			},
 		},
+		colorPrimary: {
+			...theme.colorPrimary,
+			color: theme.palette.primary.main,
+			"&.MuiCheckbox-indeterminate": {
+				color: theme.palette.primary.main,
+			},
+		},
 	},
 	MuiAccordion: {
 		...theme.MuiAccordion,
