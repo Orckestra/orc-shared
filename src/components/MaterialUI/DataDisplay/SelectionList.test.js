@@ -31,14 +31,13 @@ describe("SelectionList", () => {
 
 		const expected = (
 			<TestWrapper intlProvider={{ messages }}>
-				<div>
+				<Grid>
 					<Grid>
-						<Grid>
-							<div>{listTitle}</div>
-							<ScrollableCustomList checked={[]} items={list} classes={{}} />
-						</Grid>
+						<div>{listTitle}</div>
+						<ScrollableCustomList checked={[]} items={list} classes={{}} />
 					</Grid>
-				</div>
+					<Grid />
+				</Grid>
 			</TestWrapper>
 		);
 
@@ -57,7 +56,7 @@ describe("SelectionList", () => {
 		let item = mountedComponent.find(ListItem).at(0);
 		item.invoke("onClick")();
 
-		expect(onChange, "to have calls satisfying", [{ args: [{ right: [list[0]] }] }]);
+		expect(onChange, "to have calls satisfying", [{ args: [{ selectedItems: [list[0]] }] }]);
 	});
 
 	it("handle scrolling event", () => {

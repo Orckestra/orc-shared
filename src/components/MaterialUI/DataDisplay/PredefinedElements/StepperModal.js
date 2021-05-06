@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 		float: "right",
 	},
 	container: {
-		minWidth: theme.spacing(120),
+		width: "100%",
 		height: theme.spacing(56),
 		wordWrap: "normal",
 	},

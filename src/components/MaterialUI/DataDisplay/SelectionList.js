@@ -41,7 +41,7 @@ const formatOnChange = (data, ids) => {
 	const selectedItems = data.filter(dataItem => ids.includes(dataItem.id));
 
 	return {
-		right: [...selectedItems],
+		selectedItems: [...selectedItems],
 	};
 };
 
@@ -54,7 +54,8 @@ const SelectionList = ({
 	currentPage = 1,
 	pageSize = 20,
 	height = 50,
-	checkMode = "single",
+	multiSelect = false,
+	infoPanel,
 }) => {
 	const classes = useStyles({ height });
 	const [checked, setChecked] = useState([]);
@@ -65,27 +66,28 @@ const SelectionList = ({
 	};
 
 	return (
-		<div>
-			<Grid container spacing={1} className={classes.root}>
-				<Grid item xs={5}>
-					<div className={classes.title}>{listData.title}</div>
-					<ScrollableCustomList
-						ref={refScrollableList}
-						onScroll={onScroll}
-						currentPage={currentPage}
-						currentTotal={currentTotal}
-						pageSize={pageSize}
-						classes={classes}
-						items={listData.data}
-						checked={checked}
-						setChecked={setChecked}
-						listItemFormatter={listItemFormatter}
-						checkMode={checkMode}
-						onChange={onChangeEvent}
-					/>
-				</Grid>
+		<Grid container spacing={1} className={classes.root}>
+			<Grid item xs={5}>
+				<div className={classes.title}>{listData.title}</div>
+				<ScrollableCustomList
+					ref={refScrollableList}
+					onScroll={onScroll}
+					currentPage={currentPage}
+					currentTotal={currentTotal}
+					pageSize={pageSize}
+					classes={classes}
+					items={listData.data}
+					checked={checked}
+					setChecked={setChecked}
+					listItemFormatter={listItemFormatter}
+					multiSelect={multiSelect}
+					onChange={onChangeEvent}
+				/>
 			</Grid>
-		</div>
+			<Grid item xs={7}>
+				{infoPanel}
+			</Grid>
+		</Grid>
 	);
 };
 

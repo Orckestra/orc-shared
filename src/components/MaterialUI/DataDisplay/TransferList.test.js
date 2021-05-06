@@ -166,7 +166,6 @@ describe("TransferList", () => {
 
 		let item = mountedComponent.find(ListItem).at(0);
 		item.invoke("onClick")();
-
 		item.invoke("onClick")();
 
 		const addButton = mountedComponent.find(Button).at(0);

@@ -96,7 +96,7 @@ export const ScrollableCustomList = React.forwardRef((props, ref) => {
 				checked={props.checked}
 				setChecked={props.setChecked}
 				listItemFormatter={props.listItemFormatter}
-				checkMode={props.checkMode}
+				multiSelect={props.multiSelect}
 				onChange={props.onChange}
 			/>
 		</Paper>
@@ -134,7 +134,7 @@ const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, cla
 
 const MemoListItem = React.memo(ListItemWrapper, compareListItem);
 
-export const CustomList = ({ items, checked, setChecked, listItemFormatter, checkMode = "multiple", onChange }) => {
+export const CustomList = ({ items, checked, setChecked, listItemFormatter, multiSelect = true, onChange }) => {
 	const classes = useListStyles();
 
 	const handleToggle = useCallback(
@@ -143,17 +143,14 @@ export const CustomList = ({ items, checked, setChecked, listItemFormatter, chec
 				const currentIndex = state.indexOf(value);
 				let newChecked = [...state];
 
-				switch (checkMode) {
-					case "single":
-						newChecked = [value];
-						break;
-					default:
-						if (currentIndex === -1) {
-							newChecked.push(value);
-						} else {
-							newChecked.splice(currentIndex, 1);
-						}
-						break;
+				if (!multiSelect) {
+					newChecked = [value];
+				} else {
+					if (currentIndex === -1) {
+						newChecked.push(value);
+					} else {
+						newChecked.splice(currentIndex, 1);
+					}
 				}
 
 				if (onChange) {
@@ -161,7 +158,7 @@ export const CustomList = ({ items, checked, setChecked, listItemFormatter, chec
 				}
 				return newChecked;
 			}),
-		[setChecked, checkMode, onChange],
+		[setChecked, multiSelect, onChange],
 	);
 
 	return (
