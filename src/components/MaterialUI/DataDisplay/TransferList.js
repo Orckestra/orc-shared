@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 	paper: {
 		overflow: "auto",
 		height: props => theme.spacing(props.height),
-		border: `${theme.spacing(0.1)} solid ${theme.palette.primary.light}`,
+		border: `1px solid ${theme.palette.primary.light}`,
 		borderRadius: theme.spacing(0.5),
 		boxShadow: "none",
 
@@ -30,13 +30,13 @@ const useStyles = makeStyles(theme => ({
 		},
 		"&::-webkit-scrollbar-thumb": {
 			background: theme.palette.grey.borders,
-			border: `${theme.spacing(0.5)} white solid`,
+			border: `5px white solid`,
 			backgroundClip: "padding-box",
-			borderRadius: theme.spacing(1.5),
+			borderRadius: theme.shape.borderRadius,
 		},
 	},
 	paperLeft: {
-		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
+		border: `1px solid ${theme.palette.grey.borders}`,
 	},
 
 	customContainer: {
