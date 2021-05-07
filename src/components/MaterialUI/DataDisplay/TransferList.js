@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
 	paper: {
 		overflow: "auto",
 		height: props => theme.spacing(props.height),
-		border: `${theme.spacing(0.1)} solid ${theme.palette.primary.light}`,
-		borderRadius: theme.spacing(0.5),
+		border: `1px solid ${theme.palette.primary.light}`,
+		borderRadius: theme.shape.borderRadius,
 		boxShadow: "none",
 
 		"&::-webkit-scrollbar": {
@@ -30,13 +30,13 @@ const useStyles = makeStyles(theme => ({
 		},
 		"&::-webkit-scrollbar-thumb": {
 			background: theme.palette.grey.borders,
-			border: `${theme.spacing(0.5)} white solid`,
+			border: `5px white solid`,
 			backgroundClip: "padding-box",
 			borderRadius: theme.spacing(1.5),
 		},
 	},
 	paperLeft: {
-		border: `${theme.spacing(0.1)} solid ${theme.palette.grey.borders}`,
+		border: `1px solid ${theme.palette.grey.borders}`,
 	},
 
 	customContainer: {
@@ -96,6 +96,8 @@ export const ScrollableCustomList = React.forwardRef((props, ref) => {
 				checked={props.checked}
 				setChecked={props.setChecked}
 				listItemFormatter={props.listItemFormatter}
+				multiSelect={props.multiSelect}
+				onChange={props.onChange}
 			/>
 		</Paper>
 	);
@@ -119,11 +121,11 @@ const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, cla
 				<ListItemText
 					key={`transfer-list-item-${item.id}-label`}
 					primary={
-						<Typography component="span" className={classes.itemTitle}>
+						<Typography component="div" className={classes.itemTitle}>
 							{item.title}
 						</Typography>
 					}
-					secondary={<Typography component="span">{item.subtitle}</Typography>}
+					secondary={<Typography component="div">{item.subtitle}</Typography>}
 				/>
 			)}
 		</ListItem>
@@ -132,23 +134,31 @@ const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, cla
 
 const MemoListItem = React.memo(ListItemWrapper, compareListItem);
 
-export const CustomList = ({ items, checked, setChecked, listItemFormatter }) => {
+export const CustomList = ({ items, checked, setChecked, listItemFormatter, multiSelect = true, onChange }) => {
 	const classes = useListStyles();
 
 	const handleToggle = useCallback(
 		value =>
 			setChecked(state => {
 				const currentIndex = state.indexOf(value);
-				const newChecked = [...state];
+				let newChecked = [...state];
 
-				if (currentIndex === -1) {
-					newChecked.push(value);
+				if (!multiSelect) {
+					newChecked = [value];
 				} else {
-					newChecked.splice(currentIndex, 1);
+					if (currentIndex === -1) {
+						newChecked.push(value);
+					} else {
+						newChecked.splice(currentIndex, 1);
+					}
+				}
+
+				if (onChange) {
+					onChange(newChecked);
 				}
 				return newChecked;
 			}),
-		[setChecked],
+		[setChecked, multiSelect, onChange],
 	);
 
 	return (
