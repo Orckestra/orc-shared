@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 		overflow: "auto",
 		height: props => theme.spacing(props.height),
 		border: `1px solid ${theme.palette.primary.light}`,
-		borderRadius: theme.spacing(0.5),
+		borderRadius: theme.shape.borderRadius,
 		boxShadow: "none",
 
 		"&::-webkit-scrollbar": {
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 			background: theme.palette.grey.borders,
 			border: `5px white solid`,
 			backgroundClip: "padding-box",
-			borderRadius: theme.shape.borderRadius,
+			borderRadius: theme.spacing(1.5),
 		},
 	},
 	paperLeft: {
