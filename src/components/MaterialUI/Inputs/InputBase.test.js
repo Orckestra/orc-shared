@@ -113,6 +113,28 @@ describe("InputBase Component", () => {
 		expect(update, "to have calls satisfying", [{ args: [aValue, metadata] }]);
 	});
 
+	it("InputBase component handles focus on click", async () => {
+		const onFocus = jest.fn();
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.value, "");
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.simulate("click", { target: { focus: onFocus } });
+		expect(onFocus.mock.calls.length, "to equal", 1);
+	});
+
 	it("Renders InputBase when error position is 'right'", () => {
 		const inputProps = new InputBaseProps();
 		const errorValue = "error";
