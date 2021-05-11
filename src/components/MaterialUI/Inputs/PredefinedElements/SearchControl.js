@@ -149,15 +149,6 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 		console.log("Input %s change to value", e.target, e.target.value);
 	};
 
-	const onClear = event => {
-		onSearch(searchOption, "");
-		inputRef.current.value = "";
-		inputRef.current.focus();
-
-		event.preventDefault();
-		event.stopPropagation();
-	};
-
 	const onFocusedEvent = (event, isInput, focused) => {
 		if (isInput) setInputFocused(focused);
 		else setClearFocused(focused);
