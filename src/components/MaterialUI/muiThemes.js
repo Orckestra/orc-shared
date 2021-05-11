@@ -205,7 +205,7 @@ const setThemeOverrides = theme => ({
 		/* Styles applied to the root element if `variant="outlined"`. */
 		outlined: {
 			padding: theme.spacing(0.5, 1),
-			border: `1px solid ${theme.palette.grey.icon}`,
+			border: `1px solid ${theme.palette.type === "light" ? theme.palette.grey.icon : theme.palette.grey.icon}`,
 			backgroundColor: "white",
 			"&$disabled": {
 				border: `1px solid ${theme.palette.action.disabledBackground}`,

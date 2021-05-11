@@ -2,7 +2,7 @@ import React from "react";
 import pt from "prop-types";
 import styled from "styled-components";
 import { getThemeProp } from "../utils";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "./IconButton";
 import Input from "./Input";
 import Text, { ptLabel } from "./Text";
 import Radio from "./MaterialUI/Inputs/Radio";
