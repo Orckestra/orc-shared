@@ -205,7 +205,7 @@ const setThemeOverrides = theme => ({
 		/* Styles applied to the root element if `variant="outlined"`. */
 		outlined: {
 			padding: theme.spacing(0.5, 1),
-			border: `1px solid ${theme.palette.type === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)"}`,
+			border: `1px solid ${theme.palette.grey.icon}`,
 			backgroundColor: "white",
 			"&$disabled": {
 				border: `1px solid ${theme.palette.action.disabledBackground}`,
@@ -217,7 +217,7 @@ const setThemeOverrides = theme => ({
 		/* Styles applied to the root element if `variant="outlined"` and `color="primary"`. */
 		outlinedPrimary: {
 			color: theme.palette.primary.main,
-			border: `1px solid ${fade(theme.palette.primary.main, 0.5)}`,
+			border: `1px solid ${theme.palette.primary.main}`,
 			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.primary.main}`,
@@ -231,7 +231,7 @@ const setThemeOverrides = theme => ({
 		/* Styles applied to the root element if `variant="outlined"` and `color="secondary"`. */
 		outlinedSecondary: {
 			color: theme.palette.secondary.main,
-			border: `1px solid ${fade(theme.palette.secondary.main, 0.5)}`,
+			border: `1px solid ${theme.palette.secondary.main}`,
 			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.secondary.main}`,
@@ -249,7 +249,7 @@ const setThemeOverrides = theme => ({
 		contained: {
 			color: theme.palette.grey.dark,
 			backgroundColor: theme.palette.grey.light,
-			border: `1px solid ${theme.palette.grey.borders}`,
+			border: `1px solid ${theme.palette.grey.icon}`,
 			boxShadow: theme.shadows[2],
 			"&:hover": {
 				backgroundColor: "#D9D9D9",
