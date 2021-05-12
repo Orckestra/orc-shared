@@ -37,7 +37,7 @@ describe("MUI Themes", () => {
 		expect(muiTheme.secondary.main, "to equal", "#ED2E0B");
 		expect(muiTheme.divider, "to equal", "#CCCCCC");
 
-		expect(muiTheme.overrides.MuiButton.outlined.border, "to equal", "1px solid rgba(0, 0, 0, 0.23)");
+		expect(muiTheme.overrides.MuiButton.outlined.border, "to equal", "1px solid #999");
 	});
 
 	it("createThemes returns expected themes with dark palette type", () => {
@@ -51,6 +51,9 @@ describe("MUI Themes", () => {
 			palette: {
 				...baseMuiTheme.palette,
 				type: "dark",
+				grey: {
+					icon: "#999",
+				},
 				primary: {
 					lighter: "#f5f5f5",
 					light: "#CCC",
@@ -69,6 +72,6 @@ describe("MUI Themes", () => {
 		expect(muiTheme.direction, "to equal", "ltr");
 		expect(muiTheme.secondary.main, "to equal", "#ED2E0B");
 
-		expect(muiTheme.overrides.MuiButton.outlined.border, "to equal", "1px solid rgba(255, 255, 255, 0.23)");
+		expect(muiTheme.overrides.MuiButton.outlined.border, "to equal", "1px solid #999");
 	});
 });

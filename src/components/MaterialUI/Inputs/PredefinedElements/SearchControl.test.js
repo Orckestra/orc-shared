@@ -5,6 +5,7 @@ import SearchControl from "./SearchControl";
 import { TestWrapper, createMuiTheme } from "../../../../utils/testUtils";
 import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import SelectMUI from "@material-ui/core/Select";
 import Icon from "../../DataDisplay/Icon";
 import { useStyles } from "./SearchControl";
@@ -81,10 +82,20 @@ describe("SearchControl Component", () => {
 				<div>
 					<Select options={options} selectProps={selectProps} />
 					<div>
-						<Input placeholder="placeHolderTest" defaultValue="default" disableUnderline={true} />
-						<IconButton tabIndex="-1">
-							<Icon id="close2" />
-						</IconButton>
+						<form>
+							<Input
+								placeholder="placeHolderTest"
+								defaultValue="default"
+								disableUnderline={true}
+								endAdornment={
+									<InputAdornment position="start">
+										<IconButton tabIndex="-1" type="reset">
+											<Icon id="close2" />
+										</IconButton>
+									</InputAdornment>
+								}
+							/>
+						</form>
 					</div>
 					<IconButton>
 						<Icon id="search" />
@@ -143,38 +154,6 @@ describe("SearchControl Component", () => {
 		searchInput.simulate("keydown", { key: "Enter" });
 
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", "abc"] }]);
-	});
-
-	it("Search Control should trigger the event when clearing text", () => {
-		const options = [
-			{ value: "aValue", label: "aLabel" },
-			{ value: "anotherValue", label: "anotherLabel" },
-		];
-
-		const onSearchEvent = sinon.spy().named("search");
-
-		const component = (
-			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SearchControl placeholder="placeHolderTest" searchOptions={options} onSearch={onSearchEvent} />
-			</TestWrapper>
-		);
-
-		const mountedComponent = mount(component);
-
-		const allInputs = mountedComponent.find("input");
-		const searchInput = allInputs.find("[placeholder='placeHolderTest']");
-		expect(searchInput.length, "to be", 1);
-
-		searchInput.instance().value = "abc";
-		expect(searchInput.instance().value, "to be", "abc");
-
-		const allButton = mountedComponent.find("button");
-		const clearButton = allButton.find("[tabIndex='-1']");
-
-		clearButton.simulate("click");
-
-		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", ""] }]);
-		expect(searchInput.instance().value, "to be", "");
 	});
 
 	it("Search Control should trigger the event when clicking on the search button", () => {
@@ -283,47 +262,6 @@ describe("SearchControl Component", () => {
 		expect(searchEditParent.props()["data-qa-is-focused"], "to be", true);
 
 		searchInput.invoke("onBlur")(event);
-
-		searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
-	});
-
-	it("focusing clear button input should set focus on container", () => {
-		jest.spyOn(React, "useState").mockImplementation(useStateMock);
-
-		const options = [
-			{ value: "aValue", label: "aLabel" },
-			{ value: "anotherValue", label: "anotherLabel" },
-		];
-
-		const component = (
-			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SearchControl placeholder="placeHolderTest" searchOptions={options} />
-			</TestWrapper>
-		);
-
-		const mountedComponent = mount(component);
-
-		const allButton = mountedComponent.find("button");
-		const clearButton = allButton.find("[tabIndex='-1']");
-		expect(clearButton.length, "to be", 1);
-
-		let searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-		expect(searchEditParent.length, "to be", 1);
-
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
-
-		const event = {
-			preventDefault: () => {},
-			stopPropagation: () => {},
-		};
-
-		clearButton.invoke("onFocus")(event);
-
-		searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", true);
-
-		clearButton.invoke("onBlur")(event);
 
 		searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
 		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);

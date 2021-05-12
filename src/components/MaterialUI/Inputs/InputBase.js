@@ -140,6 +140,7 @@ const InputBase = ({ inputProps }) => {
 					startAdornment={startAdornment}
 					endAdornment={endAdornment}
 					rows={4}
+					title={value}
 				/>
 			</div>
 			{error && <div className={classNames(classes.errorText, errorTextStyle)}>{error}</div>}
