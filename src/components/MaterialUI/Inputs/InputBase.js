@@ -99,6 +99,11 @@ const InputBase = ({ inputProps }) => {
 	const endAdornment = inputProps?.get(InputBaseProps.propNames.endAdornment);
 	const metadata = inputProps?.get(InputBaseProps.propNames.metadata);
 
+	const onClick = item => {
+		// Fixes FireFox issue, where the input number buttons do not focus on input control,
+		// causing onBlur to never fire
+		item.target.focus();
+	};
 	const classes = useStyles({ label, errorPosition });
 
 	const onChangeHandler = event => {
@@ -122,6 +127,7 @@ const InputBase = ({ inputProps }) => {
 						inputMultiline: classes.inputMultiline,
 					}}
 					onBlur={onBlur}
+					onClick={onClick}
 					type={type}
 					placeholder={placeholder}
 					value={value}
