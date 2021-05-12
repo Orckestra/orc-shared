@@ -112,12 +112,11 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {}, onReset = () => {} }) => {
+const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {} }) => {
 	const [inputFocused, setInputFocused] = useState(false);
-	const [clearFocused, setClearFocused] = useState(false);
 	const [searchOption, setSearchOption] = useState(searchOptions[0].value);
 
-	const classes = useStyles({ focused: inputFocused || clearFocused });
+	const classes = useStyles({ focused: inputFocused });
 
 	const inputRef = useRef();
 
@@ -145,25 +144,15 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 		}
 	};
 
-	const handleReset = e => {
-		//console.log("Form %s was reset", e.target);
-		onReset(e);
-	};
-
-	const handleChange = e => {
-		//console.log("Input %s change to value", e.target, e.target.value);
-	};
-
-	const onFocusedEvent = (event, isInput, focused) => {
-		if (isInput) setInputFocused(focused);
-		else setClearFocused(focused);
+	const onFocusedEvent = (event, focused) => {
+		setInputFocused(focused);
 		event.preventDefault();
 		event.stopPropagation();
 	};
 
 	const inputSection = (
-		<div data-qa="searchInput" data-qa-is-focused={inputFocused || clearFocused} className={classes.parentInput}>
-			<form data-qa="searchForm" onReset={handleReset} className={classes.fullWidth}>
+		<div data-qa="searchInput" data-qa-is-focused={inputFocused} className={classes.parentInput}>
+			<form data-qa="searchForm" className={classes.fullWidth}>
 				<Input
 					placeholder={placeholder}
 					defaultValue={defaultValue}
@@ -173,9 +162,8 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 					onKeyDown={handleKeyDown}
 					disableUnderline={true}
 					required
-					onFocus={e => onFocusedEvent(e, true, true)}
-					onBlur={e => onFocusedEvent(e, true, false)}
-					onChange={handleChange}
+					onFocus={e => onFocusedEvent(e, true)}
+					onBlur={e => onFocusedEvent(e, false)}
 					endAdornment={
 						<InputAdornment position="start">
 							<IconButton tabIndex="-1" type="reset" className={classes.clearButton}>
