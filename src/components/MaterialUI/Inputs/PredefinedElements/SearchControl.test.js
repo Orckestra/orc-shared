@@ -156,6 +156,72 @@ describe("SearchControl Component", () => {
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", "abc"] }]);
 	});
 
+	it("Search Control should trigger the onReset event when clearing text", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+		const resetCallback = sinon.spy();
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl
+					placeholder="placeHolderTest"
+					searchOptions={options}
+					onSearch={onSearchEvent}
+					onReset={resetCallback}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const searchForm = mountedComponent.find("form[data-qa='searchForm']");
+
+		searchForm.simulate("reset");
+
+		expect(resetCallback, "was called");
+	});
+
+	it("Search Control should trigger the onReset event when clearing text", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+		const resetCallback = sinon.spy();
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl
+					placeholder="placeHolderTest"
+					searchOptions={options}
+					onSearch={onSearchEvent}
+					onReset={resetCallback}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const allInputs = mountedComponent.find("input");
+		let searchInput = allInputs.find("[placeholder='placeHolderTest']");
+		expect(searchInput.length, "to be", 1);
+
+		searchInput.instance().value = "abc";
+		expect(searchInput.instance().value, "to be", "abc");
+
+		const searchForm = mountedComponent.find("form[data-qa='searchForm']");
+
+		searchForm.simulate("reset");
+		searchInput = allInputs.find("[placeholder='placeHolderTest']");
+
+		expect(resetCallback, "was called");
+	});
+
 	it("Search Control should trigger the event when clicking on the search button", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },

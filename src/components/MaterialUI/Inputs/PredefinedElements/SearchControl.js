@@ -112,7 +112,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {} }) => {
+const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {}, onReset = () => {} }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 	const [clearFocused, setClearFocused] = useState(false);
 	const [searchOption, setSearchOption] = useState(searchOptions[0].value);
@@ -145,8 +145,13 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 		}
 	};
 
+	const handleReset = e => {
+		//console.log("Form %s was reset", e.target);
+		onReset(e);
+	};
+
 	const handleChange = e => {
-		console.log("Input %s change to value", e.target, e.target.value);
+		//console.log("Input %s change to value", e.target, e.target.value);
 	};
 
 	const onFocusedEvent = (event, isInput, focused) => {
@@ -158,7 +163,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 
 	const inputSection = (
 		<div data-qa="searchInput" data-qa-is-focused={inputFocused || clearFocused} className={classes.parentInput}>
-			<form className={classes.fullWidth}>
+			<form data-qa="searchForm" onReset={handleReset} className={classes.fullWidth}>
 				<Input
 					placeholder={placeholder}
 					defaultValue={defaultValue}
