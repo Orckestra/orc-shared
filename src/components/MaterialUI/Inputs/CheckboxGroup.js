@@ -13,6 +13,18 @@ const useStyles = makeStyles(theme => ({
 	checkBoxContainer: {
 		display: "flex",
 		flexDirection: "row",
+		flexWrap: "wrap",
+		"& .MuiFormControlLabel-root": {
+			[theme.breakpoints.up("xs")]: {},
+			[theme.breakpoints.up("sm")]: {},
+			[theme.breakpoints.up("md")]: { width: "45%" },
+			[theme.breakpoints.up("lg")]: { width: "30%" },
+			[theme.breakpoints.up("xl")]: { width: "20%" },
+
+			"& + .MuiFormControlLabel-root": {
+				marginTop: theme.spacing(1),
+			},
+		},
 	},
 	errorText: {
 		marginTop: theme.spacing(0.5),
