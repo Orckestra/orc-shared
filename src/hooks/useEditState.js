@@ -155,9 +155,13 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 
 		const deleteEditState = (path = []) => {
 			const fullPath = !path.length ? [...keys] : [...keys, "value", ...getValidPath(path)];
-			const action = !path.length ? removeEditModel : removeEditModelField;
 
-			dispatchWithModulesData(action, [fullPath, entityId, sectionName]);
+			if (path.length === 0) {
+				dispatchWithModulesData(removeEditModel, [fullPath, entityId, sectionName]);
+				return;
+			}
+
+			dispatchWithModulesData(removeEditModelField, [fullPath, initialValue, entityId, sectionName]);
 		};
 
 		const resetEditState = (path = []) => {
