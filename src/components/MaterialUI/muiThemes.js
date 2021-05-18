@@ -997,6 +997,7 @@ const setThemeOverrides = theme => ({
 			...theme.root,
 			flex: 13,
 			padding: theme.spacing(0, 2, 2),
+			wordBreak: "break-word",
 		},
 	},
 	MuiTimelineOppositeContent: {
