@@ -539,12 +539,14 @@ describe("useDynamicEditState", () => {
 
 		return (
 			<div>
-				<div id="field" val={field.getState()} />
-				<div id="fieldWithPath" val={field.getState(["c", "d"])} />
-				<div id="fieldInStore" val={fieldInStore.getState()} />
-				<div id="fieldWithUndefinedInitialValue" val={fieldWithUndefinedInitialValue.getState()} />
+				<div id="field" val={field.getStateValue()} />
+				<div id="fieldWithPath" val={field.getStateValue(["c", "d"])} />
+				<div id="fieldInStore" val={fieldInStore.getStateValue()} />
+				<div id="fieldWithUndefinedInitialValue" val={fieldWithUndefinedInitialValue.getStateValue()} />
+				<div id="fullEditState" val={field.getState()} />
+				<div id="fullEditStateByPath" val={field.getState(["c", "d"])} />
 				<div id="update" onClick={e => field.update(e.target.value, ["c", "d"])} />
-				<div id="fieldWithPathWithModifications" val={fieldWithModifications.getState(["c", "d"])} />
+				<div id="fieldWithPathWithModifications" val={fieldWithModifications.getStateValue(["c", "d"])} />
 				<div id="updateWithModifications" onClick={e => fieldWithModifications.update(e.target.value, ["c", "d"])} />
 				<div id="updateWithDefaultPath" onClick={e => field.update(e.target.value)} />
 				<div
@@ -645,6 +647,34 @@ describe("useDynamicEditState", () => {
 		const fieldValue = mountedComponent.find("#fieldInStore").prop("val");
 
 		expect(fieldValue, "to equal", model);
+	});
+
+	it("Provides an access to full edit state", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#fullEditState").prop("val");
+
+		expect(fieldValue, "to equal", initialFieldValue);
+	});
+
+	it("Provides an access to full edit state by path", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#fullEditStateByPath").prop("val");
+
+		expect(fieldValue, "to equal", "dynamic");
 	});
 
 	it("Sets initial value to empty string as default value", () => {

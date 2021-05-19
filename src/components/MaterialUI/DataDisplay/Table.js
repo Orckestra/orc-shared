@@ -346,6 +346,9 @@ const Table = ({
 	customClasses["container"] = tableProps?.getStyle(TableProps.ruleNames.container) || null;
 	customClasses["table"] = tableProps?.getStyle(TableProps.ruleNames.table) || null;
 
+	if ((selectedRows && !selectedRowsChanged) || (!selectedRows && selectedRowsChanged))
+		throw new Error("Both 'selectedRows' and 'selectedRowsChanged' need to be defined if one of them is.");
+
 	const refScrolled = useRef();
 
 	const [scrolled, setScrolled] = useState(0);

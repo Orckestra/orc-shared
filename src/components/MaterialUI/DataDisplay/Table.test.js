@@ -809,6 +809,7 @@ describe("Table", () => {
 		const tableProps = new TableProps();
 
 		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.selectedRows, {});
 		tableProps.set(TableProps.propNames.selectedRowsChanged, selectionHandler);
 
 		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
@@ -826,6 +827,48 @@ describe("Table", () => {
 		expect(selectionHandler, "was called twice");
 	});
 
+	it("Table throws if one selected row props is missing", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.selectedRows, {});
+
+		ignoreConsoleError(() => {
+			const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
+			expect(() => mount(component), "to throw a", Error).then(error => {
+				expect(
+					error,
+					"to have message",
+					"Both 'selectedRows' and 'selectedRowsChanged' need to be defined if one of them is.",
+				);
+			});
+		});
+	});
+
+	it("Table throws if the other selected row props is missing", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const selectionHandler = sinon.spy().named("selectionHandler");
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.selectedRowsChanged, selectionHandler);
+
+		ignoreConsoleError(() => {
+			const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
+			expect(() => mount(component), "to throw a", Error).then(error => {
+				expect(
+					error,
+					"to have message",
+					"Both 'selectedRows' and 'selectedRowsChanged' need to be defined if one of them is.",
+				);
+			});
+		});
+	});
+
 	it("Table header selection handler is invoked", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
 
@@ -834,6 +877,7 @@ describe("Table", () => {
 		const tableProps = new TableProps();
 
 		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.selectedRows, {});
 		tableProps.set(TableProps.propNames.selectedRowsChanged, selectionHandler);
 
 		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
