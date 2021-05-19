@@ -35,9 +35,9 @@ export const setEditModelField = (keys, value, storeValue, entityId, sectionName
 	payload: { keys, value, storeValue, entityId, sectionName, moduleName },
 });
 
-export const removeEditModelField = (keys, entityId, sectionName, moduleName) => ({
+export const removeEditModelField = (keys, storeValue, entityId, sectionName, moduleName) => ({
 	type: VIEW_REMOVE_EDIT_MODEL_FIELD,
-	payload: { keys, entityId, sectionName, moduleName },
+	payload: { keys, storeValue, entityId, sectionName, moduleName },
 });
 
 export const setEditModelErrors = (errors, entityId, sectionName, moduleName) => ({
@@ -50,7 +50,7 @@ export const setEditModelFieldError = (keys, error, entityId, sectionName, modul
 	payload: { keys, error, entityId, sectionName, moduleName },
 });
 
-export const removeEditModelFieldError = (keys, entityId, sectionName, moduleName) => ({
+export const removeEditModelFieldError = (keys, storeValue, entityId, sectionName, moduleName) => ({
 	type: VIEW_REMOVE_EDIT_MODEL_FIELD_ERRORS,
-	payload: { keys, entityId, sectionName, moduleName },
+	payload: { keys, storeValue, entityId, sectionName, moduleName },
 });
