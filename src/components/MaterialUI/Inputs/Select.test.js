@@ -75,6 +75,47 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Select component without indent classes", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel", level: 0 },
+			{ value: "anotherValue", label: "anotherLabel", level: 1 },
+			{ value: "aThirdValue", label: "aThirdLabel", level: 2 },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={false}>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<MenuItem key="anotherValue" value="anotherValue" className="makeStyles-level1">
+						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					</MenuItem>
+					<MenuItem key="anotherValue" value="anotherValue" className="makeStyles-level2">
+						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Renders Select component with an error message", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
