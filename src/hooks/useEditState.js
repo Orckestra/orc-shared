@@ -92,7 +92,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			}
 		}, [initialValue, keys, saveInitialValueToEditState, stateValue]);
 
-		const getEditState = (path = []) => {
+		const getEditStateValue = (path = []) => {
 			const keyPath = path.join(".");
 			const value = stateValue?.value ?? initialValue;
 			const resultValue = mapModifiedData(value);
@@ -174,7 +174,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 				dispatchWithModulesData(setEditModelField, [fullPath, fullValue, fullValue, entityId, sectionName]);
 			}
 
-			const valueToValidate = value ?? getEditState(path);
+			const valueToValidate = value ?? getEditStateValue(path);
 			const hasValidationErrors = hasAnyValidationErrors(valueToValidate, fullPath, errorTypes, dependencies);
 
 			return !hasValidationErrors;
@@ -189,13 +189,20 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			return result?.error;
 		};
 
+		const getEditState = (path = []) => {
+			const keyPath = path.join(".");
+			const value = stateValue?.value ?? initialValue;
+			return !path.length ? value : get(value, keyPath);
+		};
+
 		return {
-			getState: getEditState,
+			getStateValue: getEditStateValue,
 			update: updateEditState,
 			reset: resetEditState,
 			isValid: isEditStateValid,
 			getError: getError,
 			delete: deleteEditState,
+			getState: getEditState,
 		};
 	};
 
