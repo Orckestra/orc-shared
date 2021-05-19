@@ -9,6 +9,31 @@ import Icon from "./../DataDisplay/Icon";
 import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
+	level0: {},
+	level1: {
+		paddingLeft: theme.spacing(theme.indent),
+	},
+	level2: {
+		paddingLeft: theme.spacing(theme.indent * 2),
+	},
+	level3: {
+		paddingLeft: theme.spacing(theme.indent * 3),
+	},
+	level4: {
+		paddingLeft: theme.spacing(theme.indent * 4),
+	},
+	level5: {
+		paddingLeft: theme.spacing(theme.indent * 5),
+	},
+	level6: {
+		paddingLeft: theme.spacing(theme.indent * 6),
+	},
+	level7: {
+		paddingLeft: theme.spacing(theme.indent * 7),
+	},
+	level8: {
+		paddingLeft: theme.spacing(theme.indent * 8),
+	},
 	container: {
 		display: "flex",
 		flexDirection: "column",
@@ -163,11 +188,14 @@ const Select = ({ options, selectProps }) => {
 		...getIconButtonMenuProps(ref.current),
 	};
 
-	const items = options?.map(option => (
-		<MenuItem key={option.value} value={option.value}>
-			<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
-		</MenuItem>
-	));
+	const items = options?.map(option => {
+		let clss = option?.level ? classes["level" + option.level] : "";
+		return (
+			<MenuItem key={option.value} value={option.value} className={clss}>
+				<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
+			</MenuItem>
+		);
+	});
 
 	const defaultSelect = (
 		<SelectMUI

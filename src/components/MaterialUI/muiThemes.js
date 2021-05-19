@@ -9,6 +9,7 @@ const commonTheme = {
 	shape: {
 		borderRadius: 4,
 	},
+	indent: 3,
 	typography: {
 		h1Size: 24,
 		h2Size: 18,
