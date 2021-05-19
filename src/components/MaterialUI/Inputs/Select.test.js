@@ -75,7 +75,7 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Renders Select component without indent classes", () => {
+	it("Renders Select component with indent classes", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel", level: 0 },
 			{ value: "anotherValue", label: "anotherLabel", level: 1 },
