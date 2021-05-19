@@ -161,6 +161,17 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 				return;
 			}
 
+			if (path.length > 1) {
+				path.pop();
+				const keyPath = path.join(".");
+				return dispatchWithModulesData(removeEditModelField, [
+					fullPath,
+					get(initialValue, keyPath),
+					entityId,
+					sectionName,
+				]);
+			}
+
 			dispatchWithModulesData(removeEditModelField, [fullPath, initialValue, entityId, sectionName]);
 		};
 
