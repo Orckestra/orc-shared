@@ -93,7 +93,7 @@ const SelectionList = ({
 					<Divider dividerProps={dividerProps} />
 				</Grid>
 			)}
-			<Grid item xs={6}>
+			<Grid item xs={infoPanel ? 6 : 7}>
 				{infoPanel}
 			</Grid>
 		</Grid>
