@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { ScrollableCustomList } from "./TransferList";
+import Divider from "./Divider";
+import DividerProps from "./dividerProps";
 
 const useStyles = makeStyles(theme => ({
 	title: {
@@ -61,6 +63,12 @@ const SelectionList = ({
 		onChange(formatOnChange(listData.data, ids));
 	};
 
+	const dividerProps = new DividerProps();
+
+	dividerProps.set(DividerProps.propNames.orientation, "vertical");
+	dividerProps.set(DividerProps.propNames.light, true);
+	dividerProps.setStyle(DividerProps.ruleNames.vertical, classes.divider);
+
 	return (
 		<Grid container spacing={2}>
 			<Grid item xs={5}>
@@ -80,7 +88,12 @@ const SelectionList = ({
 					onChange={onChangeEvent}
 				/>
 			</Grid>
-			<Grid item xs={7}>
+			{infoPanel && (
+				<Grid item xs={1}>
+					<Divider dividerProps={dividerProps} />
+				</Grid>
+			)}
+			<Grid item xs={infoPanel ? 6 : 7}>
 				{infoPanel}
 			</Grid>
 		</Grid>
