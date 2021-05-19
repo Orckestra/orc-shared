@@ -13,6 +13,7 @@ import {
 	removeEditModelField,
 } from "./../actions/view";
 import { validationErrorTypes } from "./../constants";
+import { get } from "lodash";
 
 describe("useEditState", () => {
 	let store, state;
@@ -588,6 +589,7 @@ describe("useDynamicEditState", () => {
 				<div id="deleteElementByPath" onClick={e => fieldWithCustomRules.delete(["c", "e"])} />
 				<div id="deleteElementByPathWhenObject" onClick={e => fieldWithCustomRules.delete(["c", "d"])} />
 				<div id="deleteElementByPathWhenArray" onClick={e => fieldWithCustomRules.delete(["c", "n"])} />
+				<div id="deleteElementByTopPath" onClick={e => fieldWithCustomRules.delete(["c"])} />
 				<div id="deleteElementWithNoPath" onClick={e => fieldWithCustomRules.delete()} />
 			</div>
 		);
@@ -1311,7 +1313,10 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModelField, [["field", "value", "c", "value", "e"], entityId, sectionName]],
+			args: [
+				removeEditModelField,
+				[["field", "value", "c", "value", "e"], get(modelWithModifications, ["c"]), entityId, sectionName],
+			],
 		});
 
 		useDispatchWithModulesDataStub.restore();
@@ -1336,7 +1341,10 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModelField, [["field", "value", "c", "value", "d"], entityId, sectionName]],
+			args: [
+				removeEditModelField,
+				[["field", "value", "c", "value", "d"], get(modelWithModifications, ["c"]), entityId, sectionName],
+			],
 		});
 
 		useDispatchWithModulesDataStub.restore();
@@ -1361,7 +1369,35 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModelField, [["field", "value", "c", "value", "n"], entityId, sectionName]],
+			args: [
+				removeEditModelField,
+				[["field", "value", "c", "value", "n"], get(modelWithModifications, ["c"]), entityId, sectionName],
+			],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Delete value by top path", () => {
+		const component = (
+			<TestWrapper provider={{ store: storeWithModifications }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#deleteElementByTopPath");
+
+		fieldComponent.invoke("onClick")();
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [removeEditModelField, [["field", "value", "c"], modelWithModifications, entityId, sectionName]],
 		});
 
 		useDispatchWithModulesDataStub.restore();
