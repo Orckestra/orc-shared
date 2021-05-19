@@ -9,6 +9,7 @@ const commonTheme = {
 	shape: {
 		borderRadius: 4,
 	},
+	indent: 3,
 	typography: {
 		h1Size: 24,
 		h2Size: 18,
@@ -997,12 +998,13 @@ const setThemeOverrides = theme => ({
 			...theme.root,
 			flex: 13,
 			padding: theme.spacing(0, 2, 2),
+			wordBreak: "break-word",
 		},
 	},
 	MuiTimelineOppositeContent: {
 		root: {
 			...theme.root,
-			flex: 1,
+			flex: "2 0 0",
 			padding: theme.spacing(0, 2, 2),
 		},
 	},
