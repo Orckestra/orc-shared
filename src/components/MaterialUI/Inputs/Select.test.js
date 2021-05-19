@@ -106,8 +106,8 @@ describe("Select Component", () => {
 					<MenuItem key="anotherValue" value="anotherValue" className="makeStyles-level1">
 						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
 					</MenuItem>
-					<MenuItem key="anotherValue" value="anotherValue" className="makeStyles-level2">
-						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					<MenuItem key="aThirdValue" value="aThirdValue" className="makeStyles-level2">
+						<TooltippedTypography noWrap children="aThirdLabel" titleValue="aThirdLabel" />
 					</MenuItem>
 				</SelectMUI>
 			</TestWrapper>
