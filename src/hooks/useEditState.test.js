@@ -1281,7 +1281,10 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModelField, [["field", "value", "c", "value", "e"], entityId, sectionName]],
+			args: [
+				removeEditModelField,
+				[["field", "value", "c", "value", "e"], modelWithModifications, entityId, sectionName],
+			],
 		});
 
 		useDispatchWithModulesDataStub.restore();
@@ -1306,7 +1309,10 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModelField, [["field", "value", "c", "value", "d"], entityId, sectionName]],
+			args: [
+				removeEditModelField,
+				[["field", "value", "c", "value", "d"], modelWithModifications, entityId, sectionName],
+			],
 		});
 
 		useDispatchWithModulesDataStub.restore();
@@ -1331,7 +1337,10 @@ describe("useDynamicEditState", () => {
 		fieldComponent.invoke("onClick")();
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [removeEditModelField, [["field", "value", "c", "value", "n"], entityId, sectionName]],
+			args: [
+				removeEditModelField,
+				[["field", "value", "c", "value", "n"], modelWithModifications, entityId, sectionName],
+			],
 		});
 
 		useDispatchWithModulesDataStub.restore();

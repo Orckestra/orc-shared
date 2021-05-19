@@ -317,7 +317,7 @@ describe("View state reducer", () => {
 			},
 		});
 
-		const action = removeEditModelFieldError(keys, entityId, sectionName, moduleName);
+		const action = removeEditModelFieldError(keys, {}, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.Map({ edit: expected }));
@@ -475,7 +475,7 @@ describe("View state reducer", () => {
 			},
 		};
 
-		const action = removeEditModelField(keys, entityId, sectionName, moduleName);
+		const action = removeEditModelField(keys, null, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
@@ -528,7 +528,7 @@ describe("View state reducer", () => {
 			},
 		};
 
-		const action = removeEditModelField(keys, entityId, sectionName, moduleName);
+		const action = removeEditModelField(keys, null, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
@@ -573,7 +573,7 @@ describe("View state reducer", () => {
 							id: {
 								prop1: {
 									value: [],
-									wasModified: true,
+									wasModified: false,
 								},
 								prop2: {},
 							},
@@ -583,7 +583,7 @@ describe("View state reducer", () => {
 			},
 		};
 
-		const action = removeEditModelField(keys, entityId, sectionName, moduleName);
+		const action = removeEditModelField(keys, [], entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ edit: expected }));
