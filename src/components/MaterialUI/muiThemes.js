@@ -1004,7 +1004,7 @@ const setThemeOverrides = theme => ({
 	MuiTimelineOppositeContent: {
 		root: {
 			...theme.root,
-			flex: 1,
+			flex: "2 0 0",
 			padding: theme.spacing(0, 2, 2),
 		},
 	},
