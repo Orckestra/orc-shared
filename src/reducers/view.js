@@ -12,6 +12,7 @@ import {
 } from "../actions/view";
 import { APPLICATION_SCOPE_HAS_CHANGED } from "../actions/scopes";
 import { isEqual, dropRight } from "lodash";
+import { mapModifiedData } from "./../utils/mapHelper";
 
 const initialState = Immutable.Map({});
 
@@ -53,7 +54,9 @@ const viewStateReducer = (state = initialState, action) => {
 
 			const pathToUpdate = newPath[newPath.length - 1] === "value" ? dropRight(newPath, 1) : newPath;
 
-			return state.setIn(pathToUpdate, Immutable.fromJS({ value, wasModified: !isEqual(value.toJS(), storeValue) }));
+			const unpackedValue = mapModifiedData(value.toJS());
+
+			return state.setIn(pathToUpdate, Immutable.fromJS({ value, wasModified: !isEqual(unpackedValue, storeValue) }));
 		}
 		case VIEW_SET_EDIT_MODEL_FIELD_ERRORS: {
 			const { keys, error, entityId, sectionName, moduleName } = action.payload;

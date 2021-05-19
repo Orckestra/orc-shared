@@ -130,6 +130,9 @@ function propsAreEqualRow(prev, next) {
 }
 
 function propsAreEqualDeeplyRow(prevRow, nextRow) {
+	/* istanbul ignore next */
+	if (prevRow.length !== nextRow.length) return false;
+
 	for (let i = 0; i < prevRow.length; i++) {
 		if (!isEqual(prevRow[i].element, nextRow[i].element) || prevRow[i].columns.length !== nextRow[i].columns.length) {
 			return false;
