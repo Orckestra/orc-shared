@@ -11,11 +11,16 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Badge = ({ children, badge }) => {
+const Badge = ({ children, badge, ...props }) => {
 	const classes = useStyles();
+	const classProp = props.classProp;
+
+	if (!classProp?.badge) {
+		classProp.badge = classes.badge;
+	}
 
 	return (
-		<BadgeMui overlap="circle" color="primary" max={999} badgeContent={badge} classes={{ badge: classes.badge }}>
+		<BadgeMui overlap="circle" color="primary" max={999} badgeContent={badge} classes={classProp}>
 			{children}
 		</BadgeMui>
 	);

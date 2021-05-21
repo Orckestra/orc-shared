@@ -58,63 +58,71 @@ export const Arrow = ({ arrowClass }) => {
 	return <div className={arrowClass} />;
 };
 
-const withDeferredPopper = Comp => ({ popperValue, ...props }) => {
-	const classes = useStyles();
+const withDeferredPopper =
+	Comp =>
+	({ popperValue, ...props }) => {
+		const classes = useStyles();
 
-	const [popperState, setPopperState] = useState({
-		isDisplayed: false,
-		anchorElement: null,
-	});
+		const classProp = props?.classProp ? props.classProp : classes;
 
-	if (popperValue == null) return <Comp {...props} />;
+		if (classProp?.popperContainer) classProp.popwerContainer = classes.popperContainer;
+		if (classProp?.poper) classProp.poper = classes.poper;
+		if (classProp?.arrow) classProp.arrow = classes.arrow;
 
-	if (isString(popperValue) && isStringNullOrWhitespace(popperValue)) return <Comp {...props} />;
-
-	if (isObject(popperValue) && isReactComponent(popperValue) === false) return <Comp {...props} />;
-
-	const defaultComponent = <Comp onClick={event => togglePopper(event)} {...props} />;
-
-	const togglePopper = function (event) {
-		const isDisplayed = !popperState.isDisplayed;
-		const anchorElement = event.currentTarget;
-		setPopperState({
-			isDisplayed: isDisplayed,
-			anchorElement: anchorElement,
-		});
-		event.stopPropagation();
-	};
-
-	const clickAwayHandler = function () {
-		setPopperState({
+		const [popperState, setPopperState] = useState({
 			isDisplayed: false,
 			anchorElement: null,
 		});
-	};
 
-	return (
-		<ClickAwayListener onClickAway={() => clickAwayHandler()}>
-			<div className={classes.popperContainer}>
-				{defaultComponent}
-				<Popper
-					className={classes.popper}
-					modifiers={{
-						offset: {
-							offset: "0, 10",
-						},
-						arrow: {
-							enabled: true,
-							element: popperState.anchorElement,
-						},
-					}}
-					open={popperState.isDisplayed}
-					anchorEl={popperState.anchorElement}
-				>
-					<Arrow arrowClass={classes.arrow} />
-					{popperValue}
-				</Popper>
-			</div>
-		</ClickAwayListener>
-	);
-};
+		if (popperValue == null) return <Comp {...props} />;
+
+		if (isString(popperValue) && isStringNullOrWhitespace(popperValue)) return <Comp {...props} />;
+
+		if (isObject(popperValue) && isReactComponent(popperValue) === false) return <Comp {...props} />;
+
+		const defaultComponent = <Comp onClick={event => togglePopper(event)} {...props} />;
+
+		const togglePopper = function (event) {
+			const isDisplayed = !popperState.isDisplayed;
+			const anchorElement = event.currentTarget;
+			setPopperState({
+				isDisplayed: isDisplayed,
+				anchorElement: anchorElement,
+			});
+			event.stopPropagation();
+		};
+
+		const clickAwayHandler = function () {
+			setPopperState({
+				isDisplayed: false,
+				anchorElement: null,
+			});
+		};
+
+		return (
+			<ClickAwayListener onClickAway={() => clickAwayHandler()}>
+				<div className={classProp.popperContainer}>
+					{defaultComponent}
+					<Popper
+						className={classProp.popper}
+						modifiers={{
+							offset: {
+								offset: "0, 10",
+							},
+							arrow: {
+								enabled: true,
+								element: popperState.anchorElement,
+							},
+						}}
+						open={popperState.isDisplayed}
+						anchorEl={popperState.anchorElement}
+					>
+						<Arrow arrowClass={classProp.arrow} />
+						{popperValue}
+					</Popper>
+				</div>
+			</ClickAwayListener>
+		);
+	};
 
 export default withDeferredPopper;
