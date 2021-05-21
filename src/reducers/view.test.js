@@ -317,7 +317,7 @@ describe("View state reducer", () => {
 			},
 		});
 
-		const action = removeEditModelFieldError(keys, {}, entityId, sectionName, moduleName);
+		const action = removeEditModelFieldError(keys, entityId, sectionName, moduleName);
 		const newState = viewReducer(oldState, action);
 
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.Map({ edit: expected }));
