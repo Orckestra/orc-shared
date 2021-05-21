@@ -6,6 +6,7 @@ import {
 	getModifiedModel,
 	getModifiedTabs,
 	getSectionsWithErrors,
+	getInstanceKeysWithErrors,
 	getTabsWithErrors,
 	hasUnsavedDataSelector,
 } from "./view";
@@ -160,6 +161,76 @@ describe("getSectionsWithErrors", () => {
 
 	it("Retrieves empty array if edit is missing from the store", () => {
 		expect(getSectionsWithErrors, "when called with", ["id2"], "called with", [stateWithEmptyEdit], "to satisfy", []);
+	});
+});
+
+describe("getInstanceKeysWithErrors", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			view: {
+				edit: {
+					module1: {
+						id1: {
+							section1: {
+								model: {
+									path1: {
+										path11: {
+											id1: {
+												field1: {
+													error: "smth",
+												},
+											},
+											id2: {
+												field1: {
+													value: "something",
+												},
+											},
+											id3: {
+												field1: {
+													value: "something",
+												},
+												field2: {
+													error: "smth",
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			navigation: {
+				route: { match: { path: "/:scope/module1/id1/section1" } },
+				config: { prependPath: "/:scope/", prependHref: "/scope/" },
+			},
+		});
+	});
+
+	it("Retrieves instance Keys with errors", () => {
+		expect(
+			getInstanceKeysWithErrors,
+			"when called with",
+			["id1", "section1", ["path1", "path11"]],
+			"called with",
+			[state],
+			"to satisfy",
+			["id1", "id3"],
+		);
+	});
+
+	it("Retrieves empty array if path doesn't exist errors", () => {
+		expect(
+			getInstanceKeysWithErrors,
+			"when called with",
+			["id1", "section1", ["path1", "path1_absent"]],
+			"called with",
+			[state],
+			"to satisfy",
+			[],
+		);
 	});
 });
 

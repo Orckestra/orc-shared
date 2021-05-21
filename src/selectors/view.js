@@ -73,6 +73,24 @@ const getSectionsWithErrorsFromModule = (editData, moduleName, entityId) => {
 	return errorSections;
 };
 
+export const getInstanceKeysWithErrors = (entityId, sectionName, path) =>
+	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
+		const errorKeys = [];
+		const sectionData = data?.getIn([moduleName, entityId, sectionName, "model", ...path]);
+
+		if (sectionData) {
+			const section = sectionData.toJS();
+			const instanceKeys = Object.keys(section);
+			instanceKeys.forEach(instanceKey => {
+				const hasError = isObjectContainsPropertyWithAnyValue(section[instanceKey], "error");
+				if (hasError === true) {
+					errorKeys.push(instanceKey);
+				}
+			});
+		}
+		return errorKeys;
+	});
+
 export const getModifiedTabs = tabsParams =>
 	createSelector(editData, selectCurrentModuleName, (data, moduleName) => {
 		const modifiedTabs = [];
