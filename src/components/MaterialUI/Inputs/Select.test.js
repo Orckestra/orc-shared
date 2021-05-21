@@ -6,7 +6,7 @@ import sinon from "sinon";
 import { ignoreConsoleError, createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import SelectProps, { sortTypeEnum } from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
-import { MuiThemeProvider } from "@material-ui/core";
+import { ListSubheader, MuiThemeProvider } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Icon from "./../DataDisplay/Icon";
 
@@ -107,6 +107,129 @@ describe("Select Component", () => {
 						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
 					</MenuItem>
 					<MenuItem key="aThirdValue" value="aThirdValue" className="makeStyles-level2">
+						<TooltippedTypography noWrap children="aThirdLabel" titleValue="aThirdLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Select component correctly if Group header is False, null or undefined", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel", level: 0 },
+			{ value: "anotherValue", label: "anotherLabel", level: 1, isGroupHeader: false },
+			{ value: "aThirdValue", label: "aThirdLabel", level: 2, isGroupHeader: null },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={false}>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<MenuItem key="anotherValue" value="anotherValue" className="makeStyles-level1">
+						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					</MenuItem>
+					<MenuItem key="aThirdValue" value="aThirdValue" className="makeStyles-level2">
+						<TooltippedTypography noWrap children="aThirdLabel" titleValue="aThirdLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Select component with Group Header", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel", level: 0 },
+			{ value: "aHeaderValue", label: "aHeaderValue", level: 1, isGroupHeader: true },
+			{ value: "aThirdValue", label: "aThirdLabel", level: 2 },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={false}>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<ListSubheader key="aHeaderValue" value="aHeaderValue" className="makeStyles-level1">
+						aHeaderValue
+					</ListSubheader>
+					<MenuItem key="aThirdValue" value="aThirdValue" className="makeStyles-level2">
+						<TooltippedTypography noWrap children="aThirdLabel" titleValue="aThirdLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Select component with disabled options", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel", level: 0, disabled: false },
+			{ value: "anotherValue", label: "anotherLabel", level: 1, isGroupHeader: true },
+			{ value: "aThirdValue", label: "aThirdLabel", level: 2, disabled: true },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={false}>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<ListSubheader key="anotherValue" value="anotherValue" className="makeStyles-level1">
+						anotherLabel
+					</ListSubheader>
+					<MenuItem key="aThirdValue" disabled={true} value="aThirdValue" className="makeStyles-level2">
 						<TooltippedTypography noWrap children="aThirdLabel" titleValue="aThirdLabel" />
 					</MenuItem>
 				</SelectMUI>
