@@ -7,6 +7,7 @@ import classNames from "classnames";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "./../DataDisplay/Icon";
 import IconButton from "@material-ui/core/IconButton";
+import { ListSubheader } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
 	level0: {},
@@ -190,11 +191,21 @@ const Select = ({ options, selectProps }) => {
 
 	const items = options?.map(option => {
 		let clss = option?.level ? classes["level" + option.level] : "";
-		return (
-			<MenuItem key={option.value} value={option.value} className={clss}>
-				<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
-			</MenuItem>
-		);
+		const disabled = !!option.disabled;
+		const groupHeader = !!option.isGroupHeader;
+		if (groupHeader) {
+			return (
+				<ListSubheader key={option.value} className={clss}>
+					{option.label}
+				</ListSubheader>
+			);
+		} else {
+			return (
+				<MenuItem key={option.value} value={option.value} className={clss} disabled={disabled}>
+					<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
+				</MenuItem>
+			);
+		}
 	});
 
 	const defaultSelect = (
