@@ -198,7 +198,7 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		const getError = (path = []) => {
 			const validPath = getValidPath(path);
 			const keyPath = validPath.join(".");
-			const value = stateValue?.value ?? initialValue;
+			const value = has(stateValue, "error") ? stateValue : stateValue?.value ?? initialValue;
 			const result = !path.length ? value : get(value, keyPath);
 
 			return result?.error;
@@ -223,5 +223,3 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 
 	return useFieldState;
 };
-
-export default useEditState;

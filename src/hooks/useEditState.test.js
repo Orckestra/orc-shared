@@ -13,7 +13,7 @@ import {
 	removeEditModelField,
 } from "./../actions/view";
 import { validationErrorTypes } from "./../constants";
-import { get } from "lodash";
+import { get, cloneDeep } from "lodash";
 
 describe("useEditState", () => {
 	let store, state;
@@ -445,6 +445,7 @@ describe("useDynamicEditState", () => {
 				e: "object",
 			},
 		},
+		error: "this is error",
 	};
 
 	const modelWithModifications = {
@@ -570,6 +571,7 @@ describe("useDynamicEditState", () => {
 				/>
 				<div id="getError" val={fieldWithModifications.getError(["c", "d"])} />
 				<div id="getErrorWithoutPath" val={fieldWithModifications.getError()} />
+				<div id="getErrorOnTopLevel" val={fieldInStore.getError()} />
 				<div
 					id="updateWithCustomValidationAndDependencies"
 					onClick={e => fieldWithCustomRules.update(e.target.value, ["c", "d"], ["customRule"], { value: "Test" })}
@@ -1120,6 +1122,20 @@ describe("useDynamicEditState", () => {
 		const fieldValue = mountedComponent.find("#getErrorWithoutPath").prop("val");
 
 		expect(fieldValue, "to equal", undefined);
+	});
+
+	it("Gets error on the top level", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const fieldValue = mountedComponent.find("#getErrorOnTopLevel").prop("val");
+
+		expect(fieldValue, "to equal", "this is error");
 	});
 
 	it("Updates edit view value correctly with custom validation rules and dependencies when validation was passed", () => {
