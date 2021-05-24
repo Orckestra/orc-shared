@@ -13,7 +13,7 @@ import {
 	removeEditModelField,
 } from "./../actions/view";
 import { validationErrorTypes } from "./../constants";
-import { get, cloneDeep } from "lodash";
+import { get } from "lodash";
 
 describe("useEditState", () => {
 	let store, state;
