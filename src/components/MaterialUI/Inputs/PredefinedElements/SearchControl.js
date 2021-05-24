@@ -141,6 +141,8 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 	const handleKeyDown = e => {
 		if (e.key === "Enter") {
 			onSearch(searchOption, e.target.value);
+			e.preventDefault();
+			e.stopPropagation();
 		}
 	};
 

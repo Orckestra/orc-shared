@@ -50,7 +50,7 @@ export const setEditModelFieldError = (keys, error, entityId, sectionName, modul
 	payload: { keys, error, entityId, sectionName, moduleName },
 });
 
-export const removeEditModelFieldError = (keys, storeValue, entityId, sectionName, moduleName) => ({
+export const removeEditModelFieldError = (keys, entityId, sectionName, moduleName) => ({
 	type: VIEW_REMOVE_EDIT_MODEL_FIELD_ERRORS,
-	payload: { keys, storeValue, entityId, sectionName, moduleName },
+	payload: { keys, entityId, sectionName, moduleName },
 });
