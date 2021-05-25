@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { ScrollableCustomList } from "./TransferList";
@@ -35,6 +35,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
+const defaultInfoPanelXs = 7;
+
 const formatOnChange = (data, ids) => {
 	const selectedItems = data.filter(dataItem => ids.includes(dataItem.id));
 
@@ -53,47 +55,72 @@ const SelectionList = ({
 	pageSize = 20,
 	height = 50,
 	multiSelect = false,
+	defaultSelection = [],
 	infoPanel,
+	infoPanelXs,
+	divider = true,
 }) => {
 	const classes = useStyles({ height });
 	const [checked, setChecked] = useState([]);
 	const refScrollableList = React.useRef();
 
+	useEffect(() => {
+		if (checked.length === 0 && defaultSelection.length > 0) {
+			setChecked(defaultSelection);
+		}
+	}, [checked.length, defaultSelection]);
+
 	const onChangeEvent = ids => {
-		onChange(formatOnChange(listData.data, ids));
+		onChange && onChange(formatOnChange(listData.data, ids));
 	};
 
+	const showDivider = infoPanel && divider;
 	const dividerProps = new DividerProps();
-
 	dividerProps.set(DividerProps.propNames.orientation, "vertical");
 	dividerProps.set(DividerProps.propNames.light, true);
 	dividerProps.setStyle(DividerProps.ruleNames.vertical, classes.divider);
 
+	const listComponent = (
+		<Grid item xs={showDivider ? 11 : 12}>
+			<div className={classes.title}>{listData.title}</div>
+			<ScrollableCustomList
+				ref={refScrollableList}
+				onScroll={onScroll}
+				currentPage={currentPage}
+				currentTotal={currentTotal}
+				pageSize={pageSize}
+				classes={classes}
+				items={listData.data}
+				checked={checked}
+				setChecked={setChecked}
+				listItemFormatter={listItemFormatter}
+				multiSelect={multiSelect}
+				onChange={onChangeEvent}
+			/>
+		</Grid>
+	);
+
+	const dividerComponent = showDivider && (
+		<Grid item xs={1}>
+			<Divider dividerProps={dividerProps} />
+		</Grid>
+	);
+
+	const listContainer = (
+		<Grid container spacing={1}>
+			{listComponent}
+			{dividerComponent}
+		</Grid>
+	);
+
+	if (!infoPanel) return listContainer;
+
 	return (
-		<Grid container spacing={2}>
-			<Grid item xs={5}>
-				<div className={classes.title}>{listData.title}</div>
-				<ScrollableCustomList
-					ref={refScrollableList}
-					onScroll={onScroll}
-					currentPage={currentPage}
-					currentTotal={currentTotal}
-					pageSize={pageSize}
-					classes={classes}
-					items={listData.data}
-					checked={checked}
-					setChecked={setChecked}
-					listItemFormatter={listItemFormatter}
-					multiSelect={multiSelect}
-					onChange={onChangeEvent}
-				/>
+		<Grid container spacing={1}>
+			<Grid item xs={12 - (infoPanelXs ?? defaultInfoPanelXs)}>
+				{listContainer}
 			</Grid>
-			{infoPanel && (
-				<Grid item xs={1}>
-					<Divider dividerProps={dividerProps} />
-				</Grid>
-			)}
-			<Grid item xs={infoPanel ? 6 : 7}>
+			<Grid item xs={infoPanelXs ?? defaultInfoPanelXs}>
 				{infoPanel}
 			</Grid>
 		</Grid>

@@ -36,7 +36,6 @@ describe("SelectionList", () => {
 						<div>{listTitle}</div>
 						<ScrollableCustomList checked={[]} items={list} classes={{}} />
 					</Grid>
-					<Grid />
 				</Grid>
 			</TestWrapper>
 		);
@@ -55,20 +54,52 @@ describe("SelectionList", () => {
 		);
 
 		const expected = (
-			<TestWrapper intlProvider={{ messages }}>
+			<Grid>
 				<Grid>
 					<Grid>
-						<div>{listTitle}</div>
-						<ScrollableCustomList checked={[]} items={list} classes={{}} />
-					</Grid>
-					<Grid>
-						<hr />
-					</Grid>
-					<Grid>
-						<div>Test</div>
+						<Grid>
+							<div>{listTitle}</div>
+							<ScrollableCustomList checked={[]} items={list} classes={{}} />
+						</Grid>
+						<Grid>
+							<hr />
+						</Grid>
 					</Grid>
 				</Grid>
+				<Grid>
+					<div>Test</div>
+				</Grid>
+			</Grid>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders SelectionList correctly if infoPanel is supplied without divider", () => {
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<SelectionList
+					listData={{ title: listTitle, data: [{ id: "id1", disabled: true, title: "item1" }] }}
+					infoPanel={<div>Test</div>}
+					divider={false}
+				/>
 			</TestWrapper>
+		);
+
+		const expected = (
+			<Grid>
+				<Grid>
+					<Grid>
+						<Grid>
+							<div>{listTitle}</div>
+							<ScrollableCustomList checked={[]} items={list} classes={{}} />
+						</Grid>
+					</Grid>
+				</Grid>
+				<Grid>
+					<div>Test</div>
+				</Grid>
+			</Grid>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -86,7 +117,28 @@ describe("SelectionList", () => {
 		let item = mountedComponent.find(ListItem).at(0);
 		item.invoke("onClick")();
 
-		expect(onChange, "to have calls satisfying", [{ args: [{ selectedItems: [list[0]] }] }]);
+		expect(onChange.args[1][0], "to equal", { selectedItems: [list[0]] });
+	});
+
+	it("Calls onChange with defaultSelection", () => {
+		const data = [
+			{ id: "id1", title: "item1" },
+			{ id: "id2", title: "item2" },
+		];
+
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<SelectionList
+					listData={{ title: listTitle, data: data }}
+					defaultSelection={[data[1].id]}
+					onChange={onChange}
+				/>
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(onChange.args[1][0], "to equal", { selectedItems: [data[1]] });
 	});
 
 	it("handle scrolling event", () => {
