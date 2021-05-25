@@ -73,6 +73,7 @@ export const SelectedValue = styled.span`
 	display: inline-block;
 	width: calc(100% - 20px);
 	white-space: pre;
+	overflow: hidden;
 `;
 
 export const Dropdown = styled.div`
