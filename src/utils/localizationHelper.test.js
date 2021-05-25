@@ -28,6 +28,26 @@ describe("<localizationHelper.getLocalization>", () => {
 		expect(localizationHelper.getLocalization(null, "nb-no", "fallback"), "to equal", fallbackValue);
 	});
 
+	it("default value should be returned if en localization is empty", () => {
+		const localizations = { en: "", fr: "fr text", "fr-fr": "fr-fr text" };
+		expect(localizationHelper.getLocalization(localizations, "en-US", "fallback"), "to equal", fallbackValue);
+	});
+
+	it("get empty value if en localization is empty and treatEmptyValueAsNull is false", () => {
+		const localizations = { en: "", fr: "fr text", "fr-fr": "fr-fr text" };
+		expect(localizationHelper.getLocalization(localizations, "en-US", "fallback", false), "to equal", "");
+	});
+
+	it("default value should be returned if en localization is only whitespace or breakline", () => {
+		const localizations = { en: " \t\r\n ", fr: "fr text", "fr-fr": "fr-fr text" };
+		expect(localizationHelper.getLocalization(localizations, "en-US", "fallback"), "to equal", fallbackValue);
+	});
+
+	it("default value should be returned if en-US localization is empty", () => {
+		const localizations = { "en-US": "", fr: "fr text", "fr-fr": "fr-fr text" };
+		expect(localizationHelper.getLocalization(localizations, "en-US", "fallback"), "to equal", fallbackValue);
+	});
+
 	it("default value should be returned if localizations is undefined", () => {
 		expect(localizationHelper.getLocalization(undefined, "nb-no", "fallback"), "to equal", fallbackValue);
 	});
