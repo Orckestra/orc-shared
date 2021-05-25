@@ -128,11 +128,7 @@ describe("SelectionList", () => {
 
 		const component = (
 			<TestWrapper intlProvider={{ messages }}>
-				<SelectionList
-					listData={{ title: listTitle, data: data }}
-					defaultSelection={[data[1].id]}
-					onChange={onChange}
-				/>
+				<SelectionList listData={{ title: listTitle, data: data }} defaultSelection={data[1].id} onChange={onChange} />
 			</TestWrapper>
 		);
 

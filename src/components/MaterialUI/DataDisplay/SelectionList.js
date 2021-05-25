@@ -55,7 +55,7 @@ const SelectionList = ({
 	pageSize = 20,
 	height = 50,
 	multiSelect = false,
-	defaultSelection = [],
+	defaultSelection,
 	infoPanel,
 	infoPanelXs,
 	divider = true,
@@ -65,10 +65,10 @@ const SelectionList = ({
 	const refScrollableList = React.useRef();
 
 	useEffect(() => {
-		if (checked.length === 0 && defaultSelection.length > 0) {
-			setChecked(defaultSelection);
+		if (defaultSelection && checked.length === 0) {
+			setChecked([defaultSelection]);
 		}
-	}, [checked.length, defaultSelection]);
+	}, [defaultSelection, checked.length]);
 
 	const onChangeEvent = ids => {
 		onChange && onChange(formatOnChange(listData.data, ids));
