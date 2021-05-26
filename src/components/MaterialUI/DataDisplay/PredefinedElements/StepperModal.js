@@ -115,6 +115,8 @@ const StepperModal = ({
 		</div>
 	);
 	const contentComponent = <div className={classes.container}>{steps[currentStep]?.content}</div>;
+	const nextDisabledFunction = steps[currentStep]?.nextDisabled;
+	const nextDisabled = nextDisabledFunction ? !!nextDisabledFunction() : false;
 
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, open);
@@ -136,12 +138,18 @@ const StepperModal = ({
 					<FormattedMessage {...sharedMessages.cancel} />
 				</Button>
 				{currentStep < steps.length - 1 && (
-					<Button variant="contained" color="primary" onClick={nextClick} disableElevation>
+					<Button variant="contained" color="primary" disabled={nextDisabled} onClick={nextClick} disableElevation>
 						<FormattedMessage {...sharedMessages.next} />
 					</Button>
 				)}
 				{currentStep === steps.length - 1 && (
-					<Button variant="contained" color="primary" onClick={confirmCallback} disableElevation>
+					<Button
+						variant="contained"
+						color="primary"
+						disabled={nextDisabled}
+						onClick={confirmCallback}
+						disableElevation
+					>
 						{confirmTitle || <FormattedMessage {...sharedMessages.applyChanges} />}
 					</Button>
 				)}

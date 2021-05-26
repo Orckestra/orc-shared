@@ -198,6 +198,9 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		const getError = (path = []) => {
 			const validPath = getValidPath(path);
 			const keyPath = validPath.join(".");
+
+			if (!path.length && has(stateValue, "error")) return stateValue.error;
+
 			const value = stateValue?.value ?? initialValue;
 			const result = !path.length ? value : get(value, keyPath);
 

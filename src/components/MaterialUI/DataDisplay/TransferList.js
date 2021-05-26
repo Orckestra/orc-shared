@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -153,13 +153,12 @@ export const CustomList = ({ items, checked, setChecked, listItemFormatter, mult
 					}
 				}
 
-				if (onChange) {
-					onChange(newChecked);
-				}
 				return newChecked;
 			}),
-		[setChecked, multiSelect, onChange],
+		[setChecked, multiSelect],
 	);
+
+	useEffect(() => onChange && onChange(checked), [checked, onChange]);
 
 	return (
 		<List component="div" role="list">
