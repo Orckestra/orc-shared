@@ -63,12 +63,6 @@ const withDeferredPopper =
 	({ popperValue, ...props }) => {
 		const classes = useStyles();
 
-		const classProp = props?.classProp ? props.classProp : classes;
-
-		if (classProp?.popperContainer) classProp.popwerContainer = classes.popperContainer;
-		if (classProp?.poper) classProp.poper = classes.poper;
-		if (classProp?.arrow) classProp.arrow = classes.arrow;
-
 		const [popperState, setPopperState] = useState({
 			isDisplayed: false,
 			anchorElement: null,
@@ -83,21 +77,42 @@ const withDeferredPopper =
 		const defaultComponent = <Comp onClick={event => togglePopper(event)} {...props} />;
 
 		const togglePopper = function (event) {
+			const linkParent = event._dispatchInstances.filter(item => item.elementType === "a");
+			if (linkParent) {
+				event.preventDefault();
+			}
 			const isDisplayed = !popperState.isDisplayed;
 			const anchorElement = event.currentTarget;
 			setPopperState({
 				isDisplayed: isDisplayed,
 				anchorElement: anchorElement,
 			});
+			event.bubbles = false;
 			event.stopPropagation();
 		};
 
 		const clickAwayHandler = function () {
-			setPopperState({
-				isDisplayed: false,
-				anchorElement: null,
-			});
+			if (popperState.anchorElement) {
+				setPopperState({
+					isDisplayed: false,
+					anchorElement: null,
+				});
+			}
 		};
+
+		const classProp = props.classprop ? props.classprop : classes;
+
+		if (!classProp.popperContainer) {
+			classProp.popperContainer = classes.popperContainer;
+		}
+
+		if (!classProp.popper) {
+			classProp.popper = classes.popper;
+		}
+
+		if (!classProp.arrow) {
+			classProp.arrow = classes.arrow;
+		}
 
 		return (
 			<ClickAwayListener onClickAway={() => clickAwayHandler()}>
