@@ -93,11 +93,10 @@ describe("withDeferredPopper", () => {
 			return <PopperedCompponent popperValue={popperValue} classprop={myProps} />;
 		};
 
-		let mountHolder = shallow(<Holder />);
-		let mountedPopperedComponent = mount(<PopperedCompponent popperValue={popperValue} classprop={myProps} />);
+		let mountHolder = mount(<Holder />);
 
 		ignoreConsoleError(() => {
-			const mountedProps = mountedPopperedComponent.prop("classprop");
+			const mountedProps = mountHolder.find(PopperedCompponent).prop("classprop");
 
 			expect(mountedProps, "not to be null");
 
