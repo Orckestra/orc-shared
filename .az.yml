@@ -23,10 +23,19 @@ steps:
   inputs:
     versionSpec: 15.x
 
-- task: Npm@1
+- task: Npm@0
   displayName: 'npm install'
   inputs:
-    verbose: true
+    command: 'install'
+    arguments: '--legacy-peer-deps --verbose'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish eresolve-report.txt'
+  condition: failed()
+  continueOnError: true
+  inputs:
+    PathtoPublish: 'C:\npm\cache\eresolve-report.txt'
+    ArtifactName: 'NpmInstallLog'
 
 - task: Npm@1
   displayName: 'npm prune'
