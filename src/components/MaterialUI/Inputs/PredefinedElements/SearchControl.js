@@ -90,6 +90,20 @@ export const useStyles = makeStyles(theme => ({
 		display: "inherit",
 		marginLeft: theme.spacing(-0.1),
 		marginRight: theme.spacing(-0.1),
+		borderTopLeftRadius: theme.shape.borderRadius,
+		borderBottomLeftRadius: theme.shape.borderRadius,
+		"& $controlInput": {
+			borderTopLeftRadius: theme.shape.borderRadius,
+			borderBottomLeftRadius: theme.shape.borderRadius,
+		},
+		".MuiInputBase-root ~ &": {
+			borderTopLeftRadius: 0,
+			borderBottomLeftRadius: 0,
+			"& $controlInput": {
+				borderTopLeftRadius: 0,
+				borderBottomLeftRadius: 0,
+			},
+		},
 	},
 	selectRoot: {
 		zIndex: 10,
@@ -113,8 +127,10 @@ export const useStyles = makeStyles(theme => ({
 }));
 
 const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {} }) => {
+	searchOptions = !searchOptions?.length ? null : searchOptions;
+	const baseValue = !!searchOptions ? searchOptions[0].value : null;
 	const [inputFocused, setInputFocused] = useState(false);
-	const [searchOption, setSearchOption] = useState(searchOptions[0].value);
+	const [searchOption, setSearchOption] = useState(baseValue);
 
 	const classes = useStyles({ focused: inputFocused });
 
@@ -150,6 +166,11 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 		setInputFocused(focused);
 		event.preventDefault();
 		event.stopPropagation();
+	};
+
+	const SelectSection = () => {
+		if (searchOptions === null) return null;
+		else return <Select className={classes.selectInput} options={searchOptions} selectProps={selectProps} />;
 	};
 
 	const inputSection = (
@@ -193,7 +214,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 
 	return (
 		<div className={classes.container}>
-			<Select className={classes.selectInput} options={searchOptions} selectProps={selectProps} />
+			<SelectSection />
 			{inputSection}
 			{searchSection}
 		</div>

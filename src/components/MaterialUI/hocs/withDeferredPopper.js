@@ -77,7 +77,7 @@ const withDeferredPopper =
 		const defaultComponent = <Comp onClick={event => togglePopper(event)} {...props} />;
 
 		const togglePopper = function (event) {
-			const linkParent = event._dispatchInstances.filter(item => item.elementType === "a");
+			const linkParent = event?._dispatchInstances?.filter(item => item.elementType === "a");
 			if (linkParent) {
 				event.preventDefault();
 			}
@@ -102,21 +102,15 @@ const withDeferredPopper =
 
 		const classProp = props.classprop ? props.classprop : classes;
 
-		if (!classProp.popperContainer) {
-			classProp.popperContainer = classes.popperContainer;
-		}
+		classProp.popperContainer = classProp.popperContainer ?? classes.popperContainer;
 
-		if (!classProp.popper) {
-			classProp.popper = classes.popper;
-		}
+		classProp.popper = classProp.popper ?? classes.popper;
 
-		if (!classProp.arrow) {
-			classProp.arrow = classes.arrow;
-		}
+		classProp.arrow = classProp.arrow ?? classes.arrow;
 
 		return (
 			<ClickAwayListener onClickAway={() => clickAwayHandler()}>
-				<div className={classProp.popperContainer}>
+				<div className={classProp.popperContainer} data-qa="popperContainer">
 					{defaultComponent}
 					<Popper
 						className={classProp.popper}

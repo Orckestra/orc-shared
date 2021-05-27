@@ -107,6 +107,88 @@ describe("SearchControl Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Search Control component without errors when searchOptions are empty", () => {
+		const options = [];
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl placeholder="placeHolderTest" defaultValue="default" searchOptions={options} />
+			</TestWrapper>
+		);
+
+		const selectProps = new SelectProps();
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div>
+						<form>
+							<Input
+								placeholder="placeHolderTest"
+								defaultValue="default"
+								disableUnderline={true}
+								endAdornment={
+									<InputAdornment position="start">
+										<IconButton tabIndex="-1" type="reset">
+											<Icon id="close2" />
+										</IconButton>
+									</InputAdornment>
+								}
+							/>
+						</form>
+					</div>
+					<IconButton>
+						<Icon id="search" />
+					</IconButton>
+				</div>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Search Control component without errors when searchOptions are null", () => {
+		const options = null;
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl placeholder="placeHolderTest" defaultValue="default" searchOptions={options} />
+			</TestWrapper>
+		);
+
+		const selectProps = new SelectProps();
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div>
+						<form>
+							<Input
+								placeholder="placeHolderTest"
+								defaultValue="default"
+								disableUnderline={true}
+								endAdornment={
+									<InputAdornment position="start">
+										<IconButton tabIndex="-1" type="reset">
+											<Icon id="close2" />
+										</IconButton>
+									</InputAdornment>
+								}
+							/>
+						</form>
+					</div>
+					<IconButton>
+						<Icon id="search" />
+					</IconButton>
+				</div>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Search Control should trigger the event when hitting Enter even without prop", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
