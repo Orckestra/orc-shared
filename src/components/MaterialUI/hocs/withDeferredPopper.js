@@ -66,6 +66,7 @@ const withDeferredPopper =
 		const [popperState, setPopperState] = useState({
 			isDisplayed: false,
 			anchorElement: null,
+			arrowElement: null,
 		});
 
 		if (popperValue == null) return <Comp {...props} />;
@@ -113,6 +114,7 @@ const withDeferredPopper =
 				<div className={classProp.popperContainer} data-qa="popperContainer">
 					{defaultComponent}
 					<Popper
+						data-qa="poperComponent"
 						className={classProp.popper}
 						modifiers={{
 							offset: {
@@ -120,7 +122,7 @@ const withDeferredPopper =
 							},
 							arrow: {
 								enabled: true,
-								element: popperState.anchorElement,
+								element: classProp.arrow,
 							},
 						}}
 						open={popperState.isDisplayed}

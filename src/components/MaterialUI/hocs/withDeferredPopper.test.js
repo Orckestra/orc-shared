@@ -139,8 +139,6 @@ describe("withDeferredPopper", () => {
 			const expected = "makeStyles-popper-1";
 
 			expect(mountedProps.popper, "to equal", expected);
-
-			expect(mountHolder.containsMatchingElement(<PopperedCompponent />), "to be true");
 		});
 	});
 
@@ -176,8 +174,6 @@ describe("withDeferredPopper", () => {
 			const expected = "makeStyles-arrow-2";
 
 			expect(mountedProps.arrow, "to equal", expected);
-
-			expect(mountHolder.containsMatchingElement(<PopperedCompponent />), "to be true");
 		});
 	});
 
@@ -215,8 +211,6 @@ describe("withDeferredPopper", () => {
 			const expected = "makeStyles-popperContainer-3";
 
 			expect(mountedProps.popperContainer, "to equal", expected);
-
-			expect(mountHolder.containsMatchingElement(<PopperedCompponent />), "to be true");
 		});
 	});
 
