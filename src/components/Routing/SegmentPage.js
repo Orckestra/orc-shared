@@ -118,15 +118,16 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 		);
 
 	const finalLabel = (
-		<Grid container justify="space-between">
+		<Grid container alignItems="center">
 			<Grid
 				item
+				xs={8}
 				className={classNames(sectionLabelClassName, config.labelComponent != null ? classes.labelContainer : null)}
 			>
 				{basicLabel}
 				{isModified ? asterix : null}
 			</Grid>
-			<Grid item className={classes.labelComponent}>
+			<Grid item xs={4} container className={classes.labelComponent}>
 				{config.labelComponent}
 			</Grid>
 		</Grid>
