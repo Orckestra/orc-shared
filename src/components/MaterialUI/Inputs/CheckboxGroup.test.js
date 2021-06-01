@@ -34,10 +34,12 @@ describe("CheckboxGroup Component", () => {
 		const options = [
 			{ value: "option1", sortOrder: 1 },
 			{ value: "option2", sortOrder: 2 },
+			{ value: "option3", sortOrder: 3 },
+			{ value: "option3_special", sortOrder: 4 },
 		];
 
 		props.set(CheckboxGroupProps.propNames.update, update);
-		props.set(CheckboxGroupProps.propNames.value, "option1");
+		props.set(CheckboxGroupProps.propNames.value, "option1|option3_special");
 		props.set(CheckboxGroupProps.propNames.options, options);
 		const component = <CheckboxGroup checkboxGroupProps={props} />;
 
@@ -54,11 +56,28 @@ describe("CheckboxGroup Component", () => {
 		checkbox2Props.set(CheckboxProps.propNames.label, "option2");
 		checkbox2Props.set(CheckboxProps.propNames.readOnly, false);
 		checkbox2Props.set(CheckboxProps.propNames.disabled, false);
+
+		const checkbox3Props = new CheckboxProps();
+		checkbox3Props.set(CheckboxProps.propNames.update, update);
+		checkbox3Props.set(CheckboxProps.propNames.value, false);
+		checkbox3Props.set(CheckboxProps.propNames.label, "option3");
+		checkbox3Props.set(CheckboxProps.propNames.readOnly, false);
+		checkbox3Props.set(CheckboxProps.propNames.disabled, false);
+
+		const checkbox4Props = new CheckboxProps();
+		checkbox4Props.set(CheckboxProps.propNames.update, update);
+		checkbox4Props.set(CheckboxProps.propNames.value, true);
+		checkbox4Props.set(CheckboxProps.propNames.label, "option3_special");
+		checkbox4Props.set(CheckboxProps.propNames.readOnly, false);
+		checkbox4Props.set(CheckboxProps.propNames.disabled, false);
+
 		const expected = (
 			<div>
 				<div>
 					<Checkbox key={1} checkboxProps={checkbox1Props} />
 					<Checkbox key={2} checkboxProps={checkbox2Props} />
+					<Checkbox key={3} checkboxProps={checkbox3Props} />
+					<Checkbox key={4} checkboxProps={checkbox4Props} />
 				</div>
 			</div>
 		);
