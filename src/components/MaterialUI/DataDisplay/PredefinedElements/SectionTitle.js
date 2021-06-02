@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
 		fontStyle: "italic",
 		textTransform: theme.typography.button.textTransform,
 		marginBottom: theme.spacing(1),
-		marginTop: theme.spacing(2),
 	},
 }));
 
