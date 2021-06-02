@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
+		justifyContent: "flex-end",
 	},
 	labelContainer: {
 		display: "flex",

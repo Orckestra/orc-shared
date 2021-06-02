@@ -8,6 +8,9 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: "column",
 		width: "inherit",
+		"& + &": {
+			marginTop: theme.spacing(2),
+		},
 	},
 }));
 

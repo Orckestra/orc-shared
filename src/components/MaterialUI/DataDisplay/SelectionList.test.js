@@ -36,6 +36,9 @@ describe("SelectionList", () => {
 						<div>{listTitle}</div>
 						<ScrollableCustomList checked={[]} items={list} classes={{}} />
 					</Grid>
+					<Grid>
+						<div></div>
+					</Grid>
 				</Grid>
 			</TestWrapper>
 		);
@@ -56,15 +59,11 @@ describe("SelectionList", () => {
 		const expected = (
 			<Grid>
 				<Grid>
-					<Grid>
-						<Grid>
-							<div>{listTitle}</div>
-							<ScrollableCustomList checked={[]} items={list} classes={{}} />
-						</Grid>
-						<Grid>
-							<hr />
-						</Grid>
-					</Grid>
+					<div>{listTitle}</div>
+					<ScrollableCustomList checked={[]} items={list} classes={{}} />
+				</Grid>
+				<Grid>
+					<hr />
 				</Grid>
 				<Grid>
 					<div>Test</div>
@@ -89,12 +88,8 @@ describe("SelectionList", () => {
 		const expected = (
 			<Grid>
 				<Grid>
-					<Grid>
-						<Grid>
-							<div>{listTitle}</div>
-							<ScrollableCustomList checked={[]} items={list} classes={{}} />
-						</Grid>
-					</Grid>
+					<div>{listTitle}</div>
+					<ScrollableCustomList checked={[]} items={list} classes={{}} />
 				</Grid>
 				<Grid>
 					<div>Test</div>
