@@ -10,9 +10,10 @@ describe("Placeholder", () => {
 	const icon = "orders";
 	const title = "Test Title";
 	const subtitle = "Test Subtitle";
-	const cellList = ["t", "t", "t", "chip"];
+	const cellList = ["t", "t", "t", "chip","radio"];
 	const cellListWithnoChip = ["t", "t"];
 	const cellListWithnoText = ["chip", "chip"];
+	const cellListWithRadio = ["radio", "radio"];
 
 	it("Renders placeholder when cellList parameter is missed", () => {
 		const component = <Placeholder icon={icon} title={title} subtitle={subtitle} />;
@@ -88,6 +89,9 @@ describe("Placeholder", () => {
 				<div>
 					<Skeleton />
 				</div>
+				<div>
+					<Skeleton />
+				</div>
 			</div>
 		);
 
@@ -128,6 +132,23 @@ describe("Placeholder", () => {
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
+	it("Renders placeholder when cellList has just value with radio", () => {
+		const component = <Placeholder cellList={cellListWithRadio} />;
+
+		const mountedComponent = mount(component);
+		const expected = (
+			<div>
+				<div>
+					<Skeleton />
+				</div>
+				<div>
+					<Skeleton />
+				</div>
+			</div>
+		);
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
 
 	it("Renders placeholder with all parametres", () => {
 		const component = <Placeholder icon={icon} title={title} subtitle={subtitle} cellList={cellList} />;
@@ -136,6 +157,9 @@ describe("Placeholder", () => {
 		const expected = (
 			<div>
 				<div>
+					<div>
+						<Skeleton />
+					</div>
 					<div>
 						<Skeleton />
 					</div>
