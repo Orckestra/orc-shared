@@ -119,7 +119,7 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 		);
 
 	const finalLabel = (
-		<Grid container alignItems="center">
+		<Grid container alignItems="center" wrap="nowrap">
 			<Grid
 				item
 				xs={8}

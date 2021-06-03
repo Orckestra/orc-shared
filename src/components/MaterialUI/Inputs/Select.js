@@ -10,6 +10,9 @@ import IconButton from "@material-ui/core/IconButton";
 import { ListSubheader } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
+	baseItem: {
+		maxWidth: theme.spacing(35),
+	},
 	level0: {},
 	level1: {
 		paddingLeft: theme.spacing(theme.indent),
@@ -41,6 +44,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	selectPaper: {
 		border: `1px solid ${theme.palette.grey.borders}`,
+		minWidth: `${theme.spacing(35)} !important`,
+		width: `${theme.spacing(35)} !important`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
 			maxHeight: theme.spacing(30),
@@ -191,17 +196,18 @@ const Select = ({ options, selectProps }) => {
 
 	const items = options?.map(option => {
 		let clss = option?.level ? classes["level" + option.level] : "";
+		const appliedClasses = classNames(classes.baseItem, clss);
 		const disabled = !!option.disabled;
 		const groupHeader = !!option.isGroupHeader;
 		if (groupHeader) {
 			return (
-				<ListSubheader key={option.value} className={clss}>
+				<ListSubheader key={option.value} className={appliedClasses}>
 					{option.label}
 				</ListSubheader>
 			);
 		} else {
 			return (
-				<MenuItem key={option.value} value={option.value} className={clss} disabled={disabled}>
+				<MenuItem key={option.value} value={option.value} className={appliedClasses} disabled={disabled}>
 					<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
 				</MenuItem>
 			);
