@@ -126,13 +126,13 @@ describe("SegmentPage", () => {
 				<Wrapper>
 					<List>
 						<Item to="/foo/meep/entityIdValue/one">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>Text</Grid>
 								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/two" active>
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>
 									Translated
 									<span>*</span>
@@ -141,7 +141,7 @@ describe("SegmentPage", () => {
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/three">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>
 									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
 								</Grid>
@@ -151,13 +151,13 @@ describe("SegmentPage", () => {
 							</Grid>
 						</Item>
 						<Item>
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>DisabledSection</Grid>
 								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item>
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>DisabledSectionBySelector</Grid>
 								<Grid item></Grid>
 							</Grid>
@@ -196,13 +196,13 @@ describe("SegmentPage", () => {
 					<Wrapper>
 						<List>
 							<Item to="/foo/meep/entityIdValue/one">
-								<Grid container alignItems="center">
+								<Grid container alignItems="center" wrap="nowrap">
 									<Grid item>Text</Grid>
 									<Grid item></Grid>
 								</Grid>
 							</Item>
 							<Item to="/foo/meep/entityIdValue/two" active>
-								<Grid container alignItems="center">
+								<Grid container alignItems="center" wrap="nowrap">
 									<Grid item>
 										Translated
 										<span>*</span>
@@ -211,7 +211,7 @@ describe("SegmentPage", () => {
 								</Grid>
 							</Item>
 							<Item to="/foo/meep/entityIdValue/three">
-								<Grid container alignItems="center">
+								<Grid container alignItems="center" wrap="nowrap">
 									<Grid item>
 										<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
 									</Grid>
@@ -221,13 +221,13 @@ describe("SegmentPage", () => {
 								</Grid>
 							</Item>
 							<Item>
-								<Grid container alignItems="center">
+								<Grid container alignItems="center" wrap="nowrap">
 									<Grid item>DisabledSection</Grid>
 									<Grid item></Grid>
 								</Grid>
 							</Item>
 							<Item>
-								<Grid container alignItems="center">
+								<Grid container alignItems="center" wrap="nowrap">
 									<Grid item>DisabledSectionBySelector</Grid>
 									<Grid item></Grid>
 								</Grid>
@@ -318,13 +318,13 @@ describe("SegmentPage", () => {
 				<MemoryRouter>
 					<List>
 						<Item to="/foo/meep/entityIdValue/one">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>Text</Grid>
 								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/two">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>
 									Translated
 									<span>*</span>
@@ -333,7 +333,7 @@ describe("SegmentPage", () => {
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/three">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>
 									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
 								</Grid>
@@ -343,13 +343,13 @@ describe("SegmentPage", () => {
 							</Grid>
 						</Item>
 						<Item>
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>DisabledSection</Grid>
 								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item>
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>DisabledSectionBySelector</Grid>
 								<Grid item></Grid>
 							</Grid>
@@ -391,19 +391,19 @@ describe("SegmentPage", () => {
 				<MemoryRouter>
 					<List>
 						<Item to="/foo/meep/entityIdValue/one">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>Text</Grid>
 								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/two">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>Translated</Grid>
 								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item to="/foo/meep/entityIdValue/three">
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>
 									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
 								</Grid>
@@ -413,13 +413,13 @@ describe("SegmentPage", () => {
 							</Grid>
 						</Item>
 						<Item>
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>DisabledSection</Grid>
 								<Grid item></Grid>
 							</Grid>
 						</Item>
 						<Item>
-							<Grid container alignItems="center">
+							<Grid container alignItems="center" wrap="nowrap">
 								<Grid item>DisabledSectionBySelector</Grid>
 								<Grid item></Grid>
 							</Grid>

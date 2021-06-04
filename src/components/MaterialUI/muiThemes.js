@@ -139,11 +139,13 @@ const setThemeOverrides = theme => ({
 					backgroundColor: "transparent",
 				},
 				"&$disabled": {
-					backgroundColor: "transparent",
+					backgroundColor: "inherit",
+					opacity: 0.4,
 				},
 			},
 			"&$disabled": {
-				color: theme.palette.action.disabled,
+				color: "inherit",
+				opacity: 0.4,
 			},
 			"&:focus, &:active, &.Mui-focusVisible": {
 				borderRadius: theme.shape.borderRadius,
@@ -161,6 +163,9 @@ const setThemeOverrides = theme => ({
 		root: {
 			padding: `${theme.spacing(0.8)} ${theme.spacing(1)}`,
 			height: theme.spacing(3),
+			"&$disabled": {
+				color: theme.palette.text.primary,
+			},
 		},
 		/* Styles applied to the span element that wraps the children. */
 		label: {
@@ -209,7 +214,7 @@ const setThemeOverrides = theme => ({
 			border: `1px solid ${theme.palette.type === "light" ? theme.palette.grey.icon : theme.palette.grey.icon}`,
 			backgroundColor: "white",
 			"&$disabled": {
-				border: `1px solid ${theme.palette.action.disabledBackground}`,
+				border: `1px solid ${theme.palette.type === "light" ? theme.palette.grey.icon : theme.palette.grey.icon}`,
 			},
 			"& path:not([fill='none'])": {
 				fill: "currentColor",
@@ -243,7 +248,7 @@ const setThemeOverrides = theme => ({
 				},
 			},
 			"&$disabled": {
-				border: `1px solid ${theme.palette.action.disabled}`,
+				border: `1px solid ${theme.palette.secondary.main}`,
 			},
 		},
 		/* Styles applied to the root element if `variant="contained"`. */
@@ -261,7 +266,7 @@ const setThemeOverrides = theme => ({
 					backgroundColor: theme.palette.grey.light,
 				},
 				"&$disabled": {
-					backgroundColor: theme.palette.action.disabledBackground,
+					//backgroundColor: theme.palette.action.disabledBackground,
 				},
 			},
 			"&$focusVisible": {},
@@ -285,7 +290,7 @@ const setThemeOverrides = theme => ({
 				},
 			},
 			"&.Mui-disabled": {
-				backgroundColor: fade(theme.palette.primary.main, 0.4),
+				backgroundColor: theme.palette.primary.main,
 				color: theme.palette.primary.contrastText,
 			},
 		},
