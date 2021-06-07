@@ -68,7 +68,7 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 				{options.map((option, index) => {
 					const checkboxProps = new CheckboxProps();
 					checkboxProps.set(CheckboxProps.propNames.update, checked => handleGroupUpdate(checked, value, option.value));
-					checkboxProps.set(CheckboxProps.propNames.value, value?.includes(option.value));
+					checkboxProps.set(CheckboxProps.propNames.value, value?.split("|").includes(option.value));
 					checkboxProps.set(CheckboxProps.propNames.label, option.label ?? option.value);
 					checkboxProps.set(CheckboxProps.propNames.readOnly, readOnly);
 					checkboxProps.set(CheckboxProps.propNames.disabled, disabled);

@@ -9,12 +9,25 @@ import sharedMessages from "./../../../../sharedMessages";
 
 const useStyles = makeStyles(theme => ({
 	actionPanel: {
-		float: "right",
+		display: "flex",
+		marginLeft: "auto",
+		flex: "1 1 0",
+		justifyContent: "space-between",
+	},
+	rightAction: {
+		display: "flex",
+		justifyContent: "flex-end",
+	},
+	leftAction: {
+		display: "flex",
+		justifyContent: "flex-start",
 	},
 	container: {
 		width: "100%",
-		height: theme.spacing(56),
 		wordWrap: "normal",
+	},
+	fullHeight: {
+		height: theme.spacing(56),
 	},
 	step: {
 		position: "relative",
@@ -114,9 +127,14 @@ const StepperModal = ({
 			))}
 		</div>
 	);
-	const contentComponent = <div className={classes.container}>{steps[currentStep]?.content}</div>;
 	const nextDisabledFunction = steps[currentStep]?.nextDisabled;
+	const isFullHeight = steps[currentStep]?.fullHeight ?? true;
 	const nextDisabled = nextDisabledFunction ? !!nextDisabledFunction() : false;
+	const contentComponent = (
+		<div className={classNames(classes.container, isFullHeight && classes.fullHeight)}>
+			{steps[currentStep]?.content}
+		</div>
+	);
 
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, open);
@@ -128,31 +146,35 @@ const StepperModal = ({
 
 	const actionPanel = (
 		<>
-			{!!currentStep && (
-				<Button variant="contained" color="primary" onClick={backClick} disableElevation>
-					<FormattedMessage {...sharedMessages.back} />
-				</Button>
-			)}
 			<div className={classes.actionPanel}>
-				<Button variant="outlined" onClick={closeCallback}>
-					<FormattedMessage {...sharedMessages.cancel} />
-				</Button>
-				{currentStep < steps.length - 1 && (
-					<Button variant="contained" color="primary" disabled={nextDisabled} onClick={nextClick} disableElevation>
-						<FormattedMessage {...sharedMessages.next} />
+				<div className={classes.leftAction}>
+					{!!currentStep && (
+						<Button variant="contained" color="primary" onClick={backClick} disableElevation>
+							<FormattedMessage {...sharedMessages.back} />
+						</Button>
+					)}
+				</div>
+				<div className={classes.rightAction}>
+					<Button variant="outlined" onClick={closeCallback}>
+						<FormattedMessage {...sharedMessages.cancel} />
 					</Button>
-				)}
-				{currentStep === steps.length - 1 && (
-					<Button
-						variant="contained"
-						color="primary"
-						disabled={nextDisabled}
-						onClick={confirmCallback}
-						disableElevation
-					>
-						{confirmTitle || <FormattedMessage {...sharedMessages.applyChanges} />}
-					</Button>
-				)}
+					{currentStep < steps.length - 1 && (
+						<Button variant="contained" color="primary" disabled={nextDisabled} onClick={nextClick} disableElevation>
+							<FormattedMessage {...sharedMessages.next} />
+						</Button>
+					)}
+					{currentStep === steps.length - 1 && (
+						<Button
+							variant="contained"
+							color="primary"
+							disabled={nextDisabled}
+							onClick={confirmCallback}
+							disableElevation
+						>
+							{confirmTitle || <FormattedMessage {...sharedMessages.applyChanges} />}
+						</Button>
+					)}
+				</div>
 			</div>
 		</>
 	);

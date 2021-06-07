@@ -29,13 +29,15 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: theme.spacing(1.5),
 		},
 	},
-
+	divider: {
+		margin: "auto",
+	},
 	paperLeft: {
 		border: `1px solid ${theme.palette.grey.borders}`,
 	},
 }));
 
-const defaultInfoPanelXs = 7;
+const defaultInfoPanelXs = 6;
 
 const formatOnChange = (data, ids) => {
 	const selectedItems = data.filter(dataItem => ids.includes(dataItem.id));
@@ -63,6 +65,7 @@ const SelectionList = ({
 	const classes = useStyles({ height });
 	const [checked, setChecked] = useState([]);
 	const refScrollableList = React.useRef();
+	const defaultPanel = <div></div>;
 
 	useEffect(() => {
 		if (defaultSelection && checked.length === 0) {
@@ -80,8 +83,13 @@ const SelectionList = ({
 	dividerProps.set(DividerProps.propNames.light, true);
 	dividerProps.setStyle(DividerProps.ruleNames.vertical, classes.divider);
 
+	infoPanelXs = infoPanelXs ?? defaultInfoPanelXs;
+	infoPanel = infoPanel ?? defaultPanel;
+
+	const dividerDiff = showDivider ? 1 : 0;
+
 	const listComponent = (
-		<Grid item xs={showDivider ? 11 : 12}>
+		<>
 			<div className={classes.title}>{listData.title}</div>
 			<ScrollableCustomList
 				ref={refScrollableList}
@@ -97,30 +105,22 @@ const SelectionList = ({
 				multiSelect={multiSelect}
 				onChange={onChangeEvent}
 			/>
-		</Grid>
+		</>
 	);
 
 	const dividerComponent = showDivider && (
-		<Grid item xs={1}>
+		<Grid item>
 			<Divider dividerProps={dividerProps} />
 		</Grid>
 	);
 
-	const listContainer = (
-		<Grid container spacing={1}>
-			{listComponent}
-			{dividerComponent}
-		</Grid>
-	);
-
-	if (!infoPanel) return listContainer;
-
 	return (
-		<Grid container spacing={1}>
-			<Grid item xs={12 - (infoPanelXs ?? defaultInfoPanelXs)}>
-				{listContainer}
+		<Grid container spacing={2}>
+			<Grid item xs={12 - infoPanelXs - dividerDiff}>
+				{listComponent}
 			</Grid>
-			<Grid item xs={infoPanelXs ?? defaultInfoPanelXs}>
+			{dividerComponent}
+			<Grid item xs={infoPanelXs}>
 				{infoPanel}
 			</Grid>
 		</Grid>

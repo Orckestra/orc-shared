@@ -37,12 +37,15 @@ describe("StepperModal", () => {
 
 		const actionPanel = (
 			<div>
-				<Button variant="outlined" disabled={false} onClick={() => cancelCallback()}>
-					{sharedMessages.cancel.defaultMessage}
-				</Button>
-				<Button variant="contained" color="primary" disabled={false} onClick={() => {}} disableElevation>
-					{sharedMessages.next.defaultMessage}
-				</Button>
+				<div></div>
+				<div>
+					<Button variant="outlined" disabled={false} onClick={() => cancelCallback()}>
+						{sharedMessages.cancel.defaultMessage}
+					</Button>
+					<Button variant="contained" color="primary" disabled={false} onClick={() => {}} disableElevation>
+						{sharedMessages.next.defaultMessage}
+					</Button>
+				</div>
 			</div>
 		);
 
@@ -94,12 +97,15 @@ describe("StepperModal", () => {
 
 		const actionPanel = (
 			<div>
-				<Button variant="outlined" disabled={false} onClick={() => cancelCallback()}>
-					{sharedMessages.cancel.defaultMessage}
-				</Button>
-				<Button variant="contained" color="primary" disabled={true} onClick={() => {}} disableElevation>
-					{sharedMessages.next.defaultMessage}
-				</Button>
+				<div></div>
+				<div>
+					<Button variant="outlined" disabled={false} onClick={() => cancelCallback()}>
+						{sharedMessages.cancel.defaultMessage}
+					</Button>
+					<Button variant="contained" color="primary" disabled={true} onClick={() => {}} disableElevation>
+						{sharedMessages.next.defaultMessage}
+					</Button>
+				</div>
 			</div>
 		);
 

@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	labelComponent: {
 		margin: `0 ${theme.spacing(1)}`,
+		justifyContent: "flex-end",
 	},
 	labelContainer: {
 		display: "flex",
@@ -118,7 +119,7 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 		);
 
 	const finalLabel = (
-		<Grid container alignItems="center">
+		<Grid container alignItems="center" wrap="nowrap">
 			<Grid
 				item
 				xs={8}
