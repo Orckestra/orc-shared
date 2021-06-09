@@ -138,6 +138,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.fieldIsRequired",
 		defaultMessage: "This field is required",
 	},
+	fieldMustBeValidEmail: {
+		id: "orc-shared.fieldMustBeValidEmail",
+		defaultMessage: "This field must be a valid email",
+	},
 	next: {
 		id: "orc-shared.next",
 		defaultMessage: "Next",

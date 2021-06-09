@@ -18,6 +18,7 @@
 	"orc-shared.displayLanguage": "Display language",
 	"orc-shared.displayName": "Display Name",
 	"orc-shared.fieldIsRequired": "This field is required",
+	"orc-shared.fieldMustBeValidEmail": "This field must be a valid email",
 	"orc-shared.help": "Help",
 	"orc-shared.inactive": "Inactive",
 	"orc-shared.next": "Next",
