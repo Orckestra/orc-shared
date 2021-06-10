@@ -175,5 +175,11 @@
 	"orc-shared.chathamIslandsStandardTime": "(UTC+12:45) Isole Chatham",
 	"orc-shared.tongaStandardTime": "(UTC+13:00) Nukualofa",
 	"orc-shared.samoaStandardTime": "(UTC+13:00) Samoa",
-	"orc-shared.lineIslandsStandardTime": "(UTC+14:00) Isola Kiritimati"
+	"orc-shared.lineIslandsStandardTime": "(UTC+14:00) Isola Kiritimati",
+	"orc-shared.uTC02": "(UTC-02:00) Coordinated Universal Time-02",
+	"orc-shared.uTC11": "(UTC-11:00) Coordinated Universal Time-11",
+	"orc-shared.uTC09": "(UTC-09:00) Coordinated Universal Time-09",
+	"orc-shared.uTC08": "(UTC-08:00) Coordinated Universal Time-08",
+	"orc-shared.uTC13": "(UTC+13:00) Coordinated Universal Time+13",
+	"orc-shared.uTC12": "(UTC+12:00) Coordinated Universal Time+12"
 }

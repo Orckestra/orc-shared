@@ -710,6 +710,30 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.lineIslandsStandardTime",
 		defaultMessage: "(UTC+14:00) Kiritimati Island",
 	},
+	uTC02: {
+		id: "orc-shared.uTC02",
+		defaultMessage: "(UTC-02:00) Coordinated Universal Time-02",
+	},
+	uTC11: {
+		id: "orc-shared.uTC11",
+		defaultMessage: "(UTC-11:00) Coordinated Universal Time-11",
+	},
+	uTC09: {
+		id: "orc-shared.uTC09",
+		defaultMessage: "(UTC-09:00) Coordinated Universal Time-09",
+	},
+	uTC08: {
+		id: "orc-shared.uTC08",
+		defaultMessage: "(UTC-08:00) Coordinated Universal Time-08",
+	},
+	uTC13: {
+		id: "orc-shared.uTC13",
+		defaultMessage: "(UTC+13:00) Coordinated Universal Time+13",
+	},
+	uTC12: {
+		id: "orc-shared.uTC12",
+		defaultMessage: "(UTC+12:00) Coordinated Universal Time+12",
+	},
 });
 
 export default sharedMessages;

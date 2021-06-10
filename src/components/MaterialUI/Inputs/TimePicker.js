@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useIntl } from "react-intl";
+import sharedMessages from "../../../sharedMessages";
 
 const useStyles = makeStyles(theme => ({
 	timeWrapper: {
@@ -84,9 +86,11 @@ const calculateMins = time => {
 
 const calculateAMPM = time => (isAM(time) ? "AM" : "PM");
 
-const TimePicker = ({ value, onChange, showTimeZone, showAMPM }) => {
+const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 	const classes = useStyles();
+	const { formatMessage } = useIntl();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
+	timeZone = timeZone ?? "UTC";
 	const [time, setTime] = useState(parseTime(value || "00:00"));
 
 	const onTimeChange = datetime => {
@@ -120,9 +124,11 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM }) => {
 		onTimeChange(time);
 	};
 
-	const getTimeZone = () => {
-		var timezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
-		return `${timezone[2]} (GMT${timezone[1]})`;
+	const getTimeZone = timeZone => {
+		let timeZoneId = timeZone.replace(/[\s-().+]/g, "");
+		timeZoneId = timeZoneId.slice(0, 1).toLowerCase() + timeZoneId.slice(1, timeZoneId.length);
+		const localizedTimeZone = formatMessage(sharedMessages[timeZoneId]);
+		return localizedTimeZone;
 	};
 
 	const properHourOptions = showAMPM ? hourOptionsAMPM : hourOptions;
@@ -179,7 +185,7 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM }) => {
 				<AMPMSelect showAMPM={showAMPM} />
 			</span>
 			{showTimeZone && <br />}
-			{showTimeZone && <label className={classes.timeZoneWrapper}>{showTimeZone && getTimeZone()}</label>}
+			{showTimeZone && <label className={classes.timeZoneWrapper}>{showTimeZone && getTimeZone(timeZone)}</label>}
 		</div>
 	);
 };

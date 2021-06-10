@@ -92,12 +92,14 @@ const WrappedDatePicker = ({
 	readOnly,
 	showTimeSelectOnly,
 	metadata,
+	timePickerTimeZone,
 	error,
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
 	const startDate = value ? new Date(value) : null;
 	var disabledCls = classNames({ [classes.disabled]: props.disabled });
+	timePickerTimeZone = timePickerTimeZone ?? "UTC";
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
@@ -116,7 +118,7 @@ const WrappedDatePicker = ({
 						onChange={date => updateDate(date, metadata)}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
-						customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} /> : null}
+						customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} timeZone={timePickerTimeZone} /> : null}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}
 						showTimeSelectOnly={showTimeSelectOnly}
