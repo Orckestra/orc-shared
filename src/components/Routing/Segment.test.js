@@ -16,6 +16,9 @@ describe("Segment", () => {
 					match,
 				},
 			},
+			requests: {
+				logout: false,
+			},
 		});
 		store = {
 			getState: () => state,

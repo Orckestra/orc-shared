@@ -25,6 +25,9 @@ describe("SegmentPage", () => {
 				locale: "en-US",
 				supportedLocales: ["en-US"],
 			},
+			requests: {
+				logout: false,
+			},
 			navigation: {
 				route: {
 					location: { pathname: "/foo/meep/entityIdValue/two", search: "", hash: "" },
