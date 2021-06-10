@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		"& .react-datepicker": {
 			fontFamily: theme.fontFamily,
+			width: theme.spacing(28),
 		},
 		"& .react-datepicker__input-time-container": {
 			margin: theme.spacing(0.5, 0, 1, 0),
@@ -49,6 +50,18 @@ const useStyles = makeStyles(theme => ({
 			"&:focus": {
 				outline: "none",
 			},
+		},
+		"& .react-datepicker__month-container": {
+			float: "none",
+		},
+		"& .react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input": {
+			display: "block",
+		},
+		"& .react-datepicker-time__caption": {
+			display: "block",
+		},
+		"& .react-datepicker__input-time-container .react-datepicker-time__input-container": {
+			display: "block",
 		},
 	},
 	disabled: {
