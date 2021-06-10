@@ -461,6 +461,18 @@ describe("Time Component", () => {
 			buildExpectedTime("16", "30", "PM", true, false),
 		));
 
+	it("shows local timezone if requested without AMPM", () =>
+		expect(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} showTimeZone={true} />
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			buildExpectedTime("16", "30", "PM", true, false),
+		));
+
 	it("should render with browser AMPM", () => {
 		const component = mount(
 			<IntlProvider locale="en-US" messages={messages}>

@@ -90,7 +90,6 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 	const classes = useStyles();
 	const { formatMessage } = useIntl();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
-	timeZone = timeZone ?? "UTC";
 	const [time, setTime] = useState(parseTime(value || "00:00"));
 
 	const onTimeChange = datetime => {
@@ -125,10 +124,16 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 	};
 
 	const getTimeZone = timeZone => {
-		let timeZoneId = timeZone.replace(/[\s-().+]/g, "");
-		timeZoneId = timeZoneId.slice(0, 1).toLowerCase() + timeZoneId.slice(1, timeZoneId.length);
-		const localizedTimeZone = formatMessage(sharedMessages[timeZoneId]);
-		return localizedTimeZone;
+		if (timeZone) {
+			let timeZoneId = timeZone.replace(/[\s-().+]/g, "");
+			timeZoneId = timeZoneId.slice(0, 1).toLowerCase() + timeZoneId.slice(1, timeZoneId.length);
+			const localizedTimeZone = formatMessage(sharedMessages[timeZoneId]);
+			return localizedTimeZone;
+		} else {
+			const localTimezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
+			const defaultTimezone = `${localTimezone[2]} (GMT${localTimezone[1]}`;
+			return defaultTimezone;
+		}
 	};
 
 	const properHourOptions = showAMPM ? hourOptionsAMPM : hourOptions;
