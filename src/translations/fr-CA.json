@@ -18,6 +18,7 @@
 	"orc-shared.displayLanguage": "Langue d'affichage",
 	"orc-shared.displayName": "Nom d'affichage",
 	"orc-shared.fieldIsRequired": "Est requis",
+	"orc-shared.fieldMustBeValidEmail": "Ce champ doit être un email valide",
 	"orc-shared.help": "Aide",
 	"orc-shared.inactive": "Inactif",
 	"orc-shared.next": "Suivant",
