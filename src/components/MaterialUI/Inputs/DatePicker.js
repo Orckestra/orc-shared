@@ -99,7 +99,9 @@ const WrappedDatePicker = ({
 	const classes = useStyles({ readOnly });
 	const startDate = value ? new Date(value) : null;
 	var disabledCls = classNames({ [classes.disabled]: props.disabled });
-	timePickerTimeZone = timePickerTimeZone ?? "UTC";
+	const localTimezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
+	const defaultTimezone = `${localTimezone[2]} (GMT${localTimezone[1]}`;
+	timePickerTimeZone = timePickerTimeZone ?? defaultTimezone;
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {

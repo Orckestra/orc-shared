@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useIntl } from "react-intl";
 import sharedMessages from "../../../sharedMessages";
