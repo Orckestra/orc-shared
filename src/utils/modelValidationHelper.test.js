@@ -28,6 +28,24 @@ describe("validationRules", () => {
 
 		expect(isValid, "to be true");
 	});
+
+	it("validates fieldMustBeValidEmail rule correctly when its value is wrong email", () => {
+		const isValid = validationRules[validationErrorTypes.fieldMustBeValidEmail]("abc");
+
+		expect(isValid, "to be false");
+	});
+
+	it("validates fieldMustBeValidEmail rule correctly when its value is correct email", () => {
+		const isValid = validationRules[validationErrorTypes.fieldMustBeValidEmail]("test@example.com");
+
+		expect(isValid, "to be true");
+	});
+
+	it("validates fieldMustBeValidEmail rule correctly when its value is empty", () => {
+		const isValid = validationRules[validationErrorTypes.fieldMustBeValidEmail](undefined);
+
+		expect(isValid, "to be true");
+	});
 });
 
 describe("showError", () => {

@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 		maxHeight: theme.spacing(73),
 	},
 	containerFullwidth: {
-		minWidth: `calc(100% - 80px)`,
+		width: `calc(100% - 80px)`,
 		height: `calc(100% - 80px)`,
 	},
 	title: {
