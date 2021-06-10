@@ -78,6 +78,9 @@ describe("Modules", () => {
 					demos: {},
 				},
 			},
+			requests: {
+				logout: false,
+			},
 			settings: {
 				defaultScope: "myScope",
 			},
@@ -292,6 +295,9 @@ describe("Modules", () => {
 						module: {},
 					},
 				},
+				requests: {
+					logout: false,
+				},
 				scopes: {
 					TestScope: {
 						id: "TestScope",
@@ -389,6 +395,9 @@ describe("Modules", () => {
 					edit: {
 						module: {},
 					},
+				},
+				requests: {
+					logout: false,
 				},
 				scopes: {
 					TestScope: {
