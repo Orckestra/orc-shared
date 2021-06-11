@@ -4,6 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
 	timeWrapper: {
 		margin: "auto",
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		textAlign: "center",
 	},
 	timeZoneWrapper: {
 		marginLeft: theme.spacing(0.5),
@@ -13,8 +17,8 @@ const useStyles = makeStyles(theme => ({
 	timePickerWrapper: {
 		display: "flex",
 		flexWrap: "wrap",
-		width: "100%",
 		alignItems: "center",
+		paddingBottom: theme.spacing(2),
 	},
 	timePickerSegmentWrapper: {
 		fontFamily: theme.fontFamily,
@@ -178,7 +182,6 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM }) => {
 				</select>
 				<AMPMSelect showAMPM={showAMPM} />
 			</span>
-			{showTimeZone && <br />}
 			{showTimeZone && <label className={classes.timeZoneWrapper}>{showTimeZone && getTimeZone()}</label>}
 		</div>
 	);
