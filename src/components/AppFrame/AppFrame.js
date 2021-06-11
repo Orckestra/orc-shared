@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useIntl } from "react-intl";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
@@ -20,6 +21,9 @@ import { getVersionInfo } from "../../actions/versionInfo";
 import { currentLocale } from "../../selectors/locale";
 import { selectCurrentModuleName } from "../../selectors/navigation";
 import LoadingScreen from "../MaterialUI/Feedback/loadingScreen";
+import sharedMessages from "../../sharedMessages";
+import ActionModal from "../MaterialUI/DataDisplay/PredefinedElements/ActionModal";
+import { logoutSelector } from "../../selectors/requests";
 
 export const Base = styled.div`
 	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
@@ -56,7 +60,10 @@ export const ViewPort = styled.div`
 const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
 
 const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, noScope, forceShowScope = [] }) => {
+	const { formatMessage } = useIntl();
+
 	const locale = useSelector(currentLocale);
+	const needLogin = useSelector(logoutSelector);
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
 	const moduleName = useSelector(selectCurrentModuleName);
 	const [helpUrl] = useApplicationHelpUrl(applicationId);
@@ -64,6 +71,19 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 	const [open, toggle, reset] = useToggle(initOpen);
 	const currentApplication = getApp(applications, applicationId);
 	useLoader(getVersionInfo(locale), () => locale === null || helpUrl !== null);
+
+	const [doesApplicationNeedRefresh, setDoesApplicationNeedRefresh] = React.useState(false);
+
+	const reloadApplication = () => {
+		window.location.reload();
+		setDoesApplicationNeedRefresh(false);
+	};
+
+	useEffect(() => {
+		if (needLogin) {
+			setDoesApplicationNeedRefresh(true);
+		}
+	}, [needLogin]);
 
 	useEffect(() => {
 		document.title = currentApplication?.displayName || applicationId;
@@ -74,6 +94,12 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 	return (
 		<Base preferencesOpen={prefViewState.show}>
 			<ConnectedToastList />
+			<ActionModal
+				title={formatMessage(sharedMessages.error)}
+				message={formatMessage(sharedMessages.needToRefresh)}
+				open={doesApplicationNeedRefresh}
+				actions={[{ label: sharedMessages.refresh, handler: reloadApplication, isPrimary: true }]}
+			/>
 			<Topbar
 				{...{
 					applications,

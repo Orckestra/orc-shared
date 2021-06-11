@@ -74,6 +74,9 @@ beforeEach(() => {
 				parentScopeId: "test4",
 			},
 		},
+		requests: {
+			logout: false,
+		},
 		settings: {
 			defaultScope: "aDefaultScope",
 		},

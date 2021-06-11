@@ -41,6 +41,9 @@ describe("SubPage", () => {
 					match: { path: "/foo/bar", url: "/foo/bar", params: {} },
 				},
 			},
+			requests: {
+				logout: false,
+			},
 			foo: true,
 			bar: false,
 		});

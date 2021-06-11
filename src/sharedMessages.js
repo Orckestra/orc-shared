@@ -178,6 +178,18 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.scopeChangeWithUnsavedDataTitle",
 		defaultMessage: "Confirm scope change without saving data",
 	},
+	refresh: {
+		id: "orc-shared.refresh",
+		defaultMessage: "Refresh",
+	},
+	error: {
+		id: "orc-shared.error",
+		defaultMessage: "Error",
+	},
+	needToRefresh: {
+		id: "orc-shared.needToRefresh",
+		defaultMessage: "You are not authorized to execute a request. Click refresh to reload the application.",
+	},
 });
 
 export default sharedMessages;

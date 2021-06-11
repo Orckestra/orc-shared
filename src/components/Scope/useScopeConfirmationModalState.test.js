@@ -58,6 +58,9 @@ describe("useScopeConfirmationModalState", () => {
 				config: { prependPath: "/:scope/", prependHref: "/Scope1/" },
 			},
 			view: {},
+			requests: {
+				logout: false,
+			},
 			scopes: {
 				TheOldScope: {
 					id: "TheOldScope",

@@ -53,6 +53,8 @@ const useStyles = makeStyles(theme => ({
 		whiteSpace: "pre-wrap",
 		padding: theme.spacing(2, 2),
 		overflowY: "auto",
+		fontSize: theme.typography.fontsize,
+		fontFamily: theme.typography.fontFamily,
 	},
 	messageWide: {
 		minHeight: theme.spacing(10),
@@ -63,6 +65,8 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(2, 2),
 		overflowY: "auto",
 		flexGrow: 1,
+		fontSize: theme.typography.fontsize,
+		fontFamily: theme.typography.fontFamily,
 	},
 	actionPanel: {
 		padding: theme.spacing(1, 2),

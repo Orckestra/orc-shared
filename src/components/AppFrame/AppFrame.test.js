@@ -7,6 +7,7 @@ import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
 import { mount, simulate } from "unexpected-reaction";
+import { mount as enzymeMount } from "enzyme";
 import { getStyledClassSelector } from "../../utils/testUtils";
 import I18n from "../I18n";
 import {
@@ -29,6 +30,9 @@ import {
 	GET_VERSION_INFO_SUCCESS,
 } from "../../actions/versionInfo";
 import LoadingScreen from "../MaterialUI/Feedback/loadingScreen";
+import ActionModal from "../MaterialUI/DataDisplay/PredefinedElements/ActionModal";
+import sharedMessages from "../../sharedMessages";
+import Button from "@material-ui/core/Button";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -42,7 +46,24 @@ const TestComp2 = () => <div id="view2" />;
 const TestComp3 = () => <div id="view3" />;
 
 describe("AppFrame", () => {
-	let props, state, store, modalRoot;
+	let props, state, store, modalRoot, locationReloadSpy;
+
+	const { location } = window;
+
+	beforeAll(() => {
+		locationReloadSpy = sinon.spy().named("locationReloads");
+
+		delete window.location;
+
+		window.location = {
+			reload: locationReloadSpy,
+		};
+	});
+
+	afterAll(() => {
+		window.location = location;
+	});
+
 	beforeEach(() => {
 		global.DEPENDENCIES = {
 			"orc-shared": "0.9.0",
@@ -665,6 +686,112 @@ describe("AppFrame", () => {
 				},
 			]),
 		);
+	});
+
+	it("Display dialog to refresh the application when login is needed ", () => {
+		state = state.setIn(["requests", "logout"], true);
+
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
+
+		const title = sharedMessages.error.defaultMessage;
+		const message = sharedMessages.needToRefresh.defaultMessage;
+
+		const refreshCallback = jest.fn();
+
+		const actions = [{ label: sharedMessages.refresh, handler: refreshCallback, isPrimary: true }];
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<I18n>
+						<MemoryRouter initialEntries={["/Foo/bar"]}>
+							<Base>
+								<ActionModal open={true} title={title} message={message} actions={actions} />
+								<Wrapper>
+									<AppBox>
+										<AppSelWrapper>
+											<MenuIcon />
+										</AppSelWrapper>
+										<AppLabel>
+											<AppLogo />
+											Marketing Legacy
+										</AppLabel>
+									</AppBox>
+									<MenuWrapper>
+										<Ignore />
+									</MenuWrapper>
+									<HelpLink>Help</HelpLink>
+								</Wrapper>
+								<SideBar>
+									<MenuToggle />
+									<Ignore />
+									<Ignore />
+									<Ignore />
+									<Logo />
+								</SideBar>
+								<ViewPort>
+									<ScopeBar name="Test 1" />
+									<TestComp1 key="1" />
+									<TestComp2 key="2" />
+									<TestComp3 key="3" />
+								</ViewPort>
+								<About messages={props.aboutMessages} />
+								<LoadingScreen />
+							</Base>
+						</MemoryRouter>
+					</I18n>
+				</ThemeProvider>
+			</Provider>,
+		);
+	});
+
+	it("Invoke page reload when refresh button is clicked", () => {
+		state = state.setIn(["requests", "logout"], true);
+
+		props.modules = [
+			{ id: "test1", component: TestComp1, route: "/test1" },
+			{ id: "test2", component: TestComp2, route: "/test2" },
+			{ id: "test3", component: TestComp3, route: "/test3" },
+		];
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
+
+		const component = (
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>
+		);
+
+		const mountedComponent = enzymeMount(component);
+
+		const actionModal = mountedComponent.find(ActionModal);
+
+		const refreshButton = actionModal.find(Button);
+
+		refreshButton.invoke("onClick")();
+
+		expect(locationReloadSpy, "was called");
 	});
 });
 
