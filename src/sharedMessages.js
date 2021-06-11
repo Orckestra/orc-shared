@@ -138,6 +138,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.fieldIsRequired",
 		defaultMessage: "This field is required",
 	},
+	fieldMustBeValidEmail: {
+		id: "orc-shared.fieldMustBeValidEmail",
+		defaultMessage: "This field must be a valid email",
+	},
 	next: {
 		id: "orc-shared.next",
 		defaultMessage: "Next",
@@ -733,6 +737,18 @@ const sharedMessages = defineMessages({
 	uTC12: {
 		id: "orc-shared.uTC12",
 		defaultMessage: "(UTC+12:00) Coordinated Universal Time+12",
+	},
+	refresh: {
+		id: "orc-shared.refresh",
+		defaultMessage: "Refresh",
+	},
+	error: {
+		id: "orc-shared.error",
+		defaultMessage: "Error",
+	},
+	needToRefresh: {
+		id: "orc-shared.needToRefresh",
+		defaultMessage: "You are not authorized to execute a request. Click refresh to reload the application.",
 	},
 });
 

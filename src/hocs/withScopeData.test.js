@@ -33,6 +33,9 @@ describe("withScopeData", () => {
 			navigation: {
 				route: { location: {}, match: { params: { scope: "test3" } } },
 			},
+			requests: {
+				logout: false,
+			},
 			scopes: {
 				test1: {
 					id: "test1",

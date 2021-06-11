@@ -38,6 +38,7 @@ export const roleGroups = {
 export const validationErrorTypes = {
 	fieldIsRequired: "fieldIsRequired",
 	fieldHasWrongValue: "fieldHasWrongValue",
+	fieldMustBeValidEmail: "fieldMustBeValidEmail",
 };
 
 export const displayMode = {

@@ -1,5 +1,5 @@
 import Immutable from "immutable";
-import { requestRunningSelector, selectActivity } from "./requests";
+import { logoutSelector, requestRunningSelector, selectActivity } from "./requests";
 
 describe("selectActivity", () => {
 	let state;
@@ -13,6 +13,7 @@ describe("selectActivity", () => {
 						payload: { status: 500, message: "ServerError" },
 					},
 				},
+				logout: "logoutState",
 			},
 			view: {},
 		});
@@ -29,6 +30,8 @@ describe("selectActivity", () => {
 
 	it("returns an identical selector for identical request names", () =>
 		expect(selectActivity, "called with", ["FOO"], "to be", selectActivity("FOO")));
+
+	it("returns logout state", () => expect(logoutSelector, "when called with", [state], "to be", "logoutState"));
 
 	it("returns true when at least one request is running when loadingScreen state is not set", () =>
 		expect(requestRunningSelector, "when called with", [state], "to be truthy"));
