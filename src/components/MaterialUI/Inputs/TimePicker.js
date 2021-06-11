@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexWrap: "wrap",
 		alignItems: "center",
-		paddingBottom: theme.spacing(1.5),
+		paddingBottom: theme.spacing(2),
 	},
 	timePickerSegmentWrapper: {
 		fontFamily: theme.fontFamily,

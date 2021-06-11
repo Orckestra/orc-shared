@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => ({
 		},
 		"& .react-datepicker": {
 			fontFamily: theme.fontFamily,
-			width: theme.spacing(28),
 		},
 		"& .react-datepicker__input-time-container": {
 			margin: theme.spacing(0.5, 0, 1, 0),
@@ -38,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		"& .react-datepicker-popper": {
 			zIndex: 100,
+			width: theme.spacing(26),
 		},
 		"& .react-datepicker__input-container input": {
 			fontSize: theme.typography.fontSize,
