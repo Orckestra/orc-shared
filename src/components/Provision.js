@@ -9,7 +9,6 @@ import Authenticate from "./Authenticate";
 import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
-import Relogin from "./Relogin";
 
 const GlobalStyle = createGlobalStyle`
 	html {
@@ -54,7 +53,6 @@ const Provision = ({ store, theme = {}, muiTheme, children }) => {
 					</MuiThemeProvider>
 				</ThemeProvider>
 			</ConnectedRouter>
-			<Relogin />
 		</Provider>
 	);
 };
