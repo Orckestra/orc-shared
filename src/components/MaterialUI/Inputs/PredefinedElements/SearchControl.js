@@ -184,7 +184,6 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 					classes={{ input: classes.controlInput }}
 					onKeyDown={handleKeyDown}
 					disableUnderline={true}
-					required
 					onFocus={e => onFocusedEvent(e, true)}
 					onBlur={e => onFocusedEvent(e, false)}
 					endAdornment={
