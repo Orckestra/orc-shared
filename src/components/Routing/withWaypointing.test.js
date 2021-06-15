@@ -24,6 +24,9 @@ describe("withWaypointing", () => {
 					},
 				},
 			},
+			requests: {
+				logout: false,
+			},
 		});
 		const subs = [];
 		updateState = () => {

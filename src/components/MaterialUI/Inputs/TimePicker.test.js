@@ -4,7 +4,10 @@ import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
 import sinon from "sinon";
+import sharedMessages from "../../../sharedMessages";
+import { extractMessages } from "../../../utils/testUtils";
 
+const messages = extractMessages(sharedMessages);
 const BuildHours = ({ hours, showAMPM }) => {
 	if (showAMPM) {
 		return (
@@ -75,7 +78,6 @@ const buildExpectedTime = (hours, mins, ampm, showTimeZone, showAMPM = true) => 
 						</select>
 					)}
 				</span>
-				{showTimeZone && <br />}
 				{showTimeZone && <Ignore />}
 			</div>
 		</div>
@@ -96,7 +98,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 5am", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"05:00"} />
 				</div>
@@ -108,7 +110,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 5am without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"05:00"} />
 				</div>
@@ -127,7 +129,7 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={""} />
 				</div>
@@ -147,7 +149,7 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={""} />
 				</div>
@@ -167,7 +169,7 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={""} />
 				</div>
@@ -187,7 +189,7 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"xxx"} />
 				</div>
@@ -207,7 +209,7 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"xxx"} />
 				</div>
@@ -220,7 +222,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 5pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"17:00"} />
 				</div>
@@ -232,7 +234,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 5pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"17:00"} />
 				</div>
@@ -244,7 +246,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 515pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"17:16"} />
 				</div>
@@ -256,7 +258,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 515pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"17:16"} />
 				</div>
@@ -268,7 +270,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 545pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"17:46"} />
 				</div>
@@ -280,7 +282,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 545pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"17:46:00"} />
 				</div>
@@ -292,7 +294,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 12am", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"00:00"} />
 				</div>
@@ -304,7 +306,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 12am without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"00:00"} />
 				</div>
@@ -316,7 +318,7 @@ describe("Time Component", () => {
 
 	it("sets up a time 12pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"12:00 pm"} />
 				</div>
@@ -328,9 +330,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 12pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"12:00 pm"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"12:00 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -340,9 +342,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:16pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:16 pm"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:16 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -352,9 +354,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:16pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:16 pm"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:16 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -364,9 +366,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:31pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:31 pm"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:31 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -376,9 +378,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:31pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -388,9 +390,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:20pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:20 pm"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:20 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -400,9 +402,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:20pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:20 pm"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:20 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -412,9 +414,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:50pm", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:50 pm"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:50 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -424,9 +426,9 @@ describe("Time Component", () => {
 
 	it("sets up a time 4:50pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:50 pm"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:50 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -436,9 +438,15 @@ describe("Time Component", () => {
 
 	it("shows timezone if requested", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:31 pm"} showTimeZone={true} />
+					<TimePicker
+						showAMPM={true}
+						onChange={updater}
+						value={"4:31 pm"}
+						showTimeZone={true}
+						requestedTimeZone={"UTC"}
+					/>
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -448,7 +456,36 @@ describe("Time Component", () => {
 
 	it("shows timezone if requested without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US">
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker
+						showAMPM={false}
+						onChange={updater}
+						value={"4:31 pm"}
+						showTimeZone={true}
+						requestedTimeZone={"UTC"}
+					/>
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			buildExpectedTime("16", "30", "PM", true, false),
+		));
+	it("shows local timezone if requested without AMPM", () =>
+		expect(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} showTimeZone={true} />
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			buildExpectedTime("16", "30", "PM", true, false),
+		));
+
+	it("shows local timezone if requested without AMPM", () =>
+		expect(
+			<IntlProvider locale="en-US" messages={messages}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} showTimeZone={true} />
 				</div>
@@ -459,7 +496,13 @@ describe("Time Component", () => {
 		));
 
 	it("should render with browser AMPM", () => {
-		const component = mount(<TimePicker value="00:00" />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker value="00:00" />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -471,7 +514,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "12" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} value="00:00" />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} value="00:00" />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -487,7 +536,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "12" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -503,7 +558,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "5" },
 		};
-		const component = mount(<TimePicker showAMPM={false} onChange={onChangeMock} value="22:00" />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={false} onChange={onChangeMock} value="22:00" />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 2);
@@ -519,7 +580,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "12" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -539,7 +606,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "AM" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -561,7 +634,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "PM" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} value="10:00" />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} value="10:00" />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -578,7 +657,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "01" },
 		};
-		const component = mount(<TimePicker showAMPM={true} />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -592,7 +677,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "45" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -607,7 +698,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "15" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);
@@ -626,7 +723,13 @@ describe("Time Component", () => {
 			preventDefault() {},
 			target: { value: "AM" },
 		};
-		const component = mount(<TimePicker showAMPM={true} onChange={onChangeMock} />);
+		const component = mount(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={true} onChange={onChangeMock} />
+				</div>
+			</IntlProvider>,
+		);
 
 		const select = component.find("select");
 		expect(select.length, "to equal", 3);

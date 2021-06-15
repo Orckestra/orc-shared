@@ -17,6 +17,9 @@ describe("Page", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			navigation: { route: {} },
+			requests: {
+				logout: false,
+			},
 		});
 		store = {
 			subscribe: () => {},

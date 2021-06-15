@@ -22,7 +22,13 @@ describe("useLoader", () => {
 
 	let loader, state, store, appNode;
 	beforeEach(() => {
-		state = Immutable.fromJS({ cutout: "yes", live: 0 });
+		state = Immutable.fromJS({
+			cutout: "yes",
+			live: 0,
+			requests: {
+				logout: false,
+			},
+		});
 		const subs = [];
 		store = {
 			updateState: () => {
@@ -64,6 +70,19 @@ describe("useLoader", () => {
 			"to satisfy",
 			<div>0</div>,
 		).then(() => expect(store.dispatch, "was not called")));
+
+	it("does not dispatch loader if logged out", () => {
+		state = state.setIn(["requests", "logout"], true);
+
+		expect(
+			<Provider store={store}>
+				<TestComp loader={loader} cutout={state => state.get("cutout")} />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<div>0</div>,
+		).then(() => expect(store.dispatch, "was not called"));
+	});
 
 	it("does not dispatch loader if no cutout selector given, warns", () =>
 		expect(

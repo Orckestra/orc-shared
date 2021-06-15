@@ -23,6 +23,9 @@ describe("Fullpage", () => {
 					snap: {},
 				},
 			},
+			requests: {
+				logout: false,
+			},
 			navigation: {
 				route: {
 					match: match,
