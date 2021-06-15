@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useIntl } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
 	timeWrapper: {
@@ -89,7 +88,6 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 	const classes = useStyles();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
 	const [time, setTime] = useState(parseTime(value || "00:00"));
-
 	const onTimeChange = datetime => {
 		if (onChange) {
 			// DatePicker expects 24 hour time format, or else things go wonky!
