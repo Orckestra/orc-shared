@@ -332,7 +332,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"12:00 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"12:00 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -344,7 +344,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:16 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:16 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -356,7 +356,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:16 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:16 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -368,7 +368,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:31 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:31 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -380,7 +380,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -392,7 +392,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:20 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:20 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -404,7 +404,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:20 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:20 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -416,7 +416,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:50 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={true} onChange={updater} value={"4:50 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -428,7 +428,7 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:50 pm"} timeZone={"UTC"} />
+					<TimePicker showAMPM={false} onChange={updater} value={"4:50 pm"} requestedTimeZone={"UTC"} />
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -440,7 +440,13 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={true} onChange={updater} value={"4:31 pm"} showTimeZone={true} timeZone={"UTC"} />
+					<TimePicker
+						showAMPM={true}
+						onChange={updater}
+						value={"4:31 pm"}
+						showTimeZone={true}
+						requestedTimeZone={"UTC"}
+					/>
 				</div>
 			</IntlProvider>,
 			"when mounted",
@@ -452,7 +458,24 @@ describe("Time Component", () => {
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
 				<div>
-					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} showTimeZone={true} timeZone={"UTC"} />
+					<TimePicker
+						showAMPM={false}
+						onChange={updater}
+						value={"4:31 pm"}
+						showTimeZone={true}
+						requestedTimeZone={"UTC"}
+					/>
+				</div>
+			</IntlProvider>,
+			"when mounted",
+			"to satisfy",
+			buildExpectedTime("16", "30", "PM", true, false),
+		));
+	it("shows local timezone if requested without AMPM", () =>
+		expect(
+			<IntlProvider locale="en-US" messages={messages}>
+				<div>
+					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} showTimeZone={true} />
 				</div>
 			</IntlProvider>,
 			"when mounted",

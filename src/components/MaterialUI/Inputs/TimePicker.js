@@ -88,10 +88,11 @@ const calculateMins = time => {
 
 const calculateAMPM = time => (isAM(time) ? "AM" : "PM");
 
-const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
+const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone }) => {
 	const classes = useStyles();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
 	const [time, setTime] = useState(parseTime(value || "00:00"));
+
 	const onTimeChange = datetime => {
 		if (onChange) {
 			// DatePicker expects 24 hour time format, or else things go wonky!
@@ -123,13 +124,12 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 		onTimeChange(time);
 	};
 
-	const getTimeZone = timeZone => {
-		if (timeZone) {
-			return timeZone;
+	const getTimeZone = requestedTimeZone => {
+		if (requestedTimeZone) {
+			return requestedTimeZone;
 		} else {
-			const localTimezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
-			const defaultTimezone = `${localTimezone[2]} (GMT${localTimezone[1]}`;
-			return defaultTimezone;
+			var timezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
+			return `${timezone[2]} (GMT${timezone[1]})`;
 		}
 	};
 
@@ -186,7 +186,9 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 				</select>
 				<AMPMSelect showAMPM={showAMPM} />
 			</span>
-			{showTimeZone && <label className={classes.timeZoneWrapper}>{showTimeZone && getTimeZone()}</label>}
+			{showTimeZone && (
+				<label className={classes.timeZoneWrapper}>{showTimeZone && getTimeZone(requestedTimeZone)}</label>
+			)}
 		</div>
 	);
 };

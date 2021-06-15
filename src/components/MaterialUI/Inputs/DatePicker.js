@@ -130,7 +130,9 @@ const WrappedDatePicker = ({
 						onChange={date => updateDate(date, metadata)}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
-						customTimeInput={useTime ? <TimePicker showTimeZone={showTimeZone} timeZone={timePickerTimeZone} /> : null}
+						customTimeInput={
+							useTime ? <TimePicker showTimeZone={showTimeZone} requestedTimeZone={timePickerTimeZone} /> : null
+						}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}
 						showTimeSelectOnly={showTimeSelectOnly}
