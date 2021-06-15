@@ -78,7 +78,6 @@ const buildExpectedTime = (hours, mins, ampm, showTimeZone, showAMPM = true) => 
 						</select>
 					)}
 				</span>
-				{showTimeZone && <br />}
 				{showTimeZone && <Ignore />}
 			</div>
 		</div>
