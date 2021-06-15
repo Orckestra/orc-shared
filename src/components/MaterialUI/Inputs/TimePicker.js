@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useIntl } from "react-intl";
-import sharedMessages from "../../../sharedMessages";
 
 const useStyles = makeStyles(theme => ({
 	timeWrapper: {
@@ -88,7 +87,6 @@ const calculateAMPM = time => (isAM(time) ? "AM" : "PM");
 
 const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 	const classes = useStyles();
-	const { formatMessage } = useIntl();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
 	const [time, setTime] = useState(parseTime(value || "00:00"));
 
@@ -125,10 +123,7 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, timeZone }) => {
 
 	const getTimeZone = timeZone => {
 		if (timeZone) {
-			let timeZoneId = timeZone.replace(/[\s-().+]/g, "");
-			timeZoneId = timeZoneId.slice(0, 1).toLowerCase() + timeZoneId.slice(1, timeZoneId.length);
-			const localizedTimeZone = formatMessage(sharedMessages[timeZoneId]);
-			return localizedTimeZone;
+			return timeZone;
 		} else {
 			const localTimezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
 			const defaultTimezone = `${localTimezone[2]} (GMT${localTimezone[1]}`;
