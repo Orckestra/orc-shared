@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
 	paperLeft: {
 		border: `1px solid ${theme.palette.grey.borders}`,
 	},
+	actionPanel: {
+		paddingTop: theme.spacing(2),
+	},
 }));
 
 const defaultInfoPanelXs = 6;
@@ -61,6 +64,7 @@ const SelectionList = ({
 	infoPanel,
 	infoPanelXs,
 	divider = true,
+	actionPanel,
 }) => {
 	const classes = useStyles({ height });
 	const [checked, setChecked] = useState([]);
@@ -105,6 +109,7 @@ const SelectionList = ({
 				multiSelect={multiSelect}
 				onChange={onChangeEvent}
 			/>
+			{actionPanel ? <div className={classes.actionPanel}>{actionPanel}</div> : null}
 		</>
 	);
 

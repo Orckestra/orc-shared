@@ -74,6 +74,36 @@ describe("SelectionList", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders SelectionList correctly if actionPanel is supplied", () => {
+		const infoPanel = <div>Test</div>;
+		const actionPanel = <div>Action</div>;
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<SelectionList
+					listData={{ title: listTitle, data: [{ id: "id1", disabled: true, title: "item1" }] }}
+					infoPanel={infoPanel}
+					actionPanel={actionPanel}
+				/>
+			</TestWrapper>
+		);
+
+		const expected = (
+			<Grid>
+				<Grid>
+					<div>{listTitle}</div>
+					<ScrollableCustomList checked={[]} items={list} classes={{}} />
+					<div>{actionPanel}</div>
+				</Grid>
+				<Grid>
+					<hr />
+				</Grid>
+				<Grid>{infoPanel}</Grid>
+			</Grid>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Renders SelectionList correctly if infoPanel is supplied without divider", () => {
 		const component = (
 			<TestWrapper intlProvider={{ messages }}>
