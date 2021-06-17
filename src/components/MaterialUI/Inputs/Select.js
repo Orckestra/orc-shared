@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	selectPaper: {
 		border: `1px solid ${theme.palette.grey.borders}`,
-		minWidth: `${theme.spacing(35)} !important`,
-		width: `${theme.spacing(35)} !important`,
+		minWidth: `auto !important`,
+		width: `auto !important`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
 			maxHeight: theme.spacing(30),
