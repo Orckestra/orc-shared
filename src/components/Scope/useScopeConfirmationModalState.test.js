@@ -1,7 +1,6 @@
 import React from "react";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { act } from "unexpected-reaction";
 import { TestWrapper } from "../../utils/testUtils";
 import useScopeConfirmationModalState from "./useScopeConfirmationModalState";
 import { mount } from "enzyme";

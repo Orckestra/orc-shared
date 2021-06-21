@@ -185,7 +185,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 
 			dispatchRedux(setClosingTabHandlerActions(moduleName, actions));
 		}
-	}, [moduleName, pages, module.closingTabHandler]);
+	}, [dispatchRedux, moduleName, pages, module.closingTabHandler]);
 
 	return (
 		<div className={classes.container}>
