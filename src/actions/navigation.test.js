@@ -1,4 +1,11 @@
-import { removeTab, REMOVE_TAB, setHrefConfig, SET_HREF_CONFIG } from "./navigation";
+import {
+	removeTab,
+	REMOVE_TAB,
+	setHrefConfig,
+	SET_HREF_CONFIG,
+	setClosingTabHandlerActions,
+	SET_CLOSING_TAB_HANDLER_ACTIONS,
+} from "./navigation";
 
 describe("removeTab", () => {
 	it("creates a remove tab action", () =>
@@ -20,4 +27,21 @@ describe("setHrefConfig", () => {
 				prependHref: "/scope/",
 			},
 		}));
+});
+
+describe("setClosingTabHandlerActions", () => {
+	it("set closing tab handler actions", () => {
+		const actions = [
+			{ id: "id1", action: () => "action1" },
+			{ id: "id2", action: () => "action2" },
+		];
+
+		expect(setClosingTabHandlerActions, "when called with", ["a_module_x", actions], "to equal", {
+			type: SET_CLOSING_TAB_HANDLER_ACTIONS,
+			payload: {
+				module: "a_module_x",
+				actions: actions,
+			},
+		});
+	});
 });

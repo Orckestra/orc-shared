@@ -14,6 +14,8 @@ import {
 	selectPrependPathConfig,
 	selectPrependHrefConfig,
 	hasOpenedTabs,
+	selectClosingTabHandlerActions,
+	selectClosingTabHandlerActionForEntity,
 } from "./navigation";
 
 describe("selectTabGetter", () => {
@@ -303,6 +305,82 @@ describe("getCurrentScopeFromRoute", () => {
 	it("gets null if no scope set and no previous known", () => {
 		state = state.deleteIn(["navigation", "route", "match", "params", "scope"]);
 		return expect(getCurrentScopeFromRoute, "when called with", [state], "to be", null);
+	});
+});
+
+describe("closingTabHandlerActions", () => {
+	let state;
+
+	const actions1 = [
+		{ entityId: "id1", closeTab: () => "action1" },
+		{ entityId: "id2", closeTab: () => "action2" },
+		{ entityId: "id3", closeTab: "a fake action" },
+	];
+	const actions2 = [{ entityId: "id3", closeTab: "a fake action" }];
+
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			navigation: {
+				closingTabsHandlerActions: {
+					module1: actions1,
+					module2: actions2,
+				},
+			},
+		});
+	});
+
+	describe("selectClosingTabHandlerActions", () => {
+		it("selects closing tab handler actions", () =>
+			expect(selectClosingTabHandlerActions, "when called with", [state], "to equal", actions1.concat(actions2)));
+
+		it("selects null closing tab handler actions for a module.", () => {
+			state = state.setIn(["navigation", "closingTabsHandlerActions"], Immutable.fromJS({}));
+			expect(selectClosingTabHandlerActions, "when called with", [state], "to equal", []);
+		});
+	});
+
+	describe("selectClosingTabHandlerActionForEntity", () => {
+		it("selects closing tab handler fake action for a specific entity.", () =>
+			expect(
+				selectClosingTabHandlerActionForEntity,
+				"when called with",
+				["module1", "id3"],
+				"called with",
+				[state],
+				"to equal",
+				actions1[2].closeTab,
+			));
+
+		it("selects closing tab handler action for a specific entity.", () =>
+			expect(
+				selectClosingTabHandlerActionForEntity,
+				"when called with",
+				["module1", "id2"],
+				"called with",
+				[state],
+				"to equal",
+				actions1[1].closeTab,
+			));
+
+		it("selects closing tab handler action for a non-existing entity.", () =>
+			expect(
+				selectClosingTabHandlerActionForEntity,
+				"when called with",
+				["module4", "id100"],
+				"called with",
+				[state],
+				"to be null",
+			));
+
+		it("selects closing tab handler action for a non-existing module.", () =>
+			expect(
+				selectClosingTabHandlerActionForEntity,
+				"when called with",
+				["module4", "id2"],
+				"called with",
+				[state],
+				"to be null",
+			));
 	});
 });
 

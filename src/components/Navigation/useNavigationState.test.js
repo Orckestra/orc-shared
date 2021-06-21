@@ -4,6 +4,7 @@ import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
 import { push } from "connected-react-router";
 import Immutable from "immutable";
+import { mount } from "enzyme";
 import sinon from "sinon";
 import { spyOnConsole } from "../../utils/testUtils";
 import { REMOVE_TAB } from "../../actions/navigation";
@@ -59,7 +60,15 @@ const TestComp9 = props => (
 	</div>
 );
 
-const makeTestComp = Comp => ({ modules }) => <Comp {...useNavigationState(modules)} />;
+let firstPagTabClose = null;
+
+const makeTestComp = Comp => ({ modules }) => {
+	const navigationState = useNavigationState(modules);
+
+	firstPagTabClose = navigationState.pages?.length >= 2 ? navigationState.pages[1].close : null;
+
+	return <Comp {...navigationState}></Comp>;
+};
 
 describe("useNavigationState", () => {
 	spyOnConsole(["warn"]);
@@ -210,6 +219,51 @@ describe("useNavigationState", () => {
 	});
 	afterEach(() => {
 		resetLastScope();
+	});
+
+	it("provides state information about navigation without pages", () => {
+		state = state
+			.setIn(["navigation", "tabIndex"], Immutable.fromJS({}))
+			.setIn(["navigation", "moduleTabs"], Immutable.fromJS({ test: [undefined] }));
+
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modules} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<Bar
+							module={{
+								icon: "thing",
+								label: "Thing",
+								href: "/TestScope/test",
+								mappedFrom: "/TestScope/test",
+								active: false,
+							}}
+							pages={[]}
+							moduleName="test"
+							moduleHref="/TestScope/test"
+						/>
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+		).then(() =>
+			expect(console.warn, "to have calls satisfying", [
+				{
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
+				},
+				{
+					args: ["Using dataPath label value pointers is deprecated, use labelValueSelector instead"],
+				},
+			]),
+		);
 	});
 
 	it("provides state information about navigation", () =>
@@ -989,6 +1043,153 @@ describe("useNavigationState", () => {
 		);
 	});
 
+	it("Tab closing handler is not invoked when entity selector returns invalid entity", () => {
+		const fakeEvent = {
+			stopPropagation: sinon.spy().named("stopPropagation"),
+			preventDefault: sinon.spy().named("preventDefault"),
+		};
+
+		const closingHandler = sinon.spy().named("closingHandler");
+		const entitySelector = sinon.spy(() => ({ entityId: "entityId" })).named("entitySelector");
+
+		modules.test.closingTabHandler = {
+			handler: closingHandler,
+			entitySelector: entitySelector,
+		};
+
+		return expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modules} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: '[data-href="/TestScope/test/page3"] svg',
+				data: fakeEvent,
+			},
+		).then(() =>
+			Promise.all([
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								type: REMOVE_TAB,
+								payload: { module: "test", path: "/TestScope/test/page3" },
+							},
+						],
+					},
+				]),
+				expect(fakeEvent.stopPropagation, "was called once"),
+				expect(fakeEvent.preventDefault, "was called once"),
+				expect(closingHandler, "was not called"),
+				expect(entitySelector, "was called once"),
+			]),
+		);
+	});
+
+	it("Tab closing handler is not invoked when entity selector returns undefined", () => {
+		const fakeEvent = {
+			stopPropagation: sinon.spy().named("stopPropagation"),
+			preventDefault: sinon.spy().named("preventDefault"),
+		};
+
+		const closingHandler = sinon.spy().named("closingHandler");
+		const entitySelector = sinon.spy(() => {}).named("entitySelector");
+
+		modules.test.closingTabHandler = {
+			handler: closingHandler,
+			entitySelector: entitySelector,
+		};
+
+		return expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modules} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: '[data-href="/TestScope/test/page3"] svg',
+				data: fakeEvent,
+			},
+		).then(() =>
+			Promise.all([
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								type: REMOVE_TAB,
+								payload: { module: "test", path: "/TestScope/test/page3" },
+							},
+						],
+					},
+				]),
+				expect(fakeEvent.stopPropagation, "was called once"),
+				expect(fakeEvent.preventDefault, "was called once"),
+				expect(closingHandler, "was not called"),
+				expect(entitySelector, "was called once"),
+			]),
+		);
+	});
+
+	it("Tab closing handler is not invoked when entity selector returns invalid entity id", () => {
+		const fakeEvent = {
+			stopPropagation: sinon.spy().named("stopPropagation"),
+			preventDefault: sinon.spy().named("preventDefault"),
+		};
+
+		const closingHandler = sinon.spy().named("closingHandler");
+		const entitySelector = sinon.spy(() => ({ entity: {} })).named("entitySelector");
+
+		modules.test.closingTabHandler = {
+			handler: closingHandler,
+			entitySelector: entitySelector,
+		};
+
+		return expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modules} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"with event",
+			{
+				type: "click",
+				target: '[data-href="/TestScope/test/page3"] svg',
+				data: fakeEvent,
+			},
+		).then(() =>
+			Promise.all([
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								type: REMOVE_TAB,
+								payload: { module: "test", path: "/TestScope/test/page3" },
+							},
+						],
+					},
+				]),
+				expect(fakeEvent.stopPropagation, "was called once"),
+				expect(fakeEvent.preventDefault, "was called once"),
+				expect(closingHandler, "was not called"),
+				expect(entitySelector, "was called once"),
+			]),
+		);
+	});
+
 	it("Ensure tab closing handler is invoked when closing a tab", () => {
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
@@ -996,10 +1197,11 @@ describe("useNavigationState", () => {
 		};
 
 		const closingHandler = sinon.spy().named("closingHandler");
-		const closingContextSelector = sinon.spy().named("closingContextSelector");
+		const entitySelector = sinon.spy(() => ({ entityId: "entityId", entity: {} })).named("entitySelector");
 
 		modules.test.closingTabHandler = {
 			handler: closingHandler,
+			entitySelector: entitySelector,
 		};
 
 		return expect(
@@ -1031,59 +1233,46 @@ describe("useNavigationState", () => {
 				]),
 				expect(fakeEvent.stopPropagation, "was called once"),
 				expect(fakeEvent.preventDefault, "was called once"),
+				expect(entitySelector, "was called once"),
 				expect(closingHandler, "was called once"),
-				expect(closingContextSelector, "was not called"),
 			]),
 		);
 	});
 
-	it("Ensure tab closing handler is invoked when closing a tab with a context selector", () => {
+	it("Ensure tab closing handler is invoked when explicitly closing a tab", () => {
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
 			preventDefault: sinon.spy().named("preventDefault"),
 		};
 
 		const closingHandler = sinon.spy().named("closingHandler");
-		const closingContextSelector = sinon.spy().named("closingContextSelector");
+		const entitySelector = sinon.spy(() => ({ entityId: "entityId", entity: {} })).named("entitySelector");
 
 		modules.test.closingTabHandler = {
 			handler: closingHandler,
-			contextSelector: closingContextSelector,
+			entitySelector: entitySelector,
 		};
 
-		return expect(
+		const component = (
 			<Provider store={store}>
 				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
 						<TestBar modules={modules} />
 					</MemoryRouter>
 				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-				expect(closingHandler, "was called once"),
-				expect(closingContextSelector, "was called once"),
-			]),
+			</Provider>
 		);
+
+		mount(component);
+
+		expect(firstPagTabClose, "not to be null");
+
+		firstPagTabClose(null, true);
+
+		expect(fakeEvent.stopPropagation, "was not called");
+		expect(fakeEvent.preventDefault, "was not called");
+		expect(closingHandler, "was called once");
+		expect(entitySelector, "was called once");
 	});
 
 	it("navigates to module page if closing current tab", () => {

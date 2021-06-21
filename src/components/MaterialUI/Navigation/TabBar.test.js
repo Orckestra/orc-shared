@@ -21,6 +21,7 @@ import * as useDispatchWithModulesData from "./../../../hooks/useDispatchWithMod
 import * as ReactMock from "react";
 import sharedMessages from "./../../../sharedMessages";
 import { TestWrapper, createMuiTheme, extractMessages } from "./../../../utils/testUtils";
+import { SET_CLOSING_TAB_HANDLER_ACTIONS } from "../../../actions/navigation";
 
 const messages = extractMessages(sharedMessages);
 
@@ -247,6 +248,8 @@ describe("TabBar", () => {
 	);
 
 	beforeEach(() => {
+		module.closingTabHandler = null;
+
 		state = Immutable.fromJS({
 			modules: {
 				tree: {},
@@ -339,6 +342,52 @@ describe("TabBar", () => {
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders TabBar correctly with closing tab handler", () => {
+		store.dispatch = sinon.spy().named("dispatch");
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} moduleName={"module1"} pages={pages} />
+			</TestWrapper>
+		);
+
+		module.closingTabHandler = {
+			handler: () => {},
+			entitySelector: params => (params?.entityId !== "page3" ? { entityId: "entityId", entity: {} } : null),
+		};
+
+		const expected = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<ResizeDetector />
+					{expectedModuleTab}
+					{expectedTabs}
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
+				</div>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+
+		expect(store.dispatch, "was called once");
+		expect(store.dispatch.getCall(0).args.length, "to equal", 1);
+		expect(store.dispatch.getCall(0).args[0].type, "to equal", SET_CLOSING_TAB_HANDLER_ACTIONS);
+		expect(store.dispatch.getCall(0).args[0].payload.module, "to equal", "module1");
+		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
 	});
 
 	it("Contains proper Select and Modal elements when they are visible", () => {

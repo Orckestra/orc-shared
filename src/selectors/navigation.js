@@ -49,6 +49,19 @@ const selectModuleLists = createSelector(getNavigationState, nav => nav.get("mod
 const selectHrefConfig = createSelector(getNavigationState, state => state.get("config"));
 const selectCurrentPrependPath = createSelector(getNavigationState, state => state.get("currentPrependPath"));
 
+export const selectClosingTabHandlerActions = createSelector(getNavigationState, nav => {
+	const moduleActions = nav.get("closingTabsHandlerActions")?.toJS() ?? {};
+
+	return Object.values(moduleActions).reduce((a, b) => a.concat(b), []);
+});
+
+export const selectClosingTabHandlerActionForEntity = (module, entityId) =>
+	createSelector(getNavigationState, nav => {
+		const actions = nav.getIn(["closingTabsHandlerActions", module])?.toJS() ?? [];
+
+		return actions.find(x => x.entityId === entityId)?.closeTab ?? null;
+	});
+
 export const selectPrependPathConfig = createSelector(
 	selectHrefConfig,
 	selectCurrentPrependPath,
