@@ -165,19 +165,30 @@ export const useNavigationState = modules => {
 
 		// Modules do not have close functions
 		const close = isPageTab
-			? event => {
-					if (moduleData.closingTabHandler?.handler) {
-						const context = moduleData.closingTabHandler.contextSelector?.(store.getState(), params) ?? null;
-						moduleData.closingTabHandler.handler(dispatch, params, context);
+			? (event, executeHandlerOnly = false) => {
+					let result = Promise.resolve();
+					if (moduleData.closingTabHandler?.handler && moduleData.closingTabHandler?.entitySelector) {
+						const entityContext = moduleData.closingTabHandler.entitySelector(params, store.getState()) ?? null;
+						if (entityContext?.entityId != null && entityContext?.entity != null) {
+							result = moduleData.closingTabHandler.handler(
+								dispatch,
+								params,
+								entityContext.entityId,
+								entityContext.entity,
+							);
+						}
 					}
-					dispatch(removeTab(moduleName, page.href));
-					if (currentHref === href) {
-						dispatch(push(moduleHref));
+					if (executeHandlerOnly === false) {
+						dispatch(removeTab(moduleName, page.href));
+						if (currentHref === href) {
+							dispatch(push(moduleHref));
+						}
 					}
 					if (event) {
 						event.stopPropagation();
 						event.preventDefault();
 					}
+					return result;
 			  }
 			: undefined;
 
@@ -193,6 +204,8 @@ export const useNavigationState = modules => {
 			close,
 		};
 	});
+
+	module.closingTabHandler = moduleData.closingTabHandler ?? null;
 
 	return {
 		module,

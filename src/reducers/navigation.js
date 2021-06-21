@@ -1,5 +1,12 @@
 import Immutable from "immutable";
-import { SET_ROUTE, MAP_HREF, REMOVE_TAB, SET_HREF_CONFIG, SET_CURRENT_PREPEND_PATH } from "../actions/navigation";
+import {
+	SET_ROUTE,
+	MAP_HREF,
+	REMOVE_TAB,
+	SET_HREF_CONFIG,
+	SET_CURRENT_PREPEND_PATH,
+	SET_CLOSING_TAB_HANDLER_ACTIONS,
+} from "../actions/navigation";
 import { getAllAfterPrependHref } from "../utils/parseHelper";
 import { APPLICATION_SCOPE_HAS_CHANGED } from "../actions/scopes";
 
@@ -10,6 +17,7 @@ const initialState = Immutable.fromJS({
 	mappedHrefs: {},
 	config: {},
 	currentPrependPath: null,
+	closingTabsHandlerActions: {},
 });
 
 const navigationReducer = (state = initialState, action) => {
@@ -76,6 +84,12 @@ const navigationReducer = (state = initialState, action) => {
 					.set("tabIndex", Immutable.fromJS({}))
 					.set("mappedHrefs", Immutable.fromJS({}));
 			});
+		case SET_CLOSING_TAB_HANDLER_ACTIONS:
+			return state.setIn(
+				["closingTabsHandlerActions", action.payload.module],
+				Immutable.fromJS(action.payload.actions),
+			);
+
 		default:
 			return state;
 	}

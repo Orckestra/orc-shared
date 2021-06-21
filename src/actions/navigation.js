@@ -38,3 +38,13 @@ export const setCurrentPrependPath = prependPath => ({
 	type: SET_CURRENT_PREPEND_PATH,
 	payload: prependPath,
 });
+
+export const SET_CLOSING_TAB_HANDLER_ACTIONS = "SET_CLOSING_TAB_HANDLER_ACTIONS";
+
+export const setClosingTabHandlerActions = (module, actions) => ({
+	type: SET_CLOSING_TAB_HANDLER_ACTIONS,
+	payload: {
+		module,
+		actions,
+	},
+});

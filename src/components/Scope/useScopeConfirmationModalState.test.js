@@ -1,6 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import sinon from "sinon";
+import { act } from "unexpected-reaction";
 import { TestWrapper } from "../../utils/testUtils";
 import useScopeConfirmationModalState from "./useScopeConfirmationModalState";
 import { mount } from "enzyme";
@@ -15,8 +16,13 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 const TestComp = () => {
-	const [isModalOpened, closeModalCallback, scopeDialogType, acceptScopeChange, selectNewScope] =
-		useScopeConfirmationModalState();
+	const [
+		isModalOpened,
+		closeModalCallback,
+		scopeDialogType,
+		acceptScopeChange,
+		selectNewScope,
+	] = useScopeConfirmationModalState();
 	return (
 		<div>
 			<div id="isModalOpened">{isModalOpened ? "true" : "false"}</div>
@@ -36,6 +42,7 @@ const TestComp = () => {
 
 describe("useScopeConfirmationModalState", () => {
 	let state, store, history;
+
 	beforeEach(() => {
 		history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
 		sinon.spy(history, "push");
@@ -167,7 +174,7 @@ describe("useScopeConfirmationModalState", () => {
 		expect(isModalOpened, "to equal", "true");
 	});
 
-	it("selecting a new scope without active tabs changes the scope", function () {
+	it("selecting a new scope without active tabs changes the scope", async () => {
 		const component = (
 			<TestWrapper provider={{ store }} router={{ history }}>
 				<TestComp />
@@ -179,6 +186,8 @@ describe("useScopeConfirmationModalState", () => {
 		const selectScopeBtn = mountedComponent.find("#selectNewScope");
 
 		selectScopeBtn.simulate("click");
+
+		await new Promise(resolve => setTimeout(resolve, 10));
 
 		expect(history.push, "to have calls satisfying", [{ args: ["/newScope/TheModuleName"] }]);
 		expect(store.dispatch, "to have calls satisfying", [
@@ -220,7 +229,7 @@ describe("useScopeConfirmationModalState", () => {
 		expect(isModalOpened, "to equal", "false");
 	});
 
-	it("acceptScopeChange changes the scope", function () {
+	it("acceptScopeChange changes the scope", async () => {
 		openTabs();
 
 		const component = (
@@ -240,10 +249,74 @@ describe("useScopeConfirmationModalState", () => {
 		const acceptScopeChangeBtn = mountedComponent.find("#acceptScopeChange");
 		acceptScopeChangeBtn.simulate("click");
 
+		await new Promise(resolve => setTimeout(resolve, 10));
+
 		isModalOpened = mountedComponent.find("#isModalOpened").text();
 		expect(isModalOpened, "to equal", "false");
 
 		expect(history.push, "to have calls satisfying", [{ args: ["/newScope/TheModuleName"] }]);
+		expect(store.dispatch, "to have calls satisfying", [
+			{
+				args: [
+					{
+						type: APPLICATION_SCOPE_HAS_CHANGED,
+						payload: {
+							previousScope: "TheOldScope",
+							newScope: "newScope",
+						},
+					},
+				],
+			},
+		]);
+	});
+
+	it("acceptScopeChange invokes close tab handlers", async () => {
+		const closingTabHandler = sinon.spy(() => Promise.resolve("tab_closed")).named("closingTabHandler");
+
+		state = state.setIn(
+			["navigation", "closingTabsHandlerActions"],
+			Immutable.fromJS({
+				TheModuleName: [
+					{ entityId: "id1", closeTab: closingTabHandler },
+					{ entityId: "id2", closeTab: closingTabHandler },
+					{ entityId: "id3", closeTab: closingTabHandler },
+				],
+			}),
+		);
+
+		openTabs();
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const selectScopeBtn = mountedComponent.find("#selectNewScope");
+		selectScopeBtn.simulate("click");
+
+		let isModalOpened = mountedComponent.find("#isModalOpened").text();
+		expect(isModalOpened, "to equal", "true");
+
+		const acceptScopeChangeBtn = mountedComponent.find("#acceptScopeChange");
+		acceptScopeChangeBtn.simulate("click");
+
+		await new Promise(resolve => setTimeout(resolve, 10));
+
+		isModalOpened = mountedComponent.find("#isModalOpened").text();
+		expect(isModalOpened, "to equal", "false");
+
+		expect(closingTabHandler.callCount, "to be", 3);
+		expect(closingTabHandler, "to have calls satisfying", [
+			{ args: [null, true] },
+			{ args: [null, true] },
+			{ args: [null, true] },
+		]);
+
+		expect(history.push, "to have calls satisfying", [{ args: ["/newScope/TheModuleName"] }]);
+		expect(store.dispatch.callCount, "to be", 1);
 		expect(store.dispatch, "to have calls satisfying", [
 			{
 				args: [

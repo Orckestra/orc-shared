@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ResizeDetector from "react-resize-detector";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import Tabs from "@material-ui/core/Tabs";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,6 +19,7 @@ import { removeEditNode } from "./../../../actions/view";
 import { getValueFromUrlByKey, tryGetNewEntityIdKey } from "./../../../utils/urlHelper";
 import { useDispatchWithModulesData } from "./../../../hooks/useDispatchWithModulesData";
 import sharedMessages from "./../../../sharedMessages";
+import { setClosingTabHandlerActions } from "../../../actions/navigation";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -95,11 +96,12 @@ export const TabLink = React.forwardRef((props, ref) => {
 	);
 });
 
-const MuiBar = ({ module, pages }) => {
+const MuiBar = ({ module, moduleName, pages }) => {
 	const tabs = React.useRef(null);
 	const classes = useStyles();
 	const history = useHistory();
 	const dispatch = useDispatchWithModulesData();
+	const dispatchRedux = useDispatch();
 	const activePage = pages.findIndex(p => p.active === true);
 	const activeTabIndex = activePage === -1 ? false : activePage;
 	const [showSelect, setShowSelect] = React.useState(false);
@@ -171,6 +173,19 @@ const MuiBar = ({ module, pages }) => {
 	React.useEffect(() => {
 		resizeHandler();
 	}, [resizeHandler, module, pages]);
+
+	React.useEffect(() => {
+		if (module.closingTabHandler?.entitySelector) {
+			const actions = pages
+				.map(p => ({
+					entityId: module.closingTabHandler.entitySelector(p.params)?.entityId ?? null,
+					closeTab: p.close,
+				}))
+				.filter(x => x.entityId != null);
+
+			dispatchRedux(setClosingTabHandlerActions(moduleName, actions));
+		}
+	}, [moduleName, pages, module.closingTabHandler]);
 
 	return (
 		<div className={classes.container}>

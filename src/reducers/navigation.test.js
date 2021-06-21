@@ -1,5 +1,12 @@
 import Immutable from "immutable";
-import { setRoute, removeTab, mapHref, setHrefConfig, setCurrentPrependPath } from "../actions/navigation";
+import {
+	setRoute,
+	removeTab,
+	mapHref,
+	setHrefConfig,
+	setCurrentPrependPath,
+	setClosingTabHandlerActions,
+} from "../actions/navigation";
 import reducer from "./navigation";
 import { applicationScopeHasChanged } from "../actions/scopes";
 
@@ -12,6 +19,7 @@ describe("Navigation reducer", () => {
 			mappedHrefs: {},
 			config: {},
 			currentPrependPath: null,
+			closingTabsHandlerActions: {},
 		}));
 
 	describe("SET_ROUTE", () => {
@@ -344,6 +352,38 @@ describe("Navigation reducer", () => {
 					config: {
 						id: "ThisValueShouldRemain",
 					},
+				}),
+			);
+		});
+	});
+
+	describe("SET_CLOSING_TAB_HANDLER_ACTIONS", () => {
+		it("reset the tabs to their initial values", () => {
+			const actions = [
+				{ id: "id1", action: () => "action1" },
+				{ id: "id2", action: () => "action2" },
+			];
+			const oldState = Immutable.fromJS({
+				route: {},
+				tabIndex: {},
+				moduleTabs: {},
+				mappedHrefs: {},
+				config: {},
+				currentPrependPath: null,
+				closingTabsHandlerActions: {},
+			});
+			const action = setClosingTabHandlerActions("a_module_X", actions);
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to exhaustively satisfy",
+				Immutable.fromJS({
+					route: {},
+					tabIndex: {},
+					moduleTabs: {},
+					mappedHrefs: {},
+					config: {},
+					currentPrependPath: null,
+					closingTabsHandlerActions: { a_module_X: actions },
 				}),
 			);
 		});
