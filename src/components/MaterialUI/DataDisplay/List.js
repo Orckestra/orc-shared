@@ -61,7 +61,11 @@ const ListItem = ({ isChecked, item, onChange, listItemFormatter, classes }) => 
 		</ListItemMui>
 	);
 };
-export const compareListItem = (prev, next) => prev.item.id === next.item.id && prev.isChecked === next.isChecked;
+export const compareListItem = (prev, next) =>
+	prev.item.id === next.item.id &&
+	prev.isChecked === next.isChecked &&
+	prev.item.subtitle === next.item.subtitle &&
+	prev.item.title === next.item.title;
 const MemoListItemMui = React.memo(ListItem, compareListItem);
 
 export const ScrollableList = React.forwardRef((props, ref) => {
