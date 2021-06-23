@@ -66,7 +66,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 	tableCellSelect: {
 		padding: theme.spacing(2),
-		width: theme.spacing(5),
+		width: theme.spacing(3),
 	},
 	headerCell: {
 		padding: theme.spacing(1, 2),
@@ -75,7 +75,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 	headerCellSelect: {
 		padding: theme.spacing(1, 2),
-		width: theme.spacing(5),
+		width: theme.spacing(3),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
 	},
