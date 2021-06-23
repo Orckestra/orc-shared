@@ -186,7 +186,7 @@ describe("InputBase Component", () => {
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 
-	it("Renders InputBase with autoComplete", () => {
+	it("Renders InputBase with autoComplete off", () => {
 		const inputProps = new InputBaseProps();
 		const aValue = "value";
 		const aPlaceholder = "placeholder";
@@ -201,6 +201,25 @@ describe("InputBase Component", () => {
 
 		const mountedComponent = mount(component);
 		const expected = <InputBaseMUI value={aValue} placeholder={aPlaceholder} autoComplete={"new-password"} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders InputBase with autoComplete as street-address", () => {
+		const inputProps = new InputBaseProps();
+		const aValue = "value";
+		const aPlaceholder = "placeholder";
+		const autoComplete = "street-address";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.placeholder, aPlaceholder);
+		inputProps.set(InputBaseProps.propNames.autoComplete, autoComplete);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} placeholder={aPlaceholder} autoComplete={"street-address"} />;
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
