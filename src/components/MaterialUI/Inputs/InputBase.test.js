@@ -185,4 +185,23 @@ describe("InputBase Component", () => {
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
+
+	it("Renders InputBase with autoComplete", () => {
+		const inputProps = new InputBaseProps();
+		const aValue = "value";
+		const aPlaceholder = "placeholder";
+		const autoComplete = "off";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.placeholder, aPlaceholder);
+		inputProps.set(InputBaseProps.propNames.autoComplete, autoComplete);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} placeholder={aPlaceholder} autoComplete={"new-password"} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
 });
