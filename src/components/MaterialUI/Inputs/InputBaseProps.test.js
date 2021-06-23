@@ -17,6 +17,7 @@ describe("InputBase Props", () => {
 			"startAdornment",
 			"endAdornment",
 			"metadata",
+			"autoComplete",
 		];
 
 		expect(InputBaseProps.propNames, "to have keys", propNames);
@@ -38,6 +39,7 @@ describe("InputBase Props", () => {
 			"startAdornment",
 			"endAdornment",
 			"metadata",
+			"autoComplete",
 		];
 
 		const ruleNames = ["input", "errorText"];
