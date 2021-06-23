@@ -142,7 +142,7 @@ const InputBase = ({ inputProps }) => {
 					endAdornment={endAdornment}
 					rows={4}
 					title={value}
-					autoComplete={autoComplete === "off" ? "new-password" : autoComplete}
+					autoComplete={autoComplete}
 				/>
 			</div>
 			{error && <div className={classNames(classes.errorText, errorTextStyle)}>{error}</div>}

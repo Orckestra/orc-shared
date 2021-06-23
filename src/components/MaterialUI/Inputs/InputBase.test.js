@@ -186,11 +186,11 @@ describe("InputBase Component", () => {
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 
-	it("Renders InputBase with autoComplete", () => {
+	it("Renders InputBase with autoComplete as new-password", () => {
 		const inputProps = new InputBaseProps();
 		const aValue = "value";
 		const aPlaceholder = "placeholder";
-		const autoComplete = "off";
+		const autoComplete = "new-password";
 
 		inputProps.set(InputBaseProps.propNames.update, update);
 		inputProps.set(InputBaseProps.propNames.value, aValue);
