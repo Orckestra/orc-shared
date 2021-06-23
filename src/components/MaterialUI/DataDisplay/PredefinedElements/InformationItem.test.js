@@ -165,4 +165,33 @@ describe("Information Item", () => {
 
 		expect(labelContainer, "when mounted", "to have style rules satisfying", "to contain", 'content: " *"');
 	});
+
+	it("Renders Information Item properly with a header icon", () => {
+		const label = "label";
+		const value = "value";
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label} headerIcon={<span>the header icon</span>}>
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<div>
+					<div>
+						<Typography children={label} />
+					</div>
+					<div>
+						<span>the header icon</span>
+					</div>
+				</div>
+				<MultipleLinesText>{value}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 });

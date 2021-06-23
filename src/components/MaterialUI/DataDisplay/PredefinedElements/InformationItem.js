@@ -33,28 +33,68 @@ const useStyles = makeStyles(theme => ({
 			marginTop: theme.spacing(2),
 		},
 	},
+	headerRoot: {
+		display: "flex",
+		flexDirection: "row",
+	},
+	headerTextContainer: {
+		flexGrow: 0,
+	},
+	headerIconContainer: {
+		paddingLeft: theme.spacing(0.5),
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+	},
 }));
 
-const InformationItem = ({ label, children, required, error, showNotAvailable = false, marginTop = 0 }) => {
-	const classes = useStyles({ required, error, marginTop });
+const InformationItemChildren = ({ classes, children, showNotAvailable }) => {
 	const { formatMessage } = useIntl();
 
-	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
-
-	const value = children ?? (showNotAvailable ? formatMessage(sharedMessages.notAvailable) : "");
+	if (isReactComponent(children)) {
+		return children;
+	}
 
 	const multipleLinesTextProps = new TextProps();
 	multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
 	multipleLinesTextProps.set(TextProps.propNames.classes, classes.value);
 
+	const value = children ?? (showNotAvailable ? formatMessage(sharedMessages.notAvailable) : "");
+
+	return <MultipleLinesText textProps={multipleLinesTextProps} children={value} />;
+};
+
+const InformationItemHeader = ({ classes, label, headerIcon }) => {
+	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
+	const headerText = (formattedLabel && <Typography className={classes.title} children={formattedLabel} />) ?? null;
+
+	if (headerIcon) {
+		return (
+			<div className={classes.headerRoot}>
+				<div className={classes.headerTextContainer}>{headerText}</div>
+				<div className={classes.headerIconContainer}>{headerIcon}</div>
+			</div>
+		);
+	}
+
+	return headerText;
+};
+
+const InformationItem = ({
+	label,
+	children,
+	required,
+	error,
+	headerIcon = undefined,
+	showNotAvailable = false,
+	marginTop = 0,
+}) => {
+	const classes = useStyles({ required, error, marginTop });
+
 	return (
 		<div className={classes.container}>
-			{formattedLabel && <Typography className={classes.title} children={formattedLabel} />}
-			{isReactComponent(children) ? (
-				children
-			) : (
-				<MultipleLinesText textProps={multipleLinesTextProps} children={value} />
-			)}
+			<InformationItemHeader classes={classes} label={label} headerIcon={headerIcon} />
+			<InformationItemChildren classes={classes} children={children} showNotAvailable={showNotAvailable} />
 		</div>
 	);
 };
