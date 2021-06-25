@@ -104,7 +104,12 @@ export const ScrollableCustomList = React.forwardRef((props, ref) => {
 });
 
 const compareListItem = (prev, next) => {
-	return prev.item.id === next.item.id && prev.isChecked === next.isChecked;
+	return (
+		prev.item.id === next.item.id &&
+		prev.isChecked === next.isChecked &&
+		prev.item.subtitle === next.item.subtitle &&
+		prev.item.title === next.item.title
+	);
 };
 
 const ListItemWrapper = ({ isChecked, item, handleToggle, listItemFormatter, classes }) => {

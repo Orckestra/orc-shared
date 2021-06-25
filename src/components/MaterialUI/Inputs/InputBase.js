@@ -98,6 +98,7 @@ const InputBase = ({ inputProps }) => {
 	const startAdornment = inputProps?.get(InputBaseProps.propNames.startAdornment);
 	const endAdornment = inputProps?.get(InputBaseProps.propNames.endAdornment);
 	const metadata = inputProps?.get(InputBaseProps.propNames.metadata);
+	const autoComplete = inputProps?.get(InputBaseProps.propNames.autoComplete);
 
 	const onClick = item => {
 		// Fixes FireFox issue, where the input number buttons do not focus on input control,
@@ -141,6 +142,7 @@ const InputBase = ({ inputProps }) => {
 					endAdornment={endAdornment}
 					rows={4}
 					title={value}
+					autoComplete={autoComplete}
 				/>
 			</div>
 			{error && <div className={classNames(classes.errorText, errorTextStyle)}>{error}</div>}
