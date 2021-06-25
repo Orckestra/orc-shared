@@ -137,7 +137,13 @@ const renderByTypeInEditingMode = (e, def, rowId, readOnly, transformedValue) =>
 	return renderByType(e, def, rowId, readOnly, transformedValue);
 };
 
-export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnly = true, keyField = "id") => {
+export const buildHeaderAndRowFromConfig = (
+	columnDefinitions,
+	elements,
+	readOnly = true,
+	keyField = "id",
+	showCustomClass = false,
+) => {
 	if (columnDefinitions.filter(def => def.sortOptions != null && def.sortOptions.sortField).length > 1) {
 		throw new Error("Only one active sort column can exist at the same time");
 	}
@@ -154,6 +160,7 @@ export const buildHeaderAndRowFromConfig = (columnDefinitions, elements, readOnl
 		return {
 			key: rowId,
 			element: e,
+			style: { show: showCustomClass, customClass: e.customClass },
 			columns: columnDefinitions
 				.filter(def => def.visible !== false)
 				.map(def => {

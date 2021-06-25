@@ -251,27 +251,35 @@ const buildTableRows = (
 		}
 	};
 
-	const mappedRows = rows.map(row => (
-		<MemoTableRow
-			className={classNames(classes.tableRow, customClasses.tableRow)}
-			key={row.key}
-			onClick={evt => onClick(evt, row)}
-			selected={selectionHandlers.isSelected(row.key)}
-			deepPropsComparation={deepPropsComparation}
-			context={context}
-			isEditingMode={isEditingMode}
-			dataRows={rows}
-		>
-			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
-			{row.columns.map((cell, cellIndex) => (
-				<TableCell
-					className={classNames(classes.tableCell, customClasses[cell.className], customClasses.tableCell)}
-					key={cellIndex}
-					value={cell.cellElement}
-				/>
-			))}
-		</MemoTableRow>
-	));
+	const mappedRows = rows.map(row => {
+		const customClassName = row.style.show ? row.style.customClass : "";
+		return (
+			<MemoTableRow
+				className={classNames(
+					classes.tableRow,
+					customClasses.tableRow,
+					customClasses[row.className],
+					customClasses[customClassName],
+				)}
+				key={row.key}
+				onClick={evt => onClick(evt, row)}
+				selected={selectionHandlers.isSelected(row.key)}
+				deepPropsComparation={deepPropsComparation}
+				context={context}
+				isEditingMode={isEditingMode}
+				dataRows={rows}
+			>
+				{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
+				{row.columns.map((cell, cellIndex) => (
+					<TableCell
+						className={classNames(classes.tableCell, customClasses[cell.className], customClasses.tableCell)}
+						key={cellIndex}
+						value={cell.cellElement}
+					/>
+				))}
+			</MemoTableRow>
+		);
+	});
 
 	return mappedRows;
 };
