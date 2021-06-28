@@ -157,10 +157,11 @@ export const buildHeaderAndRowFromConfig = (
 
 	const rows = elements.map(e => {
 		const rowId = e[keyField];
+		const elementClass = e.customClass || "";
 		return {
 			key: rowId,
 			element: e,
-			style: { show: showCustomClass, customClass: e.customClass },
+			style: { show: showCustomClass, customClass: elementClass },
 			columns: columnDefinitions
 				.filter(def => def.visible !== false)
 				.map(def => {

@@ -252,7 +252,9 @@ const buildTableRows = (
 	};
 
 	const mappedRows = rows.map(row => {
-		const customClassName = row.style.show ? row.style.customClass : "";
+		const showStyle = row?.style?.show ?? false;
+		const rowClass = row?.style?.customClass ?? "";
+		const customClassName = showStyle ? rowClass : "";
 		return (
 			<MemoTableRow
 				className={classNames(
