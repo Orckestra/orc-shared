@@ -110,29 +110,31 @@ const withDeferredPopper =
 		classProp.arrow = classProp.arrow ?? classes.arrow;
 
 		return (
-			<ClickAwayListener onClickAway={() => clickAwayHandler()}>
-				<div className={classProp.popperContainer} data-qa="popperContainer">
-					{defaultComponent}
-					<Popper
-						data-qa="poperComponent"
-						className={classProp.popper}
-						modifiers={{
-							offset: {
-								offset: "0, 10",
-							},
-							arrow: {
-								enabled: true,
-								element: classProp.arrow,
-							},
-						}}
-						open={popperState.isDisplayed}
-						anchorEl={popperState.anchorElement}
-					>
-						<Arrow arrowClass={classProp.arrow} />
-						{popperValue}
-					</Popper>
-				</div>
-			</ClickAwayListener>
+			<div className={classProp.popperContainer} data-qa="popperContainer">
+				{defaultComponent}
+				<Popper
+					data-qa="poperComponent"
+					className={classProp.popper}
+					modifiers={{
+						offset: {
+							offset: "0, 10",
+						},
+						arrow: {
+							enabled: true,
+							element: classProp.arrow,
+						},
+					}}
+					open={popperState.isDisplayed}
+					anchorEl={popperState.anchorElement}
+				>
+					<ClickAwayListener onClickAway={() => clickAwayHandler()}>
+						<div>
+							<Arrow arrowClass={classProp.arrow} />
+							{popperValue}
+						</div>
+					</ClickAwayListener>
+				</Popper>
+			</div>
 		);
 	};
 
