@@ -36,6 +36,8 @@ const useStyles = makeStyles(theme => ({
 	headerRoot: {
 		display: "flex",
 		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: theme.spacing(1),
 	},
 	headerTextContainer: {
 		flexGrow: 0,
@@ -44,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 		paddingLeft: theme.spacing(0.5),
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "center",
+		justifyContent: "flex-start",
 	},
 }));
 
