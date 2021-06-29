@@ -89,7 +89,7 @@ describe("SearchControl Component", () => {
 								disableUnderline={true}
 								endAdornment={
 									<InputAdornment position="start">
-										<IconButton tabIndex="-1" type="reset">
+										<IconButton tabIndex="-1">
 											<Icon id="close2" />
 										</IconButton>
 									</InputAdornment>
@@ -130,7 +130,7 @@ describe("SearchControl Component", () => {
 								disableUnderline={true}
 								endAdornment={
 									<InputAdornment position="start">
-										<IconButton tabIndex="-1" type="reset">
+										<IconButton tabIndex="-1">
 											<Icon id="close2" />
 										</IconButton>
 									</InputAdornment>
@@ -171,7 +171,7 @@ describe("SearchControl Component", () => {
 								disableUnderline={true}
 								endAdornment={
 									<InputAdornment position="start">
-										<IconButton tabIndex="-1" type="reset">
+										<IconButton tabIndex="-1">
 											<Icon id="close2" />
 										</IconButton>
 									</InputAdornment>
@@ -266,6 +266,34 @@ describe("SearchControl Component", () => {
 		serachButton.simulate("click");
 
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", "abcdef"] }]);
+	});
+
+	it("Search Control should remove value when clicking on the clear button", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl placeholder="placeHolderTest" searchOptions={options} />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const allInputs = mountedComponent.find("input");
+		const searchInput = allInputs.find("[placeholder='placeHolderTest']");
+		expect(searchInput.length, "to be", 1);
+
+		searchInput.instance().value = "abcdef";
+
+		const allButton = mountedComponent.find("button");
+		const clearButton = allButton.find("[data-qa='clearButton']");
+
+		clearButton.simulate("click");
+
+		expect(searchInput.instance().value, "to equal", "");
 	});
 
 	it("Search Control should trigger the event when clicking on the search button when option change", () => {

@@ -188,7 +188,15 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 					onBlur={e => onFocusedEvent(e, false)}
 					endAdornment={
 						<InputAdornment position="start">
-							<IconButton tabIndex="-1" type="reset" className={classes.clearButton}>
+							<IconButton
+								tabIndex="-1"
+								data-qa="clearButton"
+								onClick={() => {
+									inputRef.current.value = null;
+									inputRef.current.focus();
+								}}
+								className={classes.clearButton}
+							>
 								<Icon id="close2" />
 							</IconButton>
 						</InputAdornment>
