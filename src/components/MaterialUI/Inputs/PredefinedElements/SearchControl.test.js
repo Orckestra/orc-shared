@@ -376,4 +376,50 @@ describe("SearchControl Component", () => {
 		searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
 		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
 	});
+
+	it("Renders Search Control component without errors when disabled", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl placeholder="placeHolderTest" defaultValue="default" searchOptions={options} disabled={true} />
+			</TestWrapper>
+		);
+
+		const selectProps = new SelectProps();
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<Select options={options} selectProps={selectProps} />
+					<div>
+						<form>
+							<Input
+								placeholder="placeHolderTest"
+								defaultValue="default"
+								disabled={true}
+								disableUnderline={true}
+								endAdornment={
+									<InputAdornment position="start">
+										<IconButton tabIndex="-1" disabled={true}>
+											<Icon id="close2" />
+										</IconButton>
+									</InputAdornment>
+								}
+							/>
+						</form>
+					</div>
+					<IconButton disabled={true}>
+						<Icon id="search" />
+					</IconButton>
+				</div>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 });
