@@ -8,7 +8,7 @@ import { isEqual } from "lodash";
 // as properties of extendedValidationRules
 export const useFullEntityEditState = (
 	entityId,
-	getFullEntityModelProperties = null,
+	getFullEntityModelProperties,
 	extendedValidationRules = {},
 	dependencies = {},
 ) => {
@@ -23,7 +23,7 @@ export const useFullEntityEditState = (
 				? mergedValidationRules[errorType](newValue, dependencies)
 				: true;
 
-			if (isValid === false) {
+			if (isValid === false && error == null) {
 				error = errorType;
 				return;
 			}
@@ -37,29 +37,8 @@ export const useFullEntityEditState = (
 
 		const fullEntityModelProperties = getFullEntityModelProperties(initializationContext ?? {});
 
-		for (const sectionName in fullEntityModelProperties) {
-			if (!fullEntityModelProperties.hasOwnProperty(sectionName)) {
-				continue;
-			}
-
-			const editStateFieldDefinitions = fullEntityModelProperties[sectionName];
-
-			for (const fieldName in editStateFieldDefinitions) {
-				if (!editStateFieldDefinitions.hasOwnProperty(fieldName)) {
-					continue;
-				}
-
-				const fieldDefinition = editStateFieldDefinitions[fieldName];
-
-				console.log(
-					"ResumeFunction --->  ",
-					fieldName,
-					"  ---> ",
-					fieldDefinition.newValue,
-					"   :::::  ",
-					fieldDefinition.initialValue,
-				);
-
+		Object.entries(fullEntityModelProperties).forEach(([sectionName, editStateFieldDefinitions]) => {
+			Object.entries(editStateFieldDefinitions).forEach(([fieldName, fieldDefinition]) => {
 				const allDependencies = {
 					...dependencies,
 					...fieldDefinition.dependencies,
@@ -79,8 +58,8 @@ export const useFullEntityEditState = (
 				const path = [entityId, sectionName, "model"].concat(fieldDefinition.keys);
 
 				fullEntityEditModel = fullEntityEditModel.setIn(path, value);
-			}
-		}
+			});
+		});
 
 		dispatchWithModulesData(setFullEntityEditModel, [fullEntityEditModel]);
 	};
