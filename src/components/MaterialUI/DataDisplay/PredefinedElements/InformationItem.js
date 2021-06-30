@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	headerTextContainer: {
 		flexGrow: 0,
+		"& > $title": {
+			marginBottom: 0,
+		},
 	},
 	headerIconContainer: {
 		paddingLeft: theme.spacing(0.5),
