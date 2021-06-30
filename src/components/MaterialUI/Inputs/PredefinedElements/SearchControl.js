@@ -126,7 +126,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {} }) => {
+const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {}, disabled }) => {
 	searchOptions = !searchOptions?.length ? null : searchOptions;
 	const baseValue = !!searchOptions ? searchOptions[0].value : null;
 	const [inputFocused, setInputFocused] = useState(false);
@@ -181,6 +181,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 					defaultValue={defaultValue}
 					inputRef={inputRef}
 					type="text"
+					disabled={disabled}
 					classes={{ input: classes.controlInput }}
 					onKeyDown={handleKeyDown}
 					disableUnderline={true}
@@ -191,6 +192,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 							<IconButton
 								tabIndex="-1"
 								data-qa="clearButton"
+								disabled={disabled}
 								onClick={() => {
 									inputRef.current.value = null;
 									inputRef.current.focus();
@@ -210,6 +212,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 		<IconButton
 			data-qa="searchButton"
 			variant="contained"
+			disabled={disabled}
 			classes={{ root: classes.searchButton }}
 			onClick={() => {
 				onSearch(searchOption, inputRef.current.value);
