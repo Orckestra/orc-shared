@@ -72,10 +72,18 @@ const SelectionList = ({
 	const defaultPanel = <div></div>;
 
 	useEffect(() => {
-		if (defaultSelection && checked.length === 0) {
+		const listDataIds = listData.data.map(d => d.id);
+		const checkedFromList = listDataIds.filter(l => checked.includes(l));
+		if (defaultSelection && checkedFromList.length === 0) {
 			setChecked([defaultSelection]);
 		}
-	}, [defaultSelection, checked.length]);
+	}, [defaultSelection, checked, listData.data]);
+
+	useEffect(() => {
+		if (!multiSelect) {
+			setChecked([defaultSelection]);
+		}
+	}, [defaultSelection, multiSelect, listData.data.length]);
 
 	const onChangeEvent = ids => {
 		onChange && onChange(formatOnChange(listData.data, ids));
