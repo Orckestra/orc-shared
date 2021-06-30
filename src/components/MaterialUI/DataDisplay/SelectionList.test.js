@@ -46,6 +46,33 @@ describe("SelectionList", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders SelectionList correctly with multiSelect", () => {
+		const component = (
+			<TestWrapper intlProvider={{ messages }}>
+				<SelectionList
+					listData={{ title: listTitle, data: [{ id: "id1", disabled: true, title: "item1" }] }}
+					multiSelect={true}
+				/>
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper intlProvider={{ messages }}>
+				<Grid>
+					<Grid>
+						<div>{listTitle}</div>
+						<ScrollableCustomList checked={[]} items={list} classes={{}} />
+					</Grid>
+					<Grid>
+						<div></div>
+					</Grid>
+				</Grid>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Renders SelectionList correctly if infoPanel is supplied", () => {
 		const component = (
 			<TestWrapper intlProvider={{ messages }}>
@@ -142,7 +169,7 @@ describe("SelectionList", () => {
 		let item = mountedComponent.find(ListItem).at(0);
 		item.invoke("onClick")();
 
-		expect(onChange.args[1][0], "to equal", { selectedItems: [list[0]] });
+		expect(onChange.args[2][0], "to equal", { selectedItems: [list[0]] });
 	});
 
 	it("Calls onChange with defaultSelection", () => {
