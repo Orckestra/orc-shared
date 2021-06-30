@@ -66,7 +66,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 	tableCellSelect: {
 		padding: theme.spacing(2),
-		width: theme.spacing(5),
+		width: theme.spacing(3),
 	},
 	headerCell: {
 		padding: theme.spacing(1, 2),
@@ -75,7 +75,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 	headerCellSelect: {
 		padding: theme.spacing(1, 2),
-		width: theme.spacing(5),
+		width: theme.spacing(3),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
 	},
@@ -251,27 +251,37 @@ const buildTableRows = (
 		}
 	};
 
-	const mappedRows = rows.map(row => (
-		<MemoTableRow
-			className={classNames(classes.tableRow, customClasses.tableRow)}
-			key={row.key}
-			onClick={evt => onClick(evt, row)}
-			selected={selectionHandlers.isSelected(row.key)}
-			deepPropsComparation={deepPropsComparation}
-			context={context}
-			isEditingMode={isEditingMode}
-			dataRows={rows}
-		>
-			{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
-			{row.columns.map((cell, cellIndex) => (
-				<TableCell
-					className={classNames(classes.tableCell, customClasses[cell.className], customClasses.tableCell)}
-					key={cellIndex}
-					value={cell.cellElement}
-				/>
-			))}
-		</MemoTableRow>
-	));
+	const mappedRows = rows.map(row => {
+		const showStyle = row?.style?.show ?? false;
+		const rowClass = row?.style?.customClass ?? "";
+		const customClassName = showStyle ? rowClass : "";
+		return (
+			<MemoTableRow
+				className={classNames(
+					classes.tableRow,
+					customClasses.tableRow,
+					customClasses[row.className],
+					customClasses[customClassName],
+				)}
+				key={row.key}
+				onClick={evt => onClick(evt, row)}
+				selected={selectionHandlers.isSelected(row.key)}
+				deepPropsComparation={deepPropsComparation}
+				context={context}
+				isEditingMode={isEditingMode}
+				dataRows={rows}
+			>
+				{selectMode === true ? buildRowCheckbox(classes, row.key, selectionHandlers) : null}
+				{row.columns.map((cell, cellIndex) => (
+					<TableCell
+						className={classNames(classes.tableCell, customClasses[cell.className], customClasses.tableCell)}
+						key={cellIndex}
+						value={cell.cellElement}
+					/>
+				))}
+			</MemoTableRow>
+		);
+	});
 
 	return mappedRows;
 };

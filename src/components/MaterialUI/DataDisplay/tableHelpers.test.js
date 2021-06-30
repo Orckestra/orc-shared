@@ -93,16 +93,18 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 				test: "A text row 2",
 				another: "another 2",
 				extraneous: "Don't show 2",
+				customClass: "specialRow1",
 			},
 			{
 				id: "an_id3",
 				test: null,
 				another: null,
 				extraneous: "Don't show 2",
+				customClass: "specialRow2",
 			},
 		];
 
-		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements);
+		const { headers, rows } = buildHeaderAndRowFromConfig(columnDef, elements, true, "id", true);
 
 		expect(headers.length, "to equal", 2);
 		expect(headers[0].cellElement.props.columnDefinition, "to equal", columnDef[0]);
@@ -115,6 +117,15 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(rows[0].key, "to equal", "an_id1");
 		expect(rows[0].element, "to equal", elements[0]);
+
+		expect(rows[0].style.show, "to equal", true);
+		expect(rows[0].style.customClass, "to equal", "");
+
+		expect(rows[1].style.show, "to equal", true);
+		expect(rows[1].style.customClass, "to equal", "specialRow1");
+
+		expect(rows[2].style.show, "to equal", true);
+		expect(rows[2].style.customClass, "to equal", "specialRow2");
 		expect(
 			rows[0].columns[0].cellElement,
 			"when mounted",

@@ -36,15 +36,20 @@ const useStyles = makeStyles(theme => ({
 	headerRoot: {
 		display: "flex",
 		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: theme.spacing(1),
 	},
 	headerTextContainer: {
 		flexGrow: 0,
+		"& > $title": {
+			marginBottom: 0,
+		},
 	},
 	headerIconContainer: {
 		paddingLeft: theme.spacing(0.5),
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "center",
+		justifyContent: "flex-start",
 	},
 }));
 

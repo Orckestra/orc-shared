@@ -101,6 +101,8 @@ const withDeferredPopper =
 			}
 		};
 
+		const placement = props?.placement ?? "bottom";
+
 		const classProp = props.classprop ? props.classprop : classes;
 
 		classProp.popperContainer = classProp.popperContainer ?? classes.popperContainer;
@@ -113,6 +115,7 @@ const withDeferredPopper =
 			<div className={classProp.popperContainer} data-qa="popperContainer">
 				{defaultComponent}
 				<Popper
+					placement={placement}
 					data-qa="poperComponent"
 					className={classProp.popper}
 					modifiers={{

@@ -253,10 +253,10 @@ describe("Memoize components", () => {
 
 		const mountedComponent = mount(<Table headers={headers} rows={rows} />);
 
-		let mountedFirstHeaderSortOptions = mountedComponent.prop("headers")[0].cellElement.props.columnDefinition
-			.sortOptions;
-		let mountedSecondHeaderSortOptions = mountedComponent.prop("headers")[1].cellElement.props.columnDefinition
-			.sortOptions;
+		let mountedFirstHeaderSortOptions =
+			mountedComponent.prop("headers")[0].cellElement.props.columnDefinition.sortOptions;
+		let mountedSecondHeaderSortOptions =
+			mountedComponent.prop("headers")[1].cellElement.props.columnDefinition.sortOptions;
 
 		expect(mountedFirstHeaderSortOptions.sortField, "to be true");
 		expect(mountedSecondHeaderSortOptions.sortField, "to be false");
@@ -1071,5 +1071,23 @@ describe("Table", () => {
 
 		const tableInfo = mountedComponent.find(TableInfoBar);
 		expect(tableInfo.length, "to equal", 1);
+	});
+
+	it("Renders Table rows with custom classes if provided and allowed", () => {
+		const elements = [
+			{ id: "1", a1: "test11", a2: "test12", customClass: "specialClass" },
+			{ id: "2", a1: "test21", a2: "test22", customClass: "" },
+			{ id: "3", a1: "test31", a2: "test32" },
+		];
+
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements, true, "id", true);
+		const component = <Table rows={rows} headers={headers} />;
+		const mountedComponent = mount(component);
+
+		const tableRows = mountedComponent.find(MemoTableRow);
+		const row1Props = tableRows.first().props();
+		const style = row1Props.dataRows[0].style;
+
+		expect(style.customClass, "to equal", "specialClass");
 	});
 });
