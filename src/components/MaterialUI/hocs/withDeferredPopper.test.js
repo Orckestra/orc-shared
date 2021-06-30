@@ -28,15 +28,17 @@ describe("withDeferredPopper", () => {
 
 		ignoreConsoleError(() => {
 			const expected = (
-				<ClickAwayListener>
-					<div>
-						<Wrapper />
-						<Popper open={false}>
-							<Arrow />
-							{popperValue}
-						</Popper>
-					</div>
-				</ClickAwayListener>
+				<div>
+					<Wrapper />
+					<Popper open={false}>
+						<ClickAwayListener>
+							<div>
+								<Arrow />
+								{popperValue}
+							</div>
+						</ClickAwayListener>
+					</Popper>
+				</div>
 			);
 			expect(mountedPopperedComponent.containsMatchingElement(expected), "to be true");
 		});
