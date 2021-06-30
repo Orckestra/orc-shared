@@ -135,7 +135,7 @@ describe("class name helpers", () => {
 				"when called with",
 				[<TestStyled />],
 				"to match",
-				/^\.\S*__TestStyled-[0-9a-zA-Z]{6}/,
+				/.*__TestStyled-sc-[0-9a-zA-Z]{6}-[0-9]/,
 			));
 
 		it("can use the component function without rendering", () =>
@@ -144,7 +144,7 @@ describe("class name helpers", () => {
 				"when called with",
 				[TestStyled],
 				"to match",
-				/^\.\S*__TestStyled-[0-9a-zA-Z]{6}/,
+				/.*__TestStyled-sc-[0-9a-zA-Z]{6}-[0-9]/,
 			));
 
 		it("finds the most specific class name", () =>
@@ -153,7 +153,7 @@ describe("class name helpers", () => {
 				"when called with",
 				[<DerivedTestStyled />],
 				"to match",
-				/^\.\S*__DerivedTestStyled-[0-9a-zA-Z]{6}/,
+				/.*__DerivedTestStyled-sc-[0-9a-zA-Z]{6}-[0-9]/,
 			));
 
 		it("throws an error if not given a non-styled component", () =>
