@@ -1151,7 +1151,7 @@ export const deleteUserRequest = {
 
 export const deleteWarehouseRequest = {
 	name: "deleteWarehouseRequest",
-	buildUrl: (scopeId, id) => buildUrl(["warehouses", scopeId, id, "delete"]),
+	buildUrl: (scopeId, id) => buildUrl(["warehouses", scopeId, id]),
 	verb: "DELETE",
 };
 
