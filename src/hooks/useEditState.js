@@ -27,7 +27,7 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 		initialValue = "",
 		errorTypes = [],
 		saveInitialValueToEditState = false,
-		validateInitialValueAfterSave = false,
+		preValidateInitialValue = false,
 		fieldDependencies = {},
 	) => {
 		const stateValue = useSelectorAndUnwrap(state =>
@@ -62,11 +62,11 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 			if (saveInitialValueToEditState && stateValue == null) {
 				dispatchWithModulesData(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
 
-				if (validateInitialValueAfterSave) {
+				if (preValidateInitialValue) {
 					isEditStateValid(initialValue);
 				}
 			}
-		}, [initialValue, keys, saveInitialValueToEditState, validateInitialValueAfterSave, stateValue, isEditStateValid]);
+		}, [initialValue, keys, saveInitialValueToEditState, preValidateInitialValue, stateValue, isEditStateValid]);
 
 		const updateEditState = (newValue, dependencies) => {
 			dispatchWithModulesData(setEditModelField, [keys, newValue, initialValue, entityId, sectionName]);
@@ -139,7 +139,6 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 
 			return result;
 		};
-
 		const hasAnyValidationErrors = (value, path, errorTypes, dependencies) => {
 			let hasAnyValidationErrors = false;
 			errorTypes.forEach(errorType => {
