@@ -53,9 +53,13 @@ describe("useEditState", () => {
 		};
 	});
 
-	const TestComp = ({ saveInitialValueToEditState = false, validateInitialValueAfterSave = false }) => {
+	const TestComp = ({
+		saveInitialValueToEditState = false,
+		validateInitialValueAfterSave = false,
+		dependencies = { valid: true },
+	}) => {
 		const createEditState = useEditState(entityId, sectionName, {
-			customRule: (value, dependencies = { valid: true }) => value === "custom" && dependencies.valid,
+			customRule: (value, d) => value === "custom" && d.valid,
 		});
 
 		const field = createEditState(
@@ -64,6 +68,7 @@ describe("useEditState", () => {
 			[validationErrorTypes.fieldIsRequired, "customRule"],
 			saveInitialValueToEditState,
 			validateInitialValueAfterSave,
+			dependencies,
 		);
 		const fieldWithUndefinedInitialValue = createEditState(["anotherField"]);
 
@@ -197,7 +202,33 @@ describe("useEditState", () => {
 		useDispatchWithModulesDataStub.restore();
 	});
 
-	it("Validates initial value to edit state if validateInitialValueAfterSave is true", () => {
+	it("Validates initial value to edit state if validateInitialValueAfterSave is true without error", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp saveInitialValueToEditState validateInitialValueAfterSave />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		mount(component);
+
+		expect(useDispatchWithModulesDataSpy, "to have calls satisfying", [
+			{
+				args: [setEditModelField, [["field"], initialFieldValue, initialFieldValue, entityId, sectionName]],
+			},
+			{
+				args: [setEditModelFieldError, [["field"], "customRule", entityId, sectionName]],
+			},
+		]);
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Validates initial value to edit state if validateInitialValueAfterSave is true with error", () => {
 		const component = (
 			<TestWrapper provider={{ store }}>
 				<TestComp saveInitialValueToEditState validateInitialValueAfterSave />
@@ -289,7 +320,7 @@ describe("useEditState", () => {
 		useDispatchWithModulesDataStub.restore();
 	});
 
-	it("Updates edit view value correctly with default validation rules when validation was passed with dependencies", () => {
+	it("Updates edit view value correctly and generate error with dependencies", () => {
 		const component = (
 			<TestWrapper provider={{ store }}>
 				<TestComp />
@@ -307,14 +338,49 @@ describe("useEditState", () => {
 
 		const event = {
 			target: {
-				value: "newValue",
+				value: "custom",
 			},
 		};
 
 		fieldComponent.invoke("onClick")(event);
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
-			args: [setEditModelField, [["field"], "newValue", initialFieldValue, entityId, sectionName]],
+			args: [setEditModelField, [["field"], "custom", initialFieldValue, entityId, sectionName]],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [setEditModelFieldError, [["field"], "customRule", entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Updates edit view value correctly and generate error with field dependencies", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp dependencies={{ valid: false }} />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#updateWithDefaultValidation");
+
+		const event = {
+			target: {
+				value: "custom",
+			},
+		};
+
+		fieldComponent.invoke("onClick")(event);
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [setEditModelField, [["field"], "custom", initialFieldValue, entityId, sectionName]],
 		});
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {

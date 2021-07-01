@@ -25,7 +25,6 @@ export const useFullEntityEditState = (
 
 			if (isValid === false && error == null) {
 				error = errorType;
-				return;
 			}
 		});
 

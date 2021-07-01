@@ -28,7 +28,7 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 		errorTypes = [],
 		saveInitialValueToEditState = false,
 		validateInitialValueAfterSave = false,
-		dependencies = {},
+		fieldDependencies = {},
 	) => {
 		const stateValue = useSelectorAndUnwrap(state =>
 			state.getIn(["view", "edit", currentModuleName, entityId, sectionName, "model", ...keys]),
@@ -37,23 +37,25 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 		const editState = stateValue || { value: initialValue };
 
 		const isEditStateValid = useCallback(
-			value => {
+			(value, dependencies = {}) => {
 				const valueToValidate = value ?? editState.value;
 				let hasAnyValidationErrors = false;
 				errorTypes.forEach(errorType => {
-					const isValid = mergedValidationRules[errorType](valueToValidate, dependencies);
+					const isValid = mergedValidationRules[errorType](valueToValidate, {
+						...fieldDependencies,
+						...dependencies,
+					});
 
-					if (isValid === false) {
+					if (isValid === false && hasAnyValidationErrors === false) {
 						dispatchWithModulesData(setEditModelFieldError, [keys, errorType, entityId, sectionName]);
 
 						hasAnyValidationErrors = true;
-						return;
 					}
 				});
 
 				return !hasAnyValidationErrors;
 			},
-			[editState.value, dependencies, errorTypes, keys],
+			[editState.value, fieldDependencies, errorTypes, keys],
 		);
 
 		useEffect(() => {
@@ -66,10 +68,10 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 			}
 		}, [initialValue, keys, saveInitialValueToEditState, validateInitialValueAfterSave, stateValue, isEditStateValid]);
 
-		const updateEditState = newValue => {
+		const updateEditState = (newValue, dependencies) => {
 			dispatchWithModulesData(setEditModelField, [keys, newValue, initialValue, entityId, sectionName]);
 
-			isEditStateValid(newValue);
+			isEditStateValid(newValue, dependencies);
 		};
 
 		const resetEditState = () => {
