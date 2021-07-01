@@ -4,11 +4,13 @@ import {
 	VIEW_SET_FIELD,
 	VIEW_REMOVE_EDIT_NODE,
 	VIEW_SET_EDIT_MODEL_FIELD,
+	VIEW_SET_FULL_ENTITY_EDIT_MODEL,
 	VIEW_SET_EDIT_MODEL_FIELD_ERRORS,
 	VIEW_SET_EDIT_MODEL_ERRORS,
 	VIEW_REMOVE_EDIT_MODEL,
 	VIEW_REMOVE_EDIT_MODEL_FIELD_ERRORS,
 	VIEW_REMOVE_EDIT_MODEL_FIELD,
+	VIEW_REMOVE_EDIT_ALL_MODEL_FIELDS,
 } from "../actions/view";
 import { APPLICATION_SCOPE_HAS_CHANGED } from "../actions/scopes";
 import { isEqual, dropRight } from "lodash";
@@ -41,7 +43,18 @@ const viewStateReducer = (state = initialState, action) => {
 
 			const path = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
 
-			return state.setIn(path, Immutable.fromJS({ value, wasModified: !isEqual(value, storeValue) }));
+			return state.setIn(
+				path,
+				Immutable.fromJS({
+					value,
+					wasModified: !isEqual(value, storeValue),
+				}),
+			);
+		}
+		case VIEW_SET_FULL_ENTITY_EDIT_MODEL: {
+			const { entityFullModel, moduleName } = action.payload;
+
+			return state.setIn(["edit", moduleName], entityFullModel);
 		}
 		case VIEW_REMOVE_EDIT_MODEL_FIELD: {
 			const { keys, storeValue, entityId, sectionName, moduleName } = action.payload;
@@ -57,6 +70,13 @@ const viewStateReducer = (state = initialState, action) => {
 			const unpackedValue = mapModifiedData(value.toJS());
 
 			return state.setIn(pathToUpdate, Immutable.fromJS({ value, wasModified: !isEqual(unpackedValue, storeValue) }));
+		}
+		case VIEW_REMOVE_EDIT_ALL_MODEL_FIELDS: {
+			const { keys, entityId, sectionName, moduleName } = action.payload;
+
+			const pathToDelete = ["edit", moduleName, entityId, sectionName, "model"].concat(keys);
+
+			return state.removeIn(pathToDelete);
 		}
 		case VIEW_SET_EDIT_MODEL_FIELD_ERRORS: {
 			const { keys, error, entityId, sectionName, moduleName } = action.payload;
