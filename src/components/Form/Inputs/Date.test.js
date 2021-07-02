@@ -3,23 +3,36 @@ import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
 import { DateInput } from "./Date";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
+import Immutable from "immutable";
 
 describe("DateInput", () => {
-	let update;
+	let update, state, store;
 	beforeEach(() => {
 		update = sinon.spy().named("update");
+
+		state = Immutable.fromJS({
+			locale: {
+				locale: "en-CA",
+			},
+		});
+
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 	});
 
 	const theme = createMuiTheme();
 
 	it("renders a three-part date input", () =>
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DateInput update={update} value="2020/06/30" otherProp />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
