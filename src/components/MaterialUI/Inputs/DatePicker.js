@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
+import { currentLocale } from "../../../selectors/locale";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -94,6 +96,24 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
+const AMPMLocales = ["en-US", "en-CA"];
+
+export const createFormat = (useDate, useTime, selectedLocale) => {
+	if (useDate && !useTime) {
+		return "P";
+	} else if (useTime && !useDate) {
+		if (AMPMLocales.includes(selectedLocale)) {
+			return "p";
+		}
+		return "HH:mm";
+	} else {
+		if (AMPMLocales.includes(selectedLocale)) {
+			return "P p";
+		}
+		return "P HH:mm";
+	}
+};
+
 const WrappedDatePicker = ({
 	value,
 	useTime,
@@ -111,7 +131,8 @@ const WrappedDatePicker = ({
 }) => {
 	const classes = useStyles({ readOnly });
 	const startDate = value ? new Date(value) : null;
-	var disabledCls = classNames({ [classes.disabled]: props.disabled });
+	const disabledCls = classNames({ [classes.disabled]: props.disabled });
+	const selectedLocale = useSelector(currentLocale);
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
@@ -125,13 +146,19 @@ const WrappedDatePicker = ({
 				<div className={classes.datePickerContainer}>
 					<DatePicker
 						{...props}
-						dateFormat={dateFormat || (useDate && useTime ? "P p" : !useDate && useTime ? "p" : "P")}
+						dateFormat={dateFormat || createFormat(useDate, useTime, selectedLocale)}
 						selected={startDate}
 						onChange={date => updateDate(date, metadata)}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
-							useTime ? <TimePicker showTimeZone={showTimeZone} requestedTimeZone={timePickerTimeZone} /> : null
+							useTime ? (
+								<TimePicker
+									showTimeZone={showTimeZone}
+									showAMPM={AMPMLocales.includes(selectedLocale)}
+									requestedTimeZone={timePickerTimeZone}
+								/>
+							) : null
 						}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}

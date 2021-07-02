@@ -1,26 +1,39 @@
 import React from "react";
-import DatePicker from "./DatePicker";
+import DatePicker, { createFormat } from "./DatePicker";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import Icon from "../DataDisplay/Icon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
+import Immutable from "immutable";
 
 describe("DatePicker", () => {
-	let updater;
+	let updater, state, store;
 	beforeEach(() => {
 		updater = sinon.spy().named("updater");
+
+		state = Immutable.fromJS({
+			locale: {
+				locale: "en-CA",
+			},
+		});
+
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 	});
 
 	const theme = createMuiTheme();
 
 	it("sets up a date to locale (en-US)", () =>
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker onChange={updater} value={"2020/06/30"} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -40,12 +53,12 @@ describe("DatePicker", () => {
 
 	it("sets up a default empty date", () =>
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker onChange={updater} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -67,12 +80,12 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T05:00:00");
 		const expectedDate = "06/30/2020 5:00 AM";
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker useTime={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -95,12 +108,12 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T17:00:00");
 		const expectedDate = "06/30/2020 5:00 PM";
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker useTime={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -123,12 +136,12 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker useTime={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -151,12 +164,12 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker useTime={true} onChange={updater} value={date} error="some error" />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -180,12 +193,12 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedTime = "12:00 AM";
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker useTime={true} useDate={false} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -208,12 +221,12 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedTime = "12:00 AM";
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker useTime={true} useDate={false} onChange={updater} value={date} showTimeSelectOnly={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -236,12 +249,12 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<TestWrapper intlProvider stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<label>
 						<div>
@@ -264,9 +277,15 @@ describe("DatePicker", () => {
 			preventDefault() {},
 			target: { value: "" },
 		};
-		const component = mount(<DatePicker onChange={onChangeMock} value={date} />);
 
-		const input = component.find("input");
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<DatePicker onChange={onChangeMock} value={date} />
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
 		expect(input.length, "to equal", 1);
 
 		input.at(0).simulate("change", event);
@@ -279,11 +298,59 @@ describe("DatePicker", () => {
 			target: { value: "" },
 		};
 		const date = new Date("2020-06-30T00:00:00");
-		const component = mount(<DatePicker value={date} />);
 
-		const input = component.find("input");
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<DatePicker value={date} />
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
 		expect(input.length, "to equal", 1);
 
 		input.at(0).simulate("change", event);
+	});
+});
+
+describe("createFormat", () => {
+	it("Retrieves proper format if locale is in AMPMLocales list for date and time", () => {
+		const locale1 = "en-CA";
+		const locale2 = "en-US";
+
+		expect(createFormat(true, true, locale1), "to equal", "P p");
+		expect(createFormat(true, true, locale2), "to equal", "P p");
+	});
+
+	it("Retrieves proper format if locale is in AMPMLocales list for date", () => {
+		const locale1 = "en-CA";
+		const locale2 = "en-US";
+
+		expect(createFormat(true, false, locale1), "to equal", "P");
+		expect(createFormat(true, false, locale2), "to equal", "P");
+	});
+
+	it("Retrieves proper format if locale is in AMPMLocales list for time", () => {
+		const locale1 = "en-CA";
+		const locale2 = "en-US";
+
+		expect(createFormat(false, true, locale1), "to equal", "p");
+		expect(createFormat(false, true, locale2), "to equal", "p");
+	});
+
+	it("Retrieves proper format if locale is not in AMPMLocales list for date and time", () => {
+		expect(createFormat(true, true, "fr-CA"), "to equal", "P HH:mm");
+	});
+
+	it("Retrieves proper format if locale is not in AMPMLocales list for date", () => {
+		expect(createFormat(true, false, "fr-CA"), "to equal", "P");
+	});
+
+	it("Retrieves proper format if locale is not in AMPMLocales list for time", () => {
+		expect(createFormat(false, true, "fr-CA"), "to equal", "HH:mm");
+	});
+
+	it("Retrieves date and time in 24h system by default", () => {
+		expect(createFormat(), "to equal", "P HH:mm");
 	});
 });
