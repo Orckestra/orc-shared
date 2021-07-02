@@ -29,6 +29,10 @@ export const currentScopeSelector = createSelector(
 	(id, scopes) => scopes.get(id) || Immutable.Map(),
 );
 
+export const scopeDefaultCultureSelector = memoize(scopeId =>
+	createSelector(scopeData, scopes => scopes.getIn([scopeId, "defaultCulture"])),
+);
+
 export const isCurrentScopeAuthorizedSelector = createSelector(getCurrentScope, localizedScopesSelector, (id, scopes) =>
 	scopes.getIn([id, "isAuthorizedScope"], !scopes.count()),
 );

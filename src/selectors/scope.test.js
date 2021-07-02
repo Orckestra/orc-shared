@@ -2,6 +2,7 @@ import Immutable from "immutable";
 import { resetLastScope } from "./navigation";
 import {
 	currentScopeSelector,
+	scopeDefaultCultureSelector,
 	scopeGetter,
 	localizedScopeSelector,
 	localizedScopesSelectorByIds,
@@ -29,6 +30,7 @@ beforeEach(() => {
 						fr: "Euro",
 					},
 				},
+				defaultCulture: "en-US",
 			},
 			FirstChild: {
 				name: { en: "First child", fr: "Premier fils" },
@@ -127,6 +129,7 @@ describe("currentScopeSelector", () => {
 				currency: {
 					displayName: "Euro",
 				},
+				defaultCulture: "en-US",
 			}),
 		);
 	});
@@ -152,6 +155,15 @@ describe("currentScopeSelector", () => {
 		state = state.setIn(["navigation", "route", "match", "params", "scope"], "WrongScope");
 		return expect(currentScopeSelector, "called with", [state], "to equal", Immutable.Map());
 	});
+});
+
+describe("scopeDefaultCultureSelector", () => {
+	afterEach(() => {
+		resetLastScope();
+	});
+
+	it("gets the current scope in the selected language", () =>
+		expect(scopeDefaultCultureSelector, "when called with", ["Global"], "called with", [state], "to equal", "en-US"));
 });
 
 describe("isCurrentScopeAuthorizedSelector", () => {
@@ -192,6 +204,7 @@ describe("scopeGetter", () => {
 				currency: {
 					displayName: "Euro",
 				},
+				defaultCulture: "en-US",
 			});
 			expect(getter, "called with", ["SecondGrandchild"], "to equal", {
 				name: "Deuxième petit-fils",
@@ -210,6 +223,7 @@ describe("scopeGetter", () => {
 			currency: {
 				displayName: "Euro",
 			},
+			defaultCulture: "en-US",
 		});
 	});
 });
@@ -256,6 +270,7 @@ describe("localizedScopesSelectorByIds", () => {
 		const expectedGlobal = stateAsJS.scopes.Global;
 		expectedGlobal.name = "Global";
 		expectedGlobal.currency.displayName = "Euro";
+		expectedGlobal.defaultCulture = "en-US";
 
 		const expectedFirstChild = stateAsJS.scopes.FirstChild;
 		expectedFirstChild.name = "Premier fils";
@@ -293,6 +308,7 @@ describe("localizedScopesSelectorByIds", () => {
 		const expectedGlobal = stateAsJS.scopes.Global;
 		expectedGlobal.name = "Global";
 		expectedGlobal.currency.displayName = "Euro";
+		expectedGlobal.defaultCulture = "en-US";
 
 		const expected = Immutable.fromJS({
 			Global: expectedGlobal,
