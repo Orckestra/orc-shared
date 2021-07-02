@@ -153,7 +153,11 @@ const WrappedDatePicker = ({
 						useTime={useTime ?? false}
 						customTimeInput={
 							useTime ? (
-								<TimePicker showTimeZone={showTimeZone} showAMPM={false} requestedTimeZone={timePickerTimeZone} />
+								<TimePicker
+									showTimeZone={showTimeZone}
+									showAMPM={AMPMLocales.includes(selectedLocale)}
+									requestedTimeZone={timePickerTimeZone}
+								/>
 							) : null
 						}
 						timeInputLabel={timeInputLabel ?? ""}
