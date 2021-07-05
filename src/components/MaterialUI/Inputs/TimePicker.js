@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { createInput, inputTypes } from "./createInput";
 
 const useStyles = makeStyles(theme => ({
 	timeWrapper: {
@@ -111,8 +112,8 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 		}
 	};
 
-	const updateTimeOptions = id => event => {
-		const value = event?.target?.value;
+	const updateTimeOptions = id => newValue => {
+		const value = newValue; //event?.target?.value;
 		if (id === "hours") {
 			setHours(value, isAM(time));
 		} else if (id === "ampm") {
@@ -137,27 +138,35 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 	const AMPMSelect = ({ showAMPM }) => {
 		if (!showAMPM) return null;
 
-		return (
-			<select
-				className={classes.timePickerSegmentWrapper}
-				name="ampm"
-				id="ampm"
-				onChange={updateTimeOptions("ampm")}
-				value={calculateAMPM(time)}
-			>
-				{ampmOptions.map(option => (
-					<option key={"ampm" + option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</select>
-		);
+		return createInput(inputTypes.select, {
+			options: ampmOptions,
+			value: calculateAMPM(time),
+			update: v => updateTimeOptions("ampm")(v),
+		});
+		// <select
+		// 	className={classes.timePickerSegmentWrapper}
+		// 	name="ampm"
+		// 	id="ampm"
+		// 	onChange={updateTimeOptions("ampm")}
+		// 	value={calculateAMPM(time)}
+		// >
+		// 	{ampmOptions.map(option => (
+		// 		<option key={"ampm" + option.value} value={option.value}>
+		// 			{option.label}
+		// 		</option>
+		// 	))}
+		// </select>
 	};
 
 	return (
 		<div className={classes.timeWrapper}>
 			<span className={classes.timePickerWrapper}>
-				<select
+				{createInput(inputTypes.select, {
+					options: properHourOptions,
+					value: calculateHours(time, showAMPM),
+					update: v => updateTimeOptions("hours")(v),
+				})}
+				{/* <select
 					className={classes.timePickerSegmentWrapper}
 					name="hours"
 					id="hours"
@@ -169,9 +178,14 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 							{option.label}
 						</option>
 					))}
-				</select>
+				</select> */}
 				<label> : </label>
-				<select
+				{createInput(inputTypes.select, {
+					options: minOptions,
+					value: calculateMins(time),
+					update: v => updateTimeOptions("mins")(v),
+				})}
+				{/* <select
 					className={classes.timePickerSegmentWrapper}
 					name="mins"
 					id="mins"
@@ -183,7 +197,7 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 							{option.label}
 						</option>
 					))}
-				</select>
+				</select> */}
 				<AMPMSelect showAMPM={showAMPM} />
 			</span>
 			{showTimeZone && (
