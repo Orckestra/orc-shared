@@ -279,7 +279,7 @@ describe("DatePicker", () => {
 		};
 
 		const component = (
-			<TestWrapper provider={{ store }}>
+			<TestWrapper provider={{ store }} intlProvider>
 				<DatePicker onChange={onChangeMock} value={date} />
 			</TestWrapper>
 		);
@@ -300,7 +300,7 @@ describe("DatePicker", () => {
 		const date = new Date("2020-06-30T00:00:00");
 
 		const component = (
-			<TestWrapper provider={{ store }}>
+			<TestWrapper provider={{ store }} intlProvider>
 				<DatePicker value={date} />
 			</TestWrapper>
 		);
