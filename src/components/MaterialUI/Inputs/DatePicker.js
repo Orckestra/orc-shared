@@ -5,8 +5,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
-import { currentLocale } from "../../../selectors/locale";
-import { useSelector } from "react-redux";
+import { useIntl } from "react-intl";
+import { registerLocale } from "react-datepicker";
+import { frCA, enUS, it } from "date-fns/locale";
+registerLocale("fr-CA", frCA);
+registerLocale("en-US", enUS);
+registerLocale("it-IT", it);
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -129,10 +133,10 @@ const WrappedDatePicker = ({
 	error,
 	...props
 }) => {
+	const { locale } = useIntl();
 	const classes = useStyles({ readOnly });
 	const startDate = value ? new Date(value) : null;
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
-	const selectedLocale = useSelector(currentLocale);
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
@@ -146,7 +150,7 @@ const WrappedDatePicker = ({
 				<div className={classes.datePickerContainer}>
 					<DatePicker
 						{...props}
-						dateFormat={dateFormat || createFormat(useDate, useTime, selectedLocale)}
+						dateFormat={dateFormat || createFormat(useDate, useTime, locale)}
 						selected={startDate}
 						onChange={date => updateDate(date, metadata)}
 						showTimeInput={useTime ?? false}
@@ -155,7 +159,7 @@ const WrappedDatePicker = ({
 							useTime ? (
 								<TimePicker
 									showTimeZone={showTimeZone}
-									showAMPM={AMPMLocales.includes(selectedLocale)}
+									showAMPM={AMPMLocales.includes(locale)}
 									requestedTimeZone={timePickerTimeZone}
 								/>
 							) : null
@@ -163,6 +167,7 @@ const WrappedDatePicker = ({
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}
 						showTimeSelectOnly={showTimeSelectOnly}
+						locale={locale}
 					/>
 				</div>
 				{!readOnly ? (
