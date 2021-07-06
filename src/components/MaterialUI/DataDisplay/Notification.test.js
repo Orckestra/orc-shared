@@ -126,10 +126,7 @@ describe("Notification Component", () => {
 		const mountedComponent = mount(component);
 		const snackbar = mountedComponent.find(Snackbar);
 
-		act(() => {
-			snackbar.prop("TransitionProps")["onClose"]({}, "clickaway");
-		});
-		mountedComponent.update();
+		mountedComponent.find(Snackbar).invoke("onClose")({}, "clickaway");
 		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "to be truthy");
 
 		mountedComponent.find("button").simulate("click");
