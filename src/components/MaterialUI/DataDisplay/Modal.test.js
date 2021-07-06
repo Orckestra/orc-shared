@@ -66,7 +66,7 @@ describe("Modal", () => {
 		expect(component, "when mounted", "to satisfy", null);
 	});
 
-	it("Calls passed backdropClickCallback on backdrop click event", () => {
+	it("Calls passed backdropClick as reason on click event", () => {
 		const backdropClickCallbackSpy = sinon.spy();
 
 		const modalProps = new ModalProps();
@@ -79,8 +79,26 @@ describe("Modal", () => {
 
 		const muiModal = mountedComponent.find(ModalMui);
 
-		muiModal.invoke("onBackdropClick")();
+		muiModal.invoke("onClose")({}, "backdropClick");
 
 		expect(backdropClickCallbackSpy, "was called");
+	});
+
+	it("Calls passed unknown reason on click event", () => {
+		const backdropClickCallbackSpy = sinon.spy();
+
+		const modalProps = new ModalProps();
+		modalProps.set(ModalProps.propNames.open, true);
+		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallbackSpy);
+
+		const component = <Modal modalProps={modalProps} />;
+
+		const mountedComponent = mount(component);
+
+		const muiModal = mountedComponent.find(ModalMui);
+
+		muiModal.invoke("onClose")({}, "unknown");
+
+		expect(backdropClickCallbackSpy, "was not called");
 	});
 });

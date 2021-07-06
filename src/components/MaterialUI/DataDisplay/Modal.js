@@ -100,6 +100,12 @@ const Modal = ({ message, modalProps }) => {
 		[classes.messageWide]: modalType === "wide" || modalType === "fullwidth",
 	});
 
+	const onCloseCallback = (e, reason) => {
+		if (backdropClickCallback && reason === "backdropClick") {
+			backdropClickCallback(e);
+		}
+	};
+
 	const model = (
 		<ModalMui
 			disablePortal
@@ -107,7 +113,7 @@ const Modal = ({ message, modalProps }) => {
 			disableAutoFocus
 			open={open}
 			className={classes.modal}
-			onBackdropClick={backdropClickCallback != null ? e => backdropClickCallback(e) : null}
+			onClose={onCloseCallback}
 		>
 			<div className={classNames(classes.baseContainer, containerCls)}>
 				<div className={classes.title}>{title}</div>

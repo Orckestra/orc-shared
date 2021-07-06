@@ -8,6 +8,7 @@ import Notification from "./Notification";
 import Snackbar from "@material-ui/core/Snackbar";
 import Icon from "./Icon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
+import { act } from "react-dom/test-utils";
 
 describe("Notification Component", () => {
 	let setSnackPack, container, store;
@@ -123,13 +124,21 @@ describe("Notification Component", () => {
 		);
 
 		const mountedComponent = mount(component);
+		const snackbar = mountedComponent.find(Snackbar);
 
-		mountedComponent.find(Snackbar).invoke("onClose")({}, "clickaway");
+		act(() => {
+			snackbar.prop("TransitionProps")["onClose"]({}, "clickaway");
+		});
+		mountedComponent.update();
 		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "to be truthy");
 
 		mountedComponent.find("button").simulate("click");
 
-		mountedComponent.find(Snackbar).invoke("onExited")();
+		act(() => {
+			snackbar.prop("TransitionProps")["onExited"]();
+		});
+		mountedComponent.update();
+
 		expect(mountedComponent.containsMatchingElement(mockedMessage.message), "not to be truthy");
 	});
 
@@ -150,7 +159,11 @@ describe("Notification Component", () => {
 
 		const mountedComponent = mount(component);
 
-		mountedComponent.find(Snackbar).invoke("onExited")();
+		act(() => {
+			mountedComponent.find(Snackbar).prop("TransitionProps")["onExited"]();
+		});
+		mountedComponent.update();
+
 		expect(mountedComponent.containsMatchingElement(mockedMessageSecond.message), "to be truthy");
 	});
 });

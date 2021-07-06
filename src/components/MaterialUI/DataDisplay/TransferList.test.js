@@ -108,7 +108,7 @@ describe("TransferList", () => {
 						<Paper>
 							<List component="div" role="list">
 								{rightList.map(item => (
-									<ListItem>{listItemFormatter(item)}</ListItem>
+									<ListItem key={item.id}>{listItemFormatter(item)}</ListItem>
 								))}
 							</List>
 						</Paper>
