@@ -73,16 +73,16 @@ export const ScopeIcon = ({ type }) => {
 	const classes = useStyles();
 	const theme = useTheme();
 
-	const globalIcon = <Icon className={classes.scopeIcon} color="primary" fontSize="default" id="global-scope" />;
+	const globalIcon = <Icon className={classes.scopeIcon} color="primary" fontSize="medium" id="global-scope" />;
 	const virtualIcon = (
-		<Icon className={classes.scopeIcon} themeColor={theme.palette.grey.dark} fontSize="default" id="virtual-scope" />
+		<Icon className={classes.scopeIcon} themeColor={theme.palette.grey.dark} fontSize="medium" id="virtual-scope" />
 	);
-	const salesIcon = <Icon className={classes.scopeIcon} color="primary" fontSize="default" id="sales-scope" />;
+	const salesIcon = <Icon className={classes.scopeIcon} color="primary" fontSize="medium" id="sales-scope" />;
 	const dependentIcon = (
 		<Icon
 			className={classes.scopeIcon}
 			themeColor={theme.palette.success.main}
-			fontSize="default"
+			fontSize="medium"
 			id="dependent-scope"
 		/>
 	);

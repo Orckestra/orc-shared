@@ -4,7 +4,7 @@ import { withTheme } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 const fakeStore = {
 	subscribe: listener => () => {},
@@ -26,7 +26,7 @@ const fakeStore = {
 
 const fakeTheme = { value: "styles" };
 
-const fakeMuiTheme = createMuiTheme({
+const fakeMuiTheme = createTheme({
 	direction: "ltr",
 });
 

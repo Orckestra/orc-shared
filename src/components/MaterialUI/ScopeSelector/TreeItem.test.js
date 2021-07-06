@@ -215,7 +215,7 @@ describe("ScopeIcon", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<Icon color="primary" fontSize="default" id="global-scope" />
+				<Icon color="primary" fontSize="medium" id="global-scope" />
 			</TestWrapper>
 		);
 
@@ -231,7 +231,7 @@ describe("ScopeIcon", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<Icon themeColor={theme.palette.grey.dark} fontSize="default" id="virtual-scope" />
+				<Icon themeColor={theme.palette.grey.dark} fontSize="medium" id="virtual-scope" />
 			</TestWrapper>
 		);
 
@@ -247,7 +247,7 @@ describe("ScopeIcon", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<Icon color="primary" fontSize="default" id="sales-scope" />
+				<Icon color="primary" fontSize="medium" id="sales-scope" />
 			</TestWrapper>
 		);
 
@@ -263,7 +263,7 @@ describe("ScopeIcon", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<Icon themeColor={theme.palette.success.main} fontSize="default" id="dependent-scope" />
+				<Icon themeColor={theme.palette.success.main} fontSize="medium" id="dependent-scope" />
 			</TestWrapper>
 		);
 
