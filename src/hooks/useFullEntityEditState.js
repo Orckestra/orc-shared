@@ -56,7 +56,7 @@ export const useFullEntityEditState = (
 
 				const path = [entityId, sectionName, "model"].concat(fieldDefinition.keys);
 
-				fullEntityEditModel = fullEntityEditModel.setIn(path, value);
+				fullEntityEditModel = fullEntityEditModel.setIn(path, Immutable.fromJS(value));
 			});
 		});
 
