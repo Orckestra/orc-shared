@@ -9,6 +9,7 @@ import Authenticate from "./Authenticate";
 import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
+import InternetExplorerWarningMessage from "./InternetExplorerWarningMessage";
 
 const GlobalStyle = createGlobalStyle`
 	html {
@@ -45,7 +46,10 @@ const Provision = ({ store, theme = {}, muiTheme, children }) => {
 								<React.Fragment>
 									<Fonts />
 									<DevPages>
-										<I18n>{React.Children.only(children)}</I18n>
+										<I18n>
+											{React.Children.only(children)}
+											<InternetExplorerWarningMessage />
+										</I18n>
 									</DevPages>
 								</React.Fragment>
 							</Authenticate>
