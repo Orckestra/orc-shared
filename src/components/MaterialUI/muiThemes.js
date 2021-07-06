@@ -1,5 +1,5 @@
-import { createMuiTheme } from "@material-ui/core/styles";
-import { fade, darken } from "@material-ui/core/styles/colorManipulator";
+import { createTheme } from "@material-ui/core/styles";
+import { alpha, darken } from "@material-ui/core/styles/colorManipulator";
 
 const drawerWidth = 240;
 
@@ -133,7 +133,7 @@ const setThemeOverrides = theme => ({
 			}),
 			"&:hover": {
 				textDecoration: "none",
-				backgroundColor: fade(theme.palette.text.primary, theme.palette.action.hoverOpacity),
+				backgroundColor: alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -190,7 +190,7 @@ const setThemeOverrides = theme => ({
 		textPrimary: {
 			color: theme.palette.primary.main,
 			"&:hover": {
-				backgroundColor: fade(theme.palette.primary.main, theme.palette.action.hoverOpacity),
+				backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -201,7 +201,7 @@ const setThemeOverrides = theme => ({
 		textSecondary: {
 			color: theme.palette.secondary.main,
 			"&:hover": {
-				backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
+				backgroundColor: alpha(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -227,7 +227,7 @@ const setThemeOverrides = theme => ({
 			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.primary.main}`,
-				backgroundColor: fade(theme.palette.primary.main, theme.palette.action.hoverOpacity),
+				backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -241,7 +241,7 @@ const setThemeOverrides = theme => ({
 			backgroundColor: "white",
 			"&:hover": {
 				border: `1px solid ${theme.palette.secondary.main}`,
-				backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
+				backgroundColor: alpha(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
 				// Reset on touch devices, it doesn't add specificity
 				"@media (hover: none)": {
 					backgroundColor: "transparent",
@@ -1036,9 +1036,9 @@ const setThemeOverrides = theme => ({
 });
 
 const createThemes = (applicationTheme, themeDefinition) => {
-	const applicationMuiTheme = createMuiTheme(applicationTheme);
+	const applicationMuiTheme = createTheme(applicationTheme);
 
-	const muiTheme = createMuiTheme({
+	const muiTheme = createTheme({
 		...commonTheme,
 		...themeDefinition,
 		palette: {
