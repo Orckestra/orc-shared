@@ -47,7 +47,7 @@ const TableHeaderCell = ({ columnDefinition }) => {
 		throw new Error("Sort callback is required for sorting correct work");
 	}
 
-	const iconId = direction === "Descending" ? "caret-up" : "caret-down";
+	const iconId = direction === "Descending" ? "caret-down" : "caret-up";
 
 	const iconColor = sortField ? "primary" : "disabled";
 
