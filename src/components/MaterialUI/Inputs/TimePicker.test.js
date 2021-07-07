@@ -1,5 +1,5 @@
 import React from "react";
-import TimePicker from "./TimePicker";
+import TimePicker, { HoursSelect, MinsSelect, AMPMSelect, parseTime } from "./TimePicker";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
@@ -8,75 +8,16 @@ import sharedMessages from "../../../sharedMessages";
 import { extractMessages } from "../../../utils/testUtils";
 
 const messages = extractMessages(sharedMessages);
-const BuildHours = ({ hours, showAMPM }) => {
-	if (showAMPM) {
-		return (
-			<select value={hours} onChange={() => {}}>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-				<option value="11">11</option>
-				<option value="12">12</option>
-			</select>
-		);
-	}
 
-	return (
-		<select value={hours} onChange={() => {}}>
-			<option value="0">0</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-			<option value="13">13</option>
-			<option value="14">14</option>
-			<option value="15">15</option>
-			<option value="16">16</option>
-			<option value="17">17</option>
-			<option value="18">18</option>
-			<option value="19">19</option>
-			<option value="20">20</option>
-			<option value="21">21</option>
-			<option value="22">22</option>
-			<option value="23">23</option>
-		</select>
-	);
-};
-
-const buildExpectedTime = (hours, mins, ampm, showTimeZone, showAMPM = true) => {
+const buildExpectedTime = (time, showTimeZone, showAMPM = true) => {
 	return (
 		<div>
 			<div>
 				<span>
-					<BuildHours hours={hours} showAMPM={showAMPM} />
+					<HoursSelect time={time} showAMPM={showAMPM} updateTimeOptions={jest.fn()} />
 					<label> : </label>
-					<select value={mins} onChange={() => {}}>
-						<option value="00">00</option>
-						<option value="15">15</option>
-						<option value="30">30</option>
-						<option value="45">45</option>
-					</select>
-					{showAMPM && (
-						<select value={ampm} onChange={() => {}}>
-							<option value="AM">AM</option>
-							<option value="PM">PM</option>
-						</select>
-					)}
+					<MinsSelect time={time} updateTimeOptions={jest.fn()} />
+					<AMPMSelect time={time} showAMPM={showAMPM} updateTimeOptions={jest.fn()} />
 				</span>
 				{showTimeZone && <Ignore />}
 			</div>
@@ -95,7 +36,6 @@ describe("Time Component", () => {
 	afterEach(() => {
 		global.Date = originalDate;
 	});
-
 	it("sets up a time 5am", () =>
 		expect(
 			<IntlProvider locale="en-US" messages={messages}>
@@ -105,7 +45,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("5", "00", "AM"),
+			buildExpectedTime(parseTime("5:00 AM")),
 		));
 
 	it("sets up a time 5am without AMPM", () =>
@@ -117,7 +57,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("5", "00", "AM", false, false),
+			buildExpectedTime(parseTime("5:00 AM"), false, false),
 		));
 
 	it("sets up a time now when no value without AMPM", () => {
@@ -136,7 +76,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("10", "30", "AM", false, false),
+			buildExpectedTime(parseTime("10:30 AM"), false, false),
 		);
 	});
 
@@ -156,7 +96,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("10", "30", "AM"),
+			buildExpectedTime(parseTime("10:30 AM")),
 		);
 	});
 
@@ -176,7 +116,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("10", "30", "AM", false, false),
+			buildExpectedTime(parseTime("10:30 AM"), false, false),
 		);
 	});
 
@@ -196,7 +136,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("10", "30", "AM"),
+			buildExpectedTime(parseTime("10:30 AM")),
 		);
 	});
 
@@ -216,7 +156,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("10", "30", "AM", false, false),
+			buildExpectedTime(parseTime("10:30 AM"), false, false),
 		);
 	});
 
@@ -229,7 +169,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("5", "00", "PM"),
+			buildExpectedTime(parseTime("5:00 PM")),
 		));
 
 	it("sets up a time 5pm without AMPM", () =>
@@ -241,7 +181,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("17", "00", "PM", false, false),
+			buildExpectedTime(parseTime("17:00 PM"), false, false),
 		));
 
 	it("sets up a time 515pm", () =>
@@ -253,7 +193,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("5", "15", "PM"),
+			buildExpectedTime(parseTime("5:15 PM")),
 		));
 
 	it("sets up a time 515pm without AMPM", () =>
@@ -265,7 +205,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("17", "00", "PM", false, false),
+			buildExpectedTime(parseTime("17:00 PM"), false, false),
 		));
 
 	it("sets up a time 545pm", () =>
@@ -277,7 +217,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("5", "45", "PM"),
+			buildExpectedTime(parseTime("5:45 PM")),
 		));
 
 	it("sets up a time 545pm without AMPM", () =>
@@ -289,7 +229,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("17", "45", "PM", false, false),
+			buildExpectedTime(parseTime("17:45 PM"), false, false),
 		));
 
 	it("sets up a time 12am", () =>
@@ -301,7 +241,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("12", "00", "AM"),
+			buildExpectedTime(parseTime("12:00 AM")),
 		));
 
 	it("sets up a time 12am without AMPM", () =>
@@ -313,7 +253,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("0", "00", "AM", false, false),
+			buildExpectedTime(parseTime("0:00 AM"), false, false),
 		));
 
 	it("sets up a time 12pm", () =>
@@ -325,7 +265,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("12", "00", "PM"),
+			buildExpectedTime(parseTime("12:00 PM")),
 		));
 
 	it("sets up a time 12pm without AMPM", () =>
@@ -337,7 +277,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("12", "00", "PM", false, false),
+			buildExpectedTime(parseTime("12:00 PM"), false, false),
 		));
 
 	it("sets up a time 4:16pm", () =>
@@ -349,7 +289,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("4", "15", "PM"),
+			buildExpectedTime(parseTime("4:15 PM")),
 		));
 
 	it("sets up a time 4:16pm without AMPM", () =>
@@ -361,7 +301,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("16", "15", "PM", false, false),
+			buildExpectedTime(parseTime("16:15 PM"), false, false),
 		));
 
 	it("sets up a time 4:31pm", () =>
@@ -373,7 +313,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("4", "30", "PM"),
+			buildExpectedTime(parseTime("4:30 PM")),
 		));
 
 	it("sets up a time 4:31pm without AMPM", () =>
@@ -385,7 +325,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("16", "30", "PM", false, false),
+			buildExpectedTime(parseTime("16:30 PM"), false, false),
 		));
 
 	it("sets up a time 4:20pm", () =>
@@ -397,7 +337,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("4", "15", "PM"),
+			buildExpectedTime(parseTime("4:15 PM")),
 		));
 
 	it("sets up a time 4:20pm without AMPM", () =>
@@ -409,7 +349,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("16", "15", "PM", false, false),
+			buildExpectedTime(parseTime("16:15 PM"), false, false),
 		));
 
 	it("sets up a time 4:50pm", () =>
@@ -421,7 +361,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("4", "45", "PM"),
+			buildExpectedTime(parseTime("4:45 PM")),
 		));
 
 	it("sets up a time 4:50pm without AMPM", () =>
@@ -433,7 +373,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("16", "45", "PM", false, false),
+			buildExpectedTime(parseTime("16:45 PM"), false, false),
 		));
 
 	it("shows timezone if requested", () =>
@@ -451,7 +391,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("4", "30", "PM", true),
+			buildExpectedTime(parseTime("4:30 PM"), true),
 		));
 
 	it("shows timezone if requested without AMPM", () =>
@@ -469,7 +409,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("16", "30", "PM", true, false),
+			buildExpectedTime(parseTime("16:30 PM"), true, false),
 		));
 	it("shows local timezone if requested without AMPM", () =>
 		expect(
@@ -480,7 +420,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("16", "30", "PM", true, false),
+			buildExpectedTime(parseTime("16:30 PM"), true, false),
 		));
 
 	it("shows local timezone if requested without AMPM", () =>
@@ -492,7 +432,7 @@ describe("Time Component", () => {
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime("16", "30", "PM", true, false),
+			buildExpectedTime(parseTime("16:30 PM"), true, false),
 		));
 
 	it("should render with browser AMPM", () => {
