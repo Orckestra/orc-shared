@@ -111,7 +111,7 @@ describe("TableHeaderCell", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					{columnDefinition.label}
-					<Icon id="caret-down" />
+					<Icon id="caret-up" />
 				</div>
 			</TestWrapper>
 		);
@@ -140,7 +140,7 @@ describe("TableHeaderCell", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					{columnDefinition.label}
-					<Icon id="caret-up" />
+					<Icon id="caret-down" />
 				</div>
 			</TestWrapper>
 		);
@@ -169,7 +169,7 @@ describe("TableHeaderCell", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					{columnDefinition.label}
-					<Icon id="caret-up" color="primary" />
+					<Icon id="caret-down" color="primary" />
 				</div>
 			</TestWrapper>
 		);
@@ -198,7 +198,7 @@ describe("TableHeaderCell", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					{columnDefinition.label}
-					<Icon id="caret-up" color="disabled" />
+					<Icon id="caret-down" color="disabled" />
 				</div>
 			</TestWrapper>
 		);

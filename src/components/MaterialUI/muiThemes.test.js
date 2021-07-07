@@ -1,5 +1,5 @@
 import createThemes from "./muiThemes";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 describe("MUI Themes", () => {
 	it("createThemes returns expected themes", () => {
@@ -41,7 +41,7 @@ describe("MUI Themes", () => {
 	});
 
 	it("createThemes returns expected themes with dark palette type", () => {
-		const baseMuiTheme = createMuiTheme();
+		const baseMuiTheme = createTheme();
 
 		const themeDefinition = {
 			direction: "ltr",
