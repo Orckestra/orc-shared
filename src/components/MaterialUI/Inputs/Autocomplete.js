@@ -128,7 +128,6 @@ const Autocomplete = ({ options, autocompleteProps }) => {
 					clearIndicator: classes.clearIndicator,
 					input: classes.input,
 				}}
-				//popupIcon={<Icon id="dropdown-chevron-down" className={classes.icon} />}
 				closeIcon={<Icon id="close2" className={classes.closeIcon} />}
 				renderInput={RenderInput}
 			/>
