@@ -114,8 +114,8 @@ const Notification = ({ notificationProps, snackPack, setSnackPack }) => {
 			anchorOrigin={anchorOrigin}
 			open={open}
 			autoHideDuration={autoHideDuration}
+			onClose={handleClose}
 			TransitionProps={{
-				onClose: handleClose,
 				onExited: handleExited,
 			}}
 		>

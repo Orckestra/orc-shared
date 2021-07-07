@@ -29,6 +29,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.ccVersion",
 		defaultMessage: "Commerce Cloud {version}",
 	},
+	ccDescription: {
+		id: "orc-shared.ccDescription",
+		defaultMessage: "The API-first commerce platform that makes omnichannel retail work.",
+	},
 	orcSharedVersion: {
 		id: "orc-shared.orcSharedVersion",
 		defaultMessage: "Orc-Shared Framework {version}",
@@ -189,6 +193,15 @@ const sharedMessages = defineMessages({
 	needToRefresh: {
 		id: "orc-shared.needToRefresh",
 		defaultMessage: "You are not authorized to execute a request. Click refresh to reload the application.",
+	},
+	internetExplorerWarningTitle: {
+		id: "orc-shared.internetExplorerWarningTitle",
+		defaultMessage: "Improve your experience",
+	},
+	internetExplorerWarningContent: {
+		id: "orc-shared.internetExplorerWarningContent",
+		defaultMessage:
+			"You are using a browser that we no longer support. For a better experience with our HTML web applications, we recommend you to use the latest version of one of the following browsers:",
 	},
 });
 
