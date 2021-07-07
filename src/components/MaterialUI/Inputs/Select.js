@@ -139,7 +139,7 @@ export const SelectIconButton = props => {
 	);
 };
 
-const Select = ({ options, selectProps }) => {
+const Select = ({ options, selectProps, children }) => {
 	if (isSelectProps(selectProps) === false) {
 		throw new TypeError("selectProps property is not of type SelectProps");
 	}
@@ -158,6 +158,8 @@ const Select = ({ options, selectProps }) => {
 	const isIconSelect = selectProps?.get(SelectProps.propNames.iconSelect) || false;
 	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
 	const error = selectProps?.get(SelectProps.propNames.error);
+	const native = selectProps?.get(SelectProps.propNames.native);
+	const inputProps = selectProps?.get(SelectProps.propNames.inputProps);
 	const hasError = !!error;
 
 	if (sortType === sortTypeEnum.numeric) {
@@ -223,13 +225,15 @@ const Select = ({ options, selectProps }) => {
 			MenuProps={defaultMenuProps}
 			disabled={disabled}
 			error={hasError}
+			native={native}
+			inputProps={inputProps}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
 				disabled: classes.disabled,
 			}}
 		>
-			{items}
+			{native ? children : items}
 		</SelectMUI>
 	);
 
@@ -244,6 +248,8 @@ const Select = ({ options, selectProps }) => {
 			MenuProps={iconSelectMenuProps}
 			disabled={disabled}
 			error={hasError}
+			native={native}
+			inputProps={inputProps}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
@@ -252,7 +258,7 @@ const Select = ({ options, selectProps }) => {
 			}}
 			onClick={() => setOpen(!open)}
 		>
-			{items}
+			{native ? children : items}
 		</SelectMUI>
 	);
 
