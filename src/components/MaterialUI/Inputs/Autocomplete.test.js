@@ -73,7 +73,7 @@ describe("Autocomplete Component", () => {
 								}}
 								inputProps={{
 									...params.inputProps,
-									id: undefined,
+									id: "mui-input-autocomplete-id",
 								}}
 							/>
 						)}
@@ -120,7 +120,7 @@ describe("Autocomplete Component", () => {
 								}}
 								inputProps={{
 									...params.inputProps,
-									id: undefined,
+									id: "mui-input-autocomplete-id",
 								}}
 							/>
 						)}
@@ -169,7 +169,7 @@ describe("Autocomplete Component", () => {
 								}}
 								inputProps={{
 									...params.inputProps,
-									id: undefined,
+									id: "mui-input-autocomplete-id",
 								}}
 							/>
 						)}

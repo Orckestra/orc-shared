@@ -109,6 +109,10 @@ const Autocomplete = ({ options, autocompleteProps }) => {
 					disabled: classes.disabled,
 				},
 			}}
+			inputProps={{
+				...params.inputProps,
+				id: "mui-input-autocomplete-id",
+			}}
 		/>
 	);
 
