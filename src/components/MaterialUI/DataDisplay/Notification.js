@@ -115,7 +115,9 @@ const Notification = ({ notificationProps, snackPack, setSnackPack }) => {
 			open={open}
 			autoHideDuration={autoHideDuration}
 			onClose={handleClose}
-			onExited={handleExited}
+			TransitionProps={{
+				onExited: handleExited,
+			}}
 		>
 			<div key={messageInfo.key} className={`${classes.notification} ${classes[messageInfo.type]}`}>
 				<Icon id={getIconIdByType(messageInfo.type)} className={classes.icon} />

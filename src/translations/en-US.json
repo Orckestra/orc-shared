@@ -8,6 +8,7 @@
 	"orc-shared.cancel": "Cancel",
 	"orc-shared.ccName": "Orckestra Commerce Cloud",
 	"orc-shared.ccVersion": "Commerce Cloud {version}",
+	"orc-shared.ccDescription": "The API-first commerce platform that makes omnichannel retail work.",
 	"orc-shared.close": "Close",
 	"orc-shared.confirmation": "Confirmation",
 	"orc-shared.copyright": "© 2021 Orckestra Technologies Inc.",
@@ -45,5 +46,7 @@
 	"orc-shared.status": "Status",
 	"orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
 	"orc-shared.valueName": "Value Name",
-	"orc-shared.yes": "Yes"
+	"orc-shared.yes": "Yes",
+	"orc-shared.internetExplorerWarningTitle": "Improve your experience",
+	"orc-shared.internetExplorerWarningContent": "You are using a browser that we no longer support. For a better experience with our HTML web applications, we recommend you to use the latest version of one of the following browsers:"
 }

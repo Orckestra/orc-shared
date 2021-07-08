@@ -16,7 +16,7 @@ const Badge = ({ children, badge, ...props }) => {
 	const classProp = !!props.classProp?.badge ? props.classProp : classes;
 
 	return (
-		<BadgeMui overlap="circle" color="primary" max={999} badgeContent={badge} classes={classProp}>
+		<BadgeMui overlap="circular" color="primary" max={999} badgeContent={badge} classes={classProp}>
 			{children}
 		</BadgeMui>
 	);

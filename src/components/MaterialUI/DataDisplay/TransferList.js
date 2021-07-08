@@ -211,7 +211,7 @@ const TransferList = ({
 	const leftSelected = leftListData.data?.some(({ id }) => checked.includes(id));
 
 	return (
-		<Grid container spacing={2} justify="center" alignItems="center">
+		<Grid container spacing={2} justifyContent="center" alignItems="center">
 			<Grid item xs={5}>
 				<div className={classes.title}>{leftListData.title}</div>
 				{isReactComponent(customLeftComponent) ? (

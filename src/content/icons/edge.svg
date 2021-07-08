@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+    <!-- no post-processing -->
+    <linearGradient id="EdgeA" gradientUnits="userSpaceOnUse" x1="5.528" y1="16.566" x2="22.24" y2="16.566">
+        <stop offset="0" stop-color="#0c59a4"/>
+        <stop offset="1" stop-color="#114a8b"/>
+    </linearGradient>
+    <use xlink:href="#EdgeH" fill="url(#EdgeA)"/>
+    <radialGradient id="EdgeB" cx="839.093" cy="-912.225" r="1.044" gradientTransform="matrix(8.563,0,0,8.1348,-7170.3892,7437.5156)" gradientUnits="userSpaceOnUse">
+        <stop offset=".72" stop-opacity="0"/>
+        <stop offset=".95" stop-opacity=".53"/>
+        <stop offset="1"/>
+    </radialGradient>
+    <use xlink:href="#EdgeH" opacity=".35" fill="url(#EdgeB)" enable-background="new"/>
+    <linearGradient id="EdgeC" gradientUnits="userSpaceOnUse" x1="14.346" y1="9.322" x2="3.905" y2="20.695">
+        <stop offset="0" stop-color="#1b9de2"/>
+        <stop offset=".16" stop-color="#1595df"/>
+        <stop offset=".67" stop-color="#0680d7"/>
+        <stop offset="1" stop-color="#0078d4"/>
+    </linearGradient>
+    <use xlink:href="#EdgeI" fill="url(#EdgeC)"/>
+    <radialGradient id="EdgeD" cx="597.16" cy="-1154.837" r="1.568" gradientTransform="matrix(1.2844,-8.4773,6.8504,1.0276,7150.6665,6267.6426)" gradientUnits="userSpaceOnUse">
+        <stop offset=".76" stop-opacity="0"/>
+        <stop offset=".95" stop-opacity=".5"/>
+        <stop offset="1"/>
+    </radialGradient>
+    <use xlink:href="#EdgeI" opacity=".41" fill="url(#EdgeD)" enable-background="new"/>
+    <radialGradient id="EdgeE" cx="1214.536" cy="-1357.069" r="2.216" gradientTransform="matrix(-0.3425 8.563 -18.2391 -0.685 -24333.3242 -11325.2383)" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#35c1f1"/>
+        <stop offset=".11" stop-color="#34c1ed"/>
+        <stop offset=".23" stop-color="#2fc2df"/>
+        <stop offset=".31" stop-color="#2bc3d2"/>
+        <stop offset=".67" stop-color="#36c752"/>
+    </radialGradient>
+    <use xlink:href="#EdgeJ" fill="url(#EdgeE)"/>
+    <radialGradient id="EdgeF" cx="1336.106" cy="-958.269" r="1.066" gradientTransform="matrix(2.3976,8.2205,-6.6791,1.9695,-9581.3789,-9088.8467)" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#66eb6e"/>
+        <stop offset="1" stop-color="#66eb6e" stop-opacity="0"/>
+    </radialGradient>
+    <use xlink:href="#EdgeJ" fill="url(#EdgeF)"/>
+    <defs>
+        <path id="EdgeH" d="M21.7 17.9c-.3.2-.6.3-1 .4-1.1.4-2.2.6-3.4.6-4.4 0-8.3-3.1-8.3-7 0-1.1.6-2 1.5-2.6-4 .2-5 4.3-5 6.8 0 6.9 6.4 7.6 7.8 7.6.7 0 1.9-.2 2.5-.4h.1c2.6-.9 4.8-2.6 6.2-4.9.1-.2.1-.4-.1-.5-.1-.1-.2-.1-.3 0h0z"/>
+        <path id="EdgeI" d="M9.9 22.6c-.8-.5-1.6-1.2-2.1-2-2.5-3.4-1.7-8.1 1.7-10.6.4-.3.7-.5 1.1-.7.2-.1.7-.3 1.4-.3.9 0 1.8.5 2.4 1.2.4.5.6 1.1.6 1.7 0 0 2.3-7.5-7.5-7.5-4.1.1-7.5 4-7.5 7.4 0 1.8.4 3.6 1.1 5.2 2.6 5.5 8.9 8.2 14.7 6.3-2 .7-4.1.4-5.9-.7h0z"/>
+        <path id="EdgeJ" d="M14.3 14c-.1.1-.3.2-.3.5 0 .2.2.5.4.7 1.3.9 3.9.8 3.9.8 1 0 2-.3 2.8-.8 1.8-1 2.8-2.9 2.9-5 0-2.1-.7-3.5-1.1-4.1C20.9 2.2 16.7 0 12 0 5.4 0 .1 5.3 0 11.8c0-3.4 3.4-6.2 7.5-6.2.3 0 2.2 0 3.9.9 1.5.8 2.3 1.8 2.9 2.7.6 1 .7 2.3.7 2.8 0 .6-.2 1.3-.7 2z"/>
+    </defs>
+</svg>
