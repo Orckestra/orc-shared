@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Autocomplete = ({ options, autocompleteProps }) => {
+const Autocomplete = ({ id, options, autocompleteProps }) => {
 	if (isAutocompleteProps(autocompleteProps) === false) {
 		throw new TypeError("autocompleteProps property is not of type AutocompleteProps");
 	}
@@ -109,10 +109,6 @@ const Autocomplete = ({ options, autocompleteProps }) => {
 					disabled: classes.disabled,
 				},
 			}}
-			inputProps={{
-				...params.inputProps,
-				id: "mui-input-autocomplete-id",
-			}}
 		/>
 	);
 
@@ -121,6 +117,7 @@ const Autocomplete = ({ options, autocompleteProps }) => {
 	return (
 		<div className={classes.container}>
 			<AutocompleteMUI
+				id={id}
 				disabled={disabled}
 				value={selected}
 				options={options}
