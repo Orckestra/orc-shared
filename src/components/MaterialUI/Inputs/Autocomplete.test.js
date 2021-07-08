@@ -50,7 +50,7 @@ describe("Autocomplete Component", () => {
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<Autocomplete options={options} autocompleteProps={autocompleteProps} />
+				<Autocomplete id="mui-input-autocomplete-id" options={options} autocompleteProps={autocompleteProps} />
 			</TestWrapper>
 		);
 
@@ -58,6 +58,7 @@ describe("Autocomplete Component", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<AutocompleteMUI
+						id="mui-input-autocomplete-id"
 						options={options}
 						value={options[0]}
 						closeIcon={<Icon id="close2" />}
@@ -70,10 +71,6 @@ describe("Autocomplete Component", () => {
 									...params.InputProps,
 									disableUnderline: true,
 									className: undefined,
-								}}
-								inputProps={{
-									...params.inputProps,
-									id: undefined,
 								}}
 							/>
 						)}
@@ -97,7 +94,7 @@ describe("Autocomplete Component", () => {
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<Autocomplete options={options} autocompleteProps={autocompleteProps} />
+				<Autocomplete id="mui-input-autocomplete-id" options={options} autocompleteProps={autocompleteProps} />
 			</TestWrapper>
 		);
 
@@ -105,6 +102,7 @@ describe("Autocomplete Component", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<AutocompleteMUI
+						id="mui-input-autocomplete-id"
 						options={options}
 						value={null}
 						closeIcon={<Icon id="close2" />}
@@ -117,10 +115,6 @@ describe("Autocomplete Component", () => {
 									...params.InputProps,
 									disableUnderline: true,
 									className: undefined,
-								}}
-								inputProps={{
-									...params.inputProps,
-									id: undefined,
 								}}
 							/>
 						)}
@@ -146,7 +140,7 @@ describe("Autocomplete Component", () => {
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<Autocomplete options={options} autocompleteProps={autocompleteProps} />
+				<Autocomplete id="mui-input-autocomplete-id" options={options} autocompleteProps={autocompleteProps} />
 			</TestWrapper>
 		);
 
@@ -154,6 +148,7 @@ describe("Autocomplete Component", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<AutocompleteMUI
+						id="mui-input-autocomplete-id"
 						options={options}
 						value={null}
 						closeIcon={<Icon id="close2" />}
@@ -166,10 +161,6 @@ describe("Autocomplete Component", () => {
 									...params.InputProps,
 									disableUnderline: true,
 									className: undefined,
-								}}
-								inputProps={{
-									...params.inputProps,
-									id: undefined,
 								}}
 							/>
 						)}
