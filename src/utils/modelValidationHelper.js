@@ -48,15 +48,15 @@ export const hasValidationErrors = (editState, validationMap) => {
 						const errorTypes = [];
 
 						if (validationMap[mapKey].errorTypes) {
-							errorTypes.push(validationMap[mapKey].errorTypes);
+							errorTypes.push(...validationMap[mapKey].errorTypes);
 						}
 
 						if (node.errorTypes) {
-							errorTypes.push(node.errorTypes);
+							errorTypes.push(...node.errorTypes);
 						}
 
 						if (element.errorTypes) {
-							errorTypes.push(element.errorTypes);
+							errorTypes.push(...element.errorTypes);
 						}
 
 						const isValid = editState[mapKey].isValid(null, fullElementPath, errorTypes, element.dependencies);
