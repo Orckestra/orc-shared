@@ -8,7 +8,10 @@ import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
 	actionPanel: {
-		float: "right",
+		display: "flex",
+		marginLeft: "auto",
+		flex: "1 1 0",
+		justifyContent: "flex-end",
 	},
 }));
 
