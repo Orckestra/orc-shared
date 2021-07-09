@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Select from "./Select";
+import SelectProps from "./SelectProps";
 
 const useStyles = makeStyles(theme => ({
 	timeWrapper: {
@@ -26,10 +28,14 @@ const useStyles = makeStyles(theme => ({
 		color: "#333333",
 		marginLeft: theme.spacing(0.5),
 		marginRight: theme.spacing(0.5),
-		padding: theme.spacing(0.5, 1.5, 0.5, 1),
 		borderRadius: theme.shape.borderRadius,
 		"&:first-child": {
 			marginLeft: 0,
+		},
+		"& .MuiInputBase-root": {
+			"& .MuiSelect-select": {
+				minWidth: theme.spacing(3),
+			},
 		},
 	},
 }));
@@ -59,7 +65,7 @@ const ampmOptions = [
 const isBrowserUsingAMPM = () =>
 	!!new Date(Date.UTC(2020, 7, 30, 3, 0, 0)).toLocaleTimeString().match(/am|a.m|pm|p.m/i);
 
-const parseTime = timeStr => {
+export const parseTime = timeStr => {
 	var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
 	if (!time) {
 		return new Date();
@@ -88,6 +94,84 @@ const calculateMins = time => {
 
 const calculateAMPM = time => (isAM(time) ? "AM" : "PM");
 
+export const AMPMSelect = ({ showAMPM, updateTimeOptions, time }) => {
+	const classes = useStyles();
+	if (!showAMPM) return null;
+
+	const selectProps = new SelectProps();
+
+	selectProps.set(SelectProps.propNames.update, updateTimeOptions("ampm"));
+	selectProps.set(SelectProps.propNames.value, calculateAMPM(time));
+	selectProps.set(SelectProps.propNames.native, true);
+	selectProps.set(SelectProps.propNames.inputProps, {
+		name: "ampm",
+		id: "ampm",
+	});
+
+	return (
+		<div className={classes.timePickerSegmentWrapper}>
+			<Select selectProps={selectProps}>
+				{ampmOptions.map(option => (
+					<option key={"ampm" + option.value} value={option.value}>
+						{option.label}
+					</option>
+				))}
+			</Select>
+		</div>
+	);
+};
+
+export const HoursSelect = ({ updateTimeOptions, time, showAMPM }) => {
+	const classes = useStyles();
+	const selectProps = new SelectProps();
+	const properHourOptions = showAMPM ? hourOptionsAMPM : hourOptions;
+
+	selectProps.set(SelectProps.propNames.update, updateTimeOptions("hours"));
+	selectProps.set(SelectProps.propNames.value, calculateHours(time, showAMPM));
+	selectProps.set(SelectProps.propNames.native, true);
+	selectProps.set(SelectProps.propNames.inputProps, {
+		name: "hours",
+		id: "hours",
+	});
+
+	return (
+		<div className={classes.timePickerSegmentWrapper}>
+			<Select selectProps={selectProps}>
+				{properHourOptions.map(option => (
+					<option key={"hour" + option.value} value={option.value}>
+						{option.label}
+					</option>
+				))}
+			</Select>
+		</div>
+	);
+};
+
+export const MinsSelect = ({ updateTimeOptions, time }) => {
+	const classes = useStyles();
+	const selectProps = new SelectProps();
+
+	selectProps.set(SelectProps.propNames.update, updateTimeOptions("mins"));
+	selectProps.set(SelectProps.propNames.value, calculateMins(time));
+	selectProps.set(SelectProps.propNames.native, true);
+	selectProps.set(SelectProps.propNames.inputProps, {
+		name: "mins",
+		id: "mins",
+	});
+
+	return (
+		<div className={classes.timePickerSegmentWrapper}>
+			<Select selectProps={selectProps}>
+				{minOptions.map(option => (
+					<option key={"min" + option.value} value={option.value}>
+						{option.label}
+					</option>
+				))}
+			</Select>
+		</div>
+	);
+};
+
 const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone }) => {
 	const classes = useStyles();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
@@ -111,8 +195,8 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 		}
 	};
 
-	const updateTimeOptions = id => event => {
-		const value = event?.target?.value;
+	const updateTimeOptions = id => newValue => {
+		const value = newValue;
 		if (id === "hours") {
 			setHours(value, isAM(time));
 		} else if (id === "ampm") {
@@ -133,58 +217,13 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 		}
 	};
 
-	const properHourOptions = showAMPM ? hourOptionsAMPM : hourOptions;
-	const AMPMSelect = ({ showAMPM }) => {
-		if (!showAMPM) return null;
-
-		return (
-			<select
-				className={classes.timePickerSegmentWrapper}
-				name="ampm"
-				id="ampm"
-				onChange={updateTimeOptions("ampm")}
-				value={calculateAMPM(time)}
-			>
-				{ampmOptions.map(option => (
-					<option key={"ampm" + option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</select>
-		);
-	};
-
 	return (
 		<div className={classes.timeWrapper}>
 			<span className={classes.timePickerWrapper}>
-				<select
-					className={classes.timePickerSegmentWrapper}
-					name="hours"
-					id="hours"
-					onChange={updateTimeOptions("hours")}
-					value={calculateHours(time, showAMPM)}
-				>
-					{properHourOptions.map(option => (
-						<option key={"hour" + option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</select>
+				<HoursSelect updateTimeOptions={updateTimeOptions} time={time} showAMPM={showAMPM} />
 				<label> : </label>
-				<select
-					className={classes.timePickerSegmentWrapper}
-					name="mins"
-					id="mins"
-					onChange={updateTimeOptions("mins")}
-					value={calculateMins(time)}
-				>
-					{minOptions.map(option => (
-						<option key={"min" + option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</select>
-				<AMPMSelect showAMPM={showAMPM} />
+				<MinsSelect updateTimeOptions={updateTimeOptions} time={time} />
+				<AMPMSelect showAMPM={showAMPM} updateTimeOptions={updateTimeOptions} time={time} />
 			</span>
 			{showTimeZone && (
 				<label className={classes.timeZoneWrapper}>{showTimeZone && getTimeZone(requestedTimeZone)}</label>

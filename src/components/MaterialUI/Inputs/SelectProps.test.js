@@ -12,6 +12,8 @@ describe("Select Props", () => {
 			"iconSelect",
 			"disabled",
 			"error",
+			"native",
+			"inputProps",
 		];
 
 		expect(SelectProps.propNames, "to have keys", propNames);
@@ -28,6 +30,8 @@ describe("Select Props", () => {
 			"iconSelect",
 			"disabled",
 			"error",
+			"native",
+			"inputProps",
 		];
 
 		const selectProps = new SelectProps();

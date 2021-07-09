@@ -17,6 +17,8 @@ class SelectProps extends ComponentProps {
 		iconSelect: "iconSelect",
 		disabled: "disabled",
 		error: "error",
+		native: "native",
+		inputProps: "inputProps",
 	};
 
 	static ruleNames = {
@@ -35,6 +37,8 @@ class SelectProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.iconSelect, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.error, null);
+		this.componentProps.set(this.constructor.propNames.native, null);
+		this.componentProps.set(this.constructor.propNames.inputProps, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.paper, null);
