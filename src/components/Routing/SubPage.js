@@ -23,12 +23,11 @@ const useStyles = makeStyles(theme => ({
 export const SubPage = ({ config, match, location, history, root, modulePrependPath }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	let { component: View, toolStateSelector = () => [], toolFuncSelector = () => ({}), ...props } = config;
+	let { component: View, ...props } = config;
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
 
 	const path = location.pathname;
-	console.log("SubPage: \n  config %O", config);
 
 	const basePathArr = path.split("/");
 	basePathArr.pop();
@@ -51,7 +50,11 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 
 	const modalProps = new ModalProps();
 
-	const titleComponent = <FormattedMessage {...props.title} />;
+	const titleComponent = props?.title?.id ? (
+		<FormattedMessage id={props?.title?.id} defaultMesaage={props?.title?.defaultMessage} />
+	) : (
+		props?.title
+	);
 
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, true);
