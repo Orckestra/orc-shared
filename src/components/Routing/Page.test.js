@@ -1,12 +1,12 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import Page from "./Page";
-import { Backdrop, Dialog } from "./SubPage";
-import { Bar, toolComponents } from "../Toolbar";
-
-const { button: ToolbarButton, separator: ToolbarSeparator } = toolComponents;
+import ModalProps from "../MaterialUI/DataDisplay/modalProps";
+import Button from "@material-ui/core/Button";
+import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
+import { mount } from "unexpected-reaction";
+import translations from "~/translations/en-US.json";
 
 const View = () => <div id="view" />;
 const Sub1 = () => <div id="sub1" />;
@@ -14,6 +14,25 @@ const Sub2 = () => <div id="sub2" />;
 
 describe("Page", () => {
 	let state, store;
+	const modalProps = new ModalProps();
+
+	const intlProvider = { messages: translations };
+
+	modalProps.set(ModalProps.propNames.open, true);
+	modalProps.set(ModalProps.propNames.type, "fullwidth");
+
+	const actionPanel = (
+		<div>
+			<Button variant="contained" color="primary" disableElevation>
+				Close
+			</Button>
+		</div>
+	);
+	const titleComponent = "Item Details";
+
+	modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+	modalProps.set(ModalProps.propNames.title, titleComponent);
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			navigation: { route: {} },
@@ -28,9 +47,11 @@ describe("Page", () => {
 		};
 	});
 
+	const theme = createMuiTheme();
+
 	it("shows the page view when its path is matched", () =>
 		expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<MemoryRouter initialEntries={["/nabble"]}>
 					<Page
 						component={View}
@@ -41,15 +62,17 @@ describe("Page", () => {
 						}}
 					/>
 				</MemoryRouter>
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<View />,
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<View />
+			</TestWrapper>,
 		));
 
 	it("shows nested page when its path is matched", () =>
 		expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<MemoryRouter initialEntries={["/nabble/bar"]}>
 					<Page
 						component={View}
@@ -60,40 +83,39 @@ describe("Page", () => {
 						}}
 					/>
 				</MemoryRouter>
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Sub2 />,
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<Sub2 />
+			</TestWrapper>,
 		));
 
-	it("renders both its own view as well as matched subpage", () =>
-		expect(
-			<div>
-				<Provider store={store}>
+	it("renders both its own view as well as matched subpage", () => {
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<div>
 					<MemoryRouter initialEntries={["/nabble/bar"]}>
 						<Page
 							component={View}
 							path="/nabble"
 							subpages={{
-								"/foo": { component: Sub1 },
-								"/bar": { component: Sub2 },
+								"/foo": { component: Sub1, title: "Item Details" },
+								"/bar": { component: Sub2, title: "Item Details" },
 							}}
 						/>
 					</MemoryRouter>
-				</Provider>
-			</div>,
-			"when mounted",
-			"to satisfy",
-			<div>
-				<View />
-				<Backdrop />
-				<Dialog>
-					<Bar>
-						<ToolbarButton label={{ icon: "back" }} />
-						<ToolbarSeparator />
-					</Bar>
-					<Sub2 />
-				</Dialog>
-			</div>,
-		));
+				</div>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		let expected = <div id="view"></div>;
+
+		expect(mountedComponent, "to contain", expected);
+
+		expected = <div id="sub2"></div>;
+		expect(mountedComponent, "to contain", expected);
+	});
 });

@@ -1,13 +1,12 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
 import { MemoryRouter, Router } from "react-router";
 import { createMemoryHistory } from "history";
-import I18n from "../I18n";
 import SegmentPage, { Wrapper, Item, List } from "./SegmentPage";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
+import translations from "~/translations/en-US.json";
 
 const View1 = () => <div id="view1" />;
 const View2 = () => <div id="view2" />;
@@ -15,10 +14,19 @@ const View3 = () => <div id="view3" />;
 const View4 = () => <div id="view4" />;
 const View5 = () => <div id="view5" />;
 
+jest.mock("translations/en-US.json", () => ({
+	"orc-shared.close": "Close",
+}));
+
 const ComponentLabel = () => <p>Component</p>;
 
 describe("SegmentPage", () => {
 	let state, store, segments;
+
+	const theme = createMuiTheme();
+
+	const intlProvider = { messages: translations };
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
@@ -69,6 +77,7 @@ describe("SegmentPage", () => {
 				component: View1,
 				subpages: {
 					"/sub": {
+						title: "Sub Page Title",
 						component: View4,
 					},
 				},
@@ -109,93 +118,20 @@ describe("SegmentPage", () => {
 
 	it("shows a list of links to segments", () => {
 		return expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<SegmentPage
-								path="/:scope/meep/entityIdValue"
-								segments={segments}
-								match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
-								location={{ pathname: "/foo/meep/entityIdValue/two" }}
-							/>
-						</I18n>
-					</ThemeProvider>
+					<SegmentPage
+						path="/:scope/meep/entityIdValue"
+						segments={segments}
+						match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+						location={{ pathname: "/foo/meep/entityIdValue/two" }}
+					/>
 				</MemoryRouter>
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
-				<Wrapper>
-					<List>
-						<Item to="/foo/meep/entityIdValue/one">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>Text</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item to="/foo/meep/entityIdValue/two" active>
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>
-									Translated
-									<span>*</span>
-								</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item to="/foo/meep/entityIdValue/three">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>
-									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
-								</Grid>
-								<Grid item>
-									<ComponentLabel />
-								</Grid>
-							</Grid>
-						</Item>
-						<Item>
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>DisabledSection</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item>
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>DisabledSectionBySelector</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-					</List>
-					<View2 />
-				</Wrapper>
-			</MemoryRouter>,
-		);
-	});
-
-	it("shows a view over the segment list/view", () => {
-		return expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<div>
-								<SegmentPage
-									path="/:scope/meep/entityIdValue"
-									component={View4}
-									segments={segments}
-									match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
-									location={{ pathname: "/foo/meep/entityIdValue/two" }}
-								/>
-							</div>
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
-			"when mounted",
-			"to satisfy",
-			<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
-				<div>
-					<View4 />
 					<Wrapper>
 						<List>
 							<Item to="/foo/meep/entityIdValue/one">
@@ -238,8 +174,77 @@ describe("SegmentPage", () => {
 						</List>
 						<View2 />
 					</Wrapper>
-				</div>
-			</MemoryRouter>,
+				</MemoryRouter>
+			</TestWrapper>,
+		);
+	});
+
+	it("shows a view over the segment list/view", () => {
+		return expect(
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
+					<div>
+						<SegmentPage
+							path="/:scope/meep/entityIdValue"
+							component={View4}
+							segments={segments}
+							match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+							location={{ pathname: "/foo/meep/entityIdValue/two" }}
+						/>
+					</div>
+				</MemoryRouter>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two"]}>
+					<div>
+						<View4 />
+						<Wrapper>
+							<List>
+								<Item to="/foo/meep/entityIdValue/one">
+									<Grid container alignItems="center" wrap="nowrap">
+										<Grid item>Text</Grid>
+										<Grid item></Grid>
+									</Grid>
+								</Item>
+								<Item to="/foo/meep/entityIdValue/two" active>
+									<Grid container alignItems="center" wrap="nowrap">
+										<Grid item>
+											Translated
+											<span>*</span>
+										</Grid>
+										<Grid item></Grid>
+									</Grid>
+								</Item>
+								<Item to="/foo/meep/entityIdValue/three">
+									<Grid container alignItems="center" wrap="nowrap">
+										<Grid item>
+											<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+										</Grid>
+										<Grid item>
+											<ComponentLabel />
+										</Grid>
+									</Grid>
+								</Item>
+								<Item>
+									<Grid container alignItems="center" wrap="nowrap">
+										<Grid item>DisabledSection</Grid>
+										<Grid item></Grid>
+									</Grid>
+								</Item>
+								<Item>
+									<Grid container alignItems="center" wrap="nowrap">
+										<Grid item>DisabledSectionBySelector</Grid>
+										<Grid item></Grid>
+									</Grid>
+								</Item>
+							</List>
+							<View2 />
+						</Wrapper>
+					</div>
+				</MemoryRouter>
+			</TestWrapper>,
 		);
 	});
 
@@ -257,20 +262,16 @@ describe("SegmentPage", () => {
 			}),
 		);
 		return expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/one/sub"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<SegmentPage
-								path="/:scope/meep/entityIdValue"
-								segments={segments}
-								match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
-								location={{ pathname: "/foo/meep/entityIdValue/one/sub" }}
-							/>
-						</I18n>
-					</ThemeProvider>
+					<SegmentPage
+						path="/:scope/meep/entityIdValue"
+						segments={segments}
+						match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+						location={{ pathname: "/foo/meep/entityIdValue/one/sub" }}
+					/>
 				</MemoryRouter>
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect.it("to contain", <View1 />).and("to contain", <View4 />),
@@ -279,18 +280,16 @@ describe("SegmentPage", () => {
 
 	it("shows the relevant page under a segment if it is matched", () =>
 		expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<MemoryRouter initialEntries={["/foo/meep/entityIdValue/two/sub"]}>
-					<ThemeProvider theme={{}}>
-						<SegmentPage
-							path="/:scope/meep/entityIdValue"
-							segments={segments}
-							match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
-							location={{ pathname: "/foo/meep/entityIdValue/two" }}
-						/>
-					</ThemeProvider>
+					<SegmentPage
+						path="/:scope/meep/entityIdValue"
+						segments={segments}
+						match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+						location={{ pathname: "/foo/meep/entityIdValue/two" }}
+					/>
 				</MemoryRouter>
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect.it("to satisfy", <View3 />),
@@ -301,66 +300,64 @@ describe("SegmentPage", () => {
 			initialEntries: ["/foo/meep/entityIdValue"],
 		});
 		return expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<Router history={history}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<SegmentPage
-								path="/:scope/meep/entityIdValue"
-								segments={segments}
-								match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
-								location={{ pathname: "/foo/meep/entityIdValue" }}
-							/>
-						</I18n>
-					</ThemeProvider>
+					<SegmentPage
+						path="/:scope/meep/entityIdValue"
+						segments={segments}
+						match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+						location={{ pathname: "/foo/meep/entityIdValue" }}
+					/>
 				</Router>
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Wrapper>
-				<MemoryRouter>
-					<List>
-						<Item to="/foo/meep/entityIdValue/one">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>Text</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item to="/foo/meep/entityIdValue/two">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>
-									Translated
-									<span>*</span>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<Wrapper>
+					<MemoryRouter>
+						<List>
+							<Item to="/foo/meep/entityIdValue/one">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>Text</Grid>
+									<Grid item></Grid>
 								</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item to="/foo/meep/entityIdValue/three">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>
-									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+							</Item>
+							<Item to="/foo/meep/entityIdValue/two">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>
+										Translated
+										<span>*</span>
+									</Grid>
+									<Grid item></Grid>
 								</Grid>
-								<Grid item>
-									<ComponentLabel />
+							</Item>
+							<Item to="/foo/meep/entityIdValue/three">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>
+										<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+									</Grid>
+									<Grid item>
+										<ComponentLabel />
+									</Grid>
 								</Grid>
-							</Grid>
-						</Item>
-						<Item>
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>DisabledSection</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item>
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>DisabledSectionBySelector</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-					</List>
-				</MemoryRouter>
-				<View1 />
-			</Wrapper>,
+							</Item>
+							<Item>
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>DisabledSection</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item>
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>DisabledSectionBySelector</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+						</List>
+					</MemoryRouter>
+					<View1 />
+				</Wrapper>
+			</TestWrapper>,
 		).then(() =>
 			expect(history, "to satisfy", {
 				location: { pathname: "/foo/meep/entityIdValue/one" },
@@ -373,64 +370,62 @@ describe("SegmentPage", () => {
 			initialEntries: ["/foo/meep/entityIdValue"],
 		});
 		return expect(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
 				<Router history={history}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<SegmentPage
-								path="/:scope/meep/entityIdValue"
-								segments={segments}
-								match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
-								location={{ pathname: "/foo/meep/entityIdValue" }}
-								entityIdResolver={() => "anotherId"}
-							/>
-						</I18n>
-					</ThemeProvider>
+					<SegmentPage
+						path="/:scope/meep/entityIdValue"
+						segments={segments}
+						match={{ params: { scope: "foo", entityId: "entityIdValue" } }}
+						location={{ pathname: "/foo/meep/entityIdValue" }}
+						entityIdResolver={() => "anotherId"}
+					/>
 				</Router>
-			</Provider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Wrapper>
-				<MemoryRouter>
-					<List>
-						<Item to="/foo/meep/entityIdValue/one">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>Text</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item to="/foo/meep/entityIdValue/two">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>Translated</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item to="/foo/meep/entityIdValue/three">
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>
-									<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<Wrapper>
+					<MemoryRouter>
+						<List>
+							<Item to="/foo/meep/entityIdValue/one">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>Text</Grid>
+									<Grid item></Grid>
 								</Grid>
-								<Grid item>
-									<ComponentLabel />
+							</Item>
+							<Item to="/foo/meep/entityIdValue/two">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>Translated</Grid>
+									<Grid item></Grid>
 								</Grid>
-							</Grid>
-						</Item>
-						<Item>
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>DisabledSection</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-						<Item>
-							<Grid container alignItems="center" wrap="nowrap">
-								<Grid item>DisabledSectionBySelector</Grid>
-								<Grid item></Grid>
-							</Grid>
-						</Item>
-					</List>
-				</MemoryRouter>
-				<View1 />
-			</Wrapper>,
+							</Item>
+							<Item to="/foo/meep/entityIdValue/three">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>
+										<TooltippedTypography children="ComponentLabel" titleValue="ComponentLabel" noWrap />
+									</Grid>
+									<Grid item>
+										<ComponentLabel />
+									</Grid>
+								</Grid>
+							</Item>
+							<Item>
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>DisabledSection</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item>
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>DisabledSectionBySelector</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+						</List>
+					</MemoryRouter>
+					<View1 />
+				</Wrapper>
+			</TestWrapper>,
 		).then(() =>
 			expect(history, "to satisfy", {
 				location: { pathname: "/foo/meep/entityIdValue/one" },
