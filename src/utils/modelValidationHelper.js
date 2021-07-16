@@ -15,6 +15,11 @@ export const validationRules = {
 		);
 		return regexRule.test(value);
 	},
+	[validationErrorTypes.fieldMustBeValidPhoneNumber]: value => {
+		if (!value) return true;
+		const regexRule = new RegExp("^(\\+?\\-?[ 0-9])*$");
+		return regexRule.test(value);
+	},
 };
 
 export const showError = field => {
