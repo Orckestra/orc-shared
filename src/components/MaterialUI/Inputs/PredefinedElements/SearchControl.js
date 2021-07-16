@@ -195,6 +195,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 								disabled={disabled}
 								onClick={() => {
 									inputRef.current.value = null;
+									onSearch(searchOption);
 									inputRef.current.focus();
 								}}
 								className={classes.clearButton}
