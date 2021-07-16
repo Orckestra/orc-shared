@@ -39,6 +39,7 @@ export const validationErrorTypes = {
 	fieldIsRequired: "fieldIsRequired",
 	fieldHasWrongValue: "fieldHasWrongValue",
 	fieldMustBeValidEmail: "fieldMustBeValidEmail",
+	fieldMustBeValidPhoneNumber: "fieldMustBeValidPhoneNumber",
 };
 
 export const displayMode = {

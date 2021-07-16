@@ -6,9 +6,9 @@
 	"orc-shared.applyChanges": "Appliquer les modifications",
 	"orc-shared.back": "Arrière",
 	"orc-shared.cancel": "Annuler",
+	"orc-shared.ccDescription": "La plateforme de commerce « API-first »  qui rend le commerce de détail omnicanal fluide.",
 	"orc-shared.ccName": "Orckestra Commerce Cloud",
 	"orc-shared.ccVersion": "Commerce Cloud {version}",
-	"orc-shared.ccDescription": "La plateforme de commerce « API-first »  qui rend le commerce de détail omnicanal fluide.",
 	"orc-shared.close": "Fermer",
 	"orc-shared.confirmation": "Confirmation",
 	"orc-shared.copyright": "© 2021 Technologies Orckestra Inc.",
@@ -21,8 +21,11 @@
 	"orc-shared.error": "Erreur",
 	"orc-shared.fieldIsRequired": "Est requis",
 	"orc-shared.fieldMustBeValidEmail": "Ce champ doit contenir un courriel valide",
+	"orc-shared.fieldMustBeValidPhoneNumber": "Ce champ doit contenir un numéro de téléphone valide",
 	"orc-shared.help": "Aide",
 	"orc-shared.inactive": "Inactif",
+	"orc-shared.internetExplorerWarningContent": "Vous utilisez un navigateur qui n'est plus supporté. Pour assurer une expérience optimale de nos applications web HTML, nous vous recommendons d'utiliser la dernière version des navigateurs suivants:",
+	"orc-shared.internetExplorerWarningTitle": "Améliorez votre expérience",
 	"orc-shared.needToRefresh": "Vous n'êtes pas autorisé à effectuer une requête. Veuillez cliquer sur Rafraîchir pour rafraîchir l’application.",
 	"orc-shared.next": "Suivant",
 	"orc-shared.no": "Non",
@@ -46,7 +49,5 @@
 	"orc-shared.status": "Statut",
 	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?",
 	"orc-shared.valueName": "Nom de la valeur",
-	"orc-shared.yes": "Oui",
-	"orc-shared.internetExplorerWarningTitle": "Améliorez votre expérience",
-	"orc-shared.internetExplorerWarningContent": "Vous utilisez un navigateur qui n'est plus supporté. Pour assurer une expérience optimale de nos applications web HTML, nous vous recommendons d'utiliser la dernière version des navigateurs suivants:"
+	"orc-shared.yes": "Oui"
 }
