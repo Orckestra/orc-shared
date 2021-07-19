@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	inputRoot: {
-		paddingRight: theme.spacing(2.6),
+		paddingRight: theme.spacing(5.2),
 		height: "auto",
 		boxSizing: "border-box",
 	},
@@ -74,7 +74,6 @@ const useStyles = makeStyles(theme => ({
 		right: theme.spacing(1),
 		boxShadow: "none !important",
 		backgroundColor: "unset !important",
-		display: "none",
 	},
 	clearIndicator: {
 		boxShadow: "none !important",
@@ -93,6 +92,7 @@ const Autocomplete = ({ id, options, autocompleteProps }) => {
 	const value = autocompleteProps?.get(AutocompleteProps.propNames.value) ?? "";
 	const disabled = autocompleteProps?.get(AutocompleteProps.propNames.disabled) || false;
 	const error = autocompleteProps?.get(AutocompleteProps.propNames.error);
+	const placeholder = autocompleteProps?.get(AutocompleteProps.propNames.placeholder);
 
 	const onChangeOption = useCallback((event, option) => update(option?.value ?? null), [update]);
 
@@ -100,6 +100,7 @@ const Autocomplete = ({ id, options, autocompleteProps }) => {
 		<TextField
 			{...params}
 			fullWidth
+			placeholder={placeholder}
 			InputProps={{
 				...params.InputProps,
 				disableUnderline: true,
@@ -129,6 +130,7 @@ const Autocomplete = ({ id, options, autocompleteProps }) => {
 					clearIndicator: classes.clearIndicator,
 					input: classes.input,
 				}}
+				popupIcon={<Icon id="dropdown-chevron-down" className={classes.icon} />}
 				closeIcon={<Icon id="close2" className={classes.closeIcon} />}
 				renderInput={RenderInput}
 			/>

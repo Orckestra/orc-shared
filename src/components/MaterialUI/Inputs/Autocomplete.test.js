@@ -62,6 +62,7 @@ describe("Autocomplete Component", () => {
 						options={options}
 						value={options[0]}
 						closeIcon={<Icon id="close2" />}
+						popupIcon={<Icon id="dropdown-chevron-down" />}
 						getOptionLabel={option => option.label}
 						renderInput={params => (
 							<TextField
@@ -106,6 +107,7 @@ describe("Autocomplete Component", () => {
 						options={options}
 						value={null}
 						closeIcon={<Icon id="close2" />}
+						popupIcon={<Icon id="dropdown-chevron-down" />}
 						getOptionLabel={option => option.label}
 						renderInput={params => (
 							<TextField
@@ -152,6 +154,7 @@ describe("Autocomplete Component", () => {
 						options={options}
 						value={null}
 						closeIcon={<Icon id="close2" />}
+						popupIcon={<Icon id="dropdown-chevron-down" />}
 						getOptionLabel={option => option.label}
 						renderInput={params => (
 							<TextField
