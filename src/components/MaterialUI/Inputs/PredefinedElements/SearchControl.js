@@ -237,7 +237,6 @@ const SearchControl = ({
 			disabled={disabled}
 			classes={{ root: classes.searchButton }}
 			onClick={() => {
-				console.log("search!", inputRef.current.value);
 				onSearch(searchOption, inputRef.current.value);
 			}}
 		>

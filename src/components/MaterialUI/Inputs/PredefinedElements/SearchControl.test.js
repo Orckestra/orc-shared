@@ -148,8 +148,6 @@ describe("SearchControl Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	// todo: test with specific searchOption (not the first one)
-
 	it("Renders Search Control component without errors when searchOptions are null", () => {
 		const options = null;
 
@@ -371,6 +369,33 @@ describe("SearchControl Component", () => {
 
 		expect(onSearchEvent.callCount, "to equal", 1);
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["anotherValue", "abcdef123"] }]);
+	});
+
+	it("Search Control should render with the 2nd value", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl
+					placeholder="placeHolderTest"
+					defaultValue={"abcdef123"}
+					searchOptions={options}
+					searchOption={"anotherValue"}
+					onSearch={onSearchEvent}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const selectMui = mountedComponent.find(SelectMUI);
+
+		expect(selectMui.props().value, "to equal", "anotherValue");
 	});
 
 	it("focusing text input should set focus on container", () => {
