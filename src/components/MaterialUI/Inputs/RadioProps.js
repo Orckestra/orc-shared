@@ -10,7 +10,6 @@ class RadioProps extends ComponentProps {
 		name: "name",
 		radios: "radios",
 		disabled: "disabled",
-		error: "error",
 		allowSingleRadio: "allowSingleRadio",
 	};
 
@@ -24,7 +23,6 @@ class RadioProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.name, null);
 		this.componentProps.set(this.constructor.propNames.radios, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
-		this.componentProps.set(this.constructor.propNames.error, null);
 		this.componentProps.set(this.constructor.propNames.allowSingleRadio, null);
 
 		this._isRadioProps = true;
