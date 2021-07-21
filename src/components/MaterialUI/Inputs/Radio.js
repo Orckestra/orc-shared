@@ -125,7 +125,7 @@ const Radio = ({ radioProps }) => {
 									onClick={handleClick}
 								/>
 							}
-						></FormControlLabel>
+						/>
 					);
 				})}
 			</RadioGroupMui>
