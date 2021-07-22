@@ -94,7 +94,6 @@ const Radio = ({ radioProps }) => {
 	const { name, label, defaultVal, value, update, row, radios, disabled } = extractAndValidateProps(radioProps);
 	const handleChange = update ? event => update(event.target.value) : null;
 	const error = radioProps?.get(RadioProps.propNames.error);
-	const hasError = !!error;
 
 	const radio = (
 		<FormControl component="fieldset" className={classes.radioFormControl} error={error}>
@@ -105,7 +104,6 @@ const Radio = ({ radioProps }) => {
 				name={name}
 				defaultValue={defaultVal}
 				value={value}
-				error={hasError}
 				onChange={handleChange}
 			>
 				{radios.map(radio => {
