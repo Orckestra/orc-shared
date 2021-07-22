@@ -27,7 +27,7 @@ export const FormContext = createContext();
 FormContext.displayName = "FormContext";
 
 export const FormPage = ({ formName, cols = [1, 1, 1], getUpdater, fields, values, wide }) => {
-	let colSpans = wide ? [1] : cols;
+	let colSpans = wide ? [] : cols;
 	const colFields = splitFields(fields, colSpans.length);
 	return (
 		<FormContext.Provider
