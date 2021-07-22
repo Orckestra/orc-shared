@@ -80,6 +80,28 @@ describe("FormPage", () => {
 			</Provider>,
 		));
 
+	it("still respects 'wide' flag with multiple fields", () =>
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormPage wide cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormContext.Provider value={{ values }}>
+						<Wrapper>
+							<Form spanWidth={1}>
+								<FieldElements getUpdater={getUpdater} fields={manyFields} />
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
+				</IntlProvider>
+			</Provider>,
+		));
+
 	it("renders a form with a multiple fields", () =>
 		expect(
 			<Provider store={store}>
