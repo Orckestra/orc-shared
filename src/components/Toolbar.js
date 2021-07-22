@@ -113,7 +113,7 @@ toolComponents.radio = props => {
 	radioProps.set(RadioProps.propNames.update, props?.update);
 	radioProps.set(RadioProps.propNames.radios, props?.radios);
 	radioProps.set(RadioProps.propNames.row, props?.row);
-
+	radioProps.set(RadioProps.propNames.error, props?.error);
 	return (
 		<ToolbarRadioWrapper>
 			<ToolbarRadio radioProps={radioProps} />

@@ -108,6 +108,7 @@ describe("Toolbar", () => {
 					{ label: "Option 2", value: "option2" },
 					{ label: "Option 3", value: "option3" },
 				],
+				error: false,
 				row: true,
 			},
 		];
@@ -193,12 +194,15 @@ describe("Toolbar", () => {
 								{ label: "Option 2", value: "option2" },
 								{ label: "Option 3", value: "option3" },
 							]}
+							error={false}
 							row={true}
 						/>
 					</Bar>
 				</IntlProvider>
 			</Provider>,
-		).then(() => expect(console.error, "was not called")));
+		).then(() => {
+			expect(console.error, "was not called");
+		}));
 });
 
 describe("toolComponents.input", () => {
@@ -441,6 +445,7 @@ describe("toolComponents.radio", () => {
 		radioProps.set(RadioProps.propNames.value, "option1");
 		radioProps.set(RadioProps.propNames.update, jest.fn());
 		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.error, false);
 		radioProps.set(RadioProps.propNames.row, true);
 	});
 
@@ -460,6 +465,7 @@ describe("toolComponents.radio", () => {
 					defaultVal="option1"
 					update={jest.fn()}
 					radios={radios}
+					error={false}
 					row={true}
 				/>
 			</Provider>,
