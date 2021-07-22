@@ -57,6 +57,7 @@ describe("useEditState", () => {
 		saveInitialValueToEditState = false,
 		validateInitialValueAfterSave = false,
 		dependencies = { valid: true },
+		modifiedValue = undefined,
 	}) => {
 		const createEditState = useEditState(entityId, sectionName, {
 			customRule: (value, d) => value === "custom" && d.valid,
@@ -69,6 +70,7 @@ describe("useEditState", () => {
 			saveInitialValueToEditState,
 			validateInitialValueAfterSave,
 			dependencies,
+			modifiedValue,
 		);
 		const fieldWithUndefinedInitialValue = createEditState(["anotherField"]);
 
@@ -196,6 +198,71 @@ describe("useEditState", () => {
 		expect(useDispatchWithModulesDataSpy, "to have calls satisfying", [
 			{
 				args: [setEditModelField, [["field"], initialFieldValue, initialFieldValue, entityId, sectionName]],
+			},
+		]);
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Do not save initial value to edit state if saveInitialValueToEditState is a function that returns false", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp saveInitialValueToEditState={() => false} />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		mount(component);
+
+		expect(useDispatchWithModulesDataSpy.callCount, "to equal", 0);
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Save initial value to edit state if saveInitialValueToEditState is a function that returns true", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp saveInitialValueToEditState={() => true} />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		mount(component);
+
+		expect(useDispatchWithModulesDataSpy, "to have calls satisfying", [
+			{
+				args: [setEditModelField, [["field"], initialFieldValue, initialFieldValue, entityId, sectionName]],
+			},
+		]);
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Save initial value to edit state with the modified value if saveInitialValueToEditState is a function that returns true", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp saveInitialValueToEditState={() => true} modifiedValue={"TheNewValue"} />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		mount(component);
+
+		expect(useDispatchWithModulesDataSpy, "to have calls satisfying", [
+			{
+				args: [setEditModelField, [["field"], "TheNewValue", initialFieldValue, entityId, sectionName]],
 			},
 		]);
 

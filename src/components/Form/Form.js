@@ -38,7 +38,8 @@ export const FormPage = ({ formName, cols = [1, 1, 1], getUpdater, fields, value
 		>
 			<Wrapper>
 				{colFields.map((fields, index) => (
-					<Form key={index} spanWidth={colSpans[index] /* istanbul ignore next*/ || 1}>
+					/* istanbul ignore next*/
+					<Form key={index} spanWidth={colSpans[index] || 1}>
 						<FieldElements getUpdater={getUpdater} fields={fields} />
 					</Form>
 				))}
