@@ -22,7 +22,7 @@ export const validationRules = {
 	},
 	[validationErrorTypes.fieldMustBeValidPhoneExtension]: value => {
 		if (!value) return true;
-		const regexRule = new RegExp("^(\\+?\\-?[ 0-9])*$");
+		const regexRule = new RegExp("^(\\-?\\*?\\#?[ 0-9])*$");
 		return regexRule.test(value);
 	},
 };
