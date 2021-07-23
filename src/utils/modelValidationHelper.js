@@ -20,6 +20,11 @@ export const validationRules = {
 		const regexRule = new RegExp("^(\\+?\\-?[ 0-9])*$");
 		return regexRule.test(value);
 	},
+	[validationErrorTypes.fieldMustBeValidPhoneExtension]: value => {
+		if (!value) return true;
+		const regexRule = new RegExp("^(\\-?\\*?\\#?[ 0-9])*$");
+		return regexRule.test(value);
+	},
 };
 
 export const showError = field => {

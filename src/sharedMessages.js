@@ -207,6 +207,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.fieldMustBeValidPhoneNumber",
 		defaultMessage: "This field must be a valid phone number",
 	},
+	fieldMustBeValidPhoneExtension: {
+		id: "orc-shared.fieldMustBeValidPhoneExtension",
+		defaultMessage: "This field must be a valid phone extension",
+	},
 });
 
 export default sharedMessages;
