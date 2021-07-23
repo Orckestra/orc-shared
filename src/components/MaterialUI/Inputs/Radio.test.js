@@ -187,6 +187,20 @@ describe("Radio Component", () => {
 		radioProps.set(RadioProps.propNames.radios, radios.slice(0, 1));
 		radioProps.set(RadioProps.propNames.row, true);
 		radioProps.set(RadioProps.propNames.disabled, true);
+		radioProps.set(RadioProps.propNames.error, null);
+		radioProps.set(RadioProps.propNames.allowSingleRadio, true);
+
+		ExpectComponentToBeRenderedProperly(radioProps);
+	});
+
+	it("Renders Radio component properly with an error", () => {
+		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
+		radioProps.set(RadioProps.propNames.defaultVal, "option1");
+		radioProps.set(RadioProps.propNames.value, "option1");
+		radioProps.set(RadioProps.propNames.radios, radios.slice(0, 1));
+		radioProps.set(RadioProps.propNames.row, true);
+		radioProps.set(RadioProps.propNames.disabled, true);
+		radioProps.set(RadioProps.propNames.error, "There is an error");
 		radioProps.set(RadioProps.propNames.allowSingleRadio, true);
 
 		ExpectComponentToBeRenderedProperly(radioProps);
