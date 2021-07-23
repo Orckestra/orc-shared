@@ -21,6 +21,7 @@
 	"orc-shared.error": "Error",
 	"orc-shared.fieldIsRequired": "This field is required",
 	"orc-shared.fieldMustBeValidEmail": "This field must be a valid email",
+	"orc-shared.fieldMustBeValidPhoneExtension": "This field must be a valid phone extension",
 	"orc-shared.fieldMustBeValidPhoneNumber": "This field must be a valid phone number",
 	"orc-shared.help": "Help",
 	"orc-shared.inactive": "Inactive",
