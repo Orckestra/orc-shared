@@ -29,7 +29,6 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 		saveInitialValueToEditState = false,
 		preValidateInitialValue = false,
 		fieldDependencies = {},
-		modifiedValue = undefined,
 	) => {
 		const stateValue = useSelectorAndUnwrap(state =>
 			state.getIn(["view", "edit", currentModuleName, entityId, sectionName, "model", ...keys]),
@@ -60,31 +59,14 @@ export const useEditState = (entityId, sectionName, extendedValidationRules = {}
 		);
 
 		useEffect(() => {
-			// this is a workaround for bug https://dev.azure.com/orckestra001/OrckestraCommerce/_workitems/edit/49738
-			// this was the only way I found to allow the state of the segment to be refreshed when modified in another segment
-			const mustUpdateState =
-				typeof saveInitialValueToEditState === "function"
-					? saveInitialValueToEditState(stateValue)
-					: saveInitialValueToEditState && stateValue == null;
-
-			if (mustUpdateState) {
-				const valueToSave = modifiedValue === undefined ? initialValue : modifiedValue;
-
-				dispatchWithModulesData(setEditModelField, [keys, valueToSave, initialValue, entityId, sectionName]);
+			if (saveInitialValueToEditState && stateValue == null) {
+				dispatchWithModulesData(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
 
 				if (preValidateInitialValue) {
-					isEditStateValid(valueToSave);
+					isEditStateValid(initialValue);
 				}
 			}
-		}, [
-			initialValue,
-			modifiedValue,
-			keys,
-			saveInitialValueToEditState,
-			preValidateInitialValue,
-			stateValue,
-			isEditStateValid,
-		]);
+		}, [initialValue, keys, saveInitialValueToEditState, preValidateInitialValue, stateValue, isEditStateValid]);
 
 		const updateEditState = (newValue, dependencies) => {
 			dispatchWithModulesData(setEditModelField, [keys, newValue, initialValue, entityId, sectionName]);
