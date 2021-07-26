@@ -52,10 +52,10 @@
 		}
 	],
 	"devDependencies": {
-		"orc-scripts": "1.1.0-pre.0"
+		"orc-scripts": "1.2.0-dev.1"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.1.0-pre.0"
+		"orc-scripts": "1.2.0-dev.1"
 	},
 	"sideEffects": false,
 	"lint-staged": {
