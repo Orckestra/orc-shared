@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import sinon from "sinon";
-import SearchControl from "./SearchControl";
+import SearchControl, { getSearchOptionValue } from "./SearchControl";
 import { TestWrapper, createMuiTheme } from "../../../../utils/testUtils";
 import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
@@ -306,7 +306,12 @@ describe("SearchControl Component", () => {
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SearchControl placeholder="placeHolderTest" searchOptions={options} onSearch={onSearchEvent} />
+				<SearchControl
+					placeholder="placeHolderTest"
+					searchOptions={options}
+					searchOption={"anotherValue"}
+					onSearch={onSearchEvent}
+				/>
 			</TestWrapper>
 		);
 
@@ -318,6 +323,38 @@ describe("SearchControl Component", () => {
 
 		searchInput.instance().value = "abcdef123";
 
+		const allButton = mountedComponent.find("button");
+		const searchButton = allButton.find("[data-qa='searchButton']");
+
+		onSearchEvent.resetHistory();
+
+		searchButton.simulate("click");
+
+		expect(onSearchEvent.callCount, "to equal", 1);
+		expect(onSearchEvent, "to have calls satisfying", [{ args: ["anotherValue", "abcdef123"] }]);
+	});
+
+	it("Search Control should trigger the event when changing the option", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl
+					placeholder="placeHolderTest"
+					defaultValue={"abcdef123"}
+					searchOptions={options}
+					onSearch={onSearchEvent}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
 		const selectMui = mountedComponent.find(SelectMUI);
 
 		const event = {
@@ -326,14 +363,39 @@ describe("SearchControl Component", () => {
 			},
 		};
 
+		onSearchEvent.resetHistory();
+
 		selectMui.invoke("onChange")(event);
 
-		const allButton = mountedComponent.find("button");
-		const serachButton = allButton.find("[data-qa='searchButton']");
-
-		serachButton.simulate("click");
-
+		expect(onSearchEvent.callCount, "to equal", 1);
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["anotherValue", "abcdef123"] }]);
+	});
+
+	it("Search Control should render with the 2nd value", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl
+					placeholder="placeHolderTest"
+					defaultValue={"abcdef123"}
+					searchOptions={options}
+					searchOption={"anotherValue"}
+					onSearch={onSearchEvent}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const selectMui = mountedComponent.find(SelectMUI);
+
+		expect(selectMui.props().value, "to equal", "anotherValue");
 	});
 
 	it("focusing text input should set focus on container", () => {
@@ -421,5 +483,26 @@ describe("SearchControl Component", () => {
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
+	});
+});
+
+describe("getSearchOptionValue function", () => {
+	it.each([[null], [undefined], [[]]])("returns null if searchOptions is %o", list => {
+		const result = getSearchOptionValue(list, 0);
+		expect(result, "to be", null);
+	});
+
+	it("returns the first element if the selected option cannot be found", () => {
+		const list = [{ value: 100 }, { value: 101 }];
+
+		const result = getSearchOptionValue(list, 0);
+		expect(result, "to be", 100);
+	});
+
+	it("returns the selected option value", () => {
+		const list = [{ value: 100 }, { value: 101 }];
+
+		const result = getSearchOptionValue(list, 101);
+		expect(result, "to be", 101);
 	});
 });

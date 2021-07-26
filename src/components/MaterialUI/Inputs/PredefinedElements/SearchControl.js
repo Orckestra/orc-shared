@@ -126,17 +126,38 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch = () => {}, disabled }) => {
+export const getSearchOptionValue = (searchOptions, searchOption) => {
+	if (searchOptions?.length > 0) {
+		const option = searchOptions.find(o => o.value === searchOption);
+		if (option) {
+			return option.value;
+		}
+
+		return searchOptions[0].value;
+	}
+
+	return null;
+};
+
+const SearchControl = ({
+	placeholder,
+	defaultValue = "",
+	searchOptions,
+	searchOption,
+	onSearch = () => {},
+	disabled,
+}) => {
 	searchOptions = !searchOptions?.length ? null : searchOptions;
-	const baseValue = !!searchOptions ? searchOptions[0].value : null;
+	searchOption = getSearchOptionValue(searchOptions, searchOption);
 	const [inputFocused, setInputFocused] = useState(false);
-	const [searchOption, setSearchOption] = useState(baseValue);
 
 	const classes = useStyles({ focused: inputFocused });
 
 	const inputRef = useRef();
 
-	const update = value => setSearchOption(value);
+	const update = value => {
+		onSearch(value, defaultValue);
+	};
 
 	const selectProps = new SelectProps();
 	selectProps.set(SelectProps.propNames.update, update);
@@ -195,6 +216,7 @@ const SearchControl = ({ placeholder, defaultValue = "", searchOptions, onSearch
 								disabled={disabled}
 								onClick={() => {
 									inputRef.current.value = null;
+									onSearch(searchOption);
 									inputRef.current.focus();
 								}}
 								className={classes.clearButton}

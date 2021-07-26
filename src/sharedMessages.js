@@ -203,6 +203,14 @@ const sharedMessages = defineMessages({
 		defaultMessage:
 			"You are using a browser that we no longer support. For a better experience with our HTML web applications, we recommend you to use the latest version of one of the following browsers:",
 	},
+	fieldMustBeValidPhoneNumber: {
+		id: "orc-shared.fieldMustBeValidPhoneNumber",
+		defaultMessage: "This field must be a valid phone number",
+	},
+	fieldMustBeValidPhoneExtension: {
+		id: "orc-shared.fieldMustBeValidPhoneExtension",
+		defaultMessage: "This field must be a valid phone extension",
+	},
 });
 
 export default sharedMessages;

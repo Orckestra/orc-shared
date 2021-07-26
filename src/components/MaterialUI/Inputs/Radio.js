@@ -39,6 +39,12 @@ const useStyles = makeStyles(theme => ({
 	radioFormControl: {
 		minWidth: theme.spacing(30),
 	},
+	errorText: {
+		marginTop: theme.spacing(0.5),
+		color: theme.palette.error.main,
+		fontSize: theme.typography.fieldLabelSize,
+		float: "left",
+	},
 }));
 
 const extractAndValidateProps = radioProps => {
@@ -87,9 +93,10 @@ const Radio = ({ radioProps }) => {
 	const classes = useStyles();
 	const { name, label, defaultVal, value, update, row, radios, disabled } = extractAndValidateProps(radioProps);
 	const handleChange = update ? event => update(event.target.value) : null;
+	const error = radioProps.get(RadioProps.propNames.error);
 
-	return (
-		<FormControl component="fieldset" className={classes.radioFormControl}>
+	const radio = (
+		<FormControl component="fieldset" className={classes.radioFormControl} error={error}>
 			<FormLabel component="legend">{label}</FormLabel>
 			<RadioGroupMui
 				row={row}
@@ -121,6 +128,16 @@ const Radio = ({ radioProps }) => {
 				})}
 			</RadioGroupMui>
 		</FormControl>
+	);
+
+	return (
+		(error && (
+			<div className={classes.container}>
+				{radio}
+				<div className={classNames(classes.errorText)}>{error}</div>
+			</div>
+		)) ||
+		radio
 	);
 };
 

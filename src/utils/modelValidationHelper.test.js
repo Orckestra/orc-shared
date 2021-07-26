@@ -46,6 +46,50 @@ describe("validationRules", () => {
 
 		expect(isValid, "to be true");
 	});
+
+	const testPhoneNumber = (phoneNumber, expected) => {
+		it("validates fieldMustBeValidPhoneNumber rule correctly when its value is " + phoneNumber, () => {
+			const isValid = validationRules[validationErrorTypes.fieldMustBeValidPhoneNumber](phoneNumber);
+
+			expect(isValid, expected);
+		});
+	};
+
+	testPhoneNumber("+001 111 222 3333", "to be true");
+	testPhoneNumber("+0011112223333", "to be true");
+	testPhoneNumber("+001-111-222-3333", "to be true");
+	testPhoneNumber("111 222 3333", "to be true");
+	testPhoneNumber("1112223333", "to be true");
+	testPhoneNumber("111-222-3333", "to be true");
+	testPhoneNumber(undefined, "to be true");
+
+	testPhoneNumber("+OO1-111-222-3333", "to be false");
+	testPhoneNumber("OO1-111-222-3333", "to be false");
+	testPhoneNumber("OO11112223333", "to be false");
+	testPhoneNumber("abracadabra", "to be false");
+	testPhoneNumber("111 aaa 3333", "to be false");
+	testPhoneNumber("111 AAA 3333", "to be false");
+
+	const testPhoneExtensionNumber = (phoneExtensionNumber, expected) => {
+		it("validates fieldMustBeValidPhoneExtension rule correctly when its value is " + phoneExtensionNumber, () => {
+			const isValid = validationRules[validationErrorTypes.fieldMustBeValidPhoneExtension](phoneExtensionNumber);
+
+			expect(isValid, expected);
+		});
+	};
+
+	testPhoneExtensionNumber(undefined, "to be true");
+	testPhoneExtensionNumber("111", "to be true");
+	testPhoneExtensionNumber("111 222", "to be true");
+	testPhoneExtensionNumber("111-222", "to be true");
+	testPhoneExtensionNumber("*111", "to be true");
+	testPhoneExtensionNumber("-111", "to be true");
+	testPhoneExtensionNumber("#111", "to be true");
+	testPhoneExtensionNumber("0123456789", "to be true");
+
+	testPhoneExtensionNumber("A123456789", "to be false");
+	testPhoneExtensionNumber("AAA", "to be false");
+	testPhoneExtensionNumber("+222", "to be false");
 });
 
 describe("showError", () => {
