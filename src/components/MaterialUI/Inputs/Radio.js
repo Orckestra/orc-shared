@@ -22,6 +22,10 @@ const useStyles = makeStyles(theme => ({
 			outline: "none",
 		},
 	},
+	container: {
+		display: "flex",
+		flexDirection: "column",
+	},
 	radioIconChecked: {
 		borderColor: "currentColor",
 		"&:before": {
@@ -93,10 +97,11 @@ const Radio = ({ radioProps }) => {
 	const classes = useStyles();
 	const { name, label, defaultVal, value, update, row, radios, disabled } = extractAndValidateProps(radioProps);
 	const handleChange = update ? event => update(event.target.value) : null;
-	const error = radioProps.get(RadioProps.propNames.error);
-
+	const error = radioProps?.get(RadioProps.propNames.error);
+	const hasError = error !== false && !!error;
+	console.log(error);
 	const radio = (
-		<FormControl component="fieldset" className={classes.radioFormControl} error={error}>
+		<FormControl component="fieldset" className={classes.radioFormControl} error={hasError}>
 			<FormLabel component="legend">{label}</FormLabel>
 			<RadioGroupMui
 				row={row}
@@ -131,7 +136,7 @@ const Radio = ({ radioProps }) => {
 	);
 
 	return (
-		(error && (
+		(hasError && (
 			<div className={classes.container}>
 				{radio}
 				<div className={classNames(classes.errorText)}>{error}</div>
