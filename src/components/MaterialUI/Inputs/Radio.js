@@ -99,7 +99,7 @@ const Radio = ({ radioProps }) => {
 	const handleChange = update ? event => update(event.target.value) : null;
 	const error = radioProps?.get(RadioProps.propNames.error);
 	const hasError = error !== false && !!error;
-	console.log(error);
+
 	const radio = (
 		<FormControl component="fieldset" className={classes.radioFormControl} error={hasError}>
 			<FormLabel component="legend">{label}</FormLabel>
