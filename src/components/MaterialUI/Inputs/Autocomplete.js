@@ -69,6 +69,7 @@ const useStyles = makeStyles(theme => ({
 		border: 0,
 		padding: 0,
 		boxShadow: "none !important",
+		height: "auto",
 	},
 	popupIndicator: {
 		right: theme.spacing(1),
