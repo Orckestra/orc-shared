@@ -115,7 +115,6 @@ const setThemeProps = theme => ({
 
 const setThemeOverrides = theme => ({
 	...theme.overrides,
-
 	MuiButtonBase: {
 		...theme.MuiButtonBase,
 		root: {
@@ -736,6 +735,9 @@ const setThemeOverrides = theme => ({
 			"&.MuiSelect-select": {
 				flexShrink: 1,
 			},
+			"&:focus": {
+				backgroundColor: theme.palette.background.paper,
+			},
 		},
 		outlined: {
 			padding: theme.spacing(0.4, 0.6, 0.4, 0.6),
@@ -941,12 +943,45 @@ const setThemeOverrides = theme => ({
 			paddingRight: theme.spacing(1),
 		},
 	},
+	MuiTreeView: {
+		...theme.MuiTreeView,
+		root: {
+			"& > li.MuiTreeItem-root:before": {
+				borderTop: "none",
+				left: theme.spacing(-1),
+			},
+			"& li:last-child:before": {
+				height: "100%",
+				bottom: 0,
+				top: theme.spacing(1.2),
+				backgroundColor: theme.palette.grey.light,
+				marginLeft: "-1px",
+			},
+			"& > li > ul.MuiTreeItem-group:before": {
+				left: theme.spacing(1),
+			},
+		},
+	},
 	MuiTreeItem: {
 		...theme.MuiTreeItem,
 		root: {
 			...theme.root,
 			position: "relative",
 			marginBottom: theme.spacing(1),
+			"&:before ": {
+				content: `" "`,
+				display: "block",
+				position: "absolute",
+				height: 0,
+				borderTop: `1px solid ${theme.palette.grey.icon}`,
+				marginTop: "-1px",
+				top: theme.spacing(1.2),
+				left: theme.spacing(-2.1),
+				width: theme.spacing(2),
+			},
+			"&.Mui-expanded:before": {
+				width: theme.spacing(1.5),
+			},
 		},
 		label: {
 			...theme.label,
@@ -970,7 +1005,16 @@ const setThemeOverrides = theme => ({
 		},
 		group: {
 			...theme.group,
-			borderLeft: `1px solid ${theme.palette.grey.icon}`,
+			"&:before": {
+				content: `" "`,
+				display: "block",
+				width: 0,
+				position: "absolute",
+				top: theme.spacing(3.5),
+				bottom: 0,
+				borderLeft: `1px solid ${theme.palette.grey.icon}`,
+				left: theme.spacing(3),
+			},
 			"& > *": {
 				marginLeft: theme.spacing(2),
 				marginTop: theme.spacing(1.5),

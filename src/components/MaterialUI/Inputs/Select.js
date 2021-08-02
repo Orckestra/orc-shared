@@ -76,6 +76,9 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fontSize,
 		color: theme.palette.grey.dark,
 		fontFamily: theme.typography.fontFamily,
+		".Mui-disabled &": {
+			color: theme.palette.grey.borders,
+		},
 	},
 	icon: {
 		right: theme.spacing(1),
@@ -133,7 +136,7 @@ export const SelectIconButton = props => {
 	const classes = useStyles();
 
 	return (
-		<IconButton className={classes.iconButton} onClick={props.clickHandler}>
+		<IconButton className={classes.iconButton} variant="outlined" onClick={props.clickHandler}>
 			<Icon id="arrow-more" />
 		</IconButton>
 	);

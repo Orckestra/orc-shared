@@ -118,7 +118,6 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 
 	const label = (
 		<div className={classes.scopeLabel}>
-			{isRootScope ? null : horizontalLine}
 			{icon}
 			<MultipleLinesText textProps={multipleLinesTextProps} children={name} />
 		</div>
