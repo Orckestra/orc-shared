@@ -118,6 +118,9 @@ export const useStyles = makeStyles(theme => ({
 			borderTopRightRadius: 0,
 			borderBottomRightRadius: 0,
 		},
+		"&:focus": {
+			backgroundColor: theme.palette.grey.light,
+		},
 	},
 	selectPaper: {
 		"& ul": {

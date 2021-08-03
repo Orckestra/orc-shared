@@ -114,11 +114,8 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	);
 	// 16.8 height of 1 lines of text
 
-	const horizontalLine = <span className={classes.horizontalLine} />;
-
 	const label = (
 		<div className={classes.scopeLabel}>
-			{isRootScope ? null : horizontalLine}
 			{icon}
 			<MultipleLinesText textProps={multipleLinesTextProps} children={name} />
 		</div>
