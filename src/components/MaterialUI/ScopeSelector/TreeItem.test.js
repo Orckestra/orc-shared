@@ -192,7 +192,6 @@ describe("ScopeLabel", () => {
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
-					<span />
 					<ScopeIcon type={scopeTypes.virtual} />
 					<MultipleLinesText textProps={multipleLinesTextProps} children={scopeName} />
 				</div>
