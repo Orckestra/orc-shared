@@ -80,6 +80,9 @@ const useStyles = makeStyles(theme => ({
 			color: theme.palette.grey.borders,
 		},
 	},
+	emptyLabel: {
+		fontStyle: "italic",
+	},
 	icon: {
 		right: theme.spacing(1),
 		width: theme.spacing(1.2),
@@ -202,6 +205,11 @@ const Select = ({ options, selectProps, children }) => {
 	const items = options?.map(option => {
 		let clss = option?.level ? classes["level" + option.level] : "";
 		const appliedClasses = classNames(classes.baseItem, clss);
+		const labelClss = classNames({
+			[classes.label]: true,
+			[classes.emptyLabel]: option.value === "" || option.value === "~~#~~",
+		});
+
 		const disabled = !!option.disabled;
 		const groupHeader = !!option.isGroupHeader;
 		if (groupHeader) {
@@ -213,7 +221,7 @@ const Select = ({ options, selectProps, children }) => {
 		} else {
 			return (
 				<MenuItem key={option.value} value={option.value} className={appliedClasses} disabled={disabled}>
-					<TooltippedTypography noWrap className={classes.label} children={option.label} titleValue={option.label} />
+					<TooltippedTypography noWrap className={labelClss} children={option.label} titleValue={option.label} />
 				</MenuItem>
 			);
 		}
