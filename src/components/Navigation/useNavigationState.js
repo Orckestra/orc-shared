@@ -1,6 +1,5 @@
 import { useSelector, useDispatch, useStore } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { push } from "connected-react-router";
 import { unwrapImmutable } from "../../utils";
 import { removeTab } from "../../actions/navigation";
 import {
