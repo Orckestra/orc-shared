@@ -57,6 +57,10 @@ const useStyles = makeStyles(theme => ({
 		height: theme.spacing(2.4),
 		color: "inherit",
 	},
+	sectionIcon: {
+		width: `${theme.spacing(1.6)} !important`,
+		height: theme.spacing(1.6),
+	},
 	select: {
 		marginLeft: theme.spacing(2),
 		marginBottom: theme.spacing(1),
@@ -116,6 +120,8 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	const modifiedTabs = useSelector(getModifiedTabs(pagesParams));
 	const tabsWithErrors = useSelector(getTabsWithErrors(pagesParams));
 
+	const tabLabels = [];
+
 	const handleChange = (_, value) => {
 		if (value === false) {
 			history.push(module.href);
@@ -124,8 +130,6 @@ const MuiBar = ({ module, moduleName, pages }) => {
 			history.push(href);
 		}
 	};
-
-	const tabLabels = [];
 
 	const selectProps = new SelectProps();
 	selectProps.set(SelectProps.propNames.iconSelect, true);
@@ -138,15 +142,27 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		</div>
 	);
 
-	const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey) => {
+	const getNewIndex = oldIndex => {
+		const newIndex = oldIndex + 1 >= tabLabels.length ? Math.max(0, oldIndex - 1) : oldIndex + 1;
+		return newIndex;
+	};
+
+	const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey, index) => {
 		event.stopPropagation();
 		event.preventDefault();
 		if (isModified) {
-			setCurrentCloseData({ closeCallback: closeCallback, href: href, path: path, entityIdKey: entityIdKey });
+			setCurrentCloseData({
+				closeCallback: closeCallback,
+				href: href,
+				path: path,
+				entityIdKey: entityIdKey,
+				index: index,
+			});
 			setShowConfirmationModal(true);
 		} else {
 			closeCallback();
 			removeEditState(href, entityIdKey, path);
+			handleChange(null, getNewIndex(index));
 		}
 	};
 
@@ -154,6 +170,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		setShowConfirmationModal(false);
 		currentCloseData.closeCallback();
 		removeEditState(currentCloseData.href, currentCloseData.entityIdKey, currentCloseData.path);
+		handleChange(null, getNewIndex(currentCloseData.index));
 	};
 
 	const removeEditState = (href, entityIdKey, path) => {
@@ -210,17 +227,20 @@ const MuiBar = ({ module, moduleName, pages }) => {
 				}}
 				ref={tabs}
 			>
-				{pages.map(({ href, label, outsideScope, close, path, params, mustTruncate }, index) => {
+				{pages.map(({ href, label, outsideScope, close, path, params, mustTruncate, icon, isDetails }, index) => {
 					let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
 					if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
 					const isModified = modifiedTabs.includes(href);
 					const isError = tabsWithErrors.includes(href);
 					const tabLabel = <TabLabel label={label} />;
+					const sectionIconClss = classNames(classes.moduleIcon, isDetails && classes.sectionIcon);
 					const tabClassName = classNames(
 						classes.labelContainer,
 						isModified && classes.modifiedLabel,
 						isError && classes.errorLabel,
 					);
+					const sectionIcon = !!icon && <Icon id={icon} className={sectionIconClss} />;
+
 					const wrappedTabLabel = (
 						<div className={tabClassName}>
 							<TabLabel label={label} mustTruncate={mustTruncate} classes={{ root: tabClassName }} />
@@ -231,7 +251,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 						<Icon
 							id="close"
 							className={classes.closeIcon}
-							onClick={event => tabCloseHandler(event, close, isModified, href, path, entityIdKey)}
+							onClick={event => tabCloseHandler(event, close, isModified, href, path, entityIdKey, index)}
 						/>
 					);
 					tabLabels.push({
@@ -246,6 +266,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 							}}
 							component={TabLink}
 							label={wrappedTabLabel}
+							icon={sectionIcon}
 							key={href}
 							to={href}
 							value={index}

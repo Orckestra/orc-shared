@@ -143,6 +143,8 @@ export const useNavigationState = modules => {
 		const [, pageBaseHref] = getModuleNameFromHref(prependPath, page.href);
 
 		const pageData = getPageData(page.href.replace(pageBaseHref, ""), params, moduleData) || { label: "[Not found]" };
+		const icon = pageData.icon;
+		const isDetails = pageData.isDetails;
 		let label = pageData.label;
 		if (label && label.id) {
 			label = { ...label };
@@ -180,9 +182,6 @@ export const useNavigationState = modules => {
 					}
 					if (executeHandlerOnly === false) {
 						dispatch(removeTab(moduleName, page.href));
-						if (currentHref === href) {
-							dispatch(push(moduleHref));
-						}
 					}
 					if (event) {
 						event.stopPropagation();
@@ -202,6 +201,8 @@ export const useNavigationState = modules => {
 			mappedFrom: page.href,
 			active: href === currentHref,
 			close,
+			icon,
+			isDetails,
 		};
 	});
 
