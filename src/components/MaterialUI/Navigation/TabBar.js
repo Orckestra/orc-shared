@@ -123,7 +123,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	const tabLabels = [];
 
 	const handleChange = (_, value) => {
-		if (value === false) {
+		if (!!!value) {
 			history.push(module.href);
 		} else {
 			const href = pages[value].href;
