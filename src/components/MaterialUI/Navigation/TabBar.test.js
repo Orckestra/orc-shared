@@ -529,11 +529,11 @@ describe("TabBar", () => {
 
 		const mountedComponent = mount(component);
 
-		const pageTab = mountedComponent.find(Tab).at(1);
+		const pageTab = mountedComponent.find(Tab).at(2);
 
 		pageTab.simulate("click");
 
-		expect(history.push, "to have a call satisfying", { args: [pages[0].href] });
+		expect(history.push, "to have a call satisfying", { args: [pages[1].href] });
 	});
 
 	it("Calls history.push to page link when page tab is selected via Select", () => {

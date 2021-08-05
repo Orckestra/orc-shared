@@ -123,11 +123,11 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	const tabLabels = [];
 
 	const handleChange = (_, value) => {
-		if (!!!value) {
-			history.push(module.href);
-		} else {
+		if (value > 0 && value < pages.length) {
 			const href = pages[value].href;
 			history.push(href);
+		} else {
+			history.push(module.href);
 		}
 	};
 
@@ -239,7 +239,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 						isModified && classes.modifiedLabel,
 						isError && classes.errorLabel,
 					);
-					const sectionIcon = !!icon && <Icon id={icon} className={sectionIconClss} />;
+					const sectionIcon = icon && <Icon id={icon} className={sectionIconClss} />;
 
 					const wrappedTabLabel = (
 						<div className={tabClassName}>
