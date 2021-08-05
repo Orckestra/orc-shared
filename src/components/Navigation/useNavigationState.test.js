@@ -2,7 +2,6 @@ import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
-import { push } from "connected-react-router";
 import Immutable from "immutable";
 import { mount } from "enzyme";
 import sinon from "sinon";
@@ -62,13 +61,15 @@ const TestComp9 = props => (
 
 let firstPagTabClose = null;
 
-const makeTestComp = Comp => ({ modules }) => {
-	const navigationState = useNavigationState(modules);
+const makeTestComp =
+	Comp =>
+	({ modules }) => {
+		const navigationState = useNavigationState(modules);
 
-	firstPagTabClose = navigationState.pages?.length >= 2 ? navigationState.pages[1].close : null;
+		firstPagTabClose = navigationState.pages?.length >= 2 ? navigationState.pages[1].close : null;
 
-	return <Comp {...navigationState}></Comp>;
-};
+		return <Comp {...navigationState}></Comp>;
+	};
 
 describe("useNavigationState", () => {
 	spyOnConsole(["warn"]);
@@ -811,9 +812,11 @@ describe("useNavigationState", () => {
 		});
 
 		it("gets a state value for a tab via selector", () => {
-			page.labelValueSelector = (params = {}) => state => {
-				return state.getIn(["objs", "test", params.pageVar]);
-			};
+			page.labelValueSelector =
+				(params = {}) =>
+				state => {
+					return state.getIn(["objs", "test", params.pageVar]);
+				};
 			return expect(
 				<Provider store={store}>
 					<IntlProvider locale="en">
@@ -1274,49 +1277,7 @@ describe("useNavigationState", () => {
 		expect(closingHandler, "was called once");
 		expect(entitySelector, "was called once");
 	});
-
-	it("navigates to module page if closing current tab", () => {
-		const fakeEvent = {
-			stopPropagation: sinon.spy().named("stopPropagation"),
-			preventDefault: sinon.spy().named("preventDefault"),
-		};
-		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<MemoryRouter initialEntries={["/TestScope/test/page3"]}>
-						<TestBar modules={modules} />
-					</MemoryRouter>
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-					{
-						args: [push("/TestScope/test")],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-			]),
-		);
-	});
 });
-
 describe("getPageData", () => {
 	let module, module2, module3;
 	beforeEach(() => {

@@ -247,6 +247,70 @@ describe("TabBar", () => {
 		</Tabs>
 	);
 
+	const expectedIconTabs = (
+		<Tabs value={false} variant="scrollable" scrollButtons="auto">
+			<Tab
+				label={wrappedPage1TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[0].href}
+				to={pages[0].href}
+				value={0}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[0].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage2TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[1].href}
+				to={pages[1].href}
+				value={1}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[1].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage3TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[2].href}
+				to={pages[2].href}
+				value={2}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[2].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage4TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[3].href}
+				to={pages[3].href}
+				value={3}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[3].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage5TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[4].href}
+				to={pages[4].href}
+				value={4}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[4].outsideScope}
+			/>
+			<Tab
+				label={wrappedPageNewTabLabel}
+				key={pages[5].href}
+				to={pages[5].href}
+				value={5}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[5].outsideScope}
+			/>
+		</Tabs>
+	);
+
 	beforeEach(() => {
 		module.closingTabHandler = null;
 
@@ -465,11 +529,11 @@ describe("TabBar", () => {
 
 		const mountedComponent = mount(component);
 
-		const pageTab = mountedComponent.find(Tab).at(1);
+		const pageTab = mountedComponent.find(Tab).at(2);
 
 		pageTab.simulate("click");
 
-		expect(history.push, "to have a call satisfying", { args: [pages[0].href] });
+		expect(history.push, "to have a call satisfying", { args: [pages[1].href] });
 	});
 
 	it("Calls history.push to page link when page tab is selected via Select", () => {
@@ -826,6 +890,61 @@ describe("TabBar", () => {
 
 		useDispatchWithModulesDataStub.restore();
 		useStateStub.restore();
+	});
+
+	it("Renders Tab icons properly", () => {
+		pages[0].icon = "settings";
+		pages[1].icon = "settings";
+		pages[2].icon = "settings";
+		pages[2].isDetails = false;
+		pages[3].icon = "settings";
+		pages[3].isDetails = true;
+		pages[4].icon = "settings";
+		pages[4].isDetails = true;
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<ResizeDetector />
+					{expectedModuleTab}
+					{expectedIconTabs}
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
+				</div>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+
+		const mountedComponent = mount(component);
+		const detailsTab1 = mountedComponent.find(Tab).at(1);
+		const detailsTab2 = mountedComponent.find(Tab).at(2);
+		const detailsTab3 = mountedComponent.find(Tab).at(3);
+		const detailsTab4 = mountedComponent.find(Tab).at(4);
+		const detailsTab5 = mountedComponent.find(Tab).at(5);
+
+		expect(detailsTab1.prop("icon").props.className, "to contain", "makeStyles-moduleIcon");
+		expect(detailsTab2.prop("icon").props.className, "to contain", "makeStyles-moduleIcon");
+		expect(detailsTab3.prop("icon").props.className, "to contain", "makeStyles-moduleIcon");
+		expect(detailsTab4.prop("icon").props.className, "to contain", "makeStyles-sectionIcon");
+		expect(detailsTab5.prop("icon").props.className, "to contain", "makeStyles-sectionIcon");
 	});
 });
 
