@@ -746,6 +746,10 @@ describe("useDynamicEditState", () => {
 					id="isValidWhenValueIsObject"
 					onClick={e => fieldWithCustomRules.isValid(null, ["c", "d"], ["customRule"], { value: "Test" })}
 				/>
+				<div
+					id="isValidWithMultipleValidation"
+					onClick={e => fieldWithCustomRules.isValid(e.target.value, ["c", "d"], e.validations, { value: "Test" })}
+				/>
 				<div id="deleteElementByPath" onClick={e => fieldWithCustomRules.delete(["c", "e"])} />
 				<div id="deleteElementByPathWhenObject" onClick={e => fieldWithCustomRules.delete(["c", "d"])} />
 				<div id="deleteElementByPathWhenArray" onClick={e => fieldWithCustomRules.delete(["c", "n"])} />
@@ -1373,6 +1377,41 @@ describe("useDynamicEditState", () => {
 
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
 			args: [setEditModelFieldError, [["field", "value", "c", "value", "d"], "customRule", entityId, sectionName]],
+		});
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Stops validation when an error is found - second validation should not remove error", () => {
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<TestComp />
+			</TestWrapper>
+		);
+
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		const mountedComponent = mount(component);
+
+		const fieldComponent = mountedComponent.find("#isValidWithMultipleValidation");
+
+		fieldComponent.invoke("onClick")({
+			target: { value: "" },
+			validations: [validationErrorTypes.fieldIsRequired, "customRule"],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+			args: [
+				setEditModelFieldError,
+				[["field", "value", "c", "value", "d"], validationErrorTypes.fieldIsRequired, entityId, sectionName],
+			],
+		});
+
+		expect(useDispatchWithModulesDataSpy, "not to have calls satisfying", {
+			args: [removeEditModelFieldError, [["field", "value", "c", "value", "d"], entityId, sectionName]],
 		});
 
 		useDispatchWithModulesDataStub.restore();

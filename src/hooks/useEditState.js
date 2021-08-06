@@ -140,21 +140,20 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 			return result;
 		};
 		const hasAnyValidationErrors = (value, path, errorTypes, dependencies) => {
-			let hasAnyValidationErrors = false;
-			errorTypes.forEach(errorType => {
+			for (var i = 0; i < errorTypes.length; i++) {
+				const errorType = errorTypes[i];
 				const isValid = mergedValidationRules[errorType](value, dependencies);
 
 				if (isValid === false) {
 					dispatchWithModulesData(setEditModelFieldError, [path, errorType, entityId, sectionName]);
 
-					hasAnyValidationErrors = true;
-					return;
+					return true;
 				} else {
 					dispatchWithModulesData(removeEditModelFieldError, [path, entityId, sectionName]);
 				}
-			});
+			}
 
-			return hasAnyValidationErrors;
+			return false;
 		};
 
 		const updateEditState = (newValue, path = [], errorTypes = [], dependencies = {}) => {
