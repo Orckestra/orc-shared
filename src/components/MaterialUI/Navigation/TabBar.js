@@ -123,7 +123,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	const tabLabels = [];
 
 	const handleChange = (_, value) => {
-		if (value > 0 && value < pages.length) {
+		if (typeof value === "number" && value >= 0 && value < pages.length) {
 			const href = pages[value].href;
 			history.push(href);
 		} else {
@@ -143,7 +143,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	);
 
 	const getNewIndex = oldIndex => {
-		const newIndex = oldIndex + 1 >= tabLabels.length ? Math.max(0, oldIndex - 1) : oldIndex + 1;
+		const newIndex = oldIndex + 1 >= tabLabels.length ? oldIndex - 1 : oldIndex + 1;
 		return newIndex;
 	};
 
