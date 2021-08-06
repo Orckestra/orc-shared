@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "1.1.0-dev.3",
+	"version": "1.1.0-dev.4",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
