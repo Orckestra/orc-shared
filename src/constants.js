@@ -61,3 +61,14 @@ export const scopeConfirmationDialogTypes = {
 	hasUnsavedDataMessage: "HasUnsavedDataMessage",
 	scopeChangeConfirmation: "ScopeChangeConfirmation",
 };
+
+export const attributeDataType = {
+	integer: "Integer",
+	decimal: "Decimal",
+	boolean: "Boolean",
+	text: "Text",
+	dateTime: "DateTime",
+	lookup: "Lookup",
+	entityReference: "EntityReference",
+	customType: "CustomType",
+};
