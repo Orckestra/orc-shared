@@ -2,13 +2,14 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router/immutable";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 import { getThemeProp } from "../utils";
 import { history } from "../buildStore";
 import Authenticate from "./Authenticate";
 import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
-import Relogin from "./Relogin";
+import InternetExplorerWarningMessage from "./InternetExplorerWarningMessage";
 
 const GlobalStyle = createGlobalStyle`
 	html {
@@ -32,26 +33,32 @@ const Fonts = createGlobalStyle`
 	}
 `;
 
-const Provision = ({ store, theme = {}, children }) => (
-	<Provider store={store}>
-		<ConnectedRouter history={history}>
-			<ThemeProvider theme={theme}>
-				<React.Fragment>
-					<Head />
-					<GlobalStyle />
-					<Authenticate>
+const Provision = ({ store, theme = {}, muiTheme, children }) => {
+	return (
+		<Provider store={store}>
+			<ConnectedRouter history={history}>
+				<ThemeProvider theme={theme}>
+					<MuiThemeProvider theme={muiTheme}>
 						<React.Fragment>
-							<Fonts />
-							<DevPages>
-								<I18n>{React.Children.only(children)}</I18n>
-							</DevPages>
+							<Head />
+							<GlobalStyle />
+							<Authenticate>
+								<React.Fragment>
+									<Fonts />
+									<DevPages>
+										<I18n>
+											{React.Children.only(children)}
+											<InternetExplorerWarningMessage />
+										</I18n>
+									</DevPages>
+								</React.Fragment>
+							</Authenticate>
 						</React.Fragment>
-					</Authenticate>
-				</React.Fragment>
-			</ThemeProvider>
-		</ConnectedRouter>
-		<Relogin />
-	</Provider>
-);
+					</MuiThemeProvider>
+				</ThemeProvider>
+			</ConnectedRouter>
+		</Provider>
+	);
+};
 
 export default Provision;

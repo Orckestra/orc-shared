@@ -6,8 +6,8 @@
 
 - `applications`: A list of applications to be made available in the application selector. An application is defined as an object containing `url`, `name`, `iconUri` and `displayName` values.
 - `applicationId`: The `name` of the current application as given in `applications`.
-- `modules`: A list of modules provided by this application, given as objects containing an `id` (used to generate its URL), a `component` to render, and an `icon` and a `label` (`react-intl` message descriptor) to show in the sidebar menu. See [documentation](moduleFile.md).
-- `activeModules`: An array of module `id` to be shown as active (a red dot will appear by the icon).
+- `modules`: A list of modules provided by this application, given as objects containing an `id` (used to generate its URL), a `component` to render, and an `icon` and a `label` (string or `react-intl` message descriptor) to show in the sidebar menu. See [documentation](moduleFile.md).
+- `activeModules`: An object with module names as keys, where the values are either falsy (no notification), or an object. If the object has a `message` key (string or `react-intl` message descriptor), this will be shown as a notification tooltip. If the object has a `type` key (value should a a string of either `"confirm"`, `"warn"` or `"error"` as the case demands), this will be used to dermine the alert color.
 - `menuLabel`: The label for the topbar menu. Typically the logged-in user's email.
 - `menuItems`: A list of items in the topbar menu, given as objects containing `label` (`react-intl` message descriptor), `handler`function for selecting the item, and an `icon` id to show.
 - `noScope`: A flag. If set, scope selector will not be shown.
@@ -43,6 +43,19 @@ See also the more [detailed documentation for list components](lists.md).
 
 Shows a pretty checkbox. The same props are accepted as for `<input type="checked" />` elements. Use `value` for whether the checkbox is checked or not, rather than `checked`. If no `id` is passed, one will be generated and used.
 
+## ColumnWrapper
+
+This is a default column wrapper (for column layouts) available to be used by the applications. This will ensure all applications experience the same behavior for columns layouts used in lists.
+
+Here is some sample code on usage:
+
+> ```html
+> <ColumnWrapper>
+> 	<Toolbar name="{name}" tools="{[]}" />
+> 	<List {...{ name, columnDefs, rows: locations }} />
+> </ColumnWrapper>
+> ```
+
 ## DevPages
 
 - `children`: Children of the component will be rendered on routes not starting with `/dev`.
@@ -51,17 +64,19 @@ Inserts a set of developer pages to be found under `/dev/<page>`. In production,
 
 ## DropMenu
 
-- `menuLabel`: The menu anchor label text.
 - `menuItems`: A list of objects with `label` and `handler` properties. The former is the text to show, the latter the function to call on clicking the item.
+- `alignRight`: A flag that when set causes the menu to be rendered to align with the right edge of the anchor element, instead of the default left.
 
-A simple menu component that will show a list of items when clicked. Assigning it a class will apply it to the menu anchor, allowing it to be styled with Styled Components.
+A simple menu component that will show a list of items when clicked. Assigning it a class will apply it to the wrapper element, allowing it to be positioned if necessary. This component will wrap its children with a click handler that opens the menu, and will pass its state as flag prop `open` to child components to enable showing style differences.
 
 ## Form
 
+- `cols`: An array of numbers, each indicating the relative width of a column of the form.
+- `formName`: An optional string identifying this form uniquely. Useful when using the same field data for multiple pages.
 - `getUpdater`: Should be a function that takes a field name as parameter, and returns a function that updates the named value with the new value given as its parameter.
 - `fields`: An array of field definition objects (see below).
 - `values`: A data object containing the values to be shown in the form, typically passed in from application state.
-- `wide`: A flag that determines if the form should be rendered as fixed-width vertically wrapping columns or a single full width column.
+- `wide`: A flag that determines if the form should be rendered as fixed-width vertically wrapping columns or a single full width column. This will override anything given in `cols`.
 
 A rather intricate component that creates forms. To do this, it receives a field definition, which it then uses to render in a form that fits the information it is given as values. For more details on field definitions and how they relate to values, please refer to the [detailed documentation.](forms.md)
 
@@ -216,7 +231,17 @@ Shows a list of message boxes in the upper right corner, displaying the selected
 
 - `tools`: Array of objects denoting the tools to be shown.
 
-Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `label`, `separator` and `spacer`. The former two will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id, or a `text`. In turn, `group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a cohesive group of controls. the `label` type tajkes a string or message descriptor in its `label` field, and shows it on the toolbar, suitably formatted. Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar. For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
+Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `label`, `separator` and `spacer`, as well as the props to be passed to that tool element.
+
+`input` and `button` will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id and/or a `text`, as per [IconButton](#iconbutton).
+
+`group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a joined group of controls.
+
+The `label` type takes a string or message descriptor in its `label` field, and shows it on the toolbar, suitably formatted.
+
+Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar.
+
+For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
 
 ## Tooltip
 

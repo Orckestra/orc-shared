@@ -5,23 +5,14 @@ import { Router, Route } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { getClassName, PropStruct } from "../../utils/testUtils";
+import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
 import { mapHref } from "../../actions/navigation";
 import { Bar, toolComponents } from "../Toolbar";
 import SubPage, { Backdrop, Dialog } from "./SubPage";
 
 const { button: ToolbarButton, separator: ToolbarSeparator } = toolComponents;
 
-const InnerView = ({
-	theme,
-	pathname,
-	search,
-	mapFrom,
-	match,
-	location,
-	routeIsAligned,
-	set,
-}) => (
+const InnerView = ({ theme, pathname, search, mapFrom, match, location, routeIsAligned, set }) => (
 	<PropStruct
 		{...{
 			theme,
@@ -50,6 +41,9 @@ describe("SubPage", () => {
 					match: { path: "/foo/bar", url: "/foo/bar", params: {} },
 				},
 			},
+			requests: {
+				logout: false,
+			},
 			foo: true,
 			bar: false,
 		});
@@ -73,12 +67,7 @@ describe("SubPage", () => {
 							<Route
 								path="/foo/bar"
 								render={route => (
-									<SubPage
-										config={{ component: InnerView, set: true }}
-										root="/foo"
-										path="/foo/bar"
-										{...route}
-									/>
+									<SubPage config={{ component: InnerView, set: true }} root="/foo" path="/foo/bar" {...route} />
 								)}
 							/>
 						</Router>
@@ -124,12 +113,7 @@ describe("SubPage", () => {
 							<Route
 								path="/foo/bar"
 								render={route => (
-									<SubPage
-										config={{ component: InnerView, set: true }}
-										root="/foo"
-										path="/foo/bar"
-										{...route}
-									/>
+									<SubPage config={{ component: InnerView, set: true }} root="/foo" path="/foo/bar" {...route} />
 								)}
 							/>
 						</Router>
@@ -141,9 +125,7 @@ describe("SubPage", () => {
 			{ type: "click", target: "#subPage_goBack" },
 		).then(() => {
 			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
-			expect(dispatch, "to have calls satisfying", [
-				{ args: [mapHref("/foo", "/foo")] },
-			]);
+			expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 		}));
 
 	it("closes when clicking on backdrop", () =>
@@ -155,12 +137,7 @@ describe("SubPage", () => {
 							<Route
 								path="/foo/bar"
 								render={route => (
-									<SubPage
-										config={{ component: InnerView, set: true }}
-										root="/foo"
-										path="/foo/bar"
-										{...route}
-									/>
+									<SubPage config={{ component: InnerView, set: true }} root="/foo" path="/foo/bar" {...route} />
 								)}
 							/>
 						</Router>
@@ -169,12 +146,10 @@ describe("SubPage", () => {
 			</div>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<Backdrop />) },
+			{ type: "click", target: getStyledClassSelector(Backdrop) },
 		).then(() => {
 			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
-			expect(dispatch, "to have calls satisfying", [
-				{ args: [mapHref("/foo", "/foo")] },
-			]);
+			expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 		}));
 
 	it("calls the tool selector with state to provide a toolbar config", () =>
@@ -217,7 +192,7 @@ describe("SubPage", () => {
 			</Provider>,
 			"when mounted",
 			"queried for first",
-			"." + getClassName(<Bar />),
+			getStyledClassSelector(Bar),
 			"to satisfy",
 			<Provider
 				store={{
@@ -284,7 +259,7 @@ describe("SubPage", () => {
 			"with event",
 			{ type: "click", target: "#secondButton" },
 			"queried for first",
-			"." + getClassName(<Bar />),
+			getStyledClassSelector(Bar),
 			"to satisfy",
 			<Provider
 				store={{
@@ -301,9 +276,6 @@ describe("SubPage", () => {
 				</Bar>
 			</Provider>,
 		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [
-				{ args: [{ isFoo: true }] },
-				{ args: [{ isFoo: false }] },
-			]),
+			expect(store.dispatch, "to have calls satisfying", [{ args: [{ isFoo: true }] }, { args: [{ isFoo: false }] }]),
 		));
 });

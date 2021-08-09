@@ -1,19 +1,10 @@
 import { RSAA } from "redux-api-middleware";
 
-export const makeActionTypes = name => [
-	`${name}_REQUEST`,
-	`${name}_SUCCESS`,
-	`${name}_FAILURE`,
-];
+export const makeActionTypes = name => [`${name}_REQUEST`, `${name}_SUCCESS`, `${name}_FAILURE`];
 
 const addMeta = meta => type => ({ type, meta });
 
-export const makeApiAction = (
-	name,
-	endpoint,
-	method = "GET",
-	configuration = {},
-) => {
+export const makeApiAction = (name, endpoint, method = "GET", configuration = {}) => {
 	const { meta, body, ...remainder } = configuration;
 	let types = makeActionTypes(name);
 	if (meta) {

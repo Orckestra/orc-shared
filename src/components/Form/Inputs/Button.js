@@ -15,15 +15,7 @@ export const FormButton = ({
 	update,
 	"aria-labelledby": aria, // Not meaningful for buttons
 	...props
-}) => (
-	<PositionedButton
-		id={id}
-		{...props}
-		onClick={update}
-		icon={icon}
-		label={buttonText}
-	/>
-);
+}) => <PositionedButton id={id} {...props} onClick={update} icon={icon} label={buttonText} />;
 FormButton.displayName = "FormButton";
 
 export default withId("formbutton")(FormButton);

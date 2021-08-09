@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import { mount, act } from "react-dom-testing";
+import { mount, act } from "unexpected-reaction";
 import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
 import ErrorPlaceholder from "./ErrorPlaceholder";

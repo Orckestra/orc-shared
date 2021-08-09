@@ -3,15 +3,15 @@ import styled, { css } from "styled-components";
 import { ifFlag } from "../../utils";
 import DataCell from "./DataCell";
 
-export const TableRow = styled.tr`
-	border: 0 solid #cccccc;
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-
-	&:first-child {
-		border-top-width: 0;
+export const stringifyFieldName = name => {
+	if (Array.isArray(name)) {
+		return name.join("_");
+	} else {
+		return name && name.toString();
 	}
+};
 
+export const TableRow = styled.tr`
 	${ifFlag(
 		"bgColor",
 		props =>
@@ -25,19 +25,21 @@ export const TableRow = styled.tr`
 			}
 		`,
 	)}
+
+	${ifFlag(
+		"onClick",
+		css`
+			& td {
+				cursor: pointer;
+			}
+		`,
+	)}
 `;
 
 // Clicks on these elements will not be handled by the row onClick
 const formTags = ["INPUT", "SELECT", "LABEL"];
 
-export const Row = ({
-	columnDefs,
-	row,
-	rowId,
-	selected,
-	rowOnClick,
-	bgColor,
-}) => {
+export const Row = ({ columnDefs, row, rowId, selected, rowOnClick, bgColor }) => {
 	const onClick = useCallback(
 		event => {
 			if (formTags.indexOf(event.target.tagName) === -1) {
@@ -54,7 +56,7 @@ export const Row = ({
 		<TableRow onClick={rowOnClick ? onClick : undefined} bgColor={bgColor}>
 			{columnDefs.map(columnDef => (
 				<DataCell
-					key={columnDef.fieldName}
+					key={stringifyFieldName(columnDef.fieldName)}
 					{...{
 						rowId,
 						row,

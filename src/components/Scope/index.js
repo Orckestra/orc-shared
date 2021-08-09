@@ -1,52 +1,100 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import useViewState from "../../hooks/useViewState";
 import useScopeData from "./useScopeData";
-import Button from "../Button";
-import Selector from "./Selector";
+import usePreviousModified from "../../hooks/usePreviousModified";
+import { unwrapImmutable } from "../../utils";
+import { defaultScopeSelector } from "../../selectors/settings";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import ScopeSelector from "./../MaterialUI/ScopeSelector/ScopeSelector";
+import ScopeModificationConfirmationDialog from "./ScopeModificationConfirmationDialog";
+import useScopeConfirmationModalState from "./useScopeConfirmationModalState";
 
-export const Bar = styled.div`
-	flex: 0 0 49px;
-	border-bottom: 1px solid #ccc;
-	background-color: #efefef;
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	user-select: none;
-`;
+const useStyles = makeStyles(theme => ({
+	scopeButton: {
+		zIndex: 10,
+		maxWidth: theme.spacing(25),
+	},
+	outlinedButton: {
+		backgroundColor: theme.palette.primary.contrastText,
+	},
+	buttonContainer: {
+		position: "absolute",
+		top: "50%",
+		transform: "translateY(-50%)",
+		right: theme.spacing(2),
+	},
+	scopeBar: {
+		position: "relative",
+		borderBottom: `1px solid ${theme.palette.primary.main}`,
+		backgroundColor: theme.palette.grey.light,
+		width: "100%",
+		minHeight: theme.spacing(4.9),
+		userSelect: "none",
+	},
+}));
 
-export const AlignedButton = styled(Button)`
-	margin-right: 20px;
-`;
-AlignedButton.defaultProps = {
-	primary: true,
+export const Bar = props => {
+	const classes = useStyles();
+
+	return <div className={classes.scopeBar}>{props.children}</div>;
 };
 
-export const ScopeBar = ({ show, name, updateViewState }) => (
-	<Bar>
-		<AlignedButton
-			id="showScopeSelector"
-			active={show}
-			onClick={() => updateViewState("show", true)}
-		>
-			{name}
-		</AlignedButton>
-	</Bar>
-);
+export const ScopeBar = ({ show, name, updateViewState, disabled }) => {
+	const classes = useStyles();
+
+	const variant = show === true ? "contained" : "outlined";
+
+	// markup such this was made just to support correct behavior in IE
+	// because it doesn't support min-width: auto for flex elements
+	return (
+		<Bar>
+			<div className={classes.buttonContainer}>
+				<Button
+					disabled={disabled}
+					variant={variant}
+					color="primary"
+					onClick={() => updateViewState("show", true)}
+					disableElevation
+				>
+					<TooltippedTypography noWrap children={name} titleValue={name} />
+				</Button>
+			</div>
+		</Bar>
+	);
+};
+
 ScopeBar.displayName = "ScopeBar";
 
-export const Scope = ({ children, filterPlaceholder }) => {
-	const name = "scopeSelector";
+export const SCOPE_SELECTOR_NAME = "scopeSelector";
+
+export const Scope = ({ children }) => {
 	const [currentScope, defaultNodeState, getScope] = useScopeData();
-	const [{ show = false, nodeState, filter }, updateViewState] = useViewState(
-		name,
+	const [{ show = false, disabled, nodeState, filter }, updateViewState] = useViewState(SCOPE_SELECTOR_NAME);
+
+	const resetNodeState = useCallback(
+		current => current && updateViewState("nodeState", { ...nodeState, ...defaultNodeState }),
+		[updateViewState, nodeState, defaultNodeState],
 	);
+	usePreviousModified(show, resetNodeState);
+
 	const reset = event => {
 		updateViewState("show", false);
 		event.stopPropagation();
 	};
-	const updateFilter = event => updateViewState("filter", event.target.value);
+	const updateFilter = event => updateViewState("filter", event);
+
+	const [isModalOpened, closeModal, scopeDialogType, acceptScopeChange, selectNewScope] =
+		useScopeConfirmationModalState();
+
+	const onScopeSelectorClose = (event, newSelection) => {
+		reset(event);
+		selectNewScope(newSelection);
+	};
+
 	return (
 		<React.Fragment>
 			<ScopeBar
@@ -54,18 +102,32 @@ export const Scope = ({ children, filterPlaceholder }) => {
 					name: currentScope.name,
 					show,
 					updateViewState,
+					disabled,
 				}}
 			/>
-			<Selector
-				name={name}
+			{/* <Selector
+				name={SCOPE_SELECTOR_NAME}
 				show={show}
 				reset={reset}
 				getScope={getScope}
-				nodeState={nodeState}
-				defaultNodeState={defaultNodeState}
+				filter={filter}
+				currentScope={currentScope}
+				updateFilter={updateFilter}
+				defaultNodeState={{}}
+			/> */}
+			<ScopeSelector
+				show={show}
+				getScope={getScope}
+				selectedScope={currentScope}
+				closeSelector={onScopeSelectorClose}
 				filter={filter}
 				updateFilter={updateFilter}
-				filterPlaceholder={filterPlaceholder}
+			/>
+			<ScopeModificationConfirmationDialog
+				isModalOpened={isModalOpened}
+				scopeDialogType={scopeDialogType}
+				closeModalCallback={closeModal}
+				okCallback={acceptScopeChange}
 			/>
 			{children}
 		</React.Fragment>
@@ -73,11 +135,15 @@ export const Scope = ({ children, filterPlaceholder }) => {
 };
 Scope.displayName = "Scope";
 
-const RoutedScope = props => (
-	<Switch>
-		<Route path="/:scope" render={() => <Scope {...props} />} />
-		<Redirect to="/Global" />
-	</Switch>
-);
+const RoutedScope = props => {
+	const defaultScope = unwrapImmutable(useSelector(defaultScopeSelector));
+
+	return (
+		<Switch>
+			<Route path="/:scope" render={() => <Scope {...props} />} />
+			<Redirect to={"/".concat(defaultScope || "Global")} />
+		</Switch>
+	);
+};
 
 export default RoutedScope;

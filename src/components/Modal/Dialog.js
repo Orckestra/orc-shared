@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
+import { getThemeProp } from "../../utils";
 import withClickOutside from "../../hocs/withClickOutside";
 
 const darkDialogStyle = css`
-	background-color: #333;
+	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
 	border-radius: 15px;
 `;
 

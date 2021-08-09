@@ -2,14 +2,12 @@ import React from "react";
 import { Provider } from "react-redux";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
 import withNavigationLink from "./withNavigationLink";
 
-const TestComp = ({ active, staticContext, ...props }) => (
-	<a {...props}>Anchor{active ? " active" : ""}</a>
-);
+const TestComp = ({ active, staticContext, ...props }) => <a {...props}>Anchor{active ? " active" : ""}</a>;
 
 describe("withNavigationLink", () => {
 	let fakeStore, mockEvent, history, preventDefault;
@@ -43,9 +41,7 @@ describe("withNavigationLink", () => {
 			})
 			.then(() =>
 				expect(console.warn, "to have a call satisfying", {
-					args: [
-						expect.it("to contain", "withNavigationLink has been deprecated"),
-					],
+					args: [expect.it("to contain", "withNavigationLink has been deprecated")],
 				}),
 			));
 
@@ -103,10 +99,7 @@ describe("withNavigationLink", () => {
 				</Provider>,
 			);
 			simulate(element, mockEvent);
-			return Promise.all([
-				expect(preventDefault, "was called"),
-				expect(history.push, "was not called"),
-			]);
+			return Promise.all([expect(preventDefault, "was called"), expect(history.push, "was not called")]);
 		}));
 
 	it("does navigate to remote hrefs", () =>
@@ -119,10 +112,7 @@ describe("withNavigationLink", () => {
 				</Provider>,
 			);
 			simulate(element, mockEvent);
-			return Promise.all([
-				expect(preventDefault, "was not called"),
-				expect(history.push, "was not called"),
-			]);
+			return Promise.all([expect(preventDefault, "was not called"), expect(history.push, "was not called")]);
 		}));
 
 	it("no href does not navigate", () =>
@@ -135,9 +125,6 @@ describe("withNavigationLink", () => {
 				</Provider>,
 			);
 			simulate(element, mockEvent);
-			return Promise.all([
-				expect(preventDefault, "was called"),
-				expect(history.push, "was not called"),
-			]);
+			return Promise.all([expect(preventDefault, "was called"), expect(history.push, "was not called")]);
 		}));
 });

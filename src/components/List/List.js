@@ -34,7 +34,7 @@ export const Placeholder = ({ width, height, children }) => (
 Placeholder.displayName = "Placeholder";
 
 export const Table = styled.table`
-	border-collapse: collapse;
+	border-spacing: 0;
 	table-layout: fixed;
 	width: 100%;
 	font-size: 13px;
@@ -43,13 +43,7 @@ export const Table = styled.table`
 export const HEADER_HEIGHT = 41;
 export const ROW_HEIGHT = 51;
 
-const calculateVirtualization = (
-	virtual,
-	scrollTop,
-	scrollBuffer,
-	height,
-	rows,
-) => {
+const calculateVirtualization = (virtual, scrollTop, scrollBuffer, height, rows) => {
 	let virtualFilter, heightAbove, heightBelow;
 	if (virtual) {
 		const correctedScrollTop = scrollTop - HEADER_HEIGHT; // Subtract header height
@@ -71,12 +65,7 @@ const calculateVirtualization = (
 export const useListState = (name, columnDefs) => {
 	const [viewState, updateViewState] = useViewState(name);
 	const { selection = [], sorting = {} } = viewState;
-	const enhancedColumnDefs = enhanceColumnDefs(
-		sorting,
-		selection,
-		updateViewState,
-		columnDefs,
-	);
+	const enhancedColumnDefs = enhanceColumnDefs(sorting, selection, updateViewState, columnDefs);
 
 	return [enhancedColumnDefs, selection];
 };
@@ -122,20 +111,14 @@ export const List = ({
 		);
 	});
 	if (virtual && heightAbove) {
-		rowElements.unshift(
-			<tr key="virtualAbove" style={{ height: heightAbove }} />,
-		);
+		rowElements.unshift(<tr key="virtualAbove" style={{ height: heightAbove }} />);
 	}
 	if (virtual && heightBelow) {
 		rowElements.push(<tr key="virtualBelow" style={{ height: heightBelow }} />);
 	}
 	if (rowElements.length === 0 && placeholder) {
 		rowElements.push(
-			<Placeholder
-				key="placeholder"
-				width={columnDefs.length}
-				height={height - HEADER_HEIGHT}
-			>
+			<Placeholder key="placeholder" width={columnDefs.length} height={height - HEADER_HEIGHT}>
 				{placeholder}
 			</Placeholder>,
 		);
@@ -155,16 +138,9 @@ export const List = ({
 };
 
 /* istanbul ignore next */
-const checkInfiniteScroll = branch(
-	({ scrollLoader }) => !!scrollLoader,
-	withInfiniteScroll,
-);
+const checkInfiniteScroll = branch(({ scrollLoader }) => !!scrollLoader, withInfiniteScroll);
 
-const StatefulList = compose(
-	setDisplayName("List"),
-	checkInfiniteScroll,
-	withScrollBox,
-)(List);
+const StatefulList = compose(setDisplayName("List"), checkInfiniteScroll, withScrollBox)(List);
 StatefulList.propTypes = {
 	columnDefs: pt.arrayOf(pt.object), // Each object must be a valid column definition
 	rows: pt.arrayOf(pt.object),

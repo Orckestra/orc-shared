@@ -1,13 +1,21 @@
 import React from "react";
+import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-import { addNamesToFields, FormPage, Wrapper } from "./Form";
+import { FieldBox, Label } from "./Field";
+import { FormPage, Wrapper, FormContext } from "./Form";
 
 describe("FormPage", () => {
-	let getUpdater, fields, manyFields;
+	let state, store, getUpdater, fields, manyFields, values;
 	beforeEach(() => {
+		state = Immutable.fromJS({});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
 		getUpdater = () => {};
 		fields = [{ type: "TextInput", name: "text1", label: "A text" }];
 		manyFields = [
@@ -22,172 +30,100 @@ describe("FormPage", () => {
 			{ type: "TextInput", name: "text8", label: "A text" },
 			{ type: "TextInput", name: "text9", label: "A text" },
 		];
+		values = { text1: "foo" };
 	});
 
 	it("renders a form with a single field", () =>
 		expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormPage
-						fields={fields}
-						values={{ text1: "foo" }}
-						getUpdater={getUpdater}
-					/>
+					<FormPage formName="testForm" fields={fields} getUpdater={getUpdater} values={values} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<Wrapper>
-						<Form spanWidth={1}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={fields}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-					</Wrapper>
+					<FormContext.Provider value={{ values, formName: "testForm" }}>
+						<Wrapper>
+							<Form spanWidth={1}>
+								<FieldBox>
+									<Label>A text</Label>
+									<input value="foo" id="text1" onChange={() => {}} data-test-id="testForm_text1" />
+								</FieldBox>
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 		));
 
 	it("still respects 'wide' flag", () =>
 		expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormPage
-						wide
-						fields={fields}
-						values={{ text1: "foo" }}
-						getUpdater={getUpdater}
-					/>
+					<FormPage wide fields={fields} getUpdater={getUpdater} values={values} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<Wrapper>
-						<Form spanWidth={1}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={fields}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-					</Wrapper>
+					<FormContext.Provider value={{ values }}>
+						<Wrapper>
+							<Form spanWidth={1}>
+								<FieldElements getUpdater={getUpdater} fields={fields} />
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
+				</IntlProvider>
+			</Provider>,
+		));
+
+	it("still respects 'wide' flag with multiple fields", () =>
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormPage wide cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<FormContext.Provider value={{ values }}>
+						<Wrapper>
+							<Form spanWidth={1}>
+								<FieldElements getUpdater={getUpdater} fields={manyFields} />
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
 		));
 
 	it("renders a form with a multiple fields", () =>
 		expect(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<FormPage
-						cols={[2, 1]}
-						fields={manyFields}
-						values={{ text1: "foo" }}
-						getUpdater={getUpdater}
-					/>
+					<FormPage cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<Provider store={store}>
 				<IntlProvider locale="en">
-					<Wrapper>
-						<Form spanWidth={2}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={manyFields.slice(0, 5)}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-						<Form spanWidth={1}>
-							<FieldElements
-								getUpdater={getUpdater}
-								fields={manyFields.slice(5, 10)}
-								values={{ text1: "foo" }}
-							/>
-						</Form>
-					</Wrapper>
+					<FormContext.Provider value={{ values }}>
+						<Wrapper>
+							<Form spanWidth={2}>
+								<FieldElements getUpdater={getUpdater} fields={manyFields.slice(0, 5)} />
+							</Form>
+							<Form spanWidth={1}>
+								<FieldElements getUpdater={getUpdater} fields={manyFields.slice(5, 10)} />
+							</Form>
+						</Wrapper>
+					</FormContext.Provider>
 				</IntlProvider>
 			</Provider>,
-		));
-});
-
-describe("addNamesToFields", () => {
-	it("adds a hexadecimal string as a name where names are missing", () =>
-		expect(
-			addNamesToFields,
-			"called with",
-			[
-				[
-					{ type: "Thing" },
-					{ type: "NamedThing", name: "named", rowField: { type: "Thing" } },
-					{
-						type: "HasFields",
-						fields: [{ type: "Thing" }, { type: "NamedThing", name: "named" }],
-					},
-				],
-			],
-			"to satisfy",
-			[
-				{ type: "Thing", name: expect.it("to match", /[0-9a-f]{6}/) },
-				{
-					type: "NamedThing",
-					name: "named",
-					rowField: {
-						type: "Thing",
-						name: expect.it("to match", /[0-9a-f]{6}/),
-					},
-				},
-				{
-					type: "HasFields",
-					name: expect.it("to match", /[0-9a-f]{6}/),
-					fields: [
-						{ type: "Thing", name: expect.it("to match", /[0-9a-f]{6}/) },
-						{ type: "NamedThing", name: "named" },
-					],
-				},
-			],
 		));
 });

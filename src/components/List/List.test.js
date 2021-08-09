@@ -1,13 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { Ignore } from "unexpected-reaction";
-import {
-	List,
-	Table,
-	Placeholder,
-	PlaceholderCell,
-	PlaceholderBox,
-} from "./List";
+import { List, Table, Placeholder, PlaceholderCell, PlaceholderBox } from "./List";
 import { TableRow } from "./Row";
 import { HeadTableRow } from "./HeadRow";
 import { TableHeader, HeadBox } from "./HeadCell";
@@ -63,11 +57,7 @@ describe("List", () => {
 			<Provider store={store}>
 				<List
 					height={121}
-					columnDefs={[
-						{ fieldName: "a" },
-						{ fieldName: "b" },
-						{ fieldName: "c" },
-					]}
+					columnDefs={[{ fieldName: "a" }, { fieldName: "b" }, { fieldName: "c" }]}
 					placeholder={<div />}
 				/>
 			</Provider>,
@@ -98,15 +88,9 @@ describe("List", () => {
 	it("renders a row for each row data object", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
 		const columnDefs = [{ fieldName: "a" }];
-		const rowOnClick = () => {};
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -133,10 +117,41 @@ describe("List", () => {
 		);
 	});
 
+	it("renders rows with click handlers", () => {
+		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
+		const columnDefs = [{ fieldName: "a" }];
+		return expect(
+			<Provider store={store}>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} rowOnClick={() => {}} />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<TableRow onClick={() => {}}>
+						<td />
+					</TableRow>
+					<TableRow onClick={() => {}}>
+						<td />
+					</TableRow>
+					<TableRow onClick={() => {}}>
+						<td />
+					</TableRow>
+				</tbody>
+			</table>,
+		);
+	});
+
 	it("renders rows with data-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
 		const columnDefs = [{ fieldName: "a" }];
-		const rowOnClick = () => {};
 		const colorMap = {
 			a: "#ff0000",
 			b: "#00ff00",
@@ -145,13 +160,7 @@ describe("List", () => {
 		const colorGetter = row => colorMap[row.key];
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-					rowBackgroundGetter={colorGetter}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} rowBackgroundGetter={colorGetter} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -181,17 +190,10 @@ describe("List", () => {
 	it("renders rows with index-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
 		const columnDefs = [{ fieldName: "a" }];
-		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-					rowBackgroundGetter={colorGetter}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} rowBackgroundGetter={colorGetter} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -227,12 +229,7 @@ describe("List", () => {
 		const selection = ["a"];
 		return expect(
 			<Provider store={store}>
-				<List
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					selection={selection}
-				/>
+				<List columnDefs={columnDefs} rows={rows} keyField={["key"]} selection={selection} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -337,23 +334,7 @@ describe("List", () => {
 		it("renders a header with all rows identified when virtual", () => {
 			const rows = generateRows(15);
 			const columnDefs = [{ type: "select", fieldName: "select" }];
-			selection = [
-				"1",
-				"2",
-				"3",
-				"4",
-				"5",
-				"6",
-				"7",
-				"8",
-				"9",
-				"10",
-				"11",
-				"12",
-				"13",
-				"14",
-				"15",
-			];
+			selection = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
 			return expect(
 				<Provider store={store}>
 					<List

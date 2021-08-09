@@ -10,14 +10,17 @@ import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
 import DropMenu from "../DropMenu";
+import Anchor from "./Anchor";
+import Help from "./Help";
+import sharedMessages from "./../../sharedMessages";
 
 export const Wrapper = styled.div`
 	height: 40px;
-	color: #999999;
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 	display: flex;
 	justify-content: space-between;
 `;
-export const useMenuProps = messages => {
+export const useMenuProps = () => {
 	const intl = useIntl();
 	const dispatch = useDispatch();
 	return {
@@ -26,50 +29,45 @@ export const useMenuProps = messages => {
 		menuItems: [
 			{
 				id: "userMenuSignOut",
-				label: intl.formatMessage(messages.sign_out),
+				label: intl.formatMessage(sharedMessages.signOut),
 				handler: () => dispatch(signOut()),
-				icon: "logout-1",
+				icon: "logout",
 			},
 			{
 				id: "userMenuPrefsMenu",
-				label: intl.formatMessage(messages.preferences),
+				label: intl.formatMessage(sharedMessages.preferences),
 				handler: () => dispatch(setStateField(PREFS_NAME, "show", true)),
-				icon: "settings-cogwheel",
+				icon: "cogwheel",
 			},
 			{
 				id: "userMenuAbout",
-				label: intl.formatMessage(messages.about),
+				label: intl.formatMessage(sharedMessages.about),
 				handler: () => dispatch(setStateField(ABOUT_NAME, "show", true)),
-				icon: "infomation-circle",
+				icon: "info",
 			},
 		],
 	};
 };
 
-export const StyledMenu = styled(DropMenu)`
-	box-sizing: border-box;
-	font-family: Roboto Condensed, sans-serif;
-	font-size: 12px;
-	text-transform: uppercase;
-	height: 40px;
-	min-width: 180px;
-	padding-top: 14px;
-	padding-right: 32px;
-`;
-
-export const Menu = ({ messages }) => (
-	<StyledMenu {...useMenuProps(messages)} />
-);
+export const Menu = () => {
+	const { menuLabel, ...menuProps } = useMenuProps();
+	return (
+		<DropMenu {...menuProps}>
+			<Anchor menuLabel={menuLabel} />
+		</DropMenu>
+	);
+};
 
 export const AppBox = styled.div`
 	height: 100%;
 	display: flex;
+	flex: 1;
 	align-items: stretch;
 `;
 
 export const AppLabel = styled.div`
 	background-color: #000000;
-	color: ${getThemeProp(["appHighlightColor"], "#ffffff")};
+	color: ${getThemeProp(["colors", "application", "primary"], "#ffffff")};
 	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
 	font-size: 14px;
 	text-transform: uppercase;
@@ -92,15 +90,7 @@ export const CurrentApp = ({ displayName, iconUri }) => (
 );
 CurrentApp.displayName = "CurrentApp";
 
-const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
-
-const Topbar = ({
-	applications,
-	applicationId,
-	onClick,
-	menuMessages,
-	...config
-}) => (
+const Topbar = ({ applications, applicationId, currentApplication, onClick, helpUrl, ...config }) => (
 	<Wrapper onClick={onClick}>
 		<AppBox>
 			<ApplicationSelector
@@ -109,9 +99,10 @@ const Topbar = ({
 					applicationId,
 				}}
 			/>
-			<CurrentApp {...(getApp(applications, applicationId) || {})} />
+			<CurrentApp {...(currentApplication || {})} />
 		</AppBox>
-		<Menu {...config} messages={menuMessages} />
+		<Menu {...config} />
+		<Help {...{ helpUrl }} />
 	</Wrapper>
 );
 

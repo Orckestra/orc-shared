@@ -4,53 +4,25 @@ import Icon from "../Icon";
 
 describe("Indicator", () => {
 	it("renders a closed arrow icon", () =>
-		expect(
-			<Indicator />,
-			"when mounted",
-			"to satisfy",
-			<Icon id="chevron-right" />,
-		));
+		expect(<Indicator />, "when mounted", "to satisfy", <Icon id="chevron-right" />));
 
 	it("renders an open arrow icon", () =>
-		expect(
-			<Indicator open />,
-			"when mounted",
-			"to satisfy",
-			<Icon id="chevron-down" />,
-		));
+		expect(<Indicator open />, "when mounted", "to satisfy", <Icon id="chevron-down" />));
 
 	it("renders closed arrows in highlight color", () =>
-		expect(
-			<Indicator />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"color: #ffffff;",
-		));
+		expect(<Indicator />, "when mounted", "to have style rules satisfying", "to contain", "color: #ffffff;"));
 
 	it("renders open arrows in dark grey", () =>
-		expect(
-			<Indicator open />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"color: #333;",
-		));
+		expect(<Indicator open />, "when mounted", "to have style rules satisfying", "to contain", "color: #333333;"));
 
 	it("renders open arrows in light grey when dark", () =>
-		expect(
-			<Indicator open dark />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"color: #ccc;",
-		));
+		expect(<Indicator open dark />, "when mounted", "to have style rules satisfying", "to contain", "color: #cccccc;"));
 
 	describe("with theme", () => {
 		let theme;
 		beforeEach(() => {
 			theme = {
-				appHighlightColor: "red",
+				colors: { application: { base: "red" } },
 				icons: {
 					indicators: {
 						up: "arrow-up",
@@ -63,20 +35,10 @@ describe("Indicator", () => {
 		});
 
 		it("renders a closed arrow icon", () =>
-			expect(
-				<Indicator theme={theme} />,
-				"when mounted",
-				"to satisfy",
-				<Icon id="arrow-right" />,
-			));
+			expect(<Indicator theme={theme} />, "when mounted", "to satisfy", <Icon id="arrow-right" />));
 
 		it("renders an open arrow icon", () =>
-			expect(
-				<Indicator theme={theme} open />,
-				"when mounted",
-				"to satisfy",
-				<Icon id="arrow-down" />,
-			));
+			expect(<Indicator theme={theme} open />, "when mounted", "to satisfy", <Icon id="arrow-down" />));
 
 		it("renders closed arrows in highlight color", () =>
 			expect(
@@ -93,7 +55,7 @@ describe("Indicator", () => {
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
-				"color: #333;",
+				"color: #333333;",
 			));
 
 		it("renders open arrows in light grey when dark", () =>
@@ -102,20 +64,14 @@ describe("Indicator", () => {
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
-				"color: #ccc;",
+				"color: #cccccc;",
 			));
 	});
 });
 
 describe("BeforeIndicator", () => {
 	it("renders a branch continuation before indicator", () =>
-		expect(
-			<BeforeIndicator />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"margin-left: -16px;",
-		));
+		expect(<BeforeIndicator />, "when mounted", "to have style rules satisfying", "to contain", "margin-left: -16px;"));
 });
 
 describe("NonIndicator", () => {
@@ -130,6 +86,21 @@ describe("NonIndicator", () => {
 });
 
 describe("Label", () => {
-	it("renders a space for node content", () =>
-		expect(<Label />, "when mounted", "to satisfy", <div />));
+	it("renders a space for node content", () => expect(<Label />, "when mounted", "to satisfy", <div />));
+
+	it("renders a label without border", () =>
+		expect(
+			<Label />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect.it("not to contain", "background-color: #222;").and("not to contain", "border: 1px solid #0F4E66"),
+		));
+
+	it("renders a label with border", () =>
+		expect(
+			<Label isSelectedNode={true} />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect.it("to contain", "background-color: #222;").and("to contain", "border: 1px solid #0F4E66"),
+		));
 });

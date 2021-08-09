@@ -1,15 +1,7 @@
 import React from "react";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import Selector, {
-	InnerSelect,
-	Wrapper,
-	SelectBox,
-	SelectedValue,
-	Dropdown,
-	Option,
-	Placeholder,
-} from "./Selector";
+import Selector, { InnerSelect, Wrapper, SelectBox, SelectedValue, Dropdown, Option, Placeholder } from "./Selector";
 
 describe("Selector", () => {
 	let updater;
@@ -144,9 +136,7 @@ describe("Selector", () => {
 			"when mounted",
 			"with event",
 			{ type: "change", target: "select", value: "2" },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: ["2"] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: ["2"] }])));
 
 	it("can update value when clicking a visual option", () =>
 		expect(
@@ -163,7 +153,5 @@ describe("Selector", () => {
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[data-test-id="1"]' },
-		).then(() =>
-			expect(updater, "to have calls satisfying", [{ args: ["1"] }]),
-		));
+		).then(() => expect(updater, "to have calls satisfying", [{ args: ["1"] }])));
 });

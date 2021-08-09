@@ -1,19 +1,7 @@
-import {
-	compose,
-	branch,
-	renderComponent,
-	mapProps,
-	withProps,
-} from "recompose";
-import {
-	useAuthenticationData,
-	Loader,
-	Error,
-} from "../components/Authenticate";
+import { compose, branch, renderComponent, mapProps, withProps } from "recompose";
+import { useAuthenticationData, Loader, Error } from "../components/Authenticate";
 
-console.warn(
-	"Higher order component withAuthentication has been deprecated in favor of component Authenticate",
-);
+console.warn("Higher order component withAuthentication has been deprecated in favor of component Authenticate");
 
 const isAuthenticated = withProps(useAuthenticationData);
 
@@ -23,9 +11,7 @@ const withAuthentication = compose(
 	branch(
 		({ authedUser }) => !authedUser,
 		renderComponent(Error),
-		mapProps(
-			({ authedUser, loading, requestError, needLogin, ...props }) => props,
-		),
+		mapProps(({ authedUser, loading, requestError, needLogin, ...props }) => props),
 	),
 );
 

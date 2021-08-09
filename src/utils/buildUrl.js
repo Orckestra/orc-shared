@@ -1,18 +1,13 @@
 /* Constructs a URL search string from an object with key value pairs */
 const buildParamString = params =>
 	Object.entries(params)
-		.map(([key, value]) =>
-			Array.isArray(value)
-				? `${key}=${JSON.stringify(value)}`
-				: `${key}=${value}`,
-		)
+		.map(([key, value]) => (Array.isArray(value) ? `${key}=${JSON.stringify(value)}` : `${key}=${value}`))
 		.join("&");
 
 /* Placeholder until config loads */
 const placeholder = () => {
 	throw new Error(
-		"Config not yet loaded. " +
-			"Please call util.js#loadConfig() and await resolution of the returned Promise.",
+		"Config not yet loaded. Please call util.js#loadConfig() and await resolution of the returned Promise.",
 	);
 };
 
@@ -34,9 +29,7 @@ export const loadConfig = () =>
 			/* Constructs a URL path with search parameters from a list of
 			path segments and a key-value object. */
 			buildUrl = (pathParts = [], parameters) =>
-				`${host}/${pathParts.join("/")}` +
-				(parameters ? "?" + buildParamString(parameters) : "");
-			window.orcVersion = config.version;
+				`${host}/${pathParts.join("/")}` + (parameters ? "?" + buildParamString(parameters) : "");
 		});
 
 /* Reset function for testing, never use this in actual code */

@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { getClassName, spyOnConsole } from "../../utils/testUtils";
+import { getStyledClassSelector, spyOnConsole } from "../../utils/testUtils";
 import Treeview from "./index";
 import { Branch, Wrapper } from "./Branch";
 import { Leaf, Root } from "./Leaf";
@@ -233,6 +233,57 @@ describe("TreeView", () => {
 		);
 	});
 
+	it("shows a selected node", () => {
+		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], true);
+		testProps.selectedNodeId = "testNode1";
+		return expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Treeview {...testProps} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Wrapper>
+				<Root>
+					<Label>
+						<div id="root1" />
+					</Label>
+				</Root>
+				<Branch>
+					<Leaf>
+						<BeforeIndicator />
+						<Indicator open />
+						<Label isSelectedNode={true}>
+							<div id="testNode1" />
+						</Label>
+					</Leaf>
+					<Branch>
+						<Leaf>
+							<BeforeIndicator />
+							<Indicator />
+							<Label>
+								<div id="testNode3" />
+							</Label>
+						</Leaf>
+						<Leaf>
+							<NonIndicator />
+							<Label>
+								<div id="testNode4" />
+							</Label>
+						</Leaf>
+					</Branch>
+					<Leaf>
+						<NonIndicator />
+						<Label>
+							<div id="testNode2" />
+						</Label>
+					</Leaf>
+				</Branch>
+			</Wrapper>,
+		);
+	});
+
 	it("overrides default node state with view state", () => {
 		state = state.setIn(["view", "testTree", "nodeState", "testNode1"], false);
 		return expect(
@@ -281,12 +332,7 @@ describe("TreeView", () => {
 			{
 				type: "click",
 				target:
-					"." +
-					getClassName(<Branch />) +
-					" ." +
-					getClassName(<Leaf />) +
-					" ." +
-					getClassName(<Indicator />),
+					getStyledClassSelector(Branch) + " " + getStyledClassSelector(Leaf) + " " + getStyledClassSelector(Indicator),
 			},
 			"to satisfy",
 			<Wrapper>
@@ -392,11 +438,7 @@ describe("TreeView", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<Treeview
-						{...testProps}
-						openAll
-						data-test-info="A test data variable"
-					/>
+					<Treeview {...testProps} openAll data-test-info="A test data variable" />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",

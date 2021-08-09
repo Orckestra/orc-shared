@@ -2,12 +2,7 @@ import sinon from "sinon";
 import enhanceColumnDefs from "./enhanceColumnDefs";
 
 describe("enhanceColumnDefs", () => {
-	let sorting,
-		selection,
-		updateViewState,
-		columnDefs,
-		mockEvent,
-		stopPropagations;
+	let sorting, selection, updateViewState, columnDefs, mockEvent, stopPropagations;
 	beforeEach(() => {
 		sorting = {};
 		selection = [];
@@ -24,17 +19,11 @@ describe("enhanceColumnDefs", () => {
 	});
 
 	it("does not change column definitions without cause", () =>
-		expect(
-			enhanceColumnDefs,
-			"called with",
-			[sorting, selection, updateViewState, columnDefs],
-			"to satisfy",
-			[
-				{
-					fieldName: "a",
-				},
-			],
-		));
+		expect(enhanceColumnDefs, "called with", [sorting, selection, updateViewState, columnDefs], "to satisfy", [
+			{
+				fieldName: "a",
+			},
+		]));
 
 	describe("column selection", () => {
 		beforeEach(() => {
@@ -92,31 +81,21 @@ describe("enhanceColumnDefs", () => {
 			}));
 
 		it("handles missing selection", () =>
-			expect(
-				enhanceColumnDefs,
-				"called with",
-				[sorting, [], updateViewState, columnDefs],
-				"to exhaustively satisfy",
-				[
-					{
-						type: "select",
-						fieldName: "selection",
-						onChange: expect.it("to be a function"),
-					},
-					{ fieldName: "a" },
-				],
-			));
+			expect(enhanceColumnDefs, "called with", [sorting, [], updateViewState, columnDefs], "to exhaustively satisfy", [
+				{
+					type: "select",
+					fieldName: "selection",
+					onChange: expect.it("to be a function"),
+				},
+				{ fieldName: "a" },
+			]));
 	});
 
 	describe("column sorting", () => {
 		let sorterSpies;
 		beforeEach(() => {
 			sorting = { column: "b", direction: "asc" };
-			sorterSpies = [
-				sinon.spy().named("sorter-a"),
-				sinon.spy().named("sorter-b"),
-				sinon.spy().named("sorter-c"),
-			];
+			sorterSpies = [sinon.spy().named("sorter-a"), sinon.spy().named("sorter-b"), sinon.spy().named("sorter-c")];
 			columnDefs = [
 				{
 					fieldName: "a",
@@ -155,9 +134,7 @@ describe("enhanceColumnDefs", () => {
 					},
 				],
 			).then(() => {
-				expect(sorterSpies, "to have calls satisfying", [
-					{ spy: sorterSpies[0], args: [false, "a", "currency"] },
-				]);
+				expect(sorterSpies, "to have calls satisfying", [{ spy: sorterSpies[0], args: [false, "a", "currency"] }]);
 				expect(updateViewState, "to have calls satisfying", [
 					{
 						args: ["sorting", { column: "a", direction: "asc" }],
@@ -191,9 +168,7 @@ describe("enhanceColumnDefs", () => {
 					},
 				],
 			).then(() => {
-				expect(sorterSpies, "to have calls satisfying", [
-					{ spy: sorterSpies[1], args: [true, "b", "date"] },
-				]);
+				expect(sorterSpies, "to have calls satisfying", [{ spy: sorterSpies[1], args: [true, "b", "date"] }]);
 				expect(updateViewState, "to have calls satisfying", [
 					{
 						args: ["sorting", { column: "b", direction: "desc" }],

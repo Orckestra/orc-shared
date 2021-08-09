@@ -18,13 +18,7 @@ describe("routingConnector", () => {
 	spyOnConsole(["warn"]);
 
 	it("gives deprecation warning", () =>
-		expect(
-			routingConnector,
-			"when called with",
-			[() => ({})],
-			"when called with",
-			[TestComp],
-		)
+		expect(routingConnector, "when called with", [() => ({})], "when called with", [TestComp])
 			.then(EnhComp =>
 				expect(
 					<Provider store={store}>
@@ -39,9 +33,7 @@ describe("routingConnector", () => {
 			)
 			.then(() =>
 				expect(console.warn, "to have a call satisfying", {
-					args: [
-						expect.it("to contain", "routingConnector has been deprecated"),
-					],
+					args: [expect.it("to contain", "routingConnector has been deprecated")],
 				}),
 			));
 });

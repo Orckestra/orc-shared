@@ -1,5 +1,5 @@
 import React from "react";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import useToggle from "./useToggle";
 
 const TestComp = ({ id, init }) => {
@@ -12,11 +12,9 @@ const TestComp = ({ id, init }) => {
 };
 
 describe("useToggle", () => {
-	it("provides a flag", () =>
-		expect(<TestComp />, "when mounted", "to satisfy", <div>0</div>));
+	it("provides a flag", () => expect(<TestComp />, "when mounted", "to satisfy", <div>0</div>));
 
-	it("can initialize the flag", () =>
-		expect(<TestComp init="1" />, "when mounted", "to satisfy", <div>1</div>));
+	it("can initialize the flag", () => expect(<TestComp init="1" />, "when mounted", "to satisfy", <div>1</div>));
 
 	it("provides a toggle function", () => {
 		const element = mount(<TestComp />);

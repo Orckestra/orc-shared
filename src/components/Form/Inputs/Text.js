@@ -16,8 +16,8 @@ export const FormInput = styled(Input)`
 	}
 
 	&:invalid {
-		border-color: ${getThemeProp(["errorColor"], "#ce4844")};
-		box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
+		border-color: ${getThemeProp(["colors", "error"], "#ce4844")};
+		box-shadow: 0 0 4px ${getThemeProp(["colors", "error"], "#ce4844")};
 	}
 
 	${"" /* These are hacks, work only in Chrome, best not used */}
@@ -42,18 +42,8 @@ export const FormInput = styled(Input)`
 export const getEventUpdater = memoize(update => e => update(e.target.value));
 
 export const TextInput = ({ update, value = "", ...props }) => (
-	<FormInput
-		type="text"
-		onChange={getEventUpdater(update)}
-		{...props}
-		value={value}
-	/>
+	<FormInput type="text" onChange={getEventUpdater(update)} {...props} value={value} />
 );
 export const EmailInput = ({ update, value = "", ...props }) => (
-	<FormInput
-		type="email"
-		onChange={getEventUpdater(update)}
-		{...props}
-		value={value}
-	/>
+	<FormInput type="email" onChange={getEventUpdater(update)} {...props} value={value} />
 );

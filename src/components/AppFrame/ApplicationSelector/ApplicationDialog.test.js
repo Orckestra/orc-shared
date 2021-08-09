@@ -1,14 +1,7 @@
 import React from "react";
 import sinon from "sinon";
-import { getClassName } from "../../../utils/testUtils";
-import ApplicationDialog, {
-	List,
-	Block,
-	Link,
-	Logo,
-	Label,
-	Indicator,
-} from "./ApplicationDialog";
+import { getStyledClassSelector } from "../../../utils/testUtils";
+import ApplicationDialog, { List, Block, Link, Logo, Label, Indicator } from "./ApplicationDialog";
 
 describe("ApplicationDialog", () => {
 	let toggle, applications;
@@ -32,16 +25,12 @@ describe("ApplicationDialog", () => {
 
 	it("renders a dialog structure listing applications", () =>
 		expect(
-			<ApplicationDialog
-				toggle={toggle}
-				applications={applications}
-				applicationId="ChosenId"
-			/>,
+			<ApplicationDialog toggle={toggle} applications={applications} applicationId="ChosenId" />,
 			"when mounted",
 			"with event",
 			{
 				type: "click",
-				target: "." + getClassName(<Link />) + '[href="/test/url"]',
+				target: getStyledClassSelector(Link) + '[href="/test/url"]',
 			},
 			"to satisfy",
 			<List>

@@ -30,13 +30,8 @@ describe("buildStore", () => {
 	it("sets options on Redux dev tools", () => {
 		const devTool = sinon.spy(() => () => {}).named("devTool");
 		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTool;
-		const assert = expect(buildStore, "when called with", [
-			mockReducers,
-			{ options: true },
-		]).then(() =>
-			expect(devTool, "to have calls satisfying", [
-				{ args: [{ options: true }] },
-			]),
+		const assert = expect(buildStore, "when called with", [mockReducers, { options: true }]).then(() =>
+			expect(devTool, "to have calls satisfying", [{ args: [{ options: true }] }]),
 		);
 		delete window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 		return assert;
@@ -45,7 +40,10 @@ describe("buildStore", () => {
 	describe("functionality", () => {
 		let store;
 		beforeEach(() => {
-			global.SUPPORTED_LOCALES = ["en-US", "fr"];
+			global.SUPPORTED_LOCALES = [
+				{ language: "English", cultureIso: "en-US" },
+				{ language: "Francais", cultureIso: "fr" },
+			];
 			store = buildStore(mockReducers);
 		});
 
@@ -72,8 +70,11 @@ describe("buildStore", () => {
 							action: "POP",
 						},
 						locale: {
-							locale: "en-US",
-							supportedLocales: ["en-US", "fr"],
+							locale: null,
+							supportedLocales: [
+								{ language: "English", cultureIso: "en-US" },
+								{ language: "Francais", cultureIso: "fr" },
+							],
 						},
 						navigation: {
 							tabIndex: {},
@@ -81,17 +82,20 @@ describe("buildStore", () => {
 						},
 						requests: {},
 						settings: { defaultApp: 0 },
+						versionInfo: { version: null, defaultHelpUrl: null, moduleHelpUrls: [] },
 						view: {},
 						test: false,
+						countries: {},
+						timezones: {},
 					}),
 				));
 		});
 
 		describe("dispatch", () => {
 			it("updates state when called with an action", () =>
-				expect(store.dispatch, "when called with", [
-					{ type: "TEST_TOGGLE" },
-				]).then(() => expect(store.getState(), "to satisfy", { test: true })));
+				expect(store.dispatch, "when called with", [{ type: "TEST_TOGGLE" }]).then(() =>
+					expect(store.getState(), "to satisfy", { test: true }),
+				));
 		});
 
 		describe("subscribe", () => {

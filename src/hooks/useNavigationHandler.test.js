@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import Immutable from "immutable";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { mount, simulate } from "react-dom-testing";
+import { mount, simulate } from "unexpected-reaction";
 import sinon from "sinon";
 import useNavigationHandler from "./useNavigationHandler";
 
@@ -96,10 +96,7 @@ describe("useNavigationHandler", () => {
 			</Provider>,
 		);
 		simulate(element, mockEvent);
-		return Promise.all([
-			expect(preventDefault, "was called"),
-			expect(history.push, "was not called"),
-		]);
+		return Promise.all([expect(preventDefault, "was called"), expect(history.push, "was not called")]);
 	});
 
 	it("does navigate to remote hrefs", () => {
@@ -111,10 +108,7 @@ describe("useNavigationHandler", () => {
 			</Provider>,
 		);
 		simulate(element, mockEvent);
-		return Promise.all([
-			expect(preventDefault, "was not called"),
-			expect(history.push, "was not called"),
-		]);
+		return Promise.all([expect(preventDefault, "was not called"), expect(history.push, "was not called")]);
 	});
 
 	it("no href does not navigate", () => {
@@ -126,9 +120,6 @@ describe("useNavigationHandler", () => {
 			</Provider>,
 		);
 		simulate(element, mockEvent);
-		return Promise.all([
-			expect(preventDefault, "was called"),
-			expect(history.push, "was not called"),
-		]);
+		return Promise.all([expect(preventDefault, "was called"), expect(history.push, "was not called")]);
 	});
 });

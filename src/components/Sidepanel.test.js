@@ -37,13 +37,7 @@ describe("Sidepanel", () => {
 			</RenderSidepanel>,
 			appRoot,
 		);
-		return expect(
-			modalRoot,
-			"queried for first",
-			"div#inner",
-			"to be a",
-			"DOMElement",
-		);
+		return expect(modalRoot, "queried for first", "div#inner", "to be a", "DOMElement");
 	});
 
 	describe("PanelDrawer", () => {
@@ -57,13 +51,7 @@ describe("Sidepanel", () => {
 			));
 
 		it("sets width by default", () =>
-			expect(
-				<PanelDrawer in />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"width: 200px;",
-			));
+			expect(<PanelDrawer in />, "when mounted", "to have style rules satisfying", "to contain", "width: 200px;"));
 
 		it("sets transition according to timeout", () =>
 			expect(

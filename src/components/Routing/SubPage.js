@@ -15,7 +15,7 @@ export const Backdrop = styled.div`
 	height: 100%;
 	width: 100%;
 	opacity: 0.3;
-	color: #333;
+	color: ${getThemeProp(["colors", "text"], "#333333")};
 `;
 
 export const Dialog = styled.div`
@@ -32,25 +32,16 @@ export const Dialog = styled.div`
 	z-index: 100;
 `;
 
-export const SubPage = ({ config, match, location, history, root }) => {
+export const SubPage = ({ config, match, location, history, root, modulePrependPath }) => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
-	let {
-		component: View,
-		toolStateSelector = () => [],
-		toolFuncSelector = () => ({}),
-		...props
-	} = config;
-	const toolSelector = state =>
-		toolStateSelector(state, toolFuncSelector(dispatch));
+	let { component: View, toolStateSelector = () => [], toolFuncSelector = () => ({}), ...props } = config;
+	const toolSelector = state => toolStateSelector(state, toolFuncSelector(dispatch));
 	const tools = useSelector(toolSelector);
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
 	const path = location.pathname;
-	const WrappedView = useMemo(
-		() => withErrorBoundary(path)(withWaypointing(View)),
-		[path, View],
-	);
+	const WrappedView = useMemo(() => withErrorBoundary(path)(withWaypointing(View)), [path, View]);
 	const closeSubPage = () => {
 		history.push(baseHref);
 		dispatch(mapHref(baseHref, baseHref));
@@ -84,6 +75,7 @@ export const SubPage = ({ config, match, location, history, root }) => {
 					location={location}
 					mapFrom={baseHref}
 					{...props}
+					modulePrependPath={modulePrependPath}
 				/>
 			</Dialog>
 		</React.Fragment>

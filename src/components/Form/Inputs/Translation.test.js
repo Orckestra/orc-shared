@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
 import { Ignore } from "unexpected-reaction";
 import sinon from "sinon";
-import { spyOnConsole, getClassName } from "../../../utils/testUtils";
+import { spyOnConsole, getStyledClassSelector } from "../../../utils/testUtils";
 import { ButtonWrapper } from "./FieldButtons";
 import { FormInput } from "./Text";
 import TranslationInput, {
@@ -43,11 +43,7 @@ describe("TranslationInput", () => {
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">
-						<TranslationInput
-							name="test"
-							value={{}}
-							moreLabel="Show more things"
-						/>
+						<TranslationInput name="test" value={{}} moreLabel="Show more things" />
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
@@ -69,17 +65,13 @@ describe("TranslationInput", () => {
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">
-						<TranslationInput
-							name="test"
-							value={{ "fr-CA": "Des mots" }}
-							handlers={handlers}
-						/>
+						<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} handlers={handlers} />
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: "." + getClassName(<ShowButton />) },
+			{ type: "click", target: getStyledClassSelector(ShowButton) },
 			"to satisfy",
 			<TranslationWrapper>
 				<IntlProvider locale="en">
@@ -89,11 +81,7 @@ describe("TranslationInput", () => {
 					<TranslationField lang="en-US" onChange={() => {}} />
 				</IntlProvider>
 				<IntlProvider locale="en">
-					<TranslationField
-						lang="fr-CA"
-						message="Des mots"
-						onChange={() => {}}
-					/>
+					<TranslationField lang="fr-CA" message="Des mots" onChange={() => {}} />
 				</IntlProvider>
 			</TranslationWrapper>,
 		));
@@ -133,12 +121,7 @@ describe("TranslationInput", () => {
 		return expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<TranslationInput
-						name="test"
-						value={{ "fr-CA": "Des mots" }}
-						update={update}
-						moreLabel="Show more things"
-					/>
+					<TranslationInput name="test" value={{ "fr-CA": "Des mots" }} update={update} moreLabel="Show more things" />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -152,12 +135,7 @@ describe("TranslationInput", () => {
 			<Provider store={store}>
 				<MemoryRouter>
 					<IntlProvider locale="en">
-						<TranslationInput
-							name="test"
-							value={{}}
-							required
-							moreLabel="Show more things"
-						/>
+						<TranslationInput name="test" value={{}} required moreLabel="Show more things" />
 					</IntlProvider>
 				</MemoryRouter>
 			</Provider>,
@@ -197,12 +175,7 @@ describe("TranslationField", () => {
 	it("shows a single language label and a text field", () =>
 		expect(
 			<IntlProvider locale="en">
-				<TranslationField
-					lang="en-US"
-					message="A hat, pardner"
-					onChange={onChange}
-					otherProp
-				/>
+				<TranslationField lang="en-US" message="A hat, pardner" onChange={onChange} otherProp />
 			</IntlProvider>,
 			"when mounted",
 			"to satisfy",
@@ -212,13 +185,7 @@ describe("TranslationField", () => {
 					<FormInput value="A hat, pardner" onChange={onChange} otherProp />
 				</IntlProvider>
 			</ButtonWrapper>,
-		).then(() =>
-			expect(
-				[console.log, console.warn, console.error],
-				"to have calls satisfying",
-				[],
-			),
-		));
+		).then(() => expect([console.log, console.warn, console.error], "to have calls satisfying", [])));
 
 	it("handles missing message", () =>
 		expect(
@@ -233,11 +200,5 @@ describe("TranslationField", () => {
 					<FormInput value="" onChange={onChange} otherProp />
 				</IntlProvider>
 			</ButtonWrapper>,
-		).then(() =>
-			expect(
-				[console.log, console.warn, console.error],
-				"to have calls satisfying",
-				[],
-			),
-		));
+		).then(() => expect([console.log, console.warn, console.error], "to have calls satisfying", [])));
 });

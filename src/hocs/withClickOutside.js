@@ -1,5 +1,4 @@
-import ReactDOM from "react-dom";
-import { compose, mapProps, lifecycle } from "recompose";
+import React, { useRef, useCallback, useEffect } from "react";
 
 const descendsFrom = (descendant, ancestor) => {
 	if (descendant === ancestor) {
@@ -11,24 +10,23 @@ const descendsFrom = (descendant, ancestor) => {
 	}
 };
 
-const withClickOutside = lifecycle({
-	componentDidMount() {
-		this.innerRef = ReactDOM.findDOMNode(this);
-		this.handler = event => {
-			if (!descendsFrom(event.target, this.innerRef)) {
-				(this.props.onClickOutside || (() => {}))(event);
-			}
-		};
-		document.addEventListener("click", this.handler, true);
-	},
-	componentDidUpdate() {
-		this.innerRef = ReactDOM.findDOMNode(this);
-	},
-	componentWillUnmount() {
-		document.removeEventListener("click", this.handler, true);
-	},
-});
+const withClickOutside =
+	Comp =>
+	({ onClickOutside = () => {}, ...props }) => {
+		const elmRef = useRef(null);
+		const handler = useCallback(
+			event => {
+				if (!descendsFrom(event.target, elmRef.current)) {
+					onClickOutside(event);
+				}
+			},
+			[onClickOutside, elmRef],
+		);
+		useEffect(() => {
+			document.addEventListener("click", handler, true);
+			return () => document.removeEventListener("click", handler, true);
+		}, [handler, elmRef]);
+		return <Comp ref={elmRef} {...props} />;
+	};
 
-const filterProps = mapProps(({ onClickOutside, ...props }) => props);
-
-export default compose(withClickOutside, filterProps);
+export default withClickOutside;

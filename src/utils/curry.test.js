@@ -7,8 +7,7 @@ describe("curry", () => {
 	});
 
 	describe("0 < curried < arity", () => {
-		it("returns a function", () =>
-			expect(curry, "when called with", [testFunc, "foo"], "to be a function"));
+		it("returns a function", () => expect(curry, "when called with", [testFunc, "foo"], "to be a function"));
 
 		it("calls wrapped function with curried parameters and call parameters", () =>
 			expect(
@@ -23,8 +22,7 @@ describe("curry", () => {
 	});
 
 	describe("curried = 0", () => {
-		it("returns a function", () =>
-			expect(curry, "when called with", [testFunc], "to be a function"));
+		it("returns a function", () => expect(curry, "when called with", [testFunc], "to be a function"));
 
 		it("has no curried parameters", () =>
 			expect(
@@ -39,13 +37,7 @@ describe("curry", () => {
 	});
 
 	describe("curried = arity", () => {
-		it("returns a function", () =>
-			expect(
-				curry,
-				"when called with",
-				[testFunc, "foo", "bar"],
-				"to be a function",
-			));
+		it("returns a function", () => expect(curry, "when called with", [testFunc, "foo", "bar"], "to be a function"));
 
 		it("calls wrapped function with curried parameters", () =>
 			expect(
@@ -61,12 +53,7 @@ describe("curry", () => {
 
 	describe("curried > arity", () => {
 		it("returns a function", () =>
-			expect(
-				curry,
-				"when called with",
-				[testFunc, "feep", "meep", "foo"],
-				"to be a function",
-			));
+			expect(curry, "when called with", [testFunc, "feep", "meep", "foo"], "to be a function"));
 
 		it("calls function with curried parameters", () =>
 			expect(

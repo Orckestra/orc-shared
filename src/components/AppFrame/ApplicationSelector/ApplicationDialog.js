@@ -58,12 +58,7 @@ export const Indicator = styled.div`
 	}
 `;
 
-const ApplicationDialog = ({
-	toggle,
-	applications,
-	applicationId,
-	applicationOrder,
-}) => (
+const ApplicationDialog = ({ toggle, applications, applicationId, applicationOrder }) => (
 	<List>
 		{applications.map(app => (
 			<Block key={app.name}>

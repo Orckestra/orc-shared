@@ -2,12 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import {
-	CategoryList,
-	CategoryRow,
-	CategoryHeader,
-	CategoryIndicator,
-} from "./CategoryList";
+import { CategoryList, CategoryRow, CategoryHeader, CategoryIndicator } from "./CategoryList";
 import { Wrapper as Checkbox, Cover } from "./Checkbox";
 import { Table, Placeholder } from "./List/List";
 import { TableRow } from "./List/Row";
@@ -59,13 +54,7 @@ describe("CategoryList", () => {
 	it("renders just a header", () =>
 		expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={[
-						{ fieldName: "a" },
-						{ fieldName: "b" },
-						{ fieldName: "c" },
-					]}
-				/>
+				<CategoryList columnDefs={[{ fieldName: "a" }, { fieldName: "b" }, { fieldName: "c" }]} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -92,11 +81,7 @@ describe("CategoryList", () => {
 			<Provider store={store}>
 				<CategoryList
 					height={121}
-					columnDefs={[
-						{ fieldName: "a" },
-						{ fieldName: "b" },
-						{ fieldName: "c" },
-					]}
+					columnDefs={[{ fieldName: "a" }, { fieldName: "b" }, { fieldName: "c" }]}
 					placeholder={<div />}
 				/>
 			</Provider>,
@@ -127,15 +112,9 @@ describe("CategoryList", () => {
 	it("renders a category row and a row for each row data object", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
 		const columnDefs = [{ fieldName: "key" }];
-		const rowOnClick = () => {};
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-				/>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -168,6 +147,44 @@ describe("CategoryList", () => {
 		);
 	});
 
+	it("renders rows with onClick handlers", () => {
+		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
+		const columnDefs = [{ fieldName: "key" }];
+		return expect(
+			<Provider store={store}>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} rowOnClick={() => {}} />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<Ignore />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<CategoryRow>
+						<td>
+							<Ignore />
+							<Ignore />
+						</td>
+					</CategoryRow>
+					<TableRow onClick={() => {}}>
+						<TableData>a</TableData>
+					</TableRow>
+					<TableRow onClick={() => {}}>
+						<TableData>b</TableData>
+					</TableRow>
+					<TableRow onClick={() => {}}>
+						<TableData>c</TableData>
+					</TableRow>
+				</tbody>
+			</table>,
+		);
+	});
+
 	it("renders a category header for each found category", () => {
 		const rows = [
 			{ key: "a", category: "Stuff" },
@@ -178,15 +195,9 @@ describe("CategoryList", () => {
 			{ key: "f", category: "Stuff" },
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
-		const rowOnClick = () => {};
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-				/>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -253,16 +264,10 @@ describe("CategoryList", () => {
 			{ key: "f", category: "Stuff" },
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
-		const rowOnClick = () => {};
 		viewState = { closedCategories: ["Stuff"] };
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-				/>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -317,17 +322,10 @@ describe("CategoryList", () => {
 			{ key: "f", category: "Stuff" },
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
-		const rowOnClick = () => {};
 		viewState = { closedCategories: ["Stuff"] };
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-					openAll
-				/>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} openAll />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -394,17 +392,10 @@ describe("CategoryList", () => {
 			{ key: "f", category: "Stuff" },
 		];
 		const columnDefs = [{ fieldName: "key" }, { fieldName: "category" }];
-		const rowOnClick = () => {};
 		viewState = { closedCategories: [] };
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					name="test"
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-				/>
+				<CategoryList name="test" columnDefs={columnDefs} rows={rows} keyField={["key"]} />
 			</Provider>,
 			"when mounted",
 			"with event",
@@ -437,17 +428,10 @@ describe("CategoryList", () => {
 			{ key: "f", category: "Stuff" },
 		];
 		const columnDefs = [{ fieldName: "a" }, { fieldName: "b" }];
-		const rowOnClick = () => {};
 		viewState = { closedCategories: ["Stuff"] };
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					name="test"
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-				/>
+				<CategoryList name="test" columnDefs={columnDefs} rows={rows} keyField={["key"]} />
 			</Provider>,
 			"when mounted",
 			"with event",
@@ -469,7 +453,6 @@ describe("CategoryList", () => {
 	it("renders rows with data-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
 		const columnDefs = [{ fieldName: "key" }];
-		const rowOnClick = () => {};
 		const colorMap = {
 			a: "#ff0000",
 			b: "#00ff00",
@@ -478,13 +461,7 @@ describe("CategoryList", () => {
 		const colorGetter = row => colorMap[row.key];
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-					rowBackgroundGetter={colorGetter}
-				/>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} rowBackgroundGetter={colorGetter} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -520,17 +497,10 @@ describe("CategoryList", () => {
 	it("renders rows with index-based backgrounds", () => {
 		const rows = [{ key: "a" }, { key: "b" }, { key: "c" }];
 		const columnDefs = [{ fieldName: "key" }];
-		const rowOnClick = () => {};
 		const colorGetter = (row, index) => (index % 2 ? "red" : "green");
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					rowOnClick={rowOnClick}
-					rowBackgroundGetter={colorGetter}
-				/>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} rowBackgroundGetter={colorGetter} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -572,12 +542,7 @@ describe("CategoryList", () => {
 		const selection = ["a"];
 		return expect(
 			<Provider store={store}>
-				<CategoryList
-					columnDefs={columnDefs}
-					rows={rows}
-					keyField={["key"]}
-					selection={selection}
-				/>
+				<CategoryList columnDefs={columnDefs} rows={rows} keyField={["key"]} selection={selection} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",

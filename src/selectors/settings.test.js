@@ -1,13 +1,16 @@
 import Immutable from "immutable";
-import { defaultAppId } from "./settings";
+import { defaultAppId, defaultScopeSelector } from "./settings";
 
 describe("defaultAppId", () => {
 	it("gets the id of the default app", () =>
+		expect(defaultAppId, "called with", [Immutable.fromJS({ settings: { defaultApp: 12 } })], "to equal", 12));
+
+	it("gets the the default scope", () =>
 		expect(
-			defaultAppId,
+			defaultScopeSelector,
 			"called with",
-			[Immutable.fromJS({ settings: { defaultApp: 12 } })],
+			[Immutable.fromJS({ settings: { defaultScope: "myPrecious" } })],
 			"to equal",
-			12,
+			"myPrecious",
 		));
 });

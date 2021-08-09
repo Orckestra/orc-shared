@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { ifFlag } from "../../utils";
+import { ifFlag, getThemeProp } from "../../utils";
 import { branchIndent, branchLength, branchHeight } from "./settings";
 
 const baseBranch = css`
@@ -23,7 +23,7 @@ export const Branch = styled.ul`
 	&:last-child::after {
 		/* blocker - hides lowest part of vertical branch */
 		content: " ";
-		background-color: ${ifFlag("dark", "#333", "#fff")};
+		background-color: ${ifFlag("dark", getThemeProp(["colors", "bgDark"], "#333333"), "#fff")};
 		position: absolute;
 		left: -${props => branchIndent(props) + branchLength(props) + 2}px;
 		bottom: 0;

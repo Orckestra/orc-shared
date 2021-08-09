@@ -1,9 +1,8 @@
-import { withPropsOnChange } from "recompose";
+import React, { useMemo } from "react";
 
 const generators = {};
 
-// If no id set, sets a unique-ish id on the component on mount.
-const withId = name => {
+const getGenerator = name => {
 	let idCounter = 0;
 	if (!generators[name]) {
 		generators[name] = () => {
@@ -12,8 +11,15 @@ const withId = name => {
 			return id;
 		};
 	}
-	const getDomId = generators[name];
-	return withPropsOnChange(["id"], ({ id }) => ({ id: id || getDomId() }));
+	return generators[name]();
 };
+
+const withId =
+	name =>
+	Comp =>
+	({ id, ...props }) => {
+		const generatedId = useMemo(() => getGenerator(name), []);
+		return <Comp id={id || generatedId} {...props} />;
+	};
 
 export default withId;

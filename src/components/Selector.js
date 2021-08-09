@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import styled, { css } from "styled-components";
 import { getThemeProp, ifFlag, memoize } from "../utils";
 import withId from "../hocs/withId";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 export const InnerSelect = styled.select`
 	position: absolute;
@@ -18,6 +19,7 @@ export const Wrapper = styled.div`
 	position: relative;
 	cursor: pointer;
 	font-size: 12px;
+	max-width: 700px;
 `;
 
 export const SelectBox = styled.label`
@@ -28,7 +30,7 @@ export const SelectBox = styled.label`
 	max-height: 70px;
 	overflow: hidden;
 	padding: 5px 10px;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 4px;
 	background-color: white;
 
@@ -62,8 +64,8 @@ export const SelectBox = styled.label`
 	}
 
 	${InnerSelect}:invalid + & {
-		border-color: ${getThemeProp(["errorColor"], "#ce4844")};
-		box-shadow: 0 0 4px ${getThemeProp(["errorColor"], "#ce4844")};
+		border-color: ${getThemeProp(["colors", "error"], "#ce4844")};
+		box-shadow: 0 0 4px ${getThemeProp(["colors", "error"], "#ce4844")};
 	}
 `;
 
@@ -71,6 +73,7 @@ export const SelectedValue = styled.span`
 	display: inline-block;
 	width: calc(100% - 20px);
 	white-space: pre;
+	overflow: hidden;
 `;
 
 export const Dropdown = styled.div`
@@ -79,7 +82,7 @@ export const Dropdown = styled.div`
 	left: 0;
 	top: calc(100% + 1px);
 	z-index: 1;
-	border: 1px solid #ccc;
+	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-radius: 4px;
 	padding: 4px 0;
 	width: 100%;
@@ -91,11 +94,16 @@ export const Dropdown = styled.div`
 	${/* Enables click handling on Options while closing dropdown */ ""};
 	transition: visibility 0.4s step-end;
 
-	${InnerSelect}:focus + ${SelectBox} + & {
-		opacity: 1;
-		visibility: visible;
-		transition: visibility 0s step-end;
-	}
+	${props => {
+		/* istanbul ignore next */
+		if (props.isVisible) {
+			return `${InnerSelect} + ${SelectBox} + & {
+				opacity: 1;
+				visibility: visible;
+				transition: visibility 0s step-end;
+			}`;
+		}
+	}}
 `;
 
 export const Option = styled.div`
@@ -111,7 +119,7 @@ export const Option = styled.div`
 	)};
 
 	&:hover {
-		background-color: ${getThemeProp(["appHighlightColor"], "#ccc")};
+		background-color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
 		color: #ffffff;
 	}
 `;
@@ -120,62 +128,63 @@ export const Placeholder = styled.span`
 	color: rgb(117, 117, 117);
 `;
 
-export const Selector = ({
-	id,
-	value,
-	options,
-	update,
-	placeholder = "",
-	required,
-	...props
-}) => {
+export const Selector = ({ id, value, options, update, placeholder = "", required, ...props }) => {
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const clickOption = useCallback(
-		memoize(value => () => update(value)),
+		memoize(value => () => {
+			update(value);
+			setIsVisible(false);
+		}),
 		[update],
 	);
+	console.warn("Selector component has been deprecated in favor of Material-UI wrapper component Select");
 	const onChange = useCallback(e => update(e.target.value), [update]);
+	const [isVisible, setIsVisible] = useState(false);
+	/* istanbul ignore next */
+	const toggleVisibility = () => {
+		setIsVisible(!isVisible);
+	};
+
+	/* istanbul ignore next */
+	const handlerClickAway = () => {
+		setIsVisible(false);
+	};
+
+	/* istanbul ignore next */
 	return (
-		<Wrapper>
-			<InnerSelect
-				id={id}
-				onChange={onChange}
-				value={value}
-				required={required}
-				{...props}
-			>
-				{required ? <option></option> : null}
-				{options.map(option => (
-					<option key={option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</InnerSelect>
-			<SelectBox htmlFor={id}>
-				{value ? (
-					<SelectedValue>
-						{
-							options
-								.filter(option => option.value === value)
-								.map(option => option.label)[0]
-						}
-					</SelectedValue>
-				) : (
-					<Placeholder>{placeholder}</Placeholder>
-				)}
-			</SelectBox>
-			<Dropdown>
-				{options.map(option => (
-					<Option
-						key={option.value}
-						active={option.value === value}
-						onClick={clickOption(option.value)}
-						data-test-id={option.value}
-					>
-						{option.label}
-					</Option>
-				))}
-			</Dropdown>
-		</Wrapper>
+		<ClickAwayListener onClickAway={() => handlerClickAway()}>
+			<Wrapper>
+				<InnerSelect id={id} onChange={onChange} value={value} required={required} {...props}>
+					{required ? <option></option> : null}
+					{options.map(option => (
+						<option key={option.value} value={option.value}>
+							{option.label}
+						</option>
+					))}
+				</InnerSelect>
+				<SelectBox htmlFor={id} onClick={() => toggleVisibility()}>
+					{value ? (
+						<SelectedValue>
+							{options.filter(option => option.value === value).map(option => option.label)[0]}
+						</SelectedValue>
+					) : (
+						<Placeholder>{placeholder}</Placeholder>
+					)}
+				</SelectBox>
+				<Dropdown isVisible={isVisible}>
+					{options.map(option => (
+						<Option
+							key={option.value}
+							active={option.value === value}
+							onClick={clickOption(option.value)}
+							data-test-id={option.value}
+						>
+							{option.label}
+						</Option>
+					))}
+				</Dropdown>
+			</Wrapper>
+		</ClickAwayListener>
 	);
 };
 

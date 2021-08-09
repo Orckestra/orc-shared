@@ -2,8 +2,8 @@ import React from "react";
 import Page from "./Page";
 import SegmentPage from "./SegmentPage";
 
-const FullPage = ({ path, config, location, match }) => {
-	const { component, pages = {}, segments, subpages } = config;
+const FullPage = ({ path, config, location, match, modulePrependPath }) => {
+	const { component, pages = {}, segments, subpages, entityIdResolver } = config;
 	if (segments) {
 		return (
 			<SegmentPage
@@ -12,6 +12,8 @@ const FullPage = ({ path, config, location, match }) => {
 				segments={segments}
 				location={location}
 				match={match}
+				modulePrependPath={modulePrependPath}
+				entityIdResolver={entityIdResolver}
 			/>
 		);
 	}
@@ -23,6 +25,7 @@ const FullPage = ({ path, config, location, match }) => {
 			subpages={subpages}
 			location={location}
 			match={match}
+			modulePrependPath={modulePrependPath}
 		/>
 	);
 };

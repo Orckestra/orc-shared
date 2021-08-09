@@ -16,11 +16,7 @@ jest.mock("../utils/buildUrl", () => {
 
 const TestComp = ({ spy, getScope, ...props }) => (
 	<div>
-		<input
-			id="getScope"
-			value=""
-			onChange={e => spy(getScope(e.target.value))}
-		/>
+		<input id="getScope" value="" onChange={e => spy(getScope(e.target.value))} />
 		<PropStruct {...props} />
 	</div>
 );
@@ -37,6 +33,9 @@ describe("withScopeData", () => {
 			navigation: {
 				route: { location: {}, match: { params: { scope: "test3" } } },
 			},
+			requests: {
+				logout: false,
+			},
 			scopes: {
 				test1: {
 					id: "test1",
@@ -47,7 +46,7 @@ describe("withScopeData", () => {
 				},
 				test2: {
 					id: "test2",
-					name: { "en-US": "Test 2" },
+					name: { "en-US": "Test 2", "en-CA": "Test 2" },
 					foo: false,
 					bar: true,
 					parentScopeId: "test1",
@@ -62,11 +61,14 @@ describe("withScopeData", () => {
 				},
 				test4: {
 					id: "test4",
-					name: { "en-US": "Test 4" },
+					name: { "en-US": "Test 4", "en-CA": "Test 4" },
 					foo: true,
 					bar: true,
 					parentScopeId: "test2",
 				},
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		});
 		store = {
@@ -142,7 +144,7 @@ describe("withScopeData", () => {
 			.then(() => expect(store.dispatch, "was not called")));
 
 	it("loads scopes if it has none", () => {
-		state = state.set("scopes", Immutable.Map());
+		state = state.setIn(["scopes"], Immutable.Map());
 		return expect(withScopeData, "when called with", [TestComp])
 			.then(Comp =>
 				expect(
@@ -162,11 +164,7 @@ describe("withScopeData", () => {
 						args: [
 							{
 								[RSAA]: {
-									types: [
-										"GET_SCOPES_REQUEST",
-										"GET_SCOPES_SUCCESS",
-										"GET_SCOPES_FAILURE",
-									],
+									types: ["GET_SCOPES_REQUEST", "GET_SCOPES_SUCCESS", "GET_SCOPES_FAILURE"],
 								},
 							},
 						],

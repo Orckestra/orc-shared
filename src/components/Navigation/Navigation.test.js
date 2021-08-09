@@ -1,11 +1,9 @@
 import React from "react";
-import { MemoryRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import Immutable from "immutable";
 import sinon from "sinon";
-import { TabBar } from "./Bar";
-import Tab from "./Tab";
 import Navigation from "./index";
+import TabBar from "../MaterialUI/Navigation/TabBar";
+import { TestWrapper, createMuiTheme } from "./../../utils/testUtils";
 
 jest.mock("./Tab", () => ({
 	__esModule: true,
@@ -34,7 +32,7 @@ describe("Navigation", () => {
 					},
 				},
 				moduleTabs: {
-					test: ["/TestScope/test/page1", "/TestScope/test/page2"],
+					test: ["/TestScope/test", "/TestScope/test/page1", "/TestScope/test/page2"],
 				},
 				mappedHrefs: {},
 				route: {
@@ -44,6 +42,34 @@ describe("Navigation", () => {
 						params: { scope: "TestScope" },
 					},
 				},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
+			},
+			modules: {
+				tree: {},
+			},
+			view: {
+				edit: {
+					test: {},
+				},
+			},
+			scopes: {
+				TestScope: {
+					id: "TestScope",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+				},
+			},
+			locale: {
+				locale: null,
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
+			settings: {
+				defaultScope: "myScope",
 			},
 		});
 		store = {
@@ -70,44 +96,47 @@ describe("Navigation", () => {
 		};
 	});
 
-	it("renders a navigation tab bar with state-based props", () =>
+	const theme = createMuiTheme();
+
+	it("renders a navigation tab bar with state-based props", () => {
+		const module = {
+			icon: "thing",
+			label: "Thing",
+			href: "/TestScope/test",
+			mappedFrom: "/TestScope/test",
+			active: false,
+		};
+
+		const pages = [
+			{
+				label: "Page 1",
+				href: "/TestScope/test/page1",
+				active: true,
+				params: { scope: "TestScope", entityId: "page1" },
+			},
+			{
+				label: "Page 2",
+				href: "/TestScope/test/page2",
+				active: false,
+				params: { scope: "TestScope", entityId: "page2" },
+			},
+		];
+
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/TestScope/test"]}>
-					<Navigation modules={modules} />
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/test/page1"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Navigation modules={modules} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter>
-				<TabBar>
-					<Tab
-						active={true}
-						href="/TestScope/test"
-						icon="thing"
-						label="Thing"
-						mappedFrom="/TestScope/test"
-						module={true}
-					/>
-					<Tab
-						active={false}
-						close={() => {}}
-						href="/TestScope/test/page1"
-						label="Page 1"
-						mappedFrom="/TestScope/test/page1"
-						module={false}
-						outsideScope={false}
-					/>
-					<Tab
-						active={false}
-						close={() => {}}
-						href="/TestScope/test/page2"
-						label="Page 2"
-						mappedFrom="/TestScope/test/page2"
-						module={false}
-						outsideScope={false}
-					/>
-				</TabBar>
-			</MemoryRouter>,
-		));
+			<TestWrapper provider={{ store }} memoryRouter intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>,
+		);
+	});
 });

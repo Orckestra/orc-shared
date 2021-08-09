@@ -17,8 +17,7 @@ import {
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
 	modExport.loadConfig = () => Promise.resolve({});
-	modExport.buildUrl = (path = [], params = "") =>
-		"URL: " + path.join("/") + " " + JSON.stringify(params);
+	modExport.buildUrl = (path = [], params = "") => "URL: " + path.join("/") + " " + JSON.stringify(params);
 	return modExport;
 });
 
@@ -26,12 +25,8 @@ describe("getApplications", () => {
 	it("creates a RSAA to get applications", () =>
 		expect(getApplications, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [
-					GET_APPLICATIONS_REQUEST,
-					GET_APPLICATIONS_SUCCESS,
-					GET_APPLICATIONS_FAILURE,
-				],
-				endpoint: 'URL: applications ""',
+				types: [GET_APPLICATIONS_REQUEST, GET_APPLICATIONS_SUCCESS, GET_APPLICATIONS_FAILURE],
+				endpoint: 'URL: my/applications ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",
@@ -49,11 +44,7 @@ describe("getMyApplication", () => {
 	it("creates a RSAA to get the user's default application", () =>
 		expect(getMyApplication, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [
-					GET_MY_APPLICATION_REQUEST,
-					GET_MY_APPLICATION_SUCCESS,
-					GET_MY_APPLICATION_FAILURE,
-				],
+				types: [GET_MY_APPLICATION_REQUEST, GET_MY_APPLICATION_SUCCESS, GET_MY_APPLICATION_FAILURE],
 				endpoint: 'URL: my/application ""',
 				method: "GET",
 				body: undefined,
@@ -69,29 +60,23 @@ describe("getMyApplication", () => {
 });
 describe("setMyApplication", () => {
 	it("creates a RSAA to set the user's default application", () =>
-		expect(
-			setMyApplication,
-			"when called with",
-			[15],
-			"to exhaustively satisfy",
-			{
-				[RSAA]: {
-					types: [
-						{ type: SET_MY_APPLICATION_REQUEST, meta: { appId: 15 } },
-						{ type: SET_MY_APPLICATION_SUCCESS, meta: { appId: 15 } },
-						{ type: SET_MY_APPLICATION_FAILURE, meta: { appId: 15 } },
-					],
-					endpoint: 'URL: my/application/15 ""',
-					method: "POST",
-					body: undefined,
-					credentials: "include",
-					bailout: expect.it("to be a function"),
-					headers: {
-						Accept: "application/json; charset=utf-8",
-						"Content-Type": "application/json",
-					},
-					options: { redirect: "follow" },
+		expect(setMyApplication, "when called with", [15], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: SET_MY_APPLICATION_REQUEST, meta: { appId: 15 } },
+					{ type: SET_MY_APPLICATION_SUCCESS, meta: { appId: 15 } },
+					{ type: SET_MY_APPLICATION_FAILURE, meta: { appId: 15 } },
+				],
+				endpoint: 'URL: my/application/15 ""',
+				method: "POST",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
 				},
+				options: { redirect: "follow" },
 			},
-		));
+		}));
 });

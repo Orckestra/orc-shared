@@ -21,24 +21,18 @@ describe("insertIcons", () => {
 		expect(insertIcons, "when called with", [svgString]).then(() => {
 			expect(document.querySelectorAll("svg").length, "to be", 1);
 			expect(document.getElementById("icon-abc-book"), "to be a", "DOMElement");
-			expect(
-				document.getElementById("icon-accept-green"),
-				"to be a",
-				"DOMElement",
-			);
+			expect(document.getElementById("icon-accept-green"), "to be a", "DOMElement");
 			expect(document.getElementById("icon-accept"), "to be a", "DOMElement");
 		}));
 
 	it("does not insert an SVG element if the string fails to parse", () =>
-		expect(insertIcons, "when called with", ["<Definitely not svg>"]).then(
-			() => {
-				expect(document.querySelectorAll("svg").length, "to be", 0);
-				expect(document.getElementById("icon-abc-book"), "to be", null);
-				expect(document.getElementById("icon-accept-green"), "to be", null);
-				expect(document.getElementById("icon-accept"), "to be", null);
-				expect(console.error, "to have a call satisfying", {
-					args: ["SVG failed to parse: ", "<Definitely not svg>"],
-				});
-			},
-		));
+		expect(insertIcons, "when called with", ["<Definitely not svg>"]).then(() => {
+			expect(document.querySelectorAll("svg").length, "to be", 0);
+			expect(document.getElementById("icon-abc-book"), "to be", null);
+			expect(document.getElementById("icon-accept-green"), "to be", null);
+			expect(document.getElementById("icon-accept"), "to be", null);
+			expect(console.error, "to have a call satisfying", {
+				args: ["SVG failed to parse: ", "<Definitely not svg>"],
+			});
+		}));
 });

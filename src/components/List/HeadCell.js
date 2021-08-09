@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Text from "../Text";
 import Checkbox from "../Checkbox";
-import { ifFlag } from "../../utils";
+import { ifFlag, getThemeProp } from "../../utils";
 
 export const UpMark = styled.div`
 	display: inline-block;
@@ -11,7 +11,7 @@ export const UpMark = styled.div`
 	height: 0;
 	border: 0.25em solid transparent;
 	border-top-width: 0;
-	border-bottom-color: #999999;
+	border-bottom-color: ${getThemeProp(["colors", "border"], "#999999")};
 `;
 
 export const DownMark = styled.div`
@@ -21,7 +21,7 @@ export const DownMark = styled.div`
 	height: 0;
 	border: 0.25em solid transparent;
 	border-bottom-width: 0;
-	border-top-color: #999999;
+	border-top-color: ${getThemeProp(["colors", "border"], "#999999")};
 `;
 
 export const MarkBox = styled.div`
@@ -74,7 +74,7 @@ export const HeadBox = styled.div`
 	height: 20px;
 	width: calc(100% - 40px);
 	padding: 10px 20px;
-	border-bottom: 1px solid #cccccc;
+	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 
 	& > span {
 		overflow-x: hidden;
@@ -84,11 +84,7 @@ export const HeadBox = styled.div`
 `;
 
 const HeadCell = ({ columnDef, rowIds = [], allSelected }) => (
-	<TableHeader
-		onClick={columnDef.sort}
-		select={columnDef.type === "select"}
-		width={columnDef.width}
-	>
+	<TableHeader onClick={columnDef.sort} select={columnDef.type === "select"} width={columnDef.width}>
 		<HeadBox>
 			{columnDef.type === "select" ? (
 				<Checkbox
@@ -99,9 +95,7 @@ const HeadCell = ({ columnDef, rowIds = [], allSelected }) => (
 			) : columnDef.label ? (
 				[
 					<Text key="msg" message={columnDef.label} />,
-					columnDef.sort ? (
-						<SortMark key="sort" direction={columnDef.sortDirection} />
-					) : null,
+					columnDef.sort ? <SortMark key="sort" direction={columnDef.sortDirection} /> : null,
 				]
 			) : null}
 		</HeadBox>

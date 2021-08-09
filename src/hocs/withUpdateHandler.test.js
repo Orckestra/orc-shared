@@ -15,37 +15,18 @@ describe("withUpdateHandler", () => {
 	spyOnConsole(["warn"]);
 
 	it("issues a deprecation warning", () =>
-		expect(
-			withUpdateHandler,
-			"when called with",
-			["loader", props => props.loadOnMount],
-			"when called with",
-			[TestComp],
-		)
-			.then(EnhComp =>
-				expect(
-					<EnhComp update={handler} set={false} />,
-					"when mounted",
-					"to satisfy",
-					<div />,
-				),
-			)
+		expect(withUpdateHandler, "when called with", ["loader", props => props.loadOnMount], "when called with", [
+			TestComp,
+		])
+			.then(EnhComp => expect(<EnhComp update={handler} set={false} />, "when mounted", "to satisfy", <div />))
 			.then(() =>
 				expect(console.warn, "to have a call satisfying", {
-					args: [
-						expect.it("to contain", "withUpdateHandler has been deprecated"),
-					],
+					args: [expect.it("to contain", "withUpdateHandler has been deprecated")],
 				}),
 			));
 
 	it("calls named update handler on wrapped component", () =>
-		expect(
-			withUpdateHandler,
-			"when called with",
-			["update", () => true],
-			"when called with",
-			[TestComp],
-		).then(Comp => {
+		expect(withUpdateHandler, "when called with", ["update", () => true], "when called with", [TestComp]).then(Comp => {
 			ReactDOM.render(<Comp update={handler} set={false} />, node);
 			expect(handler, "was not called");
 			ReactDOM.render(<Comp update={handler} set={true} />, node);
@@ -69,13 +50,7 @@ describe("withUpdateHandler", () => {
 		}));
 
 	it("never calls handler if no test given", () =>
-		expect(
-			withUpdateHandler,
-			"when called with",
-			["update"],
-			"when called with",
-			[TestComp],
-		).then(Comp => {
+		expect(withUpdateHandler, "when called with", ["update"], "when called with", [TestComp]).then(Comp => {
 			ReactDOM.render(<Comp update={handler} set={false} />, node);
 			expect(handler, "was not called");
 			ReactDOM.render(<Comp update={handler} set={true} />, node);

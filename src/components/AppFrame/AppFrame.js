@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useIntl } from "react-intl";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { ifFlag, unwrapImmutable } from "../../utils";
+import { ifFlag, getThemeProp, unwrapImmutable } from "../../utils";
 import { getApplications } from "../../actions/applications";
 import useToggle from "../../hooks/useToggle";
 import useLoader from "../../hooks/useLoader";
@@ -13,13 +13,28 @@ import Scope, { Bar as ScopeBar } from "../Scope";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 import About from "./About";
-import Preferences from "./Preferences";
+import Preferences, { PREFS_NAME } from "./Preferences";
 import ConnectedToastList from "./ConnectedToastList";
+import useApplicationHelpUrl from "./useApplicationHelpUrl";
+import useViewState from "../../hooks/useViewState";
+import { getVersionInfo } from "../../actions/versionInfo";
+import { currentLocale } from "../../selectors/locale";
+import { selectCurrentModuleName } from "../../selectors/navigation";
+import LoadingScreen from "../MaterialUI/Feedback/loadingScreen";
+import sharedMessages from "../../sharedMessages";
+import ActionModal from "../MaterialUI/DataDisplay/PredefinedElements/ActionModal";
+import { logoutSelector } from "../../selectors/requests";
 
 export const Base = styled.div`
-	background-color: #333;
+	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
 	height: 100%;
 	overflow: hidden;
+	${ifFlag(
+		"preferencesOpen",
+		css`
+			pointer-events: none;
+		`,
+	)};
 `;
 
 export const ViewPort = styled.div`
@@ -33,55 +48,81 @@ export const ViewPort = styled.div`
 	right: 0;
 	display: flex;
 	flex-direction: column;
-	transition: transform 0.3s ease-out;
+	transition: width 0.3s ease-out;
 	${ifFlag(
 		"open",
 		css`
-			transform: translateX(150px);
+			width: calc(100% - 200px);
 		`,
 	)};
 `;
 
-const AppFrame = ({
-	initOpen,
-	applicationId,
-	modules,
-	activeModules,
-	children,
-	menuMessages,
-	aboutMessages,
-	prefMessages,
-	prefActions,
-	scopeFilterPlaceholder,
-	noScope,
-}) => {
+const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
+
+const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, noScope, forceShowScope = [] }) => {
+	const { formatMessage } = useIntl();
+
+	const locale = useSelector(currentLocale);
+	const needLogin = useSelector(logoutSelector);
 	const applications = unwrapImmutable(useSelector(localizedAppSelector));
+	const moduleName = useSelector(selectCurrentModuleName);
+	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
 	const [open, toggle, reset] = useToggle(initOpen);
-	const location = useLocation();
+	const currentApplication = getApp(applications, applicationId);
+	useLoader(getVersionInfo(locale), () => locale === null || helpUrl !== null);
+
+	const [doesApplicationNeedRefresh, setDoesApplicationNeedRefresh] = React.useState(false);
+
+	const reloadApplication = () => {
+		window.location.reload();
+		setDoesApplicationNeedRefresh(false);
+	};
+
+	useEffect(() => {
+		if (needLogin) {
+			setDoesApplicationNeedRefresh(true);
+		}
+	}, [needLogin]);
+
+	useEffect(() => {
+		document.title = currentApplication?.displayName || applicationId;
+	}, [currentApplication, applicationId]);
+
+	const [prefViewState] = useViewState(PREFS_NAME);
+
 	return (
-		<Base>
+		<Base preferencesOpen={prefViewState.show}>
 			<ConnectedToastList />
+			<ActionModal
+				title={formatMessage(sharedMessages.error)}
+				message={formatMessage(sharedMessages.needToRefresh)}
+				open={doesApplicationNeedRefresh}
+				actions={[{ label: sharedMessages.refresh, handler: reloadApplication, isPrimary: true }]}
+			/>
 			<Topbar
-				{...{ applications, applicationId, menuMessages }}
+				{...{
+					applications,
+					applicationId,
+					currentApplication,
+					helpUrl,
+				}}
 				onClick={reset}
 			/>
-			<Sidebar
-				{...{ open, toggle, modules, activeModules }}
-				path={location.pathname}
-			/>
+			<Sidebar {...{ open, toggle, modules, activeModules }} />
 			<ViewPort open={open} onClick={reset}>
-				{noScope ? (
+				{noScope && !forceShowScope.includes(moduleName) ? (
 					<React.Fragment>
 						<ScopeBar />
 						{children}
 					</React.Fragment>
 				) : (
-					<Scope filterPlaceholder={scopeFilterPlaceholder}>{children}</Scope>
+					<Scope>{children}</Scope>
 				)}
 			</ViewPort>
-			<About messages={aboutMessages} />
-			<Preferences messages={prefMessages} />
+			<About currentApplication={currentApplication} />
+			<LoadingScreen />
+			<Preferences />
 		</Base>
 	);
 };
@@ -89,27 +130,7 @@ AppFrame.displayName = "AppFrame";
 AppFrame.propTypes = {
 	applicationId: pt.string.isRequired,
 	modules: pt.array.isRequired,
-	activeModules: pt.array,
-	menuMessages: pt.shape({
-		sign_out: ptLabel.isRequired,
-		preferences: ptLabel.isRequired,
-		about: ptLabel.isRequired,
-	}).isRequired,
-	scopeFilterPlaceholder: ptLabel,
-	aboutMessages: pt.shape({
-		ccName: ptLabel.isRequired,
-		ccVersion: ptLabel.isRequired,
-		copyrightTermsNotice: ptLabel.isRequired,
-		copyright: ptLabel.isRequired,
-		allRightsReserved: ptLabel.isRequired,
-	}).isRequired,
-	prefMessages: pt.shape({
-		preferences: ptLabel.isRequired,
-		save: ptLabel.isRequired,
-		cancel: ptLabel.isRequired,
-		language: ptLabel.isRequired,
-		defaultApp: ptLabel.isRequired,
-	}).isRequired,
+	activeModules: pt.objectOf(pt.oneOfType([pt.bool, pt.shape({ type: pt.string, message: ptLabel })])),
 	noScope: pt.bool,
 };
 

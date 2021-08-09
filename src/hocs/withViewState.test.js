@@ -8,10 +8,7 @@ import withViewState from "./withViewState";
 import { setStateField } from "../actions/view";
 
 const TestComp = ({ field, updateViewState, viewState }) => (
-	<input
-		onChange={() => updateViewState(field, "new value")}
-		value={viewState[field]}
-	/>
+	<input onChange={() => updateViewState(field, "new value")} value={viewState[field]} />
 );
 
 describe("withViewState", () => {
@@ -94,9 +91,7 @@ describe("withViewState", () => {
 				"with event",
 				"change",
 			).then(() =>
-				expect(store.dispatch, "to have calls satisfying", [
-					{ args: [setStateField("test", "aField", "new value")] },
-				]),
+				expect(store.dispatch, "to have calls satisfying", [{ args: [setStateField("test", "aField", "new value")] }]),
 			),
 		));
 });

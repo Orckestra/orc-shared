@@ -23,31 +23,23 @@ describe("loadConfig", () => {
 	afterEach(() => {
 		window.fetch = oldFetch;
 		resetConfig();
-		delete window.orcVersion;
 	});
 
-	it("loads the /config.json file, sets version, and resets dependent functions from placeholders", () => {
+	it("loads the /config.json file, sets version, sets module name and resets dependent functions from placeholders", () => {
 		response = {
 			serviceApiUrl: "https://example.com/api",
-			version: "x.y.z",
 		};
-		expect(window.orcVersion, "to be undefined");
-		return expect(loadConfig, "when called").then(() => {
+		return expect(loadConfig, "when called with", []).then(() => {
 			expect(placeholderBuildUrl, "not to be", buildUrl);
 			expect(console.warn, "was not called");
-			expect(window.orcVersion, "to equal", "x.y.z");
 		});
 	});
 
 	it("gets defaults if fetch fails, warns of this", () => {
 		fail = true;
-		return expect(loadConfig, "when called").then(() => {
+		return expect(loadConfig, "when called with", []).then(() => {
 			expect(placeholderBuildUrl, "not to be", buildUrl);
-			expect(
-				console.warn,
-				"was called with",
-				"Failed to load config.json, falling back to dev defaults",
-			);
+			expect(console.warn, "was called with", "Failed to load config.json, falling back to dev defaults");
 		});
 	});
 
@@ -56,8 +48,7 @@ describe("loadConfig", () => {
 			expect(
 				buildUrl,
 				"to throw",
-				"Config not yet loaded. " +
-					"Please call util.js#loadConfig() and await resolution of the returned Promise.",
+				"Config not yet loaded. Please call util.js#loadConfig() and await resolution of the returned Promise.",
 			));
 
 		describe("with config loaded", () => {
@@ -69,13 +60,7 @@ describe("loadConfig", () => {
 			});
 
 			it("constructs an URL from path segments", () =>
-				expect(
-					buildUrl,
-					"called with",
-					[["foo", "bar"]],
-					"to equal",
-					"https://example.com/api/foo/bar",
-				));
+				expect(buildUrl, "called with", [["foo", "bar"]], "to equal", "https://example.com/api/foo/bar"));
 
 			it("constructs an URL with parameters", () =>
 				expect(

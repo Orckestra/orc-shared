@@ -1,8 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled, { withTheme } from "styled-components";
+import { useLocation } from "react-router-dom";
 import { getThemeProp } from "../../utils";
-import { getCurrentScope } from "../../selectors/navigation";
+import { selectPrependHrefConfig } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
 
 export const Bar = styled.div`
@@ -13,7 +14,7 @@ export const Bar = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	color: #999999;
+	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
 `;
 
 export const MenuToggle = withTheme(({ open, toggle, theme }) => (
@@ -21,25 +22,25 @@ export const MenuToggle = withTheme(({ open, toggle, theme }) => (
 		id="sidebarMenuToggle"
 		menuToggle
 		open={open}
-		icon={(open
-			? getThemeProp(["icons", "sidebarOpen"], "layers")
-			: getThemeProp(["icons", "sidebarClosed"], "menu"))({ theme })}
+		icon={(open ? getThemeProp(["icons", "sidebarOpen"], "layers") : getThemeProp(["icons", "sidebarClosed"], "menu"))({
+			theme,
+		})}
 		onClick={toggle}
 	/>
 ));
 
-const useEnhancement = (id, path) => {
-	const scope = useSelector(getCurrentScope);
+const useEnhancement = id => {
+	const location = useLocation();
+	const prependHref = useSelector(selectPrependHrefConfig)(id);
+
 	return {
-		href: `/${scope}/${id}`,
-		active: path.startsWith(`/${scope}/${id}`),
+		href: `${prependHref}${id}`,
+		active: location.pathname.startsWith(`${prependHref}${id}`),
 		id,
 	};
 };
 
-export const EnhancedMenuItem = ({ path, id, ...props }) => (
-	<MenuItem {...props} {...useEnhancement(id, path)} />
-);
+export const EnhancedMenuItem = ({ id, ...props }) => <MenuItem {...props} {...useEnhancement(id)} />;
 
 const LogoSvg = styled.svg`
 	flex: 0 0 auto;
@@ -66,23 +67,17 @@ export const Logo = () => (
 	</LogoSvg>
 );
 
-const Sidebar = ({
-	open,
-	toggle,
-	modules = [],
-	activeModules = [],
-	path = "",
-}) => {
+const Sidebar = ({ open, toggle, modules = [], activeModules = [] }) => {
 	return (
 		<Bar open={open}>
 			<MenuToggle open={open} toggle={toggle} />
 			{modules.map(item => (
 				<EnhancedMenuItem
 					key={item.id}
+					title={item.label}
 					{...item}
 					open={open}
-					path={path}
-					alert={activeModules.includes(item.id)}
+					alert={activeModules[item.id] || false}
 				/>
 			))}
 			<Logo />

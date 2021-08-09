@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import styled, { css } from "styled-components";
-import { ifFlag, memoize } from "../../utils";
+import { ifFlag, getThemeProp, memoize } from "../../utils";
 import Button from "../Button";
 import Text from "../Text";
+import { FormContext } from "./Form";
 import FieldElements from "./FieldElements";
 import Field, { FieldBox } from "./Field";
 
@@ -32,7 +33,7 @@ export const List = styled.div`
 			& > ${FieldBox} {
 				margin: 0;
 				padding: 20px 0;
-				border-bottom: 1px solid #ccc;
+				border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 			}
 
 			& > ${FieldBox}:first-child {
@@ -164,45 +165,36 @@ const getListFieldUpdater = (updateAll, getRows) => {
 	});
 };
 
-const FieldList = ({
-	name,
-	values = {},
-	staticValues = [],
-	getUpdater,
-	rowField,
-	rowCount,
-	listIndex,
-	tallRows,
-	...props
-}) => {
-	const getRows = useCallback(createRowGetter(values[name], rowCount), [
-		values,
-		name,
-		rowCount,
-	]);
-	const listUpdater = useCallback(
-		getListFieldUpdater(getUpdater(name), getRows),
-		[getUpdater, name, getRows],
-	);
+const FieldList = ({ name, staticValues = [], getUpdater, rowField, rowCount, tallRows, ...props }) => {
+	const { values, listIndex } = useContext(FormContext);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const getRows = useCallback(createRowGetter(values[name], rowCount), [values, name, rowCount]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const listUpdater = useCallback(getListFieldUpdater(getUpdater(name), getRows), [getUpdater, name, getRows]);
 	if (listIndex !== undefined) {
 		return <>Cannot render list inside list</>;
 	}
-	const renderField =
-		rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
+	const renderField = rowCount === undefined ? decorateField(rowField, props.remove) : rowField;
 	return (
 		<List {...{ tallRows }}>
 			{tallRows ? null : <FieldElements fields={[renderField]} labelOnly />}
 			{getRows().map((row, index) => (
-				<FieldElements
+				<FormContext.Provider
 					key={row.id}
-					fields={[tallRows ? renderField : stripLabelFromTree(renderField)]}
-					listIndex={index}
-					getUpdater={listUpdater(index)}
-					values={{
-						...row,
-						...staticValues[index],
+					value={{
+						values: {
+							...row,
+							...staticValues[index],
+						},
+						listIndex: index,
 					}}
-				/>
+				>
+					<FieldElements
+						fields={[tallRows ? renderField : stripLabelFromTree(renderField)]}
+						listIndex={index}
+						getUpdater={listUpdater(index)}
+					/>
+				</FormContext.Provider>
 			))}
 			{rowCount === undefined ? (
 				<Field>

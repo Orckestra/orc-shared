@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import sinon from "sinon";
-import { Row, TableRow } from "./Row";
+import { Row, TableRow, stringifyFieldName } from "./Row";
 import DataCell from "./DataCell";
 
 const TestComp = () => (
@@ -16,11 +16,7 @@ describe("Row", () => {
 	let rowOnClick, columnDefs, row;
 	beforeEach(() => {
 		rowOnClick = sinon.spy().named("rowOnClick");
-		columnDefs = [
-			{ fieldName: "a" },
-			{ fieldName: "b" },
-			{ fieldName: "test", type: "custom", component: TestComp },
-		];
+		columnDefs = [{ fieldName: "a" }, { fieldName: "b" }, { fieldName: "test", type: "custom", component: TestComp }];
 		row = { a: "foo", b: "bar" };
 	});
 
@@ -35,13 +31,7 @@ describe("Row", () => {
 			>
 				<table>
 					<tbody>
-						<Row
-							row={row}
-							rowId="rowIdentifier"
-							columnDefs={columnDefs}
-							rowOnClick={rowOnClick}
-							bgColor="#ff0000"
-						/>
+						<Row row={row} rowId="rowIdentifier" columnDefs={columnDefs} rowOnClick={rowOnClick} bgColor="#ff0000" />
 					</tbody>
 				</table>
 			</Provider>,
@@ -58,25 +48,10 @@ describe("Row", () => {
 			>
 				<table>
 					<tbody>
-						<TableRow bgColor="#ff0000">
-							<DataCell
-								key="a"
-								rowId="rowIdentifier"
-								row={row}
-								columnDef={columnDefs[0]}
-							/>
-							<DataCell
-								key="b"
-								rowId="rowIdentifier"
-								row={row}
-								columnDef={columnDefs[1]}
-							/>
-							<DataCell
-								key="test"
-								rowId="rowIdentifier"
-								row={row}
-								columnDef={columnDefs[2]}
-							/>
+						<TableRow bgColor="#ff0000" onClick={() => {}}>
+							<DataCell key="a" rowId="rowIdentifier" row={row} columnDef={columnDefs[0]} />
+							<DataCell key="b" rowId="rowIdentifier" row={row} columnDef={columnDefs[1]} />
+							<DataCell key="test" rowId="rowIdentifier" row={row} columnDef={columnDefs[2]} />
 						</TableRow>
 					</tbody>
 				</table>
@@ -94,12 +69,7 @@ describe("Row", () => {
 			>
 				<table>
 					<tbody>
-						<Row
-							row={row}
-							rowId="rowIdentifier"
-							columnDefs={columnDefs}
-							rowOnClick={rowOnClick}
-						/>
+						<Row row={row} rowId="rowIdentifier" columnDefs={columnDefs} rowOnClick={rowOnClick} />
 					</tbody>
 				</table>
 			</Provider>,
@@ -193,4 +163,32 @@ describe("TableRow", () => {
 				.it("not to match", /transition: background-color/)
 				.and("not to match", /:hover \{[^}]*background-color:[^}]*\}/),
 		));
+
+	it("sets cursor type if given click handler", () =>
+		expect(
+			<table>
+				<tbody>
+					<TableRow onClick={() => {}} />
+				</tbody>
+			</table>,
+			"when mounted",
+			"queried for first",
+			"tr",
+			"to have style rules satisfying",
+			expect.it("to contain", "td {cursor: pointer;}"),
+		));
+});
+
+describe("stringifyFieldName", () => {
+	it("does nothing to a string", () =>
+		expect(stringifyFieldName, "when called with", ["FieldName"], "to equal", "FieldName"));
+
+	it("converts an array to a string", () =>
+		expect(stringifyFieldName, "when called with", [["fieldA", "foo"]], "to equal", "fieldA_foo"));
+
+	it("handles arrays with non-string types", () =>
+		expect(stringifyFieldName, "when called with", [["fieldA", 0, "foo"]], "to equal", "fieldA_0_foo"));
+
+	it("returns undefined if given undefined", () =>
+		expect(stringifyFieldName, "when called with", [undefined], "to equal", undefined));
 });

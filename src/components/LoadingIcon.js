@@ -13,10 +13,7 @@ export const Wrapper = styled.div`
 `;
 
 const LoadingIcon = withTheme(props => (
-	<Placeholder
-		icon={getThemeProp(["icons", "loading"], "loading")(props)}
-		animate
-	/>
+	<Placeholder icon={getThemeProp(["icons", "loading"], "loading")(props)} animate />
 ));
 
 export default LoadingIcon;

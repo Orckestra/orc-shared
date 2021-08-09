@@ -1,8 +1,5 @@
 import Immutable from "immutable";
-import {
-	localizedAppSelector,
-	localizedAppOptionSelector,
-} from "./applications";
+import { localizedAppSelector, localizedAppOptionSelector } from "./applications";
 
 let state;
 beforeEach(() => {
@@ -49,8 +46,7 @@ beforeEach(() => {
 					isVisible: false,
 					isAbsoluteUrl: true,
 					url: "https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy",
-					iconUri:
-						"https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy/icon.png",
+					iconUri: "https://orc-env18-oco.develop.orckestra.cloud/marketing-legacy/icon.png",
 					displayName: {
 						"en-CA": "Security",
 						"en-US": "Security",

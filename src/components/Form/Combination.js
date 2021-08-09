@@ -17,10 +17,10 @@ export const CombiningRow = styled.div`
 		props.proportions.map((width, index) =>
 			width
 				? css`
-		& > ${FieldBox}:nth-child(${index + 1}) {
-			flex: ${typeof width === "string" ? "0 0 " + width : "0 1 " + width + "%"};
-		}
-	`
+						& > ${FieldBox}:nth-child(${index + 1}) {
+							flex: ${typeof width === "string" ? "0 0 " + width : "0 1 " + width + "%"};
+						}
+				  `
 				: "",
 		)};
 `;

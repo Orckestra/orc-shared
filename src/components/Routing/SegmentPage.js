@@ -2,33 +2,70 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Switch, Route, Redirect, Link } from "react-router-dom";
 import UrlPattern from "url-pattern";
-import { ifFlag } from "../../utils";
+import { ifFlag, getThemeProp } from "../../utils";
 import Text from "../Text";
-import { TabBar } from "../Navigation/Bar";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
+import { getModifiedSections, getSectionsWithErrors } from "./../../selectors/view";
+import { useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
+import { tryGetNewEntityIdKey } from "./../../utils/urlHelper";
+import classNames from "classnames";
+
+const useStyles = makeStyles(theme => ({
+	asterix: {
+		marginLeft: theme.spacing(0.5),
+	},
+	label: {
+		color: theme.palette.text.primary,
+		fontWeight: theme.typography.fontWeightSemiBold,
+		fontSize: theme.typography.fontSize,
+		maxWidth: theme.spacing(15),
+	},
+	modifiedLabel: {
+		color: theme.palette.text.primary,
+		fontWeight: theme.typography.fontWeightBold,
+	},
+	errorLabel: {
+		color: theme.palette.error.main,
+		fontWeight: theme.typography.fontWeightBold,
+	},
+	disabledLabel: {
+		color: theme.palette.grey.icon,
+	},
+	labelComponent: {
+		margin: `0 ${theme.spacing(1)}`,
+		justifyContent: "flex-end",
+	},
+	labelContainer: {
+		display: "flex",
+	},
+}));
 
 export const Wrapper = styled.div`
 	box-sizing: border-box;
 	display: flex;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	flex: 0 1 100%;
 	height: calc(100% - 90px);
+	min-height: 0;
 
-	${TabBar} + & {
-		margin-top: 30px;
+	div[class^="AppFrame__ViewPort"] > div&:nth-child(3) {
+		margin-top: 60px;
 	}
 `;
 
 export const List = styled.div`
 	flex: 0 0.1 15%;
-	border-right: 1px solid #ccc;
+	border-right: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	display: flex;
 	flex-direction: column;
 `;
 
-const FilteredLink = ({ active, ...props }) => <Link {...props} />;
+const FilteredLink = ({ active, ...props }) => (props.to ? <Link {...props} /> : <div {...props} />);
 
 export const Item = styled(FilteredLink)`
 	display: block;
@@ -38,7 +75,8 @@ export const Item = styled(FilteredLink)`
 	font-weight: bold;
 	font-size: 13px;
 	text-decoration: none;
-	color: #333;
+	cursor: pointer;
+	color: ${getThemeProp(["colors", "text"], "#333333")};
 
 	${ifFlag(
 		"active",
@@ -53,12 +91,85 @@ export const Item = styled(FilteredLink)`
 	)};
 `;
 
-const SegmentPage = ({ path, segments, location, match }) => {
+export const SegmentItem = ({ isModified, isError, isActive, segpath, config, baseHref, params }) => {
+	const classes = useStyles();
+	let hideSelector = state => (typeof config.hide === "function" ? config.hide(params)(state) : config.hide ?? false);
+	const isHide = useSelector(hideSelector);
+	const asterix = <span className={classes.asterix}>*</span>;
+	const text = <Text message={config.label} />;
+	const getSectionLabelClassName = (isModified, isError, isDisabled) => {
+		let className = classes.label;
+		if (isModified) className = `${className} ${classes.modifiedLabel}`;
+		if (isError) className = `${className} ${classes.errorLabel}`;
+		if (isDisabled) className = `${className} ${classes.disabledLabel}`;
+
+		return className;
+	};
+
+	let disableSelector = state =>
+		typeof config.disabled === "function" ? config.disabled(params)(state) : config.disabled ?? false;
+	const isDisabled = useSelector(disableSelector);
+	const sectionLabelClassName = getSectionLabelClassName(isModified, isError, isDisabled);
+
+	const basicLabel =
+		config.labelComponent != null ? (
+			<TooltippedTypography titleValue={text} children={text} noWrap className={sectionLabelClassName} />
+		) : (
+			text
+		);
+
+	const finalLabel = (
+		<Grid container alignItems="center" wrap="nowrap">
+			<Grid
+				item
+				xs={8}
+				className={classNames(sectionLabelClassName, config.labelComponent != null ? classes.labelContainer : null)}
+			>
+				{basicLabel}
+				{isModified ? asterix : null}
+			</Grid>
+			<Grid item xs={4} container className={classes.labelComponent}>
+				{config.labelComponent}
+			</Grid>
+		</Grid>
+	);
+
+	return (
+		<>
+			{!isHide && isDisabled && <Item>{finalLabel}</Item>}
+			{!isHide && !isDisabled && (
+				<Item to={baseHref + segpath} active={isActive}>
+					{finalLabel}
+				</Item>
+			)}
+		</>
+	);
+};
+
+const defaultEntityIdResolver = ({ match, baseHref }) => {
+	const entityIdKey = Object.keys(match.params).find(p => p !== "scope");
+	let entityId = match.params[entityIdKey];
+	if (!entityId) {
+		entityId = tryGetNewEntityIdKey(baseHref);
+	}
+
+	return entityId;
+};
+
+const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath, entityIdResolver }) => {
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
 		subpages = [];
-	const segmentElements = Object.entries(segments).map(([segpath, config]) => {
+
+	const entityIdResolverParams = { match, baseHref };
+	const entityId = (entityIdResolver ?? defaultEntityIdResolver)(entityIdResolverParams);
+
+	const modifiedSections = useSelector(getModifiedSections(entityId));
+	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
+	const segmentEntries = Object.entries(segments);
+
+	const segmentElements = segmentEntries.map(([segpath, config]) => {
 		if (config.pages) {
 			pages.push(
 				...Object.entries(config.pages).map(([subpath, pageConfig]) => {
@@ -68,11 +179,7 @@ const SegmentPage = ({ path, segments, location, match }) => {
 							key={pagePath}
 							path={path + pagePath}
 							render={route => (
-								<FullPage
-									path={path + pagePath}
-									config={pageConfig}
-									{...route}
-								/>
+								<FullPage path={path + pagePath} config={pageConfig} {...route} modulePrependPath={modulePrependPath} />
 							)}
 						/>
 					);
@@ -87,9 +194,7 @@ const SegmentPage = ({ path, segments, location, match }) => {
 						<Route
 							key={pagePath}
 							path={path + pagePath}
-							render={route => (
-								<SubPage root={path} config={config} {...route} />
-							)}
+							render={route => <SubPage root={path} config={config} {...route} modulePrependPath={modulePrependPath} />}
 						/>
 					);
 				}),
@@ -105,39 +210,46 @@ const SegmentPage = ({ path, segments, location, match }) => {
 						config={config}
 						root={baseHref}
 						{...route}
+						modulePrependPath={modulePrependPath}
 					/>
 				)}
 			/>
 		);
 	});
+
 	return (
 		<Switch>
 			{pages}
 			<Route
-				render={() => (
-					<Wrapper>
+				render={() => [
+					View ? <View key="View" /> : null,
+					<Wrapper key="Segments">
 						<List>
-							{Object.entries(segments).map(([segpath, config]) => (
-								<Item
-									key={segpath}
-									to={baseHref + segpath}
-									active={location.pathname === baseHref + segpath}
-								>
-									<Text message={config.label} />
-								</Item>
-							))}
+							{segmentEntries.map(([segpath, config]) => {
+								const isModified = modifiedSections.includes(segpath.replace("/", ""));
+								const isError = sectionsWithErrors.includes(segpath.replace("/", ""));
+								const isActive = location.pathname === baseHref + segpath;
+								return (
+									<SegmentItem
+										key={segpath}
+										isModified={isModified}
+										isError={isError}
+										segpath={segpath}
+										config={config}
+										isActive={isActive}
+										baseHref={baseHref}
+										params={match.params}
+									/>
+								);
+							})}
 						</List>
 						<Switch>
 							{segmentElements}
-							<Redirect
-								exact
-								path={path}
-								to={baseHref + Object.keys(segments)[0]}
-							/>
+							<Redirect exact path={path} to={baseHref + Object.keys(segments)[0]} />
 						</Switch>
 						<Switch>{subpages}</Switch>
-					</Wrapper>
-				)}
+					</Wrapper>,
+				]}
 			/>
 		</Switch>
 	);

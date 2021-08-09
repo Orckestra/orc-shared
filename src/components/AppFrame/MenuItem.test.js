@@ -1,8 +1,9 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
 import { MemoryRouter } from "react-router-dom";
 import { Ignore } from "unexpected-reaction";
-import MenuItem, { Block, MenuIcon, Label, Alert } from "./MenuItem";
+import MenuItem, { Block, MenuIcon, Label, Alert, AlertMessage } from "./MenuItem";
 
 const BlockWithA = Block.withComponent("a");
 
@@ -17,12 +18,7 @@ describe("MenuItem", () => {
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
-					<MenuItem
-						id="test"
-						href="/foo/test"
-						data-test-id="test"
-						icon="cake"
-					/>
+					<MenuItem id="test" href="/foo/test" data-test-id="test" icon="cake" />
 				</MemoryRouter>
 			</Provider>,
 			"when mounted",
@@ -106,6 +102,176 @@ describe("MenuItem", () => {
 			</MemoryRouter>,
 		));
 
+	it("shows activity type", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert={{ type: "confirm" }} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert type="confirm" />
+					<Label>Test</Label>
+				</Block>
+			</MemoryRouter>,
+		));
+
+	it("shows activity message", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert={{ message: "Test message" }} />
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert>
+						<AlertMessage in>Test message</AlertMessage>
+					</Alert>
+					<Label>Test</Label>
+				</Block>
+			</MemoryRouter>,
+		));
+
+	it("shows activity type on messages", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert type="warn">
+						<AlertMessage in type="warn">
+							Test message
+						</AlertMessage>
+					</Alert>
+					<Label>Test</Label>
+				</Block>
+			</MemoryRouter>,
+		));
+
+	it("shows nothing if hide is true", () => {
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={true}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to equal",
+			null,
+		);
+	});
+
+	it("shows nothing if hide selector returns true", () => {
+		const hide = state => true;
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={hide}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to equal",
+			null,
+		);
+	});
+
+	it("shows properly if hide selector returns false", () => {
+		const hide = state => false;
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={hide}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert type="warn">
+						<AlertMessage in type="warn">
+							Test message
+						</AlertMessage>
+					</Alert>
+					<Label>Test</Label>
+				</Block>
+			</MemoryRouter>,
+		);
+	});
+
+	it("shows properly if hide is undefined", () => {
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<MenuItem
+						id="test"
+						href="/foo/test"
+						icon="cake"
+						label="Test"
+						alert={{ message: "Test message", type: "warn" }}
+						hide={undefined}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<MemoryRouter>
+				<Block id="test" to="/foo/test">
+					<MenuIcon id="cake" />
+					<Alert type="warn">
+						<AlertMessage in type="warn">
+							Test message
+						</AlertMessage>
+					</Alert>
+					<Label>Test</Label>
+				</Block>
+			</MemoryRouter>,
+		);
+	});
+
 	describe("Block", () => {
 		it("sets text color to highlight if active", () =>
 			expect(
@@ -154,21 +320,47 @@ describe("MenuItem", () => {
 
 	describe("Label", () => {
 		it("sets full opacity if open", () =>
-			expect(
-				<Label show />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"opacity: 1;",
-			));
+			expect(<Label show />, "when mounted", "to have style rules satisfying", "to contain", "opacity: 1;"));
 
 		it("sets zero opacity if not open", () =>
+			expect(<Label />, "when mounted", "to have style rules satisfying", "to contain", "opacity: 0;"));
+	});
+
+	describe("Alert", () => {
+		it("has a default color (red)", () =>
+			expect(<Alert />, "when mounted", "to have style rules satisfying", "to match", /border: \d+px solid red/));
+
+		it("has a default color", () =>
 			expect(
-				<Label />,
+				<ThemeProvider theme={{ colors: { toasts: { test: "blue" } } }}>
+					<Alert type="test" />
+				</ThemeProvider>,
+				"when mounted",
+				"to have style rules satisfying",
+				"to match",
+				/border: \d+px solid blue/,
+			));
+	});
+
+	describe("AlertMessage", () => {
+		it("has a default color (red)", () =>
+			expect(
+				<AlertMessage in message="Test" />,
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
-				"opacity: 0;",
+				"background-color: red",
+			));
+
+		it("has a default color", () =>
+			expect(
+				<ThemeProvider theme={{ colors: { toasts: { test: "blue" } } }}>
+					<AlertMessage in message="Test" type="test" />
+				</ThemeProvider>,
+				"when mounted",
+				"to have style rules satisfying",
+				"to contain",
+				"background-color: blue",
 			));
 	});
 });
