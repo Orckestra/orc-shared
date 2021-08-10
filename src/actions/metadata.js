@@ -8,6 +8,7 @@ import {
 	getOrderDefinitionRequest,
 	getProfileAttributeGroupsRequest,
 	getProductDefinitionsRequest,
+	updateOrderLookupTypeDefinitionRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -18,6 +19,29 @@ export const [GET_ORDER_LOOKUPS_REQUEST, GET_ORDER_LOOKUPS_SUCCESS, GET_ORDER_LO
 	makeActionTypes(GET_ORDER_LOOKUPS);
 
 export const getOrderLookups = () => makeOrcApiAction(GET_ORDER_LOOKUPS, getOrderLookupsRequest.buildUrl());
+
+const SAVE_ORDER_LOOKUPS = "SAVE_ORDER_LOOKUPS";
+
+export const [SAVE_ORDER_LOOKUPS_REQUEST, SAVE_ORDER_LOOKUPS_SUCCESS, SAVE_ORDER_LOOKUPS_FAILURE] =
+	makeActionTypes(SAVE_ORDER_LOOKUPS);
+
+export const saveOrderLookups = lookup =>
+	makeOrcApiAction(
+		SAVE_ORDER_LOOKUPS,
+		updateOrderLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
+		updateOrderLookupTypeDefinitionRequest.verb,
+		{
+			body: lookup,
+		},
+	);
+
+export const RESET_ORDER_LOOKUP_SAVE_RESULT = "RESET_ORDER_LOOKUP_SAVE_RESULT";
+
+export const resetOrderLookupSaveResult = () => {
+	return {
+		type: RESET_ORDER_LOOKUP_SAVE_RESULT,
+	};
+};
 
 export const SET_PAGED_ORDER_LOOKUPS_CURRENT_INFO = "SET_PAGED_ORDER_LOOKUPS_CURRENT_INFO";
 

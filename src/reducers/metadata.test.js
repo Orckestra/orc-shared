@@ -16,6 +16,13 @@ import {
 	incrementCustomerLookupsPage,
 } from "../actions/metadata";
 import reducer from "./metadata";
+import { requestStates } from "../constants";
+import {
+	RESET_ORDER_LOOKUP_SAVE_RESULT,
+	SAVE_ORDER_LOOKUPS_FAILURE,
+	SAVE_ORDER_LOOKUPS_REQUEST,
+	SAVE_ORDER_LOOKUPS_SUCCESS,
+} from "../actions/metadata";
 
 export const generateLookups = max => {
 	if (max < 1 || max > 25) {
@@ -65,6 +72,8 @@ describe("metadata", () => {
 					index: {},
 					list: [],
 				},
+				saveOrderLookupRequestState: requestStates.idle,
+				saveOrderLookupResponse: null,
 				customer: {
 					index: {},
 					list: [],
@@ -82,7 +91,7 @@ describe("metadata", () => {
 		}));
 
 	describe("order", () => {
-		it("saves order metadata", () => {
+		it("get order metadata", () => {
 			const oldState = Immutable.fromJS({
 				lookups: {
 					order: {
@@ -164,6 +173,193 @@ describe("metadata", () => {
 							},
 							list: [],
 						},
+					},
+				}),
+			);
+		});
+
+		it("save order metadata request", () => {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: {},
+						list: [],
+					},
+					saveOrderLookupRequestState: requestStates.idle,
+					saveOrderLookupResponse: null,
+				},
+			});
+			const action = {
+				type: SAVE_ORDER_LOOKUPS_REQUEST,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						order: {
+							index: {},
+							list: [],
+						},
+						saveOrderLookupRequestState: requestStates.processing,
+						saveOrderLookupResponse: null,
+					},
+				}),
+			);
+		});
+
+		it("save order metadata success", () => {
+			const lookups = {
+				CanceledStatusReasons: {
+					lookupName: "CanceledStatusReasons",
+					values: {
+						CanceledReason1: {
+							id: "e16d07f847284775b77cfb985724cf58",
+							value: "CanceledReason1",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+						CanceledReason2: {
+							id: "6bbfe77703c745d68b8eaceb9cd484b1",
+							value: "CanceledReason2",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+					},
+					isActive: true,
+					isSystem: true,
+				},
+				CartStatus: {
+					lookupName: "CartStatus",
+					values: {},
+					isActive: true,
+					isSystem: true,
+				},
+			};
+
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: { CartStatus: lookups.CartStatus },
+						list: [],
+					},
+					saveOrderLookupRequestState: requestStates.idle,
+					saveOrderLookupResponse: null,
+				},
+			});
+			const action = {
+				type: SAVE_ORDER_LOOKUPS_SUCCESS,
+				payload: lookups.CanceledStatusReasons,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						order: {
+							index: lookups,
+							list: [],
+						},
+						saveOrderLookupRequestState: requestStates.success,
+						saveOrderLookupResponse: null,
+					},
+				}),
+			);
+		});
+
+		it("save order metadata failure", () => {
+			const lookups = {
+				CanceledStatusReasons: {
+					lookupName: "CanceledStatusReasons",
+					values: {
+						CanceledReason1: {
+							id: "e16d07f847284775b77cfb985724cf58",
+							value: "CanceledReason1",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+						CanceledReason2: {
+							id: "6bbfe77703c745d68b8eaceb9cd484b1",
+							value: "CanceledReason2",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+					},
+					isActive: true,
+					isSystem: true,
+				},
+				CartStatus: {
+					lookupName: "CartStatus",
+					values: {},
+					isActive: true,
+					isSystem: true,
+				},
+			};
+
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: { CartStatus: lookups.CartStatus },
+						list: [],
+					},
+					saveOrderLookupRequestState: requestStates.idle,
+					saveOrderLookupResponse: null,
+				},
+			});
+			const action = {
+				type: SAVE_ORDER_LOOKUPS_FAILURE,
+				payload: { response: "failure" },
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						order: {
+							index: { CartStatus: lookups.CartStatus },
+							list: [],
+						},
+						saveOrderLookupRequestState: requestStates.fail,
+						saveOrderLookupResponse: action.payload.response,
+					},
+				}),
+			);
+		});
+
+		it("save order metadata failure", () => {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: {},
+						list: [],
+					},
+					saveOrderLookupRequestState: requestStates.success,
+					saveOrderLookupResponse: { something: 123 },
+				},
+			});
+			const action = {
+				type: RESET_ORDER_LOOKUP_SAVE_RESULT,
+				payload: { response: "failure" },
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						order: {
+							index: {},
+							list: [],
+						},
+						saveOrderLookupRequestState: requestStates.idle,
+						saveOrderLookupResponse: null,
 					},
 				}),
 			);
