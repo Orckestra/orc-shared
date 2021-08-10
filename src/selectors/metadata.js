@@ -19,7 +19,7 @@ export const lookupSelector = memoize(moduleName =>
 	createSelector(lookupsModule(moduleName), module => module.get("index")),
 );
 
-const lookupValuesSelector = memoize((moduleName, lookupName) =>
+export const lookupValuesSelector = memoize((moduleName, lookupName) =>
 	createSelector(lookups, lookups => lookups.getIn([moduleName, "index", lookupName]) || Immutable.Map()),
 );
 
@@ -37,7 +37,9 @@ export const namedLookupValuesSelector = memoize((moduleName, lookupName) =>
 	),
 );
 
-export const selectCurrentLookupDetails = memoize((moduleName, id) => namedLookupSelector(moduleName, id));
+export const selectCurrentLookupDetails = memoize((moduleName, lookupName) =>
+	namedLookupSelector(moduleName, lookupName),
+);
 
 export const namedLookupLocalizedSelector = memoize((moduleName, lookupName, key, defaultValue = key) =>
 	createSelector(lookupValuesSelector(moduleName, lookupName), currentLocaleOrDefault, (lookups, locale) => {
@@ -284,3 +286,8 @@ const resolveProductPropertyValue = (property, propertyValue, locale, lookups) =
 	}
 	return propertyValue;
 };
+
+export const saveOrderLookupRequestStateSelector = createSelector(metadata, data => ({
+	requestState: data.getIn(["lookups", "saveOrderLookupRequestState"]),
+	response: data.getIn(["lookups", "saveOrderLookupResponse"])?.toJS() ?? null,
+}));

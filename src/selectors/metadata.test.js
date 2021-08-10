@@ -20,7 +20,9 @@ import {
 	variantPropertyKeyValuesSelector,
 	profileAttributeGroupsSelector,
 	selectCurrentLookupDetails,
+	saveOrderLookupRequestStateSelector,
 } from "./metadata";
+import { requestStates } from "../constants";
 
 const orderLookups = {
 	CanceledStatusReasons: {
@@ -1476,5 +1478,40 @@ describe("definitions", () => {
 			"to satisfy",
 			{},
 		);
+	});
+});
+
+describe("saveOrderLookupRequestStateSelector", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: { locale: "it-IT" },
+			metadata: {
+				lookups: {
+					order: {
+						index: orderLookups,
+						list: [],
+					},
+					saveOrderLookupRequestState: requestStates.success,
+					saveOrderLookupResponse: { something: 123 },
+				},
+			},
+		});
+	});
+
+	it("retrieves the state of the save order lookup", () => {
+		return expect(saveOrderLookupRequestStateSelector, "when called with", [state], "to satisfy", {
+			requestState: requestStates.success,
+			response: { something: 123 },
+		});
+	});
+
+	it("retrieves the state of the save order lookup without any response", () => {
+		state = state.removeIn(["metadata", "lookups", "saveOrderLookupResponse"]);
+
+		return expect(saveOrderLookupRequestStateSelector, "when called with", [state], "to satisfy", {
+			requestState: requestStates.success,
+			response: null,
+		});
 	});
 });

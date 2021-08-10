@@ -705,6 +705,12 @@ export const createOrderDraftPaymentVaultProfileRequest = {
 	verb: "POST",
 };
 
+export const createOrderLookupTypeDefinitionRequest = {
+	name: "createOrderLookupTypeDefinitionRequest",
+	buildUrl: lookupName => buildUrl(["metadata", "lookups", "order", lookupName]),
+	verb: "POST",
+};
+
 export const createOrderRequest = {
 	name: "createOrderRequest",
 	buildUrl: () => buildUrl(["orders"]),
@@ -4083,6 +4089,12 @@ export const updateOrderDraftPaymentRequest = {
 	name: "updateOrderDraftPaymentRequest",
 	buildUrl: (scopeId, draftId, paymentId) => buildUrl(["orderdraft", scopeId, draftId, "payment", paymentId]),
 	verb: "POST",
+};
+
+export const updateOrderLookupTypeDefinitionRequest = {
+	name: "updateOrderLookupTypeDefinitionRequest",
+	buildUrl: lookupName => buildUrl(["metadata", "lookups", "order", lookupName]),
+	verb: "PUT",
 };
 
 export const updateOrderSettingsRequest = {
