@@ -42,6 +42,10 @@ import {
 	SAVE_ORDER_LOOKUPS_FAILURE,
 	RESET_ORDER_LOOKUP_SAVE_RESULT,
 	resetOrderLookupSaveResult,
+	getProductLookups,
+	GET_PRODUCT_LOOKUPS_REQUEST,
+	GET_PRODUCT_LOOKUPS_SUCCESS,
+	GET_PRODUCT_LOOKUPS_FAILURE,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -170,6 +174,25 @@ describe("getCustomerLookups", () => {
 			pageToLoad: 2,
 		});
 	});
+});
+
+describe("getProductLookups", () => {
+	it("creates a RSAA to get order lookups", () =>
+		expect(getProductLookups, "when called", "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_PRODUCT_LOOKUPS_REQUEST, GET_PRODUCT_LOOKUPS_SUCCESS, GET_PRODUCT_LOOKUPS_FAILURE],
+				endpoint: 'URL: metadata/lookups/product ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
 });
 
 describe("saveOrderLookups", () => {
