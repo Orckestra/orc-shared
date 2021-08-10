@@ -48,11 +48,10 @@ const useStyles = makeStyles(theme => ({
 		animation: false,
 		borderRadius: "15px",
 	},
-	radioSkeleton:{
+	radioSkeleton: {
 		width: 17,
 		height: 17,
 		animation: false,
-		
 	},
 	root: {
 		flexGrow: 1,
@@ -77,7 +76,7 @@ const Placeholder = ({ icon, title, subtitle, cellList = [] }) => {
 								case "radio":
 									return (
 										<div key={`pc-${index}`} className={classes.placeholderCell}>
-											   <Skeleton variant="circle" className={classes.radioSkeleton} />
+											<Skeleton variant="circle" className={classes.radioSkeleton} />
 										</div>
 									);
 								default:

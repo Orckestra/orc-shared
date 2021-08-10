@@ -5,14 +5,15 @@ import Modal from "../../Modal";
 
 const getApp = (apps = [], id) => apps.filter(app => app.name === id)[0];
 
-export const getAnchor = (className, props) => toggle => (
-	<Header
-		className={className}
-		open={props.open}
-		application={getApp(props.applications, props.applicationId)}
-		toggle={toggle}
-	/>
-);
+export const getAnchor = (className, props) => toggle =>
+	(
+		<Header
+			className={className}
+			open={props.open}
+			application={getApp(props.applications, props.applicationId)}
+			toggle={toggle}
+		/>
+	);
 
 export const getDialog = props => toggle => <ApplicationDialog {...props} toggle={toggle} />;
 

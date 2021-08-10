@@ -6,38 +6,40 @@ import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "
 // by itself then that property will be disappeared after using that HOC.
 // To fix it rename that property and pass titleValue just as a title for tooltip.
 
-const withDeferredTooltip = Comp => ({ titleValue, alwaysDisplay, ...props }) => {
-	const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
+const withDeferredTooltip =
+	Comp =>
+	({ titleValue, alwaysDisplay, ...props }) => {
+		const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
 
-	const defaultComponent = <Comp onMouseEnter={event => makeComponentTooltipped(event)} {...props} />;
+		const defaultComponent = <Comp onMouseEnter={event => makeComponentTooltipped(event)} {...props} />;
 
-	const makeComponentTooltipped = function (event) {
-		if (alwaysDisplay) {
-			setShouldBeTooltipped(true);
-		} else {
-			setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
-		}
+		const makeComponentTooltipped = function (event) {
+			if (alwaysDisplay) {
+				setShouldBeTooltipped(true);
+			} else {
+				setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
+			}
+		};
+
+		if (titleValue == null) return <Comp {...props} />;
+
+		if (isString(titleValue) && isStringNullOrWhitespace(titleValue)) return <Comp {...props} />;
+
+		if (isObject(titleValue) && isReactComponent(titleValue) === false) return <Comp {...props} />;
+
+		if (shouldBeTooltipped === false) return defaultComponent;
+
+		return (
+			<MuiTooltip
+				arrow
+				title={titleValue}
+				disableHoverListener={false}
+				disableFocusListener={true}
+				disableTouchListener={true}
+			>
+				{defaultComponent}
+			</MuiTooltip>
+		);
 	};
-
-	if (titleValue == null) return <Comp {...props} />;
-
-	if (isString(titleValue) && isStringNullOrWhitespace(titleValue)) return <Comp {...props} />;
-
-	if (isObject(titleValue) && isReactComponent(titleValue) === false) return <Comp {...props} />;
-
-	if (shouldBeTooltipped === false) return defaultComponent;
-
-	return (
-		<MuiTooltip
-			arrow
-			title={titleValue}
-			disableHoverListener={false}
-			disableFocusListener={true}
-			disableTouchListener={true}
-		>
-			{defaultComponent}
-		</MuiTooltip>
-	);
-};
 
 export default withDeferredTooltip;

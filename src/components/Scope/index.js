@@ -87,13 +87,8 @@ export const Scope = ({ children }) => {
 	};
 	const updateFilter = event => updateViewState("filter", event);
 
-	const [
-		isModalOpened,
-		closeModal,
-		scopeDialogType,
-		acceptScopeChange,
-		selectNewScope,
-	] = useScopeConfirmationModalState();
+	const [isModalOpened, closeModal, scopeDialogType, acceptScopeChange, selectNewScope] =
+		useScopeConfirmationModalState();
 
 	const onScopeSelectorClose = (event, newSelection) => {
 		reset(event);

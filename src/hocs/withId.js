@@ -14,9 +14,12 @@ const getGenerator = name => {
 	return generators[name]();
 };
 
-const withId = name => Comp => ({ id, ...props }) => {
-	const generatedId = useMemo(() => getGenerator(name), []);
-	return <Comp id={id || generatedId} {...props} />;
-};
+const withId =
+	name =>
+	Comp =>
+	({ id, ...props }) => {
+		const generatedId = useMemo(() => getGenerator(name), []);
+		return <Comp id={id || generatedId} {...props} />;
+	};
 
 export default withId;
