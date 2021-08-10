@@ -14,7 +14,7 @@ import {
 	setPagedCustomerLookupsCurrentInfo,
 	refreshPagedCustomerLookups,
 	incrementCustomerLookupsPage,
-} from "actions/metadata";
+} from "../actions/metadata";
 import reducer from "./metadata";
 
 export const generateLookups = max => {
