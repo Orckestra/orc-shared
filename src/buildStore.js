@@ -18,6 +18,7 @@ import versionInfoReducer from "./reducers/versionInfo";
 import countriesReducer from "./reducers/countries";
 import timezonesReducer from "./reducers/timezones";
 import modulesReducer from "./reducers/modules";
+import metadataReducer from "./reducers/metadata";
 
 window.BUILD_ID = BUILD_ID;
 window.BUILD_NUMBER = BUILD_NUMBER;
@@ -61,6 +62,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			countries: countriesReducer,
 			timezones: timezonesReducer,
 			modules: modulesReducer,
+			metadata: metadataReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 
