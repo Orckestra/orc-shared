@@ -5,8 +5,8 @@ import { setTranslationWithFallbackField } from "../utils/setTranslationWithFall
 import { currentLocaleOrDefault } from "../selectors/locale";
 import { getLocalization } from "../utils/localizationHelper";
 import { getPropertyOrDefault } from "../utils/propertyHelper";
-import { ORDER_LOOKUP_MODULE_NAME } from "~/reducers/metadata";
-import { attributeDataType } from "~/constants";
+import { ORDER_LOOKUP_MODULE_NAME } from "../reducers/metadata";
+import { attributeDataType } from "../constants";
 import { each, camelCase } from "lodash";
 
 const metadata = state => state.get("metadata");
