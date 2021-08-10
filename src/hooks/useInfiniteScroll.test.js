@@ -1,8 +1,6 @@
 import React from "react";
 import { TestWrapper } from "./../utils/testUtils";
 import { mount } from "enzyme";
-import { get, cloneDeep } from "lodash";
-import { act } from "unexpected-reaction";
 import useInfiniteScroll from "./useInfiniteScroll";
 
 describe("useInfiniteScroll", () => {
