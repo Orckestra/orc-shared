@@ -98,7 +98,7 @@ const definitionEntity = memoize((moduleName, entityName) =>
 	createSelector(definitionsModule(moduleName), definition => definition.getIn([entityName]) || Immutable.Map()),
 );
 
-const mappedDefinitionEntity = memoize((moduleName, entityName) =>
+export const mappedDefinitionEntity = memoize((moduleName, entityName) =>
 	createSelector(definitionEntity(moduleName, entityName), currentLocaleOrDefault, (definition, locale) =>
 		setTranslationWithFallbackField(locale, definition, "entityTypeName", "displayName"),
 	),
