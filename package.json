@@ -45,10 +45,6 @@
 		{
 			"language": "Français",
 			"cultureIso": "fr-CA"
-		},
-		{
-			"language": "Italiano",
-			"cultureIso": "it-IT"
 		}
 	],
 	"devDependencies": {
