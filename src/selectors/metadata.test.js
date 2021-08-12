@@ -23,7 +23,7 @@ import {
 	saveOrderLookupRequestStateSelector,
 	mappedDefinitionsSelector,
 } from "./metadata";
-import { requestStates, definitionType } from "../constants";
+import { requestStates } from "../constants";
 
 const orderLookups = {
 	CanceledStatusReasons: {
@@ -1091,11 +1091,6 @@ describe("definitions", () => {
 	it("will return correct customer profile definition", () => {
 		const expected = Immutable.fromJS({
 			CustomProfile1: {
-				displayName: {
-					"en-CA": "CustomProfile1",
-					"en-US": "CustomProfile1",
-					"fr-CA": "CustomProfile1",
-				},
 				entityTypeName: "CustomProfile1",
 				isBuiltIn: false,
 				isSharedEntity: true,
@@ -1110,26 +1105,16 @@ describe("definitions", () => {
 						allowMultipleValues: false,
 					},
 				],
-				name: "CustomProfile1",
+				displayName: "CustomProfile1",
 				type: "Shared",
 			},
 			CustomProfile2: {
-				displayName: {
-					"en-CA": "CustomProfile1",
-					"en-US": "CustomProfile1",
-					"fr-CA": "CustomProfile1",
-				},
 				entityTypeName: "CustomProfile2",
 				isBuiltIn: false,
-				name: "CustomProfile1",
+				displayName: "CustomProfile1",
 				type: "Embedded",
 			},
 			RecursedCustomProfile: {
-				displayName: {
-					"en-CA": "RecursedCustomProfile",
-					"en-US": "RecursedCustomProfile",
-					"fr-CA": "RecursedCustomProfile",
-				},
 				entityTypeName: "RecursedCustomProfile",
 				isBuiltIn: false,
 				attributes: [
@@ -1144,15 +1129,10 @@ describe("definitions", () => {
 						allowMultipleValues: false,
 					},
 				],
-				name: "RecursedCustomProfile",
+				displayName: "RecursedCustomProfile",
 				type: "Embedded",
 			},
 			CUSTOMER: {
-				displayName: {
-					"en-CA": "Customer",
-					"en-US": "Customer",
-					"fr-CA": "Customer",
-				},
 				entityTypeName: "CUSTOMER",
 				isBuiltIn: true,
 				attributes: [
@@ -1242,15 +1222,10 @@ describe("definitions", () => {
 					},
 				],
 				isSharedEntity: true,
-				name: "Customer",
+				displayName: "Customer",
 				type: "Shared",
 			},
 			PROFILEWITHRECUSREDATTRIBUTE: {
-				displayName: {
-					"en-CA": "PROFILEWITHRECUSREDATTRIBUTE",
-					"en-US": "PROFILEWITHRECUSREDATTRIBUTE",
-					"fr-CA": "PROFILEWITHRECUSREDATTRIBUTE",
-				},
 				entityTypeName: "PROFILEWITHRECUSREDATTRIBUTE",
 				isBuiltIn: false,
 				attributes: [
@@ -1273,7 +1248,7 @@ describe("definitions", () => {
 						description: "InnaCustomer",
 					},
 				],
-				name: "PROFILEWITHRECUSREDATTRIBUTE",
+				displayName: "PROFILEWITHRECUSREDATTRIBUTE",
 				type: "Embedded",
 			},
 		});
