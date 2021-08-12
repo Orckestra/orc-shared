@@ -1,4 +1,3 @@
-import sharedMessages from "./sharedMessages";
 export const infoBar = "infoBar";
 
 export const scopeTypes = {
