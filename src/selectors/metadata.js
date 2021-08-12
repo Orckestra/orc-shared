@@ -6,7 +6,7 @@ import { currentLocaleOrDefault } from "../selectors/locale";
 import { getLocalization } from "../utils/localizationHelper";
 import { getPropertyOrDefault } from "../utils/propertyHelper";
 import { ORDER_LOOKUP_MODULE_NAME } from "../reducers/metadata";
-import { attributeDataType } from "../constants";
+import { attributeDataType, definitionType } from "../constants";
 import { each, camelCase } from "lodash";
 
 const metadata = state => state.get("metadata");
@@ -94,6 +94,27 @@ const definitionsModule = memoize(moduleName =>
 	createSelector(definitions, definitions => definitions.get(moduleName)),
 );
 
+export const mappedDefinitionsSelector = memoize(moduleName =>
+	createSelector(
+		definitionsModule(moduleName),
+		currentLocaleOrDefault,
+		(definitions, locale, key, defaultValue = key) => {
+			return definitions.map(definition => {
+				const e = definition
+					.set(
+						"type",
+						definition.get("isSharedEntity") === true
+							? definitionType.shared.defaultMessage
+							: definitionType.embedded.defaultMessage,
+					)
+					.set("name", getLocalization(definition?.get("displayName"), locale, defaultValue));
+				console.log(e);
+				return e;
+			});
+		},
+	),
+);
+
 const definitionEntity = memoize((moduleName, entityName) =>
 	createSelector(definitionsModule(moduleName), definition => definition.getIn([entityName]) || Immutable.Map()),
 );
@@ -173,27 +194,6 @@ export const customProfileTypesSelector = memoize(() =>
 	createSelector(definitionsModule("customer"), types =>
 		types.filter(t => t.get("isBuiltIn") === false && t.get("isSharedEntity") === true),
 	),
-);
-
-export const mappedDefinitionsSelector = memoize(moduleName =>
-    createSelector(
-        definitionsModule(moduleName),
-        currentLocaleOrDefault,
-        (immutableProductDefinition, locale, key, defaultValue = key) => {
-            const productDefinitions = immutableProductDefinition.toJS();
-            const propertyMap = [];
-            each(productDefinitions, productDefinition => {
-                const newObj = {
-                    name: getLocalization(productDefinition?.displayName, locale, defaultValue),
-                    type: productDefinition.isSharedEntity === true ? "Shared" : "Embedded",
-                    isBuiltIn: productDefinition.isBuiltIn,
-                    description: productDefinition.description ?? "",
-                };
-                propertyMap.push(newObj);
-            });
-            return propertyMap;
-        },
-    ),
 );
 
 export const productPropertyMapSelector = memoize(definitionName =>

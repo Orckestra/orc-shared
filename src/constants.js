@@ -1,3 +1,4 @@
+import sharedMessages from "./sharedMessages";
 export const infoBar = "infoBar";
 
 export const scopeTypes = {
@@ -71,4 +72,9 @@ export const attributeDataType = {
 	lookup: "Lookup",
 	entityReference: "EntityReference",
 	customType: "CustomType",
+};
+
+export const definitionType = {
+	shared: sharedMessages.shared,
+	embedded: sharedMessages.embedded,
 };

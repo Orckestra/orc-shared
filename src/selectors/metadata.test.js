@@ -21,8 +21,9 @@ import {
 	profileAttributeGroupsSelector,
 	selectCurrentLookupDetails,
 	saveOrderLookupRequestStateSelector,
+	mappedDefinitionsSelector,
 } from "./metadata";
-import { requestStates } from "../constants";
+import { requestStates, definitionType } from "../constants";
 
 const orderLookups = {
 	CanceledStatusReasons: {
@@ -1085,6 +1086,206 @@ describe("definitions", () => {
 			},
 		});
 		expect(profileAttributeGroupsSelector, "when called with", [newState], "to satisfy", null);
+	});
+
+	it("will return correct customer profile definition", () => {
+		const expected = Immutable.fromJS({
+			CustomProfile1: {
+				displayName: {
+					"en-CA": "CustomProfile1",
+					"en-US": "CustomProfile1",
+					"fr-CA": "CustomProfile1",
+				},
+				entityTypeName: "CustomProfile1",
+				isBuiltIn: false,
+				isSharedEntity: true,
+				attributes: [
+					{
+						dataType: "Text",
+						isRequired: false,
+						name: "Username",
+						displayName: { "en-US": "User name" },
+						isBuiltIn: false,
+						groupId: "Default",
+						allowMultipleValues: false,
+					},
+				],
+				name: "CustomProfile1",
+				type: "Shared",
+			},
+			CustomProfile2: {
+				displayName: {
+					"en-CA": "CustomProfile1",
+					"en-US": "CustomProfile1",
+					"fr-CA": "CustomProfile1",
+				},
+				entityTypeName: "CustomProfile2",
+				isBuiltIn: false,
+				name: "CustomProfile1",
+				type: "Embedded",
+			},
+			RecursedCustomProfile: {
+				displayName: {
+					"en-CA": "RecursedCustomProfile",
+					"en-US": "RecursedCustomProfile",
+					"fr-CA": "RecursedCustomProfile",
+				},
+				entityTypeName: "RecursedCustomProfile",
+				isBuiltIn: false,
+				attributes: [
+					{
+						dataType: "EntityReference",
+						referenceTypeName: "RecursedCustomProfile",
+						isRequired: false,
+						name: "Username",
+						displayName: { "en-US": "User name" },
+						isBuiltIn: false,
+						groupId: "Default",
+						allowMultipleValues: false,
+					},
+				],
+				name: "RecursedCustomProfile",
+				type: "Embedded",
+			},
+			CUSTOMER: {
+				displayName: {
+					"en-CA": "Customer",
+					"en-US": "Customer",
+					"fr-CA": "Customer",
+				},
+				entityTypeName: "CUSTOMER",
+				isBuiltIn: true,
+				attributes: [
+					{
+						maximum: 256,
+						dataType: "Text",
+						isRequired: false,
+						name: "Username",
+						displayOrder: 0,
+						isSearchable: true,
+						displayName: {
+							"ar-JO": "",
+							"en-CA": "User name",
+							"en-US": "User name",
+							"es-ES": "",
+							"fr-CA": "User name",
+							"it-IT": "Nome utente",
+						},
+						minimum: 1,
+						multilingual: false,
+						isBuiltIn: true,
+						groupId: "Default",
+						allowMultipleValues: false,
+					},
+					{
+						maximum: 256,
+						dataType: "Text",
+						isRequired: false,
+						name: "Email",
+						displayOrder: 0,
+						isSearchable: true,
+						displayName: {
+							"ar-JO": "",
+							"en-CA": "Email",
+							"en-US": "Email",
+							"es-ES": "",
+							"fr-CA": "Email",
+							"it-IT": "Email",
+						},
+						minimum: 0,
+						multilingual: false,
+						isBuiltIn: true,
+						groupId: "Default",
+						allowMultipleValues: false,
+					},
+					customProfileAttribute1,
+					customProfileAttribute2,
+					{
+						maximum: 64,
+						dataType: "Text",
+						isRequired: false,
+						name: "LastName",
+						displayOrder: 0,
+						isSearchable: true,
+						displayName: {
+							"en-CA": "Last name",
+							"en-US": "Last name",
+							"fr-CA": "Last name",
+							"it-IT": "Cognome",
+						},
+						minimum: 0,
+						multilingual: false,
+						isBuiltIn: true,
+						groupId: "Default",
+						allowMultipleValues: false,
+					},
+					{
+						maximum: 64,
+						dataType: "Text",
+						isRequired: false,
+						name: "FirstName",
+						displayOrder: 0,
+						isSearchable: true,
+						displayName: {
+							"ar-JO": "",
+							"en-CA": "First Name",
+							"en-US": "First Name",
+							"es-ES": "",
+							"fr-CA": "First Name",
+							"it-IT": "Nome",
+						},
+						minimum: 0,
+						multilingual: false,
+						isBuiltIn: true,
+						groupId: "Default",
+						allowMultipleValues: false,
+					},
+				],
+				isSharedEntity: true,
+				name: "Customer",
+				type: "Shared",
+			},
+			PROFILEWITHRECUSREDATTRIBUTE: {
+				displayName: {
+					"en-CA": "PROFILEWITHRECUSREDATTRIBUTE",
+					"en-US": "PROFILEWITHRECUSREDATTRIBUTE",
+					"fr-CA": "PROFILEWITHRECUSREDATTRIBUTE",
+				},
+				entityTypeName: "PROFILEWITHRECUSREDATTRIBUTE",
+				isBuiltIn: false,
+				attributes: [
+					{
+						dataType: "EntityReference",
+						isRequired: false,
+						name: "Attribute",
+						displayOrder: 0,
+						isSearchable: false,
+						displayName: {
+							"en-CA": "attribute en-CA",
+							"en-US": "attribute en-US",
+							"fr-CA": "",
+						},
+						referenceTypeName: "RecursedCustomProfile",
+						multilingual: false,
+						isBuiltIn: false,
+						groupId: "Default",
+						allowMultipleValues: true,
+						description: "InnaCustomer",
+					},
+				],
+				name: "PROFILEWITHRECUSREDATTRIBUTE",
+				type: "Embedded",
+			},
+		});
+		expect(
+			mappedDefinitionsSelector,
+			"when called with",
+			["customer"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
 	});
 
 	it("will get an empty List if definitios do not exist", () =>
