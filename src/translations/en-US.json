@@ -50,7 +50,5 @@
 	"orc-shared.status": "Status",
 	"orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
 	"orc-shared.valueName": "Value Name",
-	"orc-shared.yes": "Yes",
-	"orc-shared.embedded": "Embedded",
-	"orc-shared.shared": "Shared"
+	"orc-shared.yes": "Yes"
 }

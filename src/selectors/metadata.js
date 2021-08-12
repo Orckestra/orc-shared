@@ -100,9 +100,7 @@ export const mappedDefinitionsSelector = memoize(moduleName =>
 		currentLocaleOrDefault,
 		(definitions, locale, key, defaultValue = key) => {
 			return definitions.map(definition => {
-				return definition
-					.set("type", definition.get("isSharedEntity") === true ? definitionType.shared : definitionType.embedded)
-					.set("displayName", getLocalization(definition?.get("displayName"), locale, defaultValue));
+				return definition.set("displayName", getLocalization(definition?.get("displayName"), locale, defaultValue));
 			});
 		},
 	),
