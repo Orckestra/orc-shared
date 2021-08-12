@@ -175,7 +175,7 @@ export const customProfileTypesSelector = memoize(() =>
 	),
 );
 
-export const customProfileDefinitionsSelector = memoize(moduleName =>
+export const mappedDefinitionsSelector = memoize(moduleName =>
     createSelector(
         definitionsModule(moduleName),
         currentLocaleOrDefault,
