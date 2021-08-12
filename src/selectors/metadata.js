@@ -175,6 +175,27 @@ export const customProfileTypesSelector = memoize(() =>
 	),
 );
 
+export const customProfileDefinitionsSelector = memoize(moduleName =>
+    createSelector(
+        definitionsModule(moduleName),
+        currentLocaleOrDefault,
+        (immutableProductDefinition, locale, key, defaultValue = key) => {
+            const productDefinitions = immutableProductDefinition.toJS();
+            const propertyMap = [];
+            each(productDefinitions, productDefinition => {
+                const newObj = {
+                    name: getLocalization(productDefinition?.displayName, locale, defaultValue),
+                    type: productDefinition.isSharedEntity === true ? "Shared" : "Embedded",
+                    isBuiltIn: productDefinition.isBuiltIn,
+                    description: productDefinition.description ?? "",
+                };
+                propertyMap.push(newObj);
+            });
+            return propertyMap;
+        },
+    ),
+);
+
 export const productPropertyMapSelector = memoize(definitionName =>
 	createSelector(definitionEntity("product", definitionName), immutableProductDefinition => {
 		const productDefinition = immutableProductDefinition.toJS();
