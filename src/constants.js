@@ -75,6 +75,6 @@ export const attributeDataType = {
 };
 
 export const definitionType = {
-	shared: sharedMessages.shared.defaultMessage,
-	embedded: sharedMessages.embedded.defaultMessage,
+	shared: "Shared",
+	embedded: "Embedded",
 };
