@@ -138,7 +138,7 @@ export const customAttributesSelector = memoize((moduleName, entityName) =>
 	),
 );
 
-export const definitionBuiltInAttributesSelector = memoize((moduleName, entityName) =>
+export const baseAttributesSelector = memoize((moduleName, entityName) =>
 	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), attributes =>
 		attributes.filter(a => a.get("isBuiltIn") === true),
 	),

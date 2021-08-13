@@ -53,9 +53,9 @@
 	"orc-shared.yes": "Oui",
 	"orc-shared.embedded": "Intégré",
 	"orc-shared.shared": "Partagé",
-	"orc-shared.text": "Texte",
-	"orc-shared.boolean": "Choix Oui/Non",
-	"orc-shared.date": "Date/Calendrier",
-	"orc-shared.decimal": "Nombre décimal",
-	"orc-shared.integer": "Nombre entier"
+	"orc-shared.dataTypeText": "Texte",
+	"orc-shared.dataTypeBoolean": "Choix Oui/Non",
+	"orc-shared.dataTypeDate": "Date/Calendrier",
+	"orc-shared.dataTypeDecimal": "Nombre décimal",
+	"orc-shared.dataTypeInteger": "Nombre entier"
 }

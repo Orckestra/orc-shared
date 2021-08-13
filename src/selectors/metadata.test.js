@@ -22,7 +22,7 @@ import {
 	selectCurrentLookupDetails,
 	saveOrderLookupRequestStateSelector,
 	mappedDefinitionsListSelector,
-	definitionBuiltInAttributesSelector,
+	baseAttributesSelector,
 } from "./metadata";
 import { requestStates } from "../constants";
 
@@ -1244,7 +1244,7 @@ describe("definitions", () => {
 			},
 		]);
 		expect(
-			definitionBuiltInAttributesSelector,
+			baseAttributesSelector,
 			"when called with",
 			["customer", "CUSTOMER"],
 			"when called with",
