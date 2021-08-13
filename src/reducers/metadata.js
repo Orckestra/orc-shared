@@ -25,10 +25,9 @@ import {
 } from "../actions/metadata";
 import { requestStates } from "../constants";
 
-export const ORDER_LOOKUP_MODULE_NAME = "order";
-export const CUSTOMER_LOOKUP_MODULE_NAME = "customer";
-export const PRODUCT_LOOKUP_MODULE_NAME = "product";
-export const CUSTOMER_DEFINITIONS_MODULE_NAME = "customer";
+export const ORDER_MODULE_NAME = "order";
+export const CUSTOMER_MODULE_NAME = "customer";
+export const PRODUCT_MODULE_NAME = "product";
 
 const arrayToIndex = (items, keyField) =>
 	items.reduce((index, item) => {
@@ -103,43 +102,52 @@ const lookupReducerHelper = {
 const metadataReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case INCREMENT_ORDER_LOOKUPS_PAGE: {
-			return lookupReducerHelper.incrementPage(ORDER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.incrementPage(ORDER_MODULE_NAME, state, action);
 		}
 		case REFRESH_PAGED_ORDER_LOOKUPS: {
-			return lookupReducerHelper.getPagedLookups(ORDER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.getPagedLookups(ORDER_MODULE_NAME, state, action);
 		}
 		case SET_PAGED_ORDER_LOOKUPS_CURRENT_INFO: {
-			return lookupReducerHelper.setPagedCurrentInfo(ORDER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.setPagedCurrentInfo(ORDER_MODULE_NAME, state, action);
 		}
 		case GET_ORDER_LOOKUPS_SUCCESS: {
-			return lookupReducerHelper.getLookupsQuerySuccess(ORDER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.getLookupsQuerySuccess(ORDER_MODULE_NAME, state, action);
 		}
 		case INCREMENT_CUSTOMER_LOOKUPS_PAGE: {
-			return lookupReducerHelper.incrementPage(CUSTOMER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.incrementPage(CUSTOMER_MODULE_NAME, state, action);
 		}
 		case REFRESH_PAGED_CUSTOMER_LOOKUPS: {
-			return lookupReducerHelper.getPagedLookups(CUSTOMER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.getPagedLookups(CUSTOMER_MODULE_NAME, state, action);
 		}
 		case SET_PAGED_CUSTOMER_LOOKUPS_CURRENT_INFO: {
-			return lookupReducerHelper.setPagedCurrentInfo(CUSTOMER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.setPagedCurrentInfo(CUSTOMER_MODULE_NAME, state, action);
 		}
 		case GET_CUSTOMER_LOOKUPS_SUCCESS: {
-			return lookupReducerHelper.getLookupsQuerySuccess(CUSTOMER_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.getLookupsQuerySuccess(CUSTOMER_MODULE_NAME, state, action);
 		}
 		case GET_PRODUCT_LOOKUPS_SUCCESS: {
-			return lookupReducerHelper.getLookupsQuerySuccess(PRODUCT_LOOKUP_MODULE_NAME, state, action);
+			return lookupReducerHelper.getLookupsQuerySuccess(PRODUCT_MODULE_NAME, state, action);
 		}
 		case GET_CUSTOMER_DEFINITIONS_SUCCESS: {
 			const normalizedDefinitons = normalize(action.payload, definitionsListSchema);
-			return state.setIn(["definitions", "customer"], Immutable.fromJS(normalizedDefinitons.entities.definitions));
+			return state.setIn(
+				["definitions", CUSTOMER_MODULE_NAME],
+				Immutable.fromJS(normalizedDefinitons.entities.definitions),
+			);
 		}
 		case GET_ORDER_DEFINITIONS_SUCCESS: {
 			const normalizedDefinitons = normalize(action.payload, definitionsListSchema);
-			return state.setIn(["definitions", "order"], Immutable.fromJS(normalizedDefinitons.entities.definitions));
+			return state.setIn(
+				["definitions", ORDER_MODULE_NAME],
+				Immutable.fromJS(normalizedDefinitons.entities.definitions),
+			);
 		}
 		case GET_PRODUCT_DEFINITIONS_SUCCESS: {
 			const normalizedDefinitons = normalize(action.payload, productDefinitionsListSchema);
-			return state.setIn(["definitions", "product"], Immutable.fromJS(normalizedDefinitons.entities.definitions));
+			return state.setIn(
+				["definitions", PRODUCT_MODULE_NAME],
+				Immutable.fromJS(normalizedDefinitons.entities.definitions),
+			);
 		}
 		case GET_PROFILE_ATTRIBUTE_GROUPS_SUCCESS: {
 			const normalizedData = normalize(action.payload?.profileAttributeGroups, profileAttributeGroupsListSchema);
@@ -150,10 +158,7 @@ const metadataReducer = (state = initialState, action) => {
 
 		case SAVE_ORDER_LOOKUPS_SUCCESS:
 			return state
-				.setIn(
-					["lookups", ORDER_LOOKUP_MODULE_NAME, "index", action.payload.lookupName],
-					Immutable.fromJS(action.payload),
-				)
+				.setIn(["lookups", ORDER_MODULE_NAME, "index", action.payload.lookupName], Immutable.fromJS(action.payload))
 				.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.success);
 
 		case SAVE_ORDER_LOOKUPS_FAILURE:
