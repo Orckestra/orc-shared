@@ -72,3 +72,8 @@ export const attributeDataType = {
 	entityReference: "EntityReference",
 	customType: "CustomType",
 };
+
+export const definitionType = {
+	shared: "Shared",
+	embedded: "Embedded",
+};

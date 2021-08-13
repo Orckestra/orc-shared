@@ -21,6 +21,7 @@ import {
 	profileAttributeGroupsSelector,
 	selectCurrentLookupDetails,
 	saveOrderLookupRequestStateSelector,
+	mappedDefinitionsListSelector,
 } from "./metadata";
 import { requestStates } from "../constants";
 
@@ -1085,6 +1086,52 @@ describe("definitions", () => {
 			},
 		});
 		expect(profileAttributeGroupsSelector, "when called with", [newState], "to satisfy", null);
+	});
+
+	it("will return correct customer profile definition", () => {
+		const expected = Immutable.fromJS({
+			CustomProfile1: {
+				entityTypeName: "CustomProfile1",
+				isBuiltIn: false,
+				isSharedEntity: true,
+				displayName: "CustomProfile1",
+				type: "Shared",
+			},
+			CustomProfile2: {
+				entityTypeName: "CustomProfile2",
+				isBuiltIn: false,
+				displayName: "CustomProfile1",
+				type: "Embedded",
+			},
+			RecursedCustomProfile: {
+				entityTypeName: "RecursedCustomProfile",
+				isBuiltIn: false,
+				displayName: "RecursedCustomProfile",
+				type: "Embedded",
+			},
+			CUSTOMER: {
+				entityTypeName: "CUSTOMER",
+				isBuiltIn: true,
+				isSharedEntity: true,
+				displayName: "Customer",
+				type: "Shared",
+			},
+			PROFILEWITHRECUSREDATTRIBUTE: {
+				entityTypeName: "PROFILEWITHRECUSREDATTRIBUTE",
+				isBuiltIn: false,
+				displayName: "PROFILEWITHRECUSREDATTRIBUTE",
+				type: "Embedded",
+			},
+		});
+		expect(
+			mappedDefinitionsListSelector,
+			"when called with",
+			["customer"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
 	});
 
 	it("will get an empty List if definitios do not exist", () =>
