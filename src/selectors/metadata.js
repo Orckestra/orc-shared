@@ -94,7 +94,7 @@ const definitionsModule = memoize(moduleName =>
 	createSelector(definitions, definitions => definitions.get(moduleName)),
 );
 
-export const mappedDefinitionsSelector = memoize(moduleName =>
+export const mappedDefinitionsListSelector = memoize(moduleName =>
 	createSelector(
 		definitionsModule(moduleName),
 		currentLocaleOrDefault,
@@ -102,7 +102,8 @@ export const mappedDefinitionsSelector = memoize(moduleName =>
 			return definitions.map(definition => {
 				return definition
 					.set("type", definition.get("isSharedEntity") === true ? definitionType.shared : definitionType.embedded)
-					.set("displayName", getLocalization(definition?.get("displayName"), locale, defaultValue));
+					.set("displayName", getLocalization(definition?.get("displayName"), locale, defaultValue))
+					.delete("attributes");
 			});
 		},
 	),
