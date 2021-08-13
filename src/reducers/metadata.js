@@ -28,7 +28,6 @@ import { requestStates } from "../constants";
 export const ORDER_LOOKUP_MODULE_NAME = "order";
 export const CUSTOMER_LOOKUP_MODULE_NAME = "customer";
 export const PRODUCT_LOOKUP_MODULE_NAME = "product";
-export const CUSTOMER_DEFINITIONS_MODULE_NAME = "customer";
 
 const arrayToIndex = (items, keyField) =>
 	items.reduce((index, item) => {
