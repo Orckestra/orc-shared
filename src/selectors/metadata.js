@@ -5,7 +5,7 @@ import { setTranslationWithFallbackField } from "../utils/setTranslationWithFall
 import { currentLocaleOrDefault } from "../selectors/locale";
 import { getLocalization } from "../utils/localizationHelper";
 import { getPropertyOrDefault } from "../utils/propertyHelper";
-import { ORDER_LOOKUP_MODULE_NAME } from "../reducers/metadata";
+import { ORDER_MODULE_NAME } from "../reducers/metadata";
 import { attributeDataType, definitionType } from "../constants";
 import { each, camelCase } from "lodash";
 
@@ -82,11 +82,11 @@ export const mappedLookupListSelector = memoize(moduleName =>
 	),
 );
 
-export const orderLookupsListCurrentInfo = lookupsListCurrentInfo(ORDER_LOOKUP_MODULE_NAME);
+export const orderLookupsListCurrentInfo = lookupsListCurrentInfo(ORDER_MODULE_NAME);
 
-export const orderLookupsNextPageToLoad = lookupsNextPageToLoad(ORDER_LOOKUP_MODULE_NAME);
+export const orderLookupsNextPageToLoad = lookupsNextPageToLoad(ORDER_MODULE_NAME);
 
-export const mappedOrderLookupsListSelector = mappedLookupListSelector(ORDER_LOOKUP_MODULE_NAME);
+export const mappedOrderLookupsListSelector = mappedLookupListSelector(ORDER_MODULE_NAME);
 
 /***  DEFINITIONS  ***/
 const definitions = createSelector(metadata, meta => meta.get("definitions"));
