@@ -219,6 +219,26 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.shared",
 		defaultMessage: "Shared",
 	},
+	text: {
+		id: "orc-shared.text",
+		defaultMessage: "Text",
+	},
+	boolean: {
+		id: "orc-shared.boolean",
+		defaultMessage: "Yes/No Choice",
+	},
+	date: {
+		id: "orc-shared.date",
+		defaultMessage: "Date/Calendar",
+	},
+	decimal: {
+		id: "orc-shared.decimal",
+		defaultMessage: "Decimal Number",
+	},
+	integer: {
+		id: "orc-shared.integer",
+		defaultMessage: "Whole Number",
+	},
 });
 
 export default sharedMessages;

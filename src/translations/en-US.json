@@ -52,5 +52,10 @@
 	"orc-shared.valueName": "Value Name",
 	"orc-shared.yes": "Yes",
 	"orc-shared.embedded": "Embedded",
-	"orc-shared.shared": "Shared"
+	"orc-shared.shared": "Shared",
+	"orc-shared.text": "Text",
+	"orc-shared.boolean": "Yes/No Choice",
+	"orc-shared.date": "Date/Calendar",
+	"orc-shared.decimal": "Decimal Number",
+	"orc-shared.integer": "Whole Number"
 }
