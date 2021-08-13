@@ -109,7 +109,7 @@ export const mappedDefinitionsListSelector = memoize(moduleName =>
 	),
 );
 
-const definitionEntity = memoize((moduleName, entityName) =>
+export const definitionEntity = memoize((moduleName, entityName) =>
 	createSelector(definitionsModule(moduleName), definition => definition.getIn([entityName]) || Immutable.Map()),
 );
 
