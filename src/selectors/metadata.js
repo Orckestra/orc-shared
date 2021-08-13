@@ -6,7 +6,7 @@ import { currentLocaleOrDefault } from "../selectors/locale";
 import { getLocalization } from "../utils/localizationHelper";
 import { getPropertyOrDefault } from "../utils/propertyHelper";
 import { ORDER_LOOKUP_MODULE_NAME } from "../reducers/metadata";
-import { attributeDataType } from "../constants";
+import { attributeDataType, definitionType } from "../constants";
 import { each, camelCase } from "lodash";
 
 const metadata = state => state.get("metadata");
@@ -100,7 +100,9 @@ export const mappedDefinitionsSelector = memoize(moduleName =>
 		currentLocaleOrDefault,
 		(definitions, locale, key, defaultValue = key) => {
 			return definitions.map(definition => {
-				return definition.set("displayName", getLocalization(definition?.get("displayName"), locale, defaultValue));
+				return definition
+					.set("type", definition.get("isSharedEntity") === true ? definitionType.shared : definitionType.embedded)
+					.set("displayName", getLocalization(definition?.get("displayName"), locale, defaultValue));
 			});
 		},
 	),
