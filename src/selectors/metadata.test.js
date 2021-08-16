@@ -22,6 +22,7 @@ import {
 	selectCurrentLookupDetails,
 	saveOrderLookupRequestStateSelector,
 	mappedDefinitionsListSelector,
+	baseAttributesSelector,
 } from "./metadata";
 import { requestStates } from "../constants";
 
@@ -1174,6 +1175,76 @@ describe("definitions", () => {
 
 		expect(
 			groupedCustomAttributesDefinitionSelector,
+			"when called with",
+			["customer", "CUSTOMER"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
+	});
+
+	it("will return correct customer attributes", () => {
+		const expected = Immutable.fromJS([
+			{
+				maximum: 256,
+				dataType: "Text",
+				isRequired: false,
+				name: "Username",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: "User name",
+				minimum: 1,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+			{
+				maximum: 256,
+				dataType: "Text",
+				isRequired: false,
+				name: "Email",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: "Email",
+				minimum: 0,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+			{
+				maximum: 64,
+				dataType: "Text",
+				isRequired: false,
+				name: "LastName",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: "Last name",
+				minimum: 0,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+			{
+				maximum: 64,
+				dataType: "Text",
+				isRequired: false,
+				name: "FirstName",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: "First Name",
+				minimum: 0,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+		]);
+		expect(
+			baseAttributesSelector,
 			"when called with",
 			["customer", "CUSTOMER"],
 			"when called with",

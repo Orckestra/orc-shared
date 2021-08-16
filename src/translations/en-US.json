@@ -52,5 +52,12 @@
 	"orc-shared.valueName": "Value Name",
 	"orc-shared.yes": "Yes",
 	"orc-shared.embedded": "Embedded",
-	"orc-shared.shared": "Shared"
+	"orc-shared.shared": "Shared",
+	"orc-shared.dataTypeText": "Text",
+	"orc-shared.dataTypeBoolean": "Yes/No Choice",
+	"orc-shared.dataTypeDate": "Date/Calendar",
+	"orc-shared.dataTypeDecimal": "Decimal Number",
+	"orc-shared.dataTypeInteger": "Whole Number",
+	"orc-shared.dataTypeEntityReference": "Profile Reference",
+	"orc-shared.dataTypeLookup": "Lookup List"
 }

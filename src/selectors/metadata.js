@@ -126,7 +126,7 @@ const definitionEntityAttributes = memoize((moduleName, entityName) =>
 	),
 );
 
-const mappedDefinitionAttributesSelector = memoize((moduleName, entityName) =>
+export const mappedDefinitionAttributesSelector = memoize((moduleName, entityName) =>
 	createSelector(definitionEntityAttributes(moduleName, entityName), currentLocaleOrDefault, (attributes, locale) =>
 		attributes.map(a => setTranslationWithFallbackField(locale, a, "name", "displayName")),
 	),
@@ -135,6 +135,12 @@ const mappedDefinitionAttributesSelector = memoize((moduleName, entityName) =>
 export const customAttributesSelector = memoize((moduleName, entityName) =>
 	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), attributes =>
 		attributes.filter(a => a.get("isBuiltIn") === false),
+	),
+);
+
+export const baseAttributesSelector = memoize((moduleName, entityName) =>
+	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), attributes =>
+		attributes.filter(a => a.get("isBuiltIn") === true),
 	),
 );
 

@@ -51,6 +51,13 @@
 	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?",
 	"orc-shared.valueName": "Nom de la valeur",
 	"orc-shared.yes": "Oui",
-	"orc-shared.embedded": "Incorporé",
-	"orc-shared.shared": "Partagé"
+	"orc-shared.embedded": "Intégré",
+	"orc-shared.shared": "Partagé",
+	"orc-shared.dataTypeText": "Texte",
+	"orc-shared.dataTypeBoolean": "Choix Oui/Non",
+	"orc-shared.dataTypeDate": "Date/Calendrier",
+	"orc-shared.dataTypeDecimal": "Nombre décimal",
+	"orc-shared.dataTypeInteger": "Nombre entier",
+	"orc-shared.dataTypeEntityReference": "Profil de référence",
+	"orc-shared.dataTypeLookup": "Index des listes"
 }
