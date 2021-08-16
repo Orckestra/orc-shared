@@ -239,6 +239,14 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.dataTypeInteger",
 		defaultMessage: "Whole Number",
 	},
+	dataTypeEntityReference: {
+		id: "orc-shared.dataTypeEntityReference",
+		defaultMessage: "Profile Reference",
+	},
+	dataTypeLookup: {
+		id: "orc-shared.dataTypeLookup",
+		defaultMessage: "Lookup List",
+	},
 });
 
 export default sharedMessages;

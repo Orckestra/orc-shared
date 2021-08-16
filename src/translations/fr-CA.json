@@ -57,5 +57,7 @@
 	"orc-shared.dataTypeBoolean": "Choix Oui/Non",
 	"orc-shared.dataTypeDate": "Date/Calendrier",
 	"orc-shared.dataTypeDecimal": "Nombre décimal",
-	"orc-shared.dataTypeInteger": "Nombre entier"
+	"orc-shared.dataTypeInteger": "Nombre entier",
+	"orc-shared.dataTypeEntityReference": "Profil de référence",
+	"orc-shared.dataTypeLookup": "Index des listes"
 }
