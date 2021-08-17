@@ -22,6 +22,10 @@ import {
 	SAVE_ORDER_LOOKUPS_SUCCESS,
 	SAVE_ORDER_LOOKUPS_FAILURE,
 	RESET_ORDER_LOOKUP_SAVE_RESULT,
+	SAVE_CUSTOMER_LOOKUPS_REQUEST,
+	SAVE_CUSTOMER_LOOKUPS_SUCCESS,
+	SAVE_CUSTOMER_LOOKUPS_FAILURE,
+	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 } from "../actions/metadata";
 import { requestStates } from "../constants";
 
@@ -48,6 +52,8 @@ const initialState = Immutable.fromJS({
 			index: {},
 			list: [],
 		},
+		saveCustomerLookupRequestState: requestStates.idle,
+		saveCustomerLookupResponse: null,
 		product: {
 			index: {},
 			list: [],
@@ -171,6 +177,26 @@ const metadataReducer = (state = initialState, action) => {
 				.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.idle)
 				.setIn(["lookups", "saveOrderLookupResponse"], null);
 		}
+
+		case SAVE_CUSTOMER_LOOKUPS_REQUEST:
+			return state.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.processing);
+
+		case SAVE_CUSTOMER_LOOKUPS_SUCCESS:
+			return state
+				.setIn(["lookups", CUSTOMER_MODULE_NAME, "index", action.payload.lookupName], Immutable.fromJS(action.payload))
+				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.success);
+
+		case SAVE_CUSTOMER_LOOKUPS_FAILURE:
+			return state
+				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.fail)
+				.setIn(["lookups", "saveCustomerLookupResponse"], Immutable.fromJS(action.payload.response));
+
+		case RESET_CUSTOMER_LOOKUP_SAVE_RESULT: {
+			return state
+				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.idle)
+				.setIn(["lookups", "saveCustomerLookupResponse"], null);
+		}
+
 		default:
 			return state;
 	}

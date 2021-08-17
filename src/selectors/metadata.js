@@ -324,3 +324,8 @@ export const saveOrderLookupRequestStateSelector = createSelector(metadata, data
 	requestState: data.getIn(["lookups", "saveOrderLookupRequestState"]),
 	response: data.getIn(["lookups", "saveOrderLookupResponse"])?.toJS() ?? null,
 }));
+
+export const saveCustomerLookupRequestStateSelector = createSelector(metadata, data => ({
+	requestState: data.getIn(["lookups", "saveCustomerLookupRequestState"]),
+	response: data.getIn(["lookups", "saveCustomerLookupResponse"])?.toJS() ?? null,
+}));

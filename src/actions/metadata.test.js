@@ -46,6 +46,12 @@ import {
 	GET_PRODUCT_LOOKUPS_REQUEST,
 	GET_PRODUCT_LOOKUPS_SUCCESS,
 	GET_PRODUCT_LOOKUPS_FAILURE,
+	saveCustomerLookups,
+	SAVE_CUSTOMER_LOOKUPS_REQUEST,
+	SAVE_CUSTOMER_LOOKUPS_SUCCESS,
+	SAVE_CUSTOMER_LOOKUPS_FAILURE,
+	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
+	resetCustomerLookupSaveResult,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -223,7 +229,14 @@ describe("saveOrderLookups", () => {
 		}));
 });
 
-describe("saveOrderLookups", () => {
+describe("resetOrderLookupSaveResult", () => {
+	it("creates ", () =>
+		expect(resetOrderLookupSaveResult, "when called with", [], "to exhaustively satisfy", {
+			type: RESET_ORDER_LOOKUP_SAVE_RESULT,
+		}));
+});
+
+describe("saveCustomerLookups", () => {
 	const lookup = {
 		lookupName: "aLookUpForText",
 		description: "a description for the lookup",
@@ -233,11 +246,11 @@ describe("saveOrderLookups", () => {
 		],
 	};
 
-	it("creates a RSAA to save an order lookup", () =>
-		expect(saveOrderLookups, "when called with", [lookup], "to exhaustively satisfy", {
+	it("creates a RSAA to save a customer lookup", () =>
+		expect(saveCustomerLookups, "when called with", [lookup], "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [SAVE_ORDER_LOOKUPS_REQUEST, SAVE_ORDER_LOOKUPS_SUCCESS, SAVE_ORDER_LOOKUPS_FAILURE],
-				endpoint: 'URL: metadata/lookups/order/aLookUpForText ""',
+				types: [SAVE_CUSTOMER_LOOKUPS_REQUEST, SAVE_CUSTOMER_LOOKUPS_SUCCESS, SAVE_CUSTOMER_LOOKUPS_FAILURE],
+				endpoint: 'URL: metadata/lookups/customer/aLookUpForText ""',
 				method: "PUT",
 				body: JSON.stringify(lookup),
 				credentials: "include",
@@ -251,10 +264,10 @@ describe("saveOrderLookups", () => {
 		}));
 });
 
-describe("resetOrderLookupSaveResult", () => {
+describe("resetCustomerLookupSaveResult", () => {
 	it("creates ", () =>
-		expect(resetOrderLookupSaveResult, "when called with", [], "to exhaustively satisfy", {
-			type: RESET_ORDER_LOOKUP_SAVE_RESULT,
+		expect(resetCustomerLookupSaveResult, "when called with", [], "to exhaustively satisfy", {
+			type: RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 		}));
 });
 

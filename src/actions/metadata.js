@@ -9,6 +9,7 @@ import {
 	getProfileAttributeGroupsRequest,
 	getProductDefinitionsRequest,
 	updateOrderLookupTypeDefinitionRequest,
+	updateCustomerLookupTypeDefinitionRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -79,6 +80,29 @@ export const [GET_PRODUCT_LOOKUPS_REQUEST, GET_PRODUCT_LOOKUPS_SUCCESS, GET_PROD
 	makeActionTypes(GET_PRODUCT_LOOKUPS);
 
 export const getProductLookups = () => makeOrcApiAction(GET_PRODUCT_LOOKUPS, getProductLookupsRequest.buildUrl());
+
+const SAVE_CUSTOMER_LOOKUPS = "SAVE_CUSTOMER_LOOKUPS";
+
+export const [SAVE_CUSTOMER_LOOKUPS_REQUEST, SAVE_CUSTOMER_LOOKUPS_SUCCESS, SAVE_CUSTOMER_LOOKUPS_FAILURE] =
+	makeActionTypes(SAVE_CUSTOMER_LOOKUPS);
+
+export const saveCustomerLookups = lookup =>
+	makeOrcApiAction(
+		SAVE_CUSTOMER_LOOKUPS,
+		updateCustomerLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
+		updateCustomerLookupTypeDefinitionRequest.verb,
+		{
+			body: lookup,
+		},
+	);
+
+export const RESET_CUSTOMER_LOOKUP_SAVE_RESULT = "RESET_CUSTOMER_LOOKUP_SAVE_RESULT";
+
+export const resetCustomerLookupSaveResult = () => {
+	return {
+		type: RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
+	};
+};
 
 const GET_CUSTOMER_DEFINITIONS = "GET_CUSTOMER_DEFINITIONS";
 export const [GET_CUSTOMER_DEFINITIONS_REQUEST, GET_CUSTOMER_DEFINITIONS_SUCCESS, GET_CUSTOMER_DEFINITIONS_FAILURE] =
