@@ -42,8 +42,6 @@ const useRequestState = ({ keys, operation, successAction, errorAction }) => {
 				errorAction();
 			}
 		}
-		// addNotification causes issues in the deps
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch, keys, operation, successAction, errorAction, inProgress, value, error]);
 
 	const buildRequestState = () => {
