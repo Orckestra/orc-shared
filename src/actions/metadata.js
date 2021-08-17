@@ -21,14 +21,14 @@ export const [GET_ORDER_LOOKUPS_REQUEST, GET_ORDER_LOOKUPS_SUCCESS, GET_ORDER_LO
 
 export const getOrderLookups = () => makeOrcApiAction(GET_ORDER_LOOKUPS, getOrderLookupsRequest.buildUrl());
 
-const SAVE_ORDER_LOOKUPS = "SAVE_ORDER_LOOKUPS";
+const SAVE_ORDER_LOOKUP = "SAVE_ORDER_LOOKUP";
 
-export const [SAVE_ORDER_LOOKUPS_REQUEST, SAVE_ORDER_LOOKUPS_SUCCESS, SAVE_ORDER_LOOKUPS_FAILURE] =
-	makeActionTypes(SAVE_ORDER_LOOKUPS);
+export const [SAVE_ORDER_LOOKUP_REQUEST, SAVE_ORDER_LOOKUP_SUCCESS, SAVE_ORDER_LOOKUP_FAILURE] =
+	makeActionTypes(SAVE_ORDER_LOOKUP);
 
-export const saveOrderLookups = lookup =>
+export const saveOrderLookup = lookup =>
 	makeOrcApiAction(
-		SAVE_ORDER_LOOKUPS,
+		SAVE_ORDER_LOOKUP,
 		updateOrderLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
 		updateOrderLookupTypeDefinitionRequest.verb,
 		{
@@ -81,14 +81,14 @@ export const [GET_PRODUCT_LOOKUPS_REQUEST, GET_PRODUCT_LOOKUPS_SUCCESS, GET_PROD
 
 export const getProductLookups = () => makeOrcApiAction(GET_PRODUCT_LOOKUPS, getProductLookupsRequest.buildUrl());
 
-const SAVE_CUSTOMER_LOOKUPS = "SAVE_CUSTOMER_LOOKUPS";
+const SAVE_CUSTOMER_LOOKUP = "SAVE_CUSTOMER_LOOKUP";
 
-export const [SAVE_CUSTOMER_LOOKUPS_REQUEST, SAVE_CUSTOMER_LOOKUPS_SUCCESS, SAVE_CUSTOMER_LOOKUPS_FAILURE] =
-	makeActionTypes(SAVE_CUSTOMER_LOOKUPS);
+export const [SAVE_CUSTOMER_LOOKUP_REQUEST, SAVE_CUSTOMER_LOOKUP_SUCCESS, SAVE_CUSTOMER_LOOKUP_FAILURE] =
+	makeActionTypes(SAVE_CUSTOMER_LOOKUP);
 
-export const saveCustomerLookups = lookup =>
+export const saveCustomerLookup = lookup =>
 	makeOrcApiAction(
-		SAVE_CUSTOMER_LOOKUPS,
+		SAVE_CUSTOMER_LOOKUP,
 		updateCustomerLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
 		updateCustomerLookupTypeDefinitionRequest.verb,
 		{

@@ -14,18 +14,18 @@ import {
 	setPagedCustomerLookupsCurrentInfo,
 	refreshPagedCustomerLookups,
 	incrementCustomerLookupsPage,
-	SAVE_CUSTOMER_LOOKUPS_REQUEST,
-	SAVE_CUSTOMER_LOOKUPS_SUCCESS,
-	SAVE_CUSTOMER_LOOKUPS_FAILURE,
+	SAVE_CUSTOMER_LOOKUP_REQUEST,
+	SAVE_CUSTOMER_LOOKUP_SUCCESS,
+	SAVE_CUSTOMER_LOOKUP_FAILURE,
 	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 } from "../actions/metadata";
 import reducer from "./metadata";
 import { requestStates } from "../constants";
 import {
 	RESET_ORDER_LOOKUP_SAVE_RESULT,
-	SAVE_ORDER_LOOKUPS_FAILURE,
-	SAVE_ORDER_LOOKUPS_REQUEST,
-	SAVE_ORDER_LOOKUPS_SUCCESS,
+	SAVE_ORDER_LOOKUP_FAILURE,
+	SAVE_ORDER_LOOKUP_REQUEST,
+	SAVE_ORDER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
 
 export const generateLookups = max => {
@@ -196,7 +196,7 @@ describe("metadata", () => {
 				},
 			});
 			const action = {
-				type: SAVE_ORDER_LOOKUPS_REQUEST,
+				type: SAVE_ORDER_LOOKUP_REQUEST,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -258,7 +258,7 @@ describe("metadata", () => {
 				},
 			});
 			const action = {
-				type: SAVE_ORDER_LOOKUPS_SUCCESS,
+				type: SAVE_ORDER_LOOKUP_SUCCESS,
 				payload: lookups.CanceledStatusReasons,
 			};
 			const newState = reducer(oldState, action);
@@ -321,7 +321,7 @@ describe("metadata", () => {
 				},
 			});
 			const action = {
-				type: SAVE_ORDER_LOOKUPS_FAILURE,
+				type: SAVE_ORDER_LOOKUP_FAILURE,
 				payload: { response: "failure" },
 			};
 			const newState = reducer(oldState, action);
@@ -772,7 +772,7 @@ describe("metadata", () => {
 				},
 			});
 			const action = {
-				type: SAVE_CUSTOMER_LOOKUPS_REQUEST,
+				type: SAVE_CUSTOMER_LOOKUP_REQUEST,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -834,7 +834,7 @@ describe("metadata", () => {
 				},
 			});
 			const action = {
-				type: SAVE_CUSTOMER_LOOKUPS_SUCCESS,
+				type: SAVE_CUSTOMER_LOOKUP_SUCCESS,
 				payload: lookups.CanceledStatusReasons,
 			};
 			const newState = reducer(oldState, action);
@@ -897,7 +897,7 @@ describe("metadata", () => {
 				},
 			});
 			const action = {
-				type: SAVE_CUSTOMER_LOOKUPS_FAILURE,
+				type: SAVE_CUSTOMER_LOOKUP_FAILURE,
 				payload: { response: "failure" },
 			};
 			const newState = reducer(oldState, action);

@@ -36,20 +36,20 @@ import {
 	REFRESH_PAGED_CUSTOMER_LOOKUPS,
 	incrementCustomerLookupsPage,
 	INCREMENT_CUSTOMER_LOOKUPS_PAGE,
-	saveOrderLookups,
-	SAVE_ORDER_LOOKUPS_REQUEST,
-	SAVE_ORDER_LOOKUPS_SUCCESS,
-	SAVE_ORDER_LOOKUPS_FAILURE,
+	saveOrderLookup,
+	SAVE_ORDER_LOOKUP_REQUEST,
+	SAVE_ORDER_LOOKUP_SUCCESS,
+	SAVE_ORDER_LOOKUP_FAILURE,
 	RESET_ORDER_LOOKUP_SAVE_RESULT,
 	resetOrderLookupSaveResult,
 	getProductLookups,
 	GET_PRODUCT_LOOKUPS_REQUEST,
 	GET_PRODUCT_LOOKUPS_SUCCESS,
 	GET_PRODUCT_LOOKUPS_FAILURE,
-	saveCustomerLookups,
-	SAVE_CUSTOMER_LOOKUPS_REQUEST,
-	SAVE_CUSTOMER_LOOKUPS_SUCCESS,
-	SAVE_CUSTOMER_LOOKUPS_FAILURE,
+	saveCustomerLookup,
+	SAVE_CUSTOMER_LOOKUP_REQUEST,
+	SAVE_CUSTOMER_LOOKUP_SUCCESS,
+	SAVE_CUSTOMER_LOOKUP_FAILURE,
 	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 	resetCustomerLookupSaveResult,
 } from "./metadata";
@@ -201,7 +201,7 @@ describe("getProductLookups", () => {
 		}));
 });
 
-describe("saveOrderLookups", () => {
+describe("saveOrderLookup", () => {
 	const lookup = {
 		lookupName: "aLookUpForText",
 		description: "a description for the lookup",
@@ -212,9 +212,9 @@ describe("saveOrderLookups", () => {
 	};
 
 	it("creates a RSAA to save an order lookup", () =>
-		expect(saveOrderLookups, "when called with", [lookup], "to exhaustively satisfy", {
+		expect(saveOrderLookup, "when called with", [lookup], "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [SAVE_ORDER_LOOKUPS_REQUEST, SAVE_ORDER_LOOKUPS_SUCCESS, SAVE_ORDER_LOOKUPS_FAILURE],
+				types: [SAVE_ORDER_LOOKUP_REQUEST, SAVE_ORDER_LOOKUP_SUCCESS, SAVE_ORDER_LOOKUP_FAILURE],
 				endpoint: 'URL: metadata/lookups/order/aLookUpForText ""',
 				method: "PUT",
 				body: JSON.stringify(lookup),
@@ -236,7 +236,7 @@ describe("resetOrderLookupSaveResult", () => {
 		}));
 });
 
-describe("saveCustomerLookups", () => {
+describe("saveCustomerLookup", () => {
 	const lookup = {
 		lookupName: "aLookUpForText",
 		description: "a description for the lookup",
@@ -247,9 +247,9 @@ describe("saveCustomerLookups", () => {
 	};
 
 	it("creates a RSAA to save a customer lookup", () =>
-		expect(saveCustomerLookups, "when called with", [lookup], "to exhaustively satisfy", {
+		expect(saveCustomerLookup, "when called with", [lookup], "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [SAVE_CUSTOMER_LOOKUPS_REQUEST, SAVE_CUSTOMER_LOOKUPS_SUCCESS, SAVE_CUSTOMER_LOOKUPS_FAILURE],
+				types: [SAVE_CUSTOMER_LOOKUP_REQUEST, SAVE_CUSTOMER_LOOKUP_SUCCESS, SAVE_CUSTOMER_LOOKUP_FAILURE],
 				endpoint: 'URL: metadata/lookups/customer/aLookUpForText ""',
 				method: "PUT",
 				body: JSON.stringify(lookup),

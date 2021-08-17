@@ -18,13 +18,13 @@ import {
 	INCREMENT_CUSTOMER_LOOKUPS_PAGE,
 	REFRESH_PAGED_CUSTOMER_LOOKUPS,
 	SET_PAGED_CUSTOMER_LOOKUPS_CURRENT_INFO,
-	SAVE_ORDER_LOOKUPS_REQUEST,
-	SAVE_ORDER_LOOKUPS_SUCCESS,
-	SAVE_ORDER_LOOKUPS_FAILURE,
+	SAVE_ORDER_LOOKUP_REQUEST,
+	SAVE_ORDER_LOOKUP_SUCCESS,
+	SAVE_ORDER_LOOKUP_FAILURE,
 	RESET_ORDER_LOOKUP_SAVE_RESULT,
-	SAVE_CUSTOMER_LOOKUPS_REQUEST,
-	SAVE_CUSTOMER_LOOKUPS_SUCCESS,
-	SAVE_CUSTOMER_LOOKUPS_FAILURE,
+	SAVE_CUSTOMER_LOOKUP_REQUEST,
+	SAVE_CUSTOMER_LOOKUP_SUCCESS,
+	SAVE_CUSTOMER_LOOKUP_FAILURE,
 	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 } from "../actions/metadata";
 import { requestStates } from "../constants";
@@ -159,15 +159,15 @@ const metadataReducer = (state = initialState, action) => {
 			const normalizedData = normalize(action.payload?.profileAttributeGroups, profileAttributeGroupsListSchema);
 			return state.set("profileAttributeGroups", Immutable.fromJS(normalizedData.entities.metadata));
 		}
-		case SAVE_ORDER_LOOKUPS_REQUEST:
+		case SAVE_ORDER_LOOKUP_REQUEST:
 			return state.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.processing);
 
-		case SAVE_ORDER_LOOKUPS_SUCCESS:
+		case SAVE_ORDER_LOOKUP_SUCCESS:
 			return state
 				.setIn(["lookups", ORDER_MODULE_NAME, "index", action.payload.lookupName], Immutable.fromJS(action.payload))
 				.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.success);
 
-		case SAVE_ORDER_LOOKUPS_FAILURE:
+		case SAVE_ORDER_LOOKUP_FAILURE:
 			return state
 				.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.fail)
 				.setIn(["lookups", "saveOrderLookupResponse"], Immutable.fromJS(action.payload.response));
@@ -178,15 +178,15 @@ const metadataReducer = (state = initialState, action) => {
 				.setIn(["lookups", "saveOrderLookupResponse"], null);
 		}
 
-		case SAVE_CUSTOMER_LOOKUPS_REQUEST:
+		case SAVE_CUSTOMER_LOOKUP_REQUEST:
 			return state.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.processing);
 
-		case SAVE_CUSTOMER_LOOKUPS_SUCCESS:
+		case SAVE_CUSTOMER_LOOKUP_SUCCESS:
 			return state
 				.setIn(["lookups", CUSTOMER_MODULE_NAME, "index", action.payload.lookupName], Immutable.fromJS(action.payload))
 				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.success);
 
-		case SAVE_CUSTOMER_LOOKUPS_FAILURE:
+		case SAVE_CUSTOMER_LOOKUP_FAILURE:
 			return state
 				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.fail)
 				.setIn(["lookups", "saveCustomerLookupResponse"], Immutable.fromJS(action.payload.response));
