@@ -575,6 +575,12 @@ export const createCustomRoleRequest = {
 	verb: "POST",
 };
 
+export const createCustomerLookupTypeDefinitionRequest = {
+	name: "createCustomerLookupTypeDefinitionRequest",
+	buildUrl: lookupName => buildUrl(["metadata", "lookups", "customer", lookupName]),
+	verb: "POST",
+};
+
 export const createCustomerMembershipRequest = {
 	name: "createCustomerMembershipRequest",
 	buildUrl: scopeId => buildUrl(["membership", scopeId]),
@@ -3995,6 +4001,12 @@ export const updateCustomProfileRequest = {
 export const updateCustomerAddressRequest = {
 	name: "updateCustomerAddressRequest",
 	buildUrl: (customerId, addressId) => buildUrl(["addresses", "customer", customerId, addressId]),
+	verb: "PUT",
+};
+
+export const updateCustomerLookupTypeDefinitionRequest = {
+	name: "updateCustomerLookupTypeDefinitionRequest",
+	buildUrl: lookupName => buildUrl(["metadata", "lookups", "customer", lookupName]),
 	verb: "PUT",
 };
 

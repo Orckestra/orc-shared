@@ -9,6 +9,7 @@ import {
 	getProfileAttributeGroupsRequest,
 	getProductDefinitionsRequest,
 	updateOrderLookupTypeDefinitionRequest,
+	updateCustomerLookupTypeDefinitionRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -20,14 +21,14 @@ export const [GET_ORDER_LOOKUPS_REQUEST, GET_ORDER_LOOKUPS_SUCCESS, GET_ORDER_LO
 
 export const getOrderLookups = () => makeOrcApiAction(GET_ORDER_LOOKUPS, getOrderLookupsRequest.buildUrl());
 
-const SAVE_ORDER_LOOKUPS = "SAVE_ORDER_LOOKUPS";
+const SAVE_ORDER_LOOKUP = "SAVE_ORDER_LOOKUP";
 
-export const [SAVE_ORDER_LOOKUPS_REQUEST, SAVE_ORDER_LOOKUPS_SUCCESS, SAVE_ORDER_LOOKUPS_FAILURE] =
-	makeActionTypes(SAVE_ORDER_LOOKUPS);
+export const [SAVE_ORDER_LOOKUP_REQUEST, SAVE_ORDER_LOOKUP_SUCCESS, SAVE_ORDER_LOOKUP_FAILURE] =
+	makeActionTypes(SAVE_ORDER_LOOKUP);
 
-export const saveOrderLookups = lookup =>
+export const saveOrderLookup = lookup =>
 	makeOrcApiAction(
-		SAVE_ORDER_LOOKUPS,
+		SAVE_ORDER_LOOKUP,
 		updateOrderLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
 		updateOrderLookupTypeDefinitionRequest.verb,
 		{
@@ -79,6 +80,29 @@ export const [GET_PRODUCT_LOOKUPS_REQUEST, GET_PRODUCT_LOOKUPS_SUCCESS, GET_PROD
 	makeActionTypes(GET_PRODUCT_LOOKUPS);
 
 export const getProductLookups = () => makeOrcApiAction(GET_PRODUCT_LOOKUPS, getProductLookupsRequest.buildUrl());
+
+const SAVE_CUSTOMER_LOOKUP = "SAVE_CUSTOMER_LOOKUP";
+
+export const [SAVE_CUSTOMER_LOOKUP_REQUEST, SAVE_CUSTOMER_LOOKUP_SUCCESS, SAVE_CUSTOMER_LOOKUP_FAILURE] =
+	makeActionTypes(SAVE_CUSTOMER_LOOKUP);
+
+export const saveCustomerLookup = lookup =>
+	makeOrcApiAction(
+		SAVE_CUSTOMER_LOOKUP,
+		updateCustomerLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
+		updateCustomerLookupTypeDefinitionRequest.verb,
+		{
+			body: lookup,
+		},
+	);
+
+export const RESET_CUSTOMER_LOOKUP_SAVE_RESULT = "RESET_CUSTOMER_LOOKUP_SAVE_RESULT";
+
+export const resetCustomerLookupSaveResult = () => {
+	return {
+		type: RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
+	};
+};
 
 const GET_CUSTOMER_DEFINITIONS = "GET_CUSTOMER_DEFINITIONS";
 export const [GET_CUSTOMER_DEFINITIONS_REQUEST, GET_CUSTOMER_DEFINITIONS_SUCCESS, GET_CUSTOMER_DEFINITIONS_FAILURE] =

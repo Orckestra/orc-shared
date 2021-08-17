@@ -36,16 +36,22 @@ import {
 	REFRESH_PAGED_CUSTOMER_LOOKUPS,
 	incrementCustomerLookupsPage,
 	INCREMENT_CUSTOMER_LOOKUPS_PAGE,
-	saveOrderLookups,
-	SAVE_ORDER_LOOKUPS_REQUEST,
-	SAVE_ORDER_LOOKUPS_SUCCESS,
-	SAVE_ORDER_LOOKUPS_FAILURE,
+	saveOrderLookup,
+	SAVE_ORDER_LOOKUP_REQUEST,
+	SAVE_ORDER_LOOKUP_SUCCESS,
+	SAVE_ORDER_LOOKUP_FAILURE,
 	RESET_ORDER_LOOKUP_SAVE_RESULT,
 	resetOrderLookupSaveResult,
 	getProductLookups,
 	GET_PRODUCT_LOOKUPS_REQUEST,
 	GET_PRODUCT_LOOKUPS_SUCCESS,
 	GET_PRODUCT_LOOKUPS_FAILURE,
+	saveCustomerLookup,
+	SAVE_CUSTOMER_LOOKUP_REQUEST,
+	SAVE_CUSTOMER_LOOKUP_SUCCESS,
+	SAVE_CUSTOMER_LOOKUP_FAILURE,
+	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
+	resetCustomerLookupSaveResult,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -195,7 +201,7 @@ describe("getProductLookups", () => {
 		}));
 });
 
-describe("saveOrderLookups", () => {
+describe("saveOrderLookup", () => {
 	const lookup = {
 		lookupName: "aLookUpForText",
 		description: "a description for the lookup",
@@ -206,37 +212,9 @@ describe("saveOrderLookups", () => {
 	};
 
 	it("creates a RSAA to save an order lookup", () =>
-		expect(saveOrderLookups, "when called with", [lookup], "to exhaustively satisfy", {
+		expect(saveOrderLookup, "when called with", [lookup], "to exhaustively satisfy", {
 			[RSAA]: {
-				types: [SAVE_ORDER_LOOKUPS_REQUEST, SAVE_ORDER_LOOKUPS_SUCCESS, SAVE_ORDER_LOOKUPS_FAILURE],
-				endpoint: 'URL: metadata/lookups/order/aLookUpForText ""',
-				method: "PUT",
-				body: JSON.stringify(lookup),
-				credentials: "include",
-				bailout: expect.it("to be a function"),
-				headers: {
-					Accept: "application/json; charset=utf-8",
-					"Content-Type": "application/json",
-				},
-				options: { redirect: "follow" },
-			},
-		}));
-});
-
-describe("saveOrderLookups", () => {
-	const lookup = {
-		lookupName: "aLookUpForText",
-		description: "a description for the lookup",
-		values: [
-			{ value: "first Value", sortOrder: 100 },
-			{ value: "second Value", sortOrder: 50 },
-		],
-	};
-
-	it("creates a RSAA to save an order lookup", () =>
-		expect(saveOrderLookups, "when called with", [lookup], "to exhaustively satisfy", {
-			[RSAA]: {
-				types: [SAVE_ORDER_LOOKUPS_REQUEST, SAVE_ORDER_LOOKUPS_SUCCESS, SAVE_ORDER_LOOKUPS_FAILURE],
+				types: [SAVE_ORDER_LOOKUP_REQUEST, SAVE_ORDER_LOOKUP_SUCCESS, SAVE_ORDER_LOOKUP_FAILURE],
 				endpoint: 'URL: metadata/lookups/order/aLookUpForText ""',
 				method: "PUT",
 				body: JSON.stringify(lookup),
@@ -255,6 +233,41 @@ describe("resetOrderLookupSaveResult", () => {
 	it("creates ", () =>
 		expect(resetOrderLookupSaveResult, "when called with", [], "to exhaustively satisfy", {
 			type: RESET_ORDER_LOOKUP_SAVE_RESULT,
+		}));
+});
+
+describe("saveCustomerLookup", () => {
+	const lookup = {
+		lookupName: "aLookUpForText",
+		description: "a description for the lookup",
+		values: [
+			{ value: "first Value", sortOrder: 100 },
+			{ value: "second Value", sortOrder: 50 },
+		],
+	};
+
+	it("creates a RSAA to save a customer lookup", () =>
+		expect(saveCustomerLookup, "when called with", [lookup], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [SAVE_CUSTOMER_LOOKUP_REQUEST, SAVE_CUSTOMER_LOOKUP_SUCCESS, SAVE_CUSTOMER_LOOKUP_FAILURE],
+				endpoint: 'URL: metadata/lookups/customer/aLookUpForText ""',
+				method: "PUT",
+				body: JSON.stringify(lookup),
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+});
+
+describe("resetCustomerLookupSaveResult", () => {
+	it("creates ", () =>
+		expect(resetCustomerLookupSaveResult, "when called with", [], "to exhaustively satisfy", {
+			type: RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 		}));
 });
 

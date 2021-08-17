@@ -23,12 +23,13 @@ import {
 	saveOrderLookupRequestStateSelector,
 	mappedDefinitionsListSelector,
 	baseAttributesSelector,
+	saveCustomerLookupRequestStateSelector,
 	mappedCustomDefinitionsListSelector,
 	mappedBaseDefinitionsListSelector,
 } from "./metadata";
 import { requestStates } from "../constants";
 
-const orderLookups = {
+const lookups = {
 	CanceledStatusReasons: {
 		lookupName: "CanceledStatusReasons",
 		values: {
@@ -354,7 +355,7 @@ describe("namedLookupLocalizedSelector", () => {
 				lookups: {
 					order: {
 						index: {
-							...orderLookups,
+							...lookups,
 							DistanceUOM: {
 								lookupName: "DistanceUOM",
 								values: {
@@ -491,7 +492,7 @@ describe("namedLookupLocalizedValuesSelector", () => {
 			metadata: {
 				lookups: {
 					order: {
-						index: orderLookups,
+						index: lookups,
 						list: [],
 					},
 				},
@@ -551,7 +552,7 @@ describe("lookupsListCurrentInfo", () => {
 			metadata: {
 				lookups: {
 					order: {
-						index: orderLookups,
+						index: lookups,
 						list: [],
 					},
 				},
@@ -593,7 +594,7 @@ describe("lookupsNextPageToLoad", () => {
 			metadata: {
 				lookups: {
 					order: {
-						index: orderLookups,
+						index: lookups,
 						list: [],
 					},
 				},
@@ -634,7 +635,7 @@ describe("mappedLookupListSelector", () => {
 			metadata: {
 				lookups: {
 					order: {
-						index: orderLookups,
+						index: lookups,
 						list: ["CanceledStatusReasons", "CartStatus"],
 					},
 				},
@@ -651,7 +652,7 @@ describe("mappedLookupListSelector", () => {
 			[state],
 			"to satisfy",
 			Immutable.fromJS(
-				Object.values(orderLookups).map(item => {
+				Object.values(lookups).map(item => {
 					item.id = item.lookupName;
 					return item;
 				}),
@@ -667,7 +668,7 @@ describe("mappedLookupListSelector", () => {
 				[state],
 				"to satisfy",
 				Immutable.fromJS(
-					Object.values(orderLookups).map(item => {
+					Object.values(lookups).map(item => {
 						item.id = item.lookupName;
 						return item;
 					}),
@@ -1663,13 +1664,14 @@ describe("definitions", () => {
 
 describe("saveOrderLookupRequestStateSelector", () => {
 	let state;
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: { locale: "it-IT" },
 			metadata: {
 				lookups: {
 					order: {
-						index: orderLookups,
+						index: lookups,
 						list: [],
 					},
 					saveOrderLookupRequestState: requestStates.success,
@@ -1690,6 +1692,42 @@ describe("saveOrderLookupRequestStateSelector", () => {
 		state = state.removeIn(["metadata", "lookups", "saveOrderLookupResponse"]);
 
 		return expect(saveOrderLookupRequestStateSelector, "when called with", [state], "to satisfy", {
+			requestState: requestStates.success,
+			response: null,
+		});
+	});
+});
+
+describe("saveCustomerLookupRequestStateSelector", () => {
+	let state;
+
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: { locale: "it-IT" },
+			metadata: {
+				lookups: {
+					customer: {
+						index: lookups,
+						list: [],
+					},
+					saveCustomerLookupRequestState: requestStates.success,
+					saveCustomerLookupResponse: { something: 123 },
+				},
+			},
+		});
+	});
+
+	it("retrieves the state of the save customer lookup", () => {
+		return expect(saveCustomerLookupRequestStateSelector, "when called with", [state], "to satisfy", {
+			requestState: requestStates.success,
+			response: { something: 123 },
+		});
+	});
+
+	it("retrieves the state of the save customer lookup without any response", () => {
+		state = state.removeIn(["metadata", "lookups", "saveCustomerLookupResponse"]);
+
+		return expect(saveCustomerLookupRequestStateSelector, "when called with", [state], "to satisfy", {
 			requestState: requestStates.success,
 			response: null,
 		});
