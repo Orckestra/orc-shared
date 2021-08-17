@@ -17,3 +17,11 @@ Returns `[flag, toggle(), reset()]` of a flag value with toggle and reset functi
 ## `useViewState(name)`
 
 Returns `[viewState, updateViewState(key, value)]`, where the former is the data stored by [the `view` reducer](actionsreducersselectors.md#view) for the given `name`, and the latter can be used to update individual key/value sets within it.
+
+## `useRequestState({ keys, operation, successAction, errorAction })`
+
+This hook is used to handle custom action after deletes and updates requests. Returns `[buildRequestState]`, where the first value is a method used to build the requestState object.
+
+## `useNotificationRequestState({ keys, operation, successAction, errorAction })`
+
+This hook is used to handle the notification message for deletes and updates. Returns `[buildRequestState]`, where the first value is a method used to build the requestState object.

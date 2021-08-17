@@ -77,3 +77,12 @@ export const definitionType = {
 	shared: "Shared",
 	embedded: "Embedded",
 };
+
+export const requestStateOperations = {
+	delete: "delete",
+	update: "update",
+};
+export const requestStateOperationMap = {
+	delete: "deletes",
+	update: "updates",
+};
