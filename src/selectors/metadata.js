@@ -109,15 +109,15 @@ export const mappedDefinitionsListSelector = memoize(moduleName =>
 	),
 );
 
-export const customMappedDefinitionsListSelector = memoize((moduleName, entityName) =>
-	createSelector(mappedDefinitionsListSelector(moduleName, entityName), attributes =>
-		attributes.filter(a => a.get("isBuiltIn") === false),
+export const mappedCustomDefinitionsListSelector = memoize(moduleName =>
+	createSelector(mappedDefinitionsListSelector(moduleName), definitions =>
+		definitions.filter(a => a.get("isBuiltIn") === false).toJS(),
 	),
 );
 
-export const baseMappedDefinitionsListSelector = memoize((moduleName, entityName) =>
-	createSelector(mappedDefinitionsListSelector(moduleName, entityName), attributes =>
-		attributes.filter(a => a.get("isBuiltIn") === true),
+export const mappedBaseDefinitionsListSelector = memoize(moduleName =>
+	createSelector(mappedDefinitionsListSelector(moduleName), definitions =>
+		definitions.filter(a => a.get("isBuiltIn") === true).toJS(),
 	),
 );
 
