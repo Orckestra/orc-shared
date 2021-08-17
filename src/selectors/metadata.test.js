@@ -1138,7 +1138,7 @@ describe("definitions", () => {
 	});
 
 	it("will return correct customer base profile definition", () => {
-		const expected = {
+		const expected = Immutable.fromJS({
 			CUSTOMER: {
 				entityTypeName: "CUSTOMER",
 				isBuiltIn: true,
@@ -1146,7 +1146,7 @@ describe("definitions", () => {
 				displayName: "Customer",
 				type: "Shared",
 			},
-		};
+		});
 		expect(
 			mappedBaseDefinitionsListSelector,
 			"when called with",
@@ -1159,7 +1159,7 @@ describe("definitions", () => {
 	});
 
 	it("will return correct customer custom profile definition", () => {
-		const expected = {
+		const expected = Immutable.fromJS({
 			CustomProfile1: {
 				displayName: "CustomProfile1",
 				entityTypeName: "CustomProfile1",
@@ -1185,7 +1185,7 @@ describe("definitions", () => {
 				isBuiltIn: false,
 				type: "Embedded",
 			},
-		};
+		});
 		expect(
 			mappedCustomDefinitionsListSelector,
 			"when called with",
