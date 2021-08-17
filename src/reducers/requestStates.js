@@ -1,6 +1,6 @@
 import Immutable from "immutable";
 import { castArray } from "lodash";
-import { requestStateOperationMap, requestStateOperations } from "../constants";
+import { requestStateOperationMap } from "../constants";
 
 const initialState = Immutable.fromJS({
 	deletes: Immutable.Map(),

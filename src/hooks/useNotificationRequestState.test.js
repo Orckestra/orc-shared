@@ -1,20 +1,21 @@
 import Immutable from "immutable";
 import React from "react";
-import useRequestState from "./useRequestState";
+import useNotificationRequestState from "./useNotificationRequestState";
 import { extractMessages, TestWrapper } from "../utils/testUtils";
 import { requestStateOperations } from "../constants";
 import sharedMessages from "../sharedMessages";
 import sinon from "sinon";
 import { mount } from "enzyme";
 import { resetRequestState } from "../actions/requestState";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const messages = extractMessages(sharedMessages);
 
-describe("useRequestState", () => {
+describe("useNotificationRequestState", () => {
 	let buildRequestState;
 
 	const TestComp = props => {
-		[buildRequestState] = useRequestState(props);
+		[buildRequestState] = useNotificationRequestState(props);
 		return <div>some content</div>;
 	};
 
@@ -50,7 +51,9 @@ describe("useRequestState", () => {
 				<TestComp
 					keys={["key1", "key2"]}
 					operation={requestStateOperations.delete}
+					successMessageId={sharedMessages.delete}
 					successAction={successSpy}
+					errorMessageId={sharedMessages.error}
 					errorAction={errorSpy}
 				/>
 			</TestWrapper>
@@ -71,7 +74,9 @@ describe("useRequestState", () => {
 				<TestComp
 					keys={["key1", "key2"]}
 					operation={requestStateOperations.delete}
+					successMessageId={sharedMessages.delete}
 					successAction={successSpy}
+					errorMessageId={sharedMessages.error}
 					errorAction={errorSpy}
 				/>
 			</TestWrapper>
@@ -97,19 +102,23 @@ describe("useRequestState", () => {
 				<TestComp
 					keys={["key1", "key2"]}
 					operation={requestStateOperations.delete}
+					successMessageId={sharedMessages.delete}
 					successAction={successSpy}
+					errorMessageId={sharedMessages.error}
 					errorAction={errorSpy}
 				/>
 			</TestWrapper>
 		);
 
-		mount(component);
+		const mountedComponent = mount(component);
+		const sb = mountedComponent.find(Snackbar);
 
 		const resetAction = resetRequestState(["key1", "key2"], requestStateOperations.delete);
 		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
 		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
 		expect(successSpy, "was called");
 		expect(errorSpy, "was not called");
+		expect(sb.prop("open"), "to equal", true);
 	});
 
 	it("success callback is not called when undefined", () => {
@@ -124,13 +133,21 @@ describe("useRequestState", () => {
 
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
-				<TestComp keys={["key1", "key2"]} operation={requestStateOperations.delete} errorAction={errorSpy} />
+				<TestComp
+					keys={["key1", "key2"]}
+					operation={requestStateOperations.delete}
+					successMessageId={sharedMessages.delete}
+					errorMessageId={sharedMessages.error}
+					errorAction={errorSpy}
+				/>
 			</TestWrapper>
 		);
 
-		mount(component);
+		const mountedComponent = mount(component);
+		const sb = mountedComponent.find(Snackbar);
 
 		expect(successSpy, "was not called");
+		expect(sb.prop("open"), "to equal", true);
 	});
 
 	it("dispatches the error actions", () => {
@@ -148,19 +165,23 @@ describe("useRequestState", () => {
 				<TestComp
 					keys={["key1", "key2"]}
 					operation={requestStateOperations.delete}
+					successMessageId={sharedMessages.delete}
 					successAction={successSpy}
+					errorMessageId={sharedMessages.error}
 					errorAction={errorSpy}
 				/>
 			</TestWrapper>
 		);
 
-		mount(component);
+		const mountedComponent = mount(component);
+		const sb = mountedComponent.find(Snackbar);
 
 		const resetAction = resetRequestState(["key1", "key2"], requestStateOperations.delete);
 		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
 		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
 		expect(successSpy, "was not called");
 		expect(errorSpy, "was called");
+		expect(sb.prop("open"), "to equal", true);
 	});
 
 	it("error action is not called when undefined", () => {
@@ -175,12 +196,20 @@ describe("useRequestState", () => {
 
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
-				<TestComp keys={["key1", "key2"]} operation={requestStateOperations.delete} successAction={successSpy} />
+				<TestComp
+					keys={["key1", "key2"]}
+					operation={requestStateOperations.delete}
+					successMessageId={sharedMessages.delete}
+					successAction={successSpy}
+					errorMessageId={sharedMessages.error}
+				/>
 			</TestWrapper>
 		);
 
-		mount(component);
+		const mountedComponent = mount(component);
+		const sb = mountedComponent.find(Snackbar);
 
 		expect(errorSpy, "was not called");
+		expect(sb.prop("open"), "to equal", true);
 	});
 });
