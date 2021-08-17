@@ -23,6 +23,8 @@ import {
 	saveOrderLookupRequestStateSelector,
 	mappedDefinitionsListSelector,
 	baseAttributesSelector,
+	mappedCustomDefinitionsListSelector,
+	mappedBaseDefinitionsListSelector,
 } from "./metadata";
 import { requestStates } from "../constants";
 
@@ -1126,6 +1128,66 @@ describe("definitions", () => {
 		});
 		expect(
 			mappedDefinitionsListSelector,
+			"when called with",
+			["customer"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
+	});
+
+	it("will return correct customer base profile definition", () => {
+		const expected = Immutable.fromJS({
+			CUSTOMER: {
+				entityTypeName: "CUSTOMER",
+				isBuiltIn: true,
+				isSharedEntity: true,
+				displayName: "Customer",
+				type: "Shared",
+			},
+		});
+		expect(
+			mappedBaseDefinitionsListSelector,
+			"when called with",
+			["customer"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
+	});
+
+	it("will return correct customer custom profile definition", () => {
+		const expected = Immutable.fromJS({
+			CustomProfile1: {
+				displayName: "CustomProfile1",
+				entityTypeName: "CustomProfile1",
+				isBuiltIn: false,
+				isSharedEntity: true,
+				type: "Shared",
+			},
+			CustomProfile2: {
+				displayName: "CustomProfile1",
+				entityTypeName: "CustomProfile2",
+				isBuiltIn: false,
+				type: "Embedded",
+			},
+			RecursedCustomProfile: {
+				displayName: "RecursedCustomProfile",
+				entityTypeName: "RecursedCustomProfile",
+				isBuiltIn: false,
+				type: "Embedded",
+			},
+			PROFILEWITHRECUSREDATTRIBUTE: {
+				displayName: "PROFILEWITHRECUSREDATTRIBUTE",
+				entityTypeName: "PROFILEWITHRECUSREDATTRIBUTE",
+				isBuiltIn: false,
+				type: "Embedded",
+			},
+		});
+		expect(
+			mappedCustomDefinitionsListSelector,
 			"when called with",
 			["customer"],
 			"when called with",

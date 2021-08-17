@@ -109,6 +109,18 @@ export const mappedDefinitionsListSelector = memoize(moduleName =>
 	),
 );
 
+export const mappedCustomDefinitionsListSelector = memoize(moduleName =>
+	createSelector(mappedDefinitionsListSelector(moduleName), definitions =>
+		definitions.filter(a => a.get("isBuiltIn") === false),
+	),
+);
+
+export const mappedBaseDefinitionsListSelector = memoize(moduleName =>
+	createSelector(mappedDefinitionsListSelector(moduleName), definitions =>
+		definitions.filter(a => a.get("isBuiltIn") === true),
+	),
+);
+
 export const definitionEntity = memoize((moduleName, entityName) =>
 	createSelector(definitionsModule(moduleName), definition => definition.getIn([entityName]) || Immutable.Map()),
 );
