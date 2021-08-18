@@ -1198,6 +1198,17 @@ describe("definitions", () => {
 		);
 	});
 
+	it("will get an empty Map if definitions do not exist", () =>
+		expect(
+			mappedCustomDefinitionsListSelector,
+			"when called with",
+			["notexistingmodulename"],
+			"when called with",
+			[state],
+			"to equal",
+			Immutable.Map(),
+		));
+
 	it("will get an empty List if definitios do not exist", () =>
 		expect(
 			groupedCustomAttributesDefinitionSelector,
