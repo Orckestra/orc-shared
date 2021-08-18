@@ -91,7 +91,7 @@ export const mappedOrderLookupsListSelector = mappedLookupListSelector(ORDER_MOD
 /***  DEFINITIONS  ***/
 const definitions = createSelector(metadata, meta => meta.get("definitions"));
 const definitionsModule = memoize(moduleName =>
-	createSelector(definitions, definitions => definitions.get(moduleName)),
+	createSelector(definitions, definitions => definitions.get(moduleName) ?? Immutable.Map()),
 );
 
 export const mappedDefinitionsListSelector = memoize(moduleName =>
