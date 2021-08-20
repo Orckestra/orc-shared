@@ -121,8 +121,10 @@ export const mappedBaseDefinitionsListSelector = memoize(moduleName =>
 	),
 );
 
-export const newProfileDefinitionInstanceSelector = () =>
-	createSelector(definitions, data => data.get("newInstance") || null);
+export const newProfileDefinitionInstanceSelector = createSelector(
+	definitions,
+	data => data.get("newInstance") || null,
+);
 
 export const newProfileDefinitionNameSelector = createSelector(definitions, data => data.get("newInstanceId"));
 

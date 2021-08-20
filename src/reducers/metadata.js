@@ -211,8 +211,9 @@ const metadataReducer = (state = initialState, action) => {
 			return state
 				.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.idle)
 				.setIn(["definitions", "newInstanceId"], null);
-		case SET_NEW_PROFILE_DEFINITION:
-			return state.setIn(["definitions", "newInstance"], Immutable.fromJS({ name: action.name }));
+		case SET_NEW_PROFILE_DEFINITION: {
+			return state.setIn(["definitions", "newInstance"], Immutable.fromJS({ name: action.payload.name }));
+		}
 
 		default:
 			return state;

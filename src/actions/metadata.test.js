@@ -341,7 +341,7 @@ describe("setNewProfileDefinition", () => {
 
 		expect(setNewProfileDefinition, "when called with", [name], "to equal", {
 			type: SET_NEW_PROFILE_DEFINITION,
-			name: name,
+			payload: { name: name },
 		});
 	});
 });

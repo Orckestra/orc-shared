@@ -180,5 +180,5 @@ export const resetProfileDefinitionSaveResult = () => {
 export const SET_NEW_PROFILE_DEFINITION = "SET_NEW_PROFILE_DEFINITION";
 export const setNewProfileDefinition = name => ({
 	type: SET_NEW_PROFILE_DEFINITION,
-	name,
+	payload: { name: name },
 });
