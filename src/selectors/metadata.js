@@ -121,9 +121,18 @@ export const mappedBaseDefinitionsListSelector = memoize(moduleName =>
 	),
 );
 
-export const newProfileDefinitionInstanceSelector = createSelector(metadata, meta => meta.get("newInstance") || null);
+export const newProfileDefinitionInstanceSelector = createSelector(
+	definitions,
+	definitions => definitions.get("newInstance") || null,
+);
 
-export const newProfileDefinitionNameSelector = createSelector(metadata, meta => meta.get("newInstanceId"));
+export const newProfileDefinitionNameSelector = createSelector(definitions, definitions =>
+	definitions.get("newInstanceId"),
+);
+
+export const saveProfileDefinitionRequestStateSelector = createSelector(definitions, definitions =>
+	definitions.get("saveProfileDefinitionRequestState"),
+);
 
 export const definitionEntity = memoize((moduleName, entityName) =>
 	createSelector(definitionsModule(moduleName), definition => definition.getIn([entityName]) || Immutable.Map()),

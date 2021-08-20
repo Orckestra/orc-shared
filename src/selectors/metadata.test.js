@@ -28,6 +28,7 @@ import {
 	mappedBaseDefinitionsListSelector,
 	newProfileDefinitionInstanceSelector,
 	newProfileDefinitionNameSelector,
+	saveProfileDefinitionRequestStateSelector,
 } from "./metadata";
 import { requestStates } from "../constants";
 
@@ -1204,9 +1205,12 @@ describe("definitions", () => {
 		return expect(newProfileDefinitionInstanceSelector, "when called with", [state], "to satisfy", null);
 	});
 
-	it("retrieves the state of the save customer lookup without any response", () => {
-		state = state.removeIn(["metadata", "lookups", "saveCustomerLookupResponse"]);
+	it("retrieves the state of the profile definition name response", () => {
 		return expect(newProfileDefinitionNameSelector, "when called with", [state], "to satisfy", undefined);
+	});
+
+	it("retrieves the state of the profile definition state selector", () => {
+		return expect(saveProfileDefinitionRequestStateSelector, "when called with", [state], "to satisfy", undefined);
 	});
 
 	it("will get an empty Map if definitions do not exist", () =>
