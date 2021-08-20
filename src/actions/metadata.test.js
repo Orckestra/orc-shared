@@ -1,5 +1,4 @@
 import { RSAA } from "redux-api-middleware";
-import { definitionType } from "../constants";
 import {
 	GET_ORDER_LOOKUPS_REQUEST,
 	GET_ORDER_LOOKUPS_SUCCESS,
