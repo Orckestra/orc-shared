@@ -18,6 +18,10 @@ import {
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	SAVE_CUSTOMER_LOOKUP_FAILURE,
 	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
+	CREATE_PROFILE_DEFINITION_SUCCESS,
+	CREATE_PROFILE_DEFINITION_FAILURE,
+	RESET_PROFILE_DEFINITION_SAVE_RESULT,
+	SET_NEW_PROFILE_DEFINITION,
 } from "../actions/metadata";
 import reducer from "./metadata";
 import { requestStates } from "../constants";
@@ -93,6 +97,9 @@ describe("metadata", () => {
 				customer: {},
 				order: {},
 				product: {},
+				saveProfileDefinitionRequestState: requestStates.idle,
+				newInstance: null,
+				newInstanceId: null,
 			},
 		}));
 
@@ -1131,6 +1138,126 @@ describe("metadata", () => {
 						customer: {
 							ADDRESS: definitionsPayload,
 						},
+					},
+				}),
+			);
+		});
+
+		it("create custom profile definition success", () => {
+			const definition = {
+				displayName: {
+					"en-CA": "",
+					"en-US": "Address",
+					"fr-CA": "Adresse",
+					"it-IT": "Indirizzo",
+				},
+				entityTypeName: "ADDRESS",
+				isBuiltIn: true,
+				attributes: [],
+			};
+			const oldState = Immutable.fromJS({
+				definitions: {
+					customer: {},
+					saveProfileDefinitionRequestState: null,
+					newInstanceId: null,
+				},
+			});
+			const action = {
+				type: CREATE_PROFILE_DEFINITION_SUCCESS,
+				meta: definition,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					definitions: {
+						customer: {
+							ADDRESS: {
+								displayName: { "en-CA": "", "en-US": "Address", "fr-CA": "Adresse", "it-IT": "Indirizzo" },
+								entityTypeName: "ADDRESS",
+								isBuiltIn: true,
+								attributes: [],
+							},
+						},
+						saveProfileDefinitionRequestState: requestStates.success,
+						newInstanceId: definition.entityTypeName,
+					},
+				}),
+			);
+		});
+
+		it("create custom profile definition failure", () => {
+			const oldState = Immutable.fromJS({
+				definitions: {
+					customer: {},
+					saveProfileDefinitionRequestState: null,
+					newInstanceId: null,
+				},
+			});
+
+			const action = {
+				type: CREATE_PROFILE_DEFINITION_FAILURE,
+				payload: { response: "failure" },
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					definitions: {
+						customer: {},
+						saveProfileDefinitionRequestState: requestStates.fail,
+						newInstanceId: null,
+					},
+				}),
+			);
+		});
+
+		it("reset custom profile definition save result", () => {
+			const oldState = Immutable.fromJS({
+				definitions: {
+					customer: {},
+					saveProfileDefinitionRequestState: requestStates.success,
+					newInstanceId: "test",
+				},
+			});
+			const action = {
+				type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
+				payload: { response: "failure" },
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					definitions: {
+						customer: {},
+						saveProfileDefinitionRequestState: requestStates.idle,
+						newInstanceId: null,
+					},
+				}),
+			);
+		});
+
+		it("set new profile definition", () => {
+			const oldState = Immutable.fromJS({
+				definitions: {
+					customer: {},
+					saveProfileDefinitionRequestState: requestStates.idle,
+					newInstance: null,
+				},
+			});
+			const newInstansId = "test";
+			const action = {
+				type: SET_NEW_PROFILE_DEFINITION,
+				payload: { name: newInstansId },
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					definitions: {
+						customer: {},
+						saveProfileDefinitionRequestState: requestStates.idle,
+						newInstance: { name: "test" },
 					},
 				}),
 			);

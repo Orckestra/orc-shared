@@ -10,6 +10,7 @@ import {
 	getProductDefinitionsRequest,
 	updateOrderLookupTypeDefinitionRequest,
 	updateCustomerLookupTypeDefinitionRequest,
+	createEntityTypeRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -152,4 +153,32 @@ export const INCREMENT_CUSTOMER_LOOKUPS_PAGE = "INCREMENT_CUSTOMER_LOOKUPS_PAGE"
 export const incrementCustomerLookupsPage = pageToLoad => ({
 	type: INCREMENT_CUSTOMER_LOOKUPS_PAGE,
 	pageToLoad: pageToLoad,
+});
+
+const CREATE_PROFILE_DEFINITION = "CREATE_PROFILE_DEFINITION";
+export const [CREATE_PROFILE_DEFINITION_REQUEST, CREATE_PROFILE_DEFINITION_SUCCESS, CREATE_PROFILE_DEFINITION_FAILURE] =
+	makeActionTypes(CREATE_PROFILE_DEFINITION);
+
+export const createProfileDefinition = definition =>
+	makeOrcApiAction(
+		CREATE_PROFILE_DEFINITION,
+		createEntityTypeRequest.buildUrl(definition.entityTypeName),
+		createEntityTypeRequest.verb,
+		{
+			body: definition,
+			meta: definition,
+		},
+	);
+
+export const RESET_PROFILE_DEFINITION_SAVE_RESULT = "RESET_PROFILE_DEFINITION_SAVE_RESULT";
+export const resetProfileDefinitionSaveResult = () => {
+	return {
+		type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
+	};
+};
+
+export const SET_NEW_PROFILE_DEFINITION = "SET_NEW_PROFILE_DEFINITION";
+export const setNewProfileDefinition = name => ({
+	type: SET_NEW_PROFILE_DEFINITION,
+	payload: { name: name },
 });
