@@ -314,7 +314,7 @@ describe("createProfileDefinition", () => {
 					{ type: CREATE_PROFILE_DEFINITION_SUCCESS, meta: profileDefinition },
 					{ type: CREATE_PROFILE_DEFINITION_FAILURE, meta: profileDefinition },
 				],
-				endpoint: 'URL: metadata/entityType/ ""',
+				endpoint: 'URL: metadata/EntityType/ ""',
 				method: "POST",
 				body: JSON.stringify(profileDefinition),
 				credentials: "include",
