@@ -1184,17 +1184,6 @@ describe("metadata", () => {
 		});
 
 		it("create custom profile definition failure", () => {
-			const definition = {
-				displayName: {
-					"en-CA": "",
-					"en-US": "Address",
-					"fr-CA": "Adresse",
-					"it-IT": "Indirizzo",
-				},
-				entityTypeName: "ADDRESS",
-				isBuiltIn: true,
-				attributes: [],
-			};
 			const oldState = Immutable.fromJS({
 				definitions: {
 					customer: {},
