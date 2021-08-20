@@ -1,4 +1,5 @@
 import { RSAA } from "redux-api-middleware";
+import { definitionType } from "../constants";
 import {
 	GET_ORDER_LOOKUPS_REQUEST,
 	GET_ORDER_LOOKUPS_SUCCESS,
@@ -52,6 +53,14 @@ import {
 	SAVE_CUSTOMER_LOOKUP_FAILURE,
 	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 	resetCustomerLookupSaveResult,
+	CREATE_PROFILE_DEFINITION_REQUEST,
+	CREATE_PROFILE_DEFINITION_SUCCESS,
+	CREATE_PROFILE_DEFINITION_FAILURE,
+	createProfileDefinition,
+	RESET_PROFILE_DEFINITION_SAVE_RESULT,
+	resetProfileDefinitionSaveResult,
+	SET_NEW_PROFILE_DEFINITION,
+	setNewProfileDefinition,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -288,6 +297,54 @@ describe("getCustomerDefinitions", () => {
 				options: { redirect: "follow" },
 			},
 		}));
+});
+
+describe("createProfileDefinition", () => {
+	const profileDefinition = JSON.stringify({
+		entityTypeName: "testEntityTypeName",
+		atributes: [],
+		description: "test desription",
+		displayName: "test",
+		isSharedEntity: false,
+	});
+	it("creates a RSAA to create a custom profile definition", () =>
+		expect(createProfileDefinition, "when called with", [profileDefinition], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: CREATE_PROFILE_DEFINITION_REQUEST, meta: profileDefinition },
+					{ type: CREATE_PROFILE_DEFINITION_SUCCESS, meta: profileDefinition },
+					{ type: CREATE_PROFILE_DEFINITION_FAILURE, meta: profileDefinition },
+				],
+				endpoint: 'URL: metadata/entityType/ ""',
+				method: "POST",
+				body: JSON.stringify(profileDefinition),
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+});
+
+describe("resetProfileDefinitionSaveResult", () => {
+	it("creates ", () =>
+		expect(resetProfileDefinitionSaveResult, "when called with", [], "to exhaustively satisfy", {
+			type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
+		}));
+});
+
+describe("setNewProfileDefinition", () => {
+	it("creates an action to set the new profile definition name", () => {
+		const name = "test";
+
+		expect(setNewProfileDefinition, "when called with", [name], "to equal", {
+			type: SET_NEW_PROFILE_DEFINITION,
+			name: name,
+		});
+	});
 });
 
 describe("getOrderDefinitions", () => {

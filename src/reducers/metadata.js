@@ -26,6 +26,10 @@ import {
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	SAVE_CUSTOMER_LOOKUP_FAILURE,
 	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
+	CREATE_PROFILE_DEFINITION_SUCCESS,
+	CREATE_PROFILE_DEFINITION_FAILURE,
+	RESET_PROFILE_DEFINITION_SAVE_RESULT,
+	SET_NEW_PROFILE_DEFINITION,
 } from "../actions/metadata";
 import { requestStates } from "../constants";
 
@@ -196,6 +200,19 @@ const metadataReducer = (state = initialState, action) => {
 				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.idle)
 				.setIn(["lookups", "saveCustomerLookupResponse"], null);
 		}
+		case CREATE_PROFILE_DEFINITION_SUCCESS:
+			return state
+				.setIn(["definitions", "newInstanceId"], action.meta.entityTypeName)
+				.setIn(["definitions", CUSTOMER_MODULE_NAME, action.meta.entityTypeName], Immutable.fromJS(action.meta))
+				.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.success);
+		case CREATE_PROFILE_DEFINITION_FAILURE:
+			return state.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.fail);
+		case RESET_PROFILE_DEFINITION_SAVE_RESULT:
+			return state
+				.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.idle)
+				.setIn(["definitions", "newInstanceId"], null);
+		case SET_NEW_PROFILE_DEFINITION:
+			return state.setIn(["definitions", "newInstance"], Immutable.fromJS({ name: action.name }));
 
 		default:
 			return state;

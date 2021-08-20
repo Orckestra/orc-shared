@@ -4381,3 +4381,9 @@ export const voidPaymentRequest = {
 		buildUrl(["carts", scopeId, customerId, cartName, "payments", paymentId, "void"]),
 	verb: "POST",
 };
+
+export const createProfileDefinitonRequest = {
+	name: "createProfileDefinitonRequest",
+	buildUrl: entityTypeName => buildUrl(["metadata", "entityType", entityTypeName]),
+	verb: "POST",
+};
