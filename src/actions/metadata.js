@@ -10,7 +10,7 @@ import {
 	getProductDefinitionsRequest,
 	updateOrderLookupTypeDefinitionRequest,
 	updateCustomerLookupTypeDefinitionRequest,
-	createProfileDefinitonRequest,
+	createEntityTypeRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -162,8 +162,8 @@ export const [CREATE_PROFILE_DEFINITION_REQUEST, CREATE_PROFILE_DEFINITION_SUCCE
 export const createProfileDefinition = definition =>
 	makeOrcApiAction(
 		CREATE_PROFILE_DEFINITION,
-		createProfileDefinitonRequest.buildUrl(definition.entityTypeName),
-		createProfileDefinitonRequest.verb,
+		createEntityTypeRequest.buildUrl(definition.entityTypeName),
+		createEntityTypeRequest.verb,
 		{
 			body: definition,
 			meta: definition,
