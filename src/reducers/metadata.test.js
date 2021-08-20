@@ -1086,6 +1086,60 @@ describe("metadata", () => {
 			);
 		});
 
+		it("saves customer definitions metadata", () => {
+			const definitionsPayload = {
+				displayName: {
+					"en-CA": "",
+					"en-US": "Address",
+					"fr-CA": "Adresse",
+					"it-IT": "Indirizzo",
+				},
+				entityTypeName: "ADDRESS",
+				isBuiltIn: true,
+				attributes: [
+					{
+						name: "AddressName",
+						groupId: "Default",
+						displayName: {
+							"en-CA": "",
+							"en-US": "Address Name",
+							"fr-CA": "Nom adresse",
+							"it-IT": "Nome indirizzo",
+						},
+						isRequired: false,
+						displayOrder: 0,
+						dataType: "Text",
+						isBuiltIn: true,
+						allowMultipleValues: false,
+						multilingual: false,
+						minimum: 0,
+						maximum: 64,
+						isSearchable: true,
+					},
+				],
+			};
+			const oldState = Immutable.fromJS({
+				definitions: {
+					customer: {},
+				},
+			});
+			const action = {
+				type: GET_CUSTOMER_DEFINITIONS_SUCCESS,
+				payload: [definitionsPayload],
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					definitions: {
+						customer: {
+							ADDRESS: definitionsPayload,
+						},
+					},
+				}),
+			);
+		});
+
 		it("create custom profile definition success", () => {
 			const definition = {
 				displayName: {
