@@ -67,6 +67,9 @@ const initialState = Immutable.fromJS({
 		customer: {},
 		order: {},
 		product: {},
+		saveProfileDefinitionRequestState: requestStates.idle,
+		newInstance: null,
+		newInstanceId: null,
 	},
 });
 
@@ -212,7 +215,7 @@ const metadataReducer = (state = initialState, action) => {
 				.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.idle)
 				.setIn(["definitions", "newInstanceId"], null);
 		case SET_NEW_PROFILE_DEFINITION: {
-			return state.setIn(["definitions", "newInstance"], Immutable.fromJS({ name: action.payload.name }));
+			return state.setIn(["definitions", "newInstance"], Immutable.fromJS(action.payload));
 		}
 
 		default:

@@ -97,6 +97,9 @@ describe("metadata", () => {
 				customer: {},
 				order: {},
 				product: {},
+				saveProfileDefinitionRequestState: requestStates.idle,
+				newInstance: null,
+				newInstanceId: null,
 			},
 		}));
 
@@ -1245,7 +1248,7 @@ describe("metadata", () => {
 			const newInstansId = "test";
 			const action = {
 				type: SET_NEW_PROFILE_DEFINITION,
-				name: newInstansId,
+				payload: { name: newInstansId },
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
