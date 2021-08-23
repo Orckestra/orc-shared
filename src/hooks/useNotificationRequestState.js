@@ -57,9 +57,9 @@ const useNotificationRequestState = ({
 			if (errorAction) {
 				errorAction(errorMessage);
 			}
-			// addNotification causes issues in the deps
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
+		// addNotification causes issues in the deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[errorAction, errorMessageId, errorMessageValues, formatMessage],
 	);
 
