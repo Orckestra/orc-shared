@@ -29,6 +29,8 @@ import {
 	newProfileDefinitionInstanceSelector,
 	newProfileDefinitionNameSelector,
 	saveProfileDefinitionRequestStateSelector,
+	definitionEntityBaseAttributesSelector,
+	definitionEntityCustomAttributesSelector,
 } from "./metadata";
 import { requestStates } from "../constants";
 
@@ -1264,6 +1266,144 @@ describe("definitions", () => {
 
 		expect(
 			groupedCustomAttributesDefinitionSelector,
+			"when called with",
+			["customer", "CUSTOMER"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
+	});
+
+	it("will return correct full base customer definition attributes", () => {
+		const expected = Immutable.fromJS([
+			{
+				maximum: 256,
+				dataType: "Text",
+				isRequired: false,
+				name: "Username",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: {
+					"ar-JO": "",
+					"en-CA": "User name",
+					"en-US": "User name",
+					"es-ES": "",
+					"fr-CA": "User name",
+					"it-IT": "Nome utente",
+				},
+				minimum: 1,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+			{
+				maximum: 256,
+				dataType: "Text",
+				isRequired: false,
+				name: "Email",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: {
+					"ar-JO": "",
+					"en-CA": "Email",
+					"en-US": "Email",
+					"es-ES": "",
+					"fr-CA": "Email",
+					"it-IT": "Email",
+				},
+				minimum: 0,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+			{
+				maximum: 64,
+				dataType: "Text",
+				isRequired: false,
+				name: "LastName",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: {
+					"en-CA": "Last name",
+					"en-US": "Last name",
+					"fr-CA": "Last name",
+					"it-IT": "Cognome",
+				},
+				minimum: 0,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+			{
+				maximum: 64,
+				dataType: "Text",
+				isRequired: false,
+				name: "FirstName",
+				displayOrder: 0,
+				isSearchable: true,
+				displayName: {
+					"ar-JO": "",
+					"en-CA": "First Name",
+					"en-US": "First Name",
+					"es-ES": "",
+					"fr-CA": "First Name",
+					"it-IT": "Nome",
+				},
+				minimum: 0,
+				multilingual: false,
+				isBuiltIn: true,
+				groupId: "Default",
+				allowMultipleValues: false,
+			},
+		]);
+		expect(
+			definitionEntityBaseAttributesSelector,
+			"when called with",
+			["customer", "CUSTOMER"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
+	});
+
+	it("will return correct full custom customer definition attributes", () => {
+		const expected = Immutable.fromJS([
+			{
+				dataType: "EntityReference",
+				isRequired: false,
+				name: "InnaCustom1",
+				displayOrder: 0,
+				isSearchable: false,
+				displayName: { "en-CA": "attribute en-CA", "en-US": "attribute en-US", "fr-CA": "" },
+				referenceTypeName: "CustomProfile1",
+				multilingual: false,
+				isBuiltIn: false,
+				groupId: "Default",
+				allowMultipleValues: true,
+				description: "InnaCustomer",
+			},
+			{
+				dataType: "EntityReference",
+				isRequired: false,
+				name: "InnaCustom2",
+				displayOrder: 0,
+				isSearchable: false,
+				displayName: { "en-CA": "attribute en-CA", "en-US": "attribute en-UA", "fr-CA": "" },
+				referenceTypeName: "CustomProfile2",
+				multilingual: false,
+				isBuiltIn: false,
+				groupId: "CustomGroup",
+				allowMultipleValues: true,
+				description: "InnaCustom2",
+			},
+		]);
+		expect(
+			definitionEntityCustomAttributesSelector,
 			"when called with",
 			["customer", "CUSTOMER"],
 			"when called with",
