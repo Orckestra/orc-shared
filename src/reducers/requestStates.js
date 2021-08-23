@@ -3,6 +3,7 @@ import { castArray } from "lodash";
 import { requestStateOperationMap } from "../constants";
 
 const initialState = Immutable.fromJS({
+	creates: Immutable.Map(),
 	deletes: Immutable.Map(),
 	updates: Immutable.Map(),
 });
@@ -37,6 +38,7 @@ const requestStateReducer = (state = initialState, action) => {
 				inProgress: true,
 				value: false,
 				error: false,
+				errorMessage: null,
 			}),
 		);
 	}
@@ -51,6 +53,7 @@ const requestStateReducer = (state = initialState, action) => {
 				inProgress: false,
 				value: true,
 				error: false,
+				errorMessage: null,
 			}),
 		);
 	}
@@ -65,6 +68,7 @@ const requestStateReducer = (state = initialState, action) => {
 				inProgress: false,
 				value: false,
 				error: true,
+				errorMessage: action.payload?.response?.responseStatus?.message ?? null,
 			}),
 		);
 	}
@@ -81,6 +85,7 @@ const requestStateReducer = (state = initialState, action) => {
 					inProgress: false,
 					value: false,
 					error: false,
+					errorMessage: null,
 				}),
 			);
 		}

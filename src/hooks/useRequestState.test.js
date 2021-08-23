@@ -163,6 +163,37 @@ describe("useRequestState", () => {
 		expect(errorSpy, "was called");
 	});
 
+	it("dispatches the error actions with a message", () => {
+		state = state.setIn(
+			["requestStates", "deletes", "key1", "key2", "state"],
+			Immutable.fromJS({
+				inProgress: false,
+				value: false,
+				error: true,
+				errorMessage: "some error message",
+			}),
+		);
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<TestComp
+					keys={["key1", "key2"]}
+					operation={requestStateOperations.delete}
+					successAction={successSpy}
+					errorAction={errorSpy}
+				/>
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		const resetAction = resetRequestState(["key1", "key2"], requestStateOperations.delete);
+		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
+		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
+		expect(successSpy, "was not called");
+		expect(errorSpy, "to have a call satisfying", { args: ["some error message"] });
+	});
+
 	it("error action is not called when undefined", () => {
 		state = state.setIn(
 			["requestStates", "deletes", "key1", "key2", "state"],

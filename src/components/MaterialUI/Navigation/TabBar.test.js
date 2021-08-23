@@ -79,7 +79,7 @@ describe("TabBar", () => {
 			path: "/:scope/module1/:someParamPath/:someEntityId",
 		},
 		{
-			label: messages.pageNew,
+			label: messages.page6,
 			href: "/Scope1/module1/new",
 			params: { scope: "Scope1" },
 			active: false,
@@ -371,6 +371,15 @@ describe("TabBar", () => {
 			getState: () => state,
 			dispatch: () => {},
 		};
+
+		pages[3] = {
+			label: messages.page4,
+			href: "/Scope1/module1/aParamPath/page4",
+			params: { scope: "Scope1", someParamPath: "aParamPath", someEntityId: "page4" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/:someParamPath/:someEntityId",
+		};
 	});
 
 	const theme = createMuiTheme();
@@ -590,6 +599,40 @@ describe("TabBar", () => {
 		expect(pages[0].close, "was called");
 
 		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, [pages[0].params.entityId]] });
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
+	it("Calls correct close callback when close icon for specific page tab is clicked with a custom entity resolver", () => {
+		pages[3].entityIdResolver = () => "someCustomId";
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const dispatchSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesData, "useDispatchWithModulesData")
+			.returns(dispatchSpy);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(4);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		expect(pages[3].close, "was called");
+
+		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, ["someCustomId"]] });
 
 		useDispatchWithModulesDataStub.restore();
 	});

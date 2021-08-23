@@ -20,10 +20,8 @@ import {
 	variantPropertyKeyValuesSelector,
 	profileAttributeGroupsSelector,
 	selectCurrentLookupDetails,
-	saveOrderLookupRequestStateSelector,
 	mappedDefinitionsListSelector,
 	baseAttributesSelector,
-	saveCustomerLookupRequestStateSelector,
 	mappedCustomDefinitionsListSelector,
 	mappedBaseDefinitionsListSelector,
 	newProfileDefinitionInstanceSelector,
@@ -31,8 +29,8 @@ import {
 	saveProfileDefinitionRequestStateSelector,
 	definitionEntityBaseAttributesSelector,
 	definitionEntityCustomAttributesSelector,
+	lookupByNameSelector,
 } from "./metadata";
-import { requestStates } from "../constants";
 
 const lookups = {
 	CanceledStatusReasons: {
@@ -155,6 +153,92 @@ describe("namedLookupSelector", () => {
 			[state],
 			"to equal",
 			Immutable.Map(),
+		));
+});
+
+describe("lookupByNameSelector ", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: { locale: "fr-CA" },
+			metadata: {
+				lookups: {
+					order: {
+						index: {
+							CanceledStatusReasons: {
+								lookupName: "CanceledStatusReasons",
+								values: {
+									CanceledReason1: {
+										id: "e16d07f847284775b77cfb985724cf58",
+										value: "CanceledReason1",
+										lookupId: "CanceledStatusReasons",
+										sortOrder: 0,
+										isActive: true,
+										isSystem: true,
+									},
+									CanceledReason2: {
+										id: "6bbfe77703c745d68b8eaceb9cd484b1",
+										value: "CanceledReason2",
+										lookupId: "CanceledStatusReasons",
+										sortOrder: 0,
+										isActive: true,
+										isSystem: true,
+									},
+								},
+								isActive: true,
+								isSystem: true,
+								displayName: {
+									"en-CA": "Cancellation Reasons",
+									"en-US": "Cancellation Reasons",
+									"fr-CA": "Raison annulation",
+									"it-IT": "Motivi per l'annullamento",
+								},
+							},
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			},
+		});
+	});
+
+	it("gets a named lookup for a module", () =>
+		expect(
+			lookupByNameSelector,
+			"when called with",
+			["order", "CanceledStatusReasons"],
+			"when called with",
+			[state],
+			"to satisfy",
+			Immutable.fromJS({
+				lookupName: "CanceledStatusReasons",
+				displayName: {
+					"en-CA": "Cancellation Reasons",
+					"en-US": "Cancellation Reasons",
+					"fr-CA": "Raison annulation",
+					"it-IT": "Motivi per l'annullamento",
+				},
+				values: {},
+				isActive: true,
+				isSystem: true,
+			}),
+		));
+
+	it("will get an empty Map if lookup does not exist", () =>
+		expect(
+			lookupByNameSelector,
+			"when called with",
+			["order", "NotALookup"],
+			"when called with",
+			[state],
+			"to equal",
+			null,
 		));
 });
 
@@ -1825,77 +1909,5 @@ describe("definitions", () => {
 			"to satisfy",
 			{},
 		);
-	});
-});
-
-describe("saveOrderLookupRequestStateSelector", () => {
-	let state;
-
-	beforeEach(() => {
-		state = Immutable.fromJS({
-			locale: { locale: "it-IT" },
-			metadata: {
-				lookups: {
-					order: {
-						index: lookups,
-						list: [],
-					},
-					saveOrderLookupRequestState: requestStates.success,
-					saveOrderLookupResponse: { something: 123 },
-				},
-			},
-		});
-	});
-
-	it("retrieves the state of the save order lookup", () => {
-		return expect(saveOrderLookupRequestStateSelector, "when called with", [state], "to satisfy", {
-			requestState: requestStates.success,
-			response: { something: 123 },
-		});
-	});
-
-	it("retrieves the state of the save order lookup without any response", () => {
-		state = state.removeIn(["metadata", "lookups", "saveOrderLookupResponse"]);
-
-		return expect(saveOrderLookupRequestStateSelector, "when called with", [state], "to satisfy", {
-			requestState: requestStates.success,
-			response: null,
-		});
-	});
-});
-
-describe("saveCustomerLookupRequestStateSelector", () => {
-	let state;
-
-	beforeEach(() => {
-		state = Immutable.fromJS({
-			locale: { locale: "it-IT" },
-			metadata: {
-				lookups: {
-					customer: {
-						index: lookups,
-						list: [],
-					},
-					saveCustomerLookupRequestState: requestStates.success,
-					saveCustomerLookupResponse: { something: 123 },
-				},
-			},
-		});
-	});
-
-	it("retrieves the state of the save customer lookup", () => {
-		return expect(saveCustomerLookupRequestStateSelector, "when called with", [state], "to satisfy", {
-			requestState: requestStates.success,
-			response: { something: 123 },
-		});
-	});
-
-	it("retrieves the state of the save customer lookup without any response", () => {
-		state = state.removeIn(["metadata", "lookups", "saveCustomerLookupResponse"]);
-
-		return expect(saveCustomerLookupRequestStateSelector, "when called with", [state], "to satisfy", {
-			requestState: requestStates.success,
-			response: null,
-		});
 	});
 });

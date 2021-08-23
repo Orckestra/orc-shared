@@ -177,4 +177,56 @@ describe("Fullpage", () => {
 			</TestWrapper>,
 		);
 	});
+
+	it("componentProps are passed to SegmentPage", () => {
+		const location = {
+			pathname: "/meep/snap/stuff",
+		};
+
+		const segments = { "/stuff": { component: View2, label: "Two" } };
+		const customResolver = () => "customId";
+
+		expect(
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<FullPage
+						path="/meep/snap"
+						config={{
+							component: View1,
+							segments: segments,
+							entityIdResolver: customResolver,
+							componentProps: { foo: "foo", bar: "bar" },
+						}}
+						location={location}
+						match={match}
+					/>
+				</div>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<div id="view1"></div>
+					<SegmentPage
+						path="/:scope/snap"
+						location={location}
+						segments={segments}
+						match={match}
+						componentProps={{ foo: "foo", bar: "bar" }}
+						entityIdResolver={customResolver}
+					/>
+				</div>
+			</TestWrapper>,
+		);
+	});
 });

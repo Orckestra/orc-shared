@@ -19,8 +19,12 @@ export const lookupSelector = memoize(moduleName =>
 	createSelector(lookupsModule(moduleName), module => module.get("index")),
 );
 
-export const lookupValuesSelector = memoize((moduleName, lookupName) =>
+const lookupValuesSelector = memoize((moduleName, lookupName) =>
 	createSelector(lookups, lookups => lookups.getIn([moduleName, "index", lookupName]) || Immutable.Map()),
+);
+
+export const lookupByNameSelector = memoize((moduleName, lookupName) =>
+	createSelector(lookups, lookups => lookups.getIn([moduleName, "index", lookupName]) || null),
 );
 
 export const namedLookupSelector = memoize((moduleName, lookupName) =>
@@ -338,13 +342,3 @@ const resolveProductPropertyValue = (property, propertyValue, locale, lookups) =
 	}
 	return propertyValue;
 };
-
-export const saveOrderLookupRequestStateSelector = createSelector(metadata, data => ({
-	requestState: data.getIn(["lookups", "saveOrderLookupRequestState"]),
-	response: data.getIn(["lookups", "saveOrderLookupResponse"])?.toJS() ?? null,
-}));
-
-export const saveCustomerLookupRequestStateSelector = createSelector(metadata, data => ({
-	requestState: data.getIn(["lookups", "saveCustomerLookupRequestState"]),
-	response: data.getIn(["lookups", "saveCustomerLookupResponse"])?.toJS() ?? null,
-}));

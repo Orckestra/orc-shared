@@ -79,10 +79,12 @@ export const definitionType = {
 };
 
 export const requestStateOperations = {
+	create: "create",
 	delete: "delete",
 	update: "update",
 };
 export const requestStateOperationMap = {
+	create: "creates",
 	delete: "deletes",
 	update: "updates",
 };

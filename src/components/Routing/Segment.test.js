@@ -4,7 +4,11 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Segment from "./Segment";
 
-const View = () => <div id="view" />;
+const View = props => {
+	const { foo, bar } = props;
+
+	return <div id="view" {...{ foo, bar }} />;
+};
 
 describe("Segment", () => {
 	let match, state, store;
@@ -26,6 +30,7 @@ describe("Segment", () => {
 			subscribe: () => {},
 		};
 	});
+
 	it("shows the selected view", () =>
 		expect(
 			<Provider store={store}>
@@ -36,5 +41,21 @@ describe("Segment", () => {
 			"when mounted",
 			"to satisfy",
 			<View />,
+		));
+
+	it("shows the selected view with props", () =>
+		expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/foo/bar"]}>
+					<Segment
+						location={{ pathname: "/" }}
+						config={{ component: View, componentProps: { foo: "foo", bar: "bar" } }}
+						match={match}
+					/>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<View foo="foo" bar="bar" />,
 		));
 });
