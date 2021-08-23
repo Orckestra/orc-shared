@@ -3,12 +3,13 @@ import Page from "./Page";
 import SegmentPage from "./SegmentPage";
 
 const FullPage = ({ path, config, location, match, modulePrependPath }) => {
-	const { component, pages = {}, segments, subpages, entityIdResolver } = config;
+	const { component, componentProps, pages = {}, segments, subpages, entityIdResolver } = config;
 	if (segments) {
 		return (
 			<SegmentPage
 				path={path}
 				component={component}
+				componentProps={componentProps ?? {}}
 				segments={segments}
 				location={location}
 				match={match}

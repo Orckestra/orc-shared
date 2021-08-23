@@ -195,6 +195,7 @@ export const useNavigationState = modules => {
 			outsideScope: isPageTab ? outsideScope : null,
 			scopeNotSupported: isPageTab ? pageScopeSelector != null && outsideScope : null,
 			label,
+			entityIdResolver: pageData.entityIdResolver,
 			mustTruncate: pageData.mustTruncate,
 			href,
 			mappedFrom: page.href,

@@ -18,18 +18,14 @@ import {
 	INCREMENT_CUSTOMER_LOOKUPS_PAGE,
 	REFRESH_PAGED_CUSTOMER_LOOKUPS,
 	SET_PAGED_CUSTOMER_LOOKUPS_CURRENT_INFO,
-	SAVE_ORDER_LOOKUP_REQUEST,
 	SAVE_ORDER_LOOKUP_SUCCESS,
-	SAVE_ORDER_LOOKUP_FAILURE,
-	RESET_ORDER_LOOKUP_SAVE_RESULT,
-	SAVE_CUSTOMER_LOOKUP_REQUEST,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
-	SAVE_CUSTOMER_LOOKUP_FAILURE,
-	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 	CREATE_PROFILE_DEFINITION_SUCCESS,
 	CREATE_PROFILE_DEFINITION_FAILURE,
 	RESET_PROFILE_DEFINITION_SAVE_RESULT,
 	SET_NEW_PROFILE_DEFINITION,
+	ADD_ORDER_LOOKUP_SUCCESS,
+	ADD_CUSTOMER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
 import { requestStates } from "../constants";
 
@@ -50,14 +46,10 @@ const initialState = Immutable.fromJS({
 			index: {},
 			list: [],
 		},
-		saveOrderLookupRequestState: requestStates.idle,
-		saveOrderLookupResponse: null,
 		customer: {
 			index: {},
 			list: [],
 		},
-		saveCustomerLookupRequestState: requestStates.idle,
-		saveCustomerLookupResponse: null,
 		product: {
 			index: {},
 			list: [],
@@ -77,7 +69,7 @@ const lookupReducerHelper = {
 	incrementPage: (moduleName, state, action) => {
 		return state.setIn(["lookups", moduleName, "nextPageToLoad"], action.pageToLoad);
 	},
-	getPagedLookups: (moduleName, state, action) => {
+	getPagedLookups: (moduleName, state) => {
 		const page = state.getIn(["lookups", moduleName, "nextPageToLoad"]) ?? 1;
 		const index = state.getIn(["lookups", moduleName, "index"]);
 		const [...keys] = index.keys();
@@ -118,7 +110,7 @@ const metadataReducer = (state = initialState, action) => {
 			return lookupReducerHelper.incrementPage(ORDER_MODULE_NAME, state, action);
 		}
 		case REFRESH_PAGED_ORDER_LOOKUPS: {
-			return lookupReducerHelper.getPagedLookups(ORDER_MODULE_NAME, state, action);
+			return lookupReducerHelper.getPagedLookups(ORDER_MODULE_NAME, state);
 		}
 		case SET_PAGED_ORDER_LOOKUPS_CURRENT_INFO: {
 			return lookupReducerHelper.setPagedCurrentInfo(ORDER_MODULE_NAME, state, action);
@@ -130,7 +122,7 @@ const metadataReducer = (state = initialState, action) => {
 			return lookupReducerHelper.incrementPage(CUSTOMER_MODULE_NAME, state, action);
 		}
 		case REFRESH_PAGED_CUSTOMER_LOOKUPS: {
-			return lookupReducerHelper.getPagedLookups(CUSTOMER_MODULE_NAME, state, action);
+			return lookupReducerHelper.getPagedLookups(CUSTOMER_MODULE_NAME, state);
 		}
 		case SET_PAGED_CUSTOMER_LOOKUPS_CURRENT_INFO: {
 			return lookupReducerHelper.setPagedCurrentInfo(CUSTOMER_MODULE_NAME, state, action);
@@ -166,43 +158,36 @@ const metadataReducer = (state = initialState, action) => {
 			const normalizedData = normalize(action.payload?.profileAttributeGroups, profileAttributeGroupsListSchema);
 			return state.set("profileAttributeGroups", Immutable.fromJS(normalizedData.entities.metadata));
 		}
-		case SAVE_ORDER_LOOKUP_REQUEST:
-			return state.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.processing);
-
 		case SAVE_ORDER_LOOKUP_SUCCESS:
-			return state
-				.setIn(["lookups", ORDER_MODULE_NAME, "index", action.payload.lookupName], Immutable.fromJS(action.payload))
-				.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.success);
+			return state.setIn(
+				["lookups", ORDER_MODULE_NAME, "index", action.payload.lookupName],
+				Immutable.fromJS(action.payload),
+			);
 
-		case SAVE_ORDER_LOOKUP_FAILURE:
-			return state
-				.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.fail)
-				.setIn(["lookups", "saveOrderLookupResponse"], Immutable.fromJS(action.payload.response));
+		case ADD_ORDER_LOOKUP_SUCCESS: {
+			state = state.setIn(
+				["lookups", ORDER_MODULE_NAME, "index", action.payload.lookupName],
+				Immutable.fromJS(action.payload),
+			);
 
-		case RESET_ORDER_LOOKUP_SAVE_RESULT: {
-			return state
-				.setIn(["lookups", "saveOrderLookupRequestState"], requestStates.idle)
-				.setIn(["lookups", "saveOrderLookupResponse"], null);
+			return lookupReducerHelper.getPagedLookups(ORDER_MODULE_NAME, state);
 		}
-
-		case SAVE_CUSTOMER_LOOKUP_REQUEST:
-			return state.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.processing);
 
 		case SAVE_CUSTOMER_LOOKUP_SUCCESS:
-			return state
-				.setIn(["lookups", CUSTOMER_MODULE_NAME, "index", action.payload.lookupName], Immutable.fromJS(action.payload))
-				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.success);
+			return state.setIn(
+				["lookups", CUSTOMER_MODULE_NAME, "index", action.payload.lookupName],
+				Immutable.fromJS(action.payload),
+			);
 
-		case SAVE_CUSTOMER_LOOKUP_FAILURE:
-			return state
-				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.fail)
-				.setIn(["lookups", "saveCustomerLookupResponse"], Immutable.fromJS(action.payload.response));
+		case ADD_CUSTOMER_LOOKUP_SUCCESS: {
+			state = state.setIn(
+				["lookups", CUSTOMER_MODULE_NAME, "index", action.payload.lookupName],
+				Immutable.fromJS(action.payload),
+			);
 
-		case RESET_CUSTOMER_LOOKUP_SAVE_RESULT: {
-			return state
-				.setIn(["lookups", "saveCustomerLookupRequestState"], requestStates.idle)
-				.setIn(["lookups", "saveCustomerLookupResponse"], null);
+			return lookupReducerHelper.getPagedLookups(CUSTOMER_MODULE_NAME, state);
 		}
+
 		case CREATE_PROFILE_DEFINITION_SUCCESS:
 			return state
 				.setIn(["definitions", "newInstanceId"], action.meta.entityTypeName)

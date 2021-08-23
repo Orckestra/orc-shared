@@ -247,6 +247,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.dataTypeLookup",
 		defaultMessage: "Lookup List",
 	},
+	errorUnknown: {
+		id: "orc-shared.errorUnknown",
+		defaultMessage: "Unknown Error",
+	},
 });
 
 export default sharedMessages;

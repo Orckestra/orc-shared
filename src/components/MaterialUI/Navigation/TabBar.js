@@ -147,7 +147,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		return newIndex;
 	};
 
-	const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey, index) => {
+	const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey, entityId, index) => {
 		event.stopPropagation();
 		event.preventDefault();
 		if (isModified) {
@@ -156,12 +156,13 @@ const MuiBar = ({ module, moduleName, pages }) => {
 				href: href,
 				path: path,
 				entityIdKey: entityIdKey,
+				entityId,
 				index: index,
 			});
 			setShowConfirmationModal(true);
 		} else {
 			closeCallback();
-			removeEditState(href, entityIdKey, path);
+			removeEditState(href, entityIdKey, entityId, path);
 			handleChange(null, getNewIndex(index));
 		}
 	};
@@ -169,11 +170,20 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	const closeTab = () => {
 		setShowConfirmationModal(false);
 		currentCloseData.closeCallback();
-		removeEditState(currentCloseData.href, currentCloseData.entityIdKey, currentCloseData.path);
+		removeEditState(
+			currentCloseData.href,
+			currentCloseData.entityIdKey,
+			currentCloseData.entityId,
+			currentCloseData.path,
+		);
 		handleChange(null, getNewIndex(currentCloseData.index));
 	};
 
-	const removeEditState = (href, entityIdKey, path) => {
+	const removeEditState = (href, entityIdKey, resolvedEntityId, path) => {
+		if (resolvedEntityId) {
+			dispatch(removeEditNode, [resolvedEntityId]);
+			return;
+		}
 		let newKey = tryGetNewEntityIdKey(href);
 		const key = entityIdKey === newKey ? entityIdKey : `:${entityIdKey}`;
 		const entityId = getValueFromUrlByKey(href, path, key);
@@ -227,54 +237,60 @@ const MuiBar = ({ module, moduleName, pages }) => {
 				}}
 				ref={tabs}
 			>
-				{pages.map(({ href, label, outsideScope, close, path, params, mustTruncate, icon, isDetails }, index) => {
-					let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
-					if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
-					const isModified = modifiedTabs.includes(href);
-					const isError = tabsWithErrors.includes(href);
-					const tabLabel = <TabLabel label={label} />;
-					const sectionIconClss = classNames(classes.moduleIcon, isDetails && classes.sectionIcon);
-					const tabClassName = classNames(
-						classes.labelContainer,
-						isModified && classes.modifiedLabel,
-						isError && classes.errorLabel,
-					);
-					const sectionIcon = icon && <Icon id={icon} className={sectionIconClss} />;
+				{pages.map(
+					(
+						{ href, label, outsideScope, close, path, params, mustTruncate, icon, isDetails, entityIdResolver },
+						index,
+					) => {
+						let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
+						if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
+						const entityId = typeof entityIdResolver === "function" ? entityIdResolver({ match: { params } }) : null;
+						const isModified = modifiedTabs.includes(href);
+						const isError = tabsWithErrors.includes(href);
+						const tabLabel = <TabLabel label={label} />;
+						const sectionIconClss = classNames(classes.moduleIcon, isDetails && classes.sectionIcon);
+						const tabClassName = classNames(
+							classes.labelContainer,
+							isModified && classes.modifiedLabel,
+							isError && classes.errorLabel,
+						);
+						const sectionIcon = icon && <Icon id={icon} className={sectionIconClss} />;
 
-					const wrappedTabLabel = (
-						<div className={tabClassName}>
-							<TabLabel label={label} mustTruncate={mustTruncate} classes={{ root: tabClassName }} />
-							{isModified === true ? <span className={classes.asterix}>*</span> : null}
-						</div>
-					);
-					const closeIcon = (
-						<Icon
-							id="close"
-							className={classes.closeIcon}
-							onClick={event => tabCloseHandler(event, close, isModified, href, path, entityIdKey, index)}
-						/>
-					);
-					tabLabels.push({
-						value: index,
-						label: tabLabel,
-						sortOrder: index,
-					});
-					return (
-						<Tab
-							classes={{
-								root: classNames(classes.tab, !mustTruncate && classes.unsetMaxWidth),
-							}}
-							component={TabLink}
-							label={wrappedTabLabel}
-							icon={sectionIcon}
-							key={href}
-							to={href}
-							value={index}
-							close={closeIcon}
-							disabled={outsideScope}
-						/>
-					);
-				})}
+						const wrappedTabLabel = (
+							<div className={tabClassName}>
+								<TabLabel label={label} mustTruncate={mustTruncate} classes={{ root: tabClassName }} />
+								{isModified === true ? <span className={classes.asterix}>*</span> : null}
+							</div>
+						);
+						const closeIcon = (
+							<Icon
+								id="close"
+								className={classes.closeIcon}
+								onClick={event => tabCloseHandler(event, close, isModified, href, path, entityIdKey, entityId, index)}
+							/>
+						);
+						tabLabels.push({
+							value: index,
+							label: tabLabel,
+							sortOrder: index,
+						});
+						return (
+							<Tab
+								classes={{
+									root: classNames(classes.tab, !mustTruncate && classes.unsetMaxWidth),
+								}}
+								component={TabLink}
+								label={wrappedTabLabel}
+								icon={sectionIcon}
+								key={href}
+								to={href}
+								value={index}
+								close={closeIcon}
+								disabled={outsideScope}
+							/>
+						);
+					},
+				)}
 			</Tabs>
 			{showSelect ? select : null}
 			<ConfirmationModal

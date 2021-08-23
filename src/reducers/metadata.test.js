@@ -14,23 +14,17 @@ import {
 	setPagedCustomerLookupsCurrentInfo,
 	refreshPagedCustomerLookups,
 	incrementCustomerLookupsPage,
-	SAVE_CUSTOMER_LOOKUP_REQUEST,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
-	SAVE_CUSTOMER_LOOKUP_FAILURE,
-	RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
 	CREATE_PROFILE_DEFINITION_SUCCESS,
 	CREATE_PROFILE_DEFINITION_FAILURE,
 	RESET_PROFILE_DEFINITION_SAVE_RESULT,
 	SET_NEW_PROFILE_DEFINITION,
+	SAVE_ORDER_LOOKUP_SUCCESS,
+	ADD_ORDER_LOOKUP_SUCCESS,
+	ADD_CUSTOMER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
 import reducer from "./metadata";
 import { requestStates } from "../constants";
-import {
-	RESET_ORDER_LOOKUP_SAVE_RESULT,
-	SAVE_ORDER_LOOKUP_FAILURE,
-	SAVE_ORDER_LOOKUP_REQUEST,
-	SAVE_ORDER_LOOKUP_SUCCESS,
-} from "../actions/metadata";
 
 export const generateLookups = max => {
 	if (max < 1 || max > 25) {
@@ -80,14 +74,10 @@ describe("metadata", () => {
 					index: {},
 					list: [],
 				},
-				saveOrderLookupRequestState: requestStates.idle,
-				saveOrderLookupResponse: null,
 				customer: {
 					index: {},
 					list: [],
 				},
-				saveCustomerLookupRequestState: requestStates.idle,
-				saveCustomerLookupResponse: null,
 				product: {
 					index: {},
 					list: [],
@@ -191,36 +181,6 @@ describe("metadata", () => {
 			);
 		});
 
-		it("save order metadata request", () => {
-			const oldState = Immutable.fromJS({
-				lookups: {
-					order: {
-						index: {},
-						list: [],
-					},
-					saveOrderLookupRequestState: requestStates.idle,
-					saveOrderLookupResponse: null,
-				},
-			});
-			const action = {
-				type: SAVE_ORDER_LOOKUP_REQUEST,
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					lookups: {
-						order: {
-							index: {},
-							list: [],
-						},
-						saveOrderLookupRequestState: requestStates.processing,
-						saveOrderLookupResponse: null,
-					},
-				}),
-			);
-		});
-
 		it("save order metadata success", () => {
 			const lookups = {
 				CanceledStatusReasons: {
@@ -260,8 +220,6 @@ describe("metadata", () => {
 						index: { CartStatus: lookups.CartStatus },
 						list: [],
 					},
-					saveOrderLookupRequestState: requestStates.idle,
-					saveOrderLookupResponse: null,
 				},
 			});
 			const action = {
@@ -277,17 +235,15 @@ describe("metadata", () => {
 							index: lookups,
 							list: [],
 						},
-						saveOrderLookupRequestState: requestStates.success,
-						saveOrderLookupResponse: null,
 					},
 				}),
 			);
 		});
 
-		it("save order metadata failure", () => {
+		it("add order metadata success", () => {
 			const lookups = {
-				CanceledStatusReasons: {
-					lookupName: "CanceledStatusReasons",
+				NewStatusReasons: {
+					lookupName: "NewStatusReasons",
 					values: {
 						CanceledReason1: {
 							id: "e16d07f847284775b77cfb985724cf58",
@@ -323,13 +279,11 @@ describe("metadata", () => {
 						index: { CartStatus: lookups.CartStatus },
 						list: [],
 					},
-					saveOrderLookupRequestState: requestStates.idle,
-					saveOrderLookupResponse: null,
 				},
 			});
 			const action = {
-				type: SAVE_ORDER_LOOKUP_FAILURE,
-				payload: { response: "failure" },
+				type: ADD_ORDER_LOOKUP_SUCCESS,
+				payload: lookups.NewStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -337,42 +291,10 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						order: {
-							index: { CartStatus: lookups.CartStatus },
-							list: [],
+							index: lookups,
+							list: ["CartStatus", "NewStatusReasons"],
+							totalCount: 2,
 						},
-						saveOrderLookupRequestState: requestStates.fail,
-						saveOrderLookupResponse: action.payload.response,
-					},
-				}),
-			);
-		});
-
-		it("reset order metadata save result", () => {
-			const oldState = Immutable.fromJS({
-				lookups: {
-					order: {
-						index: {},
-						list: [],
-					},
-					saveOrderLookupRequestState: requestStates.success,
-					saveOrderLookupResponse: { something: 123 },
-				},
-			});
-			const action = {
-				type: RESET_ORDER_LOOKUP_SAVE_RESULT,
-				payload: { response: "failure" },
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					lookups: {
-						order: {
-							index: {},
-							list: [],
-						},
-						saveOrderLookupRequestState: requestStates.idle,
-						saveOrderLookupResponse: null,
 					},
 				}),
 			);
@@ -767,36 +689,6 @@ describe("metadata", () => {
 			);
 		});
 
-		it("save customer metadata request", () => {
-			const oldState = Immutable.fromJS({
-				lookups: {
-					customer: {
-						index: {},
-						list: [],
-					},
-					saveCustomerLookupRequestState: requestStates.idle,
-					saveCustomerLookupResponse: null,
-				},
-			});
-			const action = {
-				type: SAVE_CUSTOMER_LOOKUP_REQUEST,
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					lookups: {
-						customer: {
-							index: {},
-							list: [],
-						},
-						saveCustomerLookupRequestState: requestStates.processing,
-						saveCustomerLookupResponse: null,
-					},
-				}),
-			);
-		});
-
 		it("save customer metadata success", () => {
 			const lookups = {
 				CanceledStatusReasons: {
@@ -836,8 +728,6 @@ describe("metadata", () => {
 						index: { CartStatus: lookups.CartStatus },
 						list: [],
 					},
-					saveCustomerLookupRequestState: requestStates.idle,
-					saveCustomerLookupResponse: null,
 				},
 			});
 			const action = {
@@ -853,17 +743,15 @@ describe("metadata", () => {
 							index: lookups,
 							list: [],
 						},
-						saveCustomerLookupRequestState: requestStates.success,
-						saveCustomerLookupResponse: null,
 					},
 				}),
 			);
 		});
 
-		it("save customer metadata failure", () => {
+		it("add customer metadata success", () => {
 			const lookups = {
-				CanceledStatusReasons: {
-					lookupName: "CanceledStatusReasons",
+				NewStatusReasons: {
+					lookupName: "NewStatusReasons",
 					values: {
 						CanceledReason1: {
 							id: "e16d07f847284775b77cfb985724cf58",
@@ -899,13 +787,11 @@ describe("metadata", () => {
 						index: { CartStatus: lookups.CartStatus },
 						list: [],
 					},
-					saveCustomerLookupRequestState: requestStates.idle,
-					saveCustomerLookupResponse: null,
 				},
 			});
 			const action = {
-				type: SAVE_CUSTOMER_LOOKUP_FAILURE,
-				payload: { response: "failure" },
+				type: ADD_CUSTOMER_LOOKUP_SUCCESS,
+				payload: lookups.NewStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -913,42 +799,10 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						customer: {
-							index: { CartStatus: lookups.CartStatus },
-							list: [],
+							index: lookups,
+							list: ["CartStatus", "NewStatusReasons"],
+							totalCount: 2,
 						},
-						saveCustomerLookupRequestState: requestStates.fail,
-						saveCustomerLookupResponse: action.payload.response,
-					},
-				}),
-			);
-		});
-
-		it("reset customer metadata save result", () => {
-			const oldState = Immutable.fromJS({
-				lookups: {
-					customer: {
-						index: {},
-						list: [],
-					},
-					saveCustomerLookupRequestState: requestStates.success,
-					saveCustomerLookupResponse: { something: 123 },
-				},
-			});
-			const action = {
-				type: RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
-				payload: { response: "failure" },
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					lookups: {
-						customer: {
-							index: {},
-							list: [],
-						},
-						saveCustomerLookupRequestState: requestStates.idle,
-						saveCustomerLookupResponse: null,
 					},
 				}),
 			);
@@ -1265,7 +1119,7 @@ describe("metadata", () => {
 	});
 
 	describe("product", () => {
-		it("saves product metadata", () => {
+		it("gets product metadata", () => {
 			const oldState = Immutable.fromJS({
 				lookups: {
 					product: {

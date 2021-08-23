@@ -11,6 +11,8 @@ import {
 	updateOrderLookupTypeDefinitionRequest,
 	updateCustomerLookupTypeDefinitionRequest,
 	createEntityTypeRequest,
+	createOrderLookupTypeDefinitionRequest,
+	createCustomerLookupTypeDefinitionRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -27,23 +29,36 @@ const SAVE_ORDER_LOOKUP = "SAVE_ORDER_LOOKUP";
 export const [SAVE_ORDER_LOOKUP_REQUEST, SAVE_ORDER_LOOKUP_SUCCESS, SAVE_ORDER_LOOKUP_FAILURE] =
 	makeActionTypes(SAVE_ORDER_LOOKUP);
 
-export const saveOrderLookup = lookup =>
+export const saveOrderLookup = (lookup, additionalActionContext = null) =>
 	makeOrcApiAction(
 		SAVE_ORDER_LOOKUP,
 		updateOrderLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
 		updateOrderLookupTypeDefinitionRequest.verb,
 		{
 			body: lookup,
+			meta: {
+				...additionalActionContext,
+			},
 		},
 	);
 
-export const RESET_ORDER_LOOKUP_SAVE_RESULT = "RESET_ORDER_LOOKUP_SAVE_RESULT";
+const ADD_ORDER_LOOKUP = "ADD_ORDER_LOOKUP";
 
-export const resetOrderLookupSaveResult = () => {
-	return {
-		type: RESET_ORDER_LOOKUP_SAVE_RESULT,
-	};
-};
+export const [ADD_ORDER_LOOKUP_REQUEST, ADD_ORDER_LOOKUP_SUCCESS, ADD_ORDER_LOOKUP_FAILURE] =
+	makeActionTypes(ADD_ORDER_LOOKUP);
+
+export const addOrderLookup = (lookup, additionalActionContext = null) =>
+	makeOrcApiAction(
+		ADD_ORDER_LOOKUP,
+		createOrderLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
+		createOrderLookupTypeDefinitionRequest.verb,
+		{
+			body: lookup,
+			meta: {
+				...additionalActionContext,
+			},
+		},
+	);
 
 export const SET_PAGED_ORDER_LOOKUPS_CURRENT_INFO = "SET_PAGED_ORDER_LOOKUPS_CURRENT_INFO";
 
@@ -87,23 +102,36 @@ const SAVE_CUSTOMER_LOOKUP = "SAVE_CUSTOMER_LOOKUP";
 export const [SAVE_CUSTOMER_LOOKUP_REQUEST, SAVE_CUSTOMER_LOOKUP_SUCCESS, SAVE_CUSTOMER_LOOKUP_FAILURE] =
 	makeActionTypes(SAVE_CUSTOMER_LOOKUP);
 
-export const saveCustomerLookup = lookup =>
+export const saveCustomerLookup = (lookup, additionalActionContext = null) =>
 	makeOrcApiAction(
 		SAVE_CUSTOMER_LOOKUP,
 		updateCustomerLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
 		updateCustomerLookupTypeDefinitionRequest.verb,
 		{
 			body: lookup,
+			meta: {
+				...additionalActionContext,
+			},
 		},
 	);
 
-export const RESET_CUSTOMER_LOOKUP_SAVE_RESULT = "RESET_CUSTOMER_LOOKUP_SAVE_RESULT";
+const ADD_CUSTOMER_LOOKUP = "ADD_CUSTOMER_LOOKUP";
 
-export const resetCustomerLookupSaveResult = () => {
-	return {
-		type: RESET_CUSTOMER_LOOKUP_SAVE_RESULT,
-	};
-};
+export const [ADD_CUSTOMER_LOOKUP_REQUEST, ADD_CUSTOMER_LOOKUP_SUCCESS, ADD_CUSTOMER_LOOKUP_FAILURE] =
+	makeActionTypes(ADD_CUSTOMER_LOOKUP);
+
+export const addCustomerLookup = (lookup, additionalActionContext = null) =>
+	makeOrcApiAction(
+		ADD_CUSTOMER_LOOKUP,
+		createCustomerLookupTypeDefinitionRequest.buildUrl(lookup.lookupName),
+		createCustomerLookupTypeDefinitionRequest.verb,
+		{
+			body: lookup,
+			meta: {
+				...additionalActionContext,
+			},
+		},
+	);
 
 const GET_CUSTOMER_DEFINITIONS = "GET_CUSTOMER_DEFINITIONS";
 export const [GET_CUSTOMER_DEFINITIONS_REQUEST, GET_CUSTOMER_DEFINITIONS_SUCCESS, GET_CUSTOMER_DEFINITIONS_FAILURE] =

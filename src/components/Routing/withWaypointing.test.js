@@ -127,6 +127,56 @@ describe("withWaypointing", () => {
 				]),
 			));
 
+	it("does fire action if path parameters different and with custom props", () =>
+		expect(withWaypointing, "called with", [PropStruct, { foo: 123 }])
+			.then(EnhancedView => {
+				history.replace("/feep/moof");
+				return expect(
+					<Provider store={store}>
+						<Router history={history}>
+							<Route path="/feep/:some" component={EnhancedView} />
+						</Router>
+					</Provider>,
+					"when mounted",
+					"to satisfy",
+					<PropStruct history="__ignore" location="__ignore" match="__ignore" foo={123} />,
+				);
+			})
+			.then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							setRoute(
+								{ pathname: "/feep/moof", search: "", hash: "" },
+								{
+									path: "/feep/:some",
+									url: "/feep/moof",
+									params: { some: "moof" },
+									isExact: true,
+								},
+							),
+						],
+					},
+				]),
+			));
+
+	it("does not fire action if route match is not exact with custom props", () =>
+		expect(withWaypointing, "called with", [PropStruct, { foo: 123 }])
+			.then(EnhancedView => {
+				history.replace("/feep/meep/mef");
+				return expect(
+					<Provider store={store}>
+						<Router history={history}>
+							<Route path="/feep/meep" component={EnhancedView} />
+						</Router>
+					</Provider>,
+					"when mounted",
+					"to satisfy",
+					<PropStruct history="__ignore" location="__ignore" match="__ignore" foo={123} />,
+				);
+			})
+			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
+
 	it("does not fire action if route match is not exact", () =>
 		expect(withWaypointing, "called with", [PropStruct])
 			.then(EnhancedView => {

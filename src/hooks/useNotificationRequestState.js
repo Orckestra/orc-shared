@@ -2,6 +2,7 @@ import { useIntl } from "react-intl";
 import { useCallback, useContext } from "react";
 import { NotificationContext } from "../components/MaterialUI/Feedback/NotificationContext";
 import useRequestState from "./useRequestState";
+import sharedMessages from "../sharedMessages";
 
 /*
     This hook is used to handle the notification message for deletes and updates.
@@ -45,16 +46,22 @@ const useNotificationRequestState = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formatMessage, successAction, successMessageId, successMessageValues]);
 
-	const onError = useCallback(() => {
-		const message = formatMessage(errorMessageId, errorMessageValues);
-		addNotification(message, "error");
+	const onError = useCallback(
+		errorMessage => {
+			const message = formatMessage(errorMessageId, {
+				...errorMessageValues,
+				errorMessage: errorMessage ?? formatMessage(sharedMessages.errorUnknown),
+			});
+			addNotification(message, "error");
 
-		if (errorAction) {
-			errorAction();
-		}
+			if (errorAction) {
+				errorAction(errorMessage);
+			}
+		},
 		// addNotification causes issues in the deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [errorAction, errorMessageId, errorMessageValues, formatMessage]);
+		[errorAction, errorMessageId, errorMessageValues, formatMessage],
+	);
 
 	const buildRequestState = useRequestState({
 		keys,
