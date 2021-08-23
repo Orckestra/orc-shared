@@ -10,10 +10,8 @@ export const getTimeZoneByName = name => {
 
 export const getTimeZoneName = () => {
 	const customerTimezone = getTimeZone();
-
-	for (let [key, value] of timeZonesList.entries()) {
-		if (key === customerTimezone) return value;
-	}
+	const timezoneName = timeZonesList.get(customerTimezone);
+	return timezoneName;
 };
 
 export const timeZonesList = new Map([
