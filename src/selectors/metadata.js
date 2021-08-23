@@ -151,6 +151,16 @@ const definitionEntityAttributes = memoize((moduleName, entityName) =>
 	),
 );
 
+const filterIsBuiltInAttributes = isBuiltIn => attributes => attributes.filter(a => a.get("isBuiltIn") === isBuiltIn);
+
+export const definitionEntityCustomAttributesSelector = memoize((moduleName, entityName) =>
+	createSelector(definitionEntityAttributes(moduleName, entityName), filterIsBuiltInAttributes(false)),
+);
+
+export const definitionEntityBaseAttributesSelector = memoize((moduleName, entityName) =>
+	createSelector(definitionEntityAttributes(moduleName, entityName), filterIsBuiltInAttributes(true)),
+);
+
 export const mappedDefinitionAttributesSelector = memoize((moduleName, entityName) =>
 	createSelector(definitionEntityAttributes(moduleName, entityName), currentLocaleOrDefault, (attributes, locale) =>
 		attributes.map(a => setTranslationWithFallbackField(locale, a, "name", "displayName")),
@@ -158,15 +168,11 @@ export const mappedDefinitionAttributesSelector = memoize((moduleName, entityNam
 );
 
 export const customAttributesSelector = memoize((moduleName, entityName) =>
-	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), attributes =>
-		attributes.filter(a => a.get("isBuiltIn") === false),
-	),
+	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), filterIsBuiltInAttributes(false)),
 );
 
 export const baseAttributesSelector = memoize((moduleName, entityName) =>
-	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), attributes =>
-		attributes.filter(a => a.get("isBuiltIn") === true),
-	),
+	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), filterIsBuiltInAttributes(true)),
 );
 
 export const profileAttributeGroupsSelector = createSelector(metadata, currentLocaleOrDefault, (meta, locale) => {
