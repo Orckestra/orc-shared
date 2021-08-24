@@ -979,9 +979,6 @@ const setThemeOverrides = theme => ({
 				left: theme.spacing(-2.1),
 				width: theme.spacing(2),
 			},
-			"&.Mui-expanded:before": {
-				width: theme.spacing(1.5),
-			},
 		},
 		label: {
 			...theme.label,
@@ -1026,6 +1023,21 @@ const setThemeOverrides = theme => ({
 			width: "auto",
 			"& svg": {
 				fontSize: "10px",
+			},
+			"&:before": {
+				content: `" "`,
+				position: "absolute",
+				height: theme.spacing(0.1),
+				width: theme.spacing(0.5),
+				left: theme.spacing(-0.5),
+				backgroundColor: theme.palette.grey.light,
+				top: theme.spacing(1.1),
+			},
+			"&:empty": {
+				display: "none",
+				"&:before": {
+					backgroundColor: "transparent",
+				},
 			},
 		},
 	},
