@@ -1034,9 +1034,11 @@ const setThemeOverrides = theme => ({
 				top: theme.spacing(1.1),
 			},
 			"&:empty": {
-				display: "none",
+				width: theme.spacing(1),
 				"&:before": {
 					backgroundColor: "transparent",
+					borderTop: `1px solid ${theme.palette.grey.borders}`,
+					width: theme.spacing(1.5),
 				},
 			},
 		},
