@@ -25,8 +25,9 @@ const useStyles = makeStyles(theme => ({
 		//   },
 		// }
 	},
-	globalIconContainer: {
+	rootIconContainer: {
 		marginRight: 0,
+		display: "none",
 	},
 	scopeLabel: {
 		position: "relative",
@@ -157,7 +158,7 @@ const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
 			onLabelClick={e => onLabelClickHandler(e)}
 			classes={{
 				group: classes.group,
-				iconContainer: classNames({ [classes.globalIconContainer]: isRootScope }),
+				iconContainer: classNames({ [classes.rootIconContainer]: isRootScope }),
 				content: classNames({ [classes.virtualScopeContent]: isVirtualScope }),
 				selected: classNames({ [classes.virtualScopeSelected]: isVirtualScope }),
 			}}
