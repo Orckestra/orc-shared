@@ -1,9 +1,16 @@
 import React from "react";
 import sinon from "sinon";
-import { getStyledClassSelector } from "../../../utils/testUtils";
-import ApplicationDialog, { List, Block, Link, Logo, Label, Indicator } from "./ApplicationDialog";
+import { extractMessages, TestWrapper, createMuiTheme } from "../../../utils/testUtils";
+import ApplicationDialog from "./ApplicationDialog";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import sharedMessages from "~/sharedMessages";
+import { mount } from "enzyme";
 
+const messages = extractMessages(sharedMessages);
 describe("ApplicationDialog", () => {
+	const theme = createMuiTheme();
+
 	let toggle, applications;
 	beforeEach(() => {
 		toggle = sinon.spy().named("toggle");
@@ -23,30 +30,60 @@ describe("ApplicationDialog", () => {
 		];
 	});
 
-	it("renders a dialog structure listing applications", () =>
+	it("renders a dialog structure listing applications", () => {
+		const component = (
+			<TestWrapper intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+				<ApplicationDialog toggle={toggle} applications={applications} applicationId="ChosenId" />
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+				<Grid>
+					<Grid>
+						<p>Orckestra Commerce Cloud applications list</p>
+					</Grid>
+					<Grid>
+						<Grid key="ChosenId">
+							<Link href="/test/url" underline="none">
+								<img src="/url/to/img1.png" alt="Current App" />
+								<br />
+								<p>Current App</p>
+							</Link>
+						</Grid>
+						<Grid key="OtherId">
+							<Link href="/test/some/other/url" underline="none">
+								<img src="/url/to/img2.png" alt="Other App" />
+								<br />
+								<p>Other App</p>
+							</Link>
+						</Grid>
+					</Grid>
+				</Grid>
+			</TestWrapper>
+		);
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("triggers toggle when the current app link is clicked", () => {
+		const component = (
+			<TestWrapper intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
+				<ApplicationDialog toggle={toggle} applications={applications} applicationId="ChosenId" />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const currAppLink = mountedComponent.find(Link).at(0);
+		currAppLink.simulate("click");
+		expect(toggle, "was called once");
+	});
+	/*
 		expect(
 			<ApplicationDialog toggle={toggle} applications={applications} applicationId="ChosenId" />,
 			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: getStyledClassSelector(Link) + '[href="/test/url"]',
-			},
 			"to satisfy",
-			<List>
-				<Block key="ChosenId">
-					<Link id="ChosenId" href="/test/url">
-						<Logo src="/url/to/img1.png" />
-					</Link>
-					<Label>Current App</Label>
-					<Indicator />
-				</Block>
-				<Block key="OtherId">
-					<Link id="OtherId" href="/test/some/other/url">
-						<Logo src="/url/to/img2.png" />
-					</Link>
-					<Label>Other App</Label>
-				</Block>
-			</List>,
+			,
 		).then(() => expect(toggle, "was called once")));
+		*/
 });

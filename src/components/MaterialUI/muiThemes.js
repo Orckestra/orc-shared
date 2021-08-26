@@ -1037,7 +1037,7 @@ const setThemeOverrides = theme => ({
 				width: theme.spacing(1),
 				"&:before": {
 					backgroundColor: "transparent",
-					borderTop: `1px solid ${theme.palette.grey.borders}`,
+					borderTop: `1px solid ${theme.palette.grey.icon}`,
 					width: theme.spacing(1.5),
 				},
 			},
