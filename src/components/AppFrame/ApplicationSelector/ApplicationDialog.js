@@ -1,6 +1,6 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import sharedMessages from "~/sharedMessages";
+import sharedMessages from "../../../sharedMessages";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
