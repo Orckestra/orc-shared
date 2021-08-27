@@ -41,7 +41,7 @@ describe("ApplicationDialog", () => {
 			<TestWrapper intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
 				<Grid>
 					<Grid>
-						<p>Orckestra Commerce Cloud applications list</p>
+						<p>Orckestra Commerce Cloud Applications List</p>
 					</Grid>
 					<Grid>
 						<Grid key="ChosenId">
