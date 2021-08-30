@@ -456,9 +456,9 @@ describe("createProfileDefinition", () => {
 		expect(createProfileDefinition, "when called with", [profileDefinition], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
-					{ type: CREATE_PROFILE_DEFINITION_REQUEST, meta: profileDefinition },
-					{ type: CREATE_PROFILE_DEFINITION_SUCCESS, meta: profileDefinition },
-					{ type: CREATE_PROFILE_DEFINITION_FAILURE, meta: profileDefinition },
+					CREATE_PROFILE_DEFINITION_REQUEST,
+					CREATE_PROFILE_DEFINITION_SUCCESS,
+					CREATE_PROFILE_DEFINITION_FAILURE,
 				],
 				endpoint: 'URL: metadata/EntityType/ ""',
 				method: "POST",
