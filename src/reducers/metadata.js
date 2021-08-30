@@ -190,8 +190,8 @@ const metadataReducer = (state = initialState, action) => {
 
 		case CREATE_PROFILE_DEFINITION_SUCCESS:
 			return state
-				.setIn(["definitions", "newInstanceId"], action.meta.entityTypeName)
-				.setIn(["definitions", CUSTOMER_MODULE_NAME, action.meta.entityTypeName], Immutable.fromJS(action.meta))
+				.setIn(["definitions", "newInstanceId"], action.payload.entityTypeName)
+				.setIn(["definitions", CUSTOMER_MODULE_NAME, action.payload.entityTypeName], Immutable.fromJS(action.payload))
 				.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.success);
 		case CREATE_PROFILE_DEFINITION_FAILURE:
 			return state.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.fail);
