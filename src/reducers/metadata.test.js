@@ -16,15 +16,12 @@ import {
 	incrementCustomerLookupsPage,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	CREATE_PROFILE_DEFINITION_SUCCESS,
-	CREATE_PROFILE_DEFINITION_FAILURE,
-	RESET_PROFILE_DEFINITION_SAVE_RESULT,
-	SET_NEW_PROFILE_DEFINITION,
+	UPDATE_PROFILE_DEFINITION_SUCCESS,
 	SAVE_ORDER_LOOKUP_SUCCESS,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
 import reducer from "./metadata";
-import { requestStates } from "../constants";
 
 export const generateLookups = max => {
 	if (max < 1 || max > 25) {
@@ -87,9 +84,6 @@ describe("metadata", () => {
 				customer: {},
 				order: {},
 				product: {},
-				saveProfileDefinitionRequestState: requestStates.idle,
-				newInstance: null,
-				newInstanceId: null,
 			},
 		}));
 
@@ -1012,8 +1006,6 @@ describe("metadata", () => {
 			const oldState = Immutable.fromJS({
 				definitions: {
 					customer: {},
-					saveProfileDefinitionRequestState: null,
-					newInstanceId: null,
 				},
 			});
 			const action = {
@@ -1033,85 +1025,57 @@ describe("metadata", () => {
 								attributes: [],
 							},
 						},
-						saveProfileDefinitionRequestState: requestStates.success,
-						newInstanceId: definition.entityTypeName,
 					},
 				}),
 			);
 		});
 
-		it("create custom profile definition failure", () => {
+		it("update custom profile definition success", () => {
+			const definition = {
+				displayName: {
+					"en-CA": "",
+					"en-US": "Address",
+					"fr-CA": "Adresse",
+					"it-IT": "Indirizzo",
+				},
+				entityTypeName: "ADDRESS",
+				isBuiltIn: true,
+				attributes: [],
+			};
 			const oldState = Immutable.fromJS({
 				definitions: {
-					customer: {},
-					saveProfileDefinitionRequestState: null,
-					newInstanceId: null,
+					customer: {
+						ADDRESS: {
+							displayName: {
+								"en-CA": "",
+								"en-US": "",
+								"fr-CA": "",
+								"it-IT": "",
+							},
+							entityTypeName: "ADDRESS",
+							isBuiltIn: true,
+							attributes: [],
+						},
+					},
 				},
 			});
-
 			const action = {
-				type: CREATE_PROFILE_DEFINITION_FAILURE,
-				payload: { response: "failure" },
+				type: UPDATE_PROFILE_DEFINITION_SUCCESS,
+				meta: { definition },
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
 				"to equal",
 				Immutable.fromJS({
 					definitions: {
-						customer: {},
-						saveProfileDefinitionRequestState: requestStates.fail,
-						newInstanceId: null,
-					},
-				}),
-			);
-		});
-
-		it("reset custom profile definition save result", () => {
-			const oldState = Immutable.fromJS({
-				definitions: {
-					customer: {},
-					saveProfileDefinitionRequestState: requestStates.success,
-					newInstanceId: "test",
-				},
-			});
-			const action = {
-				type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
-				payload: { response: "failure" },
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					definitions: {
-						customer: {},
-						saveProfileDefinitionRequestState: requestStates.idle,
-						newInstanceId: null,
-					},
-				}),
-			);
-		});
-
-		it("set new profile definition", () => {
-			const oldState = Immutable.fromJS({
-				definitions: {
-					customer: {},
-					saveProfileDefinitionRequestState: requestStates.idle,
-					newInstance: null,
-				},
-			});
-			const newInstansId = "test";
-			const action = {
-				type: SET_NEW_PROFILE_DEFINITION,
-				payload: { name: newInstansId },
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					definitions: {
-						customer: {},
-						saveProfileDefinitionRequestState: requestStates.idle,
-						newInstance: { name: "test" },
+						customer: {
+							ADDRESS: {
+								displayName: { "en-CA": "", "en-US": "Address", "fr-CA": "Adresse", "it-IT": "Indirizzo" },
+								entityTypeName: "ADDRESS",
+								isBuiltIn: true,
+								attributes: [],
+							},
+						},
 					},
 				}),
 			);
