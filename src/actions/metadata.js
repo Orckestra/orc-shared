@@ -194,7 +194,6 @@ export const createProfileDefinition = definition =>
 		createEntityTypeRequest.verb,
 		{
 			body: definition,
-			meta: definition,
 		},
 	);
 
