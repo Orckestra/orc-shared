@@ -26,10 +26,10 @@ import {
 	mappedBaseDefinitionsListSelector,
 	newProfileDefinitionInstanceSelector,
 	newProfileDefinitionNameSelector,
-	saveProfileDefinitionRequestStateSelector,
 	definitionEntityBaseAttributesSelector,
 	definitionEntityCustomAttributesSelector,
 	lookupByNameSelector,
+	mappedLookupsListSelector,
 } from "./metadata";
 
 const lookups = {
@@ -74,6 +74,48 @@ const lookups = {
 		isSystem: true,
 	},
 };
+
+describe("mappedLookupsListSelector", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: { locale: "it-IT" },
+			metadata: {
+				lookups: {
+					order: {
+						index: lookups,
+						list: ["CanceledStatusReasons", "CartStatus"],
+					},
+				},
+			},
+		});
+	});
+
+	it("retrieves mapped lookups", () => {
+		return expect(
+			mappedLookupsListSelector,
+			"when called with",
+			["order"],
+			"when called with",
+			[state],
+			"to satisfy",
+			Immutable.fromJS({
+				CanceledStatusReasons: {
+					lookupName: "CanceledStatusReasons",
+					isActive: true,
+					isSystem: true,
+					displayName: "[CanceledStatusReasons]",
+				},
+				CartStatus: {
+					lookupName: "CartStatus",
+					isActive: true,
+					isSystem: true,
+					displayName: "[CartStatus]",
+				},
+			}),
+		);
+	});
+});
 
 describe("namedLookupSelector", () => {
 	let state;
@@ -1293,10 +1335,6 @@ describe("definitions", () => {
 
 	it("retrieves the state of the profile definition name response", () => {
 		return expect(newProfileDefinitionNameSelector, "when called with", [state], "to satisfy", undefined);
-	});
-
-	it("retrieves the state of the profile definition state selector", () => {
-		return expect(saveProfileDefinitionRequestStateSelector, "when called with", [state], "to satisfy", undefined);
 	});
 
 	it("will get an empty Map if definitions do not exist", () =>

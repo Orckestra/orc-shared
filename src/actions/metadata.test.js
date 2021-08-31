@@ -48,14 +48,7 @@ import {
 	SAVE_CUSTOMER_LOOKUP_REQUEST,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	SAVE_CUSTOMER_LOOKUP_FAILURE,
-	CREATE_PROFILE_DEFINITION_REQUEST,
-	CREATE_PROFILE_DEFINITION_SUCCESS,
-	CREATE_PROFILE_DEFINITION_FAILURE,
 	createProfileDefinition,
-	RESET_PROFILE_DEFINITION_SAVE_RESULT,
-	resetProfileDefinitionSaveResult,
-	SET_NEW_PROFILE_DEFINITION,
-	setNewProfileDefinition,
 	ADD_ORDER_LOOKUP_FAILURE,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_ORDER_LOOKUP_REQUEST,
@@ -456,9 +449,9 @@ describe("createProfileDefinition", () => {
 		expect(createProfileDefinition, "when called with", [profileDefinition], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
-					CREATE_PROFILE_DEFINITION_REQUEST,
-					CREATE_PROFILE_DEFINITION_SUCCESS,
-					CREATE_PROFILE_DEFINITION_FAILURE,
+					{ type: "CREATE_PROFILE_DEFINITION_REQUEST", meta: {} },
+					{ type: "CREATE_PROFILE_DEFINITION_SUCCESS", meta: {} },
+					{ type: "CREATE_PROFILE_DEFINITION_FAILURE", meta: {} },
 				],
 				endpoint: 'URL: metadata/EntityType/ ""',
 				method: "POST",
@@ -472,24 +465,6 @@ describe("createProfileDefinition", () => {
 				options: { redirect: "follow" },
 			},
 		}));
-});
-
-describe("resetProfileDefinitionSaveResult", () => {
-	it("creates ", () =>
-		expect(resetProfileDefinitionSaveResult, "when called with", [], "to exhaustively satisfy", {
-			type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
-		}));
-});
-
-describe("setNewProfileDefinition", () => {
-	it("creates an action to set the new profile definition name", () => {
-		const name = "test";
-
-		expect(setNewProfileDefinition, "when called with", [name], "to equal", {
-			type: SET_NEW_PROFILE_DEFINITION,
-			payload: { name: name },
-		});
-	});
 });
 
 describe("getOrderDefinitions", () => {
