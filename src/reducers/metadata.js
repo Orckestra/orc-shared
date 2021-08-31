@@ -23,6 +23,7 @@ import {
 	CREATE_PROFILE_DEFINITION_SUCCESS,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
+	UPDATE_PROFILE_DEFINITION_SUCCESS,
 } from "../actions/metadata";
 
 export const ORDER_MODULE_NAME = "order";
@@ -185,6 +186,12 @@ const metadataReducer = (state = initialState, action) => {
 			return state.setIn(
 				["definitions", CUSTOMER_MODULE_NAME, action.payload.entityTypeName],
 				Immutable.fromJS(action.payload),
+			);
+
+		case UPDATE_PROFILE_DEFINITION_SUCCESS:
+			return state.setIn(
+				["definitions", CUSTOMER_MODULE_NAME, action.meta.definition.entityTypeName],
+				Immutable.fromJS(action.meta.definition),
 			);
 		default:
 			return state;

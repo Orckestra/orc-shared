@@ -11,6 +11,7 @@ import {
 	updateOrderLookupTypeDefinitionRequest,
 	updateCustomerLookupTypeDefinitionRequest,
 	createEntityTypeRequest,
+	updateEntityTypeRequest,
 	createOrderLookupTypeDefinitionRequest,
 	createCustomerLookupTypeDefinitionRequest,
 } from "./requestsApi";
@@ -195,6 +196,24 @@ export const createProfileDefinition = (definition, additionalActionContext = nu
 		{
 			body: definition,
 			meta: {
+				...additionalActionContext,
+			},
+		},
+	);
+
+const UPDATE_PROFILE_DEFINITION = "UPDATE_PROFILE_DEFINITION";
+export const [UPDATE_PROFILE_DEFINITION_REQUEST, UPDATE_PROFILE_DEFINITION_SUCCESS, UPDATE_PROFILE_DEFINITION_FAILURE] =
+	makeActionTypes(UPDATE_PROFILE_DEFINITION);
+
+export const updateProfileDefinition = (definition, additionalActionContext = null) =>
+	makeOrcApiAction(
+		UPDATE_PROFILE_DEFINITION,
+		updateEntityTypeRequest.buildUrl(definition.entityTypeName),
+		updateEntityTypeRequest.verb,
+		{
+			body: definition,
+			meta: {
+				definition,
 				...additionalActionContext,
 			},
 		},

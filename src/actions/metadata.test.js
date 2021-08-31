@@ -57,6 +57,7 @@ import {
 	ADD_CUSTOMER_LOOKUP_FAILURE,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_REQUEST,
+	updateProfileDefinition,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -455,6 +456,36 @@ describe("createProfileDefinition", () => {
 				],
 				endpoint: 'URL: metadata/EntityType/ ""',
 				method: "POST",
+				body: JSON.stringify(profileDefinition),
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+});
+
+describe("updateProfileDefinition", () => {
+	const profileDefinition = JSON.stringify({
+		entityTypeName: "testEntityTypeName",
+		atributes: [],
+		description: "test desription",
+		displayName: "test",
+		isSharedEntity: false,
+	});
+	it("creates a RSAA to update a profile definition", () =>
+		expect(updateProfileDefinition, "when called with", [profileDefinition], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: "UPDATE_PROFILE_DEFINITION_REQUEST", meta: { definition: profileDefinition } },
+					{ type: "UPDATE_PROFILE_DEFINITION_SUCCESS", meta: { definition: profileDefinition } },
+					{ type: "UPDATE_PROFILE_DEFINITION_FAILURE", meta: { definition: profileDefinition } },
+				],
+				endpoint: 'URL: metadata/EntityType/ ""',
+				method: "PUT",
 				body: JSON.stringify(profileDefinition),
 				credentials: "include",
 				bailout: expect.it("to be a function"),

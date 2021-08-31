@@ -16,6 +16,7 @@ import {
 	incrementCustomerLookupsPage,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	CREATE_PROFILE_DEFINITION_SUCCESS,
+	UPDATE_PROFILE_DEFINITION_SUCCESS,
 	SAVE_ORDER_LOOKUP_SUCCESS,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
@@ -1010,6 +1011,57 @@ describe("metadata", () => {
 			const action = {
 				type: CREATE_PROFILE_DEFINITION_SUCCESS,
 				payload: definition,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					definitions: {
+						customer: {
+							ADDRESS: {
+								displayName: { "en-CA": "", "en-US": "Address", "fr-CA": "Adresse", "it-IT": "Indirizzo" },
+								entityTypeName: "ADDRESS",
+								isBuiltIn: true,
+								attributes: [],
+							},
+						},
+					},
+				}),
+			);
+		});
+
+		it("update custom profile definition success", () => {
+			const definition = {
+				displayName: {
+					"en-CA": "",
+					"en-US": "Address",
+					"fr-CA": "Adresse",
+					"it-IT": "Indirizzo",
+				},
+				entityTypeName: "ADDRESS",
+				isBuiltIn: true,
+				attributes: [],
+			};
+			const oldState = Immutable.fromJS({
+				definitions: {
+					customer: {
+						ADDRESS: {
+							displayName: {
+								"en-CA": "",
+								"en-US": "",
+								"fr-CA": "",
+								"it-IT": "",
+							},
+							entityTypeName: "ADDRESS",
+							isBuiltIn: true,
+							attributes: [],
+						},
+					},
+				},
+			});
+			const action = {
+				type: UPDATE_PROFILE_DEFINITION_SUCCESS,
+				meta: { definition },
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
