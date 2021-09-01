@@ -8,6 +8,7 @@ import sinon from "sinon";
 import { mount } from "enzyme";
 import { resetRequestState } from "../actions/requestState";
 import Snackbar from "@material-ui/core/Snackbar";
+import * as getRequestStateInfo from "../selectors/requestStates";
 
 const messages = extractMessages(sharedMessages);
 
@@ -23,7 +24,9 @@ describe("useNotificationRequestState", () => {
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			requestStates: {
+				creates: {},
 				deletes: {},
+				fetches: {},
 				updates: {},
 			},
 		});
@@ -185,15 +188,24 @@ describe("useNotificationRequestState", () => {
 	});
 
 	it("dispatches the error actions with a message", () => {
-		state = state.setIn(
-			["requestStates", "deletes", "key1", "key2", "state"],
-			Immutable.fromJS({
-				inProgress: false,
-				value: false,
-				error: true,
-				errorMessage: "some error message",
-			}),
-		);
+		const errorPayload = {
+			response: {
+				responseStatus: {
+					message: "some error message",
+				},
+			},
+		};
+
+		const getRequestStateInfoOverride = () => ({
+			inProgress: false,
+			value: false,
+			error: errorSpy.callCount === 0,
+			errorResponse: errorSpy.callCount === 0 ? errorPayload : null,
+		});
+
+		const getRequestStateInfoStub = sinon
+			.stub(getRequestStateInfo, "getRequestStateInfo")
+			.returns(() => getRequestStateInfoOverride());
 
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
@@ -215,8 +227,10 @@ describe("useNotificationRequestState", () => {
 		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
 		expect(dispatchSpy, "to have a call satisfying", { args: [resetAction] });
 		expect(successSpy, "was not called");
-		expect(errorSpy, "to have a call satisfying", { args: ["some error message"] });
+		expect(errorSpy, "to have a call satisfying", { args: [errorPayload] });
 		expect(sb.prop("open"), "to equal", true);
+
+		getRequestStateInfoStub.restore();
 	});
 
 	it("error action is not called when undefined", () => {

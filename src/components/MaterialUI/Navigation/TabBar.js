@@ -16,7 +16,7 @@ import { isScrollVisible } from "./../../../utils/domHelper";
 import { getModifiedTabs, getTabsWithErrors } from "./../../../selectors/view";
 import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
 import { removeEditNode } from "./../../../actions/view";
-import { getValueFromUrlByKey, tryGetNewEntityIdKey } from "./../../../utils/urlHelper";
+import { tryGetNewEntityIdKey, resolveEntityId } from "./../../../utils/urlHelper";
 import { useDispatchWithModulesData } from "./../../../hooks/useDispatchWithModulesData";
 import sharedMessages from "./../../../sharedMessages";
 import { setClosingTabHandlerActions } from "../../../actions/navigation";
@@ -151,18 +151,11 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		event.stopPropagation();
 		event.preventDefault();
 		if (isModified) {
-			setCurrentCloseData({
-				closeCallback: closeCallback,
-				href: href,
-				path: path,
-				entityIdKey: entityIdKey,
-				entityId,
-				index: index,
-			});
+			setCurrentCloseData({ closeCallback, entityId, index });
 			setShowConfirmationModal(true);
 		} else {
 			closeCallback();
-			removeEditState(href, entityIdKey, entityId, path);
+			dispatch(removeEditNode, [entityId]);
 			handleChange(null, getNewIndex(index));
 		}
 	};
@@ -170,24 +163,8 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	const closeTab = () => {
 		setShowConfirmationModal(false);
 		currentCloseData.closeCallback();
-		removeEditState(
-			currentCloseData.href,
-			currentCloseData.entityIdKey,
-			currentCloseData.entityId,
-			currentCloseData.path,
-		);
+		dispatch(removeEditNode, [currentCloseData.entityId]);
 		handleChange(null, getNewIndex(currentCloseData.index));
-	};
-
-	const removeEditState = (href, entityIdKey, resolvedEntityId, path) => {
-		if (resolvedEntityId) {
-			dispatch(removeEditNode, [resolvedEntityId]);
-			return;
-		}
-		let newKey = tryGetNewEntityIdKey(href);
-		const key = entityIdKey === newKey ? entityIdKey : `:${entityIdKey}`;
-		const entityId = getValueFromUrlByKey(href, path, key);
-		dispatch(removeEditNode, [entityId]);
 	};
 
 	const moduleIcon = <Icon id={module.icon} className={classes.moduleIcon} />;
@@ -201,18 +178,11 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		resizeHandler();
 	}, [resizeHandler, module, pages]);
 
-	React.useEffect(() => {
-		if (module.closingTabHandler?.entitySelector) {
-			const actions = pages
-				.map(p => ({
-					entityId: module.closingTabHandler.entitySelector(p.params)?.entityId ?? null,
-					closeTab: p.close,
-				}))
-				.filter(x => x.entityId != null);
+	const closingActions = [];
 
-			dispatchRedux(setClosingTabHandlerActions(moduleName, actions));
-		}
-	}, [dispatchRedux, moduleName, pages, module.closingTabHandler]);
+	React.useEffect(() => {
+		dispatchRedux(setClosingTabHandlerActions(moduleName, closingActions));
+	}, [dispatchRedux, moduleName, closingActions]);
 
 	return (
 		<div className={classes.container}>
@@ -244,7 +214,10 @@ const MuiBar = ({ module, moduleName, pages }) => {
 					) => {
 						let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
 						if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
-						const entityId = typeof entityIdResolver === "function" ? entityIdResolver({ match: { params } }) : null;
+						const entityId =
+							typeof entityIdResolver === "function"
+								? entityIdResolver({ match: { params } })
+								: resolveEntityId(href, path, entityIdKey);
 						const isModified = modifiedTabs.includes(href);
 						const isError = tabsWithErrors.includes(href);
 						const tabLabel = <TabLabel label={label} />;
@@ -274,6 +247,19 @@ const MuiBar = ({ module, moduleName, pages }) => {
 							label: tabLabel,
 							sortOrder: index,
 						});
+
+						if (entityId != null) {
+							closingActions.push({
+								entityId: entityId,
+								closeTab: (event, executeHandlerOnly = false) => {
+									close(event, executeHandlerOnly);
+									if (executeHandlerOnly === false) {
+										handleChange(null, getNewIndex(index));
+									}
+								},
+							});
+						}
+
 						return (
 							<Tab
 								classes={{
