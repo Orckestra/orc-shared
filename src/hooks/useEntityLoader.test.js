@@ -6,6 +6,8 @@ import { RSAA } from "redux-api-middleware";
 import { spyOnConsole } from "../utils/testUtils";
 import useEntityLoader from "./useEntityLoader";
 import { makeActionTypes } from "../actions/makeApiAction";
+import * as getRequestStateInfo from "../selectors/requestStates";
+import { mount } from "enzyme";
 
 const TestComp = ({ entityId, loader, cutout }) => {
 	useEntityLoader(entityId, loader, cutout);
@@ -23,6 +25,8 @@ describe("useEntityLoader", () => {
 
 	let loader, state, store, appNode;
 
+	const closingAction = sinon.spy().named("closingAction");
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			cutout: "yes",
@@ -37,9 +41,19 @@ describe("useEntityLoader", () => {
 				updates: {},
 			},
 			navigation: {
-				route: { match: { path: "/:scope/TheModuleName", params: { scope: "TheOldScope" } } },
+				route: {
+					match: { path: "/:scope/TheModuleName/:entityId", params: { scope: "TheOldScope", entityId: "loaderId" } },
+				},
 				moduleTabs: {},
 				config: { prependPath: "/:scope/", prependHref: "/Scope1/" },
+				closingTabsHandlerActions: {
+					TheModuleName: [
+						{
+							entityId: "loaderId",
+							closeTab: closingAction,
+						},
+					],
+				},
 			},
 		});
 		const subs = [];
@@ -75,6 +89,7 @@ describe("useEntityLoader", () => {
 	});
 
 	afterEach(() => {
+		closingAction.resetHistory();
 		document.body.removeChild(appNode);
 	});
 
@@ -180,4 +195,72 @@ describe("useEntityLoader", () => {
 			"to throw",
 			"useEntityLoader only supports RSAA api actions with valid types",
 		));
+
+	it("Invoke the closing tab action when entity not found", () => {
+		const component = (
+			<Provider store={store}>
+				<TestComp entityId={"loaderId"} loader={loader} cutout={state => state.get("live")} />
+			</Provider>
+		);
+
+		const errorPayload = {
+			status: 404,
+			response: {
+				responseStatus: {
+					message: "some error message",
+				},
+			},
+		};
+
+		const getRequestStateInfoOverride = () => ({
+			inProgress: false,
+			value: false,
+			error: closingAction.callCount === 0,
+			errorResponse: closingAction.callCount === 0 ? errorPayload : null,
+		});
+
+		const getRequestStateInfoStub = sinon
+			.stub(getRequestStateInfo, "getRequestStateInfo")
+			.returns(() => getRequestStateInfoOverride());
+
+		mount(component);
+
+		expect(closingAction, "was called");
+
+		getRequestStateInfoStub.restore();
+	});
+
+	it("Does not invoke not existing closing tab action when entity not found", () => {
+		const component = (
+			<Provider store={store}>
+				<TestComp entityId={"loaderAnotherId"} loader={loader} cutout={state => state.get("live")} />
+			</Provider>
+		);
+
+		const errorPayload = {
+			status: 404,
+			response: {
+				responseStatus: {
+					message: "some error message",
+				},
+			},
+		};
+
+		const getRequestStateInfoOverride = () => ({
+			inProgress: false,
+			value: false,
+			error: closingAction.callCount === 0,
+			errorResponse: closingAction.callCount === 0 ? errorPayload : null,
+		});
+
+		const getRequestStateInfoStub = sinon
+			.stub(getRequestStateInfo, "getRequestStateInfo")
+			.returns(() => getRequestStateInfoOverride());
+
+		mount(component);
+
+		expect(closingAction, "was not called");
+
+		getRequestStateInfoStub.restore();
+	});
 });

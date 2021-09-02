@@ -22,13 +22,11 @@ const useEntityLoader = (entityId, loadAction, cutoutSelector) => {
 	const [requestState] = useRequestState({
 		keys: [loadAction[RSAA]?.endpoint ?? "invalidEndPoint"],
 		operation: requestStateOperations.fetch,
-		successAction: () => console.log("useLoaderWithHandler  --> successAction"),
 		errorAction: errorResponse => {
 			setLoadErrorUnhandled(true);
-
-			if (errorResponse.status === 404 && closingTabHandlerAction) closingTabHandlerAction();
-
-			console.log("useLoaderWithHandler  --> errorAction", errorResponse);
+			if (errorResponse.status === 404 && closingTabHandlerAction) {
+				closingTabHandlerAction();
+			}
 		},
 	});
 

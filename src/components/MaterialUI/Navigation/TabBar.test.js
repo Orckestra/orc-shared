@@ -472,7 +472,7 @@ describe("TabBar", () => {
 		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
 	});
 
-	it("Renders TabBar correctly with closing tab handler TODOJOC 111", () => {
+	it("Close the tab correctly using closing tab handler actions", () => {
 		store.dispatch = sinon.spy().named("dispatch");
 
 		pages[2].entityIdResolver = () => null;
@@ -509,7 +509,7 @@ describe("TabBar", () => {
 		expect(history.push, "to have a call satisfying", { args: [pages[2].href] });
 	});
 
-	it("Renders TabBar correctly with closing tab handler TODOJOC 222", () => {
+	it("Close the tab correctly using closing tab handler actions without affecting routing", () => {
 		store.dispatch = sinon.spy().named("dispatch");
 
 		pages[2].entityIdResolver = () => null;
