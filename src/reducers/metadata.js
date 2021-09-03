@@ -190,8 +190,8 @@ const metadataReducer = (state = initialState, action) => {
 
 		case UPDATE_PROFILE_DEFINITION_SUCCESS:
 			return state.setIn(
-				["definitions", CUSTOMER_MODULE_NAME, action.meta.definition.entityTypeName],
-				Immutable.fromJS(action.meta.definition),
+				["definitions", CUSTOMER_MODULE_NAME, action.payload.entityTypeName],
+				Immutable.fromJS(action.payload),
 			);
 		default:
 			return state;
