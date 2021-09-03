@@ -480,9 +480,9 @@ describe("updateProfileDefinition", () => {
 		expect(updateProfileDefinition, "when called with", [profileDefinition], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
-					{ type: "UPDATE_PROFILE_DEFINITION_REQUEST", meta: { definition: profileDefinition } },
-					{ type: "UPDATE_PROFILE_DEFINITION_SUCCESS", meta: { definition: profileDefinition } },
-					{ type: "UPDATE_PROFILE_DEFINITION_FAILURE", meta: { definition: profileDefinition } },
+					{ type: "UPDATE_PROFILE_DEFINITION_REQUEST", meta: {} },
+					{ type: "UPDATE_PROFILE_DEFINITION_SUCCESS", meta: {} },
+					{ type: "UPDATE_PROFILE_DEFINITION_FAILURE", meta: {} },
 				],
 				endpoint: 'URL: metadata/EntityType/ ""',
 				method: "PUT",

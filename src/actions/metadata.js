@@ -213,7 +213,6 @@ export const updateProfileDefinition = (definition, additionalActionContext = nu
 		{
 			body: definition,
 			meta: {
-				definition,
 				...additionalActionContext,
 			},
 		},
