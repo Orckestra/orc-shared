@@ -24,6 +24,8 @@ import {
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
 	UPDATE_PROFILE_DEFINITION_SUCCESS,
+	GET_ORDER_LOOKUP_SUCCESS,
+	GET_CUSTOMER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
 
 export const ORDER_MODULE_NAME = "order";
@@ -153,6 +155,7 @@ const metadataReducer = (state = initialState, action) => {
 			return state.set("profileAttributeGroups", Immutable.fromJS(normalizedData.entities.metadata));
 		}
 		case SAVE_ORDER_LOOKUP_SUCCESS:
+		case GET_ORDER_LOOKUP_SUCCESS:
 			return state.setIn(
 				["lookups", ORDER_MODULE_NAME, "index", action.payload.lookupName],
 				Immutable.fromJS(action.payload),
@@ -168,6 +171,7 @@ const metadataReducer = (state = initialState, action) => {
 		}
 
 		case SAVE_CUSTOMER_LOOKUP_SUCCESS:
+		case GET_CUSTOMER_LOOKUP_SUCCESS:
 			return state.setIn(
 				["lookups", CUSTOMER_MODULE_NAME, "index", action.payload.lookupName],
 				Immutable.fromJS(action.payload),

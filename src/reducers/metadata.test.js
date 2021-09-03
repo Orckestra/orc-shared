@@ -20,6 +20,8 @@ import {
 	SAVE_ORDER_LOOKUP_SUCCESS,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
+	GET_ORDER_LOOKUP_SUCCESS,
+	GET_CUSTOMER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
 import reducer from "./metadata";
 
@@ -168,6 +170,65 @@ describe("metadata", () => {
 									isSystem: true,
 								},
 							},
+							list: [],
+						},
+					},
+				}),
+			);
+		});
+
+		it("get order lookup success", () => {
+			const lookups = {
+				CanceledStatusReasons: {
+					lookupName: "CanceledStatusReasons",
+					values: {
+						CanceledReason1: {
+							id: "e16d07f847284775b77cfb985724cf58",
+							value: "CanceledReason1",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+						CanceledReason2: {
+							id: "6bbfe77703c745d68b8eaceb9cd484b1",
+							value: "CanceledReason2",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+					},
+					isActive: true,
+					isSystem: true,
+				},
+				CartStatus: {
+					lookupName: "CartStatus",
+					values: {},
+					isActive: true,
+					isSystem: true,
+				},
+			};
+
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: { CartStatus: lookups.CartStatus },
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: GET_ORDER_LOOKUP_SUCCESS,
+				payload: lookups.CanceledStatusReasons,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						order: {
+							index: lookups,
 							list: [],
 						},
 					},
@@ -676,6 +737,65 @@ describe("metadata", () => {
 									isSystem: true,
 								},
 							},
+							list: [],
+						},
+					},
+				}),
+			);
+		});
+
+		it("get customer lookup success", () => {
+			const lookups = {
+				CanceledStatusReasons: {
+					lookupName: "CanceledStatusReasons",
+					values: {
+						CanceledReason1: {
+							id: "e16d07f847284775b77cfb985724cf58",
+							value: "CanceledReason1",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+						CanceledReason2: {
+							id: "6bbfe77703c745d68b8eaceb9cd484b1",
+							value: "CanceledReason2",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+					},
+					isActive: true,
+					isSystem: true,
+				},
+				CartStatus: {
+					lookupName: "CartStatus",
+					values: {},
+					isActive: true,
+					isSystem: true,
+				},
+			};
+
+			const oldState = Immutable.fromJS({
+				lookups: {
+					customer: {
+						index: { CartStatus: lookups.CartStatus },
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: GET_CUSTOMER_LOOKUP_SUCCESS,
+				payload: lookups.CanceledStatusReasons,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						customer: {
+							index: lookups,
 							list: [],
 						},
 					},
