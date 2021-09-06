@@ -2,7 +2,7 @@ import React from "react";
 import Immutable from "immutable";
 import { mount } from "unexpected-reaction";
 import SegmentPage from "./Routing/SegmentPage";
-import { Modules } from "./Modules";
+import { Modules, Module } from "./Modules";
 import TabBar from "./MaterialUI/Navigation/TabBar";
 import { TestWrapper, createMuiTheme } from "./../utils/testUtils";
 import sinon from "sinon";
@@ -436,5 +436,137 @@ describe("Modules", () => {
 
 			expect(history.push, "to have calls satisfying", [{ args: ["/TestScope2/demos?arg=data"] }]);
 		});
+	});
+});
+
+describe("Module", () => {
+	let config, Page1, store, state;
+
+	const match = {
+		url: "/TestScope/users/page1",
+		path: "/:scope/users/page1",
+		params: { scope: "TestScope" },
+	};
+
+	let history, pushSpy;
+	beforeAll(() => {
+		history = createMemoryHistory({ initialEntries: ["/TestScope/demos"] });
+		pushSpy = sinon.spy(history, "push");
+		history.push.named("history.push");
+	});
+
+	beforeEach(() => {
+		config = {
+			label: "Module 1",
+			icon: "user",
+			hide: true,
+			segments: {
+				"/page1": {
+					component: Page1,
+					label: "Page 1",
+				},
+			},
+		};
+		state = Immutable.fromJS({
+			navigation: {
+				tabIndex: {},
+				moduleTabs: {},
+				mappedHrefs: {},
+				route: {
+					match: match,
+				},
+				config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
+			},
+			router: {
+				location: {},
+			},
+			modules: {
+				tree: {},
+			},
+			view: {
+				edit: {
+					users: {},
+					photos: {},
+					demos: {},
+				},
+			},
+			requests: {
+				logout: false,
+			},
+			settings: {
+				defaultScope: "myScope",
+			},
+			scopes: {
+				TestScope: {
+					id: "TestScope",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+					isAuthorizedScope: true,
+				},
+			},
+			locale: {
+				locale: null,
+				supportedLocales: [
+					{ language: "English", cultureIso: "en-US" },
+					{ language: "Francais", cultureIso: "fr" },
+				],
+			},
+		});
+		store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => state,
+		};
+	});
+
+	const theme = createMuiTheme();
+
+	it("Calls pushes to root when unauthorized user trying to access hidden module", () => {
+		//config.hide = false;
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Module config={config} match={match} path={match.path} location={{}} />
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(history.push, "to have calls satisfying", [{ args: ["/"] }]);
+
+		pushSpy.resetHistory();
+	});
+
+	it("Calls pushes to root when unauthorized user trying to access hidden module and hide property is a function which retrieves false", () => {
+		config.hide = () => false;
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Module config={config} match={match} path={match.path} location={{}} />
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(history.push, "not to have calls satisfying", [{ args: ["/"] }]);
+
+		pushSpy.resetHistory();
+	});
+
+	it("Calls pushes to root when unauthorized user trying to access hidden module and hide property is a function which retrieves true", () => {
+		config.hide = () => true;
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Module config={config} match={match} path={match.path} location={{}} />
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(history.push, "to have calls satisfying", [{ args: ["/"] }]);
+
+		pushSpy.resetHistory();
 	});
 });
