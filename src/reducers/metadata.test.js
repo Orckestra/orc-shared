@@ -1061,7 +1061,7 @@ describe("metadata", () => {
 			});
 			const action = {
 				type: UPDATE_PROFILE_DEFINITION_SUCCESS,
-				meta: { definition },
+				payload: definition,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
