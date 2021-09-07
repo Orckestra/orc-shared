@@ -28,7 +28,7 @@ export const tryGetNewEntityIdKey = url => {
 };
 
 export const resolveEntityId = (url, path, entityIdKey) => {
-	let newKey = tryGetNewEntityIdKey(url);
+	const newKey = tryGetNewEntityIdKey(url);
 	const key = entityIdKey === newKey ? entityIdKey : `:${entityIdKey}`;
 	return getValueFromUrlByKey(url, path, key);
 };

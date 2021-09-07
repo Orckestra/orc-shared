@@ -180,11 +180,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 
 	const closingActions = [];
 
-	React.useEffect(() => {
-		dispatchRedux(setClosingTabHandlerActions(moduleName, closingActions));
-	}, [dispatchRedux, moduleName, closingActions]);
-
-	return (
+	const allTabs = (
 		<div className={classes.container}>
 			<ResizeDetector onResize={resizeHandler} />
 			<Tab
@@ -288,6 +284,12 @@ const MuiBar = ({ module, moduleName, pages }) => {
 			/>
 		</div>
 	);
+
+	React.useEffect(() => {
+		dispatchRedux(setClosingTabHandlerActions(moduleName, closingActions));
+	}, [dispatchRedux, moduleName, closingActions]);
+
+	return allTabs;
 };
 
 export default MuiBar;
