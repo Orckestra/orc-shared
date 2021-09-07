@@ -47,7 +47,9 @@ const useNotificationRequestState = ({
 	}, [formatMessage, successAction, successMessageId, successMessageValues]);
 
 	const onError = useCallback(
-		errorMessage => {
+		errorResponse => {
+			const errorMessage = errorResponse?.response?.responseStatus?.message ?? null;
+
 			const message = formatMessage(errorMessageId, {
 				...errorMessageValues,
 				errorMessage: errorMessage ?? formatMessage(sharedMessages.errorUnknown),
@@ -55,7 +57,7 @@ const useNotificationRequestState = ({
 			addNotification(message, "error");
 
 			if (errorAction) {
-				errorAction(errorMessage);
+				errorAction(errorResponse);
 			}
 		},
 		// addNotification causes issues in the deps
