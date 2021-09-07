@@ -82,7 +82,7 @@ const SelectionList = ({
 	useEffect(() => {
 		const listDataIds = listData.data.map(d => d.id);
 		const checkedFromList = listDataIds.filter(l => checked.includes(l));
-		if (defaultSelection && checkedFromList.length === 0) {
+		if (defaultSelection && checkedFromList.length === 0 && checked[0] !== defaultSelection) {
 			setChecked([defaultSelection]);
 		}
 	}, [defaultSelection, checked, listData.data]);
