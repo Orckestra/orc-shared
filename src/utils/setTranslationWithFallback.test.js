@@ -139,24 +139,12 @@ describe("setTranslationWithFallbackValue", () => {
 			}),
 		));
 
-	it("returns same object if field does not exist", () =>
+	it("returns same object if object does not exist", () =>
 		expect(
 			setTranslationWithFallbackValue,
 			"when called with",
-			[
-				"fr",
-				Immutable.fromJS({
-					name: "fallbackName",
-					hat: { name: {} },
-				}),
-				"fallbakValue",
-				["pets", "pets2", "name"],
-			],
+			["fr", null, "fallbakValue", ["pets", "name"]],
 			"to equal",
-			Immutable.fromJS({
-				name: "fallbackName",
-				hat: { name: {} },
-				pets: { pets2: { name: "fallbakValue" } },
-			}),
+			null,
 		));
 });
