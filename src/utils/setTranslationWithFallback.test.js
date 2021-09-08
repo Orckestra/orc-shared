@@ -79,6 +79,7 @@ describe("setTranslationWithFallbackField", () => {
 			Immutable.fromJS({
 				name: "fallbackName",
 				hat: { name: {} },
+				pets: { name: "fallbackName" },
 			}),
 		));
 });
@@ -149,12 +150,13 @@ describe("setTranslationWithFallbackValue", () => {
 					hat: { name: {} },
 				}),
 				"fallbakValue",
-				["pets", "name"],
+				["pets", "pets2", "name"],
 			],
 			"to equal",
 			Immutable.fromJS({
 				name: "fallbackName",
 				hat: { name: {} },
+				pets: { pets2: { name: "fallbakValue" } },
 			}),
 		));
 });
