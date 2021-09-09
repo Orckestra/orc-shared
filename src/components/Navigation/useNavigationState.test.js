@@ -62,13 +62,15 @@ const TestComp9 = props => (
 
 let firstPagTabClose = null;
 
-const makeTestComp = Comp => ({ modules }) => {
-	const navigationState = useNavigationState(modules);
+const makeTestComp =
+	Comp =>
+	({ modules }) => {
+		const navigationState = useNavigationState(modules);
 
-	firstPagTabClose = navigationState.pages?.length >= 2 ? navigationState.pages[1].close : null;
+		firstPagTabClose = navigationState.pages?.length >= 2 ? navigationState.pages[1].close : null;
 
-	return <Comp {...navigationState}></Comp>;
-};
+		return <Comp {...navigationState}></Comp>;
+	};
 
 describe("useNavigationState", () => {
 	spyOnConsole(["warn"]);
@@ -811,9 +813,11 @@ describe("useNavigationState", () => {
 		});
 
 		it("gets a state value for a tab via selector", () => {
-			page.labelValueSelector = (params = {}) => state => {
-				return state.getIn(["objs", "test", params.pageVar]);
-			};
+			page.labelValueSelector =
+				(params = {}) =>
+				state => {
+					return state.getIn(["objs", "test", params.pageVar]);
+				};
 			return expect(
 				<Provider store={store}>
 					<IntlProvider locale="en">
@@ -1378,6 +1382,10 @@ describe("getPageData", () => {
 					label: "Page 5",
 					component: TestComp9,
 				},
+				"/:var3(def\\d{1,3})": {
+					label: "Page 6",
+					component: TestComp7,
+				},
 			},
 		};
 	});
@@ -1411,6 +1419,12 @@ describe("getPageData", () => {
 		expect(getPageData, "when called with", ["/abc99", { var2: "abc99" }, module3], "to satisfy", {
 			label: "Page 5",
 			component: TestComp9,
+		}));
+
+	it("handles variable path steps which uses 'path to regex' with multiple pages", () =>
+		expect(getPageData, "when called with", ["/def666", { var3: "def666" }, module3], "to satisfy", {
+			label: "Page 6",
+			component: TestComp7,
 		}));
 
 	it("handles multiple variable path steps", () =>
