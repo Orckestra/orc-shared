@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "1.0.0-pre.6",
+	"version": "1.1.0-dev.38",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
@@ -45,17 +45,13 @@
 		{
 			"language": "Français",
 			"cultureIso": "fr-CA"
-		},
-		{
-			"language": "Italiano",
-			"cultureIso": "it-IT"
 		}
 	],
 	"devDependencies": {
-		"orc-scripts": "1.1.0-pre.0"
+		"orc-scripts": "1.2.0-dev.1"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.1.0-pre.0"
+		"orc-scripts": "1.2.0-dev.1"
 	},
 	"sideEffects": false,
 	"lint-staged": {

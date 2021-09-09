@@ -16,7 +16,7 @@ import { isScrollVisible } from "./../../../utils/domHelper";
 import { getModifiedTabs, getTabsWithErrors } from "./../../../selectors/view";
 import ConfirmationModal from "./../DataDisplay/PredefinedElements/ConfirmationModal";
 import { removeEditNode } from "./../../../actions/view";
-import { getValueFromUrlByKey, tryGetNewEntityIdKey } from "./../../../utils/urlHelper";
+import { tryGetNewEntityIdKey, resolveEntityId } from "./../../../utils/urlHelper";
 import { useDispatchWithModulesData } from "./../../../hooks/useDispatchWithModulesData";
 import sharedMessages from "./../../../sharedMessages";
 import { setClosingTabHandlerActions } from "../../../actions/navigation";
@@ -56,6 +56,10 @@ const useStyles = makeStyles(theme => ({
 		width: `${theme.spacing(2.4)} !important`,
 		height: theme.spacing(2.4),
 		color: "inherit",
+	},
+	sectionIcon: {
+		width: `${theme.spacing(1.6)} !important`,
+		height: theme.spacing(1.6),
 	},
 	select: {
 		marginLeft: theme.spacing(2),
@@ -116,16 +120,16 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	const modifiedTabs = useSelector(getModifiedTabs(pagesParams));
 	const tabsWithErrors = useSelector(getTabsWithErrors(pagesParams));
 
+	const tabLabels = [];
+
 	const handleChange = (_, value) => {
-		if (value === false) {
-			history.push(module.href);
-		} else {
+		if (typeof value === "number" && value >= 0 && value < pages.length) {
 			const href = pages[value].href;
 			history.push(href);
+		} else {
+			history.push(module.href);
 		}
 	};
-
-	const tabLabels = [];
 
 	const selectProps = new SelectProps();
 	selectProps.set(SelectProps.propNames.iconSelect, true);
@@ -138,29 +142,29 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		</div>
 	);
 
-	const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey) => {
+	const getNewIndex = oldIndex => {
+		const newIndex = oldIndex + 1 >= tabLabels.length ? oldIndex - 1 : oldIndex + 1;
+		return newIndex;
+	};
+
+	const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey, entityId, index) => {
 		event.stopPropagation();
 		event.preventDefault();
 		if (isModified) {
-			setCurrentCloseData({ closeCallback: closeCallback, href: href, path: path, entityIdKey: entityIdKey });
+			setCurrentCloseData({ closeCallback, entityId, index });
 			setShowConfirmationModal(true);
 		} else {
 			closeCallback();
-			removeEditState(href, entityIdKey, path);
+			dispatch(removeEditNode, [entityId]);
+			handleChange(null, getNewIndex(index));
 		}
 	};
 
 	const closeTab = () => {
 		setShowConfirmationModal(false);
 		currentCloseData.closeCallback();
-		removeEditState(currentCloseData.href, currentCloseData.entityIdKey, currentCloseData.path);
-	};
-
-	const removeEditState = (href, entityIdKey, path) => {
-		let newKey = tryGetNewEntityIdKey(href);
-		const key = entityIdKey === newKey ? entityIdKey : `:${entityIdKey}`;
-		const entityId = getValueFromUrlByKey(href, path, key);
-		dispatch(removeEditNode, [entityId]);
+		dispatch(removeEditNode, [currentCloseData.entityId]);
+		handleChange(null, getNewIndex(currentCloseData.index));
 	};
 
 	const moduleIcon = <Icon id={module.icon} className={classes.moduleIcon} />;
@@ -174,20 +178,9 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		resizeHandler();
 	}, [resizeHandler, module, pages]);
 
-	React.useEffect(() => {
-		if (module.closingTabHandler?.entitySelector) {
-			const actions = pages
-				.map(p => ({
-					entityId: module.closingTabHandler.entitySelector(p.params)?.entityId ?? null,
-					closeTab: p.close,
-				}))
-				.filter(x => x.entityId != null);
+	const closingActions = [];
 
-			dispatchRedux(setClosingTabHandlerActions(moduleName, actions));
-		}
-	}, [dispatchRedux, moduleName, pages, module.closingTabHandler]);
-
-	return (
+	const allTabs = (
 		<div className={classes.container}>
 			<ResizeDetector onResize={resizeHandler} />
 			<Tab
@@ -210,50 +203,76 @@ const MuiBar = ({ module, moduleName, pages }) => {
 				}}
 				ref={tabs}
 			>
-				{pages.map(({ href, label, outsideScope, close, path, params, mustTruncate }, index) => {
-					let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
-					if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
-					const isModified = modifiedTabs.includes(href);
-					const isError = tabsWithErrors.includes(href);
-					const tabLabel = <TabLabel label={label} />;
-					const tabClassName = classNames(
-						classes.labelContainer,
-						isModified && classes.modifiedLabel,
-						isError && classes.errorLabel,
-					);
-					const wrappedTabLabel = (
-						<div className={tabClassName}>
-							<TabLabel label={label} mustTruncate={mustTruncate} classes={{ root: tabClassName }} />
-							{isModified === true ? <span className={classes.asterix}>*</span> : null}
-						</div>
-					);
-					const closeIcon = (
-						<Icon
-							id="close"
-							className={classes.closeIcon}
-							onClick={event => tabCloseHandler(event, close, isModified, href, path, entityIdKey)}
-						/>
-					);
-					tabLabels.push({
-						value: index,
-						label: tabLabel,
-						sortOrder: index,
-					});
-					return (
-						<Tab
-							classes={{
-								root: classNames(classes.tab, !mustTruncate && classes.unsetMaxWidth),
-							}}
-							component={TabLink}
-							label={wrappedTabLabel}
-							key={href}
-							to={href}
-							value={index}
-							close={closeIcon}
-							disabled={outsideScope}
-						/>
-					);
-				})}
+				{pages.map(
+					(
+						{ href, label, outsideScope, close, path, params, mustTruncate, icon, isDetails, entityIdResolver },
+						index,
+					) => {
+						let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
+						if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
+						const entityId =
+							typeof entityIdResolver === "function"
+								? entityIdResolver({ match: { params } })
+								: resolveEntityId(href, path, entityIdKey);
+						const isModified = modifiedTabs.includes(href);
+						const isError = tabsWithErrors.includes(href);
+						const tabLabel = <TabLabel label={label} />;
+						const sectionIconClss = classNames(classes.moduleIcon, isDetails && classes.sectionIcon);
+						const tabClassName = classNames(
+							classes.labelContainer,
+							isModified && classes.modifiedLabel,
+							isError && classes.errorLabel,
+						);
+						const sectionIcon = icon && <Icon id={icon} className={sectionIconClss} />;
+
+						const wrappedTabLabel = (
+							<div className={tabClassName}>
+								<TabLabel label={label} mustTruncate={mustTruncate} classes={{ root: tabClassName }} />
+								{isModified === true ? <span className={classes.asterix}>*</span> : null}
+							</div>
+						);
+						const closeIcon = (
+							<Icon
+								id="close"
+								className={classes.closeIcon}
+								onClick={event => tabCloseHandler(event, close, isModified, href, path, entityIdKey, entityId, index)}
+							/>
+						);
+						tabLabels.push({
+							value: index,
+							label: tabLabel,
+							sortOrder: index,
+						});
+
+						if (entityId != null) {
+							closingActions.push({
+								entityId: entityId,
+								closeTab: (event, executeHandlerOnly = false) => {
+									close(event, executeHandlerOnly);
+									if (executeHandlerOnly === false) {
+										handleChange(null, getNewIndex(index));
+									}
+								},
+							});
+						}
+
+						return (
+							<Tab
+								classes={{
+									root: classNames(classes.tab, !mustTruncate && classes.unsetMaxWidth),
+								}}
+								component={TabLink}
+								label={wrappedTabLabel}
+								icon={sectionIcon}
+								key={href}
+								to={href}
+								value={index}
+								close={closeIcon}
+								disabled={outsideScope}
+							/>
+						);
+					},
+				)}
 			</Tabs>
 			{showSelect ? select : null}
 			<ConfirmationModal
@@ -265,6 +284,12 @@ const MuiBar = ({ module, moduleName, pages }) => {
 			/>
 		</div>
 	);
+
+	React.useEffect(() => {
+		dispatchRedux(setClosingTabHandlerActions(moduleName, closingActions));
+	}, [dispatchRedux, moduleName, closingActions]);
+
+	return allTabs;
 };
 
 export default MuiBar;

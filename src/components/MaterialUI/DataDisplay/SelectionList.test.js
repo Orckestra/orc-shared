@@ -33,8 +33,10 @@ describe("SelectionList", () => {
 			<TestWrapper intlProvider={{ messages }}>
 				<Grid>
 					<Grid>
-						<div>{listTitle}</div>
-						<ScrollableCustomList checked={[]} items={list} classes={{}} />
+						<div>
+							<div>{listTitle}</div>
+							<ScrollableCustomList checked={[]} items={list} classes={{}} />
+						</div>
 					</Grid>
 					<Grid>
 						<div></div>
@@ -60,8 +62,10 @@ describe("SelectionList", () => {
 			<TestWrapper intlProvider={{ messages }}>
 				<Grid>
 					<Grid>
-						<div>{listTitle}</div>
-						<ScrollableCustomList checked={[]} items={list} classes={{}} />
+						<div>
+							<div>{listTitle}</div>
+							<ScrollableCustomList checked={[]} items={list} classes={{}} />
+						</div>
 					</Grid>
 					<Grid>
 						<div></div>
@@ -86,8 +90,10 @@ describe("SelectionList", () => {
 		const expected = (
 			<Grid>
 				<Grid>
-					<div>{listTitle}</div>
-					<ScrollableCustomList checked={[]} items={list} classes={{}} />
+					<div>
+						<div>{listTitle}</div>
+						<ScrollableCustomList checked={[]} items={list} classes={{}} />
+					</div>
 				</Grid>
 				<Grid>
 					<hr />
@@ -117,9 +123,11 @@ describe("SelectionList", () => {
 		const expected = (
 			<Grid>
 				<Grid>
-					<div>{listTitle}</div>
-					<ScrollableCustomList checked={[]} items={list} classes={{}} />
-					<div>{actionPanel}</div>
+					<div>
+						<div>{listTitle}</div>
+						<ScrollableCustomList checked={[]} items={list} classes={{}} />
+						<div>{actionPanel}</div>
+					</div>
 				</Grid>
 				<Grid>
 					<hr />
@@ -145,8 +153,10 @@ describe("SelectionList", () => {
 		const expected = (
 			<Grid>
 				<Grid>
-					<div>{listTitle}</div>
-					<ScrollableCustomList checked={[]} items={list} classes={{}} />
+					<div>
+						<div>{listTitle}</div>
+						<ScrollableCustomList checked={[]} items={list} classes={{}} />
+					</div>
 				</Grid>
 				<Grid>
 					<div>Test</div>

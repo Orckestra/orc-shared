@@ -1,6 +1,10 @@
 import { defineMessages } from "react-intl";
 
 const sharedMessages = defineMessages({
+	appSelectorTitle: {
+		id: "orc-shared.appSelectorTitle",
+		defaultMessage: "Orckestra Commerce Cloud Applications List",
+	},
 	scopeFilterPlaceholder: {
 		id: "orc-shared.scopeFilterPlaceholder",
 		defaultMessage: "Type a scope name",
@@ -210,6 +214,46 @@ const sharedMessages = defineMessages({
 	fieldMustBeValidPhoneExtension: {
 		id: "orc-shared.fieldMustBeValidPhoneExtension",
 		defaultMessage: "This field must be a valid phone extension",
+	},
+	embedded: {
+		id: "orc-shared.embedded",
+		defaultMessage: "Embedded",
+	},
+	shared: {
+		id: "orc-shared.shared",
+		defaultMessage: "Shared",
+	},
+	dataTypeText: {
+		id: "orc-shared.dataTypeText",
+		defaultMessage: "Text",
+	},
+	dataTypeBoolean: {
+		id: "orc-shared.dataTypeBoolean",
+		defaultMessage: "Yes/No Choice",
+	},
+	dataTypeDate: {
+		id: "orc-shared.dataTypeDate",
+		defaultMessage: "Date/Calendar",
+	},
+	dataTypeDecimal: {
+		id: "orc-shared.dataTypeDecimal",
+		defaultMessage: "Decimal Number",
+	},
+	dataTypeInteger: {
+		id: "orc-shared.dataTypeInteger",
+		defaultMessage: "Whole Number",
+	},
+	dataTypeEntityReference: {
+		id: "orc-shared.dataTypeEntityReference",
+		defaultMessage: "Profile Reference",
+	},
+	dataTypeLookup: {
+		id: "orc-shared.dataTypeLookup",
+		defaultMessage: "Lookup List",
+	},
+	errorUnknown: {
+		id: "orc-shared.errorUnknown",
+		defaultMessage: "Unknown Error",
 	},
 });
 

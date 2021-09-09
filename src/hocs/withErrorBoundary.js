@@ -20,15 +20,19 @@ class ErrorBoundary extends React.Component {
 	}
 }
 
-const withErrorBoundary = (name, handler = () => {}) => component => props => (
-	<ErrorBoundary
-		boundary={{
-			name,
-			handler,
-			component,
-		}}
-		{...props}
-	/>
-);
+const withErrorBoundary =
+	(name, handler = () => {}) =>
+	component =>
+	props =>
+		(
+			<ErrorBoundary
+				boundary={{
+					name,
+					handler,
+					component,
+				}}
+				{...props}
+			/>
+		);
 
 export default withErrorBoundary;

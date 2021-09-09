@@ -1,11 +1,12 @@
 import React from "react";
 import TimePicker, { HoursSelect, MinsSelect, AMPMSelect, parseTime } from "./TimePicker";
-import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import sharedMessages from "../../../sharedMessages";
 import { extractMessages } from "../../../utils/testUtils";
+import { TestWrapper, createMuiTheme } from "../../../utils/testUtils";
+import Immutable from "immutable";
 
 const messages = extractMessages(sharedMessages);
 
@@ -28,36 +29,108 @@ const buildExpectedTime = (time, showTimeZone, showAMPM = true) => {
 describe("Time Component", () => {
 	let updater;
 	let originalDate;
+	let state, store, stateWithoutCorrectTimezone, storeWithoutCorrectTimezone;
+	const timezoneChange = timeZone => {
+		jest.spyOn(Intl, "DateTimeFormat").mockImplementation(() => ({
+			resolvedOptions: () => ({
+				timeZone: timeZone,
+			}),
+		}));
+		global.Intl.DateTimeFormat.supportedLocalesOf = () => ["en-US"];
+	};
+
 	beforeEach(() => {
 		updater = sinon.spy().named("updater");
 		originalDate = global.Date;
+		global.Intl = Intl;
+
+		state = Immutable.fromJS({
+			locale: {},
+			metadata: {
+				lookups: {
+					customer: {
+						index: {
+							TimeZone: {
+								values: {
+									UTC: {
+										value: "UTC",
+										displayName: {
+											"en-US": "(UTC) Coordinated Universal Time",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+		store = {
+			getState: () => state,
+			subscribe: () => {},
+			dispatch: () => {},
+		};
+
+		stateWithoutCorrectTimezone = Immutable.fromJS({
+			locale: {},
+			metadata: {
+				lookups: {
+					customer: {
+						index: {
+							TimeZone: {
+								values: {
+									NewTimezone: {
+										displayName: {
+											"en-US": "NewTimezone",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+		storeWithoutCorrectTimezone = {
+			getState: () => stateWithoutCorrectTimezone,
+			subscribe: () => {},
+			dispatch: () => {},
+		};
 	});
+
+	const theme = createMuiTheme();
 
 	afterEach(() => {
 		global.Date = originalDate;
+		global.Intl = Intl;
 	});
+
 	it("sets up a time 5am", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"05:00"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("5:00 AM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("5:00 AM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 5am without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"05:00"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("5:00 AM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("5:00 AM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time now when no value without AMPM", () => {
@@ -69,14 +142,16 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={""} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("10:30 AM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("10:30 AM"), false, false)}
+			</TestWrapper>,
 		);
 	});
 
@@ -89,14 +164,16 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={""} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("10:30 AM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("10:30 AM"))}
+			</TestWrapper>,
 		);
 	});
 
@@ -109,14 +186,16 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={""} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("10:30 AM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("10:30 AM"), false, false)}
+			</TestWrapper>,
 		);
 	});
 
@@ -129,14 +208,16 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"xxx"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("10:30 AM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("10:30 AM"))}
+			</TestWrapper>,
 		);
 	});
 
@@ -149,236 +230,275 @@ describe("Time Component", () => {
 		global.Date.now = _Date.now;
 
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"xxx"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("10:30 AM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("10:30 AM"), false, false)}
+			</TestWrapper>,
 		);
 	});
 
 	it("sets up a time 5pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"17:00"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("5:00 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("5:00 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 5pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"17:00"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("17:00 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("17:00 PM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 515pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"17:16"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("5:15 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("5:15 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 515pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"17:16"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("17:00 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("17:00 PM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 545pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"17:46"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("5:45 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("5:45 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 545pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"17:46:00"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("17:45 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("17:45 PM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 12am", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"00:00"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("12:00 AM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("12:00 AM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 12am without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"00:00"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("0:00 AM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("0:00 AM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 12pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"12:00 pm"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("12:00 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("12:00 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 12pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"12:00 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("12:00 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("12:00 PM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:16pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"4:16 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("4:15 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("4:15 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:16pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"4:16 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("16:15 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("16:15 PM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:31pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"4:31 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("4:30 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("4:30 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:31pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("16:30 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("16:30 PM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:20pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"4:20 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("4:15 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("4:15 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:20pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"4:20 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("16:15 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("16:15 PM"), false, false)}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:50pm", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={updater} value={"4:50 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("4:45 PM")),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("4:45 PM"))}
+			</TestWrapper>,
 		));
 
 	it("sets up a time 4:50pm without AMPM", () =>
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"4:50 pm"} requestedTimeZone={"UTC"} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("16:45 PM"), false, false),
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("16:45 PM"), false, false)}
+			</TestWrapper>,
 		));
 
-	it("shows timezone if requested", () =>
+	it("shows timezone if requested", () => {
+		timezoneChange("UTC");
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker
 						showAMPM={true}
@@ -388,15 +508,19 @@ describe("Time Component", () => {
 						requestedTimeZone={"UTC"}
 					/>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("4:30 PM"), true),
-		));
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("4:30 PM"), true)}
+			</TestWrapper>,
+		);
+	});
 
-	it("shows timezone if requested without AMPM", () =>
+	it("shows timezone if requested without AMPM", () => {
+		timezoneChange("UTC");
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker
 						showAMPM={false}
@@ -406,42 +530,63 @@ describe("Time Component", () => {
 						requestedTimeZone={"UTC"}
 					/>
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("16:30 PM"), true, false),
-		));
-	it("shows local timezone if requested without AMPM", () =>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("16:30 PM"), true, false)}
+			</TestWrapper>,
+		);
+	});
+	it("shows local timezone if requested without AMPM", () => {
+		timezoneChange("UTC");
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} showTimeZone={true} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("16:30 PM"), true, false),
-		));
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				{buildExpectedTime(parseTime("16:30 PM"), true, false)}
+			</TestWrapper>,
+		);
+	});
 
-	it("shows local timezone if requested without AMPM", () =>
+	it("shows local timezone if requested without AMPM", () => {
+		timezoneChange("America/Santiago");
 		expect(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper
+				provider={{ store: storeWithoutCorrectTimezone }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+				intlProvider={{ messages }}
+			>
 				<div>
 					<TimePicker showAMPM={false} onChange={updater} value={"4:31 pm"} showTimeZone={true} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			buildExpectedTime(parseTime("16:30 PM"), true, false),
-		));
+			<TestWrapper
+				provider={{ store: storeWithoutCorrectTimezone }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+				intlProvider={{ messages }}
+			>
+				{buildExpectedTime(parseTime("16:30 PM"), true, false)}
+			</TestWrapper>,
+		);
+	});
 
 	it("should render with browser AMPM", () => {
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker value="00:00" />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -455,11 +600,11 @@ describe("Time Component", () => {
 			target: { value: "12" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} value="00:00" />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -477,11 +622,11 @@ describe("Time Component", () => {
 			target: { value: "12" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -499,11 +644,11 @@ describe("Time Component", () => {
 			target: { value: "5" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={false} onChange={onChangeMock} value="22:00" />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -521,11 +666,11 @@ describe("Time Component", () => {
 			target: { value: "12" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -547,11 +692,11 @@ describe("Time Component", () => {
 			target: { value: "AM" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} value="22:00" />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -575,11 +720,11 @@ describe("Time Component", () => {
 			target: { value: "PM" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} value="10:00" />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -598,11 +743,11 @@ describe("Time Component", () => {
 			target: { value: "01" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -618,11 +763,11 @@ describe("Time Component", () => {
 			target: { value: "45" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -639,11 +784,11 @@ describe("Time Component", () => {
 			target: { value: "15" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");
@@ -664,11 +809,11 @@ describe("Time Component", () => {
 			target: { value: "AM" },
 		};
 		const component = mount(
-			<IntlProvider locale="en-US" messages={messages}>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
 					<TimePicker showAMPM={true} onChange={onChangeMock} />
 				</div>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 
 		const select = component.find("select");

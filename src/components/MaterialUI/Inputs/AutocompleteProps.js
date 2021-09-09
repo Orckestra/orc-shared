@@ -6,6 +6,7 @@ class AutocompleteProps extends ComponentProps {
 		value: "value",
 		disabled: "disabled",
 		error: "error",
+		placeholder: "placeholder",
 	};
 
 	static ruleNames = {
@@ -19,6 +20,7 @@ class AutocompleteProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.value, null);
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.error, null);
+		this.componentProps.set(this.constructor.propNames.placeholder, null);
 
 		this._isAutocompleteProps = true;
 	}

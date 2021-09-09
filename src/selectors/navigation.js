@@ -67,8 +67,9 @@ export const selectPrependPathConfig = createSelector(
 	selectCurrentPrependPath,
 	(config, currentPath) => currentPath || config.get("prependPath"),
 );
-export const selectPrependHrefConfig = createSelector(selectHrefConfig, config => name =>
-	config.getIn([name, "prependHref"]) || config.get("prependHref"),
+export const selectPrependHrefConfig = createSelector(
+	selectHrefConfig,
+	config => name => config.getIn([name, "prependHref"]) || config.get("prependHref"),
 );
 
 export const selectCurrentModuleName = createSelector(selectPrependPathConfig, selectRoutePath, (prependPath, path) =>

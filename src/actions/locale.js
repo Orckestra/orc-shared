@@ -16,11 +16,8 @@ export const getMyCulture = () => makeOrcApiAction(GET_MY_CULTURE, getUserCultur
 
 export const SET_DEFAULT_LANGUAGE = "SET_DEFAULT_LANGUAGE";
 
-export const [
-	SET_DEFAULT_LANGUAGE_REQUEST,
-	SET_DEFAULT_LANGUAGE_SUCCESS,
-	SET_DEFAULT_LANGUAGE_FAILURE,
-] = makeActionTypes(SET_DEFAULT_LANGUAGE);
+export const [SET_DEFAULT_LANGUAGE_REQUEST, SET_DEFAULT_LANGUAGE_SUCCESS, SET_DEFAULT_LANGUAGE_FAILURE] =
+	makeActionTypes(SET_DEFAULT_LANGUAGE);
 
 export const setDefaultLanguage = lang =>
 	makeOrcApiAction(SET_DEFAULT_LANGUAGE, saveUserCultureRequest.buildUrl(lang), saveUserCultureRequest.verb, {

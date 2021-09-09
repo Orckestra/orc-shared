@@ -217,7 +217,6 @@ describe("cultureOptionList", () => {
 				supportedLocales: [
 					{ language: "English", cultureIso: "en" },
 					{ language: "Français", cultureIso: "fr" },
-					{ language: "Italiano", cultureIso: "it" },
 				],
 			},
 		});
@@ -232,7 +231,6 @@ describe("cultureOptionList", () => {
 			Immutable.List([
 				{ value: "en", label: "English" },
 				{ value: "fr", label: "Français" },
-				{ value: "it", label: "Italiano" },
 			]),
 		));
 

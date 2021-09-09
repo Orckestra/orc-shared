@@ -61,3 +61,32 @@ export const scopeConfirmationDialogTypes = {
 	hasUnsavedDataMessage: "HasUnsavedDataMessage",
 	scopeChangeConfirmation: "ScopeChangeConfirmation",
 };
+
+export const attributeDataType = {
+	integer: "Integer",
+	decimal: "Decimal",
+	boolean: "Boolean",
+	text: "Text",
+	dateTime: "DateTime",
+	lookup: "Lookup",
+	entityReference: "EntityReference",
+	customType: "CustomType",
+};
+
+export const definitionType = {
+	shared: "Shared",
+	embedded: "Embedded",
+};
+
+export const requestStateOperations = {
+	create: "create",
+	delete: "delete",
+	fetch: "fetch",
+	update: "update",
+};
+export const requestStateOperationMap = {
+	create: "creates",
+	delete: "deletes",
+	fetch: "fetches",
+	update: "updates",
+};

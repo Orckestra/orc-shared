@@ -46,12 +46,14 @@ beforeEach(() => {
 				foo: false,
 				bar: false,
 				scopePath: ["test1"],
+				isAuthorizedScope: true,
 			},
 			test2: {
 				id: "test2",
 				name: { "en-US": "Test 2" },
 				foo: false,
 				bar: true,
+				isAuthorizedScope: true,
 			},
 			test3: {
 				id: "test3",
@@ -59,12 +61,14 @@ beforeEach(() => {
 				foo: true,
 				bar: false,
 				parentScopeId: "test1",
+				isAuthorizedScope: true,
 			},
 			test4: {
 				id: "test4",
 				name: { "en-US": "Test 4" },
 				foo: true,
 				bar: true,
+				isAuthorizedScope: true,
 			},
 			test5: {
 				id: "test5",
@@ -72,6 +76,15 @@ beforeEach(() => {
 				foo: true,
 				bar: true,
 				parentScopeId: "test4",
+				isAuthorizedScope: false,
+			},
+			test6: {
+				id: "test6",
+				name: { "en-US": "Test 6" },
+				foo: true,
+				bar: true,
+				parentScopeId: "test5",
+				isAuthorizedScope: undefined,
 			},
 		},
 		requests: {
@@ -394,6 +407,110 @@ describe("Scope", () => {
 		expect(component, "when mounted", "to satisfy", [expectedScopeBar, expectedChild]).then(() =>
 			expect(modalRoot, "to satisfy", <div></div>),
 		);
+	});
+
+	it("isScopeSelectable return false when the scope is not authorized", () => {
+		state = state.deleteIn(["view", "scopeSelector"]);
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Scope>
+					<div id="child" />
+				</Scope>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scopeSelector = mountedComponent.find(ScopeSelector);
+
+		const result = scopeSelector.prop("isScopeSelectable")("test5");
+
+		expect(result, "to be", false);
+	});
+
+	it("isScopeSelectable return true when the scope is authorized", () => {
+		state = state.deleteIn(["view", "scopeSelector"]);
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Scope>
+					<div id="child" />
+				</Scope>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scopeSelector = mountedComponent.find(ScopeSelector);
+
+		const result = scopeSelector.prop("isScopeSelectable")("test1");
+
+		expect(result, "to be", true);
+	});
+
+	it("isScopeSelectable return false when the scope does not have isAuthorizedScope", () => {
+		state = state.deleteIn(["view", "scopeSelector"]);
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Scope>
+					<div id="child" />
+				</Scope>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scopeSelector = mountedComponent.find(ScopeSelector);
+
+		const result = scopeSelector.prop("isScopeSelectable")("test6");
+
+		expect(result, "to be", false);
+	});
+
+	it("isScopeSelectable return false when the scope does not exist", () => {
+		state = state.deleteIn(["view", "scopeSelector"]);
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Scope>
+					<div id="child" />
+				</Scope>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scopeSelector = mountedComponent.find(ScopeSelector);
+
+		const result = scopeSelector.prop("isScopeSelectable")("UnknownScope");
+
+		expect(result, "to be", false);
 	});
 });
 

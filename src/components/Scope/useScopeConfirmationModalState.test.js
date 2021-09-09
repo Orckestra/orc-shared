@@ -15,13 +15,8 @@ jest.mock("../../utils/buildUrl", () => {
 });
 
 const TestComp = () => {
-	const [
-		isModalOpened,
-		closeModalCallback,
-		scopeDialogType,
-		acceptScopeChange,
-		selectNewScope,
-	] = useScopeConfirmationModalState();
+	const [isModalOpened, closeModalCallback, scopeDialogType, acceptScopeChange, selectNewScope] =
+		useScopeConfirmationModalState();
 	return (
 		<div>
 			<div id="isModalOpened">{isModalOpened ? "true" : "false"}</div>

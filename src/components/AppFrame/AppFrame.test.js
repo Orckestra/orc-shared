@@ -17,7 +17,7 @@ import {
 } from "../../actions/applications";
 import { ScopeBar, Bar as BarWrapper } from "../Scope";
 import AppFrame, { Base, ViewPort } from "./AppFrame";
-import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
+import ApplicationSelector from "./ApplicationSelector";
 import { Wrapper as MenuWrapper } from "../DropMenu";
 import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
@@ -250,9 +250,7 @@ describe("AppFrame", () => {
 						<Base>
 							<Wrapper>
 								<AppBox>
-									<AppSelWrapper>
-										<MenuIcon />
-									</AppSelWrapper>
+									<ApplicationSelector {...props} />
 									<AppLabel>
 										<AppLogo />
 										Marketing Legacy
@@ -312,9 +310,7 @@ describe("AppFrame", () => {
 						<Base>
 							<Wrapper>
 								<AppBox>
-									<AppSelWrapper>
-										<MenuIcon />
-									</AppSelWrapper>
+									<ApplicationSelector {...props} />
 									<AppLabel>
 										<AppLogo />
 									</AppLabel>
@@ -374,9 +370,7 @@ describe("AppFrame", () => {
 						<Base>
 							<Wrapper>
 								<AppBox>
-									<AppSelWrapper>
-										<MenuIcon />
-									</AppSelWrapper>
+									<ApplicationSelector {...props} />
 									<AppLabel>
 										<AppLogo />
 									</AppLabel>
@@ -435,9 +429,7 @@ describe("AppFrame", () => {
 						<Base>
 							<Wrapper>
 								<AppBox>
-									<AppSelWrapper>
-										<MenuIcon />
-									</AppSelWrapper>
+									<ApplicationSelector {...props} />
 									<AppLabel>
 										<AppLogo />
 										Marketing Legacy
@@ -725,9 +717,7 @@ describe("AppFrame", () => {
 								<ActionModal open={true} title={title} message={message} actions={actions} />
 								<Wrapper>
 									<AppBox>
-										<AppSelWrapper>
-											<MenuIcon />
-										</AppSelWrapper>
+										<ApplicationSelector {...props} />
 										<AppLabel>
 											<AppLogo />
 											Marketing Legacy

@@ -4,7 +4,8 @@
 	"orc-shared.add": "Ajouter",
 	"orc-shared.allRightsReserved": "Tout droits réservés.",
 	"orc-shared.applyChanges": "Appliquer les modifications",
-	"orc-shared.back": "Arrière",
+	"orc-shared.appSelectorTitle": "Orckestra Commerce Cloud : Liste des applications",
+	"orc-shared.back": "Précédent",
 	"orc-shared.cancel": "Annuler",
 	"orc-shared.ccDescription": "La plateforme de commerce « API-first »  qui rend le commerce de détail omnicanal fluide.",
 	"orc-shared.ccName": "Orckestra Commerce Cloud",
@@ -50,5 +51,15 @@
 	"orc-shared.status": "Statut",
 	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?",
 	"orc-shared.valueName": "Nom de la valeur",
-	"orc-shared.yes": "Oui"
+	"orc-shared.yes": "Oui",
+	"orc-shared.embedded": "Intégré",
+	"orc-shared.shared": "Partagé",
+	"orc-shared.dataTypeText": "Texte",
+	"orc-shared.dataTypeBoolean": "Choix Oui/Non",
+	"orc-shared.dataTypeDate": "Date/Calendrier",
+	"orc-shared.dataTypeDecimal": "Nombre décimal",
+	"orc-shared.dataTypeInteger": "Nombre entier",
+	"orc-shared.dataTypeEntityReference": "Profil de référence",
+	"orc-shared.dataTypeLookup": "Index des listes",
+	"orc-shared.errorUnknown": "Erreur inconnue"
 }

@@ -87,17 +87,17 @@ export const Scope = ({ children }) => {
 	};
 	const updateFilter = event => updateViewState("filter", event);
 
-	const [
-		isModalOpened,
-		closeModal,
-		scopeDialogType,
-		acceptScopeChange,
-		selectNewScope,
-	] = useScopeConfirmationModalState();
+	const [isModalOpened, closeModal, scopeDialogType, acceptScopeChange, selectNewScope] =
+		useScopeConfirmationModalState();
 
 	const onScopeSelectorClose = (event, newSelection) => {
 		reset(event);
 		selectNewScope(newSelection);
+	};
+
+	const isScopeSelectable = scopeId => {
+		const scope = getScope(scopeId);
+		return scope?.isAuthorizedScope ?? false;
 	};
 
 	return (
@@ -110,19 +110,10 @@ export const Scope = ({ children }) => {
 					disabled,
 				}}
 			/>
-			{/* <Selector
-				name={SCOPE_SELECTOR_NAME}
-				show={show}
-				reset={reset}
-				getScope={getScope}
-				filter={filter}
-				currentScope={currentScope}
-				updateFilter={updateFilter}
-				defaultNodeState={{}}
-			/> */}
 			<ScopeSelector
 				show={show}
 				getScope={getScope}
+				isScopeSelectable={isScopeSelectable}
 				selectedScope={currentScope}
 				closeSelector={onScopeSelectorClose}
 				filter={filter}

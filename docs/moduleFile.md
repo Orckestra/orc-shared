@@ -81,8 +81,7 @@ In the above example two views have labels which are not simple strings. `/info/
 In the above example, the selector used would be defined as something like this:
 
 ```js
-const selectOrganization = params => state =>
-	state.getIn(["organizations", params.orgId]);
+const selectOrganization = params => state => state.getIn(["organizations", params.orgId]);
 ```
 
 This means we expect that the organization data in the state contains at least an `organizationName` and a `shortName` field.
