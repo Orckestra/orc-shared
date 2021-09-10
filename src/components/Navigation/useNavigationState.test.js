@@ -1339,6 +1339,10 @@ describe("getPageData", () => {
 					label: "Page 5",
 					component: TestComp9,
 				},
+				"/:var3(def\\d{1,3})": {
+					label: "Page 6",
+					component: TestComp7,
+				},
 			},
 		};
 	});
@@ -1372,6 +1376,12 @@ describe("getPageData", () => {
 		expect(getPageData, "when called with", ["/abc99", { var2: "abc99" }, module3], "to satisfy", {
 			label: "Page 5",
 			component: TestComp9,
+		}));
+
+	it("handles variable path steps which uses 'path to regex' with multiple pages", () =>
+		expect(getPageData, "when called with", ["/def666", { var3: "def666" }, module3], "to satisfy", {
+			label: "Page 6",
+			component: TestComp7,
 		}));
 
 	it("handles multiple variable path steps", () =>
