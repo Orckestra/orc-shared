@@ -5,6 +5,7 @@ import { requestStateOperationMap } from "../constants";
 const initialState = Immutable.fromJS({
 	creates: Immutable.Map(),
 	deletes: Immutable.Map(),
+	fetches: Immutable.Map(),
 	updates: Immutable.Map(),
 });
 
@@ -38,7 +39,7 @@ const requestStateReducer = (state = initialState, action) => {
 				inProgress: true,
 				value: false,
 				error: false,
-				errorMessage: null,
+				errorResponse: null,
 			}),
 		);
 	}
@@ -53,7 +54,7 @@ const requestStateReducer = (state = initialState, action) => {
 				inProgress: false,
 				value: true,
 				error: false,
-				errorMessage: null,
+				errorResponse: null,
 			}),
 		);
 	}
@@ -68,7 +69,7 @@ const requestStateReducer = (state = initialState, action) => {
 				inProgress: false,
 				value: false,
 				error: true,
-				errorMessage: action.payload?.response?.responseStatus?.message ?? null,
+				errorResponse: action.payload ?? null,
 			}),
 		);
 	}
@@ -85,7 +86,7 @@ const requestStateReducer = (state = initialState, action) => {
 					inProgress: false,
 					value: false,
 					error: false,
-					errorMessage: null,
+					errorResponse: null,
 				}),
 			);
 		}

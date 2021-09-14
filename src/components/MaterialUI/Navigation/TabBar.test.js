@@ -312,6 +312,7 @@ describe("TabBar", () => {
 	);
 
 	beforeEach(() => {
+		pages[2].entityIdResolver = undefined;
 		module.closingTabHandler = null;
 
 		state = Immutable.fromJS({
@@ -382,6 +383,10 @@ describe("TabBar", () => {
 		};
 	});
 
+	beforeEach(() => {
+		history.push.resetHistory();
+	});
+
 	const theme = createMuiTheme();
 
 	it("Renders TabBar correctly", () => {
@@ -420,12 +425,15 @@ describe("TabBar", () => {
 	it("Renders TabBar correctly with closing tab handler", () => {
 		store.dispatch = sinon.spy().named("dispatch");
 
+		pages[2].entityIdResolver = () => null;
+
 		const component = (
 			<TestWrapper
 				provider={{ store }}
 				memoryRouter
 				intlProvider={{ messages }}
 				stylesProvider
+				router={{ history }}
 				muiThemeProvider={{ theme }}
 			>
 				<TabBar module={module} moduleName={"module1"} pages={pages} />
@@ -443,6 +451,7 @@ describe("TabBar", () => {
 				memoryRouter
 				intlProvider={{ messages }}
 				stylesProvider
+				router={{ history }}
 				muiThemeProvider={{ theme }}
 			>
 				<div>
@@ -461,6 +470,80 @@ describe("TabBar", () => {
 		expect(store.dispatch.getCall(0).args[0].type, "to equal", SET_CLOSING_TAB_HANDLER_ACTIONS);
 		expect(store.dispatch.getCall(0).args[0].payload.module, "to equal", "module1");
 		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
+	});
+
+	it("Close the tab correctly using closing tab handler actions", () => {
+		store.dispatch = sinon.spy().named("dispatch");
+
+		pages[2].entityIdResolver = () => null;
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				stylesProvider
+				router={{ history }}
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} moduleName={"module1"} pages={pages} />
+			</TestWrapper>
+		);
+
+		module.closingTabHandler = {
+			handler: () => {},
+			entitySelector: params => (params?.entityId !== "page3" ? { entityId: "entityId", entity: {} } : null),
+		};
+
+		mount(component);
+
+		expect(store.dispatch, "was called once");
+		expect(store.dispatch.getCall(0).args.length, "to equal", 1);
+		expect(store.dispatch.getCall(0).args[0].type, "to equal", SET_CLOSING_TAB_HANDLER_ACTIONS);
+		expect(store.dispatch.getCall(0).args[0].payload.module, "to equal", "module1");
+		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
+
+		store.dispatch.getCall(0).args[0].payload.actions[1].closeTab({});
+
+		expect(pages[1].close, "was called");
+
+		expect(history.push, "to have a call satisfying", { args: [pages[2].href] });
+	});
+
+	it("Close the tab correctly using closing tab handler actions without affecting routing", () => {
+		store.dispatch = sinon.spy().named("dispatch");
+
+		pages[2].entityIdResolver = () => null;
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				stylesProvider
+				router={{ history }}
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} moduleName={"module1"} pages={pages} />
+			</TestWrapper>
+		);
+
+		module.closingTabHandler = {
+			handler: () => {},
+			entitySelector: params => (params?.entityId !== "page3" ? { entityId: "entityId", entity: {} } : null),
+		};
+
+		mount(component);
+
+		expect(store.dispatch, "was called once");
+		expect(store.dispatch.getCall(0).args.length, "to equal", 1);
+		expect(store.dispatch.getCall(0).args[0].type, "to equal", SET_CLOSING_TAB_HANDLER_ACTIONS);
+		expect(store.dispatch.getCall(0).args[0].payload.module, "to equal", "module1");
+		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
+
+		store.dispatch.getCall(0).args[0].payload.actions[1].closeTab({}, true);
+
+		expect(pages[1].close, "was called");
+
+		expect(history.push, "was not called");
 	});
 
 	it("Contains proper Select and Modal elements when they are visible", () => {
@@ -693,7 +776,7 @@ describe("TabBar", () => {
 
 		closeIcon.simulate("click");
 
-		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[2].close, href: pages[2].href }] });
+		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[2].close }] });
 
 		expect(setState, "to have a call satisfying", { args: [true] });
 	});
@@ -722,7 +805,7 @@ describe("TabBar", () => {
 
 		closeIcon.simulate("click");
 
-		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[4].close, href: pages[4].href }] });
+		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[4].close }] });
 
 		expect(setState, "to have a call satisfying", { args: [true] });
 	});

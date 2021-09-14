@@ -58,6 +58,14 @@ import {
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_REQUEST,
 	updateProfileDefinition,
+	getOrderLookup,
+	GET_ORDER_LOOKUP_REQUEST,
+	GET_ORDER_LOOKUP_SUCCESS,
+	GET_ORDER_LOOKUP_FAILURE,
+	getCustomerLookup,
+	GET_CUSTOMER_LOOKUP_SUCCESS,
+	GET_CUSTOMER_LOOKUP_FAILURE,
+	GET_CUSTOMER_LOOKUP_REQUEST,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -73,6 +81,23 @@ describe("order metadata", () => {
 			[RSAA]: {
 				types: [GET_ORDER_LOOKUPS_REQUEST, GET_ORDER_LOOKUPS_SUCCESS, GET_ORDER_LOOKUPS_FAILURE],
 				endpoint: 'URL: metadata/lookups/order ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("creates a RSAA to get order lookup", () =>
+		expect(getOrderLookup, "when called with", ["orderLookupId"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_ORDER_LOOKUP_REQUEST, GET_ORDER_LOOKUP_SUCCESS, GET_ORDER_LOOKUP_FAILURE],
+				endpoint: 'URL: metadata/lookups/order/orderLookupId ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",
@@ -128,11 +153,28 @@ describe("order metadata", () => {
 });
 
 describe("getCustomerLookups", () => {
-	it("creates a RSAA to get order lookups", () =>
+	it("creates a RSAA to get customer lookups", () =>
 		expect(getCustomerLookups, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [GET_CUSTOMER_LOOKUPS_REQUEST, GET_CUSTOMER_LOOKUPS_SUCCESS, GET_CUSTOMER_LOOKUPS_FAILURE],
 				endpoint: 'URL: metadata/lookups/customer ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("creates a RSAA to get customer lookup", () =>
+		expect(getCustomerLookup, "when called with", ["customerLookupId"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_CUSTOMER_LOOKUP_REQUEST, GET_CUSTOMER_LOOKUP_SUCCESS, GET_CUSTOMER_LOOKUP_FAILURE],
+				endpoint: 'URL: metadata/lookups/customer/customerLookupId ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",

@@ -27,7 +27,7 @@ import { resetRequestState } from "../actions/requestState";
 */
 
 const useRequestState = ({ keys, operation, successAction, errorAction }) => {
-	const { inProgress, value, error, errorMessage } = useSelectorAndUnwrap(getRequestStateInfo(operation, keys));
+	const { inProgress, value, error, errorResponse } = useSelectorAndUnwrap(getRequestStateInfo(operation, keys));
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -39,10 +39,10 @@ const useRequestState = ({ keys, operation, successAction, errorAction }) => {
 		} else if (!value && !inProgress && error) {
 			dispatch(resetRequestState(keys, operation));
 			if (errorAction) {
-				errorAction(errorMessage);
+				errorAction(errorResponse);
 			}
 		}
-	}, [dispatch, keys, operation, successAction, errorAction, errorMessage, inProgress, value, error]);
+	}, [dispatch, keys, operation, successAction, errorAction, errorResponse, inProgress, value, error]);
 
 	const buildRequestState = () => {
 		return {
