@@ -69,6 +69,17 @@ const useStyles = makeStyles(theme => ({
 		"& .react-datepicker__input-time-container .react-datepicker-time__input-container": {
 			display: "block",
 		},
+		"& .react-datepicker__day.disabledDay": {
+			color: theme.palette.grey.borders,
+			pointerEvents: "none",
+		},
+		"& .react-datepicker__day.alreadySelectedDay": {
+			backgroundColor: theme.palette.calendar.selected,
+			color: theme.palette.primary.contrastText,
+			borderRadius: "0.3rem",
+			pointerEvents: "none",
+			opacity: 0.4,
+		},
 	},
 	disabled: {
 		border: `1px solid ${theme.palette.grey.light} !important`,
