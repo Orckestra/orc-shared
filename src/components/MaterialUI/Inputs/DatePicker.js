@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 			pointerEvents: "none",
 		},
 		"& .react-datepicker__day.alreadySelectedDay": {
-			backgroundColor: theme.palette.calendar.selected,
+			backgroundColor: theme.palette.background.selectedDate,
 			color: theme.palette.primary.contrastText,
 			borderRadius: "0.3rem",
 			pointerEvents: "none",

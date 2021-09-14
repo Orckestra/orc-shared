@@ -87,9 +87,6 @@ const commonPalette = {
 		disabled: "#CCC",
 		hint: "#999",
 	},
-	calendar: {
-		selected: "#216BA5",
-	},
 	divider: "#CCCCCC",
 	focus: "#4fa1f0",
 	background: {
@@ -97,6 +94,7 @@ const commonPalette = {
 		default: "#FFF",
 		tabs: "#EFEFEF",
 		app: "#333",
+		selectedDate: "#216BA5",
 	},
 	action: {
 		disabledBackground: "#EFEFEF",
