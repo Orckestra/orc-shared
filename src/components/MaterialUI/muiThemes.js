@@ -94,6 +94,7 @@ const commonPalette = {
 		default: "#FFF",
 		tabs: "#EFEFEF",
 		app: "#333",
+		selectedDate: "#216BA5",
 	},
 	action: {
 		disabledBackground: "#EFEFEF",

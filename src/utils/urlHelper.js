@@ -26,3 +26,9 @@ export const tryGetNewEntityIdKey = url => {
 		if (match) return match[1];
 	}
 };
+
+export const resolveEntityId = (url, path, entityIdKey) => {
+	const newKey = tryGetNewEntityIdKey(url);
+	const key = entityIdKey === newKey ? entityIdKey : `:${entityIdKey}`;
+	return getValueFromUrlByKey(url, path, key);
+};
