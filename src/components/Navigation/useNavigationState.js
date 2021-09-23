@@ -25,7 +25,7 @@ const doesRestPathMatchParams = (params, paramPathSplit, restPath) => {
 };
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
-	let page = pages[pathStep];
+	let page = getPageFromPathSteps(pages, pathStep);
 	if (!page) {
 		const paramPath =
 			// Only one should exist
@@ -60,6 +60,25 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 			...page.subpages,
 		});
 	}
+};
+
+const getPageFromPathSteps = (pages, pathStep) => {
+	let page = pages[pathStep];
+	if (page) {
+		return page;
+	}
+
+	const rx = /^\/:[^(]+\(([^/]+?)\)/;
+
+	for (const key of Object.keys(pages)) {
+		const matches = key.match(rx);
+		if (matches !== null) {
+			if (new RegExp(matches[1]).test(pathStep)) {
+				return pages[key];
+			}
+		}
+	}
+	return undefined;
 };
 
 const redirectScopeWhenRequired = (isPageTab, pageScopeSelector, rawPage, currentScope, scopeDefinitionGetter) => {

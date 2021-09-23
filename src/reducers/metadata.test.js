@@ -16,15 +16,14 @@ import {
 	incrementCustomerLookupsPage,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	CREATE_PROFILE_DEFINITION_SUCCESS,
-	CREATE_PROFILE_DEFINITION_FAILURE,
-	RESET_PROFILE_DEFINITION_SAVE_RESULT,
-	SET_NEW_PROFILE_DEFINITION,
+	UPDATE_PROFILE_DEFINITION_SUCCESS,
 	SAVE_ORDER_LOOKUP_SUCCESS,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
+	GET_ORDER_LOOKUP_SUCCESS,
+	GET_CUSTOMER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
 import reducer from "./metadata";
-import { requestStates } from "../constants";
 
 export const generateLookups = max => {
 	if (max < 1 || max > 25) {
@@ -87,9 +86,6 @@ describe("metadata", () => {
 				customer: {},
 				order: {},
 				product: {},
-				saveProfileDefinitionRequestState: requestStates.idle,
-				newInstance: null,
-				newInstanceId: null,
 			},
 		}));
 
@@ -174,6 +170,65 @@ describe("metadata", () => {
 									isSystem: true,
 								},
 							},
+							list: [],
+						},
+					},
+				}),
+			);
+		});
+
+		it("get order lookup success", () => {
+			const lookups = {
+				CanceledStatusReasons: {
+					lookupName: "CanceledStatusReasons",
+					values: {
+						CanceledReason1: {
+							id: "e16d07f847284775b77cfb985724cf58",
+							value: "CanceledReason1",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+						CanceledReason2: {
+							id: "6bbfe77703c745d68b8eaceb9cd484b1",
+							value: "CanceledReason2",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+					},
+					isActive: true,
+					isSystem: true,
+				},
+				CartStatus: {
+					lookupName: "CartStatus",
+					values: {},
+					isActive: true,
+					isSystem: true,
+				},
+			};
+
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: { CartStatus: lookups.CartStatus },
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: GET_ORDER_LOOKUP_SUCCESS,
+				payload: lookups.CanceledStatusReasons,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						order: {
+							index: lookups,
 							list: [],
 						},
 					},
@@ -689,6 +744,65 @@ describe("metadata", () => {
 			);
 		});
 
+		it("get customer lookup success", () => {
+			const lookups = {
+				CanceledStatusReasons: {
+					lookupName: "CanceledStatusReasons",
+					values: {
+						CanceledReason1: {
+							id: "e16d07f847284775b77cfb985724cf58",
+							value: "CanceledReason1",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+						CanceledReason2: {
+							id: "6bbfe77703c745d68b8eaceb9cd484b1",
+							value: "CanceledReason2",
+							lookupId: "CanceledStatusReasons",
+							sortOrder: 0,
+							isActive: true,
+							isSystem: true,
+						},
+					},
+					isActive: true,
+					isSystem: true,
+				},
+				CartStatus: {
+					lookupName: "CartStatus",
+					values: {},
+					isActive: true,
+					isSystem: true,
+				},
+			};
+
+			const oldState = Immutable.fromJS({
+				lookups: {
+					customer: {
+						index: { CartStatus: lookups.CartStatus },
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: GET_CUSTOMER_LOOKUP_SUCCESS,
+				payload: lookups.CanceledStatusReasons,
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					lookups: {
+						customer: {
+							index: lookups,
+							list: [],
+						},
+					},
+				}),
+			);
+		});
+
 		it("save customer metadata success", () => {
 			const lookups = {
 				CanceledStatusReasons: {
@@ -1012,13 +1126,11 @@ describe("metadata", () => {
 			const oldState = Immutable.fromJS({
 				definitions: {
 					customer: {},
-					saveProfileDefinitionRequestState: null,
-					newInstanceId: null,
 				},
 			});
 			const action = {
 				type: CREATE_PROFILE_DEFINITION_SUCCESS,
-				meta: definition,
+				payload: definition,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -1033,85 +1145,57 @@ describe("metadata", () => {
 								attributes: [],
 							},
 						},
-						saveProfileDefinitionRequestState: requestStates.success,
-						newInstanceId: definition.entityTypeName,
 					},
 				}),
 			);
 		});
 
-		it("create custom profile definition failure", () => {
+		it("update custom profile definition success", () => {
+			const definition = {
+				displayName: {
+					"en-CA": "",
+					"en-US": "Address",
+					"fr-CA": "Adresse",
+					"it-IT": "Indirizzo",
+				},
+				entityTypeName: "ADDRESS",
+				isBuiltIn: true,
+				attributes: [],
+			};
 			const oldState = Immutable.fromJS({
 				definitions: {
-					customer: {},
-					saveProfileDefinitionRequestState: null,
-					newInstanceId: null,
+					customer: {
+						ADDRESS: {
+							displayName: {
+								"en-CA": "",
+								"en-US": "",
+								"fr-CA": "",
+								"it-IT": "",
+							},
+							entityTypeName: "ADDRESS",
+							isBuiltIn: true,
+							attributes: [],
+						},
+					},
 				},
 			});
-
 			const action = {
-				type: CREATE_PROFILE_DEFINITION_FAILURE,
-				payload: { response: "failure" },
+				type: UPDATE_PROFILE_DEFINITION_SUCCESS,
+				payload: definition,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
 				"to equal",
 				Immutable.fromJS({
 					definitions: {
-						customer: {},
-						saveProfileDefinitionRequestState: requestStates.fail,
-						newInstanceId: null,
-					},
-				}),
-			);
-		});
-
-		it("reset custom profile definition save result", () => {
-			const oldState = Immutable.fromJS({
-				definitions: {
-					customer: {},
-					saveProfileDefinitionRequestState: requestStates.success,
-					newInstanceId: "test",
-				},
-			});
-			const action = {
-				type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
-				payload: { response: "failure" },
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					definitions: {
-						customer: {},
-						saveProfileDefinitionRequestState: requestStates.idle,
-						newInstanceId: null,
-					},
-				}),
-			);
-		});
-
-		it("set new profile definition", () => {
-			const oldState = Immutable.fromJS({
-				definitions: {
-					customer: {},
-					saveProfileDefinitionRequestState: requestStates.idle,
-					newInstance: null,
-				},
-			});
-			const newInstansId = "test";
-			const action = {
-				type: SET_NEW_PROFILE_DEFINITION,
-				payload: { name: newInstansId },
-			};
-			const newState = reducer(oldState, action);
-			return expect(newState, "not to be", oldState).and(
-				"to equal",
-				Immutable.fromJS({
-					definitions: {
-						customer: {},
-						saveProfileDefinitionRequestState: requestStates.idle,
-						newInstance: { name: "test" },
+						customer: {
+							ADDRESS: {
+								displayName: { "en-CA": "", "en-US": "Address", "fr-CA": "Adresse", "it-IT": "Indirizzo" },
+								entityTypeName: "ADDRESS",
+								isBuiltIn: true,
+								attributes: [],
+							},
+						},
 					},
 				}),
 			);

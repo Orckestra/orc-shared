@@ -19,6 +19,16 @@ export const lookupSelector = memoize(moduleName =>
 	createSelector(lookupsModule(moduleName), module => module.get("index")),
 );
 
+export const mappedLookupsListSelector = memoize(moduleName =>
+	createSelector(lookupSelector(moduleName), currentLocaleOrDefault, (lookups, locale) =>
+		lookups.map(lookup =>
+			lookup
+				.set("displayName", getLocalization(lookup.get("displayName"), locale, lookup.get("lookupName")))
+				.delete("values"),
+		),
+	),
+);
+
 const lookupValuesSelector = memoize((moduleName, lookupName) =>
 	createSelector(lookups, lookups => lookups.getIn([moduleName, "index", lookupName]) || Immutable.Map()),
 );
@@ -99,17 +109,13 @@ const definitionsModule = memoize(moduleName =>
 );
 
 export const mappedDefinitionsListSelector = memoize(moduleName =>
-	createSelector(
-		definitionsModule(moduleName),
-		currentLocaleOrDefault,
-		(definitions, locale, key, defaultValue = key) => {
-			return definitions.map(definition => {
-				return definition
-					.set("type", definition.get("isSharedEntity") === true ? definitionType.shared : definitionType.embedded)
-					.set("displayName", getLocalization(definition?.get("displayName"), locale, defaultValue))
-					.delete("attributes");
-			});
-		},
+	createSelector(definitionsModule(moduleName), currentLocaleOrDefault, (definitions, locale) =>
+		definitions.map(definition =>
+			definition
+				.set("type", definition.get("isSharedEntity") === true ? definitionType.shared : definitionType.embedded)
+				.set("displayName", getLocalization(definition.get("displayName"), locale, definition.get("entityTypeName")))
+				.delete("attributes"),
+		),
 	),
 );
 
@@ -132,10 +138,6 @@ export const newProfileDefinitionInstanceSelector = createSelector(
 
 export const newProfileDefinitionNameSelector = createSelector(definitions, definitions =>
 	definitions.get("newInstanceId"),
-);
-
-export const saveProfileDefinitionRequestStateSelector = createSelector(definitions, definitions =>
-	definitions.get("saveProfileDefinitionRequestState"),
 );
 
 export const definitionEntity = memoize((moduleName, entityName) =>

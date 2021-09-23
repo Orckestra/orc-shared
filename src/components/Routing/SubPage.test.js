@@ -150,7 +150,7 @@ describe("SubPage", () => {
 			</TestWrapper>,
 			"when mounted",
 			"to contain",
-			<div class="makeStyles-title">Confirmation</div>,
+			<div className="makeStyles-title">Confirmation</div>,
 		));
 	it("closes when clicking close button", () => {
 		const component = (

@@ -138,4 +138,33 @@ describe("ScopeSelected", () => {
 
 		expect(closeSelector, "was called");
 	});
+
+	it("isScopeSelectable is passed to ScopeTreeView", () => {
+		const fn = sinon.spy().named("isScopeSelectable");
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<ScopeSelector
+					show={true}
+					closeSelector={closeSelector}
+					getScope={getScope}
+					selectedScope={selectedScope}
+					filter={filter}
+					updateFilter={updateFilter}
+					isScopeSelectable={fn}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const treeView = mountedComponent.find(ScopeTreeView);
+
+		expect(treeView.props().isScopeSelectable, "to be", fn);
+	});
 });

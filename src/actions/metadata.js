@@ -11,8 +11,11 @@ import {
 	updateOrderLookupTypeDefinitionRequest,
 	updateCustomerLookupTypeDefinitionRequest,
 	createEntityTypeRequest,
+	updateEntityTypeRequest,
 	createOrderLookupTypeDefinitionRequest,
 	createCustomerLookupTypeDefinitionRequest,
+	getCustomerLookupRequest,
+	getOrderLookupRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -23,6 +26,14 @@ export const [GET_ORDER_LOOKUPS_REQUEST, GET_ORDER_LOOKUPS_SUCCESS, GET_ORDER_LO
 	makeActionTypes(GET_ORDER_LOOKUPS);
 
 export const getOrderLookups = () => makeOrcApiAction(GET_ORDER_LOOKUPS, getOrderLookupsRequest.buildUrl());
+
+const GET_ORDER_LOOKUP = "GET_ORDER_LOOKUP";
+
+export const [GET_ORDER_LOOKUP_REQUEST, GET_ORDER_LOOKUP_SUCCESS, GET_ORDER_LOOKUP_FAILURE] =
+	makeActionTypes(GET_ORDER_LOOKUP);
+
+export const getOrderLookup = lookupName =>
+	makeOrcApiAction(GET_ORDER_LOOKUP, getOrderLookupRequest.buildUrl(lookupName));
 
 const SAVE_ORDER_LOOKUP = "SAVE_ORDER_LOOKUP";
 
@@ -89,6 +100,14 @@ export const [GET_CUSTOMER_LOOKUPS_REQUEST, GET_CUSTOMER_LOOKUPS_SUCCESS, GET_CU
 	makeActionTypes(GET_CUSTOMER_LOOKUPS);
 
 export const getCustomerLookups = () => makeOrcApiAction(GET_CUSTOMER_LOOKUPS, getCustomerLookupsRequest.buildUrl());
+
+const GET_CUSTOMER_LOOKUP = "GET_CUSTOMER_LOOKUP";
+
+export const [GET_CUSTOMER_LOOKUP_REQUEST, GET_CUSTOMER_LOOKUP_SUCCESS, GET_CUSTOMER_LOOKUP_FAILURE] =
+	makeActionTypes(GET_CUSTOMER_LOOKUP);
+
+export const getCustomerLookup = lookupName =>
+	makeOrcApiAction(GET_CUSTOMER_LOOKUP, getCustomerLookupRequest.buildUrl(lookupName));
 
 const GET_PRODUCT_LOOKUPS = "GET_PRODUCT_LOOKUPS";
 
@@ -187,26 +206,32 @@ const CREATE_PROFILE_DEFINITION = "CREATE_PROFILE_DEFINITION";
 export const [CREATE_PROFILE_DEFINITION_REQUEST, CREATE_PROFILE_DEFINITION_SUCCESS, CREATE_PROFILE_DEFINITION_FAILURE] =
 	makeActionTypes(CREATE_PROFILE_DEFINITION);
 
-export const createProfileDefinition = definition =>
+export const createProfileDefinition = (definition, additionalActionContext = null) =>
 	makeOrcApiAction(
 		CREATE_PROFILE_DEFINITION,
 		createEntityTypeRequest.buildUrl(definition.entityTypeName),
 		createEntityTypeRequest.verb,
 		{
 			body: definition,
-			meta: definition,
+			meta: {
+				...additionalActionContext,
+			},
 		},
 	);
 
-export const RESET_PROFILE_DEFINITION_SAVE_RESULT = "RESET_PROFILE_DEFINITION_SAVE_RESULT";
-export const resetProfileDefinitionSaveResult = () => {
-	return {
-		type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
-	};
-};
+const UPDATE_PROFILE_DEFINITION = "UPDATE_PROFILE_DEFINITION";
+export const [UPDATE_PROFILE_DEFINITION_REQUEST, UPDATE_PROFILE_DEFINITION_SUCCESS, UPDATE_PROFILE_DEFINITION_FAILURE] =
+	makeActionTypes(UPDATE_PROFILE_DEFINITION);
 
-export const SET_NEW_PROFILE_DEFINITION = "SET_NEW_PROFILE_DEFINITION";
-export const setNewProfileDefinition = name => ({
-	type: SET_NEW_PROFILE_DEFINITION,
-	payload: { name: name },
-});
+export const updateProfileDefinition = (definition, additionalActionContext = null) =>
+	makeOrcApiAction(
+		UPDATE_PROFILE_DEFINITION,
+		updateEntityTypeRequest.buildUrl(definition.entityTypeName),
+		updateEntityTypeRequest.verb,
+		{
+			body: definition,
+			meta: {
+				...additionalActionContext,
+			},
+		},
+	);

@@ -3,38 +3,28 @@ import reducer from "./requestStates";
 import { requestStateOperationMap, requestStateOperations } from "../constants";
 import { RESET_REQUEST_STATE } from "../actions/requestState";
 
+const defaultState = {
+	creates: Immutable.Map(),
+	deletes: Immutable.Map(),
+	fetches: Immutable.Map(),
+	updates: Immutable.Map(),
+};
+
 describe("Request reducer", () => {
-	it("behaves as a reducer should", () =>
-		expect(reducer, "to be a reducer with initial state", {
-			creates: Immutable.Map(),
-			deletes: Immutable.Map(),
-			updates: Immutable.Map(),
-		}));
+	it("behaves as a reducer should", () => expect(reducer, "to be a reducer with initial state", defaultState));
 
 	it("should do nothing for an unknown action with requestState", () => {
-		const oldState = Immutable.fromJS({
-			creates: Immutable.Map(),
-			deletes: Immutable.Map(),
-			updates: Immutable.Map(),
-		});
+		const oldState = Immutable.fromJS(defaultState);
 		const action = { type: "SOME_UNKNOWN_ACTION", meta: { requestState: {} } };
 		const newState = reducer(oldState, action);
 		expect(newState, "to be", oldState);
 	});
 
 	it("state should not be modified if the action does not have the correct state", () =>
-		expect(reducer, "to be a reducer with initial state", {
-			creates: Immutable.Map(),
-			deletes: Immutable.Map(),
-			updates: Immutable.Map(),
-		}));
+		expect(reducer, "to be a reducer with initial state", defaultState));
 
 	it("state should not be modified if the action does not have the correct state", () => {
-		const oldState = Immutable.fromJS({
-			creates: Immutable.Map(),
-			deletes: Immutable.Map(),
-			updates: Immutable.Map(),
-		});
+		const oldState = Immutable.fromJS(defaultState);
 		const action = { type: "TEST_THIS_REQUEST", meta: { requestState: null } };
 		const newState = reducer(oldState, action);
 		expect(newState, "to be", oldState);
@@ -48,11 +38,7 @@ describe("Request reducer", () => {
 		[requestStateOperations.update, "SUCCESS"],
 		[requestStateOperations.update, "FAILURE"],
 	])("%s %s should not modify the state if the operation is not supported", (operation, requestSuffix) => {
-		const oldState = Immutable.fromJS({
-			creates: Immutable.Map(),
-			deletes: Immutable.Map(),
-			updates: Immutable.Map(),
-		});
+		const oldState = Immutable.fromJS(defaultState);
 		const action = {
 			type: "TEST_THIS_" + requestSuffix,
 			meta: {
@@ -69,11 +55,7 @@ describe("Request reducer", () => {
 	it.each([[requestStateOperations.delete], [requestStateOperations.update], [requestStateOperations.create]])(
 		"%s operation REQUEST should initialize the state for the specified keys",
 		operation => {
-			const oldState = Immutable.fromJS({
-				creates: Immutable.Map(),
-				deletes: Immutable.Map(),
-				updates: Immutable.Map(),
-			});
+			const oldState = Immutable.fromJS(defaultState);
 			const action = {
 				type: "TEST_THIS_REQUEST",
 				meta: {
@@ -93,7 +75,7 @@ describe("Request reducer", () => {
 								inProgress: true,
 								value: false,
 								error: false,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},
@@ -108,11 +90,7 @@ describe("Request reducer", () => {
 	it.each([[requestStateOperations.delete], [requestStateOperations.update], [requestStateOperations.create]])(
 		"%s operation SUCCESS should initialize the state for the specified keys",
 		operation => {
-			const oldState = Immutable.fromJS({
-				creates: Immutable.Map(),
-				deletes: Immutable.Map(),
-				updates: Immutable.Map(),
-			});
+			const oldState = Immutable.fromJS(defaultState);
 			const action = {
 				type: "TEST_THIS_SUCCESS",
 				meta: {
@@ -132,7 +110,7 @@ describe("Request reducer", () => {
 								inProgress: false,
 								value: true,
 								error: false,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},
@@ -147,11 +125,7 @@ describe("Request reducer", () => {
 	it.each([[requestStateOperations.delete], [requestStateOperations.update], [requestStateOperations.create]])(
 		"%s operation FAILURE should initialize the state for the specified keys",
 		operation => {
-			const oldState = Immutable.fromJS({
-				creates: Immutable.Map(),
-				deletes: Immutable.Map(),
-				updates: Immutable.Map(),
-			});
+			const oldState = Immutable.fromJS(defaultState);
 			const action = {
 				type: "TEST_THIS_FAILURE",
 				meta: {
@@ -171,7 +145,7 @@ describe("Request reducer", () => {
 								inProgress: false,
 								value: false,
 								error: true,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},
@@ -186,11 +160,7 @@ describe("Request reducer", () => {
 	it.each([[requestStateOperations.delete], [requestStateOperations.update], [requestStateOperations.create]])(
 		"%s operation FAILURE with a response should initialize the state for the specified keys",
 		operation => {
-			const oldState = Immutable.fromJS({
-				creates: Immutable.Map(),
-				deletes: Immutable.Map(),
-				updates: Immutable.Map(),
-			});
+			const oldState = Immutable.fromJS(defaultState);
 
 			const action = {
 				type: "TEST_THIS_FAILURE",
@@ -218,7 +188,7 @@ describe("Request reducer", () => {
 								inProgress: false,
 								value: false,
 								error: true,
-								errorMessage: "a message",
+								errorResponse: action.payload,
 							},
 						},
 					},
@@ -233,11 +203,7 @@ describe("Request reducer", () => {
 	it.each([[requestStateOperations.delete], [requestStateOperations.update], [requestStateOperations.create]])(
 		"%s operation should accept a string as key",
 		operation => {
-			const oldState = Immutable.fromJS({
-				creates: Immutable.Map(),
-				deletes: Immutable.Map(),
-				updates: Immutable.Map(),
-			});
+			const oldState = Immutable.fromJS(defaultState);
 			const action = {
 				type: "TEST_THIS_REQUEST",
 				meta: {
@@ -256,7 +222,7 @@ describe("Request reducer", () => {
 							inProgress: true,
 							value: false,
 							error: false,
-							errorMessage: null,
+							errorResponse: null,
 						},
 					},
 				}),
@@ -270,11 +236,7 @@ describe("Request reducer", () => {
 
 describe("RESET_REQUEST_STATE", () => {
 	it("state should not be modified if the operation is not supported", () => {
-		const oldState = Immutable.fromJS({
-			creates: Immutable.Map(),
-			deletes: Immutable.Map(),
-			updates: Immutable.Map(),
-		});
+		const oldState = Immutable.fromJS(defaultState);
 		const action = {
 			type: RESET_REQUEST_STATE,
 			meta: {
@@ -291,11 +253,7 @@ describe("RESET_REQUEST_STATE", () => {
 	it.each([[requestStateOperations.delete], [requestStateOperations.update], [requestStateOperations.create]])(
 		"state is initialized when empty for %s operation",
 		operation => {
-			const oldState = Immutable.fromJS({
-				creates: Immutable.Map(),
-				deletes: Immutable.Map(),
-				updates: Immutable.Map(),
-			});
+			const oldState = Immutable.fromJS(defaultState);
 			const action = {
 				type: RESET_REQUEST_STATE,
 				meta: {
@@ -315,7 +273,7 @@ describe("RESET_REQUEST_STATE", () => {
 								inProgress: false,
 								value: false,
 								error: false,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},
@@ -330,11 +288,7 @@ describe("RESET_REQUEST_STATE", () => {
 	it.each([[requestStateOperations.delete], [requestStateOperations.update], [requestStateOperations.create]])(
 		"state is initialized when not empty for %s operation",
 		operation => {
-			let oldState = Immutable.fromJS({
-				creates: Immutable.Map(),
-				deletes: Immutable.Map(),
-				updates: Immutable.Map(),
-			});
+			let oldState = Immutable.fromJS(defaultState);
 			const action = {
 				type: RESET_REQUEST_STATE,
 				meta: {
@@ -354,7 +308,7 @@ describe("RESET_REQUEST_STATE", () => {
 								inProgress: true,
 								value: true,
 								error: true,
-								errorMessage: null,
+								errorResponse: null,
 								anotherProp: true,
 							},
 						},
@@ -371,7 +325,7 @@ describe("RESET_REQUEST_STATE", () => {
 								inProgress: false,
 								value: false,
 								error: false,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},
@@ -394,7 +348,7 @@ describe("RESET_REQUEST_STATE", () => {
 								inProgress: false,
 								value: true,
 								error: false,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},
@@ -406,7 +360,7 @@ describe("RESET_REQUEST_STATE", () => {
 								inProgress: false,
 								value: true,
 								error: false,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},
@@ -431,7 +385,7 @@ describe("RESET_REQUEST_STATE", () => {
 								inProgress: false,
 								value: false,
 								error: false,
-								errorMessage: null,
+								errorResponse: null,
 							},
 						},
 					},

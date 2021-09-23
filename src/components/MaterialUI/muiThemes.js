@@ -94,6 +94,7 @@ const commonPalette = {
 		default: "#FFF",
 		tabs: "#EFEFEF",
 		app: "#333",
+		selectedDate: "#216BA5",
 	},
 	action: {
 		disabledBackground: "#EFEFEF",
@@ -1037,7 +1038,7 @@ const setThemeOverrides = theme => ({
 				width: theme.spacing(1),
 				"&:before": {
 					backgroundColor: "transparent",
-					borderTop: `1px solid ${theme.palette.grey.borders}`,
+					borderTop: `1px solid ${theme.palette.grey.icon}`,
 					width: theme.spacing(1.5),
 				},
 			},

@@ -593,6 +593,12 @@ export const createCustomerRequest = {
 	verb: "POST",
 };
 
+export const updateEntityTypeRequest = {
+	name: "updateEntityTypeRequest",
+	buildUrl: entityTypeName => buildUrl(["metadata", "EntityType", entityTypeName]),
+	verb: "PUT",
+};
+
 export const createEntityTypeRequest = {
 	name: "createEntityTypeRequest",
 	buildUrl: entityTypeName => buildUrl(["metadata", "EntityType", entityTypeName]),

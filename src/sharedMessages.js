@@ -1,6 +1,10 @@
 import { defineMessages } from "react-intl";
 
 const sharedMessages = defineMessages({
+	appSelectorTitle: {
+		id: "orc-shared.appSelectorTitle",
+		defaultMessage: "Orckestra Commerce Cloud Applications List",
+	},
 	scopeFilterPlaceholder: {
 		id: "orc-shared.scopeFilterPlaceholder",
 		defaultMessage: "Type a scope name",

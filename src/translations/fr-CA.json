@@ -4,7 +4,8 @@
 	"orc-shared.add": "Ajouter",
 	"orc-shared.allRightsReserved": "Tout droits réservés.",
 	"orc-shared.applyChanges": "Appliquer les modifications",
-	"orc-shared.back": "Arrière",
+	"orc-shared.appSelectorTitle": "Orckestra Commerce Cloud : Liste des applications",
+	"orc-shared.back": "Précédent",
 	"orc-shared.cancel": "Annuler",
 	"orc-shared.ccDescription": "La plateforme de commerce « API-first »  qui rend le commerce de détail omnicanal fluide.",
 	"orc-shared.ccName": "Orckestra Commerce Cloud",
@@ -60,5 +61,5 @@
 	"orc-shared.dataTypeInteger": "Nombre entier",
 	"orc-shared.dataTypeEntityReference": "Profil de référence",
 	"orc-shared.dataTypeLookup": "Index des listes",
-	"orc-shared.errorUnknown": "Erreur Inconnue"
+	"orc-shared.errorUnknown": "Erreur inconnue"
 }

@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, updateFilter }) => {
+const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, updateFilter, isScopeSelectable }) => {
 	const classes = useStyles();
 	const { formatMessage } = useIntl();
 
@@ -53,6 +53,7 @@ const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, u
 					selected={selectedScope.id}
 					expanded={selectedScope.scopePath}
 					onSelected={closeSelector}
+					isScopeSelectable={isScopeSelectable}
 				/>
 			</div>
 		</>

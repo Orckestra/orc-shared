@@ -125,10 +125,11 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	return label;
 };
 
-const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
+const TreeItem = ({ scope, rootId, onScopeSelect, isScopeSelectable, children }) => {
 	const isRootScope = scope.id === rootId;
 	const isVirtualScope = scope.type === scopeTypes.virtual;
 	const hasChildren = scope.children.length > 0;
+	const isSelectable = !isVirtualScope && (!isScopeSelectable || isScopeSelectable(scope.id));
 	const classes = useStyles({ isRootScope });
 
 	const expandIcon = <Icon id="dropdown-chevron-down" />;
@@ -136,7 +137,8 @@ const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
 
 	const onLabelClickHandler = event => {
 		event.preventDefault();
-		if (isVirtualScope === false) {
+
+		if (isSelectable) {
 			onScopeSelect(event, scope.id);
 		}
 	};
@@ -159,8 +161,8 @@ const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
 			classes={{
 				group: classes.group,
 				iconContainer: classNames({ [classes.rootIconContainer]: isRootScope }),
-				content: classNames({ [classes.virtualScopeContent]: isVirtualScope }),
-				selected: classNames({ [classes.virtualScopeSelected]: isVirtualScope }),
+				content: classNames({ [classes.virtualScopeContent]: !isSelectable }),
+				selected: classNames({ [classes.virtualScopeSelected]: !isSelectable }),
 			}}
 		>
 			{children}

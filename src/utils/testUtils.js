@@ -185,7 +185,9 @@ export const TestWrapper = ({
 	const MuiThemeProviderWrapper = ({ children }) => {
 		if (muiThemeProvider == null) return children;
 
-		return <MuiThemeProvider theme={muiThemeProvider.theme}>{children}</MuiThemeProvider>;
+		const theme = muiThemeProvider.theme ?? createMuiTheme();
+
+		return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 	};
 
 	const MemoryRouterWrapper = ({ children }) => {

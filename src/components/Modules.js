@@ -3,7 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { getCurrentScope } from "../selectors/navigation";
+import { getCurrentScope, selectRouteHref } from "../selectors/navigation";
 import { isCurrentScopeAuthorizedSelector } from "../selectors/scope";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
@@ -12,6 +12,18 @@ import { setModulesStructure } from "../actions/modules";
 import { defaultScopeSelector } from "../selectors/settings";
 
 export const Module = withErrorBoundary("Module")(({ config, path, error, location, match, modulePrependPath }) => {
+	const currentRoute = useSelector(selectRouteHref);
+	const history = useHistory();
+	let hideSelector = state => (typeof config.hide === "function" ? config.hide(state) : config.hide ?? false);
+	const isHidden = useSelector(hideSelector);
+
+	React.useEffect(() => {
+		if (isHidden === true && currentRoute.includes(match.url)) {
+			history.push("/");
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isHidden, currentRoute, match.url]);
+
 	return (
 		<FullPage path={path} config={config} location={location} match={match} modulePrependPath={modulePrependPath} />
 	);

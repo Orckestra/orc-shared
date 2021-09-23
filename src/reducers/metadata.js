@@ -21,13 +21,12 @@ import {
 	SAVE_ORDER_LOOKUP_SUCCESS,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	CREATE_PROFILE_DEFINITION_SUCCESS,
-	CREATE_PROFILE_DEFINITION_FAILURE,
-	RESET_PROFILE_DEFINITION_SAVE_RESULT,
-	SET_NEW_PROFILE_DEFINITION,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
+	UPDATE_PROFILE_DEFINITION_SUCCESS,
+	GET_ORDER_LOOKUP_SUCCESS,
+	GET_CUSTOMER_LOOKUP_SUCCESS,
 } from "../actions/metadata";
-import { requestStates } from "../constants";
 
 export const ORDER_MODULE_NAME = "order";
 export const CUSTOMER_MODULE_NAME = "customer";
@@ -59,9 +58,6 @@ const initialState = Immutable.fromJS({
 		customer: {},
 		order: {},
 		product: {},
-		saveProfileDefinitionRequestState: requestStates.idle,
-		newInstance: null,
-		newInstanceId: null,
 	},
 });
 
@@ -159,6 +155,7 @@ const metadataReducer = (state = initialState, action) => {
 			return state.set("profileAttributeGroups", Immutable.fromJS(normalizedData.entities.metadata));
 		}
 		case SAVE_ORDER_LOOKUP_SUCCESS:
+		case GET_ORDER_LOOKUP_SUCCESS:
 			return state.setIn(
 				["lookups", ORDER_MODULE_NAME, "index", action.payload.lookupName],
 				Immutable.fromJS(action.payload),
@@ -174,6 +171,7 @@ const metadataReducer = (state = initialState, action) => {
 		}
 
 		case SAVE_CUSTOMER_LOOKUP_SUCCESS:
+		case GET_CUSTOMER_LOOKUP_SUCCESS:
 			return state.setIn(
 				["lookups", CUSTOMER_MODULE_NAME, "index", action.payload.lookupName],
 				Immutable.fromJS(action.payload),
@@ -189,20 +187,16 @@ const metadataReducer = (state = initialState, action) => {
 		}
 
 		case CREATE_PROFILE_DEFINITION_SUCCESS:
-			return state
-				.setIn(["definitions", "newInstanceId"], action.meta.entityTypeName)
-				.setIn(["definitions", CUSTOMER_MODULE_NAME, action.meta.entityTypeName], Immutable.fromJS(action.meta))
-				.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.success);
-		case CREATE_PROFILE_DEFINITION_FAILURE:
-			return state.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.fail);
-		case RESET_PROFILE_DEFINITION_SAVE_RESULT:
-			return state
-				.setIn(["definitions", "saveProfileDefinitionRequestState"], requestStates.idle)
-				.setIn(["definitions", "newInstanceId"], null);
-		case SET_NEW_PROFILE_DEFINITION: {
-			return state.setIn(["definitions", "newInstance"], Immutable.fromJS(action.payload));
-		}
+			return state.setIn(
+				["definitions", CUSTOMER_MODULE_NAME, action.payload.entityTypeName],
+				Immutable.fromJS(action.payload),
+			);
 
+		case UPDATE_PROFILE_DEFINITION_SUCCESS:
+			return state.setIn(
+				["definitions", CUSTOMER_MODULE_NAME, action.payload.entityTypeName],
+				Immutable.fromJS(action.payload),
+			);
 		default:
 			return state;
 	}

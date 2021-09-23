@@ -170,7 +170,7 @@ describe("useRequestState", () => {
 				inProgress: false,
 				value: false,
 				error: true,
-				errorMessage: "some error message",
+				errorResponse: "some error message",
 			}),
 		);
 

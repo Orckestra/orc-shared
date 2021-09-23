@@ -48,14 +48,7 @@ import {
 	SAVE_CUSTOMER_LOOKUP_REQUEST,
 	SAVE_CUSTOMER_LOOKUP_SUCCESS,
 	SAVE_CUSTOMER_LOOKUP_FAILURE,
-	CREATE_PROFILE_DEFINITION_REQUEST,
-	CREATE_PROFILE_DEFINITION_SUCCESS,
-	CREATE_PROFILE_DEFINITION_FAILURE,
 	createProfileDefinition,
-	RESET_PROFILE_DEFINITION_SAVE_RESULT,
-	resetProfileDefinitionSaveResult,
-	SET_NEW_PROFILE_DEFINITION,
-	setNewProfileDefinition,
 	ADD_ORDER_LOOKUP_FAILURE,
 	ADD_ORDER_LOOKUP_SUCCESS,
 	ADD_ORDER_LOOKUP_REQUEST,
@@ -64,6 +57,15 @@ import {
 	ADD_CUSTOMER_LOOKUP_FAILURE,
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
 	ADD_CUSTOMER_LOOKUP_REQUEST,
+	updateProfileDefinition,
+	getOrderLookup,
+	GET_ORDER_LOOKUP_REQUEST,
+	GET_ORDER_LOOKUP_SUCCESS,
+	GET_ORDER_LOOKUP_FAILURE,
+	getCustomerLookup,
+	GET_CUSTOMER_LOOKUP_SUCCESS,
+	GET_CUSTOMER_LOOKUP_FAILURE,
+	GET_CUSTOMER_LOOKUP_REQUEST,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -79,6 +81,23 @@ describe("order metadata", () => {
 			[RSAA]: {
 				types: [GET_ORDER_LOOKUPS_REQUEST, GET_ORDER_LOOKUPS_SUCCESS, GET_ORDER_LOOKUPS_FAILURE],
 				endpoint: 'URL: metadata/lookups/order ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("creates a RSAA to get order lookup", () =>
+		expect(getOrderLookup, "when called with", ["orderLookupId"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_ORDER_LOOKUP_REQUEST, GET_ORDER_LOOKUP_SUCCESS, GET_ORDER_LOOKUP_FAILURE],
+				endpoint: 'URL: metadata/lookups/order/orderLookupId ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",
@@ -134,11 +153,28 @@ describe("order metadata", () => {
 });
 
 describe("getCustomerLookups", () => {
-	it("creates a RSAA to get order lookups", () =>
+	it("creates a RSAA to get customer lookups", () =>
 		expect(getCustomerLookups, "when called", "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [GET_CUSTOMER_LOOKUPS_REQUEST, GET_CUSTOMER_LOOKUPS_SUCCESS, GET_CUSTOMER_LOOKUPS_FAILURE],
 				endpoint: 'URL: metadata/lookups/customer ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("creates a RSAA to get customer lookup", () =>
+		expect(getCustomerLookup, "when called with", ["customerLookupId"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_CUSTOMER_LOOKUP_REQUEST, GET_CUSTOMER_LOOKUP_SUCCESS, GET_CUSTOMER_LOOKUP_FAILURE],
+				endpoint: 'URL: metadata/lookups/customer/customerLookupId ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",
@@ -456,9 +492,9 @@ describe("createProfileDefinition", () => {
 		expect(createProfileDefinition, "when called with", [profileDefinition], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
-					{ type: CREATE_PROFILE_DEFINITION_REQUEST, meta: profileDefinition },
-					{ type: CREATE_PROFILE_DEFINITION_SUCCESS, meta: profileDefinition },
-					{ type: CREATE_PROFILE_DEFINITION_FAILURE, meta: profileDefinition },
+					{ type: "CREATE_PROFILE_DEFINITION_REQUEST", meta: {} },
+					{ type: "CREATE_PROFILE_DEFINITION_SUCCESS", meta: {} },
+					{ type: "CREATE_PROFILE_DEFINITION_FAILURE", meta: {} },
 				],
 				endpoint: 'URL: metadata/EntityType/ ""',
 				method: "POST",
@@ -474,22 +510,34 @@ describe("createProfileDefinition", () => {
 		}));
 });
 
-describe("resetProfileDefinitionSaveResult", () => {
-	it("creates ", () =>
-		expect(resetProfileDefinitionSaveResult, "when called with", [], "to exhaustively satisfy", {
-			type: RESET_PROFILE_DEFINITION_SAVE_RESULT,
-		}));
-});
-
-describe("setNewProfileDefinition", () => {
-	it("creates an action to set the new profile definition name", () => {
-		const name = "test";
-
-		expect(setNewProfileDefinition, "when called with", [name], "to equal", {
-			type: SET_NEW_PROFILE_DEFINITION,
-			payload: { name: name },
-		});
+describe("updateProfileDefinition", () => {
+	const profileDefinition = JSON.stringify({
+		entityTypeName: "testEntityTypeName",
+		atributes: [],
+		description: "test desription",
+		displayName: "test",
+		isSharedEntity: false,
 	});
+	it("creates a RSAA to update a profile definition", () =>
+		expect(updateProfileDefinition, "when called with", [profileDefinition], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: "UPDATE_PROFILE_DEFINITION_REQUEST", meta: {} },
+					{ type: "UPDATE_PROFILE_DEFINITION_SUCCESS", meta: {} },
+					{ type: "UPDATE_PROFILE_DEFINITION_FAILURE", meta: {} },
+				],
+				endpoint: 'URL: metadata/EntityType/ ""',
+				method: "PUT",
+				body: JSON.stringify(profileDefinition),
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
 });
 
 describe("getOrderDefinitions", () => {
