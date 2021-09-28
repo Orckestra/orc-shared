@@ -50,9 +50,6 @@ describe("Sidepanel", () => {
 				"width: 25vw;",
 			));
 
-		it("sets width by default", () =>
-			expect(<PanelDrawer in />, "when mounted", "to have style rules satisfying", "to contain", "width: 200px;"));
-
 		it("sets transition according to timeout", () =>
 			expect(
 				<PanelDrawer in timeout={300} />,
