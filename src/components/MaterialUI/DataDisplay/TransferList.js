@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
 
 	customContainer: {
 		margin: theme.spacing(1.5, 1),
+		"& .MuiTreeView-root li:last-child:before, & .MuiTreeItem-iconontainer:before": {
+			backgroundColor: theme.palette.background.paper,
+		},
 	},
 
 	button: {
