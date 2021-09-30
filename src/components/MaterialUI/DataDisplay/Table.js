@@ -64,21 +64,33 @@ export const useStyles = makeStyles(theme => ({
 	},
 	tableCell: {
 		padding: theme.spacing(2, 0.5),
+		"&:first-child": {
+			padding: theme.spacing(2, 0.5, 2, 2),
+		},
 	},
 	tableCellSelect: {
 		padding: theme.spacing(2, 0.5),
 		width: theme.spacing(3),
+		"&:first-child": {
+			padding: theme.spacing(2, 0.5, 2, 2),
+		},
 	},
 	headerCell: {
 		padding: theme.spacing(1, 0.5),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
+		"&:first-child": {
+			padding: theme.spacing(2, 0.5, 2, 2),
+		},
 	},
 	headerCellSelect: {
 		padding: theme.spacing(1, 0.5),
 		width: theme.spacing(3),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
+		"&:first-child": {
+			padding: theme.spacing(2, 0.5, 2, 2),
+		},
 	},
 	rowSelectCheckbox: {
 		padding: 0,
