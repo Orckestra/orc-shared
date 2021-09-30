@@ -24,6 +24,7 @@ export const useStyles = makeStyles(theme => ({
 	},
 	table: {
 		tableLayout: "fixed",
+		minWidth: theme.spacing(83),
 	},
 	stickyHeaderHead: {
 		borderTop: props => (props.withoutTopBorder ? "none" : "1px solid " + theme.palette.grey.borders),
@@ -62,19 +63,19 @@ export const useStyles = makeStyles(theme => ({
 		},
 	},
 	tableCell: {
-		padding: theme.spacing(2),
+		padding: theme.spacing(2, 0.5),
 	},
 	tableCellSelect: {
-		padding: theme.spacing(2),
+		padding: theme.spacing(2, 0.5),
 		width: theme.spacing(3),
 	},
 	headerCell: {
-		padding: theme.spacing(1, 2),
+		padding: theme.spacing(1, 0.5),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
 	},
 	headerCellSelect: {
-		padding: theme.spacing(1, 2),
+		padding: theme.spacing(1, 0.5),
 		width: theme.spacing(3),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
