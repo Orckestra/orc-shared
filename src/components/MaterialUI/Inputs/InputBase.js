@@ -100,6 +100,8 @@ const InputBase = ({ inputProps }) => {
 	const metadata = inputProps?.get(InputBaseProps.propNames.metadata);
 	const autoComplete = inputProps?.get(InputBaseProps.propNames.autoComplete);
 
+	const tooltipText = type === "text" ? value : "";
+
 	const onClick = item => {
 		// Fixes FireFox issue, where the input number buttons do not focus on input control,
 		// causing onBlur to never fire
@@ -141,7 +143,7 @@ const InputBase = ({ inputProps }) => {
 					startAdornment={startAdornment}
 					endAdornment={endAdornment}
 					rows={4}
-					title={value}
+					title={tooltipText}
 					autoComplete={autoComplete}
 				/>
 			</div>
