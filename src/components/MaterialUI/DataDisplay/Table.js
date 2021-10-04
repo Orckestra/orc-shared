@@ -24,6 +24,9 @@ export const useStyles = makeStyles(theme => ({
 	},
 	table: {
 		tableLayout: "fixed",
+		minWidth: "auto",
+	},
+	tableConstrained: {
 		minWidth: theme.spacing(83),
 	},
 	stickyHeaderHead: {
@@ -309,6 +312,8 @@ const FullTable = React.forwardRef((props, ref) => {
 		}
 	};
 
+	console.log("FullTable receive constrained = ", props.constrained);
+
 	return (
 		<div
 			key="actualTable"
@@ -317,7 +322,13 @@ const FullTable = React.forwardRef((props, ref) => {
 			onScroll={scrollEvent}
 		>
 			<ResizeDetector onResize={props.onResize} />
-			<TableMui className={classNames(props.classes.table, props.customClasses.table)}>
+			<TableMui
+				className={classNames(
+					props.classes.table,
+					props.customClasses.table,
+					props.constrained ? props.classes.tableConstrained : "",
+				)}
+			>
 				<TableHead className={classNames(props.classes.tableHeader, props.customClasses.tableHeader)}>
 					<TableRow>{props.tableHeaders}</TableRow>
 				</TableHead>
@@ -360,6 +371,9 @@ const Table = ({
 	const isEditingMode = tableProps?.get(TableProps.propNames.isEditingMode) || false;
 	const selectedRows = tableProps?.get(TableProps.propNames.selectedRows) || null;
 	const selectedRowsChanged = tableProps?.get(TableProps.propNames.selectedRowsChanged) || null;
+	const constrained = tableProps?.get(TableProps.propNames.constrained) || false;
+
+	console.log("Table setting contrained to ", constrained);
 
 	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
 	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
@@ -443,6 +457,7 @@ const Table = ({
 				ref={refScrolled}
 				classes={classes}
 				customClasses={customClasses}
+				constrained={constrained}
 				onResize={onResize}
 				selectedNumber={selectedNumber}
 				scrollLoader={scrollLoader}
