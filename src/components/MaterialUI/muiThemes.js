@@ -833,15 +833,6 @@ const setThemeOverrides = theme => ({
 			...theme.expandIcon,
 			border: "none",
 		},
-		root: {
-			...theme.root,
-			overflowX: "auto",
-			overflowY: "hidden",
-		},
-		content: {
-			...theme.content,
-			minWidth: theme.spacing(83),
-		},
 	},
 	MuiTooltip: {
 		...theme.MuiTooltip,

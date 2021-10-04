@@ -52,6 +52,13 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.grey.darker,
 		minWidth: "auto",
 	},
+	constrainedSummaryRoot: {
+		overflowX: "auto",
+		overflowY: "hidden",
+	},
+	constrainedSummaryContent: {
+		minWidth: theme.spacing(83),
+	},
 }));
 
 const SectionExpansionPanel = ({
@@ -97,6 +104,8 @@ const SectionExpansionPanel = ({
 	// Expansion panel actions props
 	const disableSpacing = expansionPanelActionsProps?.get(ExpansionPanelActionsProps.propNames.disableSpacing);
 
+	const constrained = expansionPanelProps?.get(ExpansionPanelProps.propNames.constrained) || false;
+
 	return (
 		<Accordion
 			defaultExpanded={defaultExpanded}
@@ -112,9 +121,9 @@ const SectionExpansionPanel = ({
 				expandIcon={<Icon id="dropdown-chevron-down" />}
 				IconButtonProps={defaultSummaryStyles}
 				classes={{
-					root: classNames(classes.summaryRoot),
+					root: classNames(classes.summaryRoot, constrained ? classes.constrainedSummaryRoot : ""),
 					expanded: classNames(classes.panelExpanded),
-					content: classNames(classes.summaryContent),
+					content: classNames(classes.summaryContent, constrained ? classes.constrainedSummaryContent : ""),
 					expandIcon: classNames(classes.summaryExpandIconRoot),
 				}}
 			>
