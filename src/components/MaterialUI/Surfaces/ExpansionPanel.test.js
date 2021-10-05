@@ -178,6 +178,22 @@ describe("Expansion Panel", () => {
 		expect(mountedComponent.exists(".MuiAccordionActions-spacing"), "to be truthy");
 	});
 
+	it("Classes are added properly when constrained property of expansionPanelProps is true", () => {
+		const expansionPanelProps = new ExpansionPanelProps();
+		expansionPanelProps.set(ExpansionPanelProps.propNames.constrained, true);
+
+		const component = (
+			<MuiThemeProvider theme={createMuiTheme()}>
+				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+			</MuiThemeProvider>
+		);
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".makeStyles-constrainedSummaryRoot-49"), "to be truthy");
+		expect(mountedComponent.exists(".makeStyles-constrainedSummaryContent-50"), "to be truthy");
+	});
+
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps was passed without setting that", () => {
 		const actions = <p>Actions</p>;
 		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
