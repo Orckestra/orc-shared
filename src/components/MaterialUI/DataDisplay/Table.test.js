@@ -136,6 +136,15 @@ describe("useStyles", () => {
 			expect.it("to contain", "cursor: pointer").and("to contain", ":hover {background-color: #F7F7F7;}"),
 		);
 	});
+
+	it("build constrained styles as expected", () => {
+		expect(
+			<MuiThemeContainer classToTest="tableConstrained" styleProps={{ constrained: true }} />,
+			"when mounted",
+			"to have style rules satisfying",
+			expect.it("to contain", "min-width: 51.875rem"),
+		);
+	});
 });
 
 describe("Memoize components", () => {
@@ -639,6 +648,20 @@ describe("Table", () => {
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Table with constrained property set to true", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.constrained, true);
+
+		const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".makeStyles-tableConstrained-277"), "to be truthy");
 	});
 
 	it("Renders Table with enabled sticky header and select mode", () => {

@@ -9,6 +9,7 @@ describe("TableProps Props", () => {
 			"onRowClick",
 			"classes",
 			"deepPropsComparation",
+			"constrained",
 		];
 
 		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];
@@ -28,6 +29,7 @@ describe("TableProps Props", () => {
 			"isEditingMode",
 			"selectedRows",
 			"selectedRowsChanged",
+			"constrained",
 		];
 
 		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];
