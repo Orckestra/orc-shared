@@ -11,10 +11,13 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.spacing(1.2),
 		marginBottom: theme.spacing(0.6),
 	},
-
+	listHeight: {
+		height: props => props.height && theme.spacing(props.height),
+	},
 	paper: {
+		flexGrow: 1,
+		height: "1px", // forces the container to takes 100%
 		overflow: "auto",
-		height: props => theme.spacing(props.height),
 		border: `1px solid ${theme.palette.primary.light}`,
 		borderRadius: theme.shape.borderRadius,
 		boxShadow: "none",
@@ -37,6 +40,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	actionPanel: {
 		paddingTop: theme.spacing(2),
+	},
+	listContainer: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
 	},
 }));
 
@@ -74,7 +82,7 @@ const SelectionList = ({
 	useEffect(() => {
 		const listDataIds = listData.data.map(d => d.id);
 		const checkedFromList = listDataIds.filter(l => checked.includes(l));
-		if (defaultSelection && checkedFromList.length === 0) {
+		if (defaultSelection && checkedFromList.length === 0 && checked[0] !== defaultSelection) {
 			setChecked([defaultSelection]);
 		}
 	}, [defaultSelection, checked, listData.data]);
@@ -101,7 +109,7 @@ const SelectionList = ({
 	const dividerDiff = showDivider ? 1 : 0;
 
 	const listComponent = (
-		<>
+		<div className={classes.listContainer}>
 			<div className={classes.title}>{listData.title}</div>
 			<ScrollableCustomList
 				ref={refScrollableList}
@@ -118,7 +126,7 @@ const SelectionList = ({
 				onChange={onChangeEvent}
 			/>
 			{actionPanel ? <div className={classes.actionPanel}>{actionPanel}</div> : null}
-		</>
+		</div>
 	);
 
 	const dividerComponent = showDivider && (
@@ -129,7 +137,7 @@ const SelectionList = ({
 
 	return (
 		<Grid container spacing={2}>
-			<Grid item xs={12 - infoPanelXs - dividerDiff}>
+			<Grid item xs={12 - infoPanelXs - dividerDiff} className={classes.listHeight}>
 				{listComponent}
 			</Grid>
 			{dividerComponent}

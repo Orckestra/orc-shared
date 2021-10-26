@@ -9,7 +9,7 @@ import { VIEW_STATE_SET_FIELD } from "../../actions/view";
 import { SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE } from "../../actions/authentication";
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
-import { Wrapper as AppSelWrapper, MenuIcon } from "./ApplicationSelector/Header";
+import ApplicationSelector from "./ApplicationSelector";
 import { Wrapper as MenuWrapper } from "../DropMenu";
 import Topbar, { Wrapper, AppBox, CurrentApp, AppLabel, AppLogo, useMenuProps } from "./Topbar";
 import { HelpLink } from "./Help";
@@ -79,9 +79,7 @@ describe("Topbar", () => {
 			"to satisfy",
 			<Wrapper onClick={clicker}>
 				<AppBox>
-					<AppSelWrapper>
-						<MenuIcon />
-					</AppSelWrapper>
+					<ApplicationSelector {...props} />
 					<AppLabel>
 						<AppLogo src="/test/url" />
 						Test label

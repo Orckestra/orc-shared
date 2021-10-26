@@ -113,12 +113,14 @@ describe("Navigation", () => {
 				href: "/TestScope/test/page1",
 				active: true,
 				params: { scope: "TestScope", entityId: "page1" },
+				path: "/:scope/test/:entityId",
 			},
 			{
 				label: "Page 2",
 				href: "/TestScope/test/page2",
 				active: false,
 				params: { scope: "TestScope", entityId: "page2" },
+				path: "/:scope/test/:entityId",
 			},
 		];
 

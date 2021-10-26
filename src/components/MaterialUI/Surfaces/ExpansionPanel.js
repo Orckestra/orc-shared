@@ -29,6 +29,13 @@ const useStyles = makeStyles(theme => ({
 		width: theme.spacing(1),
 	},
 	headerPanelExpanded: {},
+	constrainedSummaryRoot: {
+		overflowX: "auto",
+		overflowY: "hidden",
+	},
+	constrainedSummaryContent: {
+		minWidth: theme.spacing(83),
+	},
 }));
 
 const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansionPanelActionsProps }) => {
@@ -45,6 +52,7 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 	// Expansion panel props
 	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
 	const defaultExpanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.defaultExpanded) ?? true;
+	const constrained = expansionPanelProps?.get(ExpansionPanelProps.propNames.constrained) || false;
 
 	const [expanded, setExpanded] = React.useState(defaultExpanded);
 
@@ -76,7 +84,12 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 			<AccordionSummary
 				expandIcon={<Icon id="chevron-down" className={classes.expandIcon} />}
 				classes={{
-					root: classNames(classes.expansionPanelHeader, panelSummaryRootStyle),
+					root: classNames(
+						classes.expansionPanelHeader,
+						panelSummaryRootStyle,
+						constrained ? classes.constrainedSummaryRoot : "",
+					),
+					content: classNames(constrained ? classes.constrainedSummaryContent : ""),
 					expanded: classNames(classes.headerPanelExpanded, panelSummaryExpandedStyle),
 				}}
 			>

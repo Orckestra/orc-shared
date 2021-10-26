@@ -1,9 +1,8 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import FullPage from "./FullPage";
 import SegmentPage from "./SegmentPage";
+import { TestWrapper, createMuiTheme } from "./../../utils/testUtils";
 
 const View1 = () => <div id="view1" />;
 const View2 = () => <div id="view2" />;
@@ -15,6 +14,7 @@ describe("Fullpage", () => {
 		path: "/:scope/snap/stuff",
 		params: { scope: "meep" },
 	};
+	const theme = createMuiTheme();
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -42,19 +42,22 @@ describe("Fullpage", () => {
 
 	it("shows a page if no segments", () =>
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/meep/snap"]}>
-					<FullPage
-						path="/meep/snap"
-						config={{
-							component: View1,
-							pages: { "/stuff": { component: View2 } },
-						}}
-						location={{ location: true }}
-						match={{ match: true }}
-					/>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<FullPage
+					path="/meep/snap"
+					config={{
+						component: View1,
+						pages: { "/stuff": { component: View2 } },
+					}}
+					location={{ location: true }}
+					match={{ match: true }}
+				/>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<View1 />,
@@ -62,19 +65,22 @@ describe("Fullpage", () => {
 
 	it("shows a page under a page", () =>
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
-					<FullPage
-						path="/meep/snap"
-						config={{
-							component: View1,
-							pages: { "/stuff": { component: View2 } },
-						}}
-						location={{ location: true }}
-						match={{ match: true }}
-					/>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap/stuff"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<FullPage
+					path="/meep/snap"
+					config={{
+						component: View1,
+						pages: { "/stuff": { component: View2 } },
+					}}
+					location={{ location: true }}
+					match={{ match: true }}
+				/>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<View2 />,
@@ -88,31 +94,37 @@ describe("Fullpage", () => {
 		const segments = { "/stuff": { component: View2, label: "Two" } };
 
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/meep/snap"]}>
-					<div>
-						<FullPage
-							path="/meep/snap"
-							config={{
-								component: View1,
-								segments: segments,
-							}}
-							location={location}
-							match={match}
-						/>
-					</div>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<FullPage
+						path="/meep/snap"
+						config={{
+							component: View1,
+							segments: segments,
+						}}
+						location={location}
+						match={match}
+					/>
+				</div>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
-					<div>
-						<div id="view1"></div>
-						<SegmentPage path="/:scope/snap" location={location} segments={segments} match={match} />
-					</div>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap/stuff"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<div id="view1"></div>
+					<SegmentPage path="/:scope/snap" location={location} segments={segments} match={match} />
+				</div>
+			</TestWrapper>,
 		);
 	});
 
@@ -125,38 +137,96 @@ describe("Fullpage", () => {
 		const customResolver = () => "customId";
 
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/meep/snap"]}>
-					<div>
-						<FullPage
-							path="/meep/snap"
-							config={{
-								component: View1,
-								segments: segments,
-								entityIdResolver: customResolver,
-							}}
-							location={location}
-							match={match}
-						/>
-					</div>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<FullPage
+						path="/meep/snap"
+						config={{
+							component: View1,
+							segments: segments,
+							entityIdResolver: customResolver,
+						}}
+						location={location}
+						match={match}
+					/>
+				</div>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/meep/snap/stuff"]}>
-					<div>
-						<div id="view1"></div>
-						<SegmentPage
-							path="/:scope/snap"
-							location={location}
-							segments={segments}
-							match={match}
-							entityIdResolver={customResolver}
-						/>
-					</div>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<div id="view1"></div>
+					<SegmentPage
+						path="/:scope/snap"
+						location={location}
+						segments={segments}
+						match={match}
+						entityIdResolver={customResolver}
+					/>
+				</div>
+			</TestWrapper>,
+		);
+	});
+
+	it("componentProps are passed to SegmentPage", () => {
+		const location = {
+			pathname: "/meep/snap/stuff",
+		};
+
+		const segments = { "/stuff": { component: View2, label: "Two" } };
+		const customResolver = () => "customId";
+
+		expect(
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<FullPage
+						path="/meep/snap"
+						config={{
+							component: View1,
+							segments: segments,
+							entityIdResolver: customResolver,
+							componentProps: { foo: "foo", bar: "bar" },
+						}}
+						location={location}
+						match={match}
+					/>
+				</div>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<div id="view1"></div>
+					<SegmentPage
+						path="/:scope/snap"
+						location={location}
+						segments={segments}
+						match={match}
+						componentProps={{ foo: "foo", bar: "bar" }}
+						entityIdResolver={customResolver}
+					/>
+				</div>
+			</TestWrapper>,
 		);
 	});
 });

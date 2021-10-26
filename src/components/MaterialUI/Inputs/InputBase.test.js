@@ -53,6 +53,44 @@ describe("InputBase Component", () => {
 		expect(mountedComponent.prop("inputProps").get(InputBaseProps.propNames.value), "to equal", aValue + aValue);
 	});
 
+	it("Renders InputBase component with title attribute for input of type text", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "text");
+		inputProps.set(InputBaseProps.propNames.disabled, true);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} title={aValue} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders InputBase component with title attribute for input types other than text", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "number");
+		inputProps.set(InputBaseProps.propNames.disabled, true);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} title="" />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
 	it("Renders InputBase component without labels", () => {
 		const inputProps = new InputBaseProps();
 		const aValue = "value";

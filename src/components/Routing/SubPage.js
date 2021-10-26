@@ -1,85 +1,77 @@
 import React, { useMemo } from "react";
-import styled, { useTheme } from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import UrlPattern from "url-pattern";
-import { getThemeProp } from "../../utils";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { mapHref } from "../../actions/navigation";
-import Toolbar from "../Toolbar";
 import withWaypointing from "./withWaypointing";
+import Modal from "../MaterialUI/DataDisplay/Modal";
+import ModalProps from "../MaterialUI/DataDisplay/modalProps";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import sharedMessages from "../../sharedMessages";
+import { FormattedMessage } from "react-intl";
 
-export const Backdrop = styled.div`
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	opacity: 0.3;
-	color: ${getThemeProp(["colors", "text"], "#333333")};
-`;
-
-export const Dialog = styled.div`
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-	top: 92px;
-	bottom: 0;
-	left: 136px;
-	right: 0;
-	background: white;
-	border-top-left-radius: 8px;
-	box-shadow: -3px 0 4px 0 rgba(0, 0, 0, 0.25);
-	z-index: 100;
-`;
+const useStyles = makeStyles(theme => ({
+	actionPanel: {
+		display: "flex",
+		marginLeft: "auto",
+		flex: "1 1 0",
+		justifyContent: "flex-end",
+	},
+}));
 
 export const SubPage = ({ config, match, location, history, root, modulePrependPath }) => {
-	const theme = useTheme();
+	const classes = useStyles();
 	const dispatch = useDispatch();
-	let { component: View, toolStateSelector = () => [], toolFuncSelector = () => ({}), ...props } = config;
-	const toolSelector = state => toolStateSelector(state, toolFuncSelector(dispatch));
-	const tools = useSelector(toolSelector);
+	let { component: View, ...props } = config;
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
+
 	const path = location.pathname;
+
+	const basePathArr = path.split("/");
+	basePathArr.pop();
+	const basePath = basePathArr.join("/");
 	const WrappedView = useMemo(() => withErrorBoundary(path)(withWaypointing(View)), [path, View]);
 	const closeSubPage = () => {
-		history.push(baseHref);
-		dispatch(mapHref(baseHref, baseHref));
+		history.push(basePath);
+		dispatch(mapHref(basePath, basePath));
 	};
-	return (
-		<React.Fragment>
-			<Backdrop onClick={closeSubPage} />
-			<Dialog>
-				<Toolbar
-					tools={[
-						{
-							type: "button",
-							key: "subPage_goBack",
-							id: "subPage_goBack",
-							label: {
-								icon: getThemeProp(
-									["icons", "backArrow"],
-									"back",
-								)({
-									theme,
-								}),
-							},
-							onClick: closeSubPage,
-						},
-						{ type: "separator", key: "subpage_sep_nav" },
-						...tools,
-					]}
-				/>
-				<WrappedView
-					match={match}
-					location={location}
-					mapFrom={baseHref}
-					{...props}
-					modulePrependPath={modulePrependPath}
-				/>
-			</Dialog>
-		</React.Fragment>
+
+	const message = (
+		<WrappedView
+			match={match}
+			location={location}
+			mapFrom={baseHref}
+			{...props}
+			modulePrependPath={modulePrependPath}
+		/>
 	);
+
+	const modalProps = new ModalProps();
+
+	const titleComponent = props?.title?.id ? (
+		<FormattedMessage id={props?.title?.id} defaultMesaage={props?.title?.defaultMessage} />
+	) : (
+		props?.title
+	);
+
+	modalProps.set(ModalProps.propNames.title, titleComponent);
+	modalProps.set(ModalProps.propNames.open, true);
+	modalProps.set(ModalProps.propNames.type, "fullwidth");
+	modalProps.set(ModalProps.propNames.backdropClickCallback, closeSubPage);
+
+	const actionPanel = (
+		<div className={classes.actionPanel}>
+			<Button variant="contained" color="primary" disableElevation onClick={closeSubPage}>
+				<FormattedMessage {...sharedMessages.close} />
+			</Button>
+		</div>
+	);
+
+	modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+
+	return <Modal message={message} modalProps={modalProps} />;
 };
 SubPage.defaultProps = {
 	theme: { icons: { backArrow: "arrow-left" } },

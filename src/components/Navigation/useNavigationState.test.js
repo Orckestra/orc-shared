@@ -2,7 +2,6 @@ import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { MemoryRouter } from "react-router-dom";
-import { push } from "connected-react-router";
 import Immutable from "immutable";
 import { mount } from "enzyme";
 import sinon from "sinon";
@@ -1278,49 +1277,7 @@ describe("useNavigationState", () => {
 		expect(closingHandler, "was called once");
 		expect(entitySelector, "was called once");
 	});
-
-	it("navigates to module page if closing current tab", () => {
-		const fakeEvent = {
-			stopPropagation: sinon.spy().named("stopPropagation"),
-			preventDefault: sinon.spy().named("preventDefault"),
-		};
-		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<MemoryRouter initialEntries={["/TestScope/test/page3"]}>
-						<TestBar modules={modules} />
-					</MemoryRouter>
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-					{
-						args: [push("/TestScope/test")],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-			]),
-		);
-	});
 });
-
 describe("getPageData", () => {
 	let module, module2, module3;
 	beforeEach(() => {
@@ -1382,6 +1339,10 @@ describe("getPageData", () => {
 					label: "Page 5",
 					component: TestComp9,
 				},
+				"/:var3(def\\d{1,3})": {
+					label: "Page 6",
+					component: TestComp7,
+				},
 			},
 		};
 	});
@@ -1415,6 +1376,12 @@ describe("getPageData", () => {
 		expect(getPageData, "when called with", ["/abc99", { var2: "abc99" }, module3], "to satisfy", {
 			label: "Page 5",
 			component: TestComp9,
+		}));
+
+	it("handles variable path steps which uses 'path to regex' with multiple pages", () =>
+		expect(getPageData, "when called with", ["/def666", { var3: "def666" }, module3], "to satisfy", {
+			label: "Page 6",
+			component: TestComp7,
 		}));
 
 	it("handles multiple variable path steps", () =>

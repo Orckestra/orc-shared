@@ -11,6 +11,7 @@ class TableProps extends ComponentProps {
 		isEditingMode: "isEditingMode",
 		selectedRows: "selectedRows",
 		selectedRowsChanged: "selectedRowsChanged",
+		constrained: "constrained",
 	};
 
 	static ruleNames = {
@@ -35,6 +36,7 @@ class TableProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.isEditingMode, null);
 		this.componentProps.set(this.constructor.propNames.selectedRows, null);
 		this.componentProps.set(this.constructor.propNames.selectedRowsChanged, null);
+		this.componentProps.set(this.constructor.propNames.constrained, false);
 
 		this.componentClasses.set(this.constructor.ruleNames.tableHeader, null);
 		this.componentClasses.set(this.constructor.ruleNames.tableRow, null);

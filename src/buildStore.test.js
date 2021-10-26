@@ -87,6 +87,7 @@ describe("buildStore", () => {
 						test: false,
 						countries: {},
 						timezones: {},
+						metadata: {},
 					}),
 				));
 		});

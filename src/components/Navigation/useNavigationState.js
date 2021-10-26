@@ -1,6 +1,5 @@
 import { useSelector, useDispatch, useStore } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { push } from "connected-react-router";
 import { unwrapImmutable } from "../../utils";
 import { removeTab } from "../../actions/navigation";
 import {
@@ -26,7 +25,7 @@ const doesRestPathMatchParams = (params, paramPathSplit, restPath) => {
 };
 
 const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
-	let page = pages[pathStep];
+	let page = getPageFromPathSteps(pages, pathStep);
 	if (!page) {
 		const paramPath =
 			// Only one should exist
@@ -61,6 +60,25 @@ const getPageWithSplitPath = ([pathStep, ...restPath], params, pages) => {
 			...page.subpages,
 		});
 	}
+};
+
+const getPageFromPathSteps = (pages, pathStep) => {
+	let page = pages[pathStep];
+	if (page) {
+		return page;
+	}
+
+	const rx = /^\/:[^(]+\(([^/]+?)\)/;
+
+	for (const key of Object.keys(pages)) {
+		const matches = key.match(rx);
+		if (matches !== null) {
+			if (new RegExp(matches[1]).test(pathStep)) {
+				return pages[key];
+			}
+		}
+	}
+	return undefined;
 };
 
 const redirectScopeWhenRequired = (isPageTab, pageScopeSelector, rawPage, currentScope, scopeDefinitionGetter) => {
@@ -143,6 +161,8 @@ export const useNavigationState = modules => {
 		const [, pageBaseHref] = getModuleNameFromHref(prependPath, page.href);
 
 		const pageData = getPageData(page.href.replace(pageBaseHref, ""), params, moduleData) || { label: "[Not found]" };
+		const icon = pageData.icon;
+		const isDetails = pageData.isDetails;
 		let label = pageData.label;
 		if (label && label.id) {
 			label = { ...label };
@@ -180,9 +200,6 @@ export const useNavigationState = modules => {
 					}
 					if (executeHandlerOnly === false) {
 						dispatch(removeTab(moduleName, page.href));
-						if (currentHref === href) {
-							dispatch(push(moduleHref));
-						}
 					}
 					if (event) {
 						event.stopPropagation();
@@ -197,11 +214,14 @@ export const useNavigationState = modules => {
 			outsideScope: isPageTab ? outsideScope : null,
 			scopeNotSupported: isPageTab ? pageScopeSelector != null && outsideScope : null,
 			label,
+			entityIdResolver: pageData.entityIdResolver,
 			mustTruncate: pageData.mustTruncate,
 			href,
 			mappedFrom: page.href,
 			active: href === currentHref,
 			close,
+			icon,
+			isDetails,
 		};
 	});
 

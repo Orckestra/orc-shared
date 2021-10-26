@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Select from "./Select";
 import SelectProps from "./SelectProps";
+import { getTimeZoneName } from "../../../utils/timezoneHelper";
+import { namedLookupLocalizedSelector } from "../../../selectors/metadata";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 	timeWrapper: {
@@ -177,6 +180,9 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
 	const [time, setTime] = useState(parseTime(value || "00:00"));
 
+	const userTimeZone = getTimeZoneName();
+	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", userTimeZone, null));
+
 	const onTimeChange = datetime => {
 		if (onChange) {
 			// DatePicker expects 24 hour time format, or else things go wonky!
@@ -209,12 +215,12 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 	};
 
 	const getTimeZone = requestedTimeZone => {
-		if (requestedTimeZone) {
-			return requestedTimeZone;
-		} else {
+		if (requestedTimeZone) return requestedTimeZone;
+		if (!localizedTimeZoneName) {
 			var timezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
 			return `${timezone[2]} (GMT${timezone[1]})`;
 		}
+		return localizedTimeZoneName;
 	};
 
 	return (

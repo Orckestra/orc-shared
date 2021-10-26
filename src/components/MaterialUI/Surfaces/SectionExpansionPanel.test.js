@@ -231,6 +231,42 @@ describe("Section Expansion Panel", () => {
 		expect(mountedComponent.exists(".MuiAccordionActions-spacing"), "to be truthy");
 	});
 
+	it("Uses expansionPanelProps.constrained correctly", () => {
+		const expansionPanelProps = new ExpansionPanelProps();
+
+		expansionPanelProps.set(ExpansionPanelProps.propNames.constrained, true);
+
+		const component = (
+			<Provider store={store(state)}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
+				</MuiThemeProvider>
+			</Provider>
+		);
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".makeStyles-constrainedSummaryRoot-87"), "to be truthy");
+		expect(mountedComponent.exists(".makeStyles-constrainedSummaryContent-88"), "to be truthy");
+	});
+
+	it("Default value for constrained property is correct if expansionPanelProps was passed without setting that", () => {
+		const expansionPanelProps = new ExpansionPanelProps();
+
+		const component = (
+			<Provider store={store(state)}>
+				<MuiThemeProvider theme={createMuiTheme()}>
+					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
+				</MuiThemeProvider>
+			</Provider>
+		);
+
+		const mountedComponent = mount(component);
+
+		expect(mountedComponent.exists(".makeStyles-constrainedSummaryRoot-96"), "to be falsy");
+		expect(mountedComponent.exists(".makeStyles-constrainedSummaryContent-97"), "to be falsy");
+	});
+
 	it("handles internal on change function", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;

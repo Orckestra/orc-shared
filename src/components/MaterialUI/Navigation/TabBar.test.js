@@ -79,7 +79,7 @@ describe("TabBar", () => {
 			path: "/:scope/module1/:someParamPath/:someEntityId",
 		},
 		{
-			label: messages.pageNew,
+			label: messages.page6,
 			href: "/Scope1/module1/new",
 			params: { scope: "Scope1" },
 			active: false,
@@ -247,7 +247,72 @@ describe("TabBar", () => {
 		</Tabs>
 	);
 
+	const expectedIconTabs = (
+		<Tabs value={false} variant="scrollable" scrollButtons="auto">
+			<Tab
+				label={wrappedPage1TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[0].href}
+				to={pages[0].href}
+				value={0}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[0].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage2TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[1].href}
+				to={pages[1].href}
+				value={1}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[1].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage3TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[2].href}
+				to={pages[2].href}
+				value={2}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[2].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage4TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[3].href}
+				to={pages[3].href}
+				value={3}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[3].outsideScope}
+			/>
+			<Tab
+				label={wrappedPage5TabLabel}
+				icon={<Icon id="settings" />}
+				key={pages[4].href}
+				to={pages[4].href}
+				value={4}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[4].outsideScope}
+			/>
+			<Tab
+				label={wrappedPageNewTabLabel}
+				key={pages[5].href}
+				to={pages[5].href}
+				value={5}
+				component={TabLink}
+				close={closeIcon}
+				disabled={pages[5].outsideScope}
+			/>
+		</Tabs>
+	);
+
 	beforeEach(() => {
+		pages[2].entityIdResolver = undefined;
 		module.closingTabHandler = null;
 
 		state = Immutable.fromJS({
@@ -307,6 +372,19 @@ describe("TabBar", () => {
 			getState: () => state,
 			dispatch: () => {},
 		};
+
+		pages[3] = {
+			label: messages.page4,
+			href: "/Scope1/module1/aParamPath/page4",
+			params: { scope: "Scope1", someParamPath: "aParamPath", someEntityId: "page4" },
+			active: false,
+			close: sinon.spy(),
+			path: "/:scope/module1/:someParamPath/:someEntityId",
+		};
+	});
+
+	beforeEach(() => {
+		history.push.resetHistory();
 	});
 
 	const theme = createMuiTheme();
@@ -347,12 +425,15 @@ describe("TabBar", () => {
 	it("Renders TabBar correctly with closing tab handler", () => {
 		store.dispatch = sinon.spy().named("dispatch");
 
+		pages[2].entityIdResolver = () => null;
+
 		const component = (
 			<TestWrapper
 				provider={{ store }}
 				memoryRouter
 				intlProvider={{ messages }}
 				stylesProvider
+				router={{ history }}
 				muiThemeProvider={{ theme }}
 			>
 				<TabBar module={module} moduleName={"module1"} pages={pages} />
@@ -370,6 +451,7 @@ describe("TabBar", () => {
 				memoryRouter
 				intlProvider={{ messages }}
 				stylesProvider
+				router={{ history }}
 				muiThemeProvider={{ theme }}
 			>
 				<div>
@@ -388,6 +470,80 @@ describe("TabBar", () => {
 		expect(store.dispatch.getCall(0).args[0].type, "to equal", SET_CLOSING_TAB_HANDLER_ACTIONS);
 		expect(store.dispatch.getCall(0).args[0].payload.module, "to equal", "module1");
 		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
+	});
+
+	it("Close the tab correctly using closing tab handler actions", () => {
+		store.dispatch = sinon.spy().named("dispatch");
+
+		pages[2].entityIdResolver = () => null;
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				stylesProvider
+				router={{ history }}
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} moduleName={"module1"} pages={pages} />
+			</TestWrapper>
+		);
+
+		module.closingTabHandler = {
+			handler: () => {},
+			entitySelector: params => (params?.entityId !== "page3" ? { entityId: "entityId", entity: {} } : null),
+		};
+
+		mount(component);
+
+		expect(store.dispatch, "was called once");
+		expect(store.dispatch.getCall(0).args.length, "to equal", 1);
+		expect(store.dispatch.getCall(0).args[0].type, "to equal", SET_CLOSING_TAB_HANDLER_ACTIONS);
+		expect(store.dispatch.getCall(0).args[0].payload.module, "to equal", "module1");
+		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
+
+		store.dispatch.getCall(0).args[0].payload.actions[1].closeTab({});
+
+		expect(pages[1].close, "was called");
+
+		expect(history.push, "to have a call satisfying", { args: [pages[2].href] });
+	});
+
+	it("Close the tab correctly using closing tab handler actions without affecting routing", () => {
+		store.dispatch = sinon.spy().named("dispatch");
+
+		pages[2].entityIdResolver = () => null;
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				stylesProvider
+				router={{ history }}
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} moduleName={"module1"} pages={pages} />
+			</TestWrapper>
+		);
+
+		module.closingTabHandler = {
+			handler: () => {},
+			entitySelector: params => (params?.entityId !== "page3" ? { entityId: "entityId", entity: {} } : null),
+		};
+
+		mount(component);
+
+		expect(store.dispatch, "was called once");
+		expect(store.dispatch.getCall(0).args.length, "to equal", 1);
+		expect(store.dispatch.getCall(0).args[0].type, "to equal", SET_CLOSING_TAB_HANDLER_ACTIONS);
+		expect(store.dispatch.getCall(0).args[0].payload.module, "to equal", "module1");
+		expect(store.dispatch.getCall(0).args[0].payload.actions.length, "to equal", 5);
+
+		store.dispatch.getCall(0).args[0].payload.actions[1].closeTab({}, true);
+
+		expect(pages[1].close, "was called");
+
+		expect(history.push, "was not called");
 	});
 
 	it("Contains proper Select and Modal elements when they are visible", () => {
@@ -465,11 +621,11 @@ describe("TabBar", () => {
 
 		const mountedComponent = mount(component);
 
-		const pageTab = mountedComponent.find(Tab).at(1);
+		const pageTab = mountedComponent.find(Tab).at(2);
 
 		pageTab.simulate("click");
 
-		expect(history.push, "to have a call satisfying", { args: [pages[0].href] });
+		expect(history.push, "to have a call satisfying", { args: [pages[1].href] });
 	});
 
 	it("Calls history.push to page link when page tab is selected via Select", () => {
@@ -530,6 +686,40 @@ describe("TabBar", () => {
 		useDispatchWithModulesDataStub.restore();
 	});
 
+	it("Calls correct close callback when close icon for specific page tab is clicked with a custom entity resolver", () => {
+		pages[3].entityIdResolver = () => "someCustomId";
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				router={{ history }}
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const dispatchSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesData, "useDispatchWithModulesData")
+			.returns(dispatchSpy);
+
+		const mountedComponent = mount(component);
+
+		const pageTab = mountedComponent.find(Tab).at(4);
+		const closeIcon = pageTab.find(Icon);
+
+		closeIcon.simulate("click");
+
+		expect(pages[3].close, "was called");
+
+		expect(dispatchSpy, "to have a call satisfying", { args: [removeEditNode, ["someCustomId"]] });
+
+		useDispatchWithModulesDataStub.restore();
+	});
+
 	it("Calls correct close callback when close icon for specific page tab with multiple params is clicked and tab was not modified", () => {
 		const component = (
 			<TestWrapper
@@ -586,7 +776,7 @@ describe("TabBar", () => {
 
 		closeIcon.simulate("click");
 
-		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[2].close, href: pages[2].href }] });
+		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[2].close }] });
 
 		expect(setState, "to have a call satisfying", { args: [true] });
 	});
@@ -615,7 +805,7 @@ describe("TabBar", () => {
 
 		closeIcon.simulate("click");
 
-		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[4].close, href: pages[4].href }] });
+		expect(setState, "to have a call satisfying", { args: [{ closeCallback: pages[4].close }] });
 
 		expect(setState, "to have a call satisfying", { args: [true] });
 	});
@@ -826,6 +1016,61 @@ describe("TabBar", () => {
 
 		useDispatchWithModulesDataStub.restore();
 		useStateStub.restore();
+	});
+
+	it("Renders Tab icons properly", () => {
+		pages[0].icon = "settings";
+		pages[1].icon = "settings";
+		pages[2].icon = "settings";
+		pages[2].isDetails = false;
+		pages[3].icon = "settings";
+		pages[3].isDetails = true;
+		pages[4].icon = "settings";
+		pages[4].isDetails = true;
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={pages} />
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<ResizeDetector />
+					{expectedModuleTab}
+					{expectedIconTabs}
+					<ConfirmationModal message={<FormattedMessage {...sharedMessages.unsavedChanges} />} open={false} />
+				</div>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+
+		const mountedComponent = mount(component);
+		const detailsTab1 = mountedComponent.find(Tab).at(1);
+		const detailsTab2 = mountedComponent.find(Tab).at(2);
+		const detailsTab3 = mountedComponent.find(Tab).at(3);
+		const detailsTab4 = mountedComponent.find(Tab).at(4);
+		const detailsTab5 = mountedComponent.find(Tab).at(5);
+
+		expect(detailsTab1.prop("icon").props.className, "to contain", "makeStyles-moduleIcon");
+		expect(detailsTab2.prop("icon").props.className, "to contain", "makeStyles-moduleIcon");
+		expect(detailsTab3.prop("icon").props.className, "to contain", "makeStyles-moduleIcon");
+		expect(detailsTab4.prop("icon").props.className, "to contain", "makeStyles-sectionIcon");
+		expect(detailsTab5.prop("icon").props.className, "to contain", "makeStyles-sectionIcon");
 	});
 });
 

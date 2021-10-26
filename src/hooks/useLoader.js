@@ -4,6 +4,7 @@ import { logoutSelector } from "../selectors/requests";
 
 let hasWarned = false;
 const noCutout = () => {
+	/* istanbul ignore next */
 	if (!hasWarned) {
 		console.warn("useLoader hook called without cutout selector, loader will never be dispatched.");
 		hasWarned = true;

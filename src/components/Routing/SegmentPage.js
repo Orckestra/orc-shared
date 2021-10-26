@@ -43,6 +43,11 @@ const useStyles = makeStyles(theme => ({
 	labelContainer: {
 		display: "flex",
 	},
+	wrapper: {
+		"div[class^='AppFrame__ViewPort'] > div&:nth-child(3)": {
+			marginTop: props => (props.isComponentNull ? null : theme.spacing(6)),
+		},
+	},
 }));
 
 export const Wrapper = styled.div`
@@ -52,10 +57,6 @@ export const Wrapper = styled.div`
 	flex: 0 1 100%;
 	height: calc(100% - 90px);
 	min-height: 0;
-
-	div[class^="AppFrame__ViewPort"] > div&:nth-child(3) {
-		margin-top: 60px;
-	}
 `;
 
 export const List = styled.div`
@@ -156,14 +157,23 @@ const defaultEntityIdResolver = ({ match, baseHref }) => {
 	return entityId;
 };
 
-const SegmentPage = ({ path, component: View, segments, location, match, modulePrependPath, entityIdResolver }) => {
+const SegmentPage = ({
+	path,
+	component: View,
+	componentProps,
+	segments,
+	location,
+	match,
+	modulePrependPath,
+	entityIdResolver,
+}) => {
+	const classes = useStyles({ isComponentNull: !!!View });
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
 		subpages = [];
 
-	const entityIdResolverParams = { match, baseHref };
-	const entityId = (entityIdResolver ?? defaultEntityIdResolver)(entityIdResolverParams);
+	const entityId = entityIdResolver ? entityIdResolver({ match }) : defaultEntityIdResolver({ match, baseHref });
 
 	const modifiedSections = useSelector(getModifiedSections(entityId));
 	const sectionsWithErrors = useSelector(getSectionsWithErrors(entityId));
@@ -222,8 +232,8 @@ const SegmentPage = ({ path, component: View, segments, location, match, moduleP
 			{pages}
 			<Route
 				render={() => [
-					View ? <View key="View" /> : null,
-					<Wrapper key="Segments">
+					View ? <View key="View" {...componentProps} /> : null,
+					<Wrapper className={classes.wrapper} key="Segments">
 						<List>
 							{segmentEntries.map(([segpath, config]) => {
 								const isModified = modifiedSections.includes(segpath.replace("/", ""));

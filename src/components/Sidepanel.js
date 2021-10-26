@@ -33,7 +33,6 @@ export const PanelDrawer = transition.div`
 PanelDrawer.defaultProps = {
 	timeout: 1000,
 	unmountOnExit: true,
-	width: "200px",
 };
 
 const Sidepanel = props => ReactDOM.createPortal(<PanelDrawer {...props} />, getModalRoot());

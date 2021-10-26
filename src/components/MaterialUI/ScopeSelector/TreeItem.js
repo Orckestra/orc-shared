@@ -25,8 +25,9 @@ const useStyles = makeStyles(theme => ({
 		//   },
 		// }
 	},
-	globalIconContainer: {
+	rootIconContainer: {
 		marginRight: 0,
+		display: "none",
 	},
 	scopeLabel: {
 		position: "relative",
@@ -114,11 +115,8 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	);
 	// 16.8 height of 1 lines of text
 
-	const horizontalLine = <span className={classes.horizontalLine} />;
-
 	const label = (
 		<div className={classes.scopeLabel}>
-			{isRootScope ? null : horizontalLine}
 			{icon}
 			<MultipleLinesText textProps={multipleLinesTextProps} children={name} />
 		</div>
@@ -127,10 +125,11 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	return label;
 };
 
-const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
+const TreeItem = ({ scope, rootId, onScopeSelect, isScopeSelectable, children }) => {
 	const isRootScope = scope.id === rootId;
 	const isVirtualScope = scope.type === scopeTypes.virtual;
 	const hasChildren = scope.children.length > 0;
+	const isSelectable = !isVirtualScope && (!isScopeSelectable || isScopeSelectable(scope.id));
 	const classes = useStyles({ isRootScope });
 
 	const expandIcon = <Icon id="dropdown-chevron-down" />;
@@ -138,7 +137,8 @@ const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
 
 	const onLabelClickHandler = event => {
 		event.preventDefault();
-		if (isVirtualScope === false) {
+
+		if (isSelectable) {
 			onScopeSelect(event, scope.id);
 		}
 	};
@@ -160,9 +160,9 @@ const TreeItem = ({ scope, rootId, onScopeSelect, children }) => {
 			onLabelClick={e => onLabelClickHandler(e)}
 			classes={{
 				group: classes.group,
-				iconContainer: classNames({ [classes.globalIconContainer]: isRootScope }),
-				content: classNames({ [classes.virtualScopeContent]: isVirtualScope }),
-				selected: classNames({ [classes.virtualScopeSelected]: isVirtualScope }),
+				iconContainer: classNames({ [classes.rootIconContainer]: isRootScope }),
+				content: classNames({ [classes.virtualScopeContent]: !isSelectable }),
+				selected: classNames({ [classes.virtualScopeSelected]: !isSelectable }),
 			}}
 		>
 			{children}

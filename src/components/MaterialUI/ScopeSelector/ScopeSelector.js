@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey.light,
 		border: `1px solid ${theme.palette.grey.borders}`,
 		boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+		width: theme.spacing(50),
 	},
 	scopeSelector: {
 		display: "flex",
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, updateFilter }) => {
+const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, updateFilter, isScopeSelectable }) => {
 	const classes = useStyles();
 	const { formatMessage } = useIntl();
 
@@ -53,13 +54,14 @@ const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, u
 					selected={selectedScope.id}
 					expanded={selectedScope.scopePath}
 					onSelected={closeSelector}
+					isScopeSelectable={isScopeSelectable}
 				/>
 			</div>
 		</>
 	);
 
 	const scopeSelector = (
-		<Sidepanel className={classes.container} in={show} width="27vw" timeout={300}>
+		<Sidepanel className={classes.container} in={show} timeout={300}>
 			<ClickAwayListener onClickAway={e => closeSelector(e)}>
 				{/* this div is required since ClickAwayListener child element should be able to hold ref */}
 				<div>{show ? scopeSelectorContent : null}</div>

@@ -2,13 +2,13 @@ import AutocompleteProps, { isAutocompleteProps } from "./AutocompleteProps";
 
 describe("Autocomplete Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["update", "value", "disabled", "error"];
+		const propNames = ["update", "value", "disabled", "error", "placeholder"];
 
 		expect(AutocompleteProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["update", "value", "disabled", "error"];
+		const propNames = ["update", "value", "disabled", "error", "placeholder"];
 
 		const autocompleteProps = new AutocompleteProps();
 

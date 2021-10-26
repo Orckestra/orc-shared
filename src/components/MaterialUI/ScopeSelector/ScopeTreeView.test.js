@@ -223,4 +223,56 @@ describe("ScopeTreeView", () => {
 
 		expect(onSelectedSpy, "to have calls satisfying", [{ args: [event, scopes[3].id] }]);
 	});
+
+	it("Selection is ignored when isScopeSelectable is defined and returns false", () => {
+		const isScopeSelectableSpy = sinon.spy(() => false).named("isScopeSelectable");
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<ScopeTreeView
+					rootId={scopes[0].id}
+					getScope={getScope}
+					selected={scopes[1].id}
+					expanded={scopes[1].scopePath}
+					onSelected={onSelectedSpy}
+					isScopeSelectable={isScopeSelectableSpy}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+		let treeView = mountedComponent.find(TreeViewMui);
+		let item = treeView.find(TreeItemMui).at(2);
+
+		const event = { preventDefault: sinon.spy() };
+
+		item.invoke("onLabelClick")(event);
+
+		expect(onSelectedSpy, "was not called");
+	});
+
+	it("Selection is accepted when isScopeSelectable is defined and returns true", () => {
+		const isScopeSelectableSpy = sinon.spy(() => true).named("isScopeSelectable");
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<ScopeTreeView
+					rootId={scopes[0].id}
+					getScope={getScope}
+					selected={scopes[1].id}
+					expanded={scopes[1].scopePath}
+					onSelected={onSelectedSpy}
+					isScopeSelectable={isScopeSelectableSpy}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+		let treeView = mountedComponent.find(TreeViewMui);
+		let item = treeView.find(TreeItemMui).at(2);
+
+		const event = { preventDefault: sinon.spy() };
+
+		item.invoke("onLabelClick")(event);
+
+		expect(onSelectedSpy, "to have calls satisfying", [{ args: [event, scopes[3].id] }]);
+	});
 });

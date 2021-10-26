@@ -12,6 +12,7 @@ import { mount } from "enzyme";
 
 describe("TreeItem", () => {
 	let store, state;
+	const closeSelectorSpy = sinon.spy();
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -30,6 +31,10 @@ describe("TreeItem", () => {
 			subscribe: () => {},
 			dispatch: sinon.spy().named("dispatch"),
 		};
+	});
+
+	afterEach(() => {
+		closeSelectorSpy.resetHistory();
 	});
 
 	const globalScope = {
@@ -58,8 +63,6 @@ describe("TreeItem", () => {
 	const collapseIcon = <Icon id="dropdown-chevron-up" />;
 
 	const theme = createMuiTheme();
-
-	const closeSelectorSpy = sinon.spy();
 
 	it("Renders Tree Item correctly for global scope", () => {
 		const expectedGlobalLabel = (
@@ -151,6 +154,64 @@ describe("TreeItem", () => {
 		expect(preventDefaultSpy, "was called once");
 		expect(closeSelectorSpy, "to have no calls satisfying", { args: [event] });
 	});
+
+	it("Does not calls scope select handler on label click if isScopeSelectable is defined and returns false", () => {
+		const isScopeSelectableSpy = sinon.spy(() => false).named("isScopeSelectable");
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<TreeItem
+					scope={saleScope}
+					rootId={rootId}
+					onScopeSelect={closeSelectorSpy}
+					isScopeSelectable={isScopeSelectableSpy}
+				/>
+			</TestWrapper>
+		);
+
+		const preventDefaultSpy = sinon.spy();
+
+		const mountedComponent = mount(component);
+
+		const saleScopeLabel = mountedComponent.find(TreeItemMui);
+
+		const event = {
+			preventDefault: preventDefaultSpy,
+		};
+
+		saleScopeLabel.invoke("onLabelClick")(event);
+
+		expect(preventDefaultSpy, "was called");
+		expect(closeSelectorSpy, "was not called");
+	});
+
+	it("Calls scope select handler on label click if isScopeSelectable is defined and returns true", () => {
+		const isScopeSelectableSpy = sinon.spy(() => true).named("isScopeSelectable");
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<TreeItem
+					scope={saleScope}
+					rootId={rootId}
+					onScopeSelect={closeSelectorSpy}
+					isScopeSelectable={isScopeSelectableSpy}
+				/>
+			</TestWrapper>
+		);
+
+		const preventDefaultSpy = sinon.spy();
+
+		const mountedComponent = mount(component);
+
+		const saleScopeLabel = mountedComponent.find(TreeItemMui);
+
+		const event = {
+			preventDefault: preventDefaultSpy,
+		};
+
+		saleScopeLabel.invoke("onLabelClick")(event);
+
+		expect(preventDefaultSpy, "was called");
+		expect(closeSelectorSpy, "to have no calls satisfying", { args: [event] });
+	});
 });
 
 describe("ScopeLabel", () => {
@@ -192,7 +253,6 @@ describe("ScopeLabel", () => {
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<div>
-					<span />
 					<ScopeIcon type={scopeTypes.virtual} />
 					<MultipleLinesText textProps={multipleLinesTextProps} children={scopeName} />
 				</div>

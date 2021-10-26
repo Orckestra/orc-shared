@@ -6,6 +6,7 @@ class ExpansionPanelProps extends ComponentProps {
 		disabled: "disabled",
 		expanded: "expanded",
 		onChange: "onChange",
+		constrained: "constrained",
 	};
 
 	static ruleNames = {
@@ -22,6 +23,7 @@ class ExpansionPanelProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.expanded, null);
 		this.componentProps.set(this.constructor.propNames.onChange, null);
+		this.componentProps.set(this.constructor.propNames.constrained, false);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.summaryRoot, null);
