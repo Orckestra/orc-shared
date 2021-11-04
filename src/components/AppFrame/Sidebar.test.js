@@ -24,6 +24,15 @@ describe("Sidebar", () => {
 		state = Immutable.fromJS({
 			navigation: { route: { match: { params: { scope: "Global" } } }, config: { prependHref: "/Global/" } },
 			settings: { defaultScope: "myScope" },
+			modules: {
+				tree: "modulesTree",
+				visibleModules: ["a", "module123"],
+				lastScopeAndModuleSelection: {
+					scope: "Norway",
+					moduleName: "Profiles",
+					routingPerformed: false,
+				},
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -152,6 +161,15 @@ describe("EnhancedMenuItem", () => {
 							},
 						},
 						config: { prependHref: "/Global/" },
+					},
+					modules: {
+						tree: "modulesTree",
+						visibleModules: ["route"],
+						lastScopeAndModuleSelection: {
+							scope: "Norway",
+							moduleName: "Profiles",
+							routingPerformed: false,
+						},
 					},
 					settings: { defaultScope: "myScope" },
 				}),

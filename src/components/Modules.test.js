@@ -7,17 +7,21 @@ import TabBar from "./MaterialUI/Navigation/TabBar";
 import { TestWrapper, createMuiTheme } from "./../utils/testUtils";
 import sinon from "sinon";
 import { createMemoryHistory } from "history";
+import { INITIALIZE_FIRST_MODULE_SCOPE, SET_MODULE_AS_VISIBLE, SET_ROUTING_PERFORMED } from "../actions/modules";
+import { resetLastScope } from "../selectors/navigation";
 
 describe("Modules", () => {
-	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state;
-
-	const match = {
-		url: "/TestScope/users/page1",
-		path: "/:scope/users/page1",
-		params: { scope: "TestScope" },
-	};
+	let modules, Mod2, Mod3, Page1, Page2, Page3, store, state, match;
 
 	beforeEach(() => {
+		resetLastScope();
+
+		match = {
+			url: "/TestScope/users/page1",
+			path: "/:scope/users/page1",
+			params: { scope: "TestScope" },
+		};
+
 		Mod2 = () => <div id="Mod2" />;
 		Mod3 = () => <div id="Mod3" />;
 		Page1 = () => <div id="Page1" />;
@@ -68,9 +72,6 @@ describe("Modules", () => {
 			router: {
 				location: {},
 			},
-			modules: {
-				tree: {},
-			},
 			view: {
 				edit: {
 					users: {},
@@ -93,6 +94,23 @@ describe("Modules", () => {
 					children: ["test2"],
 					isAuthorizedScope: true,
 				},
+				TestScope1: {
+					id: "TestScope1",
+					name: { "en-CA": "Test 1" },
+					foo: false,
+					bar: false,
+					children: ["test2"],
+					isAuthorizedScope: false,
+				},
+			},
+			modules: {
+				tree: {},
+				visibleModules: ["users", "demos", "photos"],
+				lastScopeAndModuleSelection: {
+					scope: "TestScope",
+					moduleName: null,
+					routingPerformed: false,
+				},
 			},
 			locale: {
 				locale: null,
@@ -104,7 +122,7 @@ describe("Modules", () => {
 		});
 		store = {
 			subscribe: () => {},
-			dispatch: () => {},
+			dispatch: sinon.spy().named("dispatch"),
 			getState: () => state,
 		};
 	});
@@ -146,6 +164,144 @@ describe("Modules", () => {
 		];
 
 		expect(mount(component).childNodes, "to satisfy", expected);
+	});
+
+	it("renders a module table when routing is required for photos", () => {
+		const history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
+		const mockHistoryPush = sinon.spy(history, "push");
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
+		);
+
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "moduleName"], "photos");
+
+		const module = {
+			icon: "image",
+			label: "Module 2",
+			href: "/TestScope/photos",
+			mappedFrom: "/TestScope/photos",
+			active: true,
+		};
+
+		const expected = [
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<TabBar module={module} pages={[]} />
+			</TestWrapper>,
+			<Mod2 />,
+		];
+
+		expect(mount(component).childNodes, "to satisfy", expected);
+
+		expect(mockHistoryPush, "to have calls satisfying", [{ args: ["/TestScope/photos"] }]);
+
+		expect(store.dispatch, "to have a call satisfying", { args: [{ type: SET_ROUTING_PERFORMED }] });
+	});
+
+	it("renders a module table when routing is required for photos when already set correctly", () => {
+		match.url = "/TestScope/demos";
+		match.path = "/:scope/demos";
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
+		);
+
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "routingPerformed"], true);
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "moduleName"], "demos");
+
+		const module = {
+			icon: "cloud",
+			label: "Module 3",
+			href: "/TestScope/demos",
+			mappedFrom: "/TestScope/demos",
+			active: true,
+		};
+
+		const expected = [
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={[]} />
+			</TestWrapper>,
+			<Mod3 />,
+		];
+
+		expect(mount(component).childNodes, "to satisfy", expected);
+	});
+
+	it("renders a module table on first available module if requested one not visible", () => {
+		const history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
+		const mockHistoryPush = sinon.spy(history, "push");
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
+		);
+
+		state = state.setIn(["modules", "visibleModules"], Immutable.fromJS(["demos", "users"]));
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "moduleName"], "photos");
+
+		const module = {
+			icon: "cloud",
+			label: "Module 3",
+			href: "/TestScope/demos",
+			mappedFrom: "/TestScope/demos",
+			active: true,
+		};
+
+		const expected = [
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TabBar module={module} pages={[]} />
+			</TestWrapper>,
+			<Mod3 />,
+		];
+
+		expect(mount(component).childNodes, "to satisfy", expected);
+
+		expect(mockHistoryPush, "to have calls satisfying", [{ args: ["/TestScope/demos"] }]);
+
+		expect(store.dispatch, "to have a call satisfying", { args: [{ type: SET_ROUTING_PERFORMED }] });
+	});
+
+	it("renders a module table when routing cannot be performed without visible modules", () => {
+		const history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
+		const mockHistoryPush = sinon.spy(history, "push");
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
+		);
+
+		state = state.setIn(["modules", "visibleModules"], Immutable.fromJS([]));
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "moduleName"], "photos");
+
+		mount(component);
+
+		expect(mockHistoryPush, "not to have calls satisfying", [{ args: ["/TestScope/photos"] }]);
+
+		expect(store.dispatch, "not to have calls satisfying", [{ args: [{ type: SET_ROUTING_PERFORMED }] }]);
 	});
 
 	it("renders a module table as a routing system (user route)", () => {
@@ -270,6 +426,80 @@ describe("Modules", () => {
 		);
 	});
 
+	it("properly sets visible modules and scope when not already set", () => {
+		modules.users.hide = () => () => true;
+		modules.demos.hide = false;
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
+		);
+
+		state = state.setIn(["modules", "visibleModules"], Immutable.fromJS([]));
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "moduleName"], null);
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "scope"], null);
+
+		mount(component);
+
+		expect(store.dispatch, "to have a call satisfying", { args: [{ type: SET_MODULE_AS_VISIBLE, payload: "demos" }] });
+
+		expect(store.dispatch, "to have a call satisfying", { args: [{ type: SET_MODULE_AS_VISIBLE, payload: "photos" }] });
+
+		expect(store.dispatch, "not to have calls satisfying", [
+			{ args: [{ type: SET_MODULE_AS_VISIBLE, payload: "users" }] },
+		]);
+
+		expect(store.dispatch, "to have a call satisfying", {
+			args: [{ type: INITIALIZE_FIRST_MODULE_SCOPE, payload: "TestScope" }],
+		});
+	});
+
+	it("Does not set visible modules and scope when route is not yet initialized", () => {
+		modules.users.hide = () => () => true;
+		modules.demos.hide = false;
+
+		state = state.setIn(["navigation", "route", "match", "params", "scope"], null);
+
+		state = state.setIn(["modules", "visibleModules"], Immutable.fromJS([]));
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/TestScope/demos"] }}
+				intlProvider
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<Modules modules={modules} scope="TestScope" />
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(store.dispatch, "not to have calls satisfying", [
+			{ args: [{ type: SET_MODULE_AS_VISIBLE, payload: "demos" }] },
+		]);
+
+		expect(store.dispatch, "not to have calls satisfying", [
+			{ args: [{ type: SET_MODULE_AS_VISIBLE, payload: "photos" }] },
+		]);
+
+		expect(store.dispatch, "not to have calls satisfying", [
+			{ args: [{ type: SET_MODULE_AS_VISIBLE, payload: "users" }] },
+		]);
+
+		expect(store.dispatch, "not to have calls satisfying", [
+			{ args: [{ type: INITIALIZE_FIRST_MODULE_SCOPE, payload: "TestScope" }] },
+		]);
+	});
+
 	describe("with custom href", () => {
 		beforeEach(() => {
 			state = Immutable.fromJS({
@@ -289,6 +519,12 @@ describe("Modules", () => {
 				},
 				modules: {
 					tree: {},
+					visibleModules: ["users", "demos", "photos"],
+					lastScopeAndModuleSelection: {
+						scope: "TestScope",
+						moduleName: null,
+						routingPerformed: false,
+					},
 				},
 				view: {
 					edit: {
@@ -390,6 +626,12 @@ describe("Modules", () => {
 				},
 				modules: {
 					tree: {},
+					visibleModules: ["users", "demos", "photos"],
+					lastScopeAndModuleSelection: {
+						scope: "TestScope",
+						moduleName: null,
+						routingPerformed: false,
+					},
 				},
 				view: {
 					edit: {
@@ -440,13 +682,7 @@ describe("Modules", () => {
 });
 
 describe("Module", () => {
-	let config, Page1, store, state;
-
-	const match = {
-		url: "/TestScope/users/page1",
-		path: "/:scope/users/page1",
-		params: { scope: "TestScope" },
-	};
+	let config, Page1, store, state, match;
 
 	let history, pushSpy;
 	beforeAll(() => {
@@ -456,6 +692,12 @@ describe("Module", () => {
 	});
 
 	beforeEach(() => {
+		match = {
+			url: "/TestScope/users/page1",
+			path: "/:scope/users/page1",
+			params: { scope: "TestScope" },
+		};
+
 		config = {
 			label: "Module 1",
 			icon: "user",
@@ -482,6 +724,12 @@ describe("Module", () => {
 			},
 			modules: {
 				tree: {},
+				visibleModules: ["firstModule", "module123"],
+				lastScopeAndModuleSelection: {
+					scope: "TestScope",
+					moduleName: "Profiles",
+					routingPerformed: true,
+				},
 			},
 			view: {
 				edit: {
@@ -523,49 +771,85 @@ describe("Module", () => {
 
 	const theme = createMuiTheme();
 
-	it("Calls pushes to root when unauthorized user trying to access hidden module", () => {
-		//config.hide = false;
+	it("Calls pushes to first module when unauthorized user trying to access hidden module", () => {
 		const component = (
 			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<Module config={config} match={match} path={match.path} location={{}} />
+				<Module id="notVisibleModule" config={config} match={match} path={match.path} location={{}} />
 			</TestWrapper>
 		);
 
 		mount(component);
 
-		expect(history.push, "to have calls satisfying", [{ args: ["/"] }]);
+		expect(history.push, "to have calls satisfying", [{ args: ["/TestScope/firstModule"] }]);
 
 		pushSpy.resetHistory();
 	});
 
-	it("Calls pushes to root when unauthorized user trying to access hidden module and hide property is a function which retrieves false", () => {
+	it("Does not call pushes to first module when unauthorized user trying to access hidden module and hide property is a function which retrieves false", () => {
 		config.hide = () => false;
 
 		const component = (
 			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<Module config={config} match={match} path={match.path} location={{}} />
+				<Module id="firstModule" config={config} match={match} path={match.path} location={{}} />
 			</TestWrapper>
 		);
 
 		mount(component);
 
-		expect(history.push, "not to have calls satisfying", [{ args: ["/"] }]);
+		expect(history.push, "not to have calls satisfying", [{ args: ["/TestScope/firstModule"] }]);
 
 		pushSpy.resetHistory();
 	});
 
-	it("Calls pushes to root when unauthorized user trying to access hidden module and hide property is a function which retrieves true", () => {
+	it("Calls pushes to first module when unauthorized user trying to access hidden module and hide property is a function which retrieves true", () => {
 		config.hide = () => true;
 
 		const component = (
 			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<Module config={config} match={match} path={match.path} location={{}} />
+				<Module id="notVisibleModule" config={config} match={match} path={match.path} location={{}} />
 			</TestWrapper>
 		);
 
 		mount(component);
 
-		expect(history.push, "to have calls satisfying", [{ args: ["/"] }]);
+		expect(history.push, "to have calls satisfying", [{ args: ["/TestScope/firstModule"] }]);
+
+		pushSpy.resetHistory();
+	});
+
+	it("Does not call pushes to first module when already set to that location", () => {
+		state = state.setIn(["navigation", "route", "match", "url"], "/TestScope/firstModule");
+		state = state.setIn(["navigation", "route", "match", "path"], "/:scope/firstModule");
+
+		config.hide = () => true;
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Module id="notVisibleModule" config={config} match={match} path={match.path} location={{}} />
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(history.push, "not to have calls satisfying", [{ args: ["/TestScope/firstModule"] }]);
+
+		pushSpy.resetHistory();
+	});
+
+	it("Does not call pushes to first module when redirection is not yet completed to new scope", () => {
+		state = state.setIn(["modules", "lastScopeAndModuleSelection", "scope"], "newScope");
+
+		config.hide = () => true;
+
+		const component = (
+			<TestWrapper provider={{ store }} router={{ history }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<Module id="notVisibleModule" config={config} match={match} path={match.path} location={{}} />
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(history.push, "not to have calls satisfying", [{ args: ["/TestScope/firstModule"] }]);
 
 		pushSpy.resetHistory();
 	});

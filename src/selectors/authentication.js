@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 import { platformRoles } from "./../constants";
 import { getCurrentScope } from "./navigation";
+import { getScopesSelector } from "./scope";
 
 const authData = state => state.get("authentication");
 
@@ -11,35 +12,60 @@ export const selectRolesClaims = createSelector(authData, data => data.get("role
 export const selectGroupRolesClaims = roleGroup =>
 	createSelector(selectRolesClaims, rolesClaims => rolesClaims.get(roleGroup) || null);
 
-export const hasEditorPermissions = roleGroup =>
-	createSelector(selectGroupRolesClaims(roleGroup), getCurrentScope, (appRolesClaims, currentScope) => {
-		if (appRolesClaims != null) {
-			return (
-				!!appRolesClaims.getIn(["*", platformRoles.Editor]) ||
-				!!appRolesClaims.getIn([currentScope, platformRoles.Editor])
-			);
+const hasRolePermissions = (appRolesClaims, scopeId, role, scopes) => {
+	if (appRolesClaims != null && scopeId != null) {
+		const allowed = !!appRolesClaims.getIn(["*", role]) || !!appRolesClaims.getIn([scopeId, role]);
+
+		if (!allowed) {
+			const parentScopeId = scopes.get(scopeId)?.toJS()?.parentScopeId ?? null;
+
+			return hasRolePermissions(appRolesClaims, parentScopeId, role, scopes);
 		}
-		return false;
-	});
+
+		return allowed;
+	}
+
+	return false;
+};
+
+export const hasEditorPermissions = roleGroup =>
+	createSelector(
+		selectGroupRolesClaims(roleGroup),
+		getCurrentScope,
+		getScopesSelector,
+		(appRolesClaims, currentScope, scopes) =>
+			hasRolePermissions(appRolesClaims, currentScope, platformRoles.Editor, scopes),
+	);
+
+export const hasEditorPermissionsForScope = (scope, roleGroup) =>
+	createSelector(selectGroupRolesClaims(roleGroup), getScopesSelector, (appRolesClaims, scopes) =>
+		hasRolePermissions(appRolesClaims, scope, platformRoles.Editor, scopes),
+	);
 
 export const hasAdministratorPermissions = roleGroup =>
-	createSelector(selectGroupRolesClaims(roleGroup), getCurrentScope, (appRolesClaims, currentScope) => {
-		if (appRolesClaims != null) {
-			return (
-				!!appRolesClaims.getIn(["*", platformRoles.Administrator]) ||
-				!!appRolesClaims.getIn([currentScope, platformRoles.Administrator])
-			);
-		}
-		return false;
-	});
+	createSelector(
+		selectGroupRolesClaims(roleGroup),
+		getCurrentScope,
+		getScopesSelector,
+		(appRolesClaims, currentScope, scopes) =>
+			hasRolePermissions(appRolesClaims, currentScope, platformRoles.Administrator, scopes),
+	);
+
+export const hasAdministratorPermissionsForScope = (scope, roleGroup) =>
+	createSelector(selectGroupRolesClaims(roleGroup), getScopesSelector, (appRolesClaims, scopes) =>
+		hasRolePermissions(appRolesClaims, scope, platformRoles.Administrator, scopes),
+	);
 
 export const hasReaderPermissions = roleGroup =>
-	createSelector(selectGroupRolesClaims(roleGroup), getCurrentScope, (appRolesClaims, currentScope) => {
-		if (appRolesClaims != null) {
-			return (
-				!!appRolesClaims.getIn(["*", platformRoles.Reader]) ||
-				!!appRolesClaims.getIn([currentScope, platformRoles.Reader])
-			);
-		}
-		return false;
-	});
+	createSelector(
+		selectGroupRolesClaims(roleGroup),
+		getCurrentScope,
+		getScopesSelector,
+		(appRolesClaims, currentScope, scopes) =>
+			hasRolePermissions(appRolesClaims, currentScope, platformRoles.Reader, scopes),
+	);
+
+export const hasReaderPermissionsForScope = (scope, roleGroup) =>
+	createSelector(selectGroupRolesClaims(roleGroup), getScopesSelector, (appRolesClaims, scopes) =>
+		hasRolePermissions(appRolesClaims, scope, platformRoles.Reader, scopes),
+	);

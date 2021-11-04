@@ -1,14 +1,17 @@
 import Immutable from "immutable";
 import reducer from "./settings";
 import { GET_MY_APPLICATION_SUCCESS, SET_MY_APPLICATION_SUCCESS } from "../actions/applications";
-import { GET_MY_SCOPE_SUCCESS } from "../actions/scopes";
+import { GET_APPLICATION_MODULES_SUCCESS, GET_MY_SCOPE_SUCCESS, GET_SCOPES_SUCCESS } from "../actions/scopes";
 
 describe("settings", () => {
-	it("behaves as a reducer should", () =>
-		expect(reducer, "to be a reducer with initial state", {
-			defaultApp: 0,
-			defaultScope: null,
-		}));
+	const initialState = Immutable.fromJS({
+		defaultApp: 0,
+		defaultScope: null,
+		loadedModulesScope: [],
+		modules: [],
+	});
+
+	it("behaves as a reducer should", () => expect(reducer, "to be a reducer with initial state", initialState));
 
 	it("stores results of getting your personal default application", () => {
 		const oldState = Immutable.fromJS({
@@ -63,6 +66,34 @@ describe("settings", () => {
 		const newState = reducer(oldState, action);
 		expect(newState, "not to be", oldState).and("to satisfy", {
 			defaultScope: "aScope",
+		});
+	});
+
+	it("stores modules for the application", () => {
+		const oldState = Immutable.fromJS({
+			modules: [],
+		});
+		const action = {
+			type: GET_APPLICATION_MODULES_SUCCESS,
+			payload: [{ name: "Customers" }, { name: "Orders" }, { name: "Administration" }],
+		};
+		const newState = reducer(oldState, action);
+		expect(newState, "not to be", oldState).and("to satisfy", {
+			modules: ["Customer", "Order", "Administration"],
+		});
+	});
+
+	it("stores modules for the application", () => {
+		const oldState = Immutable.fromJS({
+			loadedModulesScope: [],
+		});
+		const action = {
+			type: GET_SCOPES_SUCCESS,
+			meta: { module: "Order" },
+		};
+		const newState = reducer(oldState, action);
+		expect(newState, "not to be", oldState).and("to satisfy", {
+			loadedModulesScope: ["Order"],
 		});
 	});
 });

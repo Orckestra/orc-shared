@@ -3,49 +3,105 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { getCurrentScope, selectRouteHref } from "../selectors/navigation";
+import { getCurrentScope, getCurrentScopeFromRoute, selectRouteHref } from "../selectors/navigation";
 import { isCurrentScopeAuthorizedSelector } from "../selectors/scope";
 import Navigation from "./Navigation";
 import FullPage from "./Routing/FullPage";
 import { setHrefConfig } from "../actions/navigation";
-import { setModulesStructure } from "../actions/modules";
+import {
+	setRoutingPerformed,
+	setModuleAsVisible,
+	setModulesStructure,
+	initializeFirstModuleScope,
+} from "../actions/modules";
 import { defaultScopeSelector } from "../selectors/settings";
+import { getScopeModuleInformationSelector } from "../selectors/modules";
+import UrlPattern from "url-pattern";
 
-export const Module = withErrorBoundary("Module")(({ config, path, error, location, match, modulePrependPath }) => {
-	const currentRoute = useSelector(selectRouteHref);
+const rerouteOnScopeAndModule = (history, currentRoute, scope, module) => {
+	const params = {
+		scope: scope,
+	};
+
+	const pattern = new UrlPattern(`/:scope/${module}`);
+	const href = pattern.stringify(params);
+
+	if (currentRoute !== href) {
+		history.push(href);
+	}
+};
+
+export const Module = withErrorBoundary("Module")(({ id, config, path, error, location, match, modulePrependPath }) => {
 	const history = useHistory();
-	let hideSelector = state => (typeof config.hide === "function" ? config.hide(state) : config.hide ?? false);
-	const isHidden = useSelector(hideSelector);
+	const scope = useSelector(getCurrentScopeFromRoute);
+	const currentRoute = useSelector(selectRouteHref);
+	const moduleInfo = useSelector(getScopeModuleInformationSelector);
+
+	const isVisible =
+		moduleInfo.scope != null && moduleInfo.visibleModules.length > 0 && moduleInfo.visibleModules.includes(id);
 
 	React.useEffect(() => {
-		if (isHidden === true && currentRoute.includes(match.url)) {
-			history.push("/");
+		if (scope === moduleInfo.scope && !isVisible) {
+			rerouteOnScopeAndModule(history, currentRoute, moduleInfo.scope, moduleInfo.visibleModules[0]);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isHidden, currentRoute, match.url]);
+	}, [history, scope, isVisible, currentRoute, moduleInfo.scope, moduleInfo.visibleModules]);
 
 	return (
-		<FullPage path={path} config={config} location={location} match={match} modulePrependPath={modulePrependPath} />
+		<FullPage
+			path={path}
+			config={config}
+			location={location}
+			match={match}
+			modulePrependPath={modulePrependPath}
+			isVisible={isVisible}
+		/>
 	);
 });
 
 const getHrefFromPath = (path, scope) => path.replace(":scope", scope);
 
+const CheckModuleVisibility = ({ id, config, moduleInfo }) => {
+	const dispatch = useDispatch();
+	const scopeFromRoute = useSelector(getCurrentScopeFromRoute);
+
+	const hideSelector = state => (typeof config.hide === "function" ? config.hide(state) : () => config.hide ?? false);
+
+	const isHidden = useSelector(hideSelector(moduleInfo.scope ?? scopeFromRoute));
+
+	React.useEffect(() => {
+		// We need to wait for the ROUTE to be set the first time in the Redux/Store before to set module's visibility
+		if (scopeFromRoute !== null) {
+			if (moduleInfo.scope == null) dispatch(initializeFirstModuleScope(scopeFromRoute));
+
+			if (isHidden === false && !moduleInfo.visibleModules.includes(id)) {
+				dispatch(setModuleAsVisible(id));
+			}
+		}
+	}, [isHidden, moduleInfo, dispatch, id, scopeFromRoute]);
+
+	return <React.Fragment />;
+};
+
 export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } = {} }) => {
 	const dispatch = useDispatch();
-	const scope = useSelector(getCurrentScope);
+	const currentScope = useSelector(getCurrentScope);
 	const isAuthorizedScope = useSelector(isCurrentScopeAuthorizedSelector);
 	const defaultScope = useSelector(defaultScopeSelector);
 	const history = useHistory();
 	const location = useLocation();
+	const currentRoute = useSelector(selectRouteHref);
+
+	const moduleInfo = useSelector(getScopeModuleInformationSelector);
+
+	const firstModuleName = Object.keys(modules)[0];
 
 	const scopePath = "/:scope/";
 	const prependPath = customPath || scopePath;
-	const prependHref = getHrefFromPath(prependPath, scope);
+	const prependHref = getHrefFromPath(prependPath, currentScope);
 
 	Object.keys(otherConfigs).forEach(key => {
 		const moduleConfig = otherConfigs[key];
-		moduleConfig.prependHref = getHrefFromPath(moduleConfig.prependPath, scope);
+		moduleConfig.prependHref = getHrefFromPath(moduleConfig.prependPath, currentScope);
 	});
 
 	useEffect(() => {
@@ -53,23 +109,42 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 	}, [dispatch, prependPath, prependHref, otherConfigs]);
 
 	const getModuleConfig = name => (otherConfigs && otherConfigs[name]) || { prependPath, prependHref };
-	const firstModuleName = Object.keys(modules)[0];
 
 	useEffect(() => {
 		const { pathname, search } = location;
-		if (!isAuthorizedScope && pathname.includes(scope) && defaultScope) {
-			history.push(pathname.replace(scope, defaultScope) + search);
+		if (!isAuthorizedScope && pathname.includes(currentScope) && defaultScope) {
+			history.push(pathname.replace(currentScope, defaultScope) + search);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isAuthorizedScope, defaultScope, history, scope]);
+	}, [isAuthorizedScope, defaultScope, history, currentScope]);
 
 	React.useEffect(() => {
 		dispatch(setModulesStructure(modules));
 	}, [dispatch, modules]);
 
+	useEffect(() => {
+		if (moduleInfo.routingPerformed === false && moduleInfo.scope != null) {
+			const destinationModule =
+				moduleInfo.visibleModules.length > 0
+					? moduleInfo.visibleModules.includes(moduleInfo.moduleName)
+						? moduleInfo.moduleName
+						: moduleInfo.visibleModules[0]
+					: null;
+
+			if (destinationModule != null && moduleInfo.moduleName != null) {
+				rerouteOnScopeAndModule(history, currentRoute, moduleInfo.scope, destinationModule);
+
+				dispatch(setRoutingPerformed());
+			}
+		}
+	}, [dispatch, history, moduleInfo, currentRoute]);
+
 	return (
 		<React.Fragment>
 			<Navigation modules={modules} />
+			{Object.entries(modules).map(([name, module]) => (
+				<CheckModuleVisibility key={name} id={name} config={module} moduleInfo={moduleInfo} />
+			))}
 			<Switch>
 				{Object.entries(modules).map(([name, module]) => {
 					const moduleConfig = getModuleConfig(name);
@@ -79,7 +154,7 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 							key={name}
 							path={path}
 							render={route => (
-								<Module modulePrependPath={moduleConfig.prependPath} config={module} path={path} {...route} />
+								<Module id={name} modulePrependPath={moduleConfig.prependPath} config={module} path={path} {...route} />
 							)}
 						/>
 					);

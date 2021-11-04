@@ -202,6 +202,15 @@ describe("AppFrame", () => {
 					bar: true,
 				},
 			},
+			modules: {
+				tree: "modulesTree",
+				visibleModules: ["a", "module123", "test1", "test2", "test3"],
+				lastScopeAndModuleSelection: {
+					scope: "Norway",
+					moduleName: "Profiles",
+					routingPerformed: false,
+				},
+			},
 			settings: { defaultScope: "myScope", defaultApp: "12" },
 			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 			view: { scopeSelector: { filter: "1" }, __prefsDialog: { show: false } },

@@ -70,6 +70,26 @@ describe("Page", () => {
 			</TestWrapper>,
 		));
 
+	it("Does not show the page view when its path is matched but not visible", () =>
+		expect(
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<MemoryRouter initialEntries={["/nabble"]}>
+					<Page
+						component={View}
+						path="/nabble"
+						isVisible={false}
+						pages={{
+							"/foo": { component: Sub1 },
+							"/bar": { component: Sub2 },
+						}}
+					/>
+				</MemoryRouter>
+			</TestWrapper>,
+			"when mounted",
+			"to equal",
+			null,
+		));
+
 	it("shows nested page when its path is matched", () =>
 		expect(
 			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
