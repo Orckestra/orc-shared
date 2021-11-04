@@ -41,7 +41,7 @@ export const Module = withErrorBoundary("Module")(({ id, config, path, error, lo
 		moduleInfo.scope != null && moduleInfo.visibleModules.length > 0 && moduleInfo.visibleModules.includes(id);
 
 	React.useEffect(() => {
-		if (scope === moduleInfo.scope && !isVisible) {
+		if (moduleInfo.scope != null && scope === moduleInfo.scope && moduleInfo.visibleModules.length > 0 && !isVisible) {
 			rerouteOnScopeAndModule(history, currentRoute, moduleInfo.scope, moduleInfo.visibleModules[0]);
 		}
 	}, [history, scope, isVisible, currentRoute, moduleInfo.scope, moduleInfo.visibleModules]);

@@ -21,9 +21,36 @@ jest.mock("../utils/buildUrl", () => {
 	return modExport;
 });
 
+describe("getAppModules", () => {
+	it("creates a RSAA to fetch application modules", () => {
+		expect(getAppModules, "when called", "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_APPLICATION_MODULES_REQUEST, GET_APPLICATION_MODULES_SUCCESS, GET_APPLICATION_MODULES_FAILURE],
+				endpoint: 'URL: modules/byApplicationName/anApplication ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		});
+	});
+});
+
 describe("getScopes", () => {
-	beforeEach(() => {});
-	afterEach(() => {});
+	let originalApplication;
+
+	beforeEach(() => {
+		originalApplication = global.OVERTURE_APPLICATION;
+	});
+
+	afterEach(() => {
+		global.OVERTURE_APPLICATION = originalApplication;
+	});
 
 	it("creates a RSAA to fetch authorized scope tree", () =>
 		expect(getScopes, "when called with", ["aModule"], "to exhaustively satisfy", {
@@ -70,35 +97,6 @@ describe("getScopes", () => {
 			"to throw",
 			'"overtureApplication.name" is missing in the configuration.',
 		);
-	});
-});
-
-describe("getAppModules", () => {
-	it("creates a RSAA to fetch application modules", () => {
-		// TODOJOC
-		// TODOJOC
-		// TODOJOC
-		// To be removed when orc-scripts version is updated in package.json
-		global.OVERTURE_APPLICATION = "anApplication";
-		// TODOJOC
-		// TODOJOC
-		// TODOJOC
-
-		expect(getAppModules, "when called", "to exhaustively satisfy", {
-			[RSAA]: {
-				types: [GET_APPLICATION_MODULES_REQUEST, GET_APPLICATION_MODULES_SUCCESS, GET_APPLICATION_MODULES_FAILURE],
-				endpoint: 'URL: modules/byApplicationName/anApplication ""',
-				method: "GET",
-				body: undefined,
-				credentials: "include",
-				bailout: expect.it("to be a function"),
-				headers: {
-					Accept: "application/json; charset=utf-8",
-					"Content-Type": "application/json",
-				},
-				options: { redirect: "follow" },
-			},
-		});
 	});
 });
 
