@@ -7,6 +7,8 @@ import {
 	getLoadedModulesScopeSelector,
 } from "../selectors/settings";
 import { Loader } from "./Authenticate";
+import { overtureModule, scopeTypes } from "../constants";
+import { initializeFirstModuleScope } from "../actions/modules";
 
 const ApplicationModuleLoader = ({ children }) => {
 	const dispatch = useDispatch();
@@ -19,12 +21,16 @@ const ApplicationModuleLoader = ({ children }) => {
 
 	useEffect(() => {
 		if (applicationModules.length > 0 && scopesLoaded === false) {
-			applicationModules.forEach(x => {
-				// For the default scope, the latest that will be returned will be the chosen one
-				dispatch(getDefaultScope(x));
-				// For scopes, they need to be merged
-				dispatch(getScopes(x));
-			});
+			if (applicationModules.includes(overtureModule.System)) {
+				dispatch(initializeFirstModuleScope(scopeTypes.global));
+			} else {
+				applicationModules.forEach(x => {
+					// For the default scope, the latest that will be returned will be the chosen one
+					dispatch(getDefaultScope(x));
+					// For scopes, they need to be merged
+					dispatch(getScopes(x));
+				});
+			}
 
 			setScopesLoaded(true);
 		}
@@ -34,7 +40,8 @@ const ApplicationModuleLoader = ({ children }) => {
 		applicationModules.length > 0 &&
 		applicationModules.reduce((prev, current) => prev && loadedModules.includes(current), true);
 
-	const applicationModuleReady = scopeLoadedFromAllModules && defaultScope != null;
+	const applicationModuleReady =
+		(scopeLoadedFromAllModules && defaultScope != null) || applicationModules.includes(overtureModule.System);
 
 	if (!applicationModuleReady) {
 		return <Loader />;

@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import Authenticate, { Loader } from "./Authenticate";
 import ApplicationModuleLoader from "./ApplicationModuleLoader";
+import { overtureModule } from "../constants";
 
 const TestComp = () => {
 	return <div className="test" />;
@@ -45,7 +46,7 @@ describe("ApplicationModuleLoader", () => {
 		});
 	});
 
-	it("shows the Authenticate component when scopes configuration are all loaded", () =>
+	it("shows the component when scopes configuration are all loaded", () =>
 		expect(
 			<Provider store={store(state)}>
 				<ApplicationModuleLoader>
@@ -56,6 +57,20 @@ describe("ApplicationModuleLoader", () => {
 			"to exhaustively satisfy",
 			<TestComp />,
 		));
+
+	it("shows the component when System is part of the application modules", () => {
+		state = state.setIn(["settings", "modules"], Immutable.fromJS(["moduleA", overtureModule.System]));
+		expect(
+			<Provider store={store(state)}>
+				<ApplicationModuleLoader>
+					<TestComp />
+				</ApplicationModuleLoader>
+			</Provider>,
+			"when mounted",
+			"to exhaustively satisfy",
+			<TestComp />,
+		);
+	});
 
 	it("shows a load indicator component when default scope is still unknown", () => {
 		state = state.setIn(["settings", "defaultScope"], null);

@@ -76,11 +76,12 @@ export const attributeDataType = {
 
 // It is intended that some of them have a different value of its keys
 export const overtureModule = {
+	System: "System",
 	Products: "Product",
 	Customers: "Customer",
 	Orders: "Order",
 	Marketing: "Marketing",
-	Reports: "Reports",
+	Report: "Reports",
 	Administration: "Administration",
 	UserManagement: "UserManagement",
 	PriceManagement: "PriceManagement",

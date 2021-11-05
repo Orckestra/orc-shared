@@ -14,9 +14,10 @@ import {
 	setModulesStructure,
 	initializeFirstModuleScope,
 } from "../actions/modules";
-import { defaultScopeSelector } from "../selectors/settings";
+import { defaultScopeSelector, getApplicationModulesSelector } from "../selectors/settings";
 import { getScopeModuleInformationSelector } from "../selectors/modules";
 import UrlPattern from "url-pattern";
+import { overtureModule } from "../constants";
 
 const rerouteOnScopeAndModule = (history, currentRoute, scope, module) => {
 	const params = {
@@ -62,6 +63,7 @@ const getHrefFromPath = (path, scope) => path.replace(":scope", scope);
 
 const CheckModuleVisibility = ({ id, config, moduleInfo }) => {
 	const dispatch = useDispatch();
+	const applicationModules = useSelector(getApplicationModulesSelector);
 	const scopeFromRoute = useSelector(getCurrentScopeFromRoute);
 
 	const hideSelector = state => (typeof config.hide === "function" ? config.hide(state) : () => config.hide ?? false);
@@ -70,14 +72,16 @@ const CheckModuleVisibility = ({ id, config, moduleInfo }) => {
 
 	React.useEffect(() => {
 		// We need to wait for the ROUTE to be set the first time in the Redux/Store before to set module's visibility
-		if (scopeFromRoute !== null) {
-			if (moduleInfo.scope == null) dispatch(initializeFirstModuleScope(scopeFromRoute));
+		if (scopeFromRoute !== null || applicationModules.includes(overtureModule.System)) {
+			if (moduleInfo.scope == null) {
+				dispatch(initializeFirstModuleScope(scopeFromRoute));
+			}
 
 			if (isHidden === false && !moduleInfo.visibleModules.includes(id)) {
 				dispatch(setModuleAsVisible(id));
 			}
 		}
-	}, [isHidden, moduleInfo, dispatch, id, scopeFromRoute]);
+	}, [isHidden, moduleInfo, dispatch, id, scopeFromRoute, applicationModules]);
 
 	return <React.Fragment />;
 };

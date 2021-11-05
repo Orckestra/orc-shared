@@ -84,6 +84,7 @@ describe("Modules", () => {
 			},
 			settings: {
 				defaultScope: "myScope",
+				modules: ["users", "demos", "photos"],
 			},
 			scopes: {
 				TestScope: {
@@ -516,6 +517,7 @@ describe("Modules", () => {
 				},
 				settings: {
 					defaultScope: "myScope",
+					modules: ["users", "demos", "photos"],
 				},
 				modules: {
 					tree: {},
@@ -623,6 +625,7 @@ describe("Modules", () => {
 				},
 				settings: {
 					defaultScope: "TestScope2",
+					modules: ["users", "demos", "photos"],
 				},
 				modules: {
 					tree: {},
