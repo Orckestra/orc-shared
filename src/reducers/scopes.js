@@ -20,7 +20,7 @@ const scopeReducer = (state = initialState, action) => {
 						addedScope[scope.id] = scope;
 					} else if (scope.isAuthorizedScope) {
 						loadedScopes[scope.id] = scope;
-					} else console.log("a");
+					}
 				});
 
 				Object.values(addedScope).forEach(scope => {
@@ -29,7 +29,7 @@ const scopeReducer = (state = initialState, action) => {
 					if (parentScope) {
 						if (!parentScope.children.includes(scope.id)) {
 							parentScope.children.push(scope.id);
-						} else console.log("a");
+						}
 					} else {
 						// Should not happen, but for safety
 						delete loadedScopes[scope.id];

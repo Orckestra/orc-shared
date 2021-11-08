@@ -70,18 +70,21 @@ const CheckModuleVisibility = ({ id, config, moduleInfo }) => {
 
 	const isHidden = useSelector(hideSelector(moduleInfo.scope ?? scopeFromRoute));
 
+	const moduleScope = moduleInfo.scope;
+	const moduleIsVisible = isHidden === false && !moduleInfo.visibleModules.includes(id);
+
 	React.useEffect(() => {
 		// We need to wait for the ROUTE to be set the first time in the Redux/Store before to set module's visibility
 		if (scopeFromRoute !== null || applicationModules.includes(overtureModule.System)) {
-			if (moduleInfo.scope == null) {
+			if (moduleScope == null) {
 				dispatch(initializeFirstModuleScope(scopeFromRoute));
 			}
 
-			if (isHidden === false && !moduleInfo.visibleModules.includes(id)) {
+			if (moduleIsVisible) {
 				dispatch(setModuleAsVisible(id));
 			}
 		}
-	}, [isHidden, moduleInfo, dispatch, id, scopeFromRoute, applicationModules]);
+	}, [moduleScope, moduleIsVisible, dispatch, id, scopeFromRoute, applicationModules]);
 
 	return <React.Fragment />;
 };
@@ -98,6 +101,16 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 	const moduleInfo = useSelector(getScopeModuleInformationSelector);
 
 	const firstModuleName = Object.keys(modules)[0];
+
+	const destinationModule =
+		moduleInfo.routingPerformed === false &&
+		moduleInfo.scope != null &&
+		moduleInfo.visibleModules.length > 0 &&
+		moduleInfo.moduleName != null
+			? moduleInfo.visibleModules.includes(moduleInfo.moduleName)
+				? moduleInfo.moduleName
+				: moduleInfo.visibleModules[0]
+			: null;
 
 	const scopePath = "/:scope/";
 	const prependPath = customPath || scopePath;
@@ -127,21 +140,12 @@ export const Modules = ({ modules, pathConfig: { customPath, ...otherConfigs } =
 	}, [dispatch, modules]);
 
 	useEffect(() => {
-		if (moduleInfo.routingPerformed === false && moduleInfo.scope != null) {
-			const destinationModule =
-				moduleInfo.visibleModules.length > 0
-					? moduleInfo.visibleModules.includes(moduleInfo.moduleName)
-						? moduleInfo.moduleName
-						: moduleInfo.visibleModules[0]
-					: null;
+		if (destinationModule != null) {
+			rerouteOnScopeAndModule(history, currentRoute, moduleInfo.scope, destinationModule);
 
-			if (destinationModule != null && moduleInfo.moduleName != null) {
-				rerouteOnScopeAndModule(history, currentRoute, moduleInfo.scope, destinationModule);
-
-				dispatch(setRoutingPerformed());
-			}
+			dispatch(setRoutingPerformed());
 		}
-	}, [dispatch, history, moduleInfo, currentRoute]);
+	}, [dispatch, history, moduleInfo.scope, destinationModule, currentRoute]);
 
 	return (
 		<React.Fragment>
