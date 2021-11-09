@@ -123,7 +123,7 @@ const MenuItem = ({
 	alert,
 	pageScopeSelector,
 	closingTabHandler,
-	hide,
+	hide, // This props is not used in the component, but we need to destructure it so props can be used in ItemWrapper
 	isHidden = false,
 	href,
 	...props
