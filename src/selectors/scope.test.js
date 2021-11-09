@@ -7,6 +7,7 @@ import {
 	localizedScopeSelector,
 	localizedScopesSelectorByIds,
 	isCurrentScopeAuthorizedSelector,
+	getScopesSelector,
 } from "./scope";
 
 let state;
@@ -92,6 +93,10 @@ beforeEach(() => {
 			defaultScope: "FirstChild",
 		},
 	});
+});
+
+describe("getScopesSelector", () => {
+	it("gets all scopes", () => expect(getScopesSelector, "called with", [state], "to equal", state.get("scopes")));
 });
 
 describe("currentScopeSelector", () => {

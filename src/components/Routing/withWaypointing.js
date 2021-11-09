@@ -6,7 +6,7 @@ import { setRoute, mapHref, setCurrentPrependPath } from "../../actions/navigati
 import useLoader from "../../hooks/useLoader";
 
 const withWaypointing =
-	(Comp, componentProps = {}) =>
+	(Comp, isVisible = true, componentProps = {}) =>
 	props => {
 		const { match, mapFrom, modulePrependPath } = props;
 		const location = useLocation();
@@ -24,7 +24,7 @@ const withWaypointing =
 		}
 		const cutout = state => selectRouteHref(state) === location.pathname;
 		useLoader(loadActions, cutout);
-		return <Comp {...props} {...componentProps} />;
+		return isVisible ? <Comp {...props} {...componentProps} /> : null;
 	};
 
 export default withWaypointing;

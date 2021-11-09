@@ -6,6 +6,13 @@ import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
 import { createTheme } from "@material-ui/core/styles";
 
+jest.mock("../utils/buildUrl", () => {
+	const modExport = {};
+	modExport.loadConfig = () => Promise.resolve({});
+	modExport.buildUrl = () => "URL";
+	return modExport;
+});
+
 const fakeStore = {
 	subscribe: listener => () => {},
 	dispatch: action => action,
@@ -17,8 +24,35 @@ const fakeStore = {
 			authentication: {
 				name: "foo@bar.com",
 			},
+			scopes: {
+				Global: {
+					name: { en: "Global", fr: "Global" },
+					id: "Global",
+					children: ["MyScope"],
+					currency: {
+						displayName: {
+							en: "Euro",
+							fr: "Euro",
+						},
+					},
+					defaultCulture: "en-US",
+				},
+				MyScope: {
+					name: { en: "First child", fr: "Premier fils" },
+					id: "FirstChild",
+					children: ["ChildScope"],
+					parentScopeId: "Global",
+				},
+				ChildScope: {
+					name: { en: "First grandchild", fr: "Premier petit-fils" },
+					id: "FirstGrandchild",
+					parentScopeId: "MyScope",
+				},
+			},
 			settings: {
 				defaultScope: "myScope",
+				loadedModulesScope: ["moduleA", "moduleB"],
+				modules: ["moduleA", "moduleB"],
 			},
 		}),
 	replaceReducer: () => {},

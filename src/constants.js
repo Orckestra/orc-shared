@@ -23,6 +23,7 @@ export const roleGroups = {
 	Shopping: "Shopping",
 	Search: "Search",
 	Profiles: "Profiles",
+	Locations: "Locations",
 	Orchestrator: "Orchestrator",
 	PriceManagement: "PriceManagement",
 	UserManagement: "UserManagement",
@@ -71,6 +72,20 @@ export const attributeDataType = {
 	lookup: "Lookup",
 	entityReference: "EntityReference",
 	customType: "CustomType",
+};
+
+// It is intended that some of them have a different value of its keys
+export const overtureModule = {
+	System: "System",
+	Products: "Product",
+	Customers: "Customer",
+	Orders: "Order",
+	Marketing: "Marketing",
+	Report: "Reports",
+	Administration: "Administration",
+	UserManagement: "UserManagement",
+	PriceManagement: "PriceManagement",
+	Locations: "Location",
 };
 
 export const definitionType = {

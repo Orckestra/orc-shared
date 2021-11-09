@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { Link } from "react-router-dom";
@@ -124,13 +123,11 @@ const MenuItem = ({
 	alert,
 	pageScopeSelector,
 	closingTabHandler,
-	hide,
+	hide, // This props is not used in the component, but we need to destructure it so props can be used in ItemWrapper
+	isHidden = false,
 	href,
 	...props
 }) => {
-	let hideSelector = state => (typeof hide === "function" ? hide(state) : hide ?? false);
-	const isHidden = useSelector(hideSelector);
-
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;
@@ -139,6 +136,7 @@ const MenuItem = ({
 	if (alert && alert.message) {
 		alertMessage.current = alert.message;
 	}
+
 	return (
 		!isHidden && (
 			<ItemWrapper to={href} {...props}>

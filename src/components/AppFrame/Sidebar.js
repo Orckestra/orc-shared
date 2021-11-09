@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { getThemeProp } from "../../utils";
 import { selectPrependHrefConfig } from "../../selectors/navigation";
 import MenuItem from "./MenuItem";
+import { getScopeModuleInformationSelector } from "../../selectors/modules";
 
 export const Bar = styled.div`
 	box-sizing: border-box;
@@ -40,7 +41,13 @@ const useEnhancement = id => {
 	};
 };
 
-export const EnhancedMenuItem = ({ id, ...props }) => <MenuItem {...props} {...useEnhancement(id)} />;
+export const EnhancedMenuItem = ({ id, ...props }) => {
+	const defaultModule = useSelector(getScopeModuleInformationSelector);
+
+	const isHidden = !defaultModule.visibleModules.includes(id);
+
+	return <MenuItem {...props} {...useEnhancement(id)} isHidden={isHidden} />;
+};
 
 const LogoSvg = styled.svg`
 	flex: 0 0 auto;

@@ -4,8 +4,8 @@ import sinon from "sinon";
 import { TestWrapper } from "../../utils/testUtils";
 import useScopeConfirmationModalState from "./useScopeConfirmationModalState";
 import { mount } from "enzyme";
-import { createMemoryHistory } from "history";
 import { APPLICATION_SCOPE_HAS_CHANGED } from "../../actions/scopes";
+import { SET_NEW_SCOPE_AND_MODULE_NAME } from "../../actions/modules";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -35,13 +35,9 @@ const TestComp = () => {
 };
 
 describe("useScopeConfirmationModalState", () => {
-	let state, store, history;
+	let state, store;
 
 	beforeEach(() => {
-		history = createMemoryHistory({ initialEntries: ["/TestScope/demos?arg=data"] });
-		sinon.spy(history, "push");
-		history.push.named("history.push");
-
 		state = Immutable.fromJS({
 			input: {},
 			locale: {
@@ -170,7 +166,7 @@ describe("useScopeConfirmationModalState", () => {
 
 	it("selecting a new scope without active tabs changes the scope", async () => {
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }}>
+			<TestWrapper provider={{ store }}>
 				<TestComp />
 			</TestWrapper>
 		);
@@ -183,8 +179,18 @@ describe("useScopeConfirmationModalState", () => {
 
 		await new Promise(resolve => setTimeout(resolve, 10));
 
-		expect(history.push, "to have calls satisfying", [{ args: ["/newScope/TheModuleName"] }]);
 		expect(store.dispatch, "to have calls satisfying", [
+			{
+				args: [
+					{
+						type: SET_NEW_SCOPE_AND_MODULE_NAME,
+						payload: {
+							scope: "newScope",
+							moduleName: "TheModuleName",
+						},
+					},
+				],
+			},
 			{
 				args: [
 					{
@@ -227,7 +233,7 @@ describe("useScopeConfirmationModalState", () => {
 		openTabs();
 
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }}>
+			<TestWrapper provider={{ store }}>
 				<TestComp />
 			</TestWrapper>
 		);
@@ -248,8 +254,18 @@ describe("useScopeConfirmationModalState", () => {
 		isModalOpened = mountedComponent.find("#isModalOpened").text();
 		expect(isModalOpened, "to equal", "false");
 
-		expect(history.push, "to have calls satisfying", [{ args: ["/newScope/TheModuleName"] }]);
 		expect(store.dispatch, "to have calls satisfying", [
+			{
+				args: [
+					{
+						type: SET_NEW_SCOPE_AND_MODULE_NAME,
+						payload: {
+							scope: "newScope",
+							moduleName: "TheModuleName",
+						},
+					},
+				],
+			},
 			{
 				args: [
 					{
@@ -281,7 +297,7 @@ describe("useScopeConfirmationModalState", () => {
 		openTabs();
 
 		const component = (
-			<TestWrapper provider={{ store }} router={{ history }}>
+			<TestWrapper provider={{ store }}>
 				<TestComp />
 			</TestWrapper>
 		);
@@ -309,9 +325,19 @@ describe("useScopeConfirmationModalState", () => {
 			{ args: [null, true] },
 		]);
 
-		expect(history.push, "to have calls satisfying", [{ args: ["/newScope/TheModuleName"] }]);
-		expect(store.dispatch.callCount, "to be", 1);
+		expect(store.dispatch.callCount, "to be", 2);
 		expect(store.dispatch, "to have calls satisfying", [
+			{
+				args: [
+					{
+						type: SET_NEW_SCOPE_AND_MODULE_NAME,
+						payload: {
+							scope: "newScope",
+							moduleName: "TheModuleName",
+						},
+					},
+				],
+			},
 			{
 				args: [
 					{

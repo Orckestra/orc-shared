@@ -6,8 +6,7 @@ import { applicationScopeHasChanged } from "../../actions/scopes";
 import useScopeData from "./useScopeData";
 import { hasUnsavedDataSelector } from "../../selectors/view";
 import { scopeConfirmationDialogTypes } from "../../constants";
-import { useHistory } from "react-router-dom";
-import UrlPattern from "url-pattern";
+import { setNewScopeAndModuleName } from "../../actions/modules";
 
 const ExecuteClosingTabHandlerActions = async closingTabHandlerActions => {
 	if (closingTabHandlerActions.length <= 0) return Promise.resolve();
@@ -19,23 +18,13 @@ const ExecuteClosingTabHandlerActions = async closingTabHandlerActions => {
 
 const useApplicationScopeChanger = closingTabHandlerActions => {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const moduleName = useSelectorAndUnwrap(selectCurrentModuleName);
 
 	return (previousScope, newScope) => {
-		const params = {
-			scope: newScope,
-		};
-
-		// did not find a more reliable way to get the URL for the first tab of the module
-		const pattern = new UrlPattern(`/:scope/${moduleName}`);
-		const href = pattern.stringify(params);
-
-		history.push(href);
-
-		ExecuteClosingTabHandlerActions(closingTabHandlerActions).then(() =>
-			dispatch(applicationScopeHasChanged(previousScope, newScope)),
-		);
+		ExecuteClosingTabHandlerActions(closingTabHandlerActions).then(() => {
+			dispatch(setNewScopeAndModuleName(newScope, moduleName));
+			dispatch(applicationScopeHasChanged(previousScope, newScope));
+		});
 	};
 };
 
