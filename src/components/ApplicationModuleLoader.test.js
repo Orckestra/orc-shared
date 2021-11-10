@@ -2,9 +2,13 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import Authenticate, { Loader } from "./Authenticate";
+import { Loader } from "./Authenticate";
 import ApplicationModuleLoader from "./ApplicationModuleLoader";
-import { overtureModule } from "../constants";
+import { mount } from "enzyme";
+import { getDefaultScope, getScopes } from "../actions/scopes";
+import sinon from "sinon";
+import { initializeFirstModuleScope } from "../actions/modules";
+import { scopeTypes } from "../constants";
 
 const TestComp = () => {
 	return <div className="test" />;
@@ -13,7 +17,7 @@ const TestComp = () => {
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
 	modExport.loadConfig = () => Promise.resolve({});
-	modExport.buildUrl = () => "URL";
+	modExport.buildUrl = (path = [], params = "") => "URL: " + path.join("/") + " " + JSON.stringify(params);
 	return modExport;
 });
 
@@ -42,7 +46,7 @@ describe("ApplicationModuleLoader", () => {
 		store = state => ({
 			subscribe: () => {},
 			getState: () => state,
-			dispatch: () => {},
+			dispatch: sinon.spy().named("dispatch"),
 		});
 	});
 
@@ -58,28 +62,14 @@ describe("ApplicationModuleLoader", () => {
 			<TestComp />,
 		));
 
-	it("shows the component when System is part of the application modules", () => {
-		state = state.setIn(["settings", "modules"], Immutable.fromJS(["moduleA", overtureModule.System]));
-		expect(
-			<Provider store={store(state)}>
-				<ApplicationModuleLoader>
-					<TestComp />
-				</ApplicationModuleLoader>
-			</Provider>,
-			"when mounted",
-			"to exhaustively satisfy",
-			<TestComp />,
-		);
-	});
-
 	it("shows a load indicator component when default scope is still unknown", () => {
 		state = state.setIn(["settings", "defaultScope"], null);
 		return expect(
 			<Provider store={store(state)}>
 				<ThemeProvider theme={{}}>
-					<Authenticate>
+					<ApplicationModuleLoader>
 						<TestComp />
-					</Authenticate>
+					</ApplicationModuleLoader>
 				</ThemeProvider>
 			</Provider>,
 			"when mounted",
@@ -95,9 +85,9 @@ describe("ApplicationModuleLoader", () => {
 		return expect(
 			<Provider store={store(state)}>
 				<ThemeProvider theme={{}}>
-					<Authenticate>
+					<ApplicationModuleLoader>
 						<TestComp />
-					</Authenticate>
+					</ApplicationModuleLoader>
 				</ThemeProvider>
 			</Provider>,
 			"when mounted",
@@ -106,5 +96,54 @@ describe("ApplicationModuleLoader", () => {
 				<Loader />
 			</ThemeProvider>,
 		);
+	});
+
+	it("scopes tree and default scope should be loaded when rendering the component", () => {
+		const theStore = store(state);
+
+		const component = (
+			<Provider store={theStore}>
+				<ThemeProvider theme={{}}>
+					<ApplicationModuleLoader>
+						<TestComp />
+					</ApplicationModuleLoader>
+				</ThemeProvider>
+			</Provider>
+		);
+
+		mount(component);
+
+		expect(theStore.dispatch, "to have calls satisfying", [
+			{ args: [getDefaultScope("moduleA")] },
+			{ args: [getScopes("moduleA")] },
+			{ args: [getDefaultScope("moduleB")] },
+			{ args: [getScopes("moduleB")] },
+		]);
+	});
+
+	it("First module scope should be initialized when System is part application modules", () => {
+		state = state.setIn(["settings", "modules"], Immutable.fromJS(["moduleA", "System"]));
+
+		const theStore = store(state);
+
+		const component = (
+			<Provider store={theStore}>
+				<ThemeProvider theme={{}}>
+					<ApplicationModuleLoader>
+						<TestComp />
+					</ApplicationModuleLoader>
+				</ThemeProvider>
+			</Provider>
+		);
+
+		mount(component);
+
+		expect(theStore.dispatch, "to have calls satisfying", [
+			{ args: [initializeFirstModuleScope(scopeTypes.global)] },
+			{ args: [getDefaultScope("moduleA")] },
+			{ args: [getScopes("moduleA")] },
+			{ args: [getDefaultScope("System")] },
+			{ args: [getScopes("System")] },
+		]);
 	});
 });

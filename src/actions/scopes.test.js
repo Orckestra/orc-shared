@@ -73,11 +73,49 @@ describe("getScopes", () => {
 			},
 		}));
 
+	it("creates a RSAA to fetch authorized scope tree for system module", () =>
+		expect(getScopes, "when called with", ["System"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: "GET_SCOPES_REQUEST", meta: { module: "System" } },
+					{ type: "GET_SCOPES_SUCCESS", meta: { module: "System" } },
+					{ type: "GET_SCOPES_FAILURE", meta: { module: "System" } },
+				],
+				endpoint: "URL: my/scope/Order/tree {}",
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: false,
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
 	it("creates a RSAA to fetch default user scope", () =>
 		expect(getDefaultScope, "when called with", ["aModule"], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [GET_MY_SCOPE_REQUEST, GET_MY_SCOPE_SUCCESS, GET_MY_SCOPE_FAILURE],
 				endpoint: 'URL: my/scope/aModule ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: false,
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("creates a RSAA to fetch default user scope for System module", () =>
+		expect(getDefaultScope, "when called with", ["System"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [GET_MY_SCOPE_REQUEST, GET_MY_SCOPE_SUCCESS, GET_MY_SCOPE_FAILURE],
+				endpoint: 'URL: my/scope/Order ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",
