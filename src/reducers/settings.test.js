@@ -1,7 +1,12 @@
 import Immutable from "immutable";
 import reducer from "./settings";
 import { GET_MY_APPLICATION_SUCCESS, SET_MY_APPLICATION_SUCCESS } from "../actions/applications";
-import { GET_APPLICATION_MODULES_SUCCESS, GET_MY_SCOPE_SUCCESS, GET_SCOPES_SUCCESS } from "../actions/scopes";
+import {
+	GET_APPLICATION_MODULES_SUCCESS,
+	GET_MY_SCOPE_SUCCESS,
+	GET_SCOPES_FAILURE,
+	GET_SCOPES_SUCCESS,
+} from "../actions/scopes";
 
 describe("settings", () => {
 	const initialState = Immutable.fromJS({
@@ -83,7 +88,7 @@ describe("settings", () => {
 		});
 	});
 
-	it("stores modules for the application", () => {
+	it("stores module as loaded when it is a success", () => {
 		const oldState = Immutable.fromJS({
 			loadedModulesScope: [],
 		});
@@ -95,5 +100,37 @@ describe("settings", () => {
 		expect(newState, "not to be", oldState).and("to satisfy", {
 			loadedModulesScope: ["Order"],
 		});
+	});
+
+	it("stores module as loaded when it is a failure with status 500", () => {
+		const oldState = Immutable.fromJS({
+			loadedModulesScope: [],
+		});
+		const action = {
+			type: GET_SCOPES_FAILURE,
+			payload: {
+				status: 500,
+			},
+			meta: { module: "Order" },
+		};
+		const newState = reducer(oldState, action);
+		expect(newState, "not to be", oldState).and("to satisfy", {
+			loadedModulesScope: ["Order"],
+		});
+	});
+
+	it("does not store module as loaded when it is a failure with other errors", () => {
+		const oldState = Immutable.fromJS({
+			loadedModulesScope: [],
+		});
+		const action = {
+			type: GET_SCOPES_FAILURE,
+			payload: {
+				status: 404,
+			},
+			meta: { module: "Order" },
+		};
+		const newState = reducer(oldState, action);
+		expect(newState, "to be", oldState);
 	});
 });

@@ -23,14 +23,14 @@ const ApplicationModuleLoader = ({ children }) => {
 		if (applicationModules.length > 0 && scopesLoaded === false) {
 			if (applicationModules.includes(overtureModule.System)) {
 				dispatch(initializeFirstModuleScope(scopeTypes.global));
-			} else {
-				applicationModules.forEach(x => {
-					// For the default scope, the latest that will be returned will be the chosen one
-					dispatch(getDefaultScope(x));
-					// For scopes, they need to be merged
-					dispatch(getScopes(x));
-				});
 			}
+
+			applicationModules.forEach(x => {
+				// For the default scope, the latest that will be returned will be the chosen one
+				dispatch(getDefaultScope(x));
+				// For scopes, they need to be merged
+				dispatch(getScopes(x));
+			});
 
 			setScopesLoaded(true);
 		}
@@ -40,8 +40,7 @@ const ApplicationModuleLoader = ({ children }) => {
 		applicationModules.length > 0 &&
 		applicationModules.reduce((prev, current) => prev && loadedModules.includes(current), true);
 
-	const applicationModuleReady =
-		(scopeLoadedFromAllModules && defaultScope != null) || applicationModules.includes(overtureModule.System);
+	const applicationModuleReady = scopeLoadedFromAllModules && defaultScope != null;
 
 	if (!applicationModuleReady) {
 		return <Loader />;
