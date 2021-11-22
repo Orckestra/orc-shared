@@ -158,6 +158,11 @@ const setThemeOverrides = theme => ({
 			},
 		},
 	},
+	MuiLink: {
+		root: {
+			fontSize: theme.spacing(1.3),
+		},
+	},
 	MuiButton: {
 		...theme.MuiButton,
 		root: {
