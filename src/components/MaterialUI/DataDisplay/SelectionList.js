@@ -54,7 +54,7 @@ const formatOnChange = (data, ids) => {
 	const selectedItems = data.filter(dataItem => ids.includes(dataItem.id));
 
 	return {
-		left: [...selectedItems],
+		selectedItems: [...selectedItems],
 	};
 };
 
