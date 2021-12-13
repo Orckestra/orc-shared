@@ -179,7 +179,7 @@ describe("SelectionList", () => {
 		let item = mountedComponent.find(ListItem).at(0);
 		item.invoke("onClick")();
 
-		expect(onChange.args[2][0], "to equal", { left: [list[0]] });
+		expect(onChange.args[2][0], "to equal", { selectedItems: [list[0]] });
 	});
 
 	it("Calls onChange with defaultSelection", () => {
@@ -196,7 +196,7 @@ describe("SelectionList", () => {
 
 		mount(component);
 
-		expect(onChange.args[1][0], "to equal", { left: [data[1]] });
+		expect(onChange.args[1][0], "to equal", { selectedItems: [data[1]] });
 	});
 
 	it("handle scrolling event", () => {
