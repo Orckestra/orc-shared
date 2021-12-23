@@ -184,6 +184,24 @@ describe("setTranslationWithFallbackValue", () => {
 			}),
 		));
 
+	it("returns first not empty value matched by language when match by language-culture does not exist", () =>
+		expect(
+			setTranslationWithFallbackValue,
+			"when called with",
+			[
+				"en-US",
+				Immutable.fromJS({
+					hat: { name: { "en-GB": "", "en-CA": "en-CA Name" } },
+				}),
+				"fallbakValue",
+				["hat", "name"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: "en-CA Name" },
+			}),
+		));
+
 	it("returns value fallback value  when match by language-culture and language does not exist", () =>
 		expect(
 			setTranslationWithFallbackValue,
