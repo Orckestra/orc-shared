@@ -157,7 +157,8 @@ const definitionEntityAttributes = memoize((moduleName, entityName) =>
 	),
 );
 
-const filterIsBuiltInAttributes = isBuiltIn => attributes => attributes.filter(a => a.get("isBuiltIn") === isBuiltIn);
+const filterIsBuiltInAttributes = isBuiltIn => attributes =>
+	attributes.filter(a => a.get("isBuiltIn") === isBuiltIn).sortBy(x => x.get("displayOrder"));
 
 export const definitionEntityCustomAttributesSelector = memoize((moduleName, entityName) =>
 	createSelector(definitionEntityAttributes(moduleName, entityName), filterIsBuiltInAttributes(false)),
@@ -204,11 +205,15 @@ export const groupedCustomAttributesDefinitionSelector = memoize((moduleName, en
 					})
 						.set(
 							"baseAttributes",
-							group.filter(i => i.get("dataType") !== attributeDataType.entityReference),
+							group
+								.filter(i => i.get("dataType") !== attributeDataType.entityReference)
+								.sortBy(x => x.get("displayOrder")),
 						)
 						.set(
 							"profileAttributes",
-							group.filter(i => i.get("dataType") === attributeDataType.entityReference),
+							group
+								.filter(i => i.get("dataType") === attributeDataType.entityReference)
+								.sortBy(x => x.get("displayOrder")),
 						);
 				})
 				.sortBy(x => x.get("displayOrder")),
@@ -220,8 +225,12 @@ export const customAttributesDefinitionSelector = memoize((moduleName, profileEn
 		mappedDefinitionEntity(moduleName, profileEntityName),
 		customAttributesSelector(moduleName, profileEntityName),
 		(definition, attributes) => {
-			const profileAttributes = attributes?.filter(a => a.get("dataType") === attributeDataType.entityReference);
-			const baseAttributes = attributes?.filter(a => a.get("dataType") !== attributeDataType.entityReference);
+			const profileAttributes = attributes
+				?.filter(a => a.get("dataType") === attributeDataType.entityReference)
+				.sortBy(x => x.get("displayOrder"));
+			const baseAttributes = attributes
+				?.filter(a => a.get("dataType") !== attributeDataType.entityReference)
+				.sortBy(x => x.get("displayOrder"));
 			return definition.set("baseAttributes", baseAttributes).set("profileAttributes", profileAttributes);
 		},
 	),

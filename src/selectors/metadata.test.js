@@ -848,6 +848,143 @@ describe("definitions", () => {
 		description: "InnaCustom2",
 	};
 
+	let baseBuitInAttribute1 = {
+		maximum: 256,
+		dataType: "Text",
+		isRequired: false,
+		name: "Username",
+		displayOrder: 1,
+		isSearchable: true,
+		displayName: {
+			"en-CA": "User name",
+			"en-US": "User name",
+			"fr-CA": "User name",
+		},
+		minimum: 1,
+		multilingual: false,
+		isBuiltIn: true,
+		groupId: "Default",
+		allowMultipleValues: false,
+	};
+
+	let baseBuitInAttribute2 = {
+		maximum: 256,
+		dataType: "Text",
+		isRequired: false,
+		name: "Email",
+		displayOrder: 2,
+		isSearchable: true,
+		displayName: {
+			"en-CA": "Email",
+			"en-US": "Email",
+			"fr-CA": "Email",
+		},
+		minimum: 0,
+		multilingual: false,
+		isBuiltIn: true,
+		groupId: "Default",
+		allowMultipleValues: false,
+	};
+
+	let baseBuitInAttribute3 = {
+		maximum: 64,
+		dataType: "Text",
+		isRequired: false,
+		name: "LastName",
+		displayOrder: 3,
+		isSearchable: true,
+		displayName: {
+			"en-CA": "Last name",
+			"en-US": "Last name",
+			"fr-CA": "Last name",
+			"it-IT": "Cognome",
+		},
+		minimum: 0,
+		multilingual: false,
+		isBuiltIn: true,
+		groupId: "Default",
+		allowMultipleValues: false,
+	};
+
+	let baseBuitInAttribute4 = {
+		maximum: 64,
+		dataType: "Text",
+		isRequired: false,
+		name: "FirstName",
+		displayOrder: 4,
+		isSearchable: true,
+		displayName: {
+			"ar-JO": "",
+			"en-CA": "First Name",
+			"en-US": "First Name",
+			"es-ES": "",
+			"fr-CA": "First Name",
+			"it-IT": "Nome",
+		},
+		minimum: 0,
+		multilingual: false,
+		isBuiltIn: true,
+		groupId: "Default",
+		allowMultipleValues: false,
+	};
+
+	let baseCustomAttribute1 = {
+		maximum: 64,
+		dataType: "Text",
+		isRequired: false,
+		name: "BaseAttribute1",
+		displayOrder: 1,
+		isSearchable: true,
+		displayName: {
+			"en-CA": "Base Attribute1",
+			"en-US": "Base Attribute1",
+			"fr-CA": "Base Attribute1",
+		},
+		minimum: 0,
+		multilingual: false,
+		isBuiltIn: false,
+		groupId: "Default",
+		allowMultipleValues: false,
+	};
+
+	let baseCustomAttribute2 = {
+		maximum: 64,
+		dataType: "Text",
+		isRequired: false,
+		name: "BaseAttribute2",
+		displayOrder: 2,
+		isSearchable: true,
+		displayName: {
+			"en-CA": "Base Attribute 2",
+			"en-US": "Base Attribute 2",
+			"fr-CA": "Base Attribute 2",
+		},
+		minimum: 0,
+		multilingual: false,
+		isBuiltIn: false,
+		groupId: "Default",
+		allowMultipleValues: false,
+	};
+
+	let baseCustomAttribute3 = {
+		maximum: 64,
+		dataType: "Text",
+		isRequired: false,
+		name: "BaseAttribute3",
+		displayOrder: 3,
+		isSearchable: true,
+		displayName: {
+			"en-CA": "Base Attribute 3",
+			"en-US": "Base Attribute 3",
+			"fr-CA": "Base Attribute 3",
+		},
+		minimum: 0,
+		multilingual: false,
+		isBuiltIn: false,
+		groupId: "Default",
+		allowMultipleValues: false,
+	};
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
@@ -978,90 +1115,15 @@ describe("definitions", () => {
 							entityTypeName: "CUSTOMER",
 							isBuiltIn: true,
 							attributes: [
-								{
-									maximum: 256,
-									dataType: "Text",
-									isRequired: false,
-									name: "Username",
-									displayOrder: 0,
-									isSearchable: true,
-									displayName: {
-										"ar-JO": "",
-										"en-CA": "User name",
-										"en-US": "User name",
-										"es-ES": "",
-										"fr-CA": "User name",
-										"it-IT": "Nome utente",
-									},
-									minimum: 1,
-									multilingual: false,
-									isBuiltIn: true,
-									groupId: "Default",
-									allowMultipleValues: false,
-								},
-								{
-									maximum: 256,
-									dataType: "Text",
-									isRequired: false,
-									name: "Email",
-									displayOrder: 0,
-									isSearchable: true,
-									displayName: {
-										"ar-JO": "",
-										"en-CA": "Email",
-										"en-US": "Email",
-										"es-ES": "",
-										"fr-CA": "Email",
-										"it-IT": "Email",
-									},
-									minimum: 0,
-									multilingual: false,
-									isBuiltIn: true,
-									groupId: "Default",
-									allowMultipleValues: false,
-								},
+								baseBuitInAttribute1,
+								baseBuitInAttribute2,
 								customProfileAttribute1,
 								customProfileAttribute2,
-								{
-									maximum: 64,
-									dataType: "Text",
-									isRequired: false,
-									name: "LastName",
-									displayOrder: 0,
-									isSearchable: true,
-									displayName: {
-										"en-CA": "Last name",
-										"en-US": "Last name",
-										"fr-CA": "Last name",
-										"it-IT": "Cognome",
-									},
-									minimum: 0,
-									multilingual: false,
-									isBuiltIn: true,
-									groupId: "Default",
-									allowMultipleValues: false,
-								},
-								{
-									maximum: 64,
-									dataType: "Text",
-									isRequired: false,
-									name: "FirstName",
-									displayOrder: 0,
-									isSearchable: true,
-									displayName: {
-										"ar-JO": "",
-										"en-CA": "First Name",
-										"en-US": "First Name",
-										"es-ES": "",
-										"fr-CA": "First Name",
-										"it-IT": "Nome",
-									},
-									minimum: 0,
-									multilingual: false,
-									isBuiltIn: true,
-									groupId: "Default",
-									allowMultipleValues: false,
-								},
+								baseBuitInAttribute4,
+								baseBuitInAttribute3,
+								baseCustomAttribute1,
+								baseCustomAttribute3,
+								baseCustomAttribute2,
 							],
 							isSharedEntity: true,
 						},
@@ -1359,7 +1421,7 @@ describe("definitions", () => {
 			{},
 		));
 
-	it("will return correct custom profile attributes definition", () => {
+	it("will return correct custom profile attributes definition in correct order", () => {
 		const expectedGroup1 = customProfileAttribute1.groupId;
 		const expectedGroup2 = customProfileAttribute2.groupId;
 		const expectedItem1 = {
@@ -1371,11 +1433,26 @@ describe("definitions", () => {
 			...{ displayName: customProfileAttribute2.displayName["en-US"] },
 		};
 
+		const expectedBaseCustomWithOrder1 = {
+			...baseCustomAttribute1,
+			...{ displayName: baseCustomAttribute1.displayName["en-US"] },
+		};
+
+		const expectedBaseCustomWithOrder2 = {
+			...baseCustomAttribute2,
+			...{ displayName: baseCustomAttribute2.displayName["en-US"] },
+		};
+
+		const expectedBaseCustomWithOrder3 = {
+			...baseCustomAttribute3,
+			...{ displayName: baseCustomAttribute3.displayName["en-US"] },
+		};
+
 		const expected = Immutable.fromJS({
 			[expectedGroup1]: {
 				id: expectedGroup1,
 				name: "Default en-US",
-				baseAttributes: [],
+				baseAttributes: [expectedBaseCustomWithOrder1, expectedBaseCustomWithOrder2, expectedBaseCustomWithOrder3],
 				profileAttributes: [expectedItem1],
 			},
 			[expectedGroup2]: {
@@ -1397,90 +1474,12 @@ describe("definitions", () => {
 		);
 	});
 
-	it("will return correct full base customer definition attributes", () => {
+	it("will return correct full base (built in) customer definition attributes", () => {
 		const expected = Immutable.fromJS([
-			{
-				maximum: 256,
-				dataType: "Text",
-				isRequired: false,
-				name: "Username",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: {
-					"ar-JO": "",
-					"en-CA": "User name",
-					"en-US": "User name",
-					"es-ES": "",
-					"fr-CA": "User name",
-					"it-IT": "Nome utente",
-				},
-				minimum: 1,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
-			{
-				maximum: 256,
-				dataType: "Text",
-				isRequired: false,
-				name: "Email",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: {
-					"ar-JO": "",
-					"en-CA": "Email",
-					"en-US": "Email",
-					"es-ES": "",
-					"fr-CA": "Email",
-					"it-IT": "Email",
-				},
-				minimum: 0,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
-			{
-				maximum: 64,
-				dataType: "Text",
-				isRequired: false,
-				name: "LastName",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: {
-					"en-CA": "Last name",
-					"en-US": "Last name",
-					"fr-CA": "Last name",
-					"it-IT": "Cognome",
-				},
-				minimum: 0,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
-			{
-				maximum: 64,
-				dataType: "Text",
-				isRequired: false,
-				name: "FirstName",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: {
-					"ar-JO": "",
-					"en-CA": "First Name",
-					"en-US": "First Name",
-					"es-ES": "",
-					"fr-CA": "First Name",
-					"it-IT": "Nome",
-				},
-				minimum: 0,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
+			baseBuitInAttribute1,
+			baseBuitInAttribute2,
+			baseBuitInAttribute3,
+			baseBuitInAttribute4,
 		]);
 		expect(
 			definitionEntityBaseAttributesSelector,
@@ -1495,34 +1494,11 @@ describe("definitions", () => {
 
 	it("will return correct full custom customer definition attributes", () => {
 		const expected = Immutable.fromJS([
-			{
-				dataType: "EntityReference",
-				isRequired: false,
-				name: "InnaCustom1",
-				displayOrder: 0,
-				isSearchable: false,
-				displayName: { "en-CA": "attribute en-CA", "en-US": "attribute en-US", "fr-CA": "" },
-				referenceTypeName: "CustomProfile1",
-				multilingual: false,
-				isBuiltIn: false,
-				groupId: "Default",
-				allowMultipleValues: true,
-				description: "InnaCustomer",
-			},
-			{
-				dataType: "EntityReference",
-				isRequired: false,
-				name: "InnaCustom2",
-				displayOrder: 0,
-				isSearchable: false,
-				displayName: { "en-CA": "attribute en-CA", "en-US": "attribute en-UA", "fr-CA": "" },
-				referenceTypeName: "CustomProfile2",
-				multilingual: false,
-				isBuiltIn: false,
-				groupId: "CustomGroup",
-				allowMultipleValues: true,
-				description: "InnaCustom2",
-			},
+			customProfileAttribute1,
+			customProfileAttribute2,
+			baseCustomAttribute1,
+			baseCustomAttribute2,
+			baseCustomAttribute3,
 		]);
 		expect(
 			definitionEntityCustomAttributesSelector,
@@ -1535,64 +1511,30 @@ describe("definitions", () => {
 		);
 	});
 
-	it("will return correct customer attributes", () => {
+	it("will return correct customer base (build in) attributes in correct order", () => {
+		const locale = "en-US";
+		const expectedBaseBuitInAttribute1 = {
+			...baseBuitInAttribute1,
+			...{ displayName: baseBuitInAttribute1.displayName[locale] },
+		};
+		const expectedBaseBuitInAttribute2 = {
+			...baseBuitInAttribute2,
+			...{ displayName: baseBuitInAttribute2.displayName[locale] },
+		};
+		const expectedBaseBuitInAttribute3 = {
+			...baseBuitInAttribute3,
+			...{ displayName: baseBuitInAttribute3.displayName[locale] },
+		};
+		const expectedBaseBuitInAttribute4 = {
+			...baseBuitInAttribute4,
+			...{ displayName: baseBuitInAttribute4.displayName[locale] },
+		};
+
 		const expected = Immutable.fromJS([
-			{
-				maximum: 256,
-				dataType: "Text",
-				isRequired: false,
-				name: "Username",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: "User name",
-				minimum: 1,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
-			{
-				maximum: 256,
-				dataType: "Text",
-				isRequired: false,
-				name: "Email",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: "Email",
-				minimum: 0,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
-			{
-				maximum: 64,
-				dataType: "Text",
-				isRequired: false,
-				name: "LastName",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: "Last name",
-				minimum: 0,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
-			{
-				maximum: 64,
-				dataType: "Text",
-				isRequired: false,
-				name: "FirstName",
-				displayOrder: 0,
-				isSearchable: true,
-				displayName: "First Name",
-				minimum: 0,
-				multilingual: false,
-				isBuiltIn: true,
-				groupId: "Default",
-				allowMultipleValues: false,
-			},
+			expectedBaseBuitInAttribute1,
+			expectedBaseBuitInAttribute2,
+			expectedBaseBuitInAttribute3,
+			expectedBaseBuitInAttribute4,
 		]);
 		expect(
 			baseAttributesSelector,
@@ -1606,41 +1548,37 @@ describe("definitions", () => {
 	});
 
 	it("will return correct customer attributes definition", () => {
+		const locale = "en-US";
+		const expectedProfileAttribute1 = {
+			...customProfileAttribute1,
+			...{ displayName: customProfileAttribute1.displayName[locale] },
+		};
+		const expectedProfileAttribute2 = {
+			...customProfileAttribute2,
+			...{ displayName: customProfileAttribute2.displayName[locale] },
+		};
+
+		const expectedBase1 = {
+			...baseCustomAttribute1,
+			...{ displayName: baseCustomAttribute1.displayName[locale] },
+		};
+
+		const expectedBase2 = {
+			...baseCustomAttribute2,
+			...{ displayName: baseCustomAttribute2.displayName[locale] },
+		};
+
+		const expectedBase3 = {
+			...baseCustomAttribute3,
+			...{ displayName: baseCustomAttribute3.displayName[locale] },
+		};
+
 		const expected = Immutable.fromJS({
 			displayName: "Customer",
 			entityTypeName: "CUSTOMER",
 			isBuiltIn: true,
-			baseAttributes: [],
-			profileAttributes: [
-				{
-					dataType: "EntityReference",
-					isRequired: false,
-					name: "InnaCustom1",
-					displayOrder: 0,
-					isSearchable: false,
-					displayName: "attribute en-US",
-					referenceTypeName: "CustomProfile1",
-					multilingual: false,
-					isBuiltIn: false,
-					groupId: "Default",
-					allowMultipleValues: true,
-					description: "InnaCustomer",
-				},
-				{
-					dataType: "EntityReference",
-					isRequired: false,
-					name: "InnaCustom2",
-					displayOrder: 0,
-					isSearchable: false,
-					displayName: "attribute en-UA",
-					referenceTypeName: "CustomProfile2",
-					multilingual: false,
-					isBuiltIn: false,
-					groupId: "CustomGroup",
-					allowMultipleValues: true,
-					description: "InnaCustom2",
-				},
-			],
+			baseAttributes: [expectedBase1, expectedBase2, expectedBase3],
+			profileAttributes: [expectedProfileAttribute1, expectedProfileAttribute2],
 			isSharedEntity: true,
 		});
 		expect(
