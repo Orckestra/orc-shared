@@ -46,8 +46,10 @@ export const namedLookupSelector = memoize((moduleName, lookupName) =>
 );
 
 export const namedLookupValuesSelector = memoize((moduleName, lookupName) =>
-	createSelector(namedLookupSelector(moduleName, lookupName), currentLocaleOrDefault, (statuses, locale) =>
-		(statuses.get("values") || Immutable.Map()).map(status => setTranslation(locale, status, "displayName")),
+	createSelector(namedLookupSelector(moduleName, lookupName), currentLocaleOrDefault, (lookup, locale) =>
+		(lookup.get("values") || Immutable.Map()).map(lookupValue =>
+			setTranslationWithFallbackField(locale, lookupValue, "name", "displayName"),
+		),
 	),
 );
 
