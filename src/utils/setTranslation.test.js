@@ -96,4 +96,28 @@ describe("setTranslation", () => {
 				hat: { name: "it-name" },
 			}),
 		));
+
+	it("returns first not empty match by language if language-culture not found", () =>
+		expect(
+			setTranslation,
+			"when called with",
+			[
+				"en-US",
+				Immutable.fromJS({
+					hat: {
+						name: {
+							"en-CA": "",
+							"fr-CA": "fr CA name",
+							"en-GB": "en GB name",
+							"it-IT": "it-name",
+						},
+					},
+				}),
+				["hat", "name"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: "en GB name" },
+			}),
+		));
 });
