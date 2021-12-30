@@ -13,7 +13,7 @@ import { getLocalization } from "../utils/localizationHelper";
 
 const scopeData = state => state.get("scopes");
 
-const localizedScopesSelector = createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) =>
+export const localizedScopesSelector = createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) =>
 	scopes.map(scope =>
 		scope.withMutations(s => {
 			setTranslationWithFallbackField(locale, s, "id", "name");

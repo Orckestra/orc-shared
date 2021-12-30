@@ -147,4 +147,112 @@ describe("setTranslationWithFallbackValue", () => {
 			"to equal",
 			null,
 		));
+
+	it("returns value matched by language-culture when exist", () =>
+		expect(
+			setTranslationWithFallbackValue,
+			"when called with",
+			[
+				"en-US",
+				Immutable.fromJS({
+					hat: { name: { "en-US": "en-US Name", "en-GB": "en-GB Name" } },
+				}),
+				"fallbakValue",
+				["hat", "name"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: "en-US Name" },
+			}),
+		));
+
+	it("returns value matched by language when match by language-culture does not exist", () =>
+		expect(
+			setTranslationWithFallbackValue,
+			"when called with",
+			[
+				"en-US",
+				Immutable.fromJS({
+					hat: { name: { "en-GB": "en-GB Name" } },
+				}),
+				"fallbakValue",
+				["hat", "name"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: "en-GB Name" },
+			}),
+		));
+
+	it("returns first not empty value matched by language when match by language-culture does not exist", () =>
+		expect(
+			setTranslationWithFallbackValue,
+			"when called with",
+			[
+				"en-US",
+				Immutable.fromJS({
+					hat: { name: { "en-GB": "", "en-CA": "en-CA Name" } },
+				}),
+				"fallbakValue",
+				["hat", "name"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: "en-CA Name" },
+			}),
+		));
+
+	it("returns value fallback value  when match by language-culture and language does not exist", () =>
+		expect(
+			setTranslationWithFallbackValue,
+			"when called with",
+			[
+				"en-GB",
+				Immutable.fromJS({
+					hat: { name: { "fr-CA": "fr-CA Name" } },
+				}),
+				"fallbakValue",
+				["hat", "name"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: "fallbakValue" },
+			}),
+		));
+
+	it("returns fallbak Value when field value is empty ", () =>
+		expect(
+			setTranslationWithFallbackValue,
+			"when called with",
+			[
+				"en-GB",
+				Immutable.fromJS({
+					hat: { name: {} },
+				}),
+				"fallbakValue",
+				["hat", "name"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: "fallbakValue" },
+			}),
+		));
+
+	it("returns fallbakValue when field is undefined ", () =>
+		expect(
+			setTranslationWithFallbackValue,
+			"when called with",
+			[
+				"en-GB",
+				Immutable.fromJS({
+					hat: { name: {} },
+				}),
+				"fallbakValue",
+				["hat", "name2"],
+			],
+			"to equal",
+			Immutable.fromJS({
+				hat: { name: {}, name2: "fallbakValue" },
+			}),
+		));
 });
