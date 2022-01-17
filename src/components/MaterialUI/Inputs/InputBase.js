@@ -110,7 +110,9 @@ const InputBase = ({ inputProps }) => {
 	const classes = useStyles({ label, errorPosition });
 
 	const onChangeHandler = event => {
-		if (!event.target.value || window.bypassDebounce === true) update(event.target.value, metadata);
+		if (!event.target.value || window.bypassDebounce === true) {
+		    update(event.target.value, metadata);
+		}
 
 		setInputText(event.target.value);
 		event.persist();
