@@ -110,12 +110,32 @@ const InputBase = ({ inputProps }) => {
 	const classes = useStyles({ label, errorPosition });
 
 	const onChangeHandler = event => {
+		if (!event.target.value || window.bypassDebounce === true) update(event.target.value, metadata);
+
+		setInputText(event.target.value);
 		event.persist();
-		update(event.target.value, metadata);
 	};
 
 	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);
 	const errorTextStyle = inputProps?.getStyle(InputBaseProps.ruleNames.errorText);
+
+	const [inputText, setInputText] = React.useState(null);
+
+	let textToDisplay = "";
+	if (type === "number") {
+		textToDisplay = (inputText === null ? value : inputText) ?? "0";
+	} else {
+		textToDisplay = (inputText === null && type === "text" ? value : inputText) ?? "";
+	}
+
+	React.useEffect(() => {
+		if (inputText == null && value) setInputText(value);
+
+		if (inputText !== value && inputText != null && window.bypassDebounce !== true) {
+			const timeOutId = setTimeout(() => update(inputText, metadata), 100);
+			return () => clearTimeout(timeOutId);
+		}
+	}, [inputText, value]);
 
 	return (
 		<div className={classes.container}>
@@ -133,7 +153,7 @@ const InputBase = ({ inputProps }) => {
 					onClick={onClick}
 					type={type}
 					placeholder={placeholder}
-					value={value}
+					value={textToDisplay}
 					fullWidth={true}
 					onChange={event => onChangeHandler(event)}
 					error={!!error}
