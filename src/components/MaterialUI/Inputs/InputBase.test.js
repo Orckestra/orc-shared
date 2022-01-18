@@ -9,11 +9,14 @@ import InputBaseProps from "./InputBaseProps";
 describe("InputBase Component", () => {
 	let update, container;
 	beforeEach(() => {
+		window.bypassDebounce = true;
+
 		container = document.createElement("div");
 		document.body.appendChild(container);
 		update = sinon.spy().named("update");
 	});
 	afterEach(() => {
+		delete window.bypassDebounce;
 		document.body.removeChild(container);
 		container = null;
 	});

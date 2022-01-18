@@ -18,6 +18,8 @@ describe("Translations ", () => {
 	const theme = createMuiTheme();
 
 	beforeEach(() => {
+		window.bypassDebounce = true;
+
 		collapsibleListProps = new CollapsibleListProps();
 		collapsibleListProps.set(CollapsibleListProps.propNames.hasMessage, true);
 		collapsibleListProps.set(
@@ -30,6 +32,10 @@ describe("Translations ", () => {
 		);
 		collapsibleListProps.set(CollapsibleListProps.propNames.expandPosition, "right");
 		collapsibleListProps.set(CollapsibleListProps.propNames.containerWidth, "unset");
+	});
+
+	afterEach(() => {
+		delete window.bypassDebounce;
 	});
 
 	it("Renders Translations  correctly", () => {
@@ -135,7 +141,7 @@ describe("Translations ", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Translations  component handles change", () => {
+	it("Translations component handles change", () => {
 		const aValue = "aValue";
 		const update = sinon.spy().named("update");
 

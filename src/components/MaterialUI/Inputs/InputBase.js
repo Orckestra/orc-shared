@@ -110,12 +110,13 @@ const InputBase = ({ inputProps }) => {
 	const classes = useStyles({ label, errorPosition });
 
 	const onChangeHandler = event => {
+		event.persist();
+
 		if (!event.target.value || window.bypassDebounce === true) {
-		    update(event.target.value, metadata);
+			update(event.target.value, metadata);
 		}
 
 		setInputText(event.target.value);
-		event.persist();
 	};
 
 	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);
@@ -127,16 +128,15 @@ const InputBase = ({ inputProps }) => {
 	if (type === "number") {
 		textToDisplay = (inputText === null ? value : inputText) ?? "0";
 	} else {
-		textToDisplay = (inputText === null && type === "text" ? value : inputText) ?? "";
+		textToDisplay = ((inputText === null || inputText === "") && type === "text" ? value : inputText) ?? "";
 	}
 
 	React.useEffect(() => {
-		if (inputText == null && value) setInputText(value);
-
 		if (inputText !== value && inputText != null && window.bypassDebounce !== true) {
 			const timeOutId = setTimeout(() => update(inputText, metadata), 100);
 			return () => clearTimeout(timeOutId);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [inputText, value]);
 
 	return (
