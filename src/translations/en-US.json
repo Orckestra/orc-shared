@@ -12,7 +12,7 @@
 	"orc-shared.ccVersion": "Commerce Cloud {version}",
 	"orc-shared.close": "Close",
 	"orc-shared.confirmation": "Confirmation",
-	"orc-shared.copyright": "© 2021 Orckestra Technologies Inc.",
+	"orc-shared.copyright": "© {year} Orckestra Technologies Inc.",
 	"orc-shared.copyrightTermsNotice": "This computer program is protected by copyright laws and international treaties. Unauthorized reproduction or redistribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law. Orckestra is a trademark of Orckestra Technologies Inc. All other trademarks are property of the respective owners.",
 	"orc-shared.defaultApp": "Default application",
 	"orc-shared.delete": "Delete",

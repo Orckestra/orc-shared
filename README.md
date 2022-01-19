@@ -10,7 +10,7 @@ This library provides the [infrastructure](docs/infrastructure.md) to construct 
 
 ## License
 
-Copyright &copy; 2018 Orckestra Inc.
+Copyright &copy; 2020 Orckestra Technologies Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
