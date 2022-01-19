@@ -164,7 +164,14 @@ export const About = ({ currentApplication }) => {
 				</AboutLink>
 			</AboutParagraph>
 			<AboutParagraph>
-				<Text message={sharedMessages.copyright} />
+				<Text
+					message={{
+						...sharedMessages.copyright,
+						values: {
+							year: new Date().getFullYear(),
+						},
+					}}
+				/>
 				<br />
 				<Text message={sharedMessages.allRightsReserved} />
 			</AboutParagraph>
