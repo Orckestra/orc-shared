@@ -5,6 +5,7 @@ import InputBaseMUI from "@material-ui/core/InputBase";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import InputBaseProps from "./InputBaseProps";
+import { act } from "unexpected-reaction";
 
 describe("InputBase Component", () => {
 	let update, container;
@@ -244,5 +245,69 @@ describe("InputBase Component", () => {
 		const expected = <InputBaseMUI value={aValue} placeholder={aPlaceholder} autoComplete={"new-password"} />;
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+});
+
+describe("InputBase Component", () => {
+	const clock = sinon.useFakeTimers();
+	let update, container;
+
+	beforeEach(() => {
+		container = document.createElement("div");
+		document.body.appendChild(container);
+		update = sinon.spy().named("update");
+	});
+
+	afterEach(() => {
+		clock.restore();
+	});
+
+	it("InputBase component updates when debounced update", async () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.value, "");
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.simulate("change", { target: { value: aValue } });
+
+		act(() => {
+			clock.tick(200);
+		});
+
+		input.simulate("change", { target: { value: "differentValue" } });
+		expect(update, "to have calls satisfying", [{ args: [aValue, metadata] }]);
+	});
+
+	it("InputBase component update to empty when text to display is null", async () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.value, null);
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.simulate("change", { target: { value: null } });
+		expect(input.get(0).props.value, "to equal", "");
 	});
 });

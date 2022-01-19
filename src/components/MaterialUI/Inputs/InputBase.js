@@ -124,12 +124,7 @@ const InputBase = ({ inputProps }) => {
 
 	const [inputText, setInputText] = React.useState(null);
 
-	let textToDisplay = "";
-	if (type === "number") {
-		textToDisplay = inputText ?? value ?? "0";
-	} else {
-		textToDisplay = inputText ?? value ?? "";
-	}
+	const textToDisplay = inputText ?? value;
 
 	React.useEffect(() => {
 		if (inputText !== value && inputText != null && window.bypassDebounce !== true) {
