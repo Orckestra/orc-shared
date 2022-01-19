@@ -126,9 +126,9 @@ const InputBase = ({ inputProps }) => {
 
 	let textToDisplay = "";
 	if (type === "number") {
-		textToDisplay = (inputText === null ? value : inputText) ?? "0";
+		textToDisplay = inputText ?? value ?? "0";
 	} else {
-		textToDisplay = ((inputText === null || inputText === "") && type === "text" ? value : inputText) ?? "";
+		textToDisplay = inputText ?? value ?? "";
 	}
 
 	React.useEffect(() => {
