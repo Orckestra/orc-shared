@@ -248,7 +248,7 @@ describe("InputBase Component", () => {
 	});
 });
 
-describe("InputBase Component", () => {
+describe("InputBase component debouce", () => {
 	const clock = sinon.useFakeTimers();
 	let update, container;
 
