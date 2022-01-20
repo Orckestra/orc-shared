@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useIntl } from "react-intl";
 import pt from "prop-types";
 import styled, { css } from "styled-components";
@@ -89,6 +89,17 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 		document.title = currentApplication?.displayName || applicationId;
 	}, [currentApplication, applicationId]);
 
+	// Extract only what's needed for the SideBar and its menuItems
+	const menuItemFromModules = useMemo(
+		() =>
+			(modules ?? []).map(item => ({
+				id: item.id,
+				label: item.label,
+				icon: item.icon,
+			})),
+		[modules],
+	);
+
 	const [prefViewState] = useViewState(PREFS_NAME);
 
 	return (
@@ -109,7 +120,7 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 				}}
 				onClick={reset}
 			/>
-			<Sidebar {...{ open, toggle, modules, activeModules }} />
+			<Sidebar {...{ open, toggle, modules: menuItemFromModules, activeModules }} />
 			<ViewPort open={open} onClick={reset}>
 				{noScope && !forceShowScope.includes(moduleName) ? (
 					<React.Fragment>
