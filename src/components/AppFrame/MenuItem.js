@@ -116,7 +116,18 @@ export const Label = styled.span`
 	opacity: ${ifFlag("show", 1, 0)};
 `;
 
-const MenuItem = ({ open = false, label = "", icon, alert, isHidden = false, href, ...props }) => {
+const MenuItem = ({
+	open = false,
+	label = "",
+	icon,
+	alert,
+	pageScopeSelector,
+	closingTabHandler,
+	hide, // This props is not used in the component, but we need to destructure it so props can be used in ItemWrapper
+	isHidden = false,
+	href,
+	...props
+}) => {
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;

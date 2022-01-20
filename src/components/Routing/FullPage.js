@@ -2,16 +2,8 @@ import React from "react";
 import Page from "./Page";
 import SegmentPage from "./SegmentPage";
 
-const FullPage = ({ path, config, location, match, modulePrependPath, isVisible = true }) => {
-	const {
-		component,
-		routerComponent = null,
-		componentProps,
-		pages = {},
-		segments,
-		subpages,
-		entityIdResolver,
-	} = config;
+const FullPage = ({ path, config, location, match, modulePrependPath, isVisible }) => {
+	const { component, componentProps, pages = {}, segments, subpages, entityIdResolver } = config;
 	if (segments) {
 		return (
 			<SegmentPage
@@ -29,12 +21,12 @@ const FullPage = ({ path, config, location, match, modulePrependPath, isVisible 
 	return (
 		<Page
 			path={path}
-			component={component ?? routerComponent}
+			component={component}
 			pages={pages}
 			subpages={subpages}
 			location={location}
 			match={match}
-			isVisible={isVisible === true || routerComponent != null}
+			isVisible={isVisible}
 			modulePrependPath={modulePrependPath}
 		/>
 	);
