@@ -76,3 +76,67 @@ describe("<localizationHelper.getLocalization>", () => {
 		expect(localizationHelper.getLocalization(defaultLocalizations, "it", "fallback"), "to equal", fallbackValue);
 	});
 });
+
+describe("findCorrespondingLocale", () => {
+	const locales = {
+		fr: "FR",
+		enGB: "GB",
+		enNZ: "NZ",
+		"en-in": "IN",
+		enau: "AU",
+		"en-IE": "IE",
+		frCa: "CA",
+	};
+
+	it("findCorrespondingLocale should return null for en-US", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "en-US"), "to equal", null);
+	});
+
+	it("findCorrespondingLocale should return FR for fr-FR", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "fr-FR"), "to equal", "FR");
+	});
+
+	it("findCorrespondingLocale should return FR for fr-fr", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "fr-fr"), "to equal", "FR");
+	});
+
+	it("findCorrespondingLocale should return FR for frFR", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "frFR"), "to equal", "FR");
+	});
+
+	it("findCorrespondingLocale should return FR for frfr", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "frfr"), "to equal", "FR");
+	});
+
+	it("findCorrespondingLocale should return IE for en-IE", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "en-IE"), "to equal", "IE");
+	});
+
+	it("findCorrespondingLocale should return GB for en-GB", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "en-GB"), "to equal", "GB");
+	});
+
+	it("findCorrespondingLocale should return GB for en-NZ", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "en-NZ"), "to equal", "NZ");
+	});
+
+	it("findCorrespondingLocale should return AU for en-AU", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "en-AU"), "to equal", "AU");
+	});
+
+	it("findCorrespondingLocale should return AU for en-au", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "en-au"), "to equal", "AU");
+	});
+
+	it("findCorrespondingLocale should return AU for enAU", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "enAU"), "to equal", "AU");
+	});
+
+	it("findCorrespondingLocale should return IN for en-IN", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "en-IN"), "to equal", "IN");
+	});
+
+	it("findCorrespondingLocale should return CA for frCa", () => {
+		expect(localizationHelper.findCorrespondingLocale(locales, "frCa"), "to equal", "CA");
+	});
+});
