@@ -314,43 +314,15 @@ describe("DatePicker", () => {
 });
 
 describe("createFormat", () => {
-	it("Retrieves proper format if locale is in AMPMLocales list for date and time", () => {
-		const locale1 = "en-CA";
-		const locale2 = "en-US";
-
-		expect(createFormat(true, true, locale1), "to equal", "P p");
-		expect(createFormat(true, true, locale2), "to equal", "P p");
+	it("Retrieves proper format for date and time", () => {
+		expect(createFormat(true, true), "to equal", "P p");
 	});
 
-	it("Retrieves proper format if locale is in AMPMLocales list for date", () => {
-		const locale1 = "en-CA";
-		const locale2 = "en-US";
-
-		expect(createFormat(true, false, locale1), "to equal", "P");
-		expect(createFormat(true, false, locale2), "to equal", "P");
+	it("Retrieves proper format for date only", () => {
+		expect(createFormat(true, false), "to equal", "P");
 	});
 
-	it("Retrieves proper format if locale is in AMPMLocales list for time", () => {
-		const locale1 = "en-CA";
-		const locale2 = "en-US";
-
-		expect(createFormat(false, true, locale1), "to equal", "p");
-		expect(createFormat(false, true, locale2), "to equal", "p");
-	});
-
-	it("Retrieves proper format if locale is not in AMPMLocales list for date and time", () => {
-		expect(createFormat(true, true, "fr-CA"), "to equal", "P HH:mm");
-	});
-
-	it("Retrieves proper format if locale is not in AMPMLocales list for date", () => {
-		expect(createFormat(true, false, "fr-CA"), "to equal", "P");
-	});
-
-	it("Retrieves proper format if locale is not in AMPMLocales list for time", () => {
-		expect(createFormat(false, true, "fr-CA"), "to equal", "HH:mm");
-	});
-
-	it("Retrieves date and time in 24h system by default", () => {
-		expect(createFormat(), "to equal", "P HH:mm");
+	it("Retrieves proper format for date only", () => {
+		expect(createFormat(false, true), "to equal", "p");
 	});
 });
