@@ -22,7 +22,19 @@ export function getNotLocalizedString(value) {
 	return value && `[${value}]`;
 }
 
+export function findCorrespondingLocale(locales, language) {
+	return (
+		locales[language] ??
+		locales[language.replace(/-/g, "")] ??
+		locales[language.toLowerCase()] ??
+		locales[language.toLowerCase().replace(/-/g, "")] ??
+		locales[language.substring(0, 2).toLowerCase()] ??
+		null
+	);
+}
+
 export default {
 	getLocalization,
 	getNotLocalizedString,
+	findCorrespondingLocale,
 };

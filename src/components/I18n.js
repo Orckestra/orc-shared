@@ -6,10 +6,12 @@ import { currentLocaleOrDefault } from "../selectors/locale";
 const I18n = props => {
 	const locale = useSelector(currentLocaleOrDefault);
 	const messages = require("translations/" + locale + ".json");
+	const language = navigator.language ?? locale;
+
 	return (
 		<IntlProvider
-			key={locale} // TODO: Remove this when react-intl suports new React context API
-			locale={locale}
+			key={language} // TODO: Remove this when react-intl suports new React context API
+			locale={language}
 			messages={messages}
 			{...props}
 		/>

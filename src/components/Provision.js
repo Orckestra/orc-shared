@@ -10,6 +10,7 @@ import DevPages from "./DevPages";
 import Head from "./Head";
 import I18n from "./I18n";
 import InternetExplorerWarningMessage from "./InternetExplorerWarningMessage";
+import Culture from "./Culture";
 
 const GlobalStyle = createGlobalStyle`
 	html {
@@ -41,6 +42,7 @@ const Provision = ({ store, theme = {}, muiTheme, children }) => {
 					<MuiThemeProvider theme={muiTheme}>
 						<React.Fragment>
 							<Head />
+							<Culture />
 							<GlobalStyle />
 							<Authenticate>
 								<React.Fragment>

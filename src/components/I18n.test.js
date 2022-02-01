@@ -9,10 +9,13 @@ import I18n from "./I18n";
 jest.mock("translations/en-US.json", () => ({
 	WORD: "Word",
 }));
+jest.mock("translations/fr-CA.json", () => ({
+	WORD: "Mots",
+}));
 
 describe("I18n", () => {
 	spyOnConsole();
-	let store, state;
+	let store, state, languageGetter;
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			locale: {
@@ -25,9 +28,16 @@ describe("I18n", () => {
 			dispatch: () => {},
 			getState: () => state,
 		};
+
+		languageGetter = jest.spyOn(window.navigator, "language", "get");
 	});
 
-	it("renders a react-intl IntlProvider with locale data provided", () =>
+	afterEach(() => {
+		languageGetter.mockReset();
+	});
+
+	it("renders a react-intl IntlProvider with locale data provided", () => {
+		languageGetter.mockReturnValue(null);
 		expect(
 			<Provider store={store}>
 				<MemoryRouter>
@@ -39,5 +49,24 @@ describe("I18n", () => {
 			"when mounted",
 			"to satisfy",
 			"Word",
-		).then(() => expect(console.error, "was not called")));
+		).then(() => expect(console.error, "was not called"));
+	});
+
+	it("renders a react-intl IntlProvider with navigator language provided", () => {
+		languageGetter.mockReturnValue("fr-CA");
+		state = state.setIn(["locale", "locale"], "fr-CA");
+
+		expect(
+			<Provider store={store}>
+				<MemoryRouter>
+					<I18n>
+						<FormattedMessage id="WORD" defaultMessage="Failure" />
+					</I18n>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			"Mots",
+		).then(() => expect(console.error, "was not called"));
+	});
 });
