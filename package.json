@@ -69,6 +69,6 @@
 		}
 	},
 	"dependencies": {
-		"orc-scripts": "^1.3.0-dev.2"
+		"orc-scripts": "1.3.0-dev.2"
 	}
 }
