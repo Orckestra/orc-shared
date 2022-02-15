@@ -17,6 +17,7 @@ class InputBaseProps extends ComponentProps {
 		endAdornment: "endAdornment",
 		metadata: "metadata",
 		autoComplete: "autoComplete",
+		timeoutDelay: "timeoutDelay",
 	};
 
 	static ruleNames = {
@@ -41,6 +42,7 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.endAdornment, null);
 		this.componentProps.set(this.constructor.propNames.metadata, null);
 		this.componentProps.set(this.constructor.propNames.autoComplete, null);
+		this.componentProps.set(this.constructor.propNames.timeoutDelay, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.input, null);
 		this.componentClasses.set(this.constructor.ruleNames.errorText, null);
