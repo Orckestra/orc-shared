@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Select from "./Select";
 import SelectProps from "./SelectProps";
@@ -178,7 +178,11 @@ export const MinsSelect = ({ updateTimeOptions, time }) => {
 const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone }) => {
 	const classes = useStyles();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
-	const [time, setTime] = useState(parseTime(value || "00:00"));
+	const [time, setTime] = useState( parseTime(value || "00:00"));
+
+	useEffect(() => {
+		setTime(parseTime(value || "00:00"));
+	}, [value, setTime]);
 
 	const userTimeZone = getTimeZoneName();
 	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", userTimeZone, null));

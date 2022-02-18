@@ -294,6 +294,59 @@ describe("AppFrame", () => {
 		expect(document.title, "to equal", "Marketing Legacy");
 	});
 
+	it("renders a viewport with scope selector, top bar and sidebar with undefined modules", () => {
+		props.modules = undefined;
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
+		expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base>
+							<Wrapper>
+								<AppBox>
+									<ApplicationSelector {...props} />
+									<AppLabel>
+										<AppLogo />
+										Marketing Legacy
+									</AppLabel>
+								</AppBox>
+								<MenuWrapper>
+									<Ignore />
+								</MenuWrapper>
+								<HelpLink>Help</HelpLink>
+							</Wrapper>
+							<SideBar>
+								<MenuToggle />
+								<Logo />
+							</SideBar>
+							<ViewPort>
+								<ScopeBar name="Test 1" />
+								<TestComp1 key="1" />
+								<TestComp2 key="2" />
+								<TestComp3 key="3" />
+							</ViewPort>
+							<About messages={props.aboutMessages} />
+							<LoadingScreen />
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+		);
+
+		expect(document.title, "to equal", "Marketing Legacy");
+	});
+
 	it("renders a viewport with scope selector, top bar and sidebar when no current application", () => {
 		props.modules = [
 			{ id: "test1", component: TestComp1, route: "/test1" },

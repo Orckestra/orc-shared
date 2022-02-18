@@ -12,10 +12,18 @@ export const modules = {
 		subpages: { ... },
 		...
 	},
+    providers: {
+        label: "Providers",
+        icon: "person",
+        routerComponent: ProviderRouter,
+        pages: { ... },
+        subpages: { ... },
+        ...
+    },
 	photos: {
 		label: "Photo Album",
 		icon: "camera",
-		segments: { ... }
+		segments: { ... },
 		...
 	},
 	demos: {
@@ -26,6 +34,8 @@ export const modules = {
 ```
 
 A module is described firstly with a label and an icon, which will be used to show it in the module list (the dark sidebar menu with icons, to the left of the application screen). It should have a component as well (but see below), as this will be shown as the module's main page.
+
+If the component purposes is only to define new routes, "routerComponent" should be used instead of "component". Note: A router component should not have any API calls dependencies.
 
 ## View configurations
 
