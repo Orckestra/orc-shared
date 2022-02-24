@@ -202,6 +202,15 @@ describe("AppFrame", () => {
 					bar: true,
 				},
 			},
+			modules: {
+				tree: "modulesTree",
+				visibleModules: ["a", "module123", "test1", "test2", "test3"],
+				lastScopeAndModuleSelection: {
+					scope: "Norway",
+					moduleName: "Profiles",
+					routingPerformed: false,
+				},
+			},
 			settings: { defaultScope: "myScope", defaultApp: "12" },
 			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
 			view: { scopeSelector: { filter: "1" }, __prefsDialog: { show: false } },
@@ -266,6 +275,59 @@ describe("AppFrame", () => {
 								<Ignore />
 								<Ignore />
 								<Ignore />
+								<Logo />
+							</SideBar>
+							<ViewPort>
+								<ScopeBar name="Test 1" />
+								<TestComp1 key="1" />
+								<TestComp2 key="2" />
+								<TestComp3 key="3" />
+							</ViewPort>
+							<About messages={props.aboutMessages} />
+							<LoadingScreen />
+						</Base>
+					</MemoryRouter>
+				</ThemeProvider>
+			</Provider>,
+		);
+
+		expect(document.title, "to equal", "Marketing Legacy");
+	});
+
+	it("renders a viewport with scope selector, top bar and sidebar with undefined modules", () => {
+		props.modules = undefined;
+		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
+		expect(
+			<Provider store={store}>
+				<MemoryRouter initialEntries={["/Foo/bar"]}>
+					<ThemeProvider theme={{}}>
+						<I18n>
+							<AppFrame {...props} />
+						</I18n>
+					</ThemeProvider>
+				</MemoryRouter>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<Provider store={store}>
+				<ThemeProvider theme={{}}>
+					<MemoryRouter initialEntries={["/Foo/bar"]}>
+						<Base>
+							<Wrapper>
+								<AppBox>
+									<ApplicationSelector {...props} />
+									<AppLabel>
+										<AppLogo />
+										Marketing Legacy
+									</AppLabel>
+								</AppBox>
+								<MenuWrapper>
+									<Ignore />
+								</MenuWrapper>
+								<HelpLink>Help</HelpLink>
+							</Wrapper>
+							<SideBar>
+								<MenuToggle />
 								<Logo />
 							</SideBar>
 							<ViewPort>

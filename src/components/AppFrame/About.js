@@ -8,7 +8,7 @@ import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
-import logoImage from "../../content/aboutLogo.png";
+import logoImage from "../../content/orckestra-logo-white.png";
 import close from "../../content/close.png";
 import { getVersionSelector } from "../../selectors/versionInfo";
 import { currentLocaleOrDefault } from "../../selectors/locale";
@@ -101,7 +101,7 @@ export const About = ({ currentApplication }) => {
 			<CloseButton onClick={closeAboutBox}>
 				<img src={close} alt="X" />
 			</CloseButton>
-			<img src={logoImage} alt="Orckestra" />
+			<img src={logoImage} width="250" alt="Orckestra" />
 			<AboutParagraph>
 				<Text
 					message={{
@@ -164,7 +164,14 @@ export const About = ({ currentApplication }) => {
 				</AboutLink>
 			</AboutParagraph>
 			<AboutParagraph>
-				<Text message={sharedMessages.copyright} />
+				<Text
+					message={{
+						...sharedMessages.copyright,
+						values: {
+							year: new Date().getFullYear(),
+						},
+					}}
+				/>
 				<br />
 				<Text message={sharedMessages.allRightsReserved} />
 			</AboutParagraph>

@@ -16,6 +16,10 @@ const useStyles = makeStyles(theme => ({
 		border: `1px solid ${theme.palette.grey.borders}`,
 		boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
 		width: theme.spacing(50),
+		display: "flex",
+	},
+	scopeContainer: {
+		width: "100%",
 	},
 	scopeSelector: {
 		display: "flex",
@@ -64,7 +68,7 @@ const ScopeSelector = ({ show, getScope, selectedScope, closeSelector, filter, u
 		<Sidepanel className={classes.container} in={show} timeout={300}>
 			<ClickAwayListener onClickAway={e => closeSelector(e)}>
 				{/* this div is required since ClickAwayListener child element should be able to hold ref */}
-				<div>{show ? scopeSelectorContent : null}</div>
+				<div className={classes.scopeContainer}>{show ? scopeSelectorContent : null}</div>
 			</ClickAwayListener>
 		</Sidepanel>
 	);

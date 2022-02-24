@@ -2,7 +2,6 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Immutable from "immutable";
-import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
 import { PropStruct } from "../../utils/testUtils";
 import useScopeData from "./useScopeData";
@@ -122,30 +121,4 @@ describe("useScopeData", () => {
 			)
 
 			.then(() => expect(store.dispatch, "was not called")));
-
-	it("loads scopes if it has none", () => {
-		state = state.setIn(["scopes"], Immutable.Map());
-		return expect(
-			<Provider store={store}>
-				<MemoryRouter>
-					<TestComp />
-				</MemoryRouter>
-			</Provider>,
-			"when mounted",
-			"to be a",
-			"DOMElement",
-		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [
-				{
-					args: [
-						{
-							[RSAA]: {
-								types: ["GET_SCOPES_REQUEST", "GET_SCOPES_SUCCESS", "GET_SCOPES_FAILURE"],
-							},
-						},
-					],
-				},
-			]),
-		);
-	});
 });

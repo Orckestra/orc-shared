@@ -204,9 +204,13 @@ describe("ScopeBar", () => {
 describe("Scope", () => {
 	let nodeState;
 	beforeEach(() => {
+		window.bypassDebounce = true;
+
 		nodeState = { foo: true, bar: false };
 		state = state.setIn(["view", "scopeSelector", "nodeState"], Immutable.fromJS(nodeState));
 	});
+
+	afterEach(() => delete window.bypassDebounce);
 
 	it("renders a scope bar, selector panel with handlers, and viewport", () => {
 		const scopes = [

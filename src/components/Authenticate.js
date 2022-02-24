@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 import { unwrapImmutable } from "../utils";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 import { ERROR, LOGOUT } from "../reducers/request";
+import ApplicationModuleLoader from "./ApplicationModuleLoader";
 
 export const useAuthenticationData = () => ({
 	loading: useSelector(state => state.getIn(["requests", "actives", GET_AUTHENTICATION_PROFILE])),
-	defaultScope: useSelector(state => state.getIn(["settings", "defaultScope"])) || null,
 	authedUser: useSelector(state => state.getIn(["authentication", "name"])),
 	requestError: unwrapImmutable(useSelector(state => state.getIn(["requests", ERROR]) || null)),
 	needLogin: useSelector(state => state.getIn(["requests", LOGOUT])),
@@ -47,14 +47,15 @@ export const Error = ({ requestError, needLogin }) => {
 };
 
 const Authenticate = ({ children }) => {
-	const { loading, defaultScope, authedUser, requestError, needLogin } = useAuthenticationData();
-	if (loading || defaultScope === null) {
+	const { loading, authedUser, requestError, needLogin } = useAuthenticationData();
+
+	if (loading) {
 		return <Loader />;
 	}
 	if (!authedUser) {
 		return <Error {...{ requestError, needLogin }} />;
 	} else {
-		return React.Children.only(children);
+		return <ApplicationModuleLoader children={children} />;
 	}
 };
 

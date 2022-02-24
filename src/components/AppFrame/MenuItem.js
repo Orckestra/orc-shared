@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { Link } from "react-router-dom";
@@ -117,20 +116,7 @@ export const Label = styled.span`
 	opacity: ${ifFlag("show", 1, 0)};
 `;
 
-const MenuItem = ({
-	open = false,
-	label = "",
-	icon,
-	alert,
-	pageScopeSelector,
-	closingTabHandler,
-	hide,
-	href,
-	...props
-}) => {
-	let hideSelector = state => (typeof hide === "function" ? hide(state) : hide ?? false);
-	const isHidden = useSelector(hideSelector);
-
+const MenuItem = ({ open = false, label = "", icon, alert, isHidden = false, href, ...props }) => {
 	let ItemWrapper = Block;
 	if (props.menuToggle) {
 		ItemWrapper = BlockWithA;
@@ -139,6 +125,7 @@ const MenuItem = ({
 	if (alert && alert.message) {
 		alertMessage.current = alert.message;
 	}
+
 	return (
 		!isHidden && (
 			<ItemWrapper to={href} {...props}>

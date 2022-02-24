@@ -7,19 +7,36 @@ import { ERROR, LOGOUT } from "../reducers/request";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 
 const TestComp = () => {
-	return <div className="test"></div>;
+	return <div className="test" />;
 };
+
+jest.mock("../utils/buildUrl", () => {
+	const modExport = {};
+	modExport.loadConfig = () => Promise.resolve({});
+	modExport.buildUrl = () => "URL";
+	return modExport;
+});
 
 describe("Authenticate", () => {
 	let state, store;
+
 	beforeEach(() => {
 		state = Immutable.fromJS({
 			requests: {},
+			scopes: {
+				test1: {
+					id: "test1",
+					name: { "en-CA": "Test 1", "en-US": "Test 1" },
+					children: ["test2"],
+				},
+			},
 			authentication: {
 				name: "foo@bar.com",
 			},
 			settings: {
 				defaultScope: "aDefaultScope",
+				loadedModulesScope: ["moduleA", "moduleB"],
+				modules: ["moduleA", "moduleB"],
 			},
 		});
 		store = state => ({
@@ -38,7 +55,9 @@ describe("Authenticate", () => {
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<TestComp />,
+			<Provider store={store(state)}>
+				<TestComp />
+			</Provider>,
 		));
 
 	it("shows a load indicator component if authentication is ongoing", () => {
@@ -59,12 +78,12 @@ describe("Authenticate", () => {
 		);
 	});
 
-	it("shows a load indicator component if default scope is unknown", () => {
+	it("shows a load indicator component when application modules not ready", () => {
 		state = state.setIn(["settings", "defaultScope"], null);
 		return expect(
 			<Provider store={store(state)}>
 				<ThemeProvider theme={{}}>
-					<Authenticate>
+					<Authenticate applicationModuleReady={false}>
 						<TestComp />
 					</Authenticate>
 				</ThemeProvider>

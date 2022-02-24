@@ -86,6 +86,53 @@ describe("Fullpage", () => {
 			<View2 />,
 		));
 
+	it("shows a page when there is a router component no matter how visible is set", () =>
+		expect(
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap/stuff"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<FullPage
+					path="/meep/snap"
+					config={{
+						routerComponent: View1,
+						pages: { "/stuff": { component: View2 } },
+					}}
+					location={{ location: true }}
+					match={{ match: true }}
+					isVisible={false}
+				/>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<View2 />,
+		));
+
+	it("does not show a page when not visible", () =>
+		expect(
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter={{ initialEntries: ["/meep/snap/stuff"] }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<FullPage
+					path="/meep/snap"
+					config={{
+						component: View1,
+					}}
+					isVisible={false}
+					location={{ location: true }}
+					match={{ match: true }}
+				/>
+			</TestWrapper>,
+			"when mounted",
+			"to be",
+			null,
+		));
+
 	it("shows a segment page if segments", () => {
 		const location = {
 			pathname: "/meep/snap/stuff",

@@ -13,6 +13,8 @@ import { getLocalization } from "../utils/localizationHelper";
 
 const scopeData = state => state.get("scopes");
 
+export const getScopesSelector = createSelector(scopeData, scopes => scopes);
+
 export const localizedScopesSelector = createSelector(scopeData, currentLocaleOrDefault, (scopes, locale) =>
 	scopes.map(scope =>
 		scope.withMutations(s => {

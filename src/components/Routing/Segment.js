@@ -6,7 +6,7 @@ const Segment = ({ location, match, config, root, modulePrependPath }) => {
 	const { component, componentProps } = config;
 	const path = location.pathname;
 	const View = useMemo(
-		() => withErrorBoundary(path)(withWaypointing(component, componentProps)),
+		() => withErrorBoundary(path)(withWaypointing(component, true, componentProps)),
 		[path, component, componentProps],
 	);
 	return <View location={location} match={match} mapFrom={root} modulePrependPath={modulePrependPath} />;

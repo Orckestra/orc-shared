@@ -111,11 +111,28 @@ const InputBase = ({ inputProps }) => {
 
 	const onChangeHandler = event => {
 		event.persist();
-		update(event.target.value, metadata);
+
+		if (!event.target.value || window.bypassDebounce === true) {
+			update(event.target.value, metadata);
+		}
+
+		setInputText(event.target.value);
 	};
 
 	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);
 	const errorTextStyle = inputProps?.getStyle(InputBaseProps.ruleNames.errorText);
+
+	const [inputText, setInputText] = React.useState(null);
+
+	const textToDisplay = inputText ?? value;
+
+	React.useEffect(() => {
+		if (inputText !== value && inputText != null && window.bypassDebounce !== true) {
+			const timeOutId = setTimeout(() => update(inputText, metadata), 100);
+			return () => clearTimeout(timeOutId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [inputText, value]);
 
 	return (
 		<div className={classes.container}>
@@ -133,7 +150,7 @@ const InputBase = ({ inputProps }) => {
 					onClick={onClick}
 					type={type}
 					placeholder={placeholder}
-					value={value}
+					value={textToDisplay}
 					fullWidth={true}
 					onChange={event => onChangeHandler(event)}
 					error={!!error}

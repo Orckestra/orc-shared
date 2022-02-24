@@ -1,9 +1,25 @@
 import Immutable from "immutable";
-import { setModulesStructure } from "../actions/modules";
+import {
+	initializeFirstModuleScope,
+	setModuleAsVisible,
+	setModulesStructure,
+	setNewScopeAndModuleName,
+	setRoutingPerformed,
+} from "../actions/modules";
 import modulesReducer from "./modules";
 
 describe("View state reducer", () => {
-	it("behaves as a reducer should", () => expect(modulesReducer, "to be a reducer with initial state", {}));
+	const initialState = {
+		tree: {},
+		visibleModules: [],
+		lastScopeAndModuleSelection: {
+			scope: null,
+			moduleName: null,
+			routingPerformed: true,
+		},
+	};
+
+	it("behaves as a reducer should", () => expect(modulesReducer, "to be a reducer with initial state", initialState));
 
 	it("Sets module structure correctly", () => {
 		const oldState = Immutable.Map({});
@@ -91,5 +107,104 @@ describe("View state reducer", () => {
 		const action = setModulesStructure(modules);
 		const newState = modulesReducer(oldState, action);
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS({ tree: modules }));
+	});
+
+	it("Initialize first scope", () => {
+		const oldState = Immutable.fromJS(initialState);
+
+		const expected = {
+			...initialState,
+			lastScopeAndModuleSelection: {
+				...initialState.lastScopeAndModuleSelection,
+				scope: "firstScope",
+			},
+		};
+
+		const action = initializeFirstModuleScope("firstScope");
+		const newState = modulesReducer(oldState, action);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS(expected));
+	});
+
+	it("Add a visible module into the array", () => {
+		const oldState = Immutable.fromJS({
+			...initialState,
+			visibleModules: ["moduleReality"],
+		});
+
+		const expected = {
+			...initialState,
+			visibleModules: ["moduleReality", "moduleMatrix"],
+		};
+
+		const action = setModuleAsVisible("moduleMatrix");
+		const newState = modulesReducer(oldState, action);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS(expected));
+	});
+
+	it("set a new scope and module for eventual redirection", () => {
+		const oldState = Immutable.fromJS({
+			...initialState,
+			lastScopeAndModuleSelection: {
+				scope: "aScope",
+				moduleName: null,
+				routingPerformed: true,
+			},
+		});
+
+		const expected = {
+			...initialState,
+			lastScopeAndModuleSelection: {
+				scope: "aScope",
+				moduleName: "moduleMatrix",
+				routingPerformed: false,
+			},
+		};
+
+		const action = setNewScopeAndModuleName("aScope", "moduleMatrix");
+		const newState = modulesReducer(oldState, action);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS(expected));
+	});
+
+	it("set a new scope and module for eventual redirection and reinitialize visible modules", () => {
+		const oldState = Immutable.fromJS({
+			...initialState,
+			visibleModules: ["moduleReality"],
+		});
+
+		const expected = {
+			...initialState,
+			lastScopeAndModuleSelection: {
+				scope: "newScope",
+				moduleName: "moduleMatrix",
+				routingPerformed: false,
+			},
+		};
+
+		const action = setNewScopeAndModuleName("newScope", "moduleMatrix");
+		const newState = modulesReducer(oldState, action);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS(expected));
+	});
+
+	it("set routing was perform on scope and module", () => {
+		const oldState = Immutable.fromJS({
+			...initialState,
+			lastScopeAndModuleSelection: {
+				scope: "aScope",
+				moduleName: "aModule",
+				routingPerformed: false,
+			},
+		});
+		const expected = {
+			...initialState,
+			lastScopeAndModuleSelection: {
+				scope: "aScope",
+				moduleName: "aModule",
+				routingPerformed: true,
+			},
+		};
+
+		const action = setRoutingPerformed();
+		const newState = modulesReducer(oldState, action);
+		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS(expected));
 	});
 });

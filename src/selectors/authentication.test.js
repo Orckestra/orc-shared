@@ -6,7 +6,46 @@ import {
 	hasEditorPermissions,
 	hasAdministratorPermissions,
 	hasReaderPermissions,
+	hasEditorPermissionsForScope,
+	hasAdministratorPermissionsForScope,
+	hasReaderPermissionsForScope,
 } from "./authentication";
+
+const state = {
+	navigation: {
+		route: { location: {}, match: { params: { scope: "Global" } } },
+	},
+	settings: { defaultScope: "Global" },
+	locale: {
+		locale: "fr",
+		supportedLocales: ["en", "fr"],
+	},
+	scopes: {
+		Global: {
+			name: { en: "Global", fr: "Global" },
+			id: "Global",
+			children: ["MyScope"],
+			currency: {
+				displayName: {
+					en: "Euro",
+					fr: "Euro",
+				},
+			},
+			defaultCulture: "en-US",
+		},
+		MyScope: {
+			name: { en: "First child", fr: "Premier fils" },
+			id: "FirstChild",
+			children: ["ChildScope"],
+			parentScopeId: "Global",
+		},
+		ChildScope: {
+			name: { en: "First grandchild", fr: "Premier petit-fils" },
+			id: "FirstGrandchild",
+			parentScopeId: "MyScope",
+		},
+	},
+};
 
 describe("selectCurrentUsername", () => {
 	it("Gets the logged in username", () =>
@@ -142,10 +181,7 @@ describe("hasEditorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: claims },
-					navigation: {
-						route: { location: {}, match: { params: { scope: "Global" } } },
-					},
-					settings: { defaultScope: "Global" },
+					...state,
 				}),
 			],
 			"to equal",
@@ -212,11 +248,197 @@ describe("hasEditorPermissions", () => {
 		);
 	});
 
+	it("Retrieves true if user has editor permissions just in specified scope with permission on parents", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Editor: true,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissions,
+			"when called with",
+			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
 	it("Retrieves false if app roles claims are null", () => {
 		expect(
 			hasEditorPermissions,
 			"when called with",
 			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: {} },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+});
+
+describe("hasEditorPermissionsForScope", () => {
+	it("Retrieves true if user has editor permissions in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Editor: true,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if user has not editor permissions in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Editor: false,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+
+	it("Retrieves true if user hasn't global editor permissions but, has in current scope in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Editor: false,
+				},
+				MyScope: {
+					Editor: true,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissionsForScope,
+			"when called with",
+			["MyScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has editor permissions just in specified scope", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Editor: true,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissionsForScope,
+			"when called with",
+			["MyScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has editor permissions just in specified scope with permission on parents", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Editor: true,
+				},
+			},
+		});
+
+		expect(
+			hasEditorPermissionsForScope,
+			"when called with",
+			["ChildScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if app roles claims are null", () => {
+		expect(
+			hasEditorPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -279,10 +501,7 @@ describe("hasAdministratorPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: claims },
-					navigation: {
-						route: { location: {}, match: { params: { scope: "Global" } } },
-					},
-					settings: { defaultScope: "Global" },
+					...state,
 				}),
 			],
 			"to equal",
@@ -349,11 +568,197 @@ describe("hasAdministratorPermissions", () => {
 		);
 	});
 
+	it("Retrieves true if user has administrator permissions just in specified scope with permission on parents", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Administrator: true,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissions,
+			"when called with",
+			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
 	it("Retrieves false if app roles claims are null", () => {
 		expect(
 			hasAdministratorPermissions,
 			"when called with",
 			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: {} },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+});
+
+describe("hasAdministratorPermissionsForScope", () => {
+	it("Retrieves true if user has administrator permissions in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Administrator: true,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if user has not administrator permissions in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Administrator: false,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+
+	it("Retrieves true if user hasn't global administrator permissions but, has in current scope in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Administrator: false,
+				},
+				MyScope: {
+					Administrator: true,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissionsForScope,
+			"when called with",
+			["MyScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has administrator permissions just in specified scope", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Administrator: true,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissionsForScope,
+			"when called with",
+			["MyScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has administrator permissions just in specified scope with permission on parents", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Administrator: true,
+				},
+			},
+		});
+
+		expect(
+			hasAdministratorPermissionsForScope,
+			"when called with",
+			["ChildScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if app roles claims are null", () => {
+		expect(
+			hasAdministratorPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -416,10 +821,7 @@ describe("hasReaderPermissions", () => {
 			[
 				Immutable.fromJS({
 					authentication: { rolesClaimsValues: claims },
-					navigation: {
-						route: { location: {}, match: { params: { scope: "Global" } } },
-					},
-					settings: { defaultScope: "Global" },
+					...state,
 				}),
 			],
 			"to equal",
@@ -486,11 +888,197 @@ describe("hasReaderPermissions", () => {
 		);
 	});
 
+	it("Retrieves true if user has reader permissions just in specified scope with permission on parents", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Reader: true,
+				},
+			},
+		});
+
+		expect(
+			hasReaderPermissions,
+			"when called with",
+			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
 	it("Retrieves false if app roles claims are null", () => {
 		expect(
 			hasReaderPermissions,
 			"when called with",
 			["Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: {} },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+});
+
+describe("hasReaderPermissionsForScope", () => {
+	it("Retrieves true if user has administrator permissions in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Reader: true,
+				},
+			},
+		});
+
+		expect(
+			hasReaderPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if user has not administrator permissions in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Reader: false,
+				},
+			},
+		});
+
+		expect(
+			hasReaderPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+
+	it("Retrieves true if user hasn't global administrator permissions but, has in current scope in specified group", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Reader: false,
+				},
+				MyScope: {
+					Reader: true,
+				},
+			},
+		});
+
+		expect(
+			hasReaderPermissionsForScope,
+			"when called with",
+			["MyScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has administrator permissions just in specified scope", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Reader: true,
+				},
+			},
+		});
+
+		expect(
+			hasReaderPermissionsForScope,
+			"when called with",
+			["MyScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has administrator permissions just in specified scope with permission on parents", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Reader: true,
+				},
+			},
+		});
+
+		expect(
+			hasReaderPermissionsForScope,
+			"when called with",
+			["ChildScope", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if app roles claims are null", () => {
+		expect(
+			hasReaderPermissionsForScope,
+			"when called with",
+			["Global", "Orders"],
 			"called with",
 			[
 				Immutable.fromJS({

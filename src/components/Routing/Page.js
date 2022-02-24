@@ -5,8 +5,8 @@ import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import withWaypointing from "./withWaypointing";
 
-const Page = ({ component: View, path, pages = {}, subpages = {}, modulePrependPath }) => {
-	const WrappedView = useMemo(() => withErrorBoundary(path)(withWaypointing(View)), [path, View]);
+const Page = ({ component: View, path, pages = {}, subpages = {}, modulePrependPath, isVisible = true }) => {
+	const WrappedView = useMemo(() => withErrorBoundary(path)(withWaypointing(View, isVisible)), [path, View, isVisible]);
 	return (
 		<React.Fragment>
 			<Switch>

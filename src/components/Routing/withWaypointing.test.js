@@ -6,7 +6,7 @@ import { Router, Route } from "react-router-dom";
 import { mount, act } from "unexpected-reaction";
 import sinon from "sinon";
 import { PropStruct } from "../../utils/testUtils";
-import { setRoute, mapHref } from "../../actions/navigation";
+import { setRoute, mapHref, setCurrentPrependPath } from "../../actions/navigation";
 import withWaypointing from "./withWaypointing";
 
 describe("withWaypointing", () => {
@@ -22,6 +22,7 @@ describe("withWaypointing", () => {
 						params: { some: "meep" },
 						isExact: true,
 					},
+					modulePrependPath: "foo",
 				},
 			},
 			requests: {
@@ -94,6 +95,21 @@ describe("withWaypointing", () => {
 			})
 			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
 
+	it("does not render the component if the component is not visible", () =>
+		expect(withWaypointing, "called with", [PropStruct, false])
+			.then(EnhancedView => {
+				return expect(
+					<Provider store={store}>
+						<Router history={history}>
+							<Route path="/feep/:some" component={EnhancedView} />
+						</Router>
+					</Provider>,
+					"when mounted",
+					"to be null",
+				);
+			})
+			.then(() => expect(store.dispatch, "to have calls satisfying", [])));
+
 	it("does fire action if path parameters different", () =>
 		expect(withWaypointing, "called with", [PropStruct])
 			.then(EnhancedView => {
@@ -128,7 +144,7 @@ describe("withWaypointing", () => {
 			));
 
 	it("does fire action if path parameters different and with custom props", () =>
-		expect(withWaypointing, "called with", [PropStruct, { foo: 123 }])
+		expect(withWaypointing, "called with", [PropStruct, true, { foo: 123 }])
 			.then(EnhancedView => {
 				history.replace("/feep/moof");
 				return expect(
@@ -161,7 +177,7 @@ describe("withWaypointing", () => {
 			));
 
 	it("does not fire action if route match is not exact with custom props", () =>
-		expect(withWaypointing, "called with", [PropStruct, { foo: 123 }])
+		expect(withWaypointing, "called with", [PropStruct, true, { foo: 123 }])
 			.then(EnhancedView => {
 				history.replace("/feep/meep/mef");
 				return expect(
@@ -201,16 +217,28 @@ describe("withWaypointing", () => {
 				return expect(
 					<Provider store={store}>
 						<Router history={history}>
-							<Route path="/foo/bar" render={props => <EnhancedView {...props} mapFrom="/foo" />} />
+							<Route
+								path="/foo/bar"
+								render={props => <EnhancedView {...props} mapFrom="/foo" modulePrependPath="foo" />}
+							/>
 						</Router>
 					</Provider>,
 					"when mounted",
 					"to satisfy",
-					<PropStruct history="__ignore" location="__ignore" match="__ignore" mapFrom="/foo" />,
+					<PropStruct
+						history="__ignore"
+						location="__ignore"
+						match="__ignore"
+						mapFrom="/foo"
+						modulePrependPath="__ignore"
+					/>,
 				);
 			})
 			.then(() =>
 				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [setCurrentPrependPath("foo")],
+					},
 					{
 						args: [mapHref("/foo", "/foo/bar")],
 					},

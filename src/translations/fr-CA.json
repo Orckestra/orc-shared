@@ -12,7 +12,7 @@
 	"orc-shared.ccVersion": "Commerce Cloud {version}",
 	"orc-shared.close": "Fermer",
 	"orc-shared.confirmation": "Confirmation",
-	"orc-shared.copyright": "© 2021 Technologies Orckestra Inc.",
+	"orc-shared.copyright": "© {year} Technologies Orckestra Inc.",
 	"orc-shared.copyrightTermsNotice": "Avertissement: Ce programme est protégé par la loi relative au droit d'auteur et par les conventions internationales. Toute reproduction ou distribution partielle ou totale du logiciel, par quelque moyen que ce soit, est strictement interdite. Toute personne ne respectant pas ces dispositions se rendra coupable du délit de contrefaçon et sera passible des sanctions pénales prévues par la loi. Orckestra est une marque de commerce déposée et détenue par Technologies Orckestra Inc. Toutes les autres marques de commerce sont la propriété de leurs détenteurs respectifs.",
 	"orc-shared.defaultApp": "Application par défaut",
 	"orc-shared.delete": "Supprimer",
