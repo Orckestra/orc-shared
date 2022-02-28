@@ -49,7 +49,7 @@
 	],
 	"devDependencies": {},
 	"peerDependencies": {
-		"orc-scripts": "1.3.0-dev.2"
+		"orc-scripts": "1.4.0-dev.1"
 	},
 	"sideEffects": false,
 	"lint-staged": {
@@ -69,6 +69,6 @@
 		}
 	},
 	"dependencies": {
-		"orc-scripts": "1.3.0-dev.2"
+		"orc-scripts": "1.4.0-dev.1"
 	}
 }
