@@ -69,7 +69,10 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 		</div>
 	);
 
-	modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+	modalProps.set(
+		ModalProps.propNames.actionPanel,
+		props.componentProps?.buttonsRender(() => closeSubPage()) || actionPanel,
+	);
 
 	return <Modal message={message} modalProps={modalProps} />;
 };
