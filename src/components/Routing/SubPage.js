@@ -82,7 +82,7 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 							setTimeout(() => {
 								action.handler && action.handler(e);
 								closeSubPage();
-							}, 200);
+							}, action.timeoutDelay || 200);
 						}}
 					>
 						<FormattedMessage {...action.label} />

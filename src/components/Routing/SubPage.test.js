@@ -182,10 +182,11 @@ describe("SubPage", () => {
 		expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 	});
 
-	it("renders action panel passed from props", async () => {
+	it("renders action panel passed from props", () => {
+		const someEvent = sinon.spy().named("someEvent");
 		const clock = sinon.useFakeTimers();
 
-		const actions = () => [{ label: sharedMessages.close }, { label: sharedMessages.applyChanges }];
+		const actions = () => [{ label: sharedMessages.cancel }, { label: sharedMessages.applyChanges }];
 
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
@@ -218,6 +219,7 @@ describe("SubPage", () => {
 		const applyButton = mountedComponent.find("button").at(1);
 
 		closeButton.invoke("onMouseDown")();
+
 		act(() => {
 			clock.tick(500); // Wait for the setTimeout inside the onMouseDown event to execute
 		});
@@ -225,5 +227,54 @@ describe("SubPage", () => {
 		expect(applyButton, "not to be", null);
 		expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
 		expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
+	});
+
+	it("Executes handler from button received from props", () => {
+		const someEvent = sinon.spy().named("someEvent");
+		const clock = sinon.useFakeTimers();
+
+		const actions = () => [
+			{ label: sharedMessages.applyChanges, isPrimary: true, handler: someEvent, timeoutDelay: 500 },
+		];
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div id="outer" />
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={route => (
+								<SubPage
+									config={{
+										component: InnerView,
+										set: true,
+										title: "Item Details",
+										componentProps: { actionPanel: actions },
+									}}
+									root="/foo"
+									path="/foo/bar"
+									{...route}
+								/>
+							)}
+						/>
+					</Router>
+				</div>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const applyButton = mountedComponent.find("button").at(0);
+
+		applyButton.invoke("onMouseDown")();
+
+		act(() => {
+			clock.tick(500); // Wait for the setTimeout inside the onMouseDown event to execute
+		});
+
+		const applyButtonClassName = applyButton.props().className;
+		expect(applyButtonClassName, "to contain", "MuiButton-contained");
+		expect(applyButtonClassName, "to contain", "MuiButton-containedPrimary");
+		expect(someEvent, "was called");
 	});
 });
