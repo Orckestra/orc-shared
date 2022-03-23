@@ -183,7 +183,6 @@ describe("SubPage", () => {
 	});
 
 	it("renders action panel passed from props", () => {
-		const someEvent = sinon.spy().named("someEvent");
 		const clock = sinon.useFakeTimers();
 
 		const actions = () => [{ label: sharedMessages.cancel }, { label: sharedMessages.applyChanges }];
