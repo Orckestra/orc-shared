@@ -78,11 +78,9 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 						variant={action.isPrimary ? "contained" : "outlined"}
 						color={action.isPrimary ? "primary" : "default"}
 						disableElevation={action.isPrimary}
-						onMouseDown={e => {
-							setTimeout(() => {
-								action.handler && action.handler(e);
-								closeSubPage();
-							}, action.timeoutDelay || 200);
+						onClick={e => {
+							action.handler && action.handler(e);
+							closeSubPage();
 						}}
 					>
 						<FormattedMessage {...action.label} />

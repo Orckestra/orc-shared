@@ -11,7 +11,6 @@ import Modal from "../MaterialUI/DataDisplay/Modal";
 import ModalProps from "../MaterialUI/DataDisplay/modalProps";
 import Button from "@material-ui/core/Button";
 import translations from "~/translations/en-US.json";
-import { act } from "unexpected-reaction";
 import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
 import sharedMessages from "../../sharedMessages";
 
@@ -183,8 +182,6 @@ describe("SubPage", () => {
 	});
 
 	it("renders action panel passed from props", () => {
-		const clock = sinon.useFakeTimers();
-
 		const actions = () => [{ label: sharedMessages.cancel }, { label: sharedMessages.applyChanges }];
 
 		const component = (
@@ -217,11 +214,7 @@ describe("SubPage", () => {
 		const closeButton = mountedComponent.find("button").at(0);
 		const applyButton = mountedComponent.find("button").at(1);
 
-		closeButton.invoke("onMouseDown")();
-
-		act(() => {
-			clock.tick(500); // Wait for the setTimeout inside the onMouseDown event to execute
-		});
+		closeButton.invoke("onClick")();
 
 		expect(applyButton, "not to be", null);
 		expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
@@ -230,11 +223,8 @@ describe("SubPage", () => {
 
 	it("Executes handler from button received from props", () => {
 		const someEvent = sinon.spy().named("someEvent");
-		const clock = sinon.useFakeTimers();
 
-		const actions = () => [
-			{ label: sharedMessages.applyChanges, isPrimary: true, handler: someEvent, timeoutDelay: 500 },
-		];
+		const actions = () => [{ label: sharedMessages.applyChanges, isPrimary: true, handler: someEvent }];
 
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
@@ -265,11 +255,7 @@ describe("SubPage", () => {
 
 		const applyButton = mountedComponent.find("button").at(0);
 
-		applyButton.invoke("onMouseDown")();
-
-		act(() => {
-			clock.tick(500); // Wait for the setTimeout inside the onMouseDown event to execute
-		});
+		applyButton.invoke("onClick")();
 
 		const applyButtonClassName = applyButton.props().className;
 		expect(applyButtonClassName, "to contain", "MuiButton-contained");
