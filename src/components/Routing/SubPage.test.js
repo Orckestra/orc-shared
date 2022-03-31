@@ -230,11 +230,8 @@ describe("SubPage", () => {
 
 	it("Executes handler from button received from props", () => {
 		const someEvent = sinon.spy().named("someEvent");
-		const clock = sinon.useFakeTimers();
 
-		const actions = () => [
-			{ label: sharedMessages.applyChanges, isPrimary: true, handler: someEvent, timeoutDelay: 500 },
-		];
+		const actions = () => [{ label: sharedMessages.applyChanges, isPrimary: true, handler: someEvent }];
 
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
@@ -266,10 +263,6 @@ describe("SubPage", () => {
 		const applyButton = mountedComponent.find("button").at(0);
 
 		applyButton.invoke("onMouseDown")();
-
-		act(() => {
-			clock.tick(500); // Wait for the setTimeout inside the onMouseDown event to execute
-		});
 
 		const applyButtonClassName = applyButton.props().className;
 		expect(applyButtonClassName, "to contain", "MuiButton-contained");
