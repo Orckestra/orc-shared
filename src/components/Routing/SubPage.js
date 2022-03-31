@@ -78,7 +78,7 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 						variant={action.isPrimary ? "contained" : "outlined"}
 						color={action.isPrimary ? "primary" : "default"}
 						disableElevation={action.isPrimary}
-						onMouseDown={e => {
+						onClick={e => {
 							action.handler && action.handler(e);
 							closeSubPage();
 						}}
