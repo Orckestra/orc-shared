@@ -138,7 +138,6 @@ const WrappedDatePicker = ({
 	const startDate = value ? new Date(value) : null;
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
 	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", timePickerTimeZone));
-	
 	const setLocalZone = (date, timezone) => {
 		const dateWithoutZone = moment.tz(date, timezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
 		const localZone = moment(dateWithoutZone).format("Z");
@@ -153,6 +152,12 @@ const WrappedDatePicker = ({
 		const dateWithOtherZone = [dateWithoutZone, otherZone].join("");
 		return new Date(dateWithOtherZone);
 	}
+	
+	const updateDate = (date, metadata) => {
+		if (onChange) {
+			onChange(date ? setOtherZone(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata)
+		}
+	};
 
 	return (
 		<div className={classes.container}>
@@ -162,9 +167,7 @@ const WrappedDatePicker = ({
 						{...props}
 						dateFormat={dateFormat || createFormat(useDate, useTime)}
 						selected={startDate ? setLocalZone(startDate, getTimeZoneByName(timePickerTimeZone)) : null}
-    					onChange={date => {
-      						onChange(date ? setOtherZone(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata)
-    					}}
+    					onChange={date => updateDate(date, metadata)}      						
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
