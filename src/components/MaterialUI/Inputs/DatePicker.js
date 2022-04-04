@@ -7,6 +7,8 @@ import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment-timezone";
 import { getTimeZoneByName } from "../../../utils/timezoneHelper";
+import { namedLookupLocalizedSelector } from "../../../selectors/metadata";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -129,14 +131,14 @@ const WrappedDatePicker = ({
 	showTimeSelectOnly,
 	metadata,
 	timePickerTimeZone,
-	dateTimeZone,
 	error,
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
 	const startDate = value ? new Date(value) : null;
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
-
+	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", timePickerTimeZone));
+	
 	const setLocalZone = (date, timezone) => {
 		const dateWithoutZone = moment.tz(date, timezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
 		const localZone = moment(dateWithoutZone).format("Z");
@@ -145,6 +147,7 @@ const WrappedDatePicker = ({
 	}
 	  
 	const setOtherZone = (date, timezone) => {
+		console.log(timezone);
 		const dateWithoutZone = moment(date).format("YYYY-MM-DDTHH:mm:ss.SSS");
 		const otherZone = moment.tz(date, timezone).format("Z");
 		const dateWithOtherZone = [dateWithoutZone, otherZone].join("");
@@ -158,14 +161,14 @@ const WrappedDatePicker = ({
 					<DatePicker
 						{...props}
 						dateFormat={dateFormat || createFormat(useDate, useTime)}
-						selected={startDate ? setLocalZone(startDate, getTimeZoneByName(dateTimeZone)) : null}
+						selected={startDate ? setLocalZone(startDate, getTimeZoneByName(timePickerTimeZone)) : null}
     					onChange={date => {
-      						onChange(date ? setOtherZone(date, getTimeZoneByName(dateTimeZone)) : null, metadata)
+      						onChange(date ? setOtherZone(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata)
     					}}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
-							useTime ? <TimePicker showTimeZone={showTimeZone} requestedTimeZone={timePickerTimeZone} /> : null
+							useTime ? <TimePicker showTimeZone={showTimeZone} requestedTimeZone={localizedTimeZoneName} /> : null
 						}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}
