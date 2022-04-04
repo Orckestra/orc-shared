@@ -129,6 +129,7 @@ const WrappedDatePicker = ({
 	showTimeSelectOnly,
 	metadata,
 	timePickerTimeZone,
+	dateTimeZone,
 	error,
 	...props
 }) => {
@@ -157,9 +158,9 @@ const WrappedDatePicker = ({
 					<DatePicker
 						{...props}
 						dateFormat={dateFormat || createFormat(useDate, useTime)}
-						selected={startDate ? setLocalZone(startDate, getTimeZoneByName(timePickerTimeZone)) : null}
+						selected={startDate ? setLocalZone(startDate, getTimeZoneByName(dateTimeZone)) : null}
     					onChange={date => {
-      						onChange(date ? setOtherZone(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata)
+      						onChange(date ? setOtherZone(date, getTimeZoneByName(dateTimeZone)) : null, metadata)
     					}}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
