@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment-timezone";
+import { getTimeZoneByName } from "../../../utils/timezoneHelper";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -134,11 +136,19 @@ const WrappedDatePicker = ({
 	const startDate = value ? new Date(value) : null;
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
 
-	const updateDate = (date, metadata) => {
-		if (onChange) {
-			onChange(date, metadata);
-		}
-	};
+	const setLocalZone = (date, timezone) => {
+		const dateWithoutZone = moment.tz(date, timezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
+		const localZone = moment(dateWithoutZone).format("Z");
+		const dateWithLocalZone = [dateWithoutZone, localZone].join("");
+		return new Date(dateWithLocalZone);
+	}
+	  
+	const setOtherZone = (date, timezone) => {
+		const dateWithoutZone = moment(date).format("YYYY-MM-DDTHH:mm:ss.SSS");
+		const otherZone = moment.tz(date, timezone).format("Z");
+		const dateWithOtherZone = [dateWithoutZone, otherZone].join("");
+		return new Date(dateWithOtherZone);
+	}
 
 	return (
 		<div className={classes.container}>
@@ -147,8 +157,10 @@ const WrappedDatePicker = ({
 					<DatePicker
 						{...props}
 						dateFormat={dateFormat || createFormat(useDate, useTime)}
-						selected={startDate}
-						onChange={date => updateDate(date, metadata)}
+						selected={startDate ? setLocalZone(startDate, getTimeZoneByName(timePickerTimeZone)) : null}
+    					onChange={date => {
+      						onChange(date ? setOtherZone(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata)
+    					}}
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
