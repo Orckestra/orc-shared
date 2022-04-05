@@ -59,6 +59,24 @@ describe("InputField", () => {
 				field_fieldName: { wasBlurred: true },
 				activeForm_fieldName: { wasBlurred: true },
 			},
+			metadata: {
+				lookups: {
+					customer: {
+						index: {
+							TimeZone: {
+								values: {
+									UTC: {
+										value: "UTC",
+										displayName: {
+											"en-US": "(UTC) Coordinated Universal Time",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		});
 		store = {
 			subscribe: () => {},

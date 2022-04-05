@@ -14,6 +14,24 @@ describe("DateInput", () => {
 			locale: {
 				locale: "en-CA",
 			},
+			metadata: {
+				lookups: {
+					customer: {
+						index: {
+							TimeZone: {
+								values: {
+									UTC: {
+										value: "UTC",
+										displayName: {
+											"en-US": "(UTC) Coordinated Universal Time",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		});
 
 		store = {

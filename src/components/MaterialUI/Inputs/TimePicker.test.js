@@ -584,7 +584,7 @@ describe("Time Component", () => {
 		const component = mount(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
-					<TimePicker value="00:00" />
+					<TimePicker value="00:00" showAMPM={true} />
 				</div>
 			</TestWrapper>,
 		);
