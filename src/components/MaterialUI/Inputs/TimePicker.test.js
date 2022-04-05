@@ -584,13 +584,13 @@ describe("Time Component", () => {
 		const component = mount(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
 				<div>
-					<TimePicker value="00:00" showAMPM={true} />
+					<TimePicker value="00:00" />
 				</div>
 			</TestWrapper>,
 		);
 
 		const select = component.find("select");
-		expect(select.length, "to equal", 3);
+		expect(select.length, "to equal", 2);
 	});
 
 	it("should update time with 12am", () => {
