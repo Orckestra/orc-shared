@@ -139,16 +139,18 @@ const WrappedDatePicker = ({
 }) => {
 	const classes = useStyles({ readOnly });
 	const timeZoneName = getTimeZoneByName(timePickerTimeZone);
-	const startDate = value ? convertTimeToLocalTimeZone(new Date(value), timeZoneName) : null;
+	const startDate = value
+		? timeZoneName
+			? convertTimeToLocalTimeZone(new Date(value), timeZoneName)
+			: new Date(value)
+		: null;
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
 	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", timePickerTimeZone));
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
-			if (useTime && timePickerTimeZone) {
-				onChange(date ? convertTimeToOtherTimeZone(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata);
-			} else {
-				onChange(date, metadata);
+			if (onChange) {
+				onChange(useTime && timePickerTimeZone ? convertTimeToOtherTimeZone(date, timeZoneName) : date, metadata);
 			}
 		}
 	};
