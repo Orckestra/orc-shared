@@ -312,7 +312,7 @@ describe("DatePicker", () => {
 		input.at(0).simulate("change", event);
 	});
 
-	it("should call onChange prop convertTimeToOtherTimeZone ", () => {
+	it("should call onChange prop with timezone", () => {
 		const onChangeMock = jest.fn();
 		const date = new Date("2020-06-30T00:00:00");
 		const event = {
@@ -323,7 +323,14 @@ describe("DatePicker", () => {
 
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider>
-				<DatePicker onChange={onChangeMock} value={date} useTime={true} timePickerTimeZone={requestTimeZone} />
+				<DatePicker
+					onChange={onChangeMock}
+					value={date}
+					useTime={true}
+					useDate={false}
+					showTimeSelectOnly={true}
+					timePickerTimeZone={requestTimeZone}
+				/>
 			</TestWrapper>
 		);
 		const mountedComponent = mount(component);
@@ -335,40 +342,33 @@ describe("DatePicker", () => {
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
 
-	it("sets up only time to locale with time 2am (en-US) and show only time select", () => {
-		const date = new Date("2020-06-30T06:00:00");
-		const expectedTime = "1:00 AM";
-		const requestTimeZone = "Eastern Standard Time";
-		expect(
-			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+	it("should call onChange prop with null timezone", () => {
+		const onChangeMock = jest.fn();
+		const date = new Date("2020-06-30T00:00:00");
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
 				<DatePicker
+					onChange={onChangeMock}
+					value={date}
 					useTime={true}
 					useDate={false}
-					onChange={updater}
-					value={date}
 					showTimeSelectOnly={true}
-					timePickerTimeZone={requestTimeZone}
+					timePickerTimeZone={null}
 				/>
-			</TestWrapper>,
-			"when mounted",
-			"to satisfy",
-			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<div>
-					<label>
-						<div>
-							<div className="react-datepicker-wrapper">
-								<div className="react-datepicker__input-container">
-									<input value={expectedTime} onChange={() => {}} />
-								</div>
-							</div>
-						</div>
-						<div>
-							<Icon id="clock" />
-						</div>
-					</label>
-				</div>
-			</TestWrapper>,
+			</TestWrapper>
 		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		expect(input.length, "to equal", 1);
+
+		input.at(0).simulate("change", event);
+		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
 });
 
