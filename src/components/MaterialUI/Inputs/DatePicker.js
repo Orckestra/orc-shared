@@ -149,9 +149,7 @@ const WrappedDatePicker = ({
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
-			if (onChange) {
-				onChange(useTime && timePickerTimeZone ? convertTimeToOtherTimeZone(date, timeZoneName) : date, metadata);
-			}
+			onChange(useTime && timePickerTimeZone ? convertTimeToOtherTimeZone(date, timeZoneName) : date, metadata);
 		}
 	};
 
