@@ -311,6 +311,42 @@ describe("DatePicker", () => {
 
 		input.at(0).simulate("change", event);
 	});
+
+	it("sets up only time to locale with time 2am (en-US) and show only time select", () => {
+		const date = new Date("2020-06-30T06:00:00");
+		const expectedTime = "1:00 AM";
+		const requestTimeZone = "Eastern Standard Time";
+		expect(
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<DatePicker
+					useTime={true}
+					useDate={false}
+					onChange={updater}
+					value={date}
+					showTimeSelectOnly={true}
+					timePickerTimeZone={requestTimeZone}
+				/>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<label>
+						<div>
+							<div className="react-datepicker-wrapper">
+								<div className="react-datepicker__input-container">
+									<input value={expectedTime} onChange={() => {}} />
+								</div>
+							</div>
+						</div>
+						<div>
+							<Icon id="clock" />
+						</div>
+					</label>
+				</div>
+			</TestWrapper>,
+		);
+	});
 });
 
 describe("createFormat", () => {
