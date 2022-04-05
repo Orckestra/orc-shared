@@ -140,7 +140,7 @@ const WrappedDatePicker = ({
 	const classes = useStyles({ readOnly });
 	const timeZoneName = getTimeZoneByName(timePickerTimeZone);
 	const startDate = value
-		? timeZoneName
+		? timePickerTimeZone
 			? convertTimeToLocalTimeZone(new Date(value), timeZoneName)
 			: new Date(value)
 		: null;
