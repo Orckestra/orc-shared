@@ -383,6 +383,30 @@ describe("DatePicker", () => {
 		input.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
+
+	it("should not call onChange prop with timezone", () => {
+		const date = new Date("2020-06-30T00:00:00");
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+		const requestTimeZone = "Eastern Standard Time";
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<DatePicker
+					value={date}
+					useTime={true}
+					useDate={false}
+					showTimeSelectOnly={true}
+					timePickerTimeZone={requestTimeZone}
+				/>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.at(0).simulate("change", event);
+	});
 });
 
 describe("createFormat", () => {
