@@ -590,7 +590,7 @@ describe("Time Component", () => {
 		);
 
 		const select = component.find("select");
-		expect(select.length, "to equal", 2);
+		expect(select.length, "to equal", 3);
 	});
 
 	it("should update time with 12am", () => {
