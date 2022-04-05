@@ -1,4 +1,4 @@
-import { getTimeZone, getTimeZoneByName, getTimeZoneName } from "./timezoneHelper";
+import { getTimeZone, getTimeZoneByName, getTimeZoneName, setOtherZoneDate, setLocalZoneDate } from "./timezoneHelper";
 
 describe("Timezone Helper", () => {
 	beforeEach(() => {
@@ -30,7 +30,7 @@ describe("Timezone Helper", () => {
 	it("Retrieves user timezone name", () => {
 		expect(getTimeZoneName, "called with", [], "to satisfy", "W. Europe Standard Time");
 	});
-	
+
 	it("Retrieves user local timezone date", () => {
 		const timezoneName = "America/New_York";
 		const date = "Mon Apr 04 2022 13:00:00 GMT+0300 (Eastern European Summer Time)";
