@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export const getTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const getTimeZoneByName = name => {
@@ -13,6 +15,20 @@ export const getTimeZoneName = () => {
 	const timezoneName = timeZonesList.get(customerTimezone);
 	return timezoneName;
 };
+
+export const setLocalZoneDate = (date, timezone) => {
+	const dateWithoutZone = moment.tz(date, timezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
+    const localZone = moment(dateWithoutZone).format("Z");
+    const dateWithLocalZone = [dateWithoutZone, localZone].join("");
+	return new Date(dateWithLocalZone);
+}
+
+export const setOtherZoneDate = (date, timezone) => {
+	const dateWithoutZone = moment(date).format("YYYY-MM-DDTHH:mm:ss.SSS");
+    const otherZone = moment.tz(date, timezone).format("Z");
+    const dateWithOtherZone = [dateWithoutZone, otherZone].join("");
+	return new Date(dateWithOtherZone);
+}
 
 export const timeZonesList = new Map([
 	["Africa/Bangui", "W. Central Africa Standard Time"],

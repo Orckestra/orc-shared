@@ -5,8 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
-import moment from "moment-timezone";
-import { getTimeZoneByName } from "../../../utils/timezoneHelper";
+import { getTimeZoneByName, setLocalZoneDate, setOtherZoneDate } from "../../../utils/timezoneHelper";
 import { namedLookupLocalizedSelector } from "../../../selectors/metadata";
 import { useSelector } from "react-redux";
 
@@ -135,27 +134,18 @@ const WrappedDatePicker = ({
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
-	const startDate = value ? new Date(value) : null;
+	const startDate = value ? setLocalZoneDate(new Date(value), getTimeZoneByName(timePickerTimeZone)) : null;
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
 	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", timePickerTimeZone));
-	const setLocalZone = (date, timezone) => {
-		const dateWithoutZone = moment.tz(date, timezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
-		const localZone = moment(dateWithoutZone).format("Z");
-		const dateWithLocalZone = [dateWithoutZone, localZone].join("");
-		return new Date(dateWithLocalZone);
-	}
-	  
-	const setOtherZone = (date, timezone) => {
-		console.log(timezone);
-		const dateWithoutZone = moment(date).format("YYYY-MM-DDTHH:mm:ss.SSS");
-		const otherZone = moment.tz(date, timezone).format("Z");
-		const dateWithOtherZone = [dateWithoutZone, otherZone].join("");
-		return new Date(dateWithOtherZone);
-	}
 	
 	const updateDate = (date, metadata) => {
 		if (onChange) {
-			onChange(date ? setOtherZone(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata)
+			if(useTime && timePickerTimeZone)
+			{
+				onChange(date ? setOtherZoneDate(date, getTimeZoneByName(timePickerTimeZone)) : null, metadata);
+			} else {
+				onChange(date, metadata);
+			}
 		}
 	};
 
@@ -166,7 +156,7 @@ const WrappedDatePicker = ({
 					<DatePicker
 						{...props}
 						dateFormat={dateFormat || createFormat(useDate, useTime)}
-						selected={startDate ? setLocalZone(startDate, getTimeZoneByName(timePickerTimeZone)) : null}
+						selected={startDate}
     					onChange={date => updateDate(date, metadata)}      						
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
