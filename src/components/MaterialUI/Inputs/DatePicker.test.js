@@ -384,7 +384,7 @@ describe("DatePicker", () => {
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
 
-	it("should call onChange prop with timezone without value", () => {
+	it("should call onChange prop with timezone without date value", () => {
 		const onChangeMock = jest.fn();
 		const event = {
 			preventDefault() {},
@@ -424,33 +424,6 @@ describe("DatePicker", () => {
 
 		const input = mountedComponent.find("input");
 		input.at(0).simulate("change", event);
-	});
-
-	it("should call onChange prop with timezone without value", () => {
-		const onChangeMock = jest.fn();
-		const date = new Date("2020-06-30T00:00:00");
-		const event = {
-			preventDefault() {},
-			target: { value: "" },
-		};
-		const requestTimeZone = "Eastern Standard Time";
-		const component = (
-			<TestWrapper provider={{ store }} intlProvider>
-				<DatePicker
-					value={date}
-					onChange={onChangeMock}
-					useTime={true}
-					useDate={false}
-					showTimeSelectOnly={true}
-					timePickerTimeZone={requestTimeZone}
-				/>
-			</TestWrapper>
-		);
-		const mountedComponent = mount(component);
-
-		const input = mountedComponent.find("input");
-		input.at(0).simulate("change", event);
-		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
 });
 
