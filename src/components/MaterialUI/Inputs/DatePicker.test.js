@@ -15,8 +15,25 @@ describe("DatePicker", () => {
 			locale: {
 				locale: "en-CA",
 			},
+			metadata: {
+				lookups: {
+					customer: {
+						index: {
+							TimeZone: {
+								values: {
+									UTC: {
+										value: "Eastern Standard Time",
+										displayName: {
+											"en-US": "Eastern Standard Time",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		});
-
 		store = {
 			subscribe: () => {},
 			dispatch: () => {},
@@ -336,8 +353,6 @@ describe("DatePicker", () => {
 		const mountedComponent = mount(component);
 
 		const input = mountedComponent.find("input");
-		expect(input.length, "to equal", 1);
-
 		input.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
@@ -365,8 +380,6 @@ describe("DatePicker", () => {
 		const mountedComponent = mount(component);
 
 		const input = mountedComponent.find("input");
-		expect(input.length, "to equal", 1);
-
 		input.at(0).simulate("change", event);
 		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
