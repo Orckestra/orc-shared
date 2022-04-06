@@ -127,6 +127,7 @@ const WrappedDatePicker = ({
 	useTime,
 	useDate = true,
 	onChange,
+	useTimeZone = false,
 	dateFormat,
 	showTimeZone,
 	timeInputLabel,
@@ -140,7 +141,7 @@ const WrappedDatePicker = ({
 	const classes = useStyles({ readOnly });
 	const timeZoneName = getTimeZoneByName(timePickerTimeZone);
 	const startDate = value
-		? timePickerTimeZone
+		? timePickerTimeZone && useTimeZone
 			? convertTimeToLocalTimeZone(new Date(value), timeZoneName)
 			: new Date(value)
 		: null;
@@ -149,7 +150,7 @@ const WrappedDatePicker = ({
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
-			onChange(useTime && timePickerTimeZone ? convertTimeToOtherTimeZone(date, timeZoneName) : date, metadata);
+			onChange(useTimeZone && timePickerTimeZone ? convertTimeToOtherTimeZone(date, timeZoneName) : date, metadata);
 		}
 	};
 
