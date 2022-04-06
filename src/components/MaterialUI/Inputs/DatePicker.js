@@ -5,6 +5,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
+import {
+	getTimeZoneByName,
+	convertTimeToOtherTimeZone,
+	convertTimeToLocalTimeZone,
+} from "../../../utils/timezoneHelper";
+import { namedLookupLocalizedSelector } from "../../../selectors/metadata";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -131,12 +138,18 @@ const WrappedDatePicker = ({
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
-	const startDate = value ? new Date(value) : null;
+	const timeZoneName = getTimeZoneByName(timePickerTimeZone);
+	const startDate = value
+		? timePickerTimeZone
+			? convertTimeToLocalTimeZone(new Date(value), timeZoneName)
+			: new Date(value)
+		: null;
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
+	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", timePickerTimeZone));
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
-			onChange(date, metadata);
+			onChange(useTime && timePickerTimeZone ? convertTimeToOtherTimeZone(date, timeZoneName) : date, metadata);
 		}
 	};
 
@@ -152,7 +165,7 @@ const WrappedDatePicker = ({
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
-							useTime ? <TimePicker showTimeZone={showTimeZone} requestedTimeZone={timePickerTimeZone} /> : null
+							useTime ? <TimePicker showTimeZone={showTimeZone} requestedTimeZone={localizedTimeZoneName} /> : null
 						}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}

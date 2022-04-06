@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export const getTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const getTimeZoneByName = name => {
@@ -12,6 +14,22 @@ export const getTimeZoneName = () => {
 	const customerTimezone = getTimeZone();
 	const timezoneName = timeZonesList.get(customerTimezone);
 	return timezoneName;
+};
+
+//converting time from other timezone to local
+export const convertTimeToLocalTimeZone = (date, timezone) => {
+	const dateWithoutZone = moment.tz(date, timezone).format("YYYY-MM-DDTHH:mm:ss.SSS");
+	const localZone = moment(dateWithoutZone).format("Z");
+	const dateWithLocalZone = [dateWithoutZone, localZone].join("");
+	return new Date(dateWithLocalZone);
+};
+
+//converting time from local timezone to other
+export const convertTimeToOtherTimeZone = (date, timezone) => {
+	const dateWithoutZone = moment(date).format("YYYY-MM-DDTHH:mm:ss.SSS");
+	const otherZone = moment.tz(date, timezone).format("Z");
+	const dateWithOtherZone = [dateWithoutZone, otherZone].join("");
+	return new Date(dateWithOtherZone);
 };
 
 export const timeZonesList = new Map([
