@@ -39,15 +39,15 @@ describe("Timezone Helper", () => {
 
 	it("Retrieves user local timezone date", () => {
 		const timezoneName = "America/New_York";
-		const date = "Mon Apr 04 2022 13:00:00 GMT+0300 (Eastern European Summer Time)";
-		const expectedDate = new Date("2022-04-04T09:00:00Z");
+		const date = "Mon Apr 04 2022 13:00:00.000Z";
+		const expectedDate = new Date("2022-04-04T06:00:00.000Z");
 		expect(convertTimeToLocalTimeZone, "called with", [date, timezoneName], "to satisfy", expectedDate);
 	});
 
 	it("Retrieves user other timezone date", () => {
 		const timezoneName = "America/New_York";
-		const date = "Mon Apr 04 2022 03:00:00 GMT+0300 (Eastern European Summer Time)";
-		const expectedDate = new Date("2022-04-04T04:00:00Z");
+		const date = "Mon Apr 04 2022 06:00:00.000Z";
+		const expectedDate = new Date("2022-04-04T13:00:00.000Z");
 		expect(convertTimeToOtherTimeZone, "called with", [date, timezoneName], "to satisfy", expectedDate);
 	});
 });
