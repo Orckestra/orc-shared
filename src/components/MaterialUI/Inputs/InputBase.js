@@ -128,7 +128,12 @@ const InputBase = ({ inputProps }) => {
 
 	React.useEffect(() => {
 		if (inputText !== value && inputText != null && window.bypassDebounce !== true) {
-			const timeOutId = setTimeout(() => update(inputText, metadata), 100);
+			const timeOutId = setTimeout(() => {
+				const updateValue = update(inputText, metadata);
+				setInputText(null);
+
+				return updateValue;
+			}, 100);
 			return () => clearTimeout(timeOutId);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
