@@ -4,10 +4,18 @@ import Icon from "../DataDisplay/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-	icon: {
+	link: {
+		display: "flex",
+	},
+	iconContainer: {
+		paddingTop: theme.spacing(0.5),
 		paddingLeft: theme.spacing(1),
 		width: theme.spacing(1.2),
+		height: theme.spacing(1.2),
 		color: theme.palette.primary.main,
+	},
+	icon: {
+		color: "inherit",
 	},
 }));
 
@@ -15,9 +23,11 @@ const ExternalLink = ({ id, url, children }) => {
 	const classes = useStyles();
 
 	return (
-		<Link id={id} href={url} rel="noreferrer" target="_blank" underline="always">
+		<Link id={id} href={url} rel="noreferrer" target="_blank" underline="always" className={classes.link}>
 			{children}
-			<Icon id="open-in-new-tab" className={classes.icon} />
+			<div className={classes.iconContainer}>
+				<Icon id="open-in-new-tab" className={classes.icon} />
+			</div>
 		</Link>
 	);
 };
