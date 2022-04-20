@@ -100,6 +100,11 @@ const InputBase = ({ inputProps }) => {
 	const metadata = inputProps?.get(InputBaseProps.propNames.metadata);
 	const autoComplete = inputProps?.get(InputBaseProps.propNames.autoComplete);
 	const timeoutDelay = inputProps?.get(InputBaseProps.propNames.timeoutDelay) || 100;
+	const rowsProps = inputProps?.get(InputBaseProps.propNames.rows);
+
+	const defaultRows = 4;
+	let rows = rowsProps;
+	if (rows === null || rows === undefined) rows = defaultRows;
 
 	const tooltipText = type === "text" ? value : "";
 
@@ -165,7 +170,7 @@ const InputBase = ({ inputProps }) => {
 					multiline={multiline}
 					startAdornment={startAdornment}
 					endAdornment={endAdornment}
-					rows={4}
+					rows={rows}
 					title={tooltipText}
 					autoComplete={autoComplete}
 				/>

@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const InformationItemChildren = ({ classes, children, showNotAvailable }) => {
+const InformationItemChildren = ({ classes, children, showNotAvailable, isMaxLineCountEnabled = true }) => {
 	const { formatMessage } = useIntl();
 
 	if (isReactComponent(children)) {
@@ -61,7 +61,7 @@ const InformationItemChildren = ({ classes, children, showNotAvailable }) => {
 	}
 
 	const multipleLinesTextProps = new TextProps();
-	multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
+	if (isMaxLineCountEnabled) multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
 	multipleLinesTextProps.set(TextProps.propNames.classes, classes.value);
 
 	const value = children ?? (showNotAvailable ? formatMessage(sharedMessages.notAvailable) : "");
@@ -93,13 +93,19 @@ const InformationItem = ({
 	headerIcon = undefined,
 	showNotAvailable = false,
 	marginTop = 0,
+	isMaxLineCountEnabled = true,
 }) => {
 	const classes = useStyles({ required, error, marginTop });
 
 	return (
 		<div className={classes.container}>
 			<InformationItemHeader classes={classes} label={label} headerIcon={headerIcon} />
-			<InformationItemChildren classes={classes} children={children} showNotAvailable={showNotAvailable} />
+			<InformationItemChildren
+				classes={classes}
+				children={children}
+				showNotAvailable={showNotAvailable}
+				isMaxLineCountEnabled={isMaxLineCountEnabled}
+			/>
 		</div>
 	);
 };

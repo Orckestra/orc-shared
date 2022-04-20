@@ -57,6 +57,45 @@ describe("InputBase Component", () => {
 		expect(mountedComponent.prop("inputProps").get(InputBaseProps.propNames.value), "to equal", aValue + aValue);
 	});
 
+	it("Renders multiline InputBase component with default number of rows", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+		const defaultRows = 4;
+
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "text");
+		inputProps.set(InputBaseProps.propNames.multiline, true);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} title={aValue} rows={defaultRows} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders multiline InputBase component with desired number of rows", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+		const desiredNumberOfRows = 20;
+
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "text");
+		inputProps.set(InputBaseProps.propNames.multiline, true);
+		inputProps.set(InputBaseProps.propNames.rows, desiredNumberOfRows);
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} title={aValue} rows={desiredNumberOfRows} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
 	it("Renders InputBase component with title attribute for input of type text", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";
