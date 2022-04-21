@@ -7,6 +7,7 @@ import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
 import { stringifyWithoutQuotes } from "./../../../../utils/parseHelper";
 import sharedMessages from "./../../../../sharedMessages";
 import { extractMessages } from "./../../../../utils/testUtils";
+import TextProps from "../../textProps";
 
 const messages = extractMessages(sharedMessages);
 
@@ -45,6 +46,126 @@ describe("Information Item", () => {
 			<div>
 				<Typography children={label} />
 				<MultipleLinesText>{""}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item with max line count", () => {
+		const label = "label";
+		const value = "value";
+
+		const multipleLinesTextProps = new TextProps();
+		multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label} isMaxLineCountEnabled={true}>
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<Typography children={label} />
+				<MultipleLinesText textProps={multipleLinesTextProps}>{value}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item without max line count", () => {
+		const label = "label";
+		const value = "value";
+
+		const multipleLinesTextProps = new TextProps();
+		multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label}>{value}</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<Typography children={label} />
+				<MultipleLinesText textProps={multipleLinesTextProps}>{value}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item with max line count false", () => {
+		const label = "label";
+		const value = "value";
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label} isMaxLineCountEnabled={false}>
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<Typography children={label} />
+				<MultipleLinesText>{value}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item with null max line count", () => {
+		const label = "label";
+		const value = "value";
+
+		const multipleLinesTextProps = new TextProps();
+		multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label} isMaxLineCountEnabled={null}>
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<Typography children={label} />
+				<MultipleLinesText textProps={multipleLinesTextProps}>{value}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item with undefined max line count", () => {
+		const label = "label";
+		const value = "value";
+
+		const multipleLinesTextProps = new TextProps();
+		multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label} isMaxLineCountEnabled={undefined}>
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<Typography children={label} />
+				<MultipleLinesText textProps={multipleLinesTextProps}>{value}</MultipleLinesText>
 			</div>
 		);
 

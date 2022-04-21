@@ -93,7 +93,7 @@ const InformationItem = ({
 	headerIcon = undefined,
 	showNotAvailable = false,
 	marginTop = 0,
-	isMaxLineCountEnabled = true,
+	isMaxLineCountEnabled,
 }) => {
 	const classes = useStyles({ required, error, marginTop });
 
