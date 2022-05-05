@@ -19,7 +19,9 @@ describe("ExternalLink", () => {
 				underline="always"
 			>
 				{children}
-				<Icon id="open-in-new-tab" />
+				<div>
+					<Icon id="open-in-new-tab" />
+				</div>
 			</Link>,
 		);
 	});
