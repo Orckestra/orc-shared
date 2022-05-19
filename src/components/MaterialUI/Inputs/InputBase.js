@@ -99,6 +99,7 @@ const InputBase = ({ inputProps }) => {
 	const endAdornment = inputProps?.get(InputBaseProps.propNames.endAdornment);
 	const metadata = inputProps?.get(InputBaseProps.propNames.metadata);
 	const autoComplete = inputProps?.get(InputBaseProps.propNames.autoComplete);
+	const timeoutDelay = inputProps?.get(InputBaseProps.propNames.timeoutDelay) || 100;
 
 	const tooltipText = type === "text" ? value : "";
 
@@ -128,7 +129,12 @@ const InputBase = ({ inputProps }) => {
 
 	React.useEffect(() => {
 		if (inputText !== value && inputText != null && window.bypassDebounce !== true) {
-			const timeOutId = setTimeout(() => update(inputText, metadata), 100);
+			const timeOutId = setTimeout(() => {
+				const updateValue = update(inputText, metadata);
+				setInputText(null);
+
+				return updateValue;
+			}, timeoutDelay);
 			return () => clearTimeout(timeOutId);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

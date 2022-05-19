@@ -15,8 +15,25 @@ describe("DatePicker", () => {
 			locale: {
 				locale: "en-CA",
 			},
+			metadata: {
+				lookups: {
+					customer: {
+						index: {
+							TimeZone: {
+								values: {
+									UTC: {
+										value: "Eastern Standard Time",
+										displayName: {
+											"en-US": "Eastern Standard Time",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		});
-
 		store = {
 			subscribe: () => {},
 			dispatch: () => {},
@@ -310,6 +327,131 @@ describe("DatePicker", () => {
 		expect(input.length, "to equal", 1);
 
 		input.at(0).simulate("change", event);
+	});
+
+	it("should call onChange prop with timezone", () => {
+		const onChangeMock = jest.fn();
+		const date = new Date("2020-06-30T00:00:00");
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+		const requestTimeZone = "Eastern Standard Time";
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<DatePicker
+					onChange={onChangeMock}
+					value={date}
+					useTime={true}
+					useDate={false}
+					showTimeSelectOnly={true}
+					timePickerTimeZone={requestTimeZone}
+				/>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.at(0).simulate("change", event);
+		expect(onChangeMock.mock.calls.length, "to equal", 1);
+	});
+
+	it("should call onChange prop with null timezone", () => {
+		const onChangeMock = jest.fn();
+		const date = new Date("2020-06-30T00:00:00");
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<DatePicker
+					onChange={onChangeMock}
+					value={date}
+					useTime={true}
+					useDate={false}
+					showTimeSelectOnly={true}
+					timePickerTimeZone={null}
+				/>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.at(0).simulate("change", event);
+		expect(onChangeMock.mock.calls.length, "to equal", 1);
+	});
+
+	it("should call onChange prop with timezone without date value", () => {
+		const onChangeMock = jest.fn();
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+		const requestTimeZone = "Eastern Standard Time";
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<DatePicker
+					onChange={onChangeMock}
+					useTime={true}
+					useDate={false}
+					showTimeSelectOnly={true}
+					timePickerTimeZone={requestTimeZone}
+				/>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.at(0).simulate("change", event);
+	});
+
+	it("should call onChange prop with timezone and not use time", () => {
+		const date = new Date("2020-06-30T00:00:00");
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+		const requestTimeZone = "Eastern Standard Time";
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<DatePicker value={date} useDate={false} showTimeSelectOnly={true} timePickerTimeZone={requestTimeZone} />
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.at(0).simulate("change", event);
+	});
+
+	it("should call onChange prop with useTimeZone", () => {
+		const onChangeMock = jest.fn();
+		const date = new Date("2020-06-30T00:00:00");
+		const event = {
+			preventDefault() {},
+			target: { value: "" },
+		};
+		const requestTimeZone = "Eastern Standard Time";
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<DatePicker
+					onChange={onChangeMock}
+					value={date}
+					useTime={true}
+					useDate={false}
+					useTimeZone={true}
+					showTimeSelectOnly={true}
+					timePickerTimeZone={requestTimeZone}
+				/>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const input = mountedComponent.find("input");
+		input.at(0).simulate("change", event);
+		expect(onChangeMock.mock.calls.length, "to equal", 1);
 	});
 });
 

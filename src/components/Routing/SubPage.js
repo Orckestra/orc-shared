@@ -61,13 +61,34 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 	modalProps.set(ModalProps.propNames.type, "fullwidth");
 	modalProps.set(ModalProps.propNames.backdropClickCallback, closeSubPage);
 
-	const actionPanel = (
+	let actionPanel = (
 		<div className={classes.actionPanel}>
 			<Button variant="contained" color="primary" disableElevation onClick={closeSubPage}>
 				<FormattedMessage {...sharedMessages.close} />
 			</Button>
 		</div>
 	);
+
+	if (props.componentProps?.actionPanel()?.length > 0) {
+		actionPanel = (
+			<div className={classes.actionPanel}>
+				{props.componentProps?.actionPanel().map(action => (
+					<Button
+						key={action.label?.id}
+						variant={action.isPrimary ? "contained" : "outlined"}
+						color={action.isPrimary ? "primary" : "default"}
+						disableElevation={action.isPrimary}
+						onClick={e => {
+							action.handler && action.handler(e);
+							closeSubPage();
+						}}
+					>
+						<FormattedMessage {...action.label} />
+					</Button>
+				))}
+			</div>
+		);
+	}
 
 	modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
 
