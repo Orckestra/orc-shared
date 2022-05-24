@@ -178,7 +178,7 @@ export const MinsSelect = ({ updateTimeOptions, time }) => {
 const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone }) => {
 	const classes = useStyles();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
-	const [time, setTime] = useState( parseTime(value || "00:00"));
+	const [time, setTime] = useState(parseTime(value || "00:00"));
 
 	useEffect(() => {
 		setTime(parseTime(value || "00:00"));
