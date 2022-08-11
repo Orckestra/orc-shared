@@ -151,6 +151,11 @@ export function extractMessages() {
 	return extractedMessages;
 }
 
+/* istanbul ignore next */
+function DefaultLocale() {}
+
+Intl.Locale = DefaultLocale;
+
 export const TestWrapper = ({
 	provider,
 	intlProvider,
@@ -170,7 +175,11 @@ export const TestWrapper = ({
 		if (intlProvider == null) return children;
 
 		return (
-			<IntlProvider locale="en-US" timeZone="UTC" messages={intlProvider.messages}>
+			<IntlProvider
+				locale={intlProvider.locale ?? "en-US"}
+				timeZone={intlProvider.timeZone ?? "UTC"}
+				messages={intlProvider.messages}
+			>
 				{children}
 			</IntlProvider>
 		);
