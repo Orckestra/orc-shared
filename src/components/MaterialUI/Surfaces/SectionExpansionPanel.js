@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 	panelRoot: {
 		"&$panelExpanded": {
 			margin: "0",
+			position: "unset",
 			"&:before": {
 				opacity: "1",
 			},
