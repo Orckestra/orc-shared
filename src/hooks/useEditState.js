@@ -190,8 +190,18 @@ export const useDynamicEditState = (entityId, sectionName, extendedValidationRul
 		};
 
 		const resetEditState = (path = []) => {
-			const fullPath = !path.length ? [...keys] : [...keys, "value", ...getValidPath(path)];
-			dispatchWithModulesData(setEditModelField, [fullPath, initialValue, initialValue, entityId, sectionName]);
+			const pathToField = getValidPath(path);
+			const fullPath = !path.length ? [...keys] : [...keys, "value", ...pathToField];
+
+			const initialFieldValue = !path.length ? initialValue : get(initialValue, pathToField);
+
+			dispatchWithModulesData(setEditModelField, [
+				fullPath,
+				initialFieldValue,
+				initialFieldValue,
+				entityId,
+				sectionName,
+			]);
 		};
 
 		const isEditStateValid = (value, path = [], errorTypes = [], dependencies = {}) => {

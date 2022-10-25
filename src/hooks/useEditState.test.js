@@ -1171,7 +1171,7 @@ describe("useDynamicEditState", () => {
 		expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
 			args: [
 				setEditModelField,
-				[["field", "value", "c", "d"], initialFieldValue, initialFieldValue, entityId, sectionName],
+				[["field", "value", "c", "d"], initialFieldValue.c.d, initialFieldValue.c.d, entityId, sectionName],
 			],
 		});
 
