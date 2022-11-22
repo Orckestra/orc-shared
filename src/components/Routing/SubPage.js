@@ -80,7 +80,8 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 						disableElevation={action.isPrimary}
 						disabled={action.disabled}
 						onClick={e => {
-							action.handler && action.handler(e);
+							let actionHandlerResult = action.handler && action.handler(e);
+							if (action.handler && action.validateBeforeClose && !actionHandlerResult) return;
 							closeSubPage();
 						}}
 					>
