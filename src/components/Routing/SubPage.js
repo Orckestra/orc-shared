@@ -81,7 +81,7 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 						disabled={action.disabled}
 						onClick={e => {
 							let actionHandlerResult = action.handler && action.handler(e);
-							if (action.validateBeforeClose && !actionHandlerResult) return;
+							if (action.handler && action.validateBeforeClose && !actionHandlerResult) return;
 							closeSubPage();
 						}}
 					>
