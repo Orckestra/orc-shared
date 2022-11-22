@@ -180,7 +180,6 @@ describe("SubPage", () => {
 		expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
 		expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 	});
-
 	it("renders action panel passed from props", () => {
 		const actions = () => [{ label: sharedMessages.cancel }, { label: sharedMessages.applyChanges }];
 
@@ -261,5 +260,87 @@ describe("SubPage", () => {
 		expect(applyButtonClassName, "to contain", "MuiButton-contained");
 		expect(applyButtonClassName, "to contain", "MuiButton-containedPrimary");
 		expect(someEvent, "was called");
+	});
+
+	it("Do not close when clicking action button has validateBeforeClose and result is false", () => {
+		const applyHandler = () => false;
+
+		const actions = () => [
+			{ label: sharedMessages.applyChanges, isPrimary: true, handler: applyHandler, validateBeforeClose: true },
+		];
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div id="outer" />
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={route => (
+								<SubPage
+									config={{
+										component: InnerView,
+										set: true,
+										title: "Item Details",
+										componentProps: { actionPanel: actions },
+									}}
+									root="/foo"
+									path="/foo/bar"
+									{...route}
+								/>
+							)}
+						/>
+					</Router>
+				</div>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const applyButton = mountedComponent.find("button").at(0);
+
+		applyButton.invoke("onClick")();
+		expect(history.push, "not to have calls satisfying", [{ args: ["/foo"] }]);
+		expect(dispatch, "not to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
+	});
+
+	it("Close when clicking action button has validateBeforeClose and result is true", () => {
+		const applyHandler = () => true;
+
+		const actions = () => [
+			{ label: sharedMessages.applyChanges, isPrimary: true, handler: applyHandler, validateBeforeClose: true },
+		];
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div id="outer" />
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={route => (
+								<SubPage
+									config={{
+										component: InnerView,
+										set: true,
+										title: "Item Details",
+										componentProps: { actionPanel: actions },
+									}}
+									root="/foo"
+									path="/foo/bar"
+									{...route}
+								/>
+							)}
+						/>
+					</Router>
+				</div>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const applyButton = mountedComponent.find("button").at(0);
+
+		applyButton.invoke("onClick")();
+		expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
+		expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 	});
 });
