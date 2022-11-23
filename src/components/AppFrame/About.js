@@ -8,7 +8,7 @@ import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
-import logoImage from "../../content/orckestra-logo-white.png";
+import logoImage from "../../content/orckestra-logo-white.svg";
 import close from "../../content/close.png";
 import { getVersionSelector } from "../../selectors/versionInfo";
 import { currentLocaleOrDefault } from "../../selectors/locale";
