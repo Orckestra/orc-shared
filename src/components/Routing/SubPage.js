@@ -80,9 +80,22 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 						disableElevation={action.isPrimary}
 						disabled={action.disabled}
 						onClick={e => {
-							let actionHandlerResult = action.handler && action.handler(e);
-							if (action.handler && action.validateBeforeClose && !actionHandlerResult) return;
-							closeSubPage();
+							if (!action.handler) {
+								closeSubPage();
+								return;
+							}
+
+							let actionHandlerResult = action.handler(e);
+							if (typeof actionHandlerResult === "object") {
+								// promise
+								actionHandlerResult.then(actionResult => {
+									if (action.validateBeforeClose && !actionResult) return;
+									closeSubPage();
+								});
+							} else {
+								if (action.validateBeforeClose && !actionHandlerResult) return;
+								closeSubPage();
+							}
 						}}
 					>
 						<FormattedMessage {...action.label} />
