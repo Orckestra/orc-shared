@@ -343,4 +343,90 @@ describe("SubPage", () => {
 		expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
 		expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
 	});
+
+	it("Close when clicking action button has validateBeforeClose and result as promise with true", () => {
+		const applyHandler = () => Promise.resolve(true);
+
+		const actions = () => [
+			{ label: sharedMessages.applyChanges, isPrimary: true, handler: applyHandler, validateBeforeClose: true },
+		];
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div id="outer" />
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={route => (
+								<SubPage
+									config={{
+										component: InnerView,
+										set: true,
+										title: "Item Details",
+										componentProps: { actionPanel: actions },
+									}}
+									root="/foo"
+									path="/foo/bar"
+									{...route}
+								/>
+							)}
+						/>
+					</Router>
+				</div>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const applyButton = mountedComponent.find("button").at(0);
+
+		applyButton.invoke("onClick")();
+		setTimeout(() => {
+			expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
+			expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
+		}, 200);
+	});
+
+	it("Do not Close when clicking action button has validateBeforeClose and result as promise with false", () => {
+		const applyHandler = () => Promise.resolve(false);
+
+		const actions = () => [
+			{ label: sharedMessages.applyChanges, isPrimary: true, handler: applyHandler, validateBeforeClose: true },
+		];
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div id="outer" />
+					<Router history={history}>
+						<Route
+							path="/foo/bar"
+							render={route => (
+								<SubPage
+									config={{
+										component: InnerView,
+										set: true,
+										title: "Item Details",
+										componentProps: { actionPanel: actions },
+									}}
+									root="/foo"
+									path="/foo/bar"
+									{...route}
+								/>
+							)}
+						/>
+					</Router>
+				</div>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const applyButton = mountedComponent.find("button").at(0);
+
+		applyButton.invoke("onClick")();
+		setTimeout(() => {
+			expect(history.push, "not to have calls satisfying", [{ args: ["/foo"] }]);
+			expect(dispatch, "not to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
+		}, 200);
+	});
 });
