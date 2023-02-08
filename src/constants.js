@@ -13,11 +13,13 @@ export const platformRoles = {
 	Administrator: "Administrator",
 	Editor: "Editor",
 	Reader: "Reader",
+	Recipient: "Recipient",
 };
 
 export const roleGroups = {
 	Products: "Products",
 	Orders: "Orders",
+	OrderReturn: "OrderReturn",
 	Marketing: "Marketing",
 	Analytics: "Analytics",
 	Shopping: "Shopping",
