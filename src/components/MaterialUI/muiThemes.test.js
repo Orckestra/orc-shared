@@ -1,5 +1,5 @@
 import createThemes from "./muiThemes";
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@mui/material/styles";
 
 describe("MUI Themes", () => {
 	it("createThemes returns expected themes", () => {

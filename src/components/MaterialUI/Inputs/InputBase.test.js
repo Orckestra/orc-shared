@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import InputBase from "./InputBase";
-import InputBaseMUI from "@material-ui/core/InputBase";
+import InputBaseMUI from "@mui/material/InputBase";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import InputBaseProps from "./InputBaseProps";

@@ -1,10 +1,10 @@
 import React from "react";
 import { mount } from "enzyme";
 import Placeholder from "./Placeholder";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import Icon from "./../Icon";
-import Skeleton from "@material-ui/lab/Skeleton";
+import Skeleton from "@mui/material/Skeleton";
 
 describe("Placeholder", () => {
 	const icon = "orders";

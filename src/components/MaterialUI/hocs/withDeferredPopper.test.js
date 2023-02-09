@@ -1,11 +1,11 @@
 import React from "react";
 import withDeferredPopper, { Arrow } from "./withDeferredPopper";
 import { shallow, mount } from "enzyme";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Popper from "@mui/material/Popper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { ignoreConsoleError } from "./../../../utils/testUtils";
 import sinon from "sinon";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import Paper from "../Surfaces/Paper";
 
 describe("withDeferredPopper", () => {

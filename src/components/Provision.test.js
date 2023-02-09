@@ -4,7 +4,7 @@ import { withTheme } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { spyOnConsole } from "../utils/testUtils";
 import Provision from "./Provision";
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme, adaptV4Theme } from "@mui/material/styles";
 
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};
@@ -60,9 +60,11 @@ const fakeStore = {
 
 const fakeTheme = { value: "styles" };
 
-const fakeMuiTheme = createTheme({
-	direction: "ltr",
-});
+const fakeMuiTheme = createTheme(
+	adaptV4Theme({
+		direction: "ltr",
+	}),
+);
 
 const TestComp = withTheme(({ theme }) => <div>{JSON.stringify(theme)}</div>);
 

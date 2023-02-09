@@ -1,8 +1,8 @@
 import React from "react";
-import MuiPaper from "@material-ui/core/Paper";
+import MuiPaper from "@mui/material/Paper";
 import PaperProps, { isPaperProps } from "./paperProps";
 import classNames from "classnames";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyle = makeStyles(theme => ({
 	container: {

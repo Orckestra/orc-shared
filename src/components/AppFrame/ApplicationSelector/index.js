@@ -1,7 +1,7 @@
 import React from "react";
 import ApplicationDialog from "./ApplicationDialog";
 import PopperedIcon from "../../MaterialUI/DataDisplay/PopperedElements/PopperedIcon";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
 	popperContainer: {

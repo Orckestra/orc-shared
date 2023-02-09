@@ -1,8 +1,8 @@
 import React from "react";
 import { mount } from "enzyme";
 import Badge from "./Badge";
-import BadgeMui from "@material-ui/core/Badge";
-import { makeStyles } from "@material-ui/core/styles";
+import BadgeMui from "@mui/material/Badge";
+import makeStyles from "@mui/styles/makeStyles";
 
 describe("Badge", () => {
 	it("Renders Badge when children was passed", () => {

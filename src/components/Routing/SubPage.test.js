@@ -9,7 +9,7 @@ import { mapHref } from "../../actions/navigation";
 import SubPage from "./SubPage";
 import Modal from "../MaterialUI/DataDisplay/Modal";
 import ModalProps from "../MaterialUI/DataDisplay/modalProps";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import translations from "~/translations/en-US.json";
 import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
 import sharedMessages from "../../sharedMessages";

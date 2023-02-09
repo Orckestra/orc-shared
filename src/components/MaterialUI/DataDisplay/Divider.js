@@ -1,6 +1,6 @@
 import React from "react";
-import DividerMui from "@material-ui/core/Divider";
-import { makeStyles } from "@material-ui/core/styles";
+import DividerMui from "@mui/material/Divider";
+import makeStyles from "@mui/styles/makeStyles";
 import DividerProps, { isDividerProps } from "./dividerProps";
 import classNames from "classnames";
 

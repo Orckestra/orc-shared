@@ -2,8 +2,8 @@ import React from "react";
 import sinon from "sinon";
 import { extractMessages, TestWrapper, createMuiTheme } from "../../../utils/testUtils";
 import ApplicationDialog from "./ApplicationDialog";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
 import sharedMessages from "~/sharedMessages";
 import { mount } from "enzyme";
 

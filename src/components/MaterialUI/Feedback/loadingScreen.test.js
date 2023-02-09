@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import LoadingScreen from "./loadingScreen";
-import Backdrop from "@material-ui/core/Backdrop";
+import Backdrop from "@mui/material/Backdrop";
 import { act } from "react-dom/test-utils";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import { createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import Immutable from "immutable";
 import sinon from "sinon";

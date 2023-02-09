@@ -7,7 +7,7 @@ import sharedMessages from "../sharedMessages";
 import sinon from "sinon";
 import { mount } from "enzyme";
 import { resetRequestState } from "../actions/requestState";
-import Snackbar from "@material-ui/core/Snackbar";
+import Snackbar from "@mui/material/Snackbar";
 import * as getRequestStateInfo from "../selectors/requestStates";
 
 const messages = extractMessages(sharedMessages);

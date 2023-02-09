@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "./../Modal";
 import ModalProps from "./../modalProps";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import makeStyles from "@mui/styles/makeStyles";
 import sharedMessages from "../../../../sharedMessages";
 import { FormattedMessage } from "react-intl";
 

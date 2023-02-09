@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { memoize } from "../utils";
 import withId from "../hocs/withId";
 import Text from "./Text";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { InnerSelect, Wrapper, SelectBox, Dropdown, Option, Placeholder } from "./Selector";
 
 export const SelectedValue = styled.span`

@@ -13,7 +13,7 @@ import I18n from "../I18n";
 import RoutedScope, { Scope, ScopeBar } from "./index";
 import { createMuiTheme, TestWrapper } from "./../../utils/testUtils";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { extractMessages } from "./../../utils/testUtils";
 import sharedMessages from "./../../sharedMessages";
 import ScopeSelector from "./../MaterialUI/ScopeSelector/ScopeSelector";

@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import Text from "../../Text";
 
 export const CenterWrapper = styled.div`

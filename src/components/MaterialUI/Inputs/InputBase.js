@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import InputBaseMUI from "@material-ui/core/InputBase";
+import makeStyles from "@mui/styles/makeStyles";
+import InputBaseMUI from "@mui/material/InputBase";
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
 import classNames from "classnames";
 

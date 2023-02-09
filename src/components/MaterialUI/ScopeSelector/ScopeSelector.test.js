@@ -5,7 +5,7 @@ import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 import { mount } from "enzyme";
 import ScopeTreeView from "./ScopeTreeView";
 import ScopeSelector from "./ScopeSelector";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import InputBase from "./../Inputs/InputBase";
 import InputBaseProps from "./../Inputs/InputBaseProps";
 import sharedMessages from "./../../../sharedMessages";

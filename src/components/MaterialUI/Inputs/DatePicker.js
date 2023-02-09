@@ -4,7 +4,7 @@ import Icon from "../DataDisplay/Icon";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import {
 	getTimeZoneByName,
 	convertTimeToOtherTimeZone,

@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import SectionTitle from "./SectionTitle";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 describe("SectionTitle", () => {
 	it("Renders section title with passed value", () => {

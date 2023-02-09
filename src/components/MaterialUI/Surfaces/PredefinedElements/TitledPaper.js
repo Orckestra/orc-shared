@@ -1,7 +1,7 @@
 import React from "react";
 import Paper from "../Paper";
 import SectionTitle from "../../DataDisplay/PredefinedElements/SectionTitle";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
 	container: {

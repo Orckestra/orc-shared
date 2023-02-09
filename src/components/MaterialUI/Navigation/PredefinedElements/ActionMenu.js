@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
+import makeStyles from "@mui/styles/makeStyles";
+import IconButton from "@mui/material/IconButton";
 import DropDownMenu from "../DropDownMenu";
 import Icon from "../../DataDisplay/Icon";
 import DropDownMenuProps from "../DropDownMenuProps";

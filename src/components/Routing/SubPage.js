@@ -6,8 +6,8 @@ import { mapHref } from "../../actions/navigation";
 import withWaypointing from "./withWaypointing";
 import Modal from "../MaterialUI/DataDisplay/Modal";
 import ModalProps from "../MaterialUI/DataDisplay/modalProps";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import makeStyles from "@mui/styles/makeStyles";
 import sharedMessages from "../../sharedMessages";
 import { FormattedMessage } from "react-intl";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
-import ModalMui from "@material-ui/core/Modal";
-import { makeStyles } from "@material-ui/core/styles";
+import ModalMui from "@mui/material/Modal";
+import makeStyles from "@mui/styles/makeStyles";
 import ModalProps, { isModalProps } from "./modalProps";
 
 const useStyles = makeStyles(theme => ({

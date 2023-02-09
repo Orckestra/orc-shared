@@ -1,6 +1,6 @@
 import React from "react";
 import TreeItem, { ScopeIcon, ScopeLabel } from "./TreeItem";
-import TreeItemMui from "@material-ui/lab/TreeItem";
+import TreeItemMui from "@mui/lab/TreeItem";
 import Icon from "./../DataDisplay/Icon";
 import MultipleLinesText from "./../DataDisplay/TooltippedElements/MultipleLinesText";
 import TextProps from "./../textProps";

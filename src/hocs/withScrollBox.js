@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { safeGet } from "../utils";
 import Measure from "react-measure";
 
@@ -9,18 +10,21 @@ export const Scrollbox = styled.div`
 	overflow-y: auto;
 `;
 
-const withScrollBox = WrappedComp => ({ onScroll, ...otherProps }) => (
-	<Measure bounds>
-		{({ measureRef, contentRect }) => (
-			<Scrollbox onScroll={onScroll} ref={measureRef}>
-				<WrappedComp
-					{...otherProps}
-					height={safeGet(contentRect, "bounds", "height")}
-					width={safeGet(contentRect, "bounds", "width")}
-				/>
-			</Scrollbox>
-		)}
-	</Measure>
-);
+const withScrollBox =
+	WrappedComp =>
+	({ onScroll, ...otherProps }) =>
+		(
+			<Measure bounds>
+				{({ measureRef, contentRect }) => (
+					<Scrollbox onScroll={onScroll} ref={measureRef}>
+						<WrappedComp
+							{...otherProps}
+							height={safeGet(contentRect, "bounds", "height")}
+							width={safeGet(contentRect, "bounds", "width")}
+						/>
+					</Scrollbox>
+				)}
+			</Measure>
+		);
 
 export default withScrollBox;

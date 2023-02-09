@@ -1,7 +1,7 @@
 import withDeferredTooltip from "./withDeferredTooltip";
 import React from "react";
 import { shallow } from "enzyme";
-import MuiTooltip from "@material-ui/core/Tooltip";
+import MuiTooltip from "@mui/material/Tooltip";
 
 describe("withDeferredTooltip", () => {
 	const ComponentToBeTooltipped = () => {

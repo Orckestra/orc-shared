@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled, { css } from "styled-components";
 import { getThemeProp, ifFlag, memoize } from "../utils";
 import withId from "../hocs/withId";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 export const InnerSelect = styled.select`
 	position: absolute;

@@ -1,7 +1,7 @@
 import React from "react";
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import Icon from "../DataDisplay/Icon";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
 	link: {

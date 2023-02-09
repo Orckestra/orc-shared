@@ -1,10 +1,10 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import ListMui from "@material-ui/core/List";
-import ListItemMui from "@material-ui/core/ListItem";
-import ListItemTextMui from "@material-ui/core/ListItemText";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import ListMui from "@mui/material/List";
+import ListItemMui from "@mui/material/ListItem";
+import ListItemTextMui from "@mui/material/ListItemText";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({

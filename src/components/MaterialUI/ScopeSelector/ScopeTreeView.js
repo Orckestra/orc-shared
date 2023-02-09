@@ -1,5 +1,5 @@
 import React from "react";
-import TreeViewMui from "@material-ui/lab/TreeView";
+import TreeViewMui from "@mui/lab/TreeView";
 import TreeItem from "./TreeItem";
 
 export const BaseScopeTreeView = ({

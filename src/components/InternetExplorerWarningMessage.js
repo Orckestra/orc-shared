@@ -1,8 +1,8 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import Icon from "./MaterialUI/DataDisplay/Icon";
 import { FormattedMessage } from "react-intl";
-import ModalMui from "@material-ui/core/Modal";
+import ModalMui from "@mui/material/Modal";
 import sharedMessages from "../sharedMessages";
 
 const useStyles = makeStyles(theme => ({

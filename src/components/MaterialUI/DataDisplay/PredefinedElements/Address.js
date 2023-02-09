@@ -1,9 +1,9 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import TextProps, { isTextProps } from "../../textProps";
 import TooltippedTypography from "../TooltippedElements/TooltippedTypography";
 import _ from "lodash";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({

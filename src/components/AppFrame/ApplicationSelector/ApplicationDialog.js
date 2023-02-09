@@ -1,10 +1,10 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import sharedMessages from "../../../sharedMessages";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import makeStyles from "@mui/styles/makeStyles";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({

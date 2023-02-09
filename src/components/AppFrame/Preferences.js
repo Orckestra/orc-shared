@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { getThemeProp, memoize, unwrapImmutable } from "../../utils";
 import Sidepanel from "../Sidepanel";

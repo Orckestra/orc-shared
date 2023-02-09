@@ -1,9 +1,9 @@
 import React from "react";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import CheckboxGroupProps, { isCheckboxGroupProps } from "./CheckboxGroupProps";
 import Checkbox from "./Checkbox";
 import CheckboxProps from "./CheckboxProps";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
 	container: {

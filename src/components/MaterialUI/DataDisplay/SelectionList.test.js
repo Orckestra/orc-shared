@@ -1,11 +1,11 @@
 import React from "react";
 
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 
 import { ScrollableCustomList } from "./TransferList";
 import SelectionList from "./SelectionList";
-import ListItem from "@material-ui/core/ListItem";
+import ListItem from "@mui/material/ListItem";
 import { extractMessages, TestWrapper } from "../../../utils/testUtils";
 import sharedMessages from "../../../sharedMessages";
 

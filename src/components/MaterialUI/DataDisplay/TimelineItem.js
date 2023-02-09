@@ -1,10 +1,10 @@
 import React from "react";
-import TimelineItemMui from "@material-ui/lab/TimelineItem";
-import TimelineOppositeContentMui from "@material-ui/lab/TimelineOppositeContent";
-import TimelineContentMui from "@material-ui/lab/TimelineContent";
-import TimelineSeparatorMui from "@material-ui/lab/TimelineSeparator";
-import TimelineDotMui from "@material-ui/lab/TimelineDot";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
+import TimelineItemMui from "@mui/lab/TimelineItem";
+import TimelineOppositeContentMui from "@mui/lab/TimelineOppositeContent";
+import TimelineContentMui from "@mui/lab/TimelineContent";
+import TimelineSeparatorMui from "@mui/lab/TimelineSeparator";
+import TimelineDotMui from "@mui/lab/TimelineDot";
+import TimelineConnector from "@mui/lab/TimelineConnector";
 
 const renderContent = content => {
 	if (!content) return null;

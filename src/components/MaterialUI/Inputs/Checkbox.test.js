@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { mount } from "enzyme";
 import Checkbox from "./Checkbox";
-import CheckboxMUI from "@material-ui/core/Checkbox";
+import CheckboxMUI from "@mui/material/Checkbox";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import CheckboxProps from "./CheckboxProps";

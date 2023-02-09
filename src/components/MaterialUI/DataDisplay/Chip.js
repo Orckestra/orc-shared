@@ -1,8 +1,8 @@
 import React from "react";
-import ChipMui from "@material-ui/core/Chip";
+import ChipMui from "@mui/material/Chip";
 import ChipProps, { isChipProps } from "./chipProps";
 import classNames from "classnames";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
 	root: {

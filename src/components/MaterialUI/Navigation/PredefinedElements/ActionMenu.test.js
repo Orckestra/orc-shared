@@ -1,6 +1,6 @@
 import React from "react";
 import DropDownMenu from "../DropDownMenu";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Icon from "../../DataDisplay/Icon";
 import ActionMenu from "./ActionMenu";
 import DropDownMenuProps from "../DropDownMenuProps";

@@ -3,7 +3,7 @@ import { extractMessages, TestWrapper } from "../utils/testUtils";
 import { InternetExplorerWarningMessage } from "./InternetExplorerWarningMessage";
 import Immutable from "immutable";
 import sharedMessages from "../sharedMessages";
-import ModalMui from "@material-ui/core/Modal";
+import ModalMui from "@mui/material/Modal";
 import { Ignore } from "unexpected-reaction";
 
 const messages = extractMessages(sharedMessages);

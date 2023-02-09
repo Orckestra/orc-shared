@@ -1,11 +1,11 @@
 import React from "react";
 import { mount } from "enzyme";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import NotificationProps from "./NotificationProps";
 import Notification from "./Notification";
-import Snackbar from "@material-ui/core/Snackbar";
+import Snackbar from "@mui/material/Snackbar";
 import Icon from "./Icon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 import { act } from "react-dom/test-utils";

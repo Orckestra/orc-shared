@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Collapse from "@material-ui/core/Collapse";
+import Collapse from "@mui/material/Collapse";
 import Icon from "./Icon";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Typography from "@mui/material/Typography";
 import CollapsableListProps, { isCollapsableListProps } from "./collapsableListProps";
 import classNames from "classnames";
 

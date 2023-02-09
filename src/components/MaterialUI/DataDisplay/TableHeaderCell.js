@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "./Icon";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(theme => ({

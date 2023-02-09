@@ -1,6 +1,6 @@
 import React from "react";
-import SwitchMui from "@material-ui/core/Switch";
-import { makeStyles } from "@material-ui/core/styles";
+import SwitchMui from "@mui/material/Switch";
+import makeStyles from "@mui/styles/makeStyles";
 import SwitchProps, { isSwitchProps } from "./SwitchProps";
 import { useIntl } from "react-intl";
 

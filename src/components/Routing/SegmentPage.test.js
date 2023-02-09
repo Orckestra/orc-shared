@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { MemoryRouter, Router } from "react-router";
 import { createMemoryHistory } from "history";
 import SegmentPage, { Wrapper, Item, List } from "./SegmentPage";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
 import translations from "~/translations/en-US.json";

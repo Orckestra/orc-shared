@@ -1,13 +1,13 @@
 import React from "react";
 import { mount } from "enzyme";
 import Select, { SelectIconButton } from "./Select";
-import SelectMUI from "@material-ui/core/Select";
+import SelectMUI from "@mui/material/Select";
 import sinon from "sinon";
 import { ignoreConsoleError, createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import SelectProps, { sortTypeEnum } from "./SelectProps";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
-import { ListSubheader, MuiThemeProvider } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
+import { ListSubheader, ThemeProvider, StyledEngineProvider } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 import Icon from "./../DataDisplay/Icon";
 
 describe("Select Component", () => {
@@ -25,9 +25,11 @@ describe("Select Component", () => {
 	it("Fails if selectProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = (
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<Select selectProps="Wrong type" />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<Select selectProps="Wrong type" />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			);
 
 			expect(() => mount(component), "to throw a", TypeError).then(error => {

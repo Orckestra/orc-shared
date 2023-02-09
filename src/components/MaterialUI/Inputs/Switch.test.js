@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import SwitchMUI from "@material-ui/core/Switch";
+import SwitchMUI from "@mui/material/Switch";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import SwitchProps from "./SwitchProps";

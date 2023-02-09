@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import Icon from "../DataDisplay/Icon";
 import ExternalLink from "./ExternalLink";
 

@@ -1,6 +1,7 @@
 import React from "react";
 import pt from "prop-types";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { compose, branch, setDisplayName } from "recompose";
 import { safeGet } from "../../utils";
 import withScrollBox from "../../hocs/withScrollBox";

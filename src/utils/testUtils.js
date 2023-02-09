@@ -4,8 +4,8 @@ import { mount } from "unexpected-reaction";
 import { Ignore } from "unexpected-reaction";
 import createThemes from "./../components/MaterialUI/muiThemes";
 import { Router, MemoryRouter } from "react-router-dom";
-import { MuiThemeProvider } from "@material-ui/core";
-import { StylesProvider } from "@material-ui/core/styles";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
+import StylesProvider from "@mui/styles/StylesProvider";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { NotificationContextProvider } from "./../components/MaterialUI/Feedback/NotificationContext";
@@ -196,7 +196,11 @@ export const TestWrapper = ({
 
 		const theme = muiThemeProvider.theme ?? createMuiTheme();
 
-		return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
+		return (
+			<StyledEngineProvider injectFirst>
+				<ThemeProvider theme={theme}>{children}</ThemeProvider>
+			</StyledEngineProvider>
+		);
 	};
 
 	const MemoryRouterWrapper = ({ children }) => {

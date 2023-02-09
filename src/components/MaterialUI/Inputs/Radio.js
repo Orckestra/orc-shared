@@ -1,11 +1,11 @@
 import React from "react";
 import classNames from "classnames";
-import RadioGroupMui from "@material-ui/core/RadioGroup";
-import RadioMui from "@material-ui/core/Radio";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import { makeStyles } from "@material-ui/core/styles";
+import RadioGroupMui from "@mui/material/RadioGroup";
+import RadioMui from "@mui/material/Radio";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import makeStyles from "@mui/styles/makeStyles";
 import RadioProps, { isRadioProps } from "./RadioProps.js";
 
 const useStyles = makeStyles(theme => ({

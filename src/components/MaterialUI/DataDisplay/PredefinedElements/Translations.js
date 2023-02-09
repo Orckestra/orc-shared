@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import CollapsibleList from "../CollapsableList";
 import CollapsibleListProps from "../collapsableListProps";
 import { InputBase, InputBaseProps } from "../../Inputs";

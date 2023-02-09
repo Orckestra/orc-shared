@@ -3,10 +3,10 @@ import ReactDOM from "react-dom";
 import sinon from "sinon";
 import { mount } from "enzyme";
 import { spyOnConsole } from "../../../utils/testUtils";
-import RadioGroupMui from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroupMui from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import Radio from "./Radio";
 import RadioProps from "./RadioProps";
 

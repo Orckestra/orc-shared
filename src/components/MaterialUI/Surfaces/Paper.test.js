@@ -1,5 +1,5 @@
 import React from "react";
-import MuiPaper from "@material-ui/core/Paper";
+import MuiPaper from "@mui/material/Paper";
 import PaperProps from "./paperProps";
 import Paper from "./Paper";
 import { ignoreConsoleError } from "../../../utils/testUtils";

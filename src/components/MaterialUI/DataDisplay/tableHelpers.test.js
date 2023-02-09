@@ -6,8 +6,8 @@ import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
 import Switch from "../Inputs/Switch";
 import SwitchProps from "../Inputs/SwitchProps";
 import { IntlProvider } from "react-intl";
-import { MuiThemeProvider } from "@material-ui/core";
-import { StylesProvider } from "@material-ui/core/styles";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
+import StylesProvider from "@mui/styles/StylesProvider";
 import InputBaseProps from "../Inputs/InputBaseProps";
 import InputBase from "../Inputs/InputBase";
 
@@ -723,39 +723,47 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[0].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[0].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps1} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps1} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[1].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[1].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps2} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps2} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 	});
@@ -802,39 +810,47 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[0].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[0].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps1} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps1} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[1].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[1].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps2} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps2} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 	});
@@ -883,39 +899,47 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[0].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[0].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps1} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps1} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[1].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[1].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps2} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps2} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 	});
@@ -965,39 +989,47 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[0].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[0].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps1} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps1} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[1].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[1].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<Switch switchProps={switchProps2} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<Switch switchProps={switchProps2} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 	});
@@ -1037,39 +1069,47 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[0].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[0].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<InputBase inputProps={inputBaseProps1} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<InputBase inputProps={inputBaseProps1} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[1].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[1].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<InputBase inputProps={inputBaseProps2} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<InputBase inputProps={inputBaseProps2} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 	});
@@ -1118,39 +1158,47 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[0].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[0].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<InputBase inputProps={inputBaseProps1} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<InputBase inputProps={inputBaseProps1} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 
 		expect(
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						{rows[1].columns[0].cellElement}
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							{rows[1].columns[0].cellElement}
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<IntlProvider messages={captionMessages} locale="en-US">
-						<InputBase inputProps={inputBaseProps2} />
-					</IntlProvider>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<IntlProvider messages={captionMessages} locale="en-US">
+							<InputBase inputProps={inputBaseProps2} />
+						</IntlProvider>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>,
 		);
 	});

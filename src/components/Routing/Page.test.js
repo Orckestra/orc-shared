@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { MemoryRouter } from "react-router";
 import Page from "./Page";
 import ModalProps from "../MaterialUI/DataDisplay/modalProps";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
 import { mount } from "unexpected-reaction";
 import translations from "~/translations/en-US.json";

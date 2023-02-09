@@ -1,8 +1,8 @@
 import React from "react";
-import CheckboxMUI from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CheckboxMUI from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import CheckboxProps, { isCheckboxProps } from "./CheckboxProps";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({

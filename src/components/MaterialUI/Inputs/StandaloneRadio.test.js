@@ -3,11 +3,11 @@ import { mount, shallow } from "enzyme";
 import StandaloneRadio from "./StandaloneRadio";
 import StandaloneRadioProps from "./standaloneRadioProps";
 import { ignoreConsoleError, generateClassName, createMuiTheme } from "~/utils/testUtils";
-import RadioMui from "@material-ui/core/Radio";
+import RadioMui from "@mui/material/Radio";
 import sinon from "sinon";
 import ReactDOM from "react-dom";
-import { StylesProvider } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core";
+import StylesProvider from "@mui/styles/StylesProvider";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
 
 describe("Radio", () => {
 	it("Throws an error if radioProps has wrong type", () => {
@@ -22,24 +22,28 @@ describe("Radio", () => {
 	it("Renders Radio propely", () => {
 		const component = (
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<StandaloneRadio />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<StandaloneRadio />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>
 		);
 		const expected = (
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<RadioMui
-						checked={false}
-						disabled={false}
-						onChange={null}
-						size={"medium"}
-						inputProps={null}
-						name={null}
-						icon={<span className={"makeStyles-radioIcon"} />}
-					/>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<RadioMui
+							checked={false}
+							disabled={false}
+							onChange={null}
+							size={"medium"}
+							inputProps={null}
+							name={null}
+							icon={<span className={"makeStyles-radioIcon"} />}
+						/>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>
 		);
 
@@ -174,9 +178,11 @@ describe("Radio", () => {
 		radioProps.set(StandaloneRadioProps.propNames.checked, true);
 		const component = (
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<StandaloneRadio radioProps={radioProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<StandaloneRadio radioProps={radioProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>
 		);
 
@@ -191,9 +197,11 @@ describe("Radio", () => {
 		radioProps.set(StandaloneRadioProps.propNames.checked, true);
 		const component = (
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<StandaloneRadio radioProps={radioProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<StandaloneRadio radioProps={radioProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>
 		);
 
@@ -208,9 +216,11 @@ describe("Radio", () => {
 		radioProps.set(StandaloneRadioProps.propNames.checked, false);
 		const component = (
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<StandaloneRadio radioProps={radioProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<StandaloneRadio radioProps={radioProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>
 		);
 
@@ -225,9 +235,11 @@ describe("Radio", () => {
 		radioProps.set(StandaloneRadioProps.propNames.checked, false);
 		const component = (
 			<StylesProvider generateClassName={generateClassName}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<StandaloneRadio radioProps={radioProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<StandaloneRadio radioProps={radioProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</StylesProvider>
 		);
 

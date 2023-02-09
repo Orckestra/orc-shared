@@ -1,6 +1,6 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
-import ListItemMui from "@material-ui/core/ListItem";
+import Paper from "@mui/material/Paper";
+import ListItemMui from "@mui/material/ListItem";
 import List, { ScrollableList, compareListItem } from "./List";
 import { mount } from "enzyme";
 import sinon from "sinon";

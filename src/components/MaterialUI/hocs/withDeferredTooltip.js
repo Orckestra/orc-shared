@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MuiTooltip from "@material-ui/core/Tooltip";
+import MuiTooltip from "@mui/material/Tooltip";
 import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "../../../utils/propertyValidator";
 
 // Pay attention that if component you are passed to this HOC contains titleValue property

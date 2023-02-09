@@ -1,9 +1,9 @@
 import React from "react";
 import { mount } from "enzyme";
 import Autocomplete from "./Autocomplete";
-import AutocompleteMUI from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
-import { MuiThemeProvider } from "@material-ui/core";
+import AutocompleteMUI from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
 import sinon from "sinon";
 import { ignoreConsoleError, createMuiTheme, TestWrapper } from "../../../utils/testUtils";
 import AutocompleteProps from "./AutocompleteProps";
@@ -24,9 +24,11 @@ describe("Autocomplete Component", () => {
 	it("Fails if autocompleteProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = (
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<Autocomplete autocompleteProps="Wrong type" />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<Autocomplete autocompleteProps="Wrong type" />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			);
 
 			expect(() => mount(component), "to throw a", TypeError).then(error => {

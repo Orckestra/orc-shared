@@ -1,7 +1,7 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@mui/material/Typography";
+import makeStyles from "@mui/styles/makeStyles";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
 import TextProps from "../../textProps";
 import { isReactComponent } from "../../../../utils/propertyValidator";

@@ -2,7 +2,7 @@ import React from "react";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { TestWrapper, createMuiTheme, extractMessages } from "../../../../utils/testUtils";
-import InputBase from "@material-ui/core/InputBase";
+import InputBase from "@mui/material/InputBase";
 import Translations, { compareTranslateStrings } from "./Translations";
 import sharedMessages from "../../../../sharedMessages";
 import CollapsableList from "../CollapsableList";

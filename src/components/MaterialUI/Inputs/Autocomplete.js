@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from "react";
 import classNames from "classnames";
-import AutocompleteMUI from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
+import AutocompleteMUI from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import makeStyles from "@mui/styles/makeStyles";
 import Icon from "../DataDisplay/Icon";
 import AutocompleteProps, { isAutocompleteProps } from "./AutocompleteProps";
 

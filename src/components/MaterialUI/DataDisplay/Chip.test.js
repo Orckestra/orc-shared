@@ -3,7 +3,7 @@ import { mount, shallow } from "enzyme";
 import Chip from "./Chip";
 import ChipProps from "./chipProps";
 import { ignoreConsoleError } from "~/utils/testUtils";
-import ChipMui from "@material-ui/core/Chip";
+import ChipMui from "@mui/material/Chip";
 
 describe("Chip", () => {
 	it("Throws an error if chipProps has wrong type", () => {

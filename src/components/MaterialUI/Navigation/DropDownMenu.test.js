@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
 import { mount } from "enzyme";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import Icon from "../DataDisplay/Icon";
 import DropDownMenu from "./DropDownMenu";
 import { ignoreConsoleError } from "../../../utils/testUtils";

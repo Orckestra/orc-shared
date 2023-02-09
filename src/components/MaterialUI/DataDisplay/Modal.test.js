@@ -3,7 +3,7 @@ import { ignoreConsoleError } from "~/utils/testUtils";
 import Modal from "./Modal";
 import ModalProps from "./modalProps";
 import { mount } from "enzyme";
-import ModalMui from "@material-ui/core/Modal";
+import ModalMui from "@mui/material/Modal";
 import sinon from "sinon";
 
 describe("Modal", () => {

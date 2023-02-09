@@ -2,7 +2,7 @@ import React from "react";
 import TitledSelect from "./TitledSelect";
 import Select from "./../Select";
 import SelectProps from "./../SelectProps";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { TestWrapper, createMuiTheme } from "./../../../../utils/testUtils";
 
 describe("TitledSelect", () => {

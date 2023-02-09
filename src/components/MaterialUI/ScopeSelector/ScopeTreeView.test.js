@@ -5,8 +5,8 @@ import sinon from "sinon";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 import { mount } from "enzyme";
 import TreeItem from "./TreeItem";
-import TreeViewMui from "@material-ui/lab/TreeView";
-import TreeItemMui from "@material-ui/lab/TreeItem";
+import TreeViewMui from "@mui/lab/TreeView";
+import TreeItemMui from "@mui/lab/TreeItem";
 import ScopeTreeView from "./ScopeTreeView";
 
 describe("ScopeTreeView", () => {

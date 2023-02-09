@@ -1,7 +1,7 @@
 import React from "react";
-import RadioMui from "@material-ui/core/Radio";
+import RadioMui from "@mui/material/Radio";
 import RadioProps, { isStandaloneRadioProps } from "./standaloneRadioProps";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({

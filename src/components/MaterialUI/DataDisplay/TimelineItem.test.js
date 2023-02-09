@@ -1,6 +1,6 @@
 import React from "react";
 import TimelineItem from "./TimelineItem";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
+import TimelineConnector from "@mui/lab/TimelineConnector";
 import { mount } from "enzyme";
 
 describe("TimelineItem", () => {

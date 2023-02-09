@@ -2,7 +2,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import DiscountedPrice from "./DiscountedPrice";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { FormattedNumber, IntlProvider } from "react-intl";
 
 describe("Discounted Price", () => {

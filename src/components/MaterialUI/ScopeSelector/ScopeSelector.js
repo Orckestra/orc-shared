@@ -1,8 +1,8 @@
 import React from "react";
 import ScopeTreeView from "./ScopeTreeView";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import Sidepanel from "./../../Sidepanel";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import InputBase from "./../Inputs/InputBase";
 import { useIntl } from "react-intl";
 import InputBaseProps from "./../Inputs/InputBaseProps";

@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import { IntlProvider } from "react-intl";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import InformationItem from "./InformationItem";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
 import { stringifyWithoutQuotes } from "./../../../../utils/parseHelper";

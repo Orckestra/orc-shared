@@ -1,4 +1,5 @@
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 const ColumnWrapper = styled.div`
 	flex: 0 1 100%;
