@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { FormattedNumber, FormattedDate, FormattedTime } from "react-intl";
 import { safeGet, getThemeProp } from "../../utils";
 import Switch from "../Switch";
@@ -48,7 +49,7 @@ const renderByType = (value, def, rowId, selected, row) => {
 export const TableData = styled.td`
 	border: 0 solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	border-top-width: 1px;
-	tr:first-child & {
+	tr:first-of-type & {
 		border-top-width: 0;
 	}
 	tr:last-child & {

@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import ResizeDetector from "react-resize-detector";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import Tabs from "@material-ui/core/Tabs";
-import { makeStyles } from "@material-ui/core/styles";
-import Tab from "@material-ui/core/Tab";
+import Tabs from "@mui/material/Tabs";
+import makeStyles from "@mui/styles/makeStyles";
+import Tab from "@mui/material/Tab";
 import TabLabel from "./TabLabel";
 import Select from "../Inputs/Select";
 import SelectProps from "../Inputs/SelectProps";
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: "unset",
 	},
 	tabWrapper: {
-		"& > *:first-child": {
+		"& > *:first-of-type": {
 			order: "1 !important",
 			marginLeft: theme.spacing(1),
 			color: theme.palette.primary.contrastText,
@@ -197,7 +197,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 				value={activeTabIndex}
 				onChange={handleChange}
 				variant="scrollable"
-				scrollButtons="off"
+				scrollButtons={false}
 				classes={{
 					scrollButtons: classes.hidden,
 				}}

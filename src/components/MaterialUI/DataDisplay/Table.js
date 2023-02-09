@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import TableMui from "@material-ui/core/Table";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import { makeStyles } from "@material-ui/core/styles";
+import TableMui from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import makeStyles from "@mui/styles/makeStyles";
 import { createInput, inputTypes } from "../Inputs/createInput";
 import { tableSelectionMode, useTableSelection } from "./useTableSelection";
 import TableProps, { isTableProps } from "./TableProps";
@@ -67,14 +67,14 @@ export const useStyles = makeStyles(theme => ({
 	},
 	tableCell: {
 		padding: theme.spacing(2, 0.5),
-		"&:first-child": {
+		"&:first-of-type": {
 			padding: theme.spacing(2, 0.5, 2, 2),
 		},
 	},
 	tableCellSelect: {
 		padding: theme.spacing(2, 0.5),
 		width: theme.spacing(3),
-		"&:first-child": {
+		"&:first-of-type": {
 			padding: theme.spacing(2, 0.5, 2, 2),
 		},
 	},
@@ -82,7 +82,7 @@ export const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(1, 0.5),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
-		"&:first-child": {
+		"&:first-of-type": {
 			padding: theme.spacing(2, 0.5, 2, 2),
 		},
 	},
@@ -91,7 +91,7 @@ export const useStyles = makeStyles(theme => ({
 		width: theme.spacing(3),
 		textAlign: "left",
 		fontWeight: theme.typography.fontWeightSemiBold,
-		"&:first-child": {
+		"&:first-of-type": {
 			padding: theme.spacing(2, 0.5, 2, 2),
 		},
 	},

@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import SelectMUI from "@material-ui/core/Select";
-import { makeStyles } from "@material-ui/core/styles";
+import MenuItem from "@mui/material/MenuItem";
+import SelectMUI from "@mui/material/Select";
+import makeStyles from "@mui/styles/makeStyles";
 import SelectProps, { sortTypeEnum, isSelectProps } from "./SelectProps";
 import classNames from "classnames";
 import TooltippedTypography from "./../DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "./../DataDisplay/Icon";
-import IconButton from "@material-ui/core/IconButton";
-import { ListSubheader } from "@material-ui/core";
+import IconButton from "@mui/material/IconButton";
+import { ListSubheader } from "@mui/material";
 
 const useStyles = makeStyles(theme => ({
 	baseItem: {
@@ -231,7 +231,6 @@ const Select = ({ options, selectProps, children }) => {
 		<SelectMUI
 			value={value}
 			onChange={handleChange}
-			disableUnderline={true}
 			IconComponent={SelectIcon}
 			MenuProps={defaultMenuProps}
 			disabled={disabled}
@@ -254,7 +253,6 @@ const Select = ({ options, selectProps, children }) => {
 			value={value}
 			ref={ref}
 			onChange={handleChange}
-			disableUnderline={true}
 			IconComponent={SelectIconButton}
 			MenuProps={iconSelectMenuProps}
 			disabled={disabled}

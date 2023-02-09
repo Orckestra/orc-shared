@@ -1,13 +1,14 @@
 import React from "react";
 import { mount } from "enzyme";
 import ExpansionPanel from "./ExpansionPanel";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionActions from "@material-ui/core/AccordionActions";
-import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionActions from "@mui/material/AccordionActions";
+import { AcordionProps, AcordionActionsProps } from "./expansionPanelProps";
 import { ignoreConsoleError } from "../../../utils/testUtils";
-import { MuiThemeProvider } from "@material-ui/core";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
+import StylesProvider from "@mui/styles/StylesProvider";
 import { createMuiTheme } from "./../../../utils/testUtils";
 
 describe("Expansion Panel", () => {
@@ -16,9 +17,13 @@ describe("Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel header={header} content={content} actions={actions} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel header={header} content={content} actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 		const mountedComponent = mount(component);
 		const expected = (
@@ -37,9 +42,13 @@ describe("Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const actions = <p>Actions</p>;
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel header={header} content={content} actions={actions} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel header={header} content={content} actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 		const mountedComponent = mount(component);
 
@@ -50,9 +59,13 @@ describe("Expansion Panel", () => {
 		const header = <p>Header</p>;
 		const content = <p>Content</p>;
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel header={header} content={content} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel header={header} content={content} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 		const mountedComponent = mount(component);
 
@@ -62,12 +75,16 @@ describe("Expansion Panel", () => {
 	it("Fails if expansionPanelProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = (
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<ExpansionPanel expansionPanelProps="Wrong type" />
-				</MuiThemeProvider>
+				<StylesProvider>
+					<StyledEngineProvider injectFirst>
+						<ThemeProvider theme={createMuiTheme()}>
+							<ExpansionPanel expansionPanelProps="Wrong type" />
+						</ThemeProvider>
+					</StyledEngineProvider>
+				</StylesProvider>
 			);
 			expect(() => mount(component), "to throw a", TypeError).then(error => {
-				expect(error, "to have message", "expansionPanelProps property is not of type ExpansionPanelProps");
+				expect(error, "to have message", "expansionPanelProps property is not of type AcordionProps");
 			});
 		});
 	});
@@ -75,29 +92,33 @@ describe("Expansion Panel", () => {
 	it("Fails if expansionPanelActionsProps has wrong type", () => {
 		ignoreConsoleError(() => {
 			const component = (
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<ExpansionPanel expansionPanelActionsProps="Wrong type" />
-				</MuiThemeProvider>
+				<StylesProvider>
+					<StyledEngineProvider injectFirst>
+						<ThemeProvider theme={createMuiTheme()}>
+							<ExpansionPanel expansionPanelActionsProps="Wrong type" />
+						</ThemeProvider>
+					</StyledEngineProvider>
+				</StylesProvider>
 			);
 			expect(() => mount(component), "to throw a", TypeError).then(error => {
-				expect(
-					error,
-					"to have message",
-					"expansionPanelActionsProps property is not of type ExpansionPanelActionsProps",
-				);
+				expect(error, "to have message", "expansionPanelActionsProps property is not of type AcordionActionsProps");
 			});
 		});
 	});
 
 	it("Uses expansionPanelProps.expanded correctly", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AcordionProps();
 
-		expansionPanelProps.set(ExpansionPanelProps.propNames.expanded, true);
+		expansionPanelProps.set(AcordionProps.propNames.expanded, true);
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -106,14 +127,18 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Uses expansionPanelProps.disabled correctly", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AcordionProps();
 
-		expansionPanelProps.set(ExpansionPanelProps.propNames.disabled, true);
+		expansionPanelProps.set(AcordionProps.propNames.disabled, true);
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -123,9 +148,13 @@ describe("Expansion Panel", () => {
 
 	it("Default value for disabled property is correct if expansionPanelProps wasn't passed", () => {
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -134,12 +163,16 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Default value for disabled property is correct if expansionPanelProps was passed without setting that", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AcordionProps();
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -149,14 +182,18 @@ describe("Expansion Panel", () => {
 
 	it("Uses expansionPanelActionsProps.disableSpacing correctly", () => {
 		const actions = <p>Actions</p>;
-		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
+		const expansionPanelActionsProps = new AcordionActionsProps();
 
-		expansionPanelActionsProps.set(ExpansionPanelActionsProps.propNames.disableSpacing, true);
+		expansionPanelActionsProps.set(AcordionActionsProps.propNames.disableSpacing, true);
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel actions={actions} expansionPanelActionsProps={expansionPanelActionsProps} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel actions={actions} expansionPanelActionsProps={expansionPanelActionsProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -168,9 +205,13 @@ describe("Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel actions={actions} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -179,13 +220,17 @@ describe("Expansion Panel", () => {
 	});
 
 	it("Classes are added properly when constrained property of expansionPanelProps is true", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
-		expansionPanelProps.set(ExpansionPanelProps.propNames.constrained, true);
+		const expansionPanelProps = new AcordionProps();
+		expansionPanelProps.set(AcordionProps.propNames.constrained, true);
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel expansionPanelProps={expansionPanelProps} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -196,12 +241,16 @@ describe("Expansion Panel", () => {
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps was passed without setting that", () => {
 		const actions = <p>Actions</p>;
-		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
+		const expansionPanelActionsProps = new AcordionActionsProps();
 
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel actions={actions} expansionPanelActionsProps={expansionPanelActionsProps} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel actions={actions} expansionPanelActionsProps={expansionPanelActionsProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 
 		const mountedComponent = mount(component);
@@ -215,9 +264,13 @@ describe("Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const expansionPanelId = "ExpPanel123";
 		const component = (
-			<MuiThemeProvider theme={createMuiTheme()}>
-				<ExpansionPanel header={header} content={content} actions={actions} expansionPanelId={expansionPanelId} />
-			</MuiThemeProvider>
+			<StylesProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<ExpansionPanel header={header} content={content} actions={actions} expansionPanelId={expansionPanelId} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			</StylesProvider>
 		);
 		const mountedComponent = mount(component);
 

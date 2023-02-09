@@ -20,7 +20,7 @@ export const ButtonWrapper = styled.div`
 		box-shadow: none;
 	}
 
-	& > :first-child {
+	& > :first-of-type {
 		border-top-left-radius: 4px;
 		border-bottom-left-radius: 4px;
 	}
@@ -50,7 +50,7 @@ export const Spinners = styled.div`
 	margin-top: -1px;
 	margin-bottom: -1px;
 
-	&:first-child > * {
+	&:first-of-type > * {
 		margin-left: -1px;
 	}
 	&:last-child > * {
@@ -78,7 +78,7 @@ export const InputButton = styled(Button)`
 	${Spinners}:last-child > & {
 		margin-top: -1px;
 
-		&:first-child {
+		&:first-of-type {
 			margin-top: 0;
 			border-top-right-radius: 4px;
 		}

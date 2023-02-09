@@ -1,6 +1,6 @@
 import {
-	ExpansionPanelProps,
-	ExpansionPanelActionsProps,
+	AccordionProps,
+	AccordionActionsProps,
 	isExpansionPanelProps,
 	isExpansionPanelActionsProps,
 } from "./expansionPanelProps";
@@ -10,15 +10,15 @@ describe("Expansion Panel Props", () => {
 		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange", "constrained"];
 		const rulesNames = ["root", "summaryRoot", "summaryExpanded", "details", "actions"];
 
-		expect(ExpansionPanelProps.propNames, "to have keys", propNames);
-		expect(ExpansionPanelProps.ruleNames, "to have keys", rulesNames);
+		expect(AccordionProps.propNames, "to have keys", propNames);
+		expect(AccordionProps.ruleNames, "to have keys", rulesNames);
 	});
 
 	it("Puts keys in component prop and rule maps", () => {
 		const propNames = ["defaultExpanded", "disabled", "expanded", "onChange", "constrained"];
 		const rulesNames = ["root", "summaryRoot", "summaryExpanded", "details", "actions"];
 
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AccordionProps();
 
 		const propsKeys = Array.from(expansionPanelProps.componentProps.keys());
 		const classesKeys = Array.from(expansionPanelProps.componentClasses.keys());
@@ -32,13 +32,13 @@ describe("Expansion Panel Actions Props", () => {
 	it("Contains necessary props keys", () => {
 		const propNames = ["disableSpacing"];
 
-		expect(ExpansionPanelActionsProps.propNames, "to have keys", propNames);
+		expect(AccordionActionsProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
 		const propNames = ["disableSpacing"];
 
-		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
+		const expansionPanelActionsProps = new AccordionActionsProps();
 
 		const keys = Array.from(expansionPanelActionsProps.componentProps.keys());
 
@@ -55,8 +55,8 @@ describe("isExpansionPanelProps", () => {
 		expect(isExpansionPanelProps("Not object"), "to be false");
 	});
 
-	it("Returns true if passed value type is ExpansionPanelProps", () => {
-		expect(isExpansionPanelProps(new ExpansionPanelProps()), "to be true");
+	it("Returns true if passed value type is AccordionProps", () => {
+		expect(isExpansionPanelProps(new AccordionProps()), "to be true");
 	});
 
 	it("Returns true if passed value has property _isExpansionPanelProps and it's true", () => {
@@ -78,8 +78,8 @@ describe("isExpansionPanelActionsProps", () => {
 		expect(isExpansionPanelActionsProps("Not object"), "to be false");
 	});
 
-	it("Returns true if passed value type is ExpansionPanelActionsProps", () => {
-		expect(isExpansionPanelActionsProps(new ExpansionPanelActionsProps()), "to be true");
+	it("Returns true if passed value type is AccordionActionsProps", () => {
+		expect(isExpansionPanelActionsProps(new AccordionActionsProps()), "to be true");
 	});
 
 	it("Returns true if passed value has property _isExpansionPanelActionsProps and it's true", () => {

@@ -4,17 +4,17 @@ import { act } from "react-dom/test-utils";
 import sinon from "sinon";
 import { mount } from "enzyme";
 import Table, { MemoTableBody, MemoTableRow, useStyles } from "./Table";
-import TableMui from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import TableMui from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import Placeholder from "../../Placeholder";
 import TableInfoBar from "./PredefinedElements/TableInfoBar";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import TableProps from "./TableProps";
-import { MuiThemeProvider } from "@material-ui/core";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
 import { createMuiTheme } from "./../../../utils/testUtils";
-import TableContainer from "@material-ui/core/TableContainer";
+import TableContainer from "@mui/material/TableContainer";
 import ResizeDetector from "react-resize-detector";
 import CheckboxMui from "../Inputs/Checkbox";
 import { cloneDeep } from "lodash";
@@ -28,9 +28,11 @@ const TestComp = ({ classToTest, styleProps }) => {
 
 const MuiThemeContainer = ({ classToTest, styleProps }) => {
 	return (
-		<MuiThemeProvider theme={createMuiTheme()}>
-			<TestComp classToTest={classToTest} styleProps={styleProps} />
-		</MuiThemeProvider>
+		<StyledEngineProvider injectFirst>
+			<ThemeProvider theme={createMuiTheme()}>
+				<TestComp classToTest={classToTest} styleProps={styleProps} />
+			</ThemeProvider>
+		</StyledEngineProvider>
 	);
 };
 

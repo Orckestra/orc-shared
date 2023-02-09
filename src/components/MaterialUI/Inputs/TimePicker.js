@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import Select from "./Select";
 import SelectProps from "./SelectProps";
 import { getTimeZoneName } from "../../../utils/timezoneHelper";
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: theme.spacing(0.5),
 		marginRight: theme.spacing(0.5),
 		borderRadius: theme.shape.borderRadius,
-		"&:first-child": {
+		"&:first-of-type": {
 			marginLeft: 0,
 		},
 		"& .MuiInputBase-root": {

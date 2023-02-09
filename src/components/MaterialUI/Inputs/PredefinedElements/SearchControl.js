@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import SelectProps from "../SelectProps";
 import Icon from "../../DataDisplay/Icon";
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import Select from "../Select";
-import Input from "@material-ui/core/Input";
+import Input from "@mui/material/Input";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -214,7 +214,7 @@ const SearchControl = ({
 					endAdornment={
 						<InputAdornment position="start">
 							<IconButton
-								tabIndex="-1"
+								tabIndex={-1}
 								data-qa="clearButton"
 								disabled={disabled}
 								onClick={() => {
@@ -223,6 +223,7 @@ const SearchControl = ({
 									inputRef.current.focus();
 								}}
 								className={classes.clearButton}
+								size="large"
 							>
 								<Icon id="close2" />
 							</IconButton>
@@ -242,6 +243,7 @@ const SearchControl = ({
 			onClick={() => {
 				onSearch(searchOption, inputRef.current.value);
 			}}
+			size="large"
 		>
 			<Icon id="search" />
 		</IconButton>

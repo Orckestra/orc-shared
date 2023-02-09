@@ -1,6 +1,7 @@
 import React from "react";
 import pt from "prop-types";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { getThemeProp } from "../utils";
 import IconButton from "./IconButton";
 import Input from "./Input";
@@ -27,7 +28,7 @@ export const ToolGroup = styled.div`
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 	}
-	& > *:not(:first-child) {
+	& > *:not(:first-of-type) {
 		margin-left: 0;
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;

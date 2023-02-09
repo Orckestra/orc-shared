@@ -2,7 +2,7 @@ import React from "react";
 import StepperModal from "./StepperModal";
 import Modal from "./../Modal";
 import ModalProps from "./../modalProps";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";

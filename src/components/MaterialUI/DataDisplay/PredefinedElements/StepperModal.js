@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import makeStyles from "@mui/styles/makeStyles";
 import Modal from "../Modal";
 import ModalProps from "../modalProps";
 import sharedMessages from "./../../../../sharedMessages";
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(1, 0),
 		marginRight: theme.spacing(0.4),
 
-		"&:not(:first-child)": {
+		"&:not(:first-of-type)": {
 			backgroundColor: theme.palette.grey.borders,
 			color: "#FFF",
 			width: "auto",
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: theme.spacing(0, 0.8, 0, 0),
 		},
 
-		"&:not(:first-child):not(:last-child):after, &:not(:last-child):before": {
+		"&:not(:first-of-type):not(:last-child):after, &:not(:last-child):before": {
 			content: "' '",
 			width: 0,
 			height: 0,

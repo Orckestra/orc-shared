@@ -1,8 +1,8 @@
 import React from "react";
-import TreeItemMui from "@material-ui/lab/TreeItem";
+import TreeItemMui from "@mui/lab/TreeItem";
 import Icon from "./../DataDisplay/Icon";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
+import makeStyles from "@mui/styles/makeStyles";
+import { useTheme } from "@mui/styles";
 import MultipleLinesText from "./../DataDisplay/TooltippedElements/MultipleLinesText";
 import TextProps from "./../textProps";
 import classNames from "classnames";
@@ -102,7 +102,7 @@ export const ScopeIcon = ({ type }) => {
 	}
 };
 
-export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScope }) => {
+export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScope, onClick }) => {
 	const classes = useStyles({ hasChildren });
 
 	const icon = <ScopeIcon type={type} />;
@@ -116,7 +116,7 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	// 16.8 height of 1 lines of text
 
 	const label = (
-		<div className={classes.scopeLabel}>
+		<div className={classes.scopeLabel} onClick={onClick}>
 			{icon}
 			<MultipleLinesText textProps={multipleLinesTextProps} children={name} />
 		</div>
@@ -153,11 +153,11 @@ const TreeItem = ({ scope, rootId, onScopeSelect, isScopeSelectable, children })
 					isRootScope={isRootScope}
 					isVirtualScope={isVirtualScope}
 					hasChildren={hasChildren}
+					onClick={e => onLabelClickHandler(e)}
 				/>
 			}
 			expandIcon={isRootScope ? null : expandIcon}
 			collapseIcon={isRootScope ? null : collapseIcon}
-			onLabelClick={e => onLabelClickHandler(e)}
 			classes={{
 				group: classes.group,
 				iconContainer: classNames({ [classes.rootIconContainer]: isRootScope }),

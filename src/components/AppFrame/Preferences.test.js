@@ -459,7 +459,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(PrefButton) + ":first-child",
+						target: getStyledClassSelector(PrefButton) + ":first-of-type",
 					},
 					"to satisfy",
 					<div>

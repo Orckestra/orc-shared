@@ -1,15 +1,15 @@
 import React from "react";
 import { mount } from "enzyme";
 import SectionExpansionPanel from "./SectionExpansionPanel";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionActions from "@material-ui/core/AccordionActions";
-import { ExpansionPanelProps, ExpansionPanelActionsProps } from "./expansionPanelProps";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionActions from "@mui/material/AccordionActions";
+import { AccordionProps, AccordionActionsProps } from "./expansionPanelProps";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import { Provider } from "react-redux";
 import Immutable from "immutable";
-import { MuiThemeProvider } from "@material-ui/core";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
 import { createMuiTheme } from "./../../../utils/testUtils";
 
 describe("Section Expansion Panel", () => {
@@ -36,9 +36,11 @@ describe("Section Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel header={header} content={content} actions={actions} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel header={header} content={content} actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 		const mountedComponent = mount(component);
@@ -59,9 +61,11 @@ describe("Section Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel header={header} content={content} actions={actions} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel header={header} content={content} actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 		const mountedComponent = mount(component);
@@ -74,9 +78,11 @@ describe("Section Expansion Panel", () => {
 		const content = <p>Content</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel header={header} content={content} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel header={header} content={content} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 		const mountedComponent = mount(component);
@@ -92,7 +98,7 @@ describe("Section Expansion Panel", () => {
 				</Provider>
 			);
 			expect(() => mount(component), "to throw a", TypeError).then(error => {
-				expect(error, "to have message", "expansionPanelProps property is not of type ExpansionPanelProps");
+				expect(error, "to have message", "expansionPanelProps property is not of type AccordionProps");
 			});
 		});
 	});
@@ -105,25 +111,23 @@ describe("Section Expansion Panel", () => {
 				</Provider>
 			);
 			expect(() => mount(component), "to throw a", TypeError).then(error => {
-				expect(
-					error,
-					"to have message",
-					"expansionPanelActionsProps property is not of type ExpansionPanelActionsProps",
-				);
+				expect(error, "to have message", "expansionPanelActionsProps property is not of type AccordionActionsProps");
 			});
 		});
 	});
 
 	it("Uses expansionPanelProps.defaultExpanded correctly", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AccordionProps();
 
-		expansionPanelProps.set(ExpansionPanelProps.propNames.defaultExpanded, true);
+		expansionPanelProps.set(AccordionProps.propNames.defaultExpanded, true);
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -133,15 +137,17 @@ describe("Section Expansion Panel", () => {
 	});
 
 	it("Uses expansionPanelProps.disabled correctly", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AccordionProps();
 
-		expansionPanelProps.set(ExpansionPanelProps.propNames.disabled, true);
+		expansionPanelProps.set(AccordionProps.propNames.disabled, true);
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -153,9 +159,11 @@ describe("Section Expansion Panel", () => {
 	it("Default value for disabled property is correct if expansionPanelProps wasn't passed", () => {
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -165,13 +173,15 @@ describe("Section Expansion Panel", () => {
 	});
 
 	it("Default value for disabled property is correct if expansionPanelProps was passed without setting that", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AccordionProps();
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -182,15 +192,17 @@ describe("Section Expansion Panel", () => {
 
 	it("Uses expansionPanelActionsProps.disableSpacing correctly", () => {
 		const actions = <p>Actions</p>;
-		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
+		const expansionPanelActionsProps = new AccordionActionsProps();
 
-		expansionPanelActionsProps.set(ExpansionPanelActionsProps.propNames.disableSpacing, true);
+		expansionPanelActionsProps.set(AccordionActionsProps.propNames.disableSpacing, true);
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} actions={actions} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -203,9 +215,11 @@ describe("Section Expansion Panel", () => {
 		const actions = <p>Actions</p>;
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel actions={actions} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -216,13 +230,15 @@ describe("Section Expansion Panel", () => {
 
 	it("DisableSpacing value for disabled property is correct if expansionPanelActionsProps was passed without setting that", () => {
 		const actions = <p>Actions</p>;
-		const expansionPanelActionsProps = new ExpansionPanelActionsProps();
+		const expansionPanelActionsProps = new AccordionActionsProps();
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} actions={actions} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel expansionPanelActionsProps={expansionPanelActionsProps} actions={actions} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -232,15 +248,17 @@ describe("Section Expansion Panel", () => {
 	});
 
 	it("Uses expansionPanelProps.constrained correctly", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AccordionProps();
 
-		expansionPanelProps.set(ExpansionPanelProps.propNames.constrained, true);
+		expansionPanelProps.set(AccordionProps.propNames.constrained, true);
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -251,13 +269,15 @@ describe("Section Expansion Panel", () => {
 	});
 
 	it("Default value for constrained property is correct if expansionPanelProps was passed without setting that", () => {
-		const expansionPanelProps = new ExpansionPanelProps();
+		const expansionPanelProps = new AccordionProps();
 
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel expansionPanelProps={expansionPanelProps} />
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 
@@ -274,14 +294,16 @@ describe("Section Expansion Panel", () => {
 		const expansionPanelId = "ExpPanel123";
 		const component = (
 			<Provider store={store(state)}>
-				<MuiThemeProvider theme={createMuiTheme()}>
-					<SectionExpansionPanel
-						header={header}
-						content={content}
-						actions={actions}
-						expansionPanelId={expansionPanelId}
-					/>
-				</MuiThemeProvider>
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={createMuiTheme()}>
+						<SectionExpansionPanel
+							header={header}
+							content={content}
+							actions={actions}
+							expansionPanelId={expansionPanelId}
+						/>
+					</ThemeProvider>
+				</StyledEngineProvider>
 			</Provider>
 		);
 		const mountedComponent = mount(component);

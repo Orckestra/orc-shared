@@ -1,4 +1,5 @@
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 const Form = styled.div`
 	box-sizing: border-box;
@@ -12,7 +13,7 @@ const Form = styled.div`
 	padding-top: 0;
 	font-size: 12px;
 
-	&:first-child {
+	&:first-of-type {
 		padding-left: 20px;
 	}
 `;

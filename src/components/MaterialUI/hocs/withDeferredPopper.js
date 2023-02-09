@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Popper from "@mui/material/Popper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "../../../utils/propertyValidator";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
 	popper: {
@@ -118,15 +118,20 @@ const withDeferredPopper =
 					placement={placement}
 					data-qa="poperComponent"
 					className={classProp.popper}
-					modifiers={{
-						offset: {
-							offset: "0, 10",
+					modifiers={[
+						{
+							name: "offset",
+							options: {
+								offset: [0, 10],
+							},
 						},
-						arrow: {
-							enabled: true,
-							element: classProp.arrow,
+						{
+							name: "arrow",
+							options: {
+								element: classProp.arrow,
+							},
 						},
-					}}
+					]}
 					open={popperState.isDisplayed}
 					anchorEl={popperState.anchorElement}
 				>

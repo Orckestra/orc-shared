@@ -1,14 +1,14 @@
 import React from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionActions from "@material-ui/core/AccordionActions";
-import { makeStyles } from "@material-ui/core/styles";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionActions from "@mui/material/AccordionActions";
+import makeStyles from "@mui/styles/makeStyles";
 import classNames from "classnames";
 import Icon from "./../DataDisplay/Icon";
 import {
-	ExpansionPanelProps,
-	ExpansionPanelActionsProps,
+	AccordionProps,
+	AccordionActionsProps,
 	isExpansionPanelProps,
 	isExpansionPanelActionsProps,
 } from "./expansionPanelProps";
@@ -71,17 +71,17 @@ const SectionExpansionPanel = ({
 	expansionPanelActionsProps,
 }) => {
 	if (isExpansionPanelProps(expansionPanelProps) === false) {
-		throw new TypeError("expansionPanelProps property is not of type ExpansionPanelProps");
+		throw new TypeError("expansionPanelProps property is not of type AccordionProps");
 	}
 
 	if (isExpansionPanelActionsProps(expansionPanelActionsProps) === false) {
-		throw new TypeError("expansionPanelActionsProps property is not of type ExpansionPanelActionsProps");
+		throw new TypeError("expansionPanelActionsProps property is not of type AccordionActionsProps");
 	}
 
 	const classes = useStyles();
 
 	// Expansion panel props
-	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
+	const disabled = expansionPanelProps?.get(AccordionProps.propNames.disabled);
 
 	const [panelState, updateViewState] = useViewState(expansionPanelId);
 	const defaultExpanded = panelState["isExpanded"] ?? true;
@@ -103,9 +103,9 @@ const SectionExpansionPanel = ({
 	};
 
 	// Expansion panel actions props
-	const disableSpacing = expansionPanelActionsProps?.get(ExpansionPanelActionsProps.propNames.disableSpacing);
+	const disableSpacing = expansionPanelActionsProps?.get(AccordionActionsProps.propNames.disableSpacing);
 
-	const constrained = expansionPanelProps?.get(ExpansionPanelProps.propNames.constrained) || false;
+	const constrained = expansionPanelProps?.get(AccordionProps.propNames.constrained) || false;
 
 	return (
 		<Accordion

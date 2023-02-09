@@ -3,10 +3,10 @@ import { mount } from "enzyme";
 import sinon from "sinon";
 import SearchControl, { getSearchOptionValue } from "./SearchControl";
 import { TestWrapper, createMuiTheme } from "../../../../utils/testUtils";
-import Input from "@material-ui/core/Input";
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import SelectMUI from "@material-ui/core/Select";
+import Input from "@mui/material/Input";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import SelectMUI from "@mui/material/Select";
 import Icon from "../../DataDisplay/Icon";
 import { useStyles } from "./SearchControl";
 import Select from "../Select";
@@ -89,7 +89,7 @@ describe("SearchControl Component", () => {
 								disableUnderline={true}
 								endAdornment={
 									<InputAdornment position="start">
-										<IconButton tabIndex="-1">
+										<IconButton tabIndex={-1}>
 											<Icon id="close2" />
 										</IconButton>
 									</InputAdornment>
@@ -130,7 +130,7 @@ describe("SearchControl Component", () => {
 								disableUnderline={true}
 								endAdornment={
 									<InputAdornment position="start">
-										<IconButton tabIndex="-1">
+										<IconButton tabIndex={-1}>
 											<Icon id="close2" />
 										</IconButton>
 									</InputAdornment>
@@ -171,7 +171,7 @@ describe("SearchControl Component", () => {
 								disableUnderline={true}
 								endAdornment={
 									<InputAdornment position="start">
-										<IconButton tabIndex="-1">
+										<IconButton tabIndex={-1}>
 											<Icon id="close2" />
 										</IconButton>
 									</InputAdornment>
@@ -467,7 +467,7 @@ describe("SearchControl Component", () => {
 								disableUnderline={true}
 								endAdornment={
 									<InputAdornment position="start">
-										<IconButton tabIndex="-1" disabled={true}>
+										<IconButton tabIndex={-1} disabled={true}>
 											<Icon id="close2" />
 										</IconButton>
 									</InputAdornment>

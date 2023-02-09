@@ -36,7 +36,7 @@ export const List = styled.div`
 				border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 			}
 
-			& > ${FieldBox}:first-child {
+			& > ${FieldBox}:first-of-type {
 				margin-top: 15px;
 			}
 			& > ${FieldBox}:last-child {

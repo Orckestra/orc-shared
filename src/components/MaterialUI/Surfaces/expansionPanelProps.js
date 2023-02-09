@@ -1,6 +1,6 @@
 import ComponentProps from "../componentProps";
 
-class ExpansionPanelProps extends ComponentProps {
+class AccordionProps extends ComponentProps {
 	static propNames = {
 		defaultExpanded: "defaultExpanded",
 		disabled: "disabled",
@@ -37,10 +37,10 @@ class ExpansionPanelProps extends ComponentProps {
 
 export const isExpansionPanelProps = function (value) {
 	if (value == null) return true;
-	return typeof value === "object" && (value instanceof ExpansionPanelProps || value._isExpansionPanelProps === true);
+	return typeof value === "object" && (value instanceof AccordionProps || value._isExpansionPanelProps === true);
 };
 
-class ExpansionPanelActionsProps extends ComponentProps {
+class AccordionActionsProps extends ComponentProps {
 	static propNames = {
 		disableSpacing: "disableSpacing",
 	};
@@ -55,9 +55,7 @@ class ExpansionPanelActionsProps extends ComponentProps {
 
 export const isExpansionPanelActionsProps = function (value) {
 	if (value == null) return true;
-	return (
-		typeof value === "object" && (value instanceof ExpansionPanelProps || value._isExpansionPanelActionsProps === true)
-	);
+	return typeof value === "object" && (value instanceof AccordionProps || value._isExpansionPanelActionsProps === true);
 };
 
-export { ExpansionPanelProps, ExpansionPanelActionsProps };
+export { AccordionProps, AccordionActionsProps };

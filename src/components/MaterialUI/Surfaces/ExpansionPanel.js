@@ -1,13 +1,13 @@
 import React from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionActions from "@material-ui/core/AccordionActions";
-import { makeStyles } from "@material-ui/core/styles";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionActions from "@mui/material/AccordionActions";
+import { makeStyles } from "@mui/styles";
 import classNames from "classnames";
 import {
-	ExpansionPanelProps,
-	ExpansionPanelActionsProps,
+	AccordionProps,
+	AccordionActionsProps,
 	isExpansionPanelProps,
 	isExpansionPanelActionsProps,
 } from "./expansionPanelProps";
@@ -40,19 +40,19 @@ const useStyles = makeStyles(theme => ({
 
 const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansionPanelActionsProps }) => {
 	if (isExpansionPanelProps(expansionPanelProps) === false) {
-		throw new TypeError("expansionPanelProps property is not of type ExpansionPanelProps");
+		throw new TypeError("expansionPanelProps property is not of type AccordionProps");
 	}
 
 	if (isExpansionPanelActionsProps(expansionPanelActionsProps) === false) {
-		throw new TypeError("expansionPanelActionsProps property is not of type ExpansionPanelActionsProps");
+		throw new TypeError("expansionPanelActionsProps property is not of type AccordionActionsProps");
 	}
 
 	const classes = useStyles();
 
 	// Expansion panel props
-	const disabled = expansionPanelProps?.get(ExpansionPanelProps.propNames.disabled);
-	const defaultExpanded = expansionPanelProps?.get(ExpansionPanelProps.propNames.defaultExpanded) ?? true;
-	const constrained = expansionPanelProps?.get(ExpansionPanelProps.propNames.constrained) || false;
+	const disabled = expansionPanelProps?.get(AccordionProps.propNames.disabled);
+	const defaultExpanded = expansionPanelProps?.get(AccordionProps.propNames.defaultExpanded) ?? true;
+	const constrained = expansionPanelProps?.get(AccordionProps.propNames.constrained) || false;
 
 	const [expanded, setExpanded] = React.useState(defaultExpanded);
 
@@ -60,16 +60,16 @@ const ExpansionPanel = ({ header, content, actions, expansionPanelProps, expansi
 		setExpanded(isExpanded);
 	};
 
-	const expansionPanelRootStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.root);
-	const panelSummaryRootStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.summaryRoot);
-	const panelSummaryExpandedStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.summaryExpanded);
-	const panelDetailsStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.details);
-	const panelActionsStyle = expansionPanelProps?.getStyle(ExpansionPanelProps.ruleNames.actions);
+	const expansionPanelRootStyle = expansionPanelProps?.getStyle(AccordionProps.ruleNames.root);
+	const panelSummaryRootStyle = expansionPanelProps?.getStyle(AccordionProps.ruleNames.summaryRoot);
+	const panelSummaryExpandedStyle = expansionPanelProps?.getStyle(AccordionProps.ruleNames.summaryExpanded);
+	const panelDetailsStyle = expansionPanelProps?.getStyle(AccordionProps.ruleNames.details);
+	const panelActionsStyle = expansionPanelProps?.getStyle(AccordionProps.ruleNames.actions);
 
 	// Expansion panel summary props
 
 	// Expansion panel actions props
-	const disableSpacing = expansionPanelActionsProps?.get(ExpansionPanelActionsProps.propNames.disableSpacing);
+	const disableSpacing = expansionPanelActionsProps?.get(AccordionActionsProps.propNames.disableSpacing);
 
 	return (
 		<Accordion
