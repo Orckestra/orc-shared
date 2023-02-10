@@ -19,7 +19,7 @@ export const platformRoles = {
 export const roleGroups = {
 	Products: "Products",
 	Orders: "Orders",
-	Returns: "Returns",
+	OrderReturn: "OrderReturn",
 	Marketing: "Marketing",
 	Analytics: "Analytics",
 	Shopping: "Shopping",
