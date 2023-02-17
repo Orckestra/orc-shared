@@ -708,4 +708,26 @@
  <polygon fill="#FFF" points="9.6 12 16 8.4 9.6 4.8"/>
  </g>
 </symbol>
+<symbol id="icon-barcode" viewBox="0 0 25 20" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.00031 16.0315C1.27645 16.0315 1.50031 16.2554 1.50031 16.5315V19.0005H3.96931C4.24545 19.0005 4.46931 19.2244 4.46931 19.5005C4.46931 19.7766 4.24545 20.0005 3.96931 20.0005H1.00031C0.724163 20.0005 0.500305 19.7766 0.500305 19.5005V16.5315C0.500305 16.2554 0.724163 16.0315 1.00031 16.0315Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 0.500244C0.5 0.224102 0.723858 0.000244141 1 0.000244141H3.969C4.24514 0.000244141 4.469 0.224102 4.469 0.500244C4.469 0.776386 4.24514 1.00024 3.969 1.00024H1.5V3.46924C1.5 3.74539 1.27614 3.96924 1 3.96924C0.723858 3.96924 0.5 3.74539 0.5 3.46924V0.500244Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.5313 0.5C20.5313 0.223858 20.7552 0 21.0313 0H24.0003C24.2765 0 24.5003 0.223858 24.5003 0.5V3.469C24.5003 3.74514 24.2765 3.969 24.0003 3.969C23.7242 3.969 23.5003 3.74514 23.5003 3.469V1H21.0313C20.7552 1 20.5313 0.776142 20.5313 0.5Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.0005 16.0312C24.2766 16.0312 24.5005 16.2551 24.5005 16.5312V19.5002C24.5005 19.7764 24.2766 20.0002 24.0005 20.0002H21.0315C20.7554 20.0002 20.5315 19.7764 20.5315 19.5002C20.5315 19.2241 20.7554 19.0002 21.0315 19.0002H23.5005V16.5312C23.5005 16.2551 23.7244 16.0312 24.0005 16.0312Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.50031 15.0002V5.00024H4.50031V15.0002H3.50031Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.50031 12.0002V5.00024H6.50031V12.0002H5.50031Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.50031 12.0002V5.00024H8.50031V12.0002H7.50031Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5003 12.0002V5.00024H11.5003V12.0002H10.5003Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.5003 12.0002V5.00024H13.5003V12.0002H12.5003Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.5003 12.0002V5.00024H15.5003V12.0002H14.5003Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5003 12.0002V5.00024H17.5003V12.0002H16.5003Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.5003 12.0002V5.00024H19.5003V12.0002H18.5003Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20.5003 15.0002V5.00024H21.5003V15.0002H20.5003Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.50031 13.0002H5.50031V14.0002H6.50031V13.0002Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.50031 13.0002H7.50031V14.0002H8.50031V13.0002Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.5003 13.0002H10.5003V14.0002H11.5003V13.0002Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13.5003 13.0002H12.5003V14.0002H13.5003V13.0002Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.5003 13.0002H14.5003V14.0002H15.5003V13.0002Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.5003 13.0002H16.5003V14.0002H17.5003V13.0002Z" fill="#333333"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.5003 13.0002H18.5003V14.0002H19.5003V13.0002Z" fill="#333333"/>
+</symbol>
 </svg>
