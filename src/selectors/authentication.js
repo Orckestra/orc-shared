@@ -42,6 +42,20 @@ export const hasEditorPermissionsForScope = (scope, roleGroup) =>
 		hasRolePermissions(appRolesClaims, scope, platformRoles.Editor, scopes),
 	);
 
+export const hasRecipientPermissions = roleGroup =>
+	createSelector(
+		selectGroupRolesClaims(roleGroup),
+		getCurrentScope,
+		getScopesSelector,
+		(appRolesClaims, currentScope, scopes) =>
+			hasRolePermissions(appRolesClaims, currentScope, platformRoles.Recipient, scopes),
+	);
+
+export const hasRecipientPermissionsForScope = (scope, roleGroup) =>
+	createSelector(selectGroupRolesClaims(roleGroup), getScopesSelector, (appRolesClaims, scopes) =>
+		hasRolePermissions(appRolesClaims, scope, platformRoles.Recipient, scopes),
+	);
+
 export const hasAdministratorPermissions = roleGroup =>
 	createSelector(
 		selectGroupRolesClaims(roleGroup),
