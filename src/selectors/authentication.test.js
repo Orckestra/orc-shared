@@ -4,11 +4,11 @@ import {
 	selectRolesClaims,
 	selectGroupRolesClaims,
 	hasEditorPermissions,
-	hasRecipientPermissions,
+	hasPermissionsForRole,
 	hasAdministratorPermissions,
 	hasReaderPermissions,
 	hasEditorPermissionsForScope,
-	hasRecipientPermissionsForScope,
+	hasPermissionsForRoleAndScope,
 	hasAdministratorPermissionsForScope,
 	hasReaderPermissionsForScope,
 } from "./authentication";
@@ -457,20 +457,20 @@ describe("hasEditorPermissionsForScope", () => {
 	});
 });
 
-describe("hasRecipientPermissions", () => {
-	it("Retrieves true if user has recipient permissions in specified group", () => {
+describe("hasPermissionsForRole", () => {
+	it("Retrieves true if user has permissions in specified group and role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				"*": {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissions,
+			hasPermissionsForRole,
 			"when called with",
-			["OrderReturn"],
+			["Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -486,19 +486,19 @@ describe("hasRecipientPermissions", () => {
 		);
 	});
 
-	it("Retrieves false if user does not have recipient permissions in specified group", () => {
+	it("Retrieves false if user does not have permissions in specified group and role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				"*": {
-					Recipient: false,
+					Tester: false,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissions,
+			hasPermissionsForRole,
 			"when called with",
-			["OrderReturn"],
+			["Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -511,22 +511,22 @@ describe("hasRecipientPermissions", () => {
 		);
 	});
 
-	it("Retrieves true if user does not have global recipient permissions but, has in current scope in specified group", () => {
+	it("Retrieves true if user hasn't global permissions but, has in current scope in specified group for role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				"*": {
-					Recipient: false,
+					Tester: false,
 				},
 				MyScope: {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissions,
+			hasPermissionsForRole,
 			"when called with",
-			["OrderReturn"],
+			["Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -542,19 +542,19 @@ describe("hasRecipientPermissions", () => {
 		);
 	});
 
-	it("Retrieves true if user has recipient permissions just in specified scope", () => {
+	it("Retrieves true if user has permissions just in specified scope for role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				MyScope: {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissions,
+			hasPermissionsForRole,
 			"when called with",
-			["OrderReturn"],
+			["Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -570,19 +570,19 @@ describe("hasRecipientPermissions", () => {
 		);
 	});
 
-	it("Retrieves true if user has recipient permissions just in specified scope with permission on parents", () => {
+	it("Retrieves true if user has permissions just in specified scope with permission on parents for role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				MyScope: {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissions,
+			hasPermissionsForRole,
 			"when called with",
-			["OrderReturn"],
+			["Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -600,9 +600,9 @@ describe("hasRecipientPermissions", () => {
 
 	it("Retrieves false if app roles claims are null", () => {
 		expect(
-			hasEditorPermissions,
+			hasPermissionsForRole,
 			"when called with",
-			["OrderReturn"],
+			["Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -619,20 +619,20 @@ describe("hasRecipientPermissions", () => {
 	});
 });
 
-describe("hasRecipientPermissionsForScope", () => {
-	it("Retrieves true if user has recipient permissions in specified group", () => {
+describe("hasPermissionsForRoleAndScope", () => {
+	it("Retrieves true if user has permissions in specified group for role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				"*": {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissionsForScope,
+			hasPermissionsForRoleAndScope,
 			"when called with",
-			["Global", "OrderReturn"],
+			["Global", "Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -644,19 +644,19 @@ describe("hasRecipientPermissionsForScope", () => {
 		);
 	});
 
-	it("Retrieves false if user does not have recipient permissions in specified group", () => {
+	it("Retrieves false if user does not have permissions in specified group for role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				"*": {
-					Recipient: false,
+					Tester: false,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissionsForScope,
+			hasPermissionsForRoleAndScope,
 			"when called with",
-			["Global", "OrderReturn"],
+			["Global", "Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -669,22 +669,22 @@ describe("hasRecipientPermissionsForScope", () => {
 		);
 	});
 
-	it("Retrieves true if user hasn't global recipient permissions but, has in current scope in specified group", () => {
+	it("Retrieves true if user hasn't global permissions but, has in current scope in specified group for role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				"*": {
-					Recipient: false,
+					Tester: false,
 				},
 				MyScope: {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissionsForScope,
+			hasPermissionsForRoleAndScope,
 			"when called with",
-			["MyScope", "OrderReturn"],
+			["MyScope", "Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -700,19 +700,19 @@ describe("hasRecipientPermissionsForScope", () => {
 		);
 	});
 
-	it("Retrieves true if user has recipient permissions just in specified scope", () => {
+	it("Retrieves true if user has permissions just in specified scope and role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				MyScope: {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissionsForScope,
+			hasPermissionsForRoleAndScope,
 			"when called with",
-			["MyScope", "OrderReturn"],
+			["MyScope", "Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -728,19 +728,19 @@ describe("hasRecipientPermissionsForScope", () => {
 		);
 	});
 
-	it("Retrieves true if user has recipient permissions just in specified scope with permission on parents", () => {
+	it("Retrieves true if user has permissions just in specified scope with permission on parents for role", () => {
 		const claims = Immutable.fromJS({
-			OrderReturn: {
+			Orders: {
 				MyScope: {
-					Recipient: true,
+					Tester: true,
 				},
 			},
 		});
 
 		expect(
-			hasRecipientPermissionsForScope,
+			hasPermissionsForRoleAndScope,
 			"when called with",
-			["ChildScope", "OrderReturn"],
+			["ChildScope", "Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
@@ -758,9 +758,9 @@ describe("hasRecipientPermissionsForScope", () => {
 
 	it("Retrieves false if app roles claims are null", () => {
 		expect(
-			hasEditorPermissionsForScope,
+			hasPermissionsForRoleAndScope,
 			"when called with",
-			["Global", "OrderReturn"],
+			["Global", "Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
