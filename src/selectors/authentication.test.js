@@ -4,9 +4,11 @@ import {
 	selectRolesClaims,
 	selectGroupRolesClaims,
 	hasEditorPermissions,
+	hasPermissionsForRole,
 	hasAdministratorPermissions,
 	hasReaderPermissions,
 	hasEditorPermissionsForScope,
+	hasPermissionsForRoleAndScope,
 	hasAdministratorPermissionsForScope,
 	hasReaderPermissionsForScope,
 } from "./authentication";
@@ -439,6 +441,326 @@ describe("hasEditorPermissionsForScope", () => {
 			hasEditorPermissionsForScope,
 			"when called with",
 			["Global", "Orders"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: {} },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+});
+
+describe("hasPermissionsForRole", () => {
+	it("Retrieves true if user has permissions in specified group and role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRole,
+			"when called with",
+			["Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if user does not have permissions in specified group and role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Tester: false,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRole,
+			"when called with",
+			["Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+
+	it("Retrieves true if user hasn't global permissions but, has in current scope in specified group for role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Tester: false,
+				},
+				MyScope: {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRole,
+			"when called with",
+			["Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has permissions just in specified scope for role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRole,
+			"when called with",
+			["Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has permissions just in specified scope with permission on parents for role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRole,
+			"when called with",
+			["Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if app roles claims are null", () => {
+		expect(
+			hasPermissionsForRole,
+			"when called with",
+			["Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: {} },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "Global" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+});
+
+describe("hasPermissionsForRoleAndScope", () => {
+	it("Retrieves true if user has permissions in specified group for role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRoleAndScope,
+			"when called with",
+			["Global", "Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if user does not have permissions in specified group for role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Tester: false,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRoleAndScope,
+			"when called with",
+			["Global", "Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+				}),
+			],
+			"to equal",
+			false,
+		);
+	});
+
+	it("Retrieves true if user hasn't global permissions but, has in current scope in specified group for role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				"*": {
+					Tester: false,
+				},
+				MyScope: {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRoleAndScope,
+			"when called with",
+			["MyScope", "Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has permissions just in specified scope and role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRoleAndScope,
+			"when called with",
+			["MyScope", "Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					navigation: {
+						route: { location: {}, match: { params: { scope: "MyScope" } } },
+					},
+					settings: { defaultScope: "Global" },
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves true if user has permissions just in specified scope with permission on parents for role", () => {
+		const claims = Immutable.fromJS({
+			Orders: {
+				MyScope: {
+					Tester: true,
+				},
+			},
+		});
+
+		expect(
+			hasPermissionsForRoleAndScope,
+			"when called with",
+			["ChildScope", "Orders", "Tester"],
+			"called with",
+			[
+				Immutable.fromJS({
+					authentication: { rolesClaimsValues: claims },
+					...state,
+					navigation: {
+						route: { location: {}, match: { params: { scope: "ChildScope" } } },
+					},
+				}),
+			],
+			"to equal",
+			true,
+		);
+	});
+
+	it("Retrieves false if app roles claims are null", () => {
+		expect(
+			hasPermissionsForRoleAndScope,
+			"when called with",
+			["Global", "Orders", "Tester"],
 			"called with",
 			[
 				Immutable.fromJS({
