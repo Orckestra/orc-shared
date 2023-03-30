@@ -28,6 +28,17 @@ describe("Request reducer", () => {
 		);
 	});
 
+	it("ignore activity flag when a request is started because addToActiveRequests is false", () => {
+		const oldState = Immutable.fromJS({
+			actives: {
+				SOME_FLAG: true,
+			},
+		});
+		const action = { type: "TEST_THIS_REQUEST", meta: { addToActiveRequests: false } };
+		const newState = reducer(oldState, action);
+		expect(newState, "to be", oldState);
+	});
+
 	it("clears activity and logout flag when a request succeeds", () => {
 		const oldState = Immutable.fromJS({
 			actives: {

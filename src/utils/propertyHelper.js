@@ -67,3 +67,41 @@ export const isObjectContainsPropertyWithAnyValue = (obj, propertyName) => {
 
 	return false;
 };
+
+export const compareObjectProperty = (obj1, obj2, propertyName) => {
+	if (propertyName == null || propertyName === "") {
+		return 0;
+	}
+
+	const val1 = obj1?.[propertyName];
+	const val2 = obj2?.[propertyName];
+
+	if (val1 === val2) {
+		return 0;
+	}
+
+	if (val1 < val2) {
+		return -1;
+	}
+
+	return 1;
+};
+
+export const compareObjectPropertyDescending = (obj1, obj2, propertyName) => {
+	if (propertyName == null || propertyName === "") {
+		return 0;
+	}
+
+	const val1 = obj1?.[propertyName];
+	const val2 = obj2?.[propertyName];
+
+	if (val1 === val2) {
+		return 0;
+	}
+
+	if (val1 > val2) {
+		return -1;
+	}
+
+	return 1;
+};

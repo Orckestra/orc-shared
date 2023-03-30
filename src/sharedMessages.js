@@ -56,7 +56,7 @@ const sharedMessages = defineMessages({
 	},
 	copyright: {
 		id: "orc-shared.copyright",
-		defaultMessage: "© 2021 Orckestra Technologies Inc.",
+		defaultMessage: "© {year} Orckestra Technologies Inc.",
 	},
 	allRightsReserved: {
 		id: "orc-shared.allRightsReserved",
@@ -254,6 +254,22 @@ const sharedMessages = defineMessages({
 	errorUnknown: {
 		id: "orc-shared.errorUnknown",
 		defaultMessage: "Unknown Error",
+	},
+	taskInProgressModalTitle: {
+		id: "orc-shared.taskInProgressModalTitle",
+		defaultMessage: "Task In Progress",
+	},
+	taskId: {
+		id: "orc-shared.taskId",
+		defaultMessage: "Task ID",
+	},
+	taskStatus: {
+		id: "orc-shared.taskStatus",
+		defaultMessage: "Status",
+	},
+	taskLogs: {
+		id: "orc-shared.taskLogs",
+		defaultMessage: "Logs",
 	},
 });
 

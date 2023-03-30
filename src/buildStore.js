@@ -20,6 +20,7 @@ import timezonesReducer from "./reducers/timezones";
 import modulesReducer from "./reducers/modules";
 import metadataReducer from "./reducers/metadata";
 import requestStatesReducer from "./reducers/requestStates";
+import tasksReducer from "./reducers/tasks";
 
 window.BUILD_ID = BUILD_ID;
 window.BUILD_NUMBER = BUILD_NUMBER;
@@ -65,6 +66,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			modules: modulesReducer,
 			metadata: metadataReducer,
 			requestStates: requestStatesReducer,
+			tasks: tasksReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 
