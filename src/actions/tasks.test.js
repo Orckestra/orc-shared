@@ -5,17 +5,10 @@ import {
 	GET_TASKINFO_FAILURE,
 	getTaskInfo,
 	getTaskList,
-	GET_TASK_LIST_REQUEST,
-	GET_TASK_LIST_SUCCESS,
-	GET_TASK_LIST_FAILURE,
 	getTaskLog,
 	ssrsDownloadFilterTaskNames,
 	deleteTask,
-	DELETE_TASK_REQUEST,
-	DELETE_TASK_SUCCESS,
-	DELETE_TASK_FAILURE,
 } from "./tasks";
-import { GET_TASK_LOG_REQUEST, GET_TASK_LOG_SUCCESS, GET_TASK_LOG_FAILURE } from "./tasks";
 
 jest.mock("../utils/buildUrl", () => {
 	const modExport = {};

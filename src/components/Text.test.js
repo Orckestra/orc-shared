@@ -1,6 +1,5 @@
 import React from "react";
 import Text, { Placeholder } from "./Text";
-import { FormattedMessage } from "react-intl";
 import { createMuiTheme, TestWrapper } from "../utils/testUtils";
 
 const theme = createMuiTheme();

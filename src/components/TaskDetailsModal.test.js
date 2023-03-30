@@ -1,7 +1,5 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { IntlProvider } from "react-intl";
 import { mount } from "enzyme";
 import TaskDetailsModal from "./TaskDetailsModal";
 import Modal from "./MaterialUI/DataDisplay/Modal";

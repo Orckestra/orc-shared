@@ -1,5 +1,4 @@
 import * as propertyHelper from "./propertyHelper";
-import { compareObjectProperty } from "./propertyHelper";
 const { Map } = require("immutable");
 
 const immutableMap = Map({ prop1: 123 });
