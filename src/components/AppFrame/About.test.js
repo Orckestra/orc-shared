@@ -79,7 +79,7 @@ describe("About", () => {
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages["orc-shared.copyright"])}
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
 					</AboutParagraph>
@@ -130,7 +130,7 @@ describe("About", () => {
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages["orc-shared.copyright"])}
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
 					</AboutParagraph>
@@ -165,7 +165,7 @@ describe("About", () => {
 						</AboutLink>
 					</AboutParagraph>
 					<AboutParagraph>
-						{stringifyWithoutQuotes(messages["orc-shared.copyright"])}
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
 					</AboutParagraph>

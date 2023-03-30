@@ -11,6 +11,10 @@ export const LOGOUT = "logout";
 
 const requestReducer = (state = initialState, action) => {
 	if (action.type.endsWith("_REQUEST")) {
+		if (safeGet(action, "meta", "addToActiveRequests") === false) {
+			// this flag should only be used by requests triggered by a background process to avoid the spinner
+			return state;
+		}
 		const requestName = action.type.replace(/_REQUEST$/, "");
 		return state.setIn(["actives", requestName], true);
 	}

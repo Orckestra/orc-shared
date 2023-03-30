@@ -107,3 +107,16 @@ export const requestStateOperationMap = {
 	fetch: "fetches",
 	update: "updates",
 };
+
+export const taskStatuses = {
+	created: "Created",
+	waitingToRun: "WaitingToRun",
+	running: "Running",
+	ranToCompletion: "RanToCompletion",
+	canceled: "Canceled",
+	faulted: "Faulted",
+	idle: "Idle",
+	waitingToCancel: "WaitingToCancel",
+	ignored: "Ignored",
+	queuedForSequence: "QueuedForSequence",
+};

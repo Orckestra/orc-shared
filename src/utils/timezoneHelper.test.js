@@ -40,14 +40,16 @@ describe("Timezone Helper", () => {
 	it("Retrieves user local timezone date", () => {
 		const timezoneName = "America/New_York";
 		const date = "Mon Apr 04 2022 13:00:00.000Z";
-		const expectedDate = new Date("2022-04-04T09:00:00.000Z");
+		let expectedDate = new Date("2022-04-04T09:00:00.000Z");
+		expectedDate = new Date(expectedDate.getTime() + expectedDate.getTimezoneOffset() * 60000); // try to adapt expected date with current computer timezone
 		expect(convertTimeToLocalTimeZone, "called with", [date, timezoneName], "to satisfy", expectedDate);
 	});
 
 	it("Retrieves user other timezone date", () => {
 		const timezoneName = "America/New_York";
 		const date = "Mon Apr 04 2022 06:00:00.000Z";
-		const expectedDate = new Date("2022-04-04T10:00:00.000Z");
+		let expectedDate = new Date("2022-04-04T10:00:00.000Z");
+		expectedDate = new Date(expectedDate.getTime() - expectedDate.getTimezoneOffset() * 60000); // try to adapt expected date with current computer timezone
 		expect(convertTimeToOtherTimeZone, "called with", [date, timezoneName], "to satisfy", expectedDate);
 	});
 });
