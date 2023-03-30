@@ -270,7 +270,7 @@ describe("TaskDetailsModal", () => {
 				args: [removeBailout(getTaskInfo("1234"))],
 			},
 			{
-				args: [removeBailout(getTaskLog("1234"))],
+				args: [removeBailout(getTaskLog("1234", false))],
 			},
 		]);
 	});

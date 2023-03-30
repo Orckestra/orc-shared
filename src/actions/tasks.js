@@ -61,9 +61,12 @@ const GET_TASK_LOG = "GET_TASK_LOG";
 
 export const [GET_TASK_LOG_REQUEST, GET_TASK_LOG_SUCCESS, GET_TASK_LOG_FAILURE] = makeActionTypes(GET_TASK_LOG);
 
-export const getTaskLog = taskId =>
+export const getTaskLog = (taskId, addToActiveRequests = true) =>
 	makeOrcApiAction(GET_TASK_LOG, getTaskExecutionLogsRequest.buildUrl(taskId), getTaskExecutionLogsRequest.verb, {
-		meta: { taskId },
+		meta: {
+			taskId,
+			addToActiveRequests,
+		},
 	});
 
 export const CLEAR_TASK_LOG = "CLEAR_TASK_LOG";

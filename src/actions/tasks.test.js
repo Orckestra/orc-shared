@@ -41,9 +41,30 @@ describe("getTaskLog", () => {
 		expect(getTaskLog, "when called with", ["1234"], "to exhaustively satisfy", {
 			[RSAA]: {
 				types: [
-					{ type: "GET_TASK_LOG_REQUEST", meta: { taskId: "1234" } },
-					{ type: "GET_TASK_LOG_SUCCESS", meta: { taskId: "1234" } },
-					{ type: "GET_TASK_LOG_FAILURE", meta: { taskId: "1234" } },
+					{ type: "GET_TASK_LOG_REQUEST", meta: { taskId: "1234", addToActiveRequests: true } },
+					{ type: "GET_TASK_LOG_SUCCESS", meta: { taskId: "1234", addToActiveRequests: true } },
+					{ type: "GET_TASK_LOG_FAILURE", meta: { taskId: "1234", addToActiveRequests: true } },
+				],
+				endpoint: 'URL: tasks/1234/logs ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+
+	it("creates a RSAA to get task info with addToActiveRequests false", () =>
+		expect(getTaskLog, "when called with", ["1234", false], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{ type: "GET_TASK_LOG_REQUEST", meta: { taskId: "1234", addToActiveRequests: false } },
+					{ type: "GET_TASK_LOG_SUCCESS", meta: { taskId: "1234", addToActiveRequests: false } },
+					{ type: "GET_TASK_LOG_FAILURE", meta: { taskId: "1234", addToActiveRequests: false } },
 				],
 				endpoint: 'URL: tasks/1234/logs ""',
 				method: "GET",

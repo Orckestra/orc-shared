@@ -84,7 +84,7 @@ const TaskDetailsModal = ({ taskId, open, closeModal }) => {
 		const timer = setInterval(() => {
 			if (!isTaskCompleted(taskStatus)) {
 				dispatch(getTaskInfo(taskId));
-				dispatch(getTaskLog(taskId));
+				dispatch(getTaskLog(taskId, false));
 			}
 		}, 10000);
 		return () => clearInterval(timer);
