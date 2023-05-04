@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps from "../SelectProps";
 import Icon from "../../DataDisplay/Icon";
@@ -149,6 +149,7 @@ const SearchControl = ({
 	searchOption,
 	onSearch = () => {},
 	disabled,
+	focusAndSelectSearchFieldOnLoad = true,
 }) => {
 	searchOptions = !searchOptions?.length ? null : searchOptions;
 	searchOption = getSearchOptionValue(searchOptions, searchOption);
@@ -191,6 +192,14 @@ const SearchControl = ({
 		event.preventDefault();
 		event.stopPropagation();
 	};
+
+	useEffect(() => {
+		if (focusAndSelectSearchFieldOnLoad && inputRef.current) {
+			inputRef.current.focus();
+			inputRef.current.select();
+			setInputFocused(true);
+		}
+	}, [focusAndSelectSearchFieldOnLoad]);
 
 	const SelectSection = () => {
 		if (searchOptions === null) return null;
