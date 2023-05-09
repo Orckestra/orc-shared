@@ -155,4 +155,56 @@ describe("withDeferredTooltip", () => {
 
 		expect(wrapper.prop("onMouseEnter"), "to be", undefined);
 	});
+
+	it("Always displays passed title in tooltip with tooltip classes when specified", () => {
+		const Wrapper = props => <ComponentToBeTooltipped {...props} />;
+
+		const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+		const mountedTooltippedComponent = shallow(
+			<TooltippedCompponent alwaysDisplay titleValue="test" tooltipClasses={{ classTest: "testMyMojo" }} />,
+		);
+
+		const event = {
+			target: {
+				offsetWidth: 100,
+				scrollWidth: 100,
+			},
+		};
+
+		mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
+
+		let expected = (
+			<MuiTooltip title="test" classes={{ classTest: "testMyMojo" }}>
+				<Wrapper />
+			</MuiTooltip>
+		);
+
+		expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
+	});
+
+	it("Always displays passed title in tooltip without tooltip classes when not specified", () => {
+		const Wrapper = props => <ComponentToBeTooltipped {...props} />;
+
+		const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+		const mountedTooltippedComponent = shallow(<TooltippedCompponent alwaysDisplay titleValue="test" />);
+
+		const event = {
+			target: {
+				offsetWidth: 100,
+				scrollWidth: 100,
+			},
+		};
+
+		mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
+
+		let expected = (
+			<MuiTooltip title="test" classes={null}>
+				<Wrapper />
+			</MuiTooltip>
+		);
+
+		expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
+	});
 });

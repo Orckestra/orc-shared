@@ -8,7 +8,7 @@ import { isString, isObject, isStringNullOrWhitespace, isReactComponent } from "
 
 const withDeferredTooltip =
 	Comp =>
-	({ titleValue, alwaysDisplay, ...props }) => {
+	({ titleValue, alwaysDisplay, tooltipClasses, ...props }) => {
 		const [shouldBeTooltipped, setShouldBeTooltipped] = useState(false);
 
 		const defaultComponent = <Comp onMouseEnter={event => makeComponentTooltipped(event)} {...props} />;
@@ -32,6 +32,7 @@ const withDeferredTooltip =
 		return (
 			<MuiTooltip
 				arrow
+				classes={tooltipClasses ?? null}
 				title={titleValue}
 				disableHoverListener={false}
 				disableFocusListener={true}
