@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProps from "../SelectProps";
 import Icon from "../../DataDisplay/Icon";

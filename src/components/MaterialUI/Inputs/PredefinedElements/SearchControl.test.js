@@ -53,9 +53,6 @@ describe("useStyles", () => {
 });
 
 describe("SearchControl Component", () => {
-	const stateSetter = sinon.spy().named("focus");
-	const useStateMock = initState => [initState, stateSetter];
-
 	beforeEach(() => {
 		jest.useFakeTimers();
 	});
