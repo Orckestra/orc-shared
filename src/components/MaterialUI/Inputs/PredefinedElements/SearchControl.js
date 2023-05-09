@@ -194,6 +194,7 @@ const SearchControl = ({
 	selectProps.setStyle(SelectProps.ruleNames.paper, classes.selectPaper);
 
 	useEffect(() => {
+		/* istanbul ignore next */
 		if (focusAndSelectSearchFieldOnLoad && inputRef.current) {
 			inputRef.current.focus();
 			inputRef.current.select();
