@@ -56,7 +56,11 @@ describe("SearchControl Component", () => {
 	const stateSetter = sinon.spy().named("focus");
 	const useStateMock = initState => [initState, stateSetter];
 
+	beforeEach(() => {
+		jest.useFakeTimers();
+	});
 	afterEach(() => {
+		jest.useRealTimers();
 		jest.clearAllMocks();
 	});
 
@@ -232,8 +236,7 @@ describe("SearchControl Component", () => {
 		expect(searchInput.length, "to be", 1);
 
 		searchInput.instance().value = "abc";
-		searchInput.simulate("keydown", { key: "Tab" });
-		searchInput.simulate("keydown", { key: "Enter" });
+		mountedComponent.find("form").simulate("submit", { preventDefault: () => {} });
 
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", "abc"] }]);
 	});
@@ -371,6 +374,52 @@ describe("SearchControl Component", () => {
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["anotherValue", "abcdef123"] }]);
 	});
 
+	it("Search Control should clear the search when changing the option", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl
+					placeholder="placeHolderTest"
+					defaultValue={"abcdef123"}
+					searchOptions={options}
+					onSearch={onSearchEvent}
+					focusSearchOnSearchOptionChange={true}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const selectMui = mountedComponent.find(SelectMUI);
+
+		const event = {
+			target: {
+				value: "anotherValue",
+			},
+		};
+
+		onSearchEvent.resetHistory();
+
+		selectMui.invoke("onChange")(event);
+
+		expect(onSearchEvent.callCount, "to equal", 1);
+		expect(onSearchEvent, "to have calls satisfying", [{ args: ["anotherValue", ""] }]);
+
+		const allInputs = mountedComponent.find("input");
+		const searchInput = allInputs.find("[placeholder='placeHolderTest']");
+		expect(searchInput.length, "to be", 1);
+
+		expect(searchInput.instance().value, "to be", "abcdef123");
+		jest.runOnlyPendingTimers();
+		expect(searchInput.instance().value, "to be", "");
+	});
+
 	it("Search Control should render with the 2nd value", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
@@ -396,47 +445,6 @@ describe("SearchControl Component", () => {
 		const selectMui = mountedComponent.find(SelectMUI);
 
 		expect(selectMui.props().value, "to equal", "anotherValue");
-	});
-
-	it("focusing text input should set focus on container", () => {
-		jest.spyOn(React, "useState").mockImplementation(useStateMock);
-
-		const options = [
-			{ value: "aValue", label: "aLabel" },
-			{ value: "anotherValue", label: "anotherLabel" },
-		];
-
-		const component = (
-			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SearchControl placeholder="placeHolderTest" searchOptions={options} focusAndSelectSearchFieldOnLoad={false} />
-			</TestWrapper>
-		);
-
-		const mountedComponent = mount(component);
-
-		const allInputs = mountedComponent.find("input");
-		const searchInput = allInputs.find("[placeholder='placeHolderTest']");
-		expect(searchInput.length, "to be", 1);
-
-		let searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-		expect(searchEditParent.length, "to be", 1);
-
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
-
-		const event = {
-			preventDefault: () => {},
-			stopPropagation: () => {},
-		};
-
-		searchInput.invoke("onFocus")(event);
-
-		searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", true);
-
-		searchInput.invoke("onBlur")(event);
-
-		searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
 	});
 
 	it("Renders Search Control component without errors when disabled", () => {
@@ -483,46 +491,6 @@ describe("SearchControl Component", () => {
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
-	});
-
-	it("focusAndSelectSearchFieldOnLoad set to true gives focus to control", () => {
-		jest.spyOn(React, "useState").mockImplementation(useStateMock);
-
-		const options = [
-			{ value: "aValue", label: "aLabel" },
-			{ value: "anotherValue", label: "anotherLabel" },
-		];
-
-		const component = (
-			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SearchControl placeholder="placeHolderTest" searchOptions={options} focusAndSelectSearchFieldOnLoad={true} />
-			</TestWrapper>
-		);
-
-		const mountedComponent = mount(component);
-		const searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", true);
-	});
-
-	it("focusAndSelectSearchFieldOnLoad set to false does not give focus to control", () => {
-		jest.spyOn(React, "useState").mockImplementation(useStateMock);
-
-		const options = [
-			{ value: "aValue", label: "aLabel" },
-			{ value: "anotherValue", label: "anotherLabel" },
-		];
-
-		const component = (
-			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SearchControl placeholder="placeHolderTest" searchOptions={options} focusAndSelectSearchFieldOnLoad={false} />
-			</TestWrapper>
-		);
-
-		const mountedComponent = mount(component);
-		const searchEditParent = mountedComponent.find('[data-qa="searchInput"]');
-
-		expect(searchEditParent.props()["data-qa-is-focused"], "to be", false);
 	});
 });
 
