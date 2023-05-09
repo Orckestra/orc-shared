@@ -6,6 +6,7 @@ import {
 	SET_HREF_CONFIG,
 	SET_CURRENT_PREPEND_PATH,
 	SET_CLOSING_TAB_HANDLER_ACTIONS,
+	REMOVE_MODULE_TABS,
 } from "../actions/navigation";
 import { getAllAfterPrependHref } from "../utils/parseHelper";
 import { APPLICATION_SCOPE_HAS_CHANGED } from "../actions/scopes";
@@ -72,6 +73,29 @@ const navigationReducer = (state = initialState, action) => {
 					}
 					s.deleteIn(["tabIndex", remainingSection]);
 				}
+			});
+		case REMOVE_MODULE_TABS:
+			return state.withMutations(s => {
+				const { module } = action.payload;
+
+				s.deleteIn(["moduleTabs", module]);
+				s.deleteIn(["closingTabsHandlerActions", module]);
+
+				s.get("tabIndex")
+					.keySeq()
+					.forEach(key => {
+						if (key.startsWith(module)) {
+							s.deleteIn(["tabIndex", key]);
+						}
+					});
+
+				s.get("mappedHrefs")
+					.keySeq()
+					.forEach(key => {
+						if (key.startsWith(module)) {
+							s.deleteIn(["mappedHrefs", key]);
+						}
+					});
 			});
 		case SET_HREF_CONFIG:
 			return state.set("config", Immutable.fromJS(action.payload));

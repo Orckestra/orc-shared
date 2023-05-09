@@ -6,6 +6,7 @@ import {
 	setHrefConfig,
 	setCurrentPrependPath,
 	setClosingTabHandlerActions,
+	removeModuleTabs,
 } from "../actions/navigation";
 import reducer from "./navigation";
 import { applicationScopeHasChanged } from "../actions/scopes";
@@ -290,6 +291,43 @@ describe("Navigation reducer", () => {
 				config: { prependPath: "/:scope/" },
 			});
 			const action = removeTab("thing", "te111st");
+			const newState = reducer(oldState, action);
+			return expect(newState, "to be", oldState);
+		});
+	});
+
+	describe("REMOVE_MODULE_TABS", () => {
+		it("can remove module tabs", () => {
+			const oldState = Immutable.fromJS({
+				moduleTabs: { test: ["test/new", "test/old"], another: [1, 2, 3] },
+				closingTabsHandlerActions: { test: [0, 1, 2], another: [] },
+				tabIndex: { "test/old": {}, "test/new": {}, test: {}, another: {} },
+				mappedHrefs: { "test/old": {}, "test/new": {}, test: {}, another2: {} },
+				config: { prependPath: "/:scope/" },
+			});
+			const action = removeModuleTabs("test");
+			const newState = reducer(oldState, action);
+			return expect(newState, "not to be", oldState).and(
+				"to equal",
+				Immutable.fromJS({
+					moduleTabs: { another: [1, 2, 3] },
+					closingTabsHandlerActions: { another: [] },
+					tabIndex: { another: {} },
+					mappedHrefs: { another2: {} },
+					config: { prependPath: "/:scope/" },
+				}),
+			);
+		});
+
+		it("does nothing if the module to remove is not found", () => {
+			const oldState = Immutable.fromJS({
+				moduleTabs: { test: ["test/new", "test/old"], another: [1, 2, 3] },
+				closingTabsHandlerActions: { test: [0, 1, 2], another: [] },
+				tabIndex: { "test/old": {}, "test/new": {}, test: {}, another: {} },
+				mappedHrefs: { "test/old": {}, "test/new": {}, test: {}, another2: {} },
+				config: { prependPath: "/:scope/" },
+			});
+			const action = removeModuleTabs("unknown");
 			const newState = reducer(oldState, action);
 			return expect(newState, "to be", oldState);
 		});

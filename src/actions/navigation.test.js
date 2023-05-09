@@ -5,6 +5,8 @@ import {
 	SET_HREF_CONFIG,
 	setClosingTabHandlerActions,
 	SET_CLOSING_TAB_HANDLER_ACTIONS,
+	removeModuleTabs,
+	REMOVE_MODULE_TABS,
 } from "./navigation";
 
 describe("removeTab", () => {
@@ -14,6 +16,16 @@ describe("removeTab", () => {
 			payload: {
 				module: "module",
 				path: "/path/to/tab",
+			},
+		}));
+});
+
+describe("removeModuleTabs", () => {
+	it("creates a remove module tabs action", () =>
+		expect(removeModuleTabs, "when called with", ["module"], "to equal", {
+			type: REMOVE_MODULE_TABS,
+			payload: {
+				module: "module",
 			},
 		}));
 });

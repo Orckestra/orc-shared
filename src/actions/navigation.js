@@ -25,6 +25,13 @@ export const removeTab = (module, path) => ({
 	payload: { module, path },
 });
 
+export const REMOVE_MODULE_TABS = "REMOVE_MODULE_TABS";
+
+export const removeModuleTabs = module => ({
+	type: REMOVE_MODULE_TABS,
+	payload: { module },
+});
+
 export const SET_HREF_CONFIG = "SET_HREF_CONFIG";
 
 export const setHrefConfig = (prependPath, prependHref, otherConfigs = {}) => ({
