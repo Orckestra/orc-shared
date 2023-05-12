@@ -7,6 +7,7 @@ import TextProps from "../../textProps";
 import { isReactComponent } from "../../../../utils/propertyValidator";
 import sharedMessages from "../../../../sharedMessages";
 import { useIntl } from "react-intl";
+import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	title: {
@@ -53,7 +54,14 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const InformationItemChildren = ({ classes, children, showNotAvailable, isMaxLineCountEnabled = true }) => {
+const InformationItemChildren = ({
+	classes,
+	children,
+	showNotAvailable,
+	isMaxLineCountEnabled = true,
+	tooltipClasses,
+	valueClasses,
+}) => {
 	const { formatMessage } = useIntl();
 
 	if (isReactComponent(children)) {
@@ -62,11 +70,11 @@ const InformationItemChildren = ({ classes, children, showNotAvailable, isMaxLin
 
 	const multipleLinesTextProps = new TextProps();
 	if (isMaxLineCountEnabled) multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
-	multipleLinesTextProps.set(TextProps.propNames.classes, classes.value);
+	multipleLinesTextProps.set(TextProps.propNames.classes, classNames(classes.value, valueClasses));
 
 	const value = children ?? (showNotAvailable ? formatMessage(sharedMessages.notAvailable) : "");
 
-	return <MultipleLinesText textProps={multipleLinesTextProps} children={value} />;
+	return <MultipleLinesText textProps={multipleLinesTextProps} children={value} tooltipClasses={tooltipClasses} />;
 };
 
 const InformationItemHeader = ({ classes, label, headerIcon }) => {
@@ -94,6 +102,8 @@ const InformationItem = ({
 	showNotAvailable = false,
 	marginTop = 0,
 	isMaxLineCountEnabled,
+	tooltipClasses,
+	valueClasses,
 }) => {
 	const classes = useStyles({ required, error, marginTop });
 
@@ -105,6 +115,8 @@ const InformationItem = ({
 				children={children}
 				showNotAvailable={showNotAvailable}
 				isMaxLineCountEnabled={isMaxLineCountEnabled}
+				tooltipClasses={tooltipClasses}
+				valueClasses={valueClasses}
 			/>
 		</div>
 	);
