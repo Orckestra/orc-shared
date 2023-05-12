@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const MultipleLinesText = ({ children, titleValue, textProps }) => {
+const MultipleLinesText = ({ children, titleValue, textProps, tooltipClasses }) => {
 	const classes = useStyles();
 
 	const [isClamped, setIsClamped] = useState(false);
@@ -48,6 +48,7 @@ const MultipleLinesText = ({ children, titleValue, textProps }) => {
 			titleValue={title}
 			alwaysDisplay={isClamped}
 			onClampStart={event => clampHandler(event)}
+			tooltipClasses={tooltipClasses}
 		/>
 	);
 };
