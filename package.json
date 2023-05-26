@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
@@ -51,6 +51,9 @@
 	"peerDependencies": {
 		"orc-scripts": "1.6.0"
 	},
+	"dependencies": {
+		"orc-scripts": "1.6.0"
+	},
 	"sideEffects": false,
 	"lint-staged": {
 		"*.{js,json,md}": [
@@ -67,8 +70,5 @@
 		"hooks": {
 			"pre-commit": "lint-staged"
 		}
-	},
-	"dependencies": {
-		"orc-scripts": "1.5.0"
 	}
 }
