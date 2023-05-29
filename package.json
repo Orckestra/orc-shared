@@ -51,6 +51,9 @@
 	"peerDependencies": {
 		"orc-scripts": "1.6.0"
 	},
+	"dependencies": {
+		"orc-scripts": "1.6.0"
+	},
 	"sideEffects": false,
 	"lint-staged": {
 		"*.{js,json,md}": [
@@ -67,8 +70,5 @@
 		"hooks": {
 			"pre-commit": "lint-staged"
 		}
-	},
-	"dependencies": {
-		"orc-scripts": "1.6.0-dev.1"
 	}
 }
