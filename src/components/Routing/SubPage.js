@@ -20,22 +20,19 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export const SubPage = ({ config, match, location, history, root, modulePrependPath }) => {
+export const SubPage = ({ config, match, location, history, root, modulePrependPath, parentUrlPattern }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	let { component: View, ...props } = config;
 	const pattern = new UrlPattern(root);
 	const baseHref = pattern.stringify(match.params);
-
 	const path = location.pathname;
 
-	const basePathArr = path.split("/");
-	basePathArr.pop();
-	const basePath = basePathArr.join("/");
 	const WrappedView = useMemo(() => withErrorBoundary(path)(withWaypointing(View)), [path, View]);
 	const closeSubPage = () => {
-		history.push(basePath);
-		dispatch(mapHref(basePath, basePath));
+		const parentHref = parentUrlPattern.stringify(match.params);
+		history.push(parentHref);
+		dispatch(mapHref(parentHref, parentHref));
 	};
 
 	const message = (
