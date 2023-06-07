@@ -14,6 +14,7 @@ import translations from "~/translations/en-US.json";
 
 import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
 import sharedMessages from "../../sharedMessages";
+import UrlPattern from "url-pattern";
 
 const InnerView = ({ theme, pathname, search, mapFrom, match, location, routeIsAligned, set }) => (
 	<PropStruct
@@ -93,6 +94,7 @@ describe("SubPage", () => {
 									config={{ component: InnerView, set: true, title: "Item Details" }}
 									root="/foo"
 									path="/foo/bar"
+									parentUrlPattern={new UrlPattern("/foo")}
 									{...route}
 								/>
 							)}
@@ -141,6 +143,7 @@ describe("SubPage", () => {
 									config={{ component: InnerView, set: true, title: sharedMessages.confirmation }}
 									root="/foo"
 									path="/foo/bar"
+									parentUrlPattern={new UrlPattern("/foo")}
 									{...route}
 								/>
 							)}
@@ -165,6 +168,7 @@ describe("SubPage", () => {
 									config={{ component: InnerView, set: true, title: "Item Details" }}
 									root="/foo"
 									path="/foo/bar"
+									parentUrlPattern={new UrlPattern("/foo")}
 									{...route}
 								/>
 							)}
@@ -180,5 +184,40 @@ describe("SubPage", () => {
 		closeButton.invoke("onClick")();
 		expect(history.push, "to have calls satisfying", [{ args: ["/foo"] }]);
 		expect(dispatch, "to have calls satisfying", [{ args: [mapHref("/foo", "/foo")] }]);
+	});
+	it("closing the dialog navigate to the parentUrlPattern with parameters", () => {
+		history = createMemoryHistory({ initialEntries: ["/foo/bar/123/456"] });
+		sinon.spy(history, "push");
+		history.push.named("history.push");
+		dispatch.resetHistory();
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={intlProvider} stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div id="outer" />
+					<Router history={history}>
+						<Route
+							path="/foo/bar/:parentId/:id"
+							render={route => (
+								<SubPage
+									config={{ component: InnerView, set: true, title: "Item Details" }}
+									root="/foo/bar/:parentId/:id"
+									path="/foo/bar/123/456"
+									parentUrlPattern={new UrlPattern("/foo/bar/:parentId")}
+									{...route}
+								/>
+							)}
+						/>
+					</Router>
+				</div>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+
+		const closeButton = mountedComponent.find("button").at(0);
+
+		closeButton.invoke("onClick")();
+		expect(history.push, "to have calls satisfying", [{ args: ["/foo/bar/123"] }]);
+		expect(dispatch, "to have a call satisfying", { args: [mapHref("/foo/bar/123", "/foo/bar/123")] });
 	});
 });

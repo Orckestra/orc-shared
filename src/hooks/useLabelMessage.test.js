@@ -5,12 +5,14 @@ import Immutable from "immutable";
 import sinon from "sinon";
 import { messageContainsValues } from "./useLabelMessage";
 import useLabelMessage from "./useLabelMessage";
+import { createMuiTheme, extractMessages, TestWrapper } from "../utils/testUtils";
 
 const TestComp = ({ message, buildMessage }) => {
 	const [msgResult, missingValues = false] = useLabelMessage(message, buildMessage);
 
 	return <div missing-values={missingValues ? 1 : 0}>{msgResult}</div>;
 };
+const theme = createMuiTheme();
 
 describe("useLabelMessage", () => {
 	let store, state;
@@ -45,12 +47,18 @@ describe("useLabelMessage", () => {
 			values: { aValue: "testValue" },
 		};
 
+		const messages = extractMessages({ "test.msg": message });
+
 		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<TestComp message={message} />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				intlProvider={{ messages }}
+				memoryRouter
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<TestComp message={message} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<div>Test message testValue</div>,
@@ -65,11 +73,9 @@ describe("useLabelMessage", () => {
 		};
 
 		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<TestComp message={message} />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<TestComp message={message} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<div missing-values={1}></div>,
