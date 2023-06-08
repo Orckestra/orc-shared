@@ -197,6 +197,9 @@ const SegmentPage = ({
 			);
 		}
 		if (config.subpages) {
+			const parentUrl = path + segpath;
+			const parentUrlPattern = new UrlPattern(parentUrl);
+
 			subpages.push(
 				...Object.entries(config.subpages).map(([subpath, config]) => {
 					const pagePath = segpath + subpath;
@@ -204,7 +207,15 @@ const SegmentPage = ({
 						<Route
 							key={pagePath}
 							path={path + pagePath}
-							render={route => <SubPage root={path} config={config} {...route} modulePrependPath={modulePrependPath} />}
+							render={route => (
+								<SubPage
+									root={path}
+									config={config}
+									parentUrlPattern={parentUrlPattern}
+									{...route}
+									modulePrependPath={modulePrependPath}
+								/>
+							)}
 						/>
 					);
 				}),
