@@ -4,9 +4,12 @@ import withErrorBoundary from "../../hocs/withErrorBoundary";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import withWaypointing from "./withWaypointing";
+import UrlPattern from "url-pattern";
 
 const Page = ({ component: View, path, pages = {}, subpages = {}, modulePrependPath, isVisible = true }) => {
 	const WrappedView = useMemo(() => withErrorBoundary(path)(withWaypointing(View, isVisible)), [path, View, isVisible]);
+	const parentUrlPattern = new UrlPattern(path);
+
 	return (
 		<React.Fragment>
 			<Switch>
@@ -38,7 +41,15 @@ const Page = ({ component: View, path, pages = {}, subpages = {}, modulePrependP
 					<Route
 						key={subpath}
 						path={path + subpath}
-						render={route => <SubPage root={path} config={config} {...route} modulePrependPath={modulePrependPath} />}
+						render={route => (
+							<SubPage
+								root={path}
+								config={config}
+								parentUrlPattern={parentUrlPattern}
+								{...route}
+								modulePrependPath={modulePrependPath}
+							/>
+						)}
 					/>
 				))}
 			</Switch>
