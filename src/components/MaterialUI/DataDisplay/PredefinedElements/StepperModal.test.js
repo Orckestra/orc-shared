@@ -3,6 +3,7 @@ import StepperModal from "./StepperModal";
 import Modal from "./../Modal";
 import ModalProps from "./../modalProps";
 import Button from "@material-ui/core/Button";
+import ModalMui from "@material-ui/core/Modal";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { IntlProvider } from "react-intl";
@@ -161,6 +162,25 @@ describe("StepperModal", () => {
 		cancelButton.invoke("onClick")();
 
 		expect(cancelCallbackSpy, "was called");
+	});
+
+	it("Calls backdropCallback when clicking away from component", () => {
+		const open = true;
+		const backdropCallbackSpy = sinon.spy();
+
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<StepperModal open={open} backdropCallback={backdropCallbackSpy} />
+			</IntlProvider>
+		);
+
+		const mountedComponent = mount(component);
+
+		const muiModal = mountedComponent.find(ModalMui);
+
+		muiModal.invoke("onClose")({}, "backdropClick");
+
+		expect(backdropCallbackSpy, "was called");
 	});
 
 	it("Calls cancelCallback when ok button is pressed", () => {

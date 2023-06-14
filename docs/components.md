@@ -201,6 +201,19 @@ Renders a side panel which will slide into view from the left side of the screen
 
 Displays all available icons along with the ids to access them.
 
+## StepperModal
+
+- `steps`: The steps (or pages) that are to be available in the component.
+- `title`: The title of the component (shown on all steps).
+- `open`: True when this component is to be rendered.
+- `closeCallback`: The function to call when the cancel button is pressed.
+- `confirmCallback`: The function to call when the last step is diplayed and the user selects finish.
+- `backdropCallback`: The function to call when the use clicks outside of the component.
+- `confirmTitle`: The text for the confirm button on the final step.
+- `type`: The type of Moal to use when rendering the component, default is `wide`, options are: `normal`, `wide`, `fullwidth`.
+
+Renders a wizard like component with seperate steps and a Next and Previous button to move between steps
+
 ## Switch
 
 - `onCaption`: A string or message descriptor (as used by `react-intl`) to be shown when the switch is on.
