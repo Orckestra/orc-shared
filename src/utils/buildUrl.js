@@ -21,7 +21,7 @@ export const loadConfig = () =>
 		.catch(() => {
 			console.warn("Failed to load config.json, falling back to dev defaults");
 			return {
-				serviceApiUrl: "https://orc-dev-ocs-cm.develop.orckestra.cloud:443/api",
+				serviceApiUrl: "https://occ-dev-ocs-cm.develop.orckestra.cloud:443/api",
 			};
 		})
 		.then(config => {
