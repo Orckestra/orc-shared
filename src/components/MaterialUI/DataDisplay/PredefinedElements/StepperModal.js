@@ -96,6 +96,7 @@ const StepperModal = ({
 	open,
 	closeCallback,
 	confirmCallback,
+	backdropCallback,
 	confirmTitle,
 	type = "wide",
 }) => {
@@ -138,7 +139,7 @@ const StepperModal = ({
 
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, open);
-	modalProps.set(ModalProps.propNames.backdropClickCallback, closeCallback);
+	modalProps.set(ModalProps.propNames.backdropClickCallback, backdropCallback ?? closeCallback);
 	modalProps.set(ModalProps.propNames.type, type);
 
 	const nextClick = useCallback(() => changeCurrentStep(step => step + 1), []);
