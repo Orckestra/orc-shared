@@ -56,7 +56,6 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, true);
 	modalProps.set(ModalProps.propNames.type, "fullwidth");
-	modalProps.set(ModalProps.propNames.backdropClickCallback, closeSubPage);
 
 	let actionPanel = (
 		<div className={classes.actionPanel}>
