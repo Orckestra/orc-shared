@@ -71,7 +71,7 @@ describe("InputBase Component", () => {
 		const component = <InputBase inputProps={inputProps} />;
 
 		const mountedComponent = mount(component);
-		const expected = <InputBaseMUI value={aValue} title={aValue} rows={defaultRows} />;
+		const expected = <InputBaseMUI value={aValue} title={aValue} minRows={defaultRows} />;
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
@@ -91,7 +91,7 @@ describe("InputBase Component", () => {
 		const component = <InputBase inputProps={inputProps} />;
 
 		const mountedComponent = mount(component);
-		const expected = <InputBaseMUI value={aValue} title={aValue} rows={desiredNumberOfRows} />;
+		const expected = <InputBaseMUI value={aValue} title={aValue} minRows={desiredNumberOfRows} />;
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});

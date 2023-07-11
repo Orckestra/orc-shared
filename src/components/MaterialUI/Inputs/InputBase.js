@@ -170,7 +170,7 @@ const InputBase = ({ inputProps }) => {
 					multiline={multiline}
 					startAdornment={startAdornment}
 					endAdornment={endAdornment}
-					rows={rows}
+					minRows={rows}
 					title={tooltipText}
 					autoComplete={autoComplete}
 				/>
