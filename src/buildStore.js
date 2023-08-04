@@ -21,6 +21,7 @@ import modulesReducer from "./reducers/modules";
 import metadataReducer from "./reducers/metadata";
 import requestStatesReducer from "./reducers/requestStates";
 import tasksReducer from "./reducers/tasks";
+import globalErrorMessagesReducer from "./reducers/globalErrorMessages";
 
 window.BUILD_ID = BUILD_ID;
 window.BUILD_NUMBER = BUILD_NUMBER;
@@ -67,6 +68,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			metadata: metadataReducer,
 			requestStates: requestStatesReducer,
 			tasks: tasksReducer,
+			globalErrorMessages: globalErrorMessagesReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 
