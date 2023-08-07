@@ -80,6 +80,10 @@ A simple menu component that will show a list of items when clicked. Assigning i
 
 A rather intricate component that creates forms. To do this, it receives a field definition, which it then uses to render in a form that fits the information it is given as values. For more details on field definitions and how they relate to values, please refer to the [detailed documentation.](forms.md)
 
+## GlobalErrorMessages
+
+Can be included in the component tree to display error messages based on data from the redux store.
+
 ## Head
 
 Sets the DOM header, and wrapper element attributes, according to the current application state.

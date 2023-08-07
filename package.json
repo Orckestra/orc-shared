@@ -47,7 +47,9 @@
 			"cultureIso": "fr-CA"
 		}
 	],
-	"devDependencies": {},
+	"devDependencies": {
+		"@testing-library/react": "^10.4.9"
+	},
 	"peerDependencies": {
 		"orc-scripts": "1.7.0-dev.1"
 	},
