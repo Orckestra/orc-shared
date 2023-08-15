@@ -28,6 +28,7 @@ export const extractStandardErrorMessagesFromResponse = (response, validationLoo
 						lookupModule: err.lookupModule,
 						lookupName: err.lookupName,
 						lookupKey: err.lookupKey,
+						lookupReplacementValues: err.lookupReplacementValues,
 					});
 				});
 			}

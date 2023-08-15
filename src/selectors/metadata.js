@@ -30,7 +30,7 @@ export const mappedLookupsListSelector = memoize(moduleName =>
 );
 
 const lookupValuesSelector = memoize((moduleName, lookupName) =>
-	createSelector(lookups, lookups => lookups.getIn([moduleName, "index", lookupName]) || Immutable.Map()),
+	createSelector(lookups, lookups => lookups.getIn([moduleName.toLowerCase(), "index", lookupName]) || Immutable.Map()),
 );
 
 export const lookupByNameSelector = memoize((moduleName, lookupName) =>

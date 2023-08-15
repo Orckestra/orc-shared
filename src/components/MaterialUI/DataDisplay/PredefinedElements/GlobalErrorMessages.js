@@ -60,6 +60,7 @@ const GlobalErrorMessagesModal = ({ children }) => {
 													moduleName={msg.lookupModule}
 													lookupName={msg.lookupName}
 													lookupKey={msg.lookupKey}
+													lookupReplacementValues={msg.lookupReplacementValues}
 												/>
 											)}
 											{!hasLookup && msg.message}

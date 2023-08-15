@@ -48,6 +48,17 @@ const metadataPayload = {
 								isActive: false,
 								isSystem: true,
 							},
+							MessageWithArguments: {
+								id: "23caa0ebecd04792a96c2f8df5b9b35a",
+								value: "MessageWithArguments",
+								lookupId: "MessageWithArguments",
+								displayName: {
+									"en-US": "This is the message with arguments {customKey1} {customKey2}",
+								},
+								sortOrder: 1,
+								isActive: false,
+								isSystem: true,
+							},
 						},
 						displayName: {
 							"en-US": "Order Status",
@@ -94,6 +105,12 @@ describe("GlobalErrorMessagesModal", () => {
 			messages: [
 				{ message: "error msg" },
 				{ lookupModule: "order", lookupName: "OrderStatus", lookupKey: "InProgress" },
+				{
+					lookupModule: "order",
+					lookupName: "OrderStatus",
+					lookupKey: "MessageWithArguments",
+					lookupReplacementValues: { customKey1: "val1", customKey2: "val2" },
+				},
 			],
 		},
 	];
@@ -108,6 +125,17 @@ describe("GlobalErrorMessagesModal", () => {
 					<ListItemIcon>●</ListItemIcon>
 					<ListItemText>
 						<LookupDisplayValue moduleName="order" lookupName="OrderStatus" lookupKey="InProgress" />
+					</ListItemText>
+				</ListItem>
+				<ListItem key={2}>
+					<ListItemIcon>●</ListItemIcon>
+					<ListItemText>
+						<LookupDisplayValue
+							moduleName="order"
+							lookupName="OrderStatus"
+							lookupKey="MessageWithArguments"
+							lookupReplacementValues={{ customKey1: "val1", customKey2: "val2" }}
+						/>
 					</ListItemText>
 				</ListItem>
 			</List>

@@ -36,6 +36,17 @@ const metadataPayload = {
 								isActive: false,
 								isSystem: true,
 							},
+							MessageWithArguments: {
+								id: "23caa0ebecd04792a96c2f8df5b9b35a",
+								value: "MessageWithArguments",
+								lookupId: "MessageWithArguments",
+								displayName: {
+									"en-US": "This is the message with arguments {customKey1} {customKey2}",
+								},
+								sortOrder: 1,
+								isActive: false,
+								isSystem: true,
+							},
 						},
 						displayName: {
 							"en-US": "Order Status",
@@ -77,6 +88,31 @@ describe("LookupDisplayValue", () => {
 		const expected = (
 			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
 				<TooltippedTypography noWrap children={"In Progress"} titleValue={"In Progress"} />
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders lookup value with arguments", () => {
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<LookupDisplayValue
+					moduleName="order"
+					lookupName="OrderStatus"
+					lookupKey="MessageWithArguments"
+					lookupReplacementValues={{ customKey1: "val1", customKey2: "val2" }}
+				/>
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<TooltippedTypography
+					noWrap
+					children={"This is the message with arguments val1 val2"}
+					titleValue={"This is the message with arguments val1 val2"}
+				/>
 			</TestWrapper>
 		);
 
