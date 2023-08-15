@@ -179,4 +179,40 @@ describe("extractStandardErrorMessagesFromResponse", () => {
 			],
 		});
 	});
+
+	it("Returns error with empty messages with 500 with messages containing arguments", () => {
+		const response = {
+			error: true,
+			payload: {
+				status: 500,
+				response: {
+					errors: [
+						{
+							message: "msg1",
+							lookupModule: "mod2",
+							lookupName: "name3",
+							lookupKey: "key4",
+							lookupReplacementValues: { key: "val" },
+						},
+						{ message: "", lookupModule: "mod5", lookupName: "name5", lookupKey: "key5" },
+					],
+				},
+			},
+		};
+		const extractedMessages = extractStandardErrorMessagesFromResponse(response, "fallback module", "fallback name");
+
+		expect(extractedMessages, "to equal", {
+			hasErrors: true,
+			messages: [
+				{
+					message: "msg1",
+					lookupModule: "mod2",
+					lookupName: "name3",
+					lookupKey: "key4",
+					lookupReplacementValues: { key: "val" },
+				},
+				{ message: "", lookupModule: "mod5", lookupName: "name5", lookupKey: "key5" },
+			],
+		});
+	});
 });

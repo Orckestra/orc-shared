@@ -394,6 +394,18 @@ describe("namedLookupValuesSelector", () => {
 			"Annulla per motivo 1",
 		);
 	});
+
+	it("retrieves localized values with an uppercase module", () => {
+		expect(
+			namedLookupLocalizedSelector,
+			"when called with",
+			["ORDER", "CanceledStatusReasons", "CanceledReason1"],
+			"when called with",
+			[state],
+			"to satisfy",
+			"Annulla per motivo 1",
+		);
+	});
 });
 
 describe("selectCurrentLookupDetails", () => {
