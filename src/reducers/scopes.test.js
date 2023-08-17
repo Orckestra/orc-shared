@@ -92,7 +92,7 @@ describe("scopes", () => {
 		);
 	});
 
-	it("reset option", () => {
+	it("reset option should override previous state", () => {
 		const oldState = Immutable.Map({
 			Global: {
 				id: "Global",
@@ -102,6 +102,7 @@ describe("scopes", () => {
 			},
 			Child1: { id: "Child1", isAuthorizedScope: true, scopePath: ["Global", "Child1"], children: [] },
 			Child2: { id: "Child2", isAuthorizedScope: false, scopePath: ["Global", "Child2"], children: [] },
+			ChildOld: { id: "ChildOld", isAuthorizedScope: false, scopePath: ["Global", "ChildOld"], children: [] },
 		});
 
 		const action = {
