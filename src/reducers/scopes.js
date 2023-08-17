@@ -10,6 +10,9 @@ const scopeReducer = (state = initialState, action) => {
 		case GET_SCOPES_SUCCESS: {
 			const loadedScopes = state.toJS();
 			const normalizedScopes = normalize(action.payload, scopeSchema);
+			if (action.meta && action.meta.reset) {
+				return Immutable.fromJS(normalizedScopes.entities.scopes);
+			}
 
 			if (Object.keys(loadedScopes).length > 0) {
 				const addedScope = {};

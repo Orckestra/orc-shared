@@ -91,4 +91,51 @@ describe("scopes", () => {
 			}),
 		);
 	});
+
+	it("reset option should override previous state", () => {
+		const oldState = Immutable.Map({
+			Global: {
+				id: "Global",
+				isAuthorizedScope: true,
+				children: ["Child1", "Child2", "Child3"],
+				scopePath: ["Global"],
+			},
+			Child1: { id: "Child1", isAuthorizedScope: true, scopePath: ["Global", "Child1"], children: [] },
+			Child2: { id: "Child2", isAuthorizedScope: false, scopePath: ["Global", "Child2"], children: [] },
+			ChildOld: { id: "ChildOld", isAuthorizedScope: false, scopePath: ["Global", "ChildOld"], children: [] },
+		});
+
+		const action = {
+			type: GET_SCOPES_SUCCESS,
+			payload: {
+				id: "Global",
+				isAuthorizedScope: true,
+				children: [
+					{ id: "Child1", isAuthorizedScope: false, children: [], parentScopeId: "Global" },
+					{ id: "Child2", isAuthorizedScope: true, children: [], parentScopeId: "Global" },
+					{ id: "Child3", isAuthorizedScope: false, children: [], parentScopeId: "Global" },
+					{ id: "Child4", isAuthorizedScope: true, children: [], parentScopeId: "Global" },
+				],
+			},
+			meta: {
+				reset: true,
+			},
+		};
+		const newState = reducer(oldState, action);
+		return expect(newState, "not to be", oldState).and(
+			"to satisfy",
+			Immutable.fromJS({
+				Global: {
+					id: "Global",
+					isAuthorizedScope: true,
+					children: ["Child1", "Child2", "Child3", "Child4"],
+					scopePath: ["Global"],
+				},
+				Child1: { id: "Child1", isAuthorizedScope: false, scopePath: ["Global", "Child1"], children: [] },
+				Child2: { id: "Child2", isAuthorizedScope: true, scopePath: ["Global", "Child2"], children: [] },
+				Child3: { id: "Child3", isAuthorizedScope: false, scopePath: ["Global", "Child3"], children: [] },
+				Child4: { id: "Child4", isAuthorizedScope: true, scopePath: ["Global", "Child4"], children: [] },
+			}),
+		);
+	});
 });
