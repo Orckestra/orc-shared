@@ -108,7 +108,7 @@ describe("scopes", () => {
 			type: GET_SCOPES_SUCCESS,
 			payload: {
 				id: "Global",
-				isAuthorized: false,
+				isAuthorizedScope: true,
 				children: [
 					{ id: "Child1", isAuthorizedScope: false, children: [], parentScopeId: "Global" },
 					{ id: "Child2", isAuthorizedScope: true, children: [], parentScopeId: "Global" },
@@ -126,7 +126,7 @@ describe("scopes", () => {
 			Immutable.fromJS({
 				Global: {
 					id: "Global",
-					isAuthorizedScope: false,
+					isAuthorizedScope: true,
 					children: ["Child1", "Child2", "Child3", "Child4"],
 					scopePath: ["Global"],
 				},
