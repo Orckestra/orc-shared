@@ -24,7 +24,8 @@ const requestReducer = (state = initialState, action) => {
 	}
 	if (action.type.endsWith("_FAILURE")) {
 		const requestName = action.type.replace(/_FAILURE$/, "");
-		if (safeGet(action, "payload", "status") === 403) {
+		const status = safeGet(action, "payload", "status");
+		if (status === 403 || status === 401) {
 			return state.deleteIn(["actives", requestName]).set("logout", true);
 		} else {
 			return state.deleteIn(["actives", requestName]).set("error", Immutable.fromJS(action));
