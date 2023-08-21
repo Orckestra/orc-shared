@@ -125,4 +125,27 @@ describe("Request reducer", () => {
 			}),
 		);
 	});
+
+	it("clears activity flag and sets login flag when a request fails with status 401", () => {
+		const oldState = Immutable.fromJS({
+			actives: {
+				SOME_FLAG: true,
+				TEST_THIS: true,
+			},
+		});
+		const action = {
+			type: "TEST_THIS_FAILURE",
+			payload: { status: 401, message: "UnauthorizedAccessException" },
+		};
+		const newState = reducer(oldState, action);
+		expect(newState, "not to be", oldState).and(
+			"to equal",
+			Immutable.fromJS({
+				actives: {
+					SOME_FLAG: true,
+				},
+				[LOGOUT]: true,
+			}),
+		);
+	});
 });
