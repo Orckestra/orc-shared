@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputBaseMUI from "@material-ui/core/InputBase";
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
 import classNames from "classnames";
+import { NumericFormat, numericFormatter } from "react-number-format";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -79,6 +80,27 @@ export const useStyles = makeStyles(theme => ({
 	},
 }));
 
+export const AdvancedNumericInput = props => {
+	const { inputRef, onChange, ...other } = props;
+
+	// https://github.com/s-yadav/react-number-format
+
+	return (
+		<NumericFormat
+			{...other}
+			getInputRef={inputRef}
+			onValueChange={values => {
+				onChange({
+					target: {
+						name: props.name,
+						value: values.value,
+					},
+				});
+			}}
+		/>
+	);
+};
+
 const InputBase = ({ inputProps }) => {
 	if (isInputProps(inputProps) === false) {
 		throw new TypeError("inputProps property is not of type InputBaseProps");
@@ -101,6 +123,19 @@ const InputBase = ({ inputProps }) => {
 	const autoComplete = inputProps?.get(InputBaseProps.propNames.autoComplete);
 	const timeoutDelay = inputProps?.get(InputBaseProps.propNames.timeoutDelay) || 100;
 	const rowsProps = inputProps?.get(InputBaseProps.propNames.rows);
+	const numericInputProps = inputProps?.get(InputBaseProps.propNames.numericInputProps) || null;
+
+	const isAdvancedNumericInput = type.toLowerCase() === "advancednumericinput";
+	const inputComponent = isAdvancedNumericInput ? AdvancedNumericInput : undefined;
+	const inputControlType = isAdvancedNumericInput ? "text" : type;
+
+	if (isAdvancedNumericInput && numericInputProps) {
+		Object.keys(numericInputProps).forEach(key => {
+			if (key !== "blurFormattingSkipFixedDecimalScale") {
+				inputAttributes[key] = numericInputProps[key];
+			}
+		});
+	}
 
 	const defaultRows = 4;
 	let rows = rowsProps;
@@ -116,34 +151,80 @@ const InputBase = ({ inputProps }) => {
 	const classes = useStyles({ label, errorPosition });
 
 	const onChangeHandler = event => {
-		event.persist();
+		if (event.persist) {
+			event.persist();
+		}
 
 		if (!event.target.value || window.bypassDebounce === true) {
 			update(event.target.value, metadata);
 		}
-
 		setInputText(event.target.value);
+	};
+
+	const timerId = useRef(null);
+
+	React.useEffect(() => {
+		return () => {
+			clearTimeout(timerId.current);
+			timerId.current = null;
+		};
+	}, []);
+
+	const onBlurInternal = e => {
+		let updateValue = (inputText ?? value).toString(); // value cannot be null as defined above
+
+		if (timerId.current) {
+			clearTimeout(timerId.current);
+			timerId.current = null;
+		}
+
+		if (isAdvancedNumericInput) {
+			const formattingProps = { ...numericInputProps };
+			delete formattingProps.blurFormattingSkipFixedDecimalScale;
+
+			if (numericInputProps?.blurFormattingSkipFixedDecimalScale !== true) {
+				formattingProps.fixedDecimalScale = true;
+			}
+
+			updateValue = numericFormatter(updateValue, formattingProps);
+		}
+
+		update(updateValue, metadata);
+		setInputText(null);
+
+		if (onBlur) {
+			onBlur(e);
+		}
 	};
 
 	const inputBaseInputStyle = inputProps?.getStyle(InputBaseProps.ruleNames.input);
 	const errorTextStyle = inputProps?.getStyle(InputBaseProps.ruleNames.errorText);
-
 	const [inputText, setInputText] = React.useState(null);
-
 	const textToDisplay = inputText ?? value;
 
 	React.useEffect(() => {
-		if (inputText !== value && inputText != null && window.bypassDebounce !== true) {
-			const timeOutId = setTimeout(() => {
-				const updateValue = update(inputText, metadata);
-				setInputText(null);
-
-				return updateValue;
-			}, timeoutDelay);
-			return () => clearTimeout(timeOutId);
+		if (inputText === null || window.bypassDebounce === true) {
+			return;
 		}
+
+		if (inputText !== value) {
+			clearTimeout(timerId.current);
+			timerId.current = setTimeout(() => {
+				update(inputText, metadata);
+				setInputText(null);
+			}, timeoutDelay);
+
+			return () => {
+				clearTimeout(timerId.current);
+				timerId.current = null;
+			};
+		} else {
+			setInputText(null);
+			clearTimeout(timerId.current);
+		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [inputText, value]);
+	}, [inputText, metadata, timeoutDelay, update, value]);
 
 	return (
 		<div className={classes.container}>
@@ -157,15 +238,16 @@ const InputBase = ({ inputProps }) => {
 						multiline: classes.multiline,
 						inputMultiline: classes.inputMultiline,
 					}}
-					onBlur={onBlur}
+					onBlur={onBlurInternal}
 					onClick={onClick}
-					type={type}
+					type={inputControlType}
 					placeholder={placeholder}
 					value={textToDisplay}
 					fullWidth={true}
 					onChange={event => onChangeHandler(event)}
 					error={!!error}
 					inputProps={inputAttributes}
+					inputComponent={inputComponent}
 					disabled={disabled}
 					multiline={multiline}
 					startAdornment={startAdornment}

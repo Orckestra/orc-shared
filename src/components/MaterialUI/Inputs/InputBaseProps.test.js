@@ -20,6 +20,7 @@ describe("InputBase Props", () => {
 			"autoComplete",
 			"timeoutDelay",
 			"rows",
+			"numericInputProps",
 		];
 
 		expect(InputBaseProps.propNames, "to have keys", propNames);
@@ -44,6 +45,7 @@ describe("InputBase Props", () => {
 			"autoComplete",
 			"timeoutDelay",
 			"rows",
+			"numericInputProps",
 		];
 
 		const ruleNames = ["input", "errorText"];

@@ -19,6 +19,7 @@ class InputBaseProps extends ComponentProps {
 		autoComplete: "autoComplete",
 		timeoutDelay: "timeoutDelay",
 		rows: "rows",
+		numericInputProps: "numericInputProps",
 	};
 
 	static ruleNames = {
@@ -45,6 +46,7 @@ class InputBaseProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.autoComplete, null);
 		this.componentProps.set(this.constructor.propNames.timeoutDelay, null);
 		this.componentProps.set(this.constructor.propNames.rows, null);
+		this.componentProps.set(this.constructor.propNames.numericInputProps, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.input, null);
 		this.componentClasses.set(this.constructor.ruleNames.errorText, null);
