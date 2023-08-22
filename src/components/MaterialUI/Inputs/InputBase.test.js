@@ -6,7 +6,7 @@ import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import InputBaseProps from "./InputBaseProps";
 import { act } from "unexpected-reaction";
-import { fireEvent, getByText, render, screen, getByDisplayValue } from "@testing-library/react";
+import { fireEvent, render, getByDisplayValue } from "@testing-library/react";
 
 describe("InputBase Component", () => {
 	let update, container;
