@@ -1,11 +1,12 @@
 import React from "react";
 import { mount } from "enzyme";
-import InputBase from "./InputBase";
+import InputBase, { AdvancedNumericInput } from "./InputBase";
 import InputBaseMUI from "@material-ui/core/InputBase";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import InputBaseProps from "./InputBaseProps";
 import { act } from "unexpected-reaction";
+import { fireEvent, render, getByDisplayValue } from "@testing-library/react";
 
 describe("InputBase Component", () => {
 	let update, container;
@@ -285,6 +286,35 @@ describe("InputBase Component", () => {
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
+
+	it("Change value on blur with pending timer", () => {
+		window.bypassDebounce = false;
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "12.2";
+		const metadata = {
+			test: "value",
+		};
+		const onBlur = sinon.spy().named("blur");
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+		inputProps.set(InputBaseProps.propNames.onBlur, onBlur);
+		inputProps.set(InputBaseProps.propNames.timeoutDelay, 1000);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("change", { target: { value: "13", focus: () => {} } });
+		input.simulate("blur", {});
+
+		expect(onBlur, "was called once");
+		expect(update, "not to have calls satisfying", [{ args: [aValue, metadata] }]);
+		expect(update, "to have calls satisfying", [{ args: ["13", metadata] }]);
+	});
 });
 
 describe("InputBase component debouce", () => {
@@ -348,5 +378,311 @@ describe("InputBase component debouce", () => {
 		const input = mountedComponent.find("input");
 		input.simulate("change", { target: { value: null } });
 		expect(input.get(0).props.value, "to equal", "");
+	});
+});
+
+describe("AdvancedNumericInput", () => {
+	const noop = function () {};
+	let update, container;
+	beforeEach(() => {
+		window.bypassDebounce = true;
+		jest.useFakeTimers();
+
+		container = document.createElement("div");
+		document.body.appendChild(container);
+		update = sinon.spy().named("update");
+	});
+	afterEach(() => {
+		jest.useRealTimers();
+		delete window.bypassDebounce;
+		document.body.removeChild(container);
+		container = null;
+	});
+
+	it("Renders InputBase component as advanced numeric input", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} title="" inputComponent={AdvancedNumericInput} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders InputBase component as advanced numeric input with custom numeric props", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 2);
+	});
+
+	it("Change advanced numeric input value", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "12.2";
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+		input.simulate("change", { target: { value: "13", focus: noop } });
+
+		expect(update, "to have calls satisfying", [{ args: ["13", metadata] }]);
+	});
+
+	it("Change advanced numeric input on blur without custom blur method", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "12.2";
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		expect(update, "to have calls satisfying", [{ args: ["12.20", metadata] }]);
+	});
+
+	it("Onblur send a formatted string instead of a number", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = 12.2;
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		expect(update, "to have calls satisfying", [{ args: ["12.20", metadata] }]);
+	});
+
+	it("Onblur send a formatted string with default numeric input props", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = 12.2;
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		expect(update, "to have calls satisfying", [{ args: ["12.2", metadata] }]);
+	});
+
+	it("Onblur send an unformatted string when blurFormattingSkipFixedDecimalScale is true", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = 12.2;
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, {
+			decimalScale: 2,
+			blurFormattingSkipFixedDecimalScale: true,
+		});
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		expect(update, "to have calls satisfying", [{ args: ["12.2", metadata] }]);
+	});
+
+	it("Onblur send an empty string when the initial value is empty", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = null;
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		expect(update, "to have calls satisfying", [{ args: ["", metadata] }]);
+	});
+
+	it("Change advanced numeric input on blur with no pending timer", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "12.2";
+		const metadata = {
+			test: "value",
+		};
+		const onBlur = sinon.spy().named("blur");
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+		inputProps.set(InputBaseProps.propNames.onBlur, onBlur);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		expect(onBlur, "was called once");
+		expect(update, "to have calls satisfying", [{ args: ["12.20", metadata] }]);
+	});
+
+	it("Change advanced numeric input on blur with pending timer", () => {
+		window.bypassDebounce = false;
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "12.2";
+		const metadata = {
+			test: "value",
+		};
+		const onBlur = sinon.spy().named("blur");
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+		inputProps.set(InputBaseProps.propNames.onBlur, onBlur);
+		inputProps.set(InputBaseProps.propNames.timeoutDelay, 1000);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("change", { target: { value: "13", focus: noop } });
+		input.simulate("blur", {});
+
+		expect(onBlur, "was called once");
+		expect(update, "not to have calls satisfying", [{ args: [aValue, metadata] }]);
+		expect(update, "to have calls satisfying", [{ args: ["13.00", metadata] }]);
+	});
+
+	it("Local state is reset when the value props changes for the same value as inputText", () => {
+		window.bypassDebounce = false;
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "12.2";
+		const metadata = {
+			test: "value",
+		};
+		const onBlur = sinon.spy().named("blur");
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+		inputProps.set(InputBaseProps.propNames.onBlur, onBlur);
+		inputProps.set(InputBaseProps.propNames.timeoutDelay, 1000);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const { container, rerender } = render(component);
+
+		const input = getByDisplayValue(container, "12.2");
+
+		fireEvent.change(input, {
+			target: {
+				value: "13",
+			},
+		});
+
+		const inputProps2 = new InputBaseProps();
+		inputProps2.set(InputBaseProps.propNames.update, update);
+		inputProps2.set(InputBaseProps.propNames.value, "13");
+		inputProps2.set(InputBaseProps.propNames.label, aLabel);
+		inputProps2.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps2.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps2.set(InputBaseProps.propNames.metadata, metadata);
+		inputProps2.set(InputBaseProps.propNames.onBlur, onBlur);
+		inputProps2.set(InputBaseProps.propNames.timeoutDelay, 1000);
+
+		act(() => {
+			rerender(<InputBase inputProps={inputProps2} />);
+		});
+
+		// no idea what to assert here, this test is mostly for code coverage
 	});
 });

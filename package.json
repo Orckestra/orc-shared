@@ -54,7 +54,8 @@
 		"orc-scripts": "1.7.0-dev.2"
 	},
 	"dependencies": {
-		"orc-scripts": "1.7.0-dev.2"
+		"orc-scripts": "1.7.0-dev.2",
+		"react-number-format": "^5.3.0"
 	},
 	"sideEffects": false,
 	"lint-staged": {
