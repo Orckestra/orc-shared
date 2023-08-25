@@ -3,7 +3,14 @@ import TooltippedTypography from "../TooltippedElements/TooltippedTypography";
 import { namedLookupLocalizedSelector } from "../../../../selectors/metadata";
 import { useSelector } from "react-redux";
 
-const LookupDisplayValue = ({ moduleName, lookupName, lookupKey, lookupReplacementValues, ...otherProps }) => {
+const LookupDisplayValue = ({
+	moduleName,
+	lookupName,
+	lookupKey,
+	lookupReplacementValues,
+	labelComponent,
+	...otherProps
+}) => {
 	let value = useSelector(namedLookupLocalizedSelector(moduleName, lookupName, lookupKey));
 
 	if (value && lookupReplacementValues) {
@@ -12,7 +19,11 @@ const LookupDisplayValue = ({ moduleName, lookupName, lookupKey, lookupReplaceme
 		});
 	}
 
-	return <TooltippedTypography noWrap {...otherProps} children={value} titleValue={value} />;
+	const DisplayComponent =
+		labelComponent ??
+		(({ children }) => <TooltippedTypography noWrap {...otherProps} children={children} titleValue={value} />);
+
+	return <DisplayComponent>{value}</DisplayComponent>;
 };
 
 export default LookupDisplayValue;
