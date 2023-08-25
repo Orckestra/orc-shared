@@ -4,7 +4,6 @@ import { createMuiTheme, extractMessages, TestWrapper } from "../../../../utils/
 import Immutable from "immutable";
 import ActionModal from "./ActionModal";
 import sharedMessages from "../../../../sharedMessages";
-import LookupDisplayValue from "./LookupDisplayValue";
 import Grid from "@material-ui/core/Grid";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
