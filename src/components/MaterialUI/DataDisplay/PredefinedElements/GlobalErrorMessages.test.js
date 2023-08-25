@@ -1,5 +1,5 @@
 import React from "react";
-import GlobalErrorMessagesModal from "./GlobalErrorMessages";
+import GlobalErrorMessagesModal, { GlobalErrorMessageLabel } from "./GlobalErrorMessages";
 import { createMuiTheme, extractMessages, TestWrapper } from "../../../../utils/testUtils";
 import Immutable from "immutable";
 import ActionModal from "./ActionModal";
@@ -119,23 +119,20 @@ describe("GlobalErrorMessagesModal", () => {
 			<List>
 				<ListItem key={0}>
 					<ListItemIcon>●</ListItemIcon>
-					<ListItemText>error msg</ListItemText>
+					<ListItemText>
+						<GlobalErrorMessageLabel>error msg</GlobalErrorMessageLabel>
+					</ListItemText>
 				</ListItem>
 				<ListItem key={1}>
 					<ListItemIcon>●</ListItemIcon>
 					<ListItemText>
-						<LookupDisplayValue moduleName="order" lookupName="OrderStatus" lookupKey="InProgress" />
+						<GlobalErrorMessageLabel>In Progress</GlobalErrorMessageLabel>
 					</ListItemText>
 				</ListItem>
 				<ListItem key={2}>
 					<ListItemIcon>●</ListItemIcon>
 					<ListItemText>
-						<LookupDisplayValue
-							moduleName="order"
-							lookupName="OrderStatus"
-							lookupKey="MessageWithArguments"
-							lookupReplacementValues={{ customKey1: "val1", customKey2: "val2" }}
-						/>
+						<GlobalErrorMessageLabel>This is the message with arguments val1 val2</GlobalErrorMessageLabel>
 					</ListItemText>
 				</ListItem>
 			</List>

@@ -118,4 +118,30 @@ describe("LookupDisplayValue", () => {
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});
+
+	it("Renders lookup value with custom component", () => {
+		const CustomComponent = ({ children }) => {
+			return <div>{children}</div>;
+		};
+
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<LookupDisplayValue
+					moduleName="order"
+					lookupName="OrderStatus"
+					lookupKey="MessageWithArguments"
+					lookupReplacementValues={{ customKey1: "val1", customKey2: "val2" }}
+					labelComponent={CustomComponent}
+				/>
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<div>This is the message with arguments val1 val2</div>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 });

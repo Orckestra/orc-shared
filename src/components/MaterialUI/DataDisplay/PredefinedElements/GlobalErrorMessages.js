@@ -20,6 +20,20 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
+const useMessageStyles = makeStyles(theme => ({
+	label: {
+		fontSize: theme.typography.fontSize,
+		color: theme.palette.grey.dark,
+		fontFamily: theme.typography.fontFamily,
+	},
+}));
+
+export const GlobalErrorMessageLabel = ({ children }) => {
+	const classes = useMessageStyles();
+
+	return <span className={classes.label}>{children}</span>;
+};
+
 const GlobalErrorMessagesModal = ({ children }) => {
 	const classes = useStyles();
 	const { formatMessage } = useIntl();
@@ -61,9 +75,10 @@ const GlobalErrorMessagesModal = ({ children }) => {
 													lookupName={msg.lookupName}
 													lookupKey={msg.lookupKey}
 													lookupReplacementValues={msg.lookupReplacementValues}
+													labelComponent={GlobalErrorMessageLabel}
 												/>
 											)}
-											{!hasLookup && msg.message}
+											{!hasLookup && <GlobalErrorMessageLabel>{msg.message}</GlobalErrorMessageLabel>}
 										</ListItemText>
 									</ListItem>
 								);
