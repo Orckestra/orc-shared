@@ -125,6 +125,9 @@ const Autocomplete = ({ id, options, autocompleteProps }) => {
 				options={options}
 				getOptionLabel={option => option.label}
 				onChange={onChangeOption}
+				openText={null}
+				closeText={null}
+				clearText={null}
 				classes={{
 					paper: classes.selectPaper,
 					popupIndicator: classes.popupIndicator,
