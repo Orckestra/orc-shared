@@ -128,6 +128,8 @@ const Autocomplete = ({ id, options, autocompleteProps }) => {
 				openText={null}
 				closeText={null}
 				clearText={null}
+				noOptionsText={null}
+				loadingText={null}
 				classes={{
 					paper: classes.selectPaper,
 					popupIndicator: classes.popupIndicator,
