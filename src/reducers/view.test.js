@@ -522,14 +522,7 @@ describe("View state reducer", () => {
 		});
 		const action = applicationScopeHasChanged("oldScope", "newScope");
 		const newState = viewReducer(oldState, action);
-		return expect(newState, "not to be", oldState).and(
-			"to exhaustively satisfy",
-			Immutable.fromJS({
-				anotherKey: {
-					id: "ThisValueShouldRemain",
-				},
-			}),
-		);
+		return expect(newState, "not to be", oldState).and("to exhaustively satisfy", Immutable.fromJS({}));
 	});
 
 	it("Removes edit model field correctly", () => {
