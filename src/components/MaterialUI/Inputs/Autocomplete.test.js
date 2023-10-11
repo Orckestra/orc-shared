@@ -67,6 +67,8 @@ describe("Autocomplete Component", () => {
 						openText={null}
 						closeText={null}
 						clearText={null}
+						noOptionsText={null}
+						loadingText={null}
 						renderInput={params => (
 							<TextField
 								{...params}
@@ -115,6 +117,8 @@ describe("Autocomplete Component", () => {
 						openText={null}
 						closeText={null}
 						clearText={null}
+						noOptionsText={null}
+						loadingText={null}
 						renderInput={params => (
 							<TextField
 								{...params}
@@ -165,6 +169,8 @@ describe("Autocomplete Component", () => {
 						openText={null}
 						closeText={null}
 						clearText={null}
+						noOptionsText={null}
+						loadingText={null}
 						renderInput={params => (
 							<TextField
 								{...params}
