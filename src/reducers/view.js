@@ -100,7 +100,7 @@ const viewStateReducer = (state = initialState, action) => {
 			return state;
 		}
 		case APPLICATION_SCOPE_HAS_CHANGED: {
-			return state.remove("edit");
+			return initialState;
 		}
 		default:
 			return state;

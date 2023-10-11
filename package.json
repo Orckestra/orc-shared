@@ -63,7 +63,7 @@
 			"prettier --write"
 		],
 		"*.js": [
-			"eslint"
+			"eslint --max-warnings=0"
 		],
 		"./src/translations/*.json": [
 			"npx orc-scripts validateTranslations"
