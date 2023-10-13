@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.error.main,
 		color: theme.palette.error.contrastText,
 	},
+	info: {
+		backgroundColor: theme.palette.warning.main,
+		color: theme.palette.success.contrastText,
+	},
 	message: {
 		flex: 1,
 		padding: theme.spacing(0.5),
@@ -55,6 +59,8 @@ const getIconIdByType = type => {
 			return "checkmark-filled";
 		case "error":
 			return "error-cross-filled";
+		case "info":
+			return "info";
 		default:
 			return "";
 	}

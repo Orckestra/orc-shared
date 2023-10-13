@@ -112,6 +112,43 @@ describe("Notification Component", () => {
 		);
 	});
 
+	it("Renders Info Notification component without errors", () => {
+		const mockedMessage = {
+			key: new Date().getTime(),
+			message: "This is confirmation notification message",
+			type: "info",
+		};
+		let snackPack = [mockedMessage];
+		const autoHideDuration = 5000;
+		const anchorOrigin = { vertical: "top", horizontal: "right" };
+		const lastOnly = false;
+
+		const notificationProps = new NotificationProps();
+
+		notificationProps.set(NotificationProps.propNames.autoHideDuration, autoHideDuration);
+		notificationProps.set(NotificationProps.propNames.anchorOrigin, anchorOrigin);
+		notificationProps.set(NotificationProps.propNames.lastOnly, lastOnly);
+
+		expect(
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }}>
+				<Notification notificationProps={notificationProps} snackPack={snackPack} setSnackPack={setSnackPack} />
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<div>
+						<Icon id="info" />
+						<div>{mockedMessage.message}</div>
+						<IconButton aria-label="close">
+							<Icon id="close2" />
+						</IconButton>
+					</div>
+				</div>
+			</TestWrapper>,
+		);
+	});
+
 	it("Renders Notification component without errors", () => {
 		const mockedMessage = { key: new Date().getTime(), message: "This is confirmation notification message" };
 		let snackPack = [mockedMessage];
