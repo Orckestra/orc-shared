@@ -10,3 +10,6 @@ babel.tmp.json
 /.run
 /jest.config.js
 /webpack.config.js
+
+#VSCode specific changes
+.vscode/
