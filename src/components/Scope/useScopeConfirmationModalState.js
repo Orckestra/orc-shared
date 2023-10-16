@@ -6,7 +6,6 @@ import { applicationScopeHasChanged } from "../../actions/scopes";
 import useScopeData from "./useScopeData";
 import { hasUnsavedDataSelector } from "../../selectors/view";
 import { scopeConfirmationDialogTypes } from "../../constants";
-import { setNewScopeAndModuleName } from "../../actions/modules";
 
 const ExecuteClosingTabHandlerActions = async closingTabHandlerActions => {
 	if (closingTabHandlerActions.length <= 0) return Promise.resolve();
@@ -22,8 +21,7 @@ const useApplicationScopeChanger = closingTabHandlerActions => {
 
 	return (previousScope, newScope) => {
 		ExecuteClosingTabHandlerActions(closingTabHandlerActions).then(() => {
-			dispatch(setNewScopeAndModuleName(newScope, moduleName));
-			dispatch(applicationScopeHasChanged(previousScope, newScope));
+			dispatch(applicationScopeHasChanged(previousScope, newScope, moduleName));
 		});
 	};
 };

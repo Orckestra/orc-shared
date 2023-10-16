@@ -5,7 +5,6 @@ import { TestWrapper } from "../../utils/testUtils";
 import useScopeConfirmationModalState from "./useScopeConfirmationModalState";
 import { mount } from "enzyme";
 import { APPLICATION_SCOPE_HAS_CHANGED } from "../../actions/scopes";
-import { SET_NEW_SCOPE_AND_MODULE_NAME } from "../../actions/modules";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -183,21 +182,11 @@ describe("useScopeConfirmationModalState", () => {
 			{
 				args: [
 					{
-						type: SET_NEW_SCOPE_AND_MODULE_NAME,
-						payload: {
-							scope: "newScope",
-							moduleName: "TheModuleName",
-						},
-					},
-				],
-			},
-			{
-				args: [
-					{
 						type: APPLICATION_SCOPE_HAS_CHANGED,
 						payload: {
 							previousScope: "TheOldScope",
 							newScope: "newScope",
+							moduleName: "TheModuleName",
 						},
 					},
 				],
@@ -258,21 +247,11 @@ describe("useScopeConfirmationModalState", () => {
 			{
 				args: [
 					{
-						type: SET_NEW_SCOPE_AND_MODULE_NAME,
-						payload: {
-							scope: "newScope",
-							moduleName: "TheModuleName",
-						},
-					},
-				],
-			},
-			{
-				args: [
-					{
 						type: APPLICATION_SCOPE_HAS_CHANGED,
 						payload: {
 							previousScope: "TheOldScope",
 							newScope: "newScope",
+							moduleName: "TheModuleName",
 						},
 					},
 				],
@@ -325,19 +304,8 @@ describe("useScopeConfirmationModalState", () => {
 			{ args: [null, true] },
 		]);
 
-		expect(store.dispatch.callCount, "to be", 2);
+		expect(store.dispatch.callCount, "to be", 1);
 		expect(store.dispatch, "to have calls satisfying", [
-			{
-				args: [
-					{
-						type: SET_NEW_SCOPE_AND_MODULE_NAME,
-						payload: {
-							scope: "newScope",
-							moduleName: "TheModuleName",
-						},
-					},
-				],
-			},
 			{
 				args: [
 					{
@@ -345,6 +313,7 @@ describe("useScopeConfirmationModalState", () => {
 						payload: {
 							previousScope: "TheOldScope",
 							newScope: "newScope",
+							moduleName: "TheModuleName",
 						},
 					},
 				],

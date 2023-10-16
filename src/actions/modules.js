@@ -19,16 +19,6 @@ export const initializeFirstModuleScope = scope => ({
 	payload: scope,
 });
 
-export const SET_NEW_SCOPE_AND_MODULE_NAME = "SET_NEW_SCOPE_AND_MODULE_NAME";
-
-export const setNewScopeAndModuleName = (scope, moduleName) => ({
-	type: SET_NEW_SCOPE_AND_MODULE_NAME,
-	payload: {
-		scope,
-		moduleName,
-	},
-});
-
 export const SET_ROUTING_PERFORMED = "SET_ROUTING_PERFORMED";
 
 export const setRoutingPerformed = () => ({

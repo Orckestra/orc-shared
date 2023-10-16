@@ -22,6 +22,7 @@ import metadataReducer from "./reducers/metadata";
 import requestStatesReducer from "./reducers/requestStates";
 import tasksReducer from "./reducers/tasks";
 import globalErrorMessagesReducer from "./reducers/globalErrorMessages";
+import scopeRouteStateReducer from "./reducers/scopeRouteState";
 
 window.BUILD_ID = BUILD_ID;
 window.BUILD_NUMBER = BUILD_NUMBER;
@@ -69,6 +70,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			requestStates: requestStatesReducer,
 			tasks: tasksReducer,
 			globalErrorMessages: globalErrorMessagesReducer,
+			scopeRouteState: scopeRouteStateReducer,
 		});
 	const rootReducer = buildReducer(reducers);
 

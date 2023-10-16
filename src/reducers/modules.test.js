@@ -3,10 +3,10 @@ import {
 	initializeFirstModuleScope,
 	setModuleAsVisible,
 	setModulesStructure,
-	setNewScopeAndModuleName,
 	setRoutingPerformed,
 } from "../actions/modules";
 import modulesReducer from "./modules";
+import { applicationScopeHasChanged } from "../actions/scopes";
 
 describe("View state reducer", () => {
 	const initialState = {
@@ -145,7 +145,7 @@ describe("View state reducer", () => {
 		const oldState = Immutable.fromJS({
 			...initialState,
 			lastScopeAndModuleSelection: {
-				scope: "aScope",
+				scope: "newScope",
 				moduleName: null,
 				routingPerformed: true,
 			},
@@ -154,13 +154,13 @@ describe("View state reducer", () => {
 		const expected = {
 			...initialState,
 			lastScopeAndModuleSelection: {
-				scope: "aScope",
+				scope: "newScope",
 				moduleName: "moduleMatrix",
 				routingPerformed: false,
 			},
 		};
 
-		const action = setNewScopeAndModuleName("aScope", "moduleMatrix");
+		const action = applicationScopeHasChanged("prevScope", "newScope", "moduleMatrix");
 		const newState = modulesReducer(oldState, action);
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS(expected));
 	});
@@ -180,7 +180,7 @@ describe("View state reducer", () => {
 			},
 		};
 
-		const action = setNewScopeAndModuleName("newScope", "moduleMatrix");
+		const action = applicationScopeHasChanged("prevScope", "newScope", "moduleMatrix");
 		const newState = modulesReducer(oldState, action);
 		return expect(newState, "not to be", oldState).and("to equal", Immutable.fromJS(expected));
 	});
