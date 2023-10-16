@@ -3,10 +3,10 @@ import {
 	INITIALIZE_FIRST_MODULE_SCOPE,
 	SET_MODULE_AS_VISIBLE,
 	SET_MODULES_STRUCTURE,
-	SET_NEW_SCOPE_AND_MODULE_NAME,
 	SET_ROUTING_PERFORMED,
 } from "../actions/modules";
 import { infoBar } from "./../constants";
+import { APPLICATION_SCOPE_HAS_CHANGED } from "../actions/scopes";
 
 const initialState = Immutable.fromJS({
 	tree: {},
@@ -58,10 +58,10 @@ const viewStateReducer = (state = initialState, action) => {
 			return state.set("visibleModules", Immutable.fromJS(visibleModules));
 		}
 
-		case SET_NEW_SCOPE_AND_MODULE_NAME: {
+		case APPLICATION_SCOPE_HAS_CHANGED: {
 			const lastScopeAndModuleSelection = state.get("lastScopeAndModuleSelection").toJS();
 
-			if (action.payload.scope !== lastScopeAndModuleSelection.scope) {
+			if (action.payload.newScope !== lastScopeAndModuleSelection.scope) {
 				state = state.set("visibleModules", Immutable.fromJS([]));
 			}
 
@@ -69,7 +69,7 @@ const viewStateReducer = (state = initialState, action) => {
 				"lastScopeAndModuleSelection",
 				Immutable.fromJS({
 					moduleName: action.payload.moduleName,
-					scope: action.payload.scope,
+					scope: action.payload.newScope,
 					routingPerformed: false,
 				}),
 			);

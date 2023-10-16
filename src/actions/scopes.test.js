@@ -140,11 +140,12 @@ describe("getScopes", () => {
 
 describe("applicationScopeHasChanged", () => {
 	it("creates an action object", () => {
-		expect(applicationScopeHasChanged, "when called with", ["oldScope", "newScope"], "to equal", {
+		expect(applicationScopeHasChanged, "when called with", ["oldScope", "newScope", "module"], "to equal", {
 			type: APPLICATION_SCOPE_HAS_CHANGED,
 			payload: {
 				previousScope: "oldScope",
 				newScope: "newScope",
+				moduleName: "module",
 			},
 		});
 	});

@@ -50,12 +50,13 @@ export const getDefaultScope = module =>
 
 export const APPLICATION_SCOPE_HAS_CHANGED = "APPLICATION_SCOPE_HAS_CHANGED";
 
-export const applicationScopeHasChanged = (previousScope, newScope) => {
+export const applicationScopeHasChanged = (previousScope, newScope, moduleName) => {
 	return {
 		type: APPLICATION_SCOPE_HAS_CHANGED,
 		payload: {
 			previousScope,
 			newScope,
+			moduleName,
 		},
 	};
 };
