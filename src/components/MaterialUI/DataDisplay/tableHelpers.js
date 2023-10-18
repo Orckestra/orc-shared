@@ -18,10 +18,10 @@ const defaultRendering = (e, def, rowId, readOnly, transformedValue) => {
 	) : null;
 };
 
-const renderByType = (e, def, rowId, readOnly, transformedValue) => {
+const renderByType = (e, def, rowId, readOnly, transformedValue, index) => {
 	switch (def.type) {
 		case "custom": {
-			return [def.builder(e, readOnly, def) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
+			return [def.builder(e, readOnly, def, index) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
 		}
 
 		case "currency": {
@@ -130,11 +130,11 @@ const renderByType = (e, def, rowId, readOnly, transformedValue) => {
 	}
 };
 
-const renderByTypeInEditingMode = (e, def, rowId, readOnly, transformedValue) => {
+const renderByTypeInEditingMode = (e, def, rowId, readOnly, transformedValue, index) => {
 	if ((def.editingBuilder || null) !== null)
-		return [def.editingBuilder(e, readOnly, def) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
+		return [def.editingBuilder(e, readOnly, def, index) || defaultRendering(e, def, rowId, readOnly, transformedValue)];
 
-	return renderByType(e, def, rowId, readOnly, transformedValue);
+	return renderByType(e, def, rowId, readOnly, transformedValue, index);
 };
 
 export const buildHeaderAndRowFromConfig = (
@@ -155,7 +155,7 @@ export const buildHeaderAndRowFromConfig = (
 			className: def.className,
 		}));
 
-	const rows = elements.map(e => {
+	const rows = elements.map((e, index) => {
 		const rowId = e[keyField];
 		const elementClass = e.customClass || "";
 		return {
@@ -168,8 +168,8 @@ export const buildHeaderAndRowFromConfig = (
 					const transformedValue = def.transform?.value ? def.transform.value(e[def.fieldName]) : e[def.fieldName];
 
 					const [cellElement, title] = readOnly
-						? renderByType(e, def, rowId, readOnly, transformedValue)
-						: renderByTypeInEditingMode(e, def, rowId, readOnly, transformedValue);
+						? renderByType(e, def, rowId, readOnly, transformedValue, index)
+						: renderByTypeInEditingMode(e, def, rowId, readOnly, transformedValue, index);
 
 					return {
 						title: def.tooltipable !== false ? (title === undefined ? cellElement : title) : null,

@@ -12,10 +12,15 @@ const useStyles = makeStyles(theme => ({
 		textTransform: "none",
 		color: theme.palette.text.primary,
 		borderRadius: 0,
-		"&:hover, &:focus": {
+		"&:hover": {
 			borderRadius: 0,
 			boxShadow: "none",
 			backgroundColor: theme.palette.primary.light,
+		},
+		"&:focus, &:active, &.Mui-focusVisible": {
+			borderRadius: 0,
+			boxShadow: "none",
+			outline: "none",
 		},
 	},
 	menu: {

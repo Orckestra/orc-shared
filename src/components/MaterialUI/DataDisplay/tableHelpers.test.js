@@ -358,6 +358,59 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		expect(rows[1].columns[0].title, "to equal", "44 a value from builder");
 	});
 
+	it("validate builder inputs", () => {
+		const elements = [
+			{
+				id: "an_id1",
+				test: "A text row 1",
+				another: "another 1",
+				extraneous: "Don't show 1",
+			},
+			{
+				id: "an_id2",
+				test: "A text row 2",
+				another: "another 2",
+				extraneous: "Don't show 2",
+			},
+		];
+
+		let counter = 0;
+
+		const builder = (e, readOnly, def, index) => {
+			if (e.id === "an_id1") {
+				expect(index, "to equal", 0);
+			} else {
+				expect(index, "to equal", 1);
+			}
+
+			expect(readOnly, "to be", false);
+
+			counter++;
+		};
+
+		const columnDef = [
+			{
+				type: "custom",
+				builder: builder,
+				label: messages.a_label,
+			},
+			{
+				type: "custom",
+				builder: builder,
+				label: messages.a_label,
+			},
+			{
+				type: "custom",
+				builder: builder,
+				label: messages.a_label,
+			},
+		];
+
+		buildHeaderAndRowFromConfig(columnDef, elements, false);
+
+		expect(counter, "to equal", 6);
+	});
+
 	it("build table rows as expected with a custom builder returning not valid component", () => {
 		const columnDef = [
 			{
@@ -1590,6 +1643,46 @@ describe("table helpers buildHeaderAndRowFromConfig", () => {
 		);
 		expect(rows[1].columns[1].cellElement, "to equal", "another 2 a value from builder");
 		expect(rows[1].columns[1].title, "to equal", "another 2 a value from builder");
+	});
+
+	it("validate editingBuilder inputs", () => {
+		const elements = [
+			{
+				id: "an_id1",
+				test: "A text row 1",
+				another: "another 1",
+				extraneous: "Don't show 1",
+			},
+			{
+				id: "an_id2",
+				test: "A text row 2",
+				another: "another 2",
+				extraneous: "Don't show 2",
+			},
+		];
+
+		let counter = 0;
+
+		const editingBuilder = (e, readOnly, def, index) => {
+			if (e.id === "an_id1") {
+				expect(index, "to equal", 0);
+			} else {
+				expect(index, "to equal", 1);
+			}
+
+			expect(readOnly, "to be", false);
+
+			counter++;
+		};
+
+		const columnDef = [
+			{ fieldName: "test", label: messages.a_label, className: "aClassXYZ", editingBuilder: editingBuilder },
+			{ fieldName: "another", label: messages.another, editingBuilder: editingBuilder },
+		];
+
+		buildHeaderAndRowFromConfig(columnDef, elements, false);
+
+		expect(counter, "to equal", 4);
 	});
 
 	it("build table headers and rows as expected when a column should not be visible", () => {
