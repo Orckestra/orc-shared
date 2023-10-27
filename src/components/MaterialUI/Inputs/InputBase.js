@@ -137,6 +137,24 @@ const InputBase = ({ inputProps }) => {
 		});
 	}
 
+	if (isAdvancedNumericInput) {
+		if (inputAttributes.max === undefined) {
+			inputAttributes.max = 2147483647;
+		}
+
+		if (inputAttributes.min === undefined) {
+			inputAttributes.min = -2147483648;
+		}
+
+		inputAttributes.isAllowed = val => {
+			return (
+				val.value === "" ||
+				val.value === "-" ||
+				(val.floatValue >= inputAttributes.min && val.floatValue <= inputAttributes.max)
+			);
+		};
+	}
+
 	const defaultRows = 4;
 	let rows = rowsProps;
 	if (rows === null || rows === undefined) rows = defaultRows;

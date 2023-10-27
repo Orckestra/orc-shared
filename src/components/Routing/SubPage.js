@@ -47,11 +47,12 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 
 	const modalProps = new ModalProps();
 
-	const titleComponent = props?.title?.id ? (
-		<FormattedMessage id={props?.title?.id} defaultMesaage={props?.title?.defaultMessage} />
-	) : (
-		props?.title
-	);
+	const formattedMsgProps = {
+		id: props?.title?.id,
+		defaultMesaage: props?.title?.defaultMessage,
+	};
+
+	const titleComponent = props?.title?.id ? <FormattedMessage {...formattedMsgProps} /> : props?.title;
 
 	modalProps.set(ModalProps.propNames.title, titleComponent);
 	modalProps.set(ModalProps.propNames.open, true);

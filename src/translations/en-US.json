@@ -65,5 +65,7 @@
 	"orc-shared.taskStatus": "Status",
 	"orc-shared.unsavedChanges": "This entity has unsaved changes. All changes will be lost.\n\nAre you sure you want to close it?",
 	"orc-shared.valueName": "Value Name",
+	"orc-shared.valueTypeWrapperFalse": "False",
+	"orc-shared.valueTypeWrapperTrue": "True",
 	"orc-shared.yes": "Yes"
 }

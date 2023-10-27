@@ -2,11 +2,13 @@ import React from "react";
 import { useDispatchWithErrorHandling } from "./useDispatchWithErrorHandling";
 import sinon from "sinon";
 import { mount } from "enzyme";
-import { Provider } from "react-redux";
 import Immutable from "immutable";
 import { pushGlobalErrorMessage } from "../actions/globalErrorMessages";
+import { extractMessages, TestWrapper } from "../utils/testUtils";
+import sharedMessages from "../sharedMessages";
 
 const delay = () => new Promise(resolve => setTimeout(resolve, 10));
+const messages = extractMessages(sharedMessages);
 
 describe("useDispatchWithErrorHandling", () => {
 	let store, state, dispatchSpy;
@@ -38,9 +40,9 @@ describe("useDispatchWithErrorHandling", () => {
 		};
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages }}>
 				<TestComp />
-			</Provider>
+			</TestWrapper>
 		);
 
 		mount(component);
@@ -65,9 +67,9 @@ describe("useDispatchWithErrorHandling", () => {
 		};
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages }}>
 				<TestComp />
-			</Provider>
+			</TestWrapper>
 		);
 
 		mount(component);
@@ -91,9 +93,9 @@ describe("useDispatchWithErrorHandling", () => {
 		};
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages }}>
 				<TestComp />
-			</Provider>
+			</TestWrapper>
 		);
 
 		mount(component);
@@ -117,9 +119,9 @@ describe("useDispatchWithErrorHandling", () => {
 		};
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages }}>
 				<TestComp />
-			</Provider>
+			</TestWrapper>
 		);
 
 		mount(component);
@@ -148,9 +150,9 @@ describe("useDispatchWithErrorHandling", () => {
 		};
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages }}>
 				<TestComp />
-			</Provider>
+			</TestWrapper>
 		);
 
 		mount(component);
@@ -200,9 +202,9 @@ describe("useDispatchWithErrorHandling", () => {
 		};
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages }}>
 				<TestComp />
-			</Provider>
+			</TestWrapper>
 		);
 
 		mount(component);

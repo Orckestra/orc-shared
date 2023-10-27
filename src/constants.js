@@ -120,3 +120,51 @@ export const taskStatuses = {
 	ignored: "Ignored",
 	queuedForSequence: "QueuedForSequence",
 };
+
+export const propertyBagPrimitiveDataType = {
+	boolean: "Boolean",
+	byte: "Byte",
+	sbyte: "SByte",
+	int16: "Int16",
+	uint16: "UInt16",
+	int32: "Int32",
+	uint32: "UInt32",
+	int64: "Int64",
+	uint64: "UInt64",
+	single: "Single",
+	double: "Double",
+	decimal: "Decimal",
+	dateTime: "DateTime",
+	char: "Char",
+	string: "String",
+	guid: "Guid",
+};
+
+export const dotNetDataTypes = {
+	boolean: "System.Boolean",
+	byte: "System.Byte",
+	sbyte: "System.SByte",
+	int16: "System.Int16",
+	uint16: "System.UInt16",
+	int32: "System.Int32",
+	uint32: "System.UInt32",
+	int64: "System.Int64",
+	uint64: "System.UInt64",
+	single: "System.Single",
+	double: "System.Double",
+	decimal: "System.Decimal",
+	dateTime: "System.DateTime",
+	char: "System.Char",
+	string: "System.String",
+	guid: "System.Guid",
+};
+
+export const serializationTypeKey = "__type";
+
+export const jsonCargoType = {
+	boolean: "Boolean",
+	double: "Double",
+	dateTime: "DateTime",
+	integer: "Int32",
+	entityReferences: "Guid[]",
+};
