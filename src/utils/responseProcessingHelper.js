@@ -1,4 +1,28 @@
-export const extractStandardErrorMessagesFromResponse = (response, validationLookupModule, validationLookupName) => {
+import { getPropertyBagFormattedPrimitiveValue } from "./propertyBagHelper";
+
+const parseFailureContext = (context, formatMessage, formatDate, formatTime) => {
+	if (!context) {
+		return context;
+	}
+
+	const newContext = {};
+
+	Object.keys(context).forEach(key => {
+		newContext[key] = getPropertyBagFormattedPrimitiveValue(context[key], formatMessage, formatDate, formatTime);
+	});
+
+	return newContext;
+};
+
+export const extractStandardErrorMessagesFromResponse = (
+	response,
+	validationLookupModule,
+	validationLookupName,
+	formatMessage,
+	formatDate,
+	formatTime,
+	lookupKeyCustomizer,
+) => {
 	let hasErrors = false;
 	const messages = [];
 
@@ -14,7 +38,8 @@ export const extractStandardErrorMessagesFromResponse = (response, validationLoo
 							message: failure.errorMessage,
 							lookupModule: validationLookupModule,
 							lookupName: validationLookupName,
-							lookupKey: failure.errorCode,
+							lookupKey: lookupKeyCustomizer ? lookupKeyCustomizer(failure.errorCode) : failure.errorCode,
+							lookupReplacementValues: parseFailureContext(failure.context, formatMessage, formatDate, formatTime),
 						});
 					}
 				});
@@ -27,7 +52,7 @@ export const extractStandardErrorMessagesFromResponse = (response, validationLoo
 						message: err.message,
 						lookupModule: err.lookupModule,
 						lookupName: err.lookupName,
-						lookupKey: err.lookupKey,
+						lookupKey: lookupKeyCustomizer ? lookupKeyCustomizer(err.lookupKey) : err.lookupKey,
 						lookupReplacementValues: err.lookupReplacementValues,
 					});
 				});

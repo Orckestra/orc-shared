@@ -65,5 +65,7 @@
 	"orc-shared.taskStatus": "Statut",
 	"orc-shared.unsavedChanges": "Ce dossier contient des modifications qui ne sont sauvegardées. Si vous quittez, les modifications seront perdues.\n\nVoulez vous vraiment quitter?",
 	"orc-shared.valueName": "Nom de la valeur",
+	"orc-shared.valueTypeWrapperFalse": "Faux",
+	"orc-shared.valueTypeWrapperTrue": "Vrai",
 	"orc-shared.yes": "Oui"
 }

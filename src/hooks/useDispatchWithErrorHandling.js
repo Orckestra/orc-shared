@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 import { extractStandardErrorMessagesFromResponse } from "../utils/responseProcessingHelper";
 import { pushGlobalErrorMessage } from "../actions/globalErrorMessages";
+import { useIntl } from "react-intl";
 
 export const executeDispatchWithErrorHandling = ({
 	dispatch,
@@ -10,12 +11,20 @@ export const executeDispatchWithErrorHandling = ({
 	errorDescription,
 	validationLookupModule,
 	validationLookupName,
+	formatMessage,
+	formatDate,
+	formatTime,
+	lookupKeyCustomizer = null,
 }) => {
 	return dispatch(action).then(data => {
 		const extractedMessages = extractStandardErrorMessagesFromResponse(
 			data,
 			validationLookupModule,
 			validationLookupName,
+			formatMessage,
+			formatDate,
+			formatTime,
+			lookupKeyCustomizer,
 		);
 		if (extractedMessages.hasErrors) {
 			const newMsg = {
@@ -38,9 +47,10 @@ export const executeDispatchWithErrorHandling = ({
 
 export const useDispatchWithErrorHandling = () => {
 	const dispatch = useDispatch();
+	const { formatMessage, formatDate, formatTime } = useIntl();
 
 	return useCallback(
-		({ action, errorTitle, errorDescription, validationLookupModule, validationLookupName }) => {
+		({ action, errorTitle, errorDescription, validationLookupModule, validationLookupName, lookupKeyCustomizer }) => {
 			return executeDispatchWithErrorHandling({
 				dispatch,
 				action,
@@ -48,9 +58,13 @@ export const useDispatchWithErrorHandling = () => {
 				errorDescription,
 				validationLookupModule,
 				validationLookupName,
+				formatMessage,
+				formatDate,
+				formatTime,
+				lookupKeyCustomizer,
 			});
 		},
-		[dispatch],
+		[dispatch, formatDate, formatMessage, formatTime],
 	);
 };
 

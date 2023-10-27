@@ -271,6 +271,14 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.taskLogs",
 		defaultMessage: "Logs",
 	},
+	valueTypeWrapperTrue: {
+		id: "orc-shared.valueTypeWrapperTrue",
+		defaultMessage: "True",
+	},
+	valueTypeWrapperFalse: {
+		id: "orc-shared.valueTypeWrapperFalse",
+		defaultMessage: "False",
+	},
 });
 
 export default sharedMessages;
