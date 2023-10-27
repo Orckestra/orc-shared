@@ -49,7 +49,7 @@ export const SubPage = ({ config, match, location, history, root, modulePrependP
 
 	const formattedMsgProps = {
 		id: props?.title?.id,
-		defaultMesaage: props?.title?.defaultMessage,
+		defaultMessage: props?.title?.defaultMessage,
 	};
 
 	const titleComponent = props?.title?.id ? <FormattedMessage {...formattedMsgProps} /> : props?.title;
