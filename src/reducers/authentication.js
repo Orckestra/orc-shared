@@ -14,6 +14,11 @@ const authenticationReducer = (state = initialState, action) => {
 				s.set("upn", action.payload.upn);
 				s.set("name", action.payload.name);
 				const claims = action.payload.rolesClaimsValues;
+
+				if (action.meta && action.meta.overrideClaims) {
+					s.set("rolesClaimsValues", Immutable.fromJS({}));
+				}
+
 				claims.forEach(claim => {
 					const [app, scope, role] = claim.split("/");
 					s.setIn(["rolesClaimsValues", app, scope, role], true);
