@@ -81,6 +81,87 @@ describe("authentication", () => {
 		});
 	});
 
+	describe("storing authentication with override", () => {
+		it("clears existing roles and claims if override is true", () => {
+			const oldState = Immutable.fromJS({
+				upn: "oldupn",
+				name: "oldname",
+				rolesClaimsValues: {
+					Customer: { "*": { Reader: true } },
+					Generic: { "*": { Reader: true } },
+				},
+			});
+			const action = {
+				type: GET_AUTHENTICATION_PROFILE_SUCCESS,
+				payload: {
+					upn: "newupn",
+					name: "newname",
+					rolesClaimsValues: ["Setting/*/Reader", "Tenant/*/Reader"],
+				},
+				meta: { overrideClaims: true },
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "to have value at", ["rolesClaimsValues"], Immutable.fromJS({
+				Setting: { "*": { Reader: true } },
+				Tenant: { "*": { Reader: true } },
+			}));
+		});
+	
+		it("does not clear existing roles and claims if override is false", () => {
+			const oldState = Immutable.fromJS({
+				upn: "oldupn",
+				name: "oldname",
+				rolesClaimsValues: {
+					Customer: { "*": { Reader: true } },
+					Generic: { "*": { Reader: true } },
+				},
+			});
+			const action = {
+				type: GET_AUTHENTICATION_PROFILE_SUCCESS,
+				payload: {
+					upn: "newupn",
+					name: "newname",
+					rolesClaimsValues: ["Setting/*/Reader", "Tenant/*/Reader"],
+				},
+				meta: { overrideClaims: false },
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "to have value at", ["rolesClaimsValues"], Immutable.fromJS({
+				Customer: { "*": { Reader: true } },
+				Generic: { "*": { Reader: true } },
+				Setting: { "*": { Reader: true } },
+				Tenant: { "*": { Reader: true } },
+			}));
+		});
+	
+		it("does not clear existing roles and claims if override is not provided", () => {
+			const oldState = Immutable.fromJS({
+				upn: "oldupn",
+				name: "oldname",
+				rolesClaimsValues: {
+					Customer: { "*": { Reader: true } },
+					Generic: { "*": { Reader: true } },
+				},
+			});
+			const action = {
+				type: GET_AUTHENTICATION_PROFILE_SUCCESS,
+				payload: {
+					upn: "newupn",
+					name: "newname",
+					rolesClaimsValues: ["Setting/*/Reader", "Tenant/*/Reader"],
+				},
+				// meta: { overrideClaims: false }, // Intentionally omitted
+			};
+			const newState = reducer(oldState, action);
+			return expect(newState, "to have value at", ["rolesClaimsValues"], Immutable.fromJS({
+				Customer: { "*": { Reader: true } },
+				Generic: { "*": { Reader: true } },
+				Setting: { "*": { Reader: true } },
+				Tenant: { "*": { Reader: true } },
+			}));
+		});
+	});
+
 	describe("sign out", () => {
 		const { location } = window;
 		beforeAll(() => {
