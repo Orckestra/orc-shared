@@ -51,10 +51,10 @@
 		"@testing-library/react": "^10.4.9"
 	},
 	"peerDependencies": {
-		"orc-scripts": "1.8.0-dev.2"
+		"orc-scripts": "2.0.0-dev.2"
 	},
 	"dependencies": {
-		"orc-scripts": "1.8.0-dev.2",
+		"orc-scripts": "2.0.0-dev.2",
 		"react-number-format": "^5.3.0"
 	},
 	"sideEffects": false,

@@ -16,15 +16,15 @@ variables:
 
 steps:
 - task: NodeTool@0
-  displayName: 'Use Node 15.x'
+  displayName: 'Use Node 18.x'
   inputs:
-    versionSpec: 15.x
+    versionSpec: 18.x
 
 - task: Npm@0
   displayName: 'npm install'
   inputs:
     command: 'install'
-    arguments: '--legacy-peer-deps --verbose'
+    arguments: '--verbose'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish eresolve-report.txt'
