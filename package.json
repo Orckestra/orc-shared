@@ -8,6 +8,10 @@
 		"./src/": "./src/",
 		"./dist/": "./dist/"
 	},
+	"engines": {
+		"node": ">= 18",
+		"npm": ">= 9.0.0"
+	},
 	"scripts": {
 		"build": "orc-scripts prep && npm run build:source --",
 		"build:source": "orc-scripts build --ignore \"**/*.test.js\",\"src/translations/*\" --no-copy-files",
