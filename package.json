@@ -58,7 +58,7 @@
 		"orc-scripts": "2.0.0-dev.3"
 	},
 	"dependencies": {
-		"orc-scripts": "2.0.0-dev.2",
+		"orc-scripts": "2.0.0-dev.3",
 		"react-number-format": "^5.3.0"
 	},
 	"sideEffects": false,
