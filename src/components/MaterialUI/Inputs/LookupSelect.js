@@ -4,7 +4,7 @@ import { namedLookupValuesSelector } from "../../../selectors/metadata";
 import { getNotLocalizedString } from "../../../utils/localizationHelper";
 import createInput, { inputTypes } from "./createInput";
 
-const LookupSelect = ({ moduleName, lookupName, value, onChange, disabled, metadata }) => {
+const LookupSelect = ({ moduleName, lookupName, value, onChange, disabled, metadata, ...props }) => {
 	const options = extractDropboxOptions(useSelector(namedLookupValuesSelector(moduleName, lookupName)));
 
 	if (value !== null && !options.some(x => x.value === value)) {
@@ -15,11 +15,18 @@ const LookupSelect = ({ moduleName, lookupName, value, onChange, disabled, metad
 		});
 	}
 
+	const inputProps = {};
+
+	if (props?.["data-qa"]) {
+		inputProps["data-qa"] = props["data-qa"];
+	}
+
 	return createInput(inputTypes.select, {
 		options: options,
 		value: value,
 		update: newValue => onChange(newValue, metadata),
 		disabled: disabled,
+		inputProps: inputProps,
 	});
 };
 
