@@ -125,6 +125,10 @@ Configurable list component. Shows a table of information, according to the give
 
 See also the more [detailed documentation for list components](lists.md).
 
+## LookupSelect
+
+A select control which loads its values from a lookup definition.
+
 ## Modal
 
 - `look`: The appearance of the dialog box. One of `'default'` or `'dark'`.

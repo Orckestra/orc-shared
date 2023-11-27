@@ -210,4 +210,25 @@ describe("LookupSelect Component", () => {
 
 		expect(update, "to have calls satisfying", [{ args: ["CanceledReason2", { a: 123 }] }]);
 	});
+
+	it("LookupSelect component with data-qa", () => {
+		const update = sinon.spy().named("update");
+		const component = (
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }}>
+				<LookupSelect
+					moduleName={"order"}
+					lookupName={"CanceledStatusReasons"}
+					value={"CanceledReason3"}
+					onChange={update}
+					metadata={{ a: 123 }}
+					data-qa="custom-value"
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const controls = mountedComponent.find("[data-qa='custom-value']").hostNodes();
+		expect(controls.length, "to equal", 1);
+	});
 });
