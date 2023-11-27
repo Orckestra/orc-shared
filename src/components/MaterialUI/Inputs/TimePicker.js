@@ -91,8 +91,17 @@ const calculateHours = (time, showAMPM) => {
 	return time.getHours() === 0 || time.getHours() === 12 ? 12 : time.getHours() % 12;
 };
 
-const calculateMins = time => {
-	return time.getMinutes() >= 45 ? "45" : time.getMinutes() >= 30 ? "30" : time.getMinutes() >= 15 ? "15" : "00";
+const calculateMins = (time, minuteValues) => {
+	let selectedMinute = minuteValues[0];
+	for (const minuteValue of minuteValues) {
+		if (time.getMinutes() >= parseInt(minuteValue.value, 10)) {
+			selectedMinute = minuteValue;
+		} else {
+			break;
+		}
+	}
+
+	return selectedMinute.value;
 };
 
 const calculateAMPM = time => (isAM(time) ? "AM" : "PM");
@@ -113,7 +122,7 @@ export const AMPMSelect = ({ showAMPM, updateTimeOptions, time }) => {
 
 	return (
 		<div className={classes.timePickerSegmentWrapper}>
-			<Select selectProps={selectProps}>
+			<Select selectProps={selectProps} data-qa="time-ampm">
 				{ampmOptions.map(option => (
 					<option key={"ampm" + option.value} value={option.value}>
 						{option.label}
@@ -139,7 +148,7 @@ export const HoursSelect = ({ updateTimeOptions, time, showAMPM }) => {
 
 	return (
 		<div className={classes.timePickerSegmentWrapper}>
-			<Select selectProps={selectProps}>
+			<Select selectProps={selectProps} data-qa="time-hours">
 				{properHourOptions.map(option => (
 					<option key={"hour" + option.value} value={option.value}>
 						{option.label}
@@ -150,12 +159,12 @@ export const HoursSelect = ({ updateTimeOptions, time, showAMPM }) => {
 	);
 };
 
-export const MinsSelect = ({ updateTimeOptions, time }) => {
+export const MinsSelect = ({ updateTimeOptions, time, values = minOptions }) => {
 	const classes = useStyles();
 	const selectProps = new SelectProps();
 
 	selectProps.set(SelectProps.propNames.update, updateTimeOptions("mins"));
-	selectProps.set(SelectProps.propNames.value, calculateMins(time));
+	selectProps.set(SelectProps.propNames.value, calculateMins(time, values));
 	selectProps.set(SelectProps.propNames.native, true);
 	selectProps.set(SelectProps.propNames.inputProps, {
 		name: "mins",
@@ -164,8 +173,8 @@ export const MinsSelect = ({ updateTimeOptions, time }) => {
 
 	return (
 		<div className={classes.timePickerSegmentWrapper}>
-			<Select selectProps={selectProps}>
-				{minOptions.map(option => (
+			<Select selectProps={selectProps} data-qa="time-minutes">
+				{values.map(option => (
 					<option key={"min" + option.value} value={option.value}>
 						{option.label}
 					</option>
@@ -175,7 +184,7 @@ export const MinsSelect = ({ updateTimeOptions, time }) => {
 	);
 };
 
-const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone }) => {
+const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone, timeOption }) => {
 	const classes = useStyles();
 	showAMPM = showAMPM ?? isBrowserUsingAMPM();
 	const [time, setTime] = useState(parseTime(value || "00:00"));
@@ -232,7 +241,7 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 			<span className={classes.timePickerWrapper}>
 				<HoursSelect updateTimeOptions={updateTimeOptions} time={time} showAMPM={showAMPM} />
 				<label> : </label>
-				<MinsSelect updateTimeOptions={updateTimeOptions} time={time} />
+				<MinsSelect updateTimeOptions={updateTimeOptions} time={time} values={timeOption?.minutes} />
 				<AMPMSelect showAMPM={showAMPM} updateTimeOptions={updateTimeOptions} time={time} />
 			</span>
 			{showTimeZone && (

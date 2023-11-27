@@ -313,6 +313,34 @@ describe("Time Component", () => {
 			</TestWrapper>,
 		));
 
+	it("sets up a time 559pm", () => {
+		const component = mount(
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>
+				<div>
+					<TimePicker
+						showAMPM={true}
+						onChange={jest.fn()}
+						value="10:59"
+						timeOption={{
+							minutes: [
+								{ value: "00", label: "00" },
+								{ value: "15", label: "15" },
+								{ value: "30", label: "30" },
+								{ value: "45", label: "45" },
+								{ value: "59", label: "59" },
+							],
+						}}
+					/>
+				</div>
+			</TestWrapper>,
+		);
+
+		const minSelect = component.find("[data-qa='time-minutes']");
+
+		expect(minSelect.length, "to equal", 1);
+		expect(minSelect.at(0).props().selectProps.componentProps.get("value"), "to equal", "59");
+	});
+
 	it("sets up a time 545pm without AMPM", () =>
 		expect(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} intlProvider={{ messages }}>

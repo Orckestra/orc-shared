@@ -136,6 +136,7 @@ const WrappedDatePicker = ({
 	metadata,
 	timePickerTimeZone,
 	error,
+	timeOption,
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
@@ -166,7 +167,13 @@ const WrappedDatePicker = ({
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
-							useTime ? <TimePicker showTimeZone={showTimeZone} requestedTimeZone={localizedTimeZoneName} /> : null
+							useTime ? (
+								<TimePicker
+									showTimeZone={showTimeZone}
+									requestedTimeZone={localizedTimeZoneName}
+									timeOption={timeOption}
+								/>
+							) : null
 						}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}
