@@ -168,3 +168,5 @@ export const jsonCargoType = {
 	integer: "Int32",
 	entityReferences: "Guid[]",
 };
+
+export const allValue = "#All#";
