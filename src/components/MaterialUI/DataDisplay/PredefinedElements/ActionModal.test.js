@@ -17,8 +17,8 @@ describe("ActionModal", () => {
 		const open = true;
 		const message = "message";
 
-		const actionOne = { label: sharedMessages.yes, handler: jest.fn(), isPrimary: true };
-		const actionTwo = { label: sharedMessages.no, handler: jest.fn() };
+		const actionOne = { label: sharedMessages.yes, handler: jest.fn(), isPrimary: true, disabled: false };
+		const actionTwo = { label: sharedMessages.no, handler: jest.fn(), disabled: false };
 		const actionThree = { label: sharedMessages.cancel, handler: jest.fn() };
 
 		const backdropClickCallback = jest.fn();
@@ -32,13 +32,20 @@ describe("ActionModal", () => {
 
 		const actionPanel = (
 			<div>
-				<Button key="1" variant="contained" color="primary" onClick={() => actionOne.handler()} disableElevation>
+				<Button
+					key="1"
+					variant="contained"
+					color="primary"
+					disabled={false}
+					onClick={() => actionOne.handler()}
+					disableElevation
+				>
 					{stringifyWithoutQuotes(messages["orc-shared.yes"])}
 				</Button>
-				<Button key="2" variant="outlined" onClick={() => actionTwo.handler()}>
+				<Button key="2" variant="outlined" disabled={false} onClick={() => actionTwo.handler()}>
 					{stringifyWithoutQuotes(messages["orc-shared.no"])}
 				</Button>
-				<Button key="3" variant="outlined" onClick={() => actionThree.handler()}>
+				<Button key="3" variant="outlined" disabled={false} onClick={() => actionThree.handler()}>
 					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
 				</Button>
 			</div>
@@ -51,6 +58,68 @@ describe("ActionModal", () => {
 				<ActionModal
 					message={message}
 					open={open}
+					actions={[actionOne, actionTwo, actionThree]}
+					backdropClickCallback={backdropClickCallback}
+				/>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<Modal message={message} modalProps={modalProps} />
+			</IntlProvider>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders ActionModal correctly with disabled actions", () => {
+		const open = true;
+		const message = "message";
+
+		const actionOne = { label: sharedMessages.yes, handler: jest.fn(), isPrimary: true, disabled: true };
+		const actionTwo = { label: sharedMessages.no, handler: jest.fn(), disabled: false };
+		const actionThree = { label: sharedMessages.cancel, handler: jest.fn() };
+
+		const backdropClickCallback = jest.fn();
+		const modalProps = new ModalProps();
+
+		const titleComponent = stringifyWithoutQuotes(messages["orc-shared.confirmation"]);
+
+		modalProps.set(ModalProps.propNames.title, titleComponent);
+		modalProps.set(ModalProps.propNames.open, open);
+		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
+		modalProps.set(ModalProps.propNames.type, "fullwidth");
+
+		const actionPanel = (
+			<div>
+				<Button
+					key="1"
+					variant="contained"
+					color="primary"
+					disabled={true}
+					onClick={() => actionOne.handler()}
+					disableElevation
+				>
+					{stringifyWithoutQuotes(messages["orc-shared.yes"])}
+				</Button>
+				<Button key="2" variant="outlined" disabled={false} onClick={() => actionTwo.handler()}>
+					{stringifyWithoutQuotes(messages["orc-shared.no"])}
+				</Button>
+				<Button key="3" variant="outlined" disabled={false} onClick={() => actionThree.handler()}>
+					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
+				</Button>
+			</div>
+		);
+
+		modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<ActionModal
+					message={message}
+					open={open}
+					type={"fullwidth"}
 					actions={[actionOne, actionTwo, actionThree]}
 					backdropClickCallback={backdropClickCallback}
 				/>

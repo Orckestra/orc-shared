@@ -20,7 +20,7 @@ const ActionModal = ({
 	message,
 	open,
 	type,
-	actions, // Array of objects containing three properties: label, handler, isPrimary
+	actions, // Array of objects containing four properties: label, handler, isPrimary & disabled
 	backdropClickCallback,
 }) => {
 	const classes = useStyles();
@@ -42,6 +42,7 @@ const ActionModal = ({
 					variant={action.isPrimary ? "contained" : "outlined"}
 					color={action.isPrimary ? "primary" : "default"}
 					disableElevation={action.isPrimary}
+					disabled={action.disabled ?? false}
 					onClick={e => action.handler(e)}
 				>
 					<FormattedMessage {...action.label} />
