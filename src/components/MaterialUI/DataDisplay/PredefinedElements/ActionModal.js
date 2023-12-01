@@ -42,6 +42,7 @@ const ActionModal = ({
 					variant={action.isPrimary ? "contained" : "outlined"}
 					color={action.isPrimary ? "primary" : "default"}
 					disableElevation={action.isPrimary}
+					disabled={action.disabled ?? false}
 					onClick={e => action.handler(e)}
 				>
 					<FormattedMessage {...action.label} />
