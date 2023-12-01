@@ -20,7 +20,7 @@ const ActionModal = ({
 	message,
 	open,
 	type,
-	actions, // Array of objects containing three properties: label, handler, isPrimary
+	actions, // Array of objects containing four properties: label, handler, isPrimary & disabled
 	backdropClickCallback,
 }) => {
 	const classes = useStyles();
