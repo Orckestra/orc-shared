@@ -17,8 +17,8 @@ describe("ActionModal", () => {
 		const open = true;
 		const message = "message";
 
-		const actionOne = { label: sharedMessages.yes, handler: jest.fn(), isPrimary: true };
-		const actionTwo = { label: sharedMessages.no, handler: jest.fn() };
+		const actionOne = { label: sharedMessages.yes, handler: jest.fn(), isPrimary: true, disabled: false };
+		const actionTwo = { label: sharedMessages.no, handler: jest.fn(), disabled: false };
 		const actionThree = { label: sharedMessages.cancel, handler: jest.fn() };
 
 		const backdropClickCallback = jest.fn();
@@ -32,13 +32,20 @@ describe("ActionModal", () => {
 
 		const actionPanel = (
 			<div>
-				<Button key="1" variant="contained" color="primary" onClick={() => actionOne.handler()} disableElevation>
+				<Button
+					key="1"
+					variant="contained"
+					color="primary"
+					disabled={false}
+					onClick={() => actionOne.handler()}
+					disableElevation
+				>
 					{stringifyWithoutQuotes(messages["orc-shared.yes"])}
 				</Button>
-				<Button key="2" variant="outlined" onClick={() => actionTwo.handler()}>
+				<Button key="2" variant="outlined" disabled={false} onClick={() => actionTwo.handler()}>
 					{stringifyWithoutQuotes(messages["orc-shared.no"])}
 				</Button>
-				<Button key="3" variant="outlined" onClick={() => actionThree.handler()}>
+				<Button key="3" variant="outlined" disabled={false} onClick={() => actionThree.handler()}>
 					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
 				</Button>
 			</div>
@@ -96,10 +103,10 @@ describe("ActionModal", () => {
 				>
 					{stringifyWithoutQuotes(messages["orc-shared.yes"])}
 				</Button>
-				<Button key="2" variant="outlined" onClick={() => actionTwo.handler()}>
+				<Button key="2" variant="outlined" disabled={false} onClick={() => actionTwo.handler()}>
 					{stringifyWithoutQuotes(messages["orc-shared.no"])}
 				</Button>
-				<Button key="3" variant="outlined" onClick={() => actionThree.handler()}>
+				<Button key="3" variant="outlined" disabled={false} onClick={() => actionThree.handler()}>
 					{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
 				</Button>
 			</div>
