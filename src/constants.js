@@ -74,6 +74,7 @@ export const attributeDataType = {
 	lookup: "Lookup",
 	entityReference: "EntityReference",
 	customType: "CustomType",
+	radio: "Radio",
 };
 
 // It is intended that some of them have a different value of its keys
