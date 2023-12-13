@@ -49,8 +49,10 @@ export const toJsonCargo = (attribute, value) => {
 	switch (attribute.dataType) {
 		case attributeDataType.text:
 		case attributeDataType.lookup:
-		case attributeDataType.radio:
+		case attributeDataType.singleChoice:
 			return value;
+		case attributeDataType.multipleChoice:
+			return createJsonCargo(jsonCargoType.stringArray, value);
 
 		case attributeDataType.boolean:
 			return createJsonCargo(jsonCargoType.boolean, value);

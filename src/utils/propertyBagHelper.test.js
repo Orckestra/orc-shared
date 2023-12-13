@@ -123,7 +123,13 @@ describe("toJsonCargo function", () => {
 				tiers: [{ min: "2", rate: "2" }],
 			},
 		],
-		["aRadioValue", attributeDataType.radio, null, "aRadioValue"],
+		["aRadioValue", attributeDataType.singleChoice, null, "aRadioValue"],
+		[
+			["aCheckboxValue1", "aCheckboxValue1"],
+			attributeDataType.multipleChoice,
+			null,
+			{ __type: "ValueOfString[]", value: ["aCheckboxValue1", "aCheckboxValue1"] },
+		],
 	])("should return the proper json cargo with %s of type %s", (value, dataType, customType, expectedCargo) => {
 		const attribute = {
 			dataType: dataType,
