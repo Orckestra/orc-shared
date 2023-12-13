@@ -85,6 +85,28 @@ describe("CheckboxGroup Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders CheckboxGroup component without errors and vertical orientation", () => {
+		const props = new CheckboxGroupProps();
+		const options = [
+			{ value: "option1", sortOrder: 1 },
+			{ value: "option2", sortOrder: 2 },
+			{ value: "option3", sortOrder: 3 },
+			{ value: "option3_special", sortOrder: 4 },
+		];
+
+		props.set(CheckboxGroupProps.propNames.update, update);
+		props.set(CheckboxGroupProps.propNames.value, "option1|option3_special");
+		props.set(CheckboxGroupProps.propNames.options, options);
+		props.set(CheckboxGroupProps.propNames.row, false);
+		const component = <CheckboxGroup checkboxGroupProps={props} />;
+
+		const mountedComponent = mount(component);
+		const container = mountedComponent.find("[data-qa='checkboxgroup-container']");
+
+		const styles = getComputedStyle(container.getDOMNode());
+		expect(styles.flexDirection, "to be", "column");
+	});
+
 	it("Renders CheckboxGroup component without errors when options are not specified", () => {
 		const props = new CheckboxGroupProps();
 

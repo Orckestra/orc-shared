@@ -74,7 +74,8 @@ export const attributeDataType = {
 	lookup: "Lookup",
 	entityReference: "EntityReference",
 	customType: "CustomType",
-	radio: "Radio",
+	singleChoice: "SingleChoice",
+	multipleChoice: "MultipleChoice",
 };
 
 // It is intended that some of them have a different value of its keys
@@ -167,7 +168,13 @@ export const jsonCargoType = {
 	double: "Double",
 	dateTime: "DateTime",
 	integer: "Int32",
+	stringArray: "String[]",
 	entityReferences: "Guid[]",
 };
 
 export const allValue = "#All#";
+
+export const choiceControlOrientation = {
+	horizontal: "Horizontal",
+	vertical: "Vertical",
+};

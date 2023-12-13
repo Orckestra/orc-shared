@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	checkBoxContainer: {
 		display: "flex",
-		flexDirection: "row",
+		flexDirection: props => (props.row ? "row" : "column"),
 		flexWrap: "wrap",
 		"& .MuiFormControlLabel-root": {
 			[theme.breakpoints.up("xs")]: {},
@@ -35,8 +35,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CheckboxGroup = ({ checkboxGroupProps }) => {
-	const classes = useStyles();
-
 	if (isCheckboxGroupProps(checkboxGroupProps) === false) {
 		throw new TypeError("checkboxGroupProps property is not of type CheckboxGroupProps");
 	}
@@ -48,6 +46,9 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 	const readOnly = checkboxGroupProps?.get(CheckboxGroupProps.propNames.readOnly) || false;
 	const disabled = checkboxGroupProps?.get(CheckboxGroupProps.propNames.disabled) || false;
 	const options = checkboxGroupProps?.get(CheckboxGroupProps.propNames.options) ?? [];
+	const row = checkboxGroupProps.get(CheckboxGroupProps.propNames.row) ?? true;
+
+	const classes = useStyles({ row });
 
 	const handleGroupUpdate = (checked, value, newValue) => {
 		const values = value ? value.split("|") : [];
@@ -64,7 +65,7 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 
 	const checkBoxGroup = (
 		<div className={classes.container}>
-			<div className={classes.checkBoxContainer}>
+			<div className={classes.checkBoxContainer} data-qa="checkboxgroup-container">
 				{options.map((option, index) => {
 					const checkboxProps = new CheckboxProps();
 					checkboxProps.set(CheckboxProps.propNames.update, checked => handleGroupUpdate(checked, value, option.value));

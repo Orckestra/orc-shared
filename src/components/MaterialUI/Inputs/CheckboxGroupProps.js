@@ -9,6 +9,7 @@ class CheckboxGroupProps extends ComponentProps {
 		readOnly: "readOnly",
 		disabled: "disabled",
 		error: "error",
+		row: "row",
 	};
 
 	constructor() {
@@ -20,6 +21,7 @@ class CheckboxGroupProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.disabled, null);
 		this.componentProps.set(this.constructor.propNames.options, null);
 		this.componentProps.set(this.constructor.propNames.error, null);
+		this.componentProps.set(this.constructor.propNames.row, null);
 
 		this._isCheckboxGroupProps = true;
 	}

@@ -2,13 +2,13 @@ import CheckboxGroupProps, { isCheckboxGroupProps } from "./CheckboxGroupProps";
 
 describe("CheckboxGroup Props", () => {
 	it("Contains necessary props keys", () => {
-		const propNames = ["update", "value", "label", "readOnly", "disabled", "options", "error"];
+		const propNames = ["update", "value", "label", "readOnly", "disabled", "options", "error", "row"];
 
 		expect(CheckboxGroupProps.propNames, "to have keys", propNames);
 	});
 
 	it("Puts keys in component props map", () => {
-		const propNames = ["update", "value", "label", "readOnly", "disabled", "options", "error"];
+		const propNames = ["update", "value", "label", "readOnly", "disabled", "options", "error", "row"];
 
 		const checkboxProps = new CheckboxGroupProps();
 
