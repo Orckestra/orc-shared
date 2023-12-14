@@ -238,6 +238,63 @@ describe("SearchControl Component", () => {
 		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", "abc"] }]);
 	});
 
+	it("Search value should be trimmed after a search", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl placeholder="placeHolderTest" searchOptions={options} onSearch={onSearchEvent} />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const allInputs = mountedComponent.find("input");
+		const searchInput = allInputs.find("[placeholder='placeHolderTest']");
+		expect(searchInput.length, "to be", 1);
+
+		searchInput.instance().value = "abc ";
+		mountedComponent.find("form").simulate("submit", { preventDefault: () => {} });
+
+		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", "abc"] }]);
+	});
+
+	it("Search value should not be trimmed after a search", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const onSearchEvent = sinon.spy().named("search");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SearchControl
+					placeholder="placeHolderTest"
+					searchOptions={options}
+					onSearch={onSearchEvent}
+					trimSearchvalue={false}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const allInputs = mountedComponent.find("input");
+		const searchInput = allInputs.find("[placeholder='placeHolderTest']");
+		expect(searchInput.length, "to be", 1);
+
+		searchInput.instance().value = "abc ";
+		mountedComponent.find("form").simulate("submit", { preventDefault: () => {} });
+
+		expect(onSearchEvent, "to have calls satisfying", [{ args: ["aValue", "abc "] }]);
+	});
+
 	it("Search Control should trigger the event when clicking on the search button", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },

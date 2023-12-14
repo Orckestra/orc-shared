@@ -153,6 +153,7 @@ const SearchControl = ({
 	disabled,
 	focusAndSelectSearchFieldOnLoad = true,
 	focusSearchOnSearchOptionChange = false,
+	trimSearchvalue = true,
 }) => {
 	searchOptions = !searchOptions?.length ? null : searchOptions;
 	searchOption = getSearchOptionValue(searchOptions, searchOption);
@@ -160,6 +161,13 @@ const SearchControl = ({
 	const classes = useStyles();
 
 	const inputRef = useRef();
+
+	const cleanUpSearchValue = value => {
+		if (trimSearchvalue) {
+			return value?.trim();
+		}
+		return value;
+	};
 
 	const update = value => {
 		if (focusSearchOnSearchOptionChange && inputRef.current) {
@@ -173,7 +181,7 @@ const SearchControl = ({
 				}
 			}, 0);
 		} else {
-			onSearch(value, defaultValue);
+			onSearch(value, cleanUpSearchValue(defaultValue));
 		}
 	};
 
@@ -208,7 +216,7 @@ const SearchControl = ({
 
 	const onSubmit = event => {
 		// using form submit instead of a keydown (with key=enter) to allow the 'enter key' event to be canceled elsewhere to avoid the submit event
-		onSearch(searchOption, inputRef.current?.value);
+		onSearch(searchOption, cleanUpSearchValue(inputRef.current?.value));
 		event.preventDefault();
 	};
 
