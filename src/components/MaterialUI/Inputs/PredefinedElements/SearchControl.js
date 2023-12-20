@@ -162,16 +162,15 @@ const SearchControl = ({
 
 	const inputRef = useRef();
 
-	const cleanUpSearchValue = value => {
-		if (trimSearchvalue) {
-			return value?.trim();
-		}
-		return value;
+	const onSearchInternal = (newSearchOption, value) => {
+		const searchValue = trimSearchvalue ? value?.trim() : value;
+
+		onSearch(newSearchOption, searchValue);
 	};
 
-	const update = value => {
+	const update = newSearchOption => {
 		if (focusSearchOnSearchOptionChange && inputRef.current) {
-			onSearch(value, "");
+			onSearchInternal(newSearchOption, "");
 			setTimeout(() => {
 				/* istanbul ignore next */
 				if (inputRef.current) {
@@ -181,7 +180,7 @@ const SearchControl = ({
 				}
 			}, 0);
 		} else {
-			onSearch(value, cleanUpSearchValue(defaultValue));
+			onSearchInternal(newSearchOption, inputRef.current?.value);
 		}
 	};
 
@@ -216,7 +215,7 @@ const SearchControl = ({
 
 	const onSubmit = event => {
 		// using form submit instead of a keydown (with key=enter) to allow the 'enter key' event to be canceled elsewhere to avoid the submit event
-		onSearch(searchOption, cleanUpSearchValue(inputRef.current?.value));
+		onSearchInternal(searchOption, inputRef.current?.value);
 		event.preventDefault();
 	};
 
@@ -239,7 +238,7 @@ const SearchControl = ({
 								disabled={disabled}
 								onClick={() => {
 									inputRef.current.value = null;
-									onSearch(searchOption);
+									onSearchInternal(searchOption);
 									inputRef.current.focus();
 								}}
 								className={classes.clearButton}
@@ -260,7 +259,7 @@ const SearchControl = ({
 			disabled={disabled}
 			classes={{ root: classes.searchButton }}
 			onClick={() => {
-				onSearch(searchOption, inputRef.current.value);
+				onSearchInternal(searchOption, inputRef.current.value);
 			}}
 		>
 			<Icon id="search" />
