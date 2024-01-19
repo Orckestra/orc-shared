@@ -12,6 +12,7 @@ import {
 	GET_APPLICATION_MODULES_REQUEST,
 	GET_APPLICATION_MODULES_SUCCESS,
 	GET_APPLICATION_MODULES_FAILURE,
+	getScopeExtendedConfiguration,
 } from "./scopes";
 
 jest.mock("../utils/buildUrl", () => {
@@ -146,6 +147,39 @@ describe("applicationScopeHasChanged", () => {
 				previousScope: "oldScope",
 				newScope: "newScope",
 				moduleName: "module",
+			},
+		});
+	});
+});
+
+describe("getScopeExtendedConfiguration", () => {
+	it("creates a RSAA to fetch a scope extended configuration", () => {
+		expect(getScopeExtendedConfiguration, "when called with", ["zeScope"], "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					{
+						type: "GET_SCOPE_EXTENDED_CONFIGURATION_REQUEST",
+						meta: { scope: "zeScope" },
+					},
+					{
+						type: "GET_SCOPE_EXTENDED_CONFIGURATION_SUCCESS",
+						meta: { scope: "zeScope" },
+					},
+					{
+						type: "GET_SCOPE_EXTENDED_CONFIGURATION_FAILURE",
+						meta: { scope: "zeScope" },
+					},
+				],
+				endpoint: 'URL: scopes/zeScope/extendedConfiguration ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: false,
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
 			},
 		});
 	});

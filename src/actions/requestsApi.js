@@ -77,6 +77,13 @@ export const addFulfillmentCompetitionLocationsRequest = {
 	verb: "POST",
 };
 
+export const addFulfillmentLocationTimeSlotQuotaExceptionRequest = {
+	name: "addFulfillmentLocationTimeSlotQuotaExceptionRequest",
+	buildUrl: (scopeId, fulfillmentLocationId, slotId) =>
+		buildUrl(["fulfillmentLocations", scopeId, fulfillmentLocationId, "quotaExceptions", slotId]),
+	verb: "POST",
+};
+
 export const addFulfillmentLocationTimeSlotRequest = {
 	name: "addFulfillmentLocationTimeSlotRequest",
 	buildUrl: (scopeId, fulfillmentLocationId, fulfillmentMethodType) =>
@@ -148,6 +155,12 @@ export const addOrUpdatePriceListRequest = {
 	verb: "POST",
 };
 
+export const addOrUpdateProfileSettingsRequest = {
+	name: "addOrUpdateProfileSettingsRequest",
+	buildUrl: () => buildUrl(["metadata", "settings", "customer"]),
+	verb: "POST",
+};
+
 export const addOrUpdateRecurringOrderLineItemsRequest = {
 	name: "addOrUpdateRecurringOrderLineItemsRequest",
 	buildUrl: (scopeId, customerId) => buildUrl(["recurringOrders", scopeId, "lineItems", "forCustomer", customerId]),
@@ -179,15 +192,22 @@ export const addOrderNoteRequest = {
 	verb: "POST",
 };
 
+export const addOrderReturnNoteRequest = {
+	name: "addOrderReturnNoteRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "notes"]),
+	verb: "POST",
+};
+
 export const addOrganizationsToCustomerRequest = {
 	name: "addOrganizationsToCustomerRequest",
 	buildUrl: (scopeId, customerId) => buildUrl(["customers", scopeId, customerId, "organizations"]),
 	verb: "POST",
 };
 
-export const addStoresToCustomerRequest = {
-	name: "addStoresToCustomerRequest",
-	buildUrl: (scopeId, customerId) => buildUrl(["customers", scopeId, customerId, "stores"]),
+export const addPaymentHistoryRequest = {
+	name: "addPaymentHistoryRequest",
+	buildUrl: (scopeId, orderId) => buildUrl(["orders", scopeId, orderId, "paymentHistory"]),
 	verb: "POST",
 };
 
@@ -240,15 +260,33 @@ export const addShipmentRequest = {
 	verb: "POST",
 };
 
+export const addStoresToCustomerRequest = {
+	name: "addStoresToCustomerRequest",
+	buildUrl: (scopeId, customerId) => buildUrl(["customers", scopeId, customerId, "stores"]),
+	verb: "POST",
+};
+
 export const addUserToGroupRequest = {
 	name: "addUserToGroupRequest",
 	buildUrl: (groupId, userName) => buildUrl(["groups", groupId, userName]),
 	verb: "POST",
 };
 
+export const advancedFindInventoryItemsRequest = {
+	name: "advancedFindInventoryItemsRequest",
+	buildUrl: scopeId => buildUrl(["inventoryItems", scopeId, "find", "advanced"]),
+	verb: "POST",
+};
+
 export const advancedSearchRequest = {
 	name: "advancedSearchRequest",
 	buildUrl: (scopeId, cultureName, indexName) => buildUrl(["search", scopeId, cultureName, "advanced", indexName]),
+	verb: "POST",
+};
+
+export const anonymizeCustomerRequest = {
+	name: "anonymizeCustomerRequest",
+	buildUrl: (scopeId, customerId) => buildUrl(["customers", scopeId, customerId, "anonymize"]),
 	verb: "POST",
 };
 
@@ -291,15 +329,15 @@ export const bulkAssignProductCategoriesRequest = {
 	verb: "POST",
 };
 
-export const bulkRevertProductChangesRequest = {
-	name: "bulkRevertProductChangesRequest",
-	buildUrl: scopeId => buildUrl(["products", scopeId, "bulkRevert"]),
+export const bulkDeletePriceListEntriesRequest = {
+	name: "bulkDeletePriceListEntriesRequest",
+	buildUrl: scopeId => buildUrl(["products", scopeId, "priceListEntries", "bulkDelete"]),
 	verb: "POST",
 };
 
-export const bulkUpdatePublicationStatusRequest = {
-	name: "bulkUpdatePublicationStatusRequest",
-	buildUrl: scopeId => buildUrl(["products", scopeId, "bulkUpdatePublicationStatus"]),
+export const bulkRevertProductChangesRequest = {
+	name: "bulkRevertProductChangesRequest",
+	buildUrl: scopeId => buildUrl(["products", scopeId, "bulkRevert"]),
 	verb: "POST",
 };
 
@@ -309,9 +347,27 @@ export const bulkUpdateProfilesRequest = {
 	verb: "PUT",
 };
 
+export const bulkUpdatePublicationStatusRequest = {
+	name: "bulkUpdatePublicationStatusRequest",
+	buildUrl: scopeId => buildUrl(["products", scopeId, "bulkUpdatePublicationStatus"]),
+	verb: "POST",
+};
+
+export const calculateDistanceBetweenAddressesRequest = {
+	name: "calculateDistanceBetweenAddressesRequest",
+	buildUrl: scopeId => buildUrl(["addresses", scopeId, "calculateDistance"]),
+	verb: "POST",
+};
+
 export const calculateFulfillmentLocationsDelayRequest = {
 	name: "calculateFulfillmentLocationsDelayRequest",
 	buildUrl: scopeId => buildUrl(["fulfillmentLocations", scopeId, "calculateDelay"]),
+	verb: "POST",
+};
+
+export const calculateOrderReturnAmountsRequest = {
+	name: "calculateOrderReturnAmountsRequest",
+	buildUrl: (scopeId, orderNumber) => buildUrl(["orders", "returns", scopeId, orderNumber, "calculateAmounts"]),
 	verb: "POST",
 };
 
@@ -544,6 +600,13 @@ export const createCartOrderDraftRequest = {
 	verb: "POST",
 };
 
+export const createCartPaymentInVaultProfileRequest = {
+	name: "createCartPaymentInVaultProfileRequest",
+	buildUrl: (scopeId, customerId, cartName, paymentId) =>
+		buildUrl(["carts", scopeId, customerId, cartName, "payments", paymentId, "createCartPaymentVaultProfile"]),
+	verb: "POST",
+};
+
 export const createCartPaymentVaultProfileRequest = {
 	name: "createCartPaymentVaultProfileRequest",
 	buildUrl: (scopeId, customerId, cartName, paymentId) =>
@@ -591,12 +654,6 @@ export const createCustomerRequest = {
 	name: "createCustomerRequest",
 	buildUrl: scopeId => buildUrl(["customers", scopeId]),
 	verb: "POST",
-};
-
-export const updateEntityTypeRequest = {
-	name: "updateEntityTypeRequest",
-	buildUrl: entityTypeName => buildUrl(["metadata", "EntityType", entityTypeName]),
-	verb: "PUT",
 };
 
 export const createEntityTypeRequest = {
@@ -667,22 +724,16 @@ export const createOrUpdateFulfillmentExceptionRequest = {
 	verb: "PUT",
 };
 
+export const createOrUpdateInventoryItemRequest = {
+	name: "createOrUpdateInventoryItemRequest",
+	buildUrl: (scopeId, inventoryLocationId, sku) => buildUrl(["inventoryItems", scopeId, inventoryLocationId, sku]),
+	verb: "PUT",
+};
+
 export const createOrUpdatePaymentProviderStoreSettingsRequest = {
 	name: "createOrUpdatePaymentProviderStoreSettingsRequest",
 	buildUrl: (scopeId, providerId, storeId) =>
 		buildUrl(["providers", scopeId, "payment", providerId, "storesSettings", storeId]),
-	verb: "PUT",
-};
-
-export const createOrUpdateFulfillmentProviderRequest = {
-	name: "createOrUpdateFulfillmentProviderRequest",
-	buildUrl: scopeId => buildUrl(["providers", scopeId, "fulfillment"]),
-	verb: "PUT",
-};
-
-export const createOrUpdateInventoryItemRequest = {
-	name: "createOrUpdateInventoryItemRequest",
-	buildUrl: (scopeId, inventoryLocationId, sku) => buildUrl(["inventoryItems", scopeId, inventoryLocationId, sku]),
 	verb: "PUT",
 };
 
@@ -710,6 +761,12 @@ export const createOrUpdateWarehouseByNumberRequest = {
 	verb: "PUT",
 };
 
+export const createOrderDraftFromCartRequest = {
+	name: "createOrderDraftFromCartRequest",
+	buildUrl: (scopeId, customerId, cartName) => buildUrl(["carts", scopeId, customerId, cartName, "orderDraft"]),
+	verb: "POST",
+};
+
 export const createOrderDraftPaymentVaultProfileRequest = {
 	name: "createOrderDraftPaymentVaultProfileRequest",
 	buildUrl: (scopeId, draftId, paymentId) =>
@@ -726,6 +783,18 @@ export const createOrderLookupTypeDefinitionRequest = {
 export const createOrderRequest = {
 	name: "createOrderRequest",
 	buildUrl: () => buildUrl(["orders"]),
+	verb: "POST",
+};
+
+export const createOrderReturnRequest = {
+	name: "createOrderReturnRequest",
+	buildUrl: (scopeId, orderNumber) => buildUrl(["orders", "returns", scopeId, orderNumber]),
+	verb: "POST",
+};
+
+export const createOrderReturnsProviderRequest = {
+	name: "createOrderReturnsProviderRequest",
+	buildUrl: scopeId => buildUrl(["providers", scopeId, "orderReturns"]),
 	verb: "POST",
 };
 
@@ -813,19 +882,6 @@ export const createRelationshipsV2Request = {
 	verb: "POST",
 };
 
-export const createRmaGuestRequest = {
-	name: "createRmaGuestRequest",
-	buildUrl: (scopeId, orderNumber) => buildUrl(["orders", "RMA", scopeId, orderNumber, "Guest"]),
-	verb: "POST",
-};
-
-export const createRmaRegisteredRequest = {
-	name: "createRmaRegisteredRequest",
-	buildUrl: (scopeId, orderNumber, customerId) =>
-		buildUrl(["orders", "RMA", scopeId, orderNumber, customerId, "Registered"]),
-	verb: "POST",
-};
-
 export const createRoleRequest = {
 	name: "createRoleRequest",
 	buildUrl: name => buildUrl(["roles", name]),
@@ -887,9 +943,33 @@ export const createStoreRequest = {
 	verb: "POST",
 };
 
+export const createTaxCategoryRequest = {
+	name: "createTaxCategoryRequest",
+	buildUrl: () => buildUrl(["taxes", "taxCategory"]),
+	verb: "POST",
+};
+
+export const createTaxJurisdictionGroupRequest = {
+	name: "createTaxJurisdictionGroupRequest",
+	buildUrl: () => buildUrl(["taxes", "jurisdictionGroups"]),
+	verb: "POST",
+};
+
+export const createTaxJurisdictionRequest = {
+	name: "createTaxJurisdictionRequest",
+	buildUrl: () => buildUrl(["taxes", "jurisdictions"]),
+	verb: "POST",
+};
+
 export const createTaxProviderRequest = {
 	name: "createTaxProviderRequest",
 	buildUrl: scopeId => buildUrl(["providers", scopeId, "tax"]),
+	verb: "POST",
+};
+
+export const createTaxRateRequest = {
+	name: "createTaxRateRequest",
+	buildUrl: scopeId => buildUrl(["taxes", "rates", scopeId]),
 	verb: "POST",
 };
 
@@ -985,6 +1065,12 @@ export const deleteCustomProfileRequest = {
 	verb: "DELETE",
 };
 
+export const deleteCustomerNoteRequest = {
+	name: "deleteCustomerNoteRequest",
+	buildUrl: (scopeId, customerId, noteId) => buildUrl(["customers", scopeId, customerId, "notes", noteId]),
+	verb: "DELETE",
+};
+
 export const deleteCustomerPaymentMethodRequest = {
 	name: "deleteCustomerPaymentMethodRequest",
 	buildUrl: (scopeId, customerId, paymentProviderName, paymentMethodId) =>
@@ -1003,6 +1089,13 @@ export const deleteFulfillmentExceptionRequest = {
 	name: "deleteFulfillmentExceptionRequest",
 	buildUrl: (scopeId, fulfillmentLocationId, orderId, shipmentId, lineItemId) =>
 		buildUrl(["fulfillments", "exceptions", scopeId, fulfillmentLocationId, orderId, shipmentId, lineItemId]),
+	verb: "DELETE",
+};
+
+export const deleteFulfillmentLocationTimeSlotQuotaExceptionRequest = {
+	name: "deleteFulfillmentLocationTimeSlotQuotaExceptionRequest",
+	buildUrl: (scopeId, fulfillmentLocationId, slotId, quotaExceptionId) =>
+		buildUrl(["fulfillmentLocations", scopeId, fulfillmentLocationId, "quotaExceptions", slotId, quotaExceptionId]),
 	verb: "DELETE",
 };
 
@@ -1064,6 +1157,25 @@ export const deleteInventoryScheduleRequest = {
 	name: "deleteInventoryScheduleRequest",
 	buildUrl: (inventoryLocationId, scheduleId, queryParams) =>
 		buildUrl(["inventoryLocations", inventoryLocationId, "schedules", scheduleId], queryParams),
+	verb: "DELETE",
+};
+
+export const deleteOrderNoteRequest = {
+	name: "deleteOrderNoteRequest",
+	buildUrl: (scopeId, orderId, noteId) => buildUrl(["orders", scopeId, orderId, "notes", noteId]),
+	verb: "DELETE",
+};
+
+export const deleteOrderReturnNotesRequest = {
+	name: "deleteOrderReturnNotesRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "notes"]),
+	verb: "DELETE",
+};
+
+export const deleteOrderReturnsProviderRequest = {
+	name: "deleteOrderReturnsProviderRequest",
+	buildUrl: (scopeId, id) => buildUrl(["providers", scopeId, "orderReturns", id]),
 	verb: "DELETE",
 };
 
@@ -1224,6 +1336,13 @@ export const deleteShipmentDocumentRequest = {
 	verb: "DELETE",
 };
 
+export const deleteShipmentNoteRequest = {
+	name: "deleteShipmentNoteRequest",
+	buildUrl: (scopeId, orderId, shipmentId, noteId) =>
+		buildUrl(["orders", scopeId, orderId, "shipments", shipmentId, "notes", noteId]),
+	verb: "DELETE",
+};
+
 export const deleteStoreRequest = {
 	name: "deleteStoreRequest",
 	buildUrl: (scopeId, id) => buildUrl(["stores", scopeId, id]),
@@ -1236,9 +1355,27 @@ export const deleteTaskInfoRequest = {
 	verb: "DELETE",
 };
 
+export const deleteTaxJurisdictionGroupRequest = {
+	name: "deleteTaxJurisdictionGroupRequest",
+	buildUrl: id => buildUrl(["taxes", "jurisdictionGroups", id]),
+	verb: "DELETE",
+};
+
+export const deleteTaxJurisdictionRequest = {
+	name: "deleteTaxJurisdictionRequest",
+	buildUrl: id => buildUrl(["taxes", "jurisdictions", id]),
+	verb: "DELETE",
+};
+
 export const deleteTaxProviderRequest = {
 	name: "deleteTaxProviderRequest",
 	buildUrl: (scopeId, id) => buildUrl(["providers", scopeId, "tax", id]),
+	verb: "DELETE",
+};
+
+export const deleteTaxRateRequest = {
+	name: "deleteTaxRateRequest",
+	buildUrl: (scopeId, id) => buildUrl(["taxes", "rates", scopeId, id]),
 	verb: "DELETE",
 };
 
@@ -1251,12 +1388,6 @@ export const deleteTemplateRequest = {
 export const deleteTemplateVariableRequest = {
 	name: "deleteTemplateVariableRequest",
 	buildUrl: (scopeId, name) => buildUrl(["templates", scopeId, "Variables", name]),
-	verb: "DELETE",
-};
-
-export const deleteUnusedMediaStorageRequest = {
-	name: "deleteUnusedMediaStorageRequest",
-	buildUrl: queryParams => buildUrl(["products", "media", "storage"], queryParams),
 	verb: "DELETE",
 };
 
@@ -1290,6 +1421,13 @@ export const disassociateEntityRequest = {
 	buildUrl: (scopeId, parentEntityTypeName, parentId, attributeName, entityId) =>
 		buildUrl(["customProfiles", scopeId, parentEntityTypeName, parentId, attributeName, entityId]),
 	verb: "DELETE",
+};
+
+export const ensureTableIsReadyForReportingRequest = {
+	name: "ensureTableIsReadyForReportingRequest",
+	buildUrl: (databaseName, schemaName, tableName) =>
+		buildUrl(["reporting", databaseName, schemaName, tableName, "ensureIsReadyForReporting"]),
+	verb: "POST",
 };
 
 export const evaluateInventoryAvailabilityRequest = {
@@ -1349,6 +1487,24 @@ export const exportPromoCodesRequest = {
 export const exportSsrsReportRequest = {
 	name: "exportSsrsReportRequest",
 	buildUrl: reportId => buildUrl(["reporting", "ssrs", "reports", reportId, "export"]),
+	verb: "POST",
+};
+
+export const extractCustomerInformationForIndexingRequest = {
+	name: "extractCustomerInformationForIndexingRequest",
+	buildUrl: () => buildUrl(["customers", "extractForIndexing"]),
+	verb: "POST",
+};
+
+export const extractProductInformationForIndexingRequest = {
+	name: "extractProductInformationForIndexingRequest",
+	buildUrl: scopeId => buildUrl(["products", scopeId, "extractForIndexing"]),
+	verb: "POST",
+};
+
+export const extractStoreInformationForIndexingRequest = {
+	name: "extractStoreInformationForIndexingRequest",
+	buildUrl: () => buildUrl(["stores", "extractForIndexing"]),
 	verb: "POST",
 };
 
@@ -1488,6 +1644,12 @@ export const findNearestStoresRequest = {
 	verb: "GET",
 };
 
+export const findOrderReturnsByCustomerIdsRequest = {
+	name: "findOrderReturnsByCustomerIdsRequest",
+	buildUrl: scopeId => buildUrl(["orders", "returns", scopeId, "find", "byCustomerIds"]),
+	verb: "POST",
+};
+
 export const findOrdersCountRequest = {
 	name: "findOrdersCountRequest",
 	buildUrl: scopeId => buildUrl(["orders", scopeId, "count"]),
@@ -1503,12 +1665,6 @@ export const findOrdersRequest = {
 export const findOrganizationsRequest = {
 	name: "findOrganizationsRequest",
 	buildUrl: scopeId => buildUrl(["organizations", scopeId, "find"]),
-	verb: "POST",
-};
-
-export const findProductsRequest = {
-	name: "findProductsRequest",
-	buildUrl: (scopeId, cultureName) => buildUrl(["search", scopeId, cultureName, "availableProducts"]),
 	verb: "POST",
 };
 
@@ -1545,6 +1701,12 @@ export const findProfileInstancesRequest = {
 export const findPromoCodesRequest = {
 	name: "findPromoCodesRequest",
 	buildUrl: (scopeId, promotionId) => buildUrl(["promotions", scopeId, promotionId, "promoCodes"]),
+	verb: "POST",
+};
+
+export const findRecurringOrderLineItemsRequest = {
+	name: "findRecurringOrderLineItemsRequest",
+	buildUrl: scopeId => buildUrl(["recurringOrders", scopeId, "lineItems", "find"]),
 	verb: "POST",
 };
 
@@ -1602,9 +1764,22 @@ export const forceChangeUserPasswordRequest = {
 	verb: "POST",
 };
 
+export const generateOrderReturnDocumentsRequest = {
+	name: "generateOrderReturnDocumentsRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "documents"]),
+	verb: "POST",
+};
+
 export const generatePromoCodesRequest = {
 	name: "generatePromoCodesRequest",
 	buildUrl: (scopeId, promotionId) => buildUrl(["promotions", scopeId, promotionId, "promoCodes", "generate"]),
+	verb: "POST",
+};
+
+export const geolocaliseAddressRequest = {
+	name: "geolocaliseAddressRequest",
+	buildUrl: scopeId => buildUrl(["addresses", scopeId, "geolocalise"]),
 	verb: "POST",
 };
 
@@ -1968,6 +2143,13 @@ export const getCustomerOrderHistoryRequest = {
 	verb: "GET",
 };
 
+export const getCustomerOrderedProductsRequest = {
+	name: "getCustomerOrderedProductsRequest",
+	buildUrl: (scopeId, customerId, queryParams) =>
+		buildUrl(["orders", scopeId, customerId, "orderedProducts"], queryParams),
+	verb: "GET",
+};
+
 export const getCustomerOrganizationsRequest = {
 	name: "getCustomerOrganizationsRequest",
 	buildUrl: (scopeId, customerId, queryParams) =>
@@ -2044,6 +2226,12 @@ export const getEffectivePriceEntryInfoRequest = {
 	buildUrl: (scopeId, productId, queryParams) =>
 		buildUrl(["products", scopeId, productId, "effectivePriceEntryInfo"], queryParams),
 	verb: "GET",
+};
+
+export const getFulfillmentAvailabilityByScopeIdRequest = {
+	name: "getFulfillmentAvailabilityByScopeIdRequest",
+	buildUrl: scopeId => buildUrl(["fulfillmentLocations", scopeId, "availability"]),
+	verb: "POST",
 };
 
 export const getFulfillmentAvailabilityRequest = {
@@ -2128,6 +2316,13 @@ export const getFulfillmentLocationTimeSlotByIdRequest = {
 	verb: "GET",
 };
 
+export const getFulfillmentLocationTimeSlotQuotaExceptionsRequest = {
+	name: "getFulfillmentLocationTimeSlotQuotaExceptionsRequest",
+	buildUrl: (scopeId, fulfillmentLocationId, slotId, queryParams) =>
+		buildUrl(["fulfillmentLocations", scopeId, fulfillmentLocationId, "quotaExceptions", slotId], queryParams),
+	verb: "GET",
+};
+
 export const getFulfillmentLocationTimeSlotReservationByIdRequest = {
 	name: "getFulfillmentLocationTimeSlotReservationByIdRequest",
 	buildUrl: (scopeId, fulfillmentLocationId, slotReservationId, queryParams) =>
@@ -2147,15 +2342,15 @@ export const getFulfillmentLocationTimeSlotReservationsRequest = {
 
 export const getFulfillmentLocationTimeSlotsRequest = {
 	name: "getFulfillmentLocationTimeSlotsRequest",
-	buildUrl: (scopeId, fulfillmentLocationId, fulfillmentMethodType) =>
-		buildUrl(["fulfillmentLocations", scopeId, fulfillmentLocationId, fulfillmentMethodType, "slots"]),
+	buildUrl: (scopeId, fulfillmentLocationId, fulfillmentMethodType, queryParams) =>
+		buildUrl(["fulfillmentLocations", scopeId, fulfillmentLocationId, fulfillmentMethodType, "slots"], queryParams),
 	verb: "GET",
 };
 
 export const getFulfillmentLocationsByInventoryLocationIdsRequest = {
 	name: "getFulfillmentLocationsByInventoryLocationIdsRequest",
-	buildUrl: (scopeId, inventoryLocationIds) => buildUrl(["fulfillmentLocations", scopeId, inventoryLocationIds]),
-	verb: "GET",
+	buildUrl: scopeId => buildUrl(["fulfillmentLocations", scopeId, "byInventoryIds"]),
+	verb: "POST",
 };
 
 export const getFulfillmentLocationsByScopeRequest = {
@@ -2291,6 +2486,13 @@ export const getInventorySchedulesRequest = {
 	name: "getInventorySchedulesRequest",
 	buildUrl: (inventoryLocationId, queryParams) =>
 		buildUrl(["inventoryLocations", inventoryLocationId, "schedules"], queryParams),
+	verb: "GET",
+};
+
+export const getItemsForOrderReturnRequest = {
+	name: "getItemsForOrderReturnRequest",
+	buildUrl: (scopeId, orderNumber, queryParams) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, "itemsForReturn"], queryParams),
 	verb: "GET",
 };
 
@@ -2461,6 +2663,37 @@ export const getOrderPickingMissionsRequest = {
 	verb: "GET",
 };
 
+export const getOrderReturnRequest = {
+	name: "getOrderReturnRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber]),
+	verb: "GET",
+};
+
+export const getOrderReturnsByOrderRequest = {
+	name: "getOrderReturnsByOrderRequest",
+	buildUrl: (scopeId, orderNumber) => buildUrl(["orders", "returns", scopeId, orderNumber]),
+	verb: "GET",
+};
+
+export const getOrderReturnsProviderByIdRequest = {
+	name: "getOrderReturnsProviderByIdRequest",
+	buildUrl: (scopeId, id) => buildUrl(["providers", scopeId, "orderReturns", id]),
+	verb: "GET",
+};
+
+export const getOrderReturnsProvidersMetadataRequest = {
+	name: "getOrderReturnsProvidersMetadataRequest",
+	buildUrl: queryParams => buildUrl(["providers", "orderReturns", "metadata"], queryParams),
+	verb: "GET",
+};
+
+export const getOrderReturnsProvidersRequest = {
+	name: "getOrderReturnsProvidersRequest",
+	buildUrl: (scopeId, queryParams) => buildUrl(["providers", scopeId, "orderReturns"], queryParams),
+	verb: "GET",
+};
+
 export const getOrderSettingsRequest = {
 	name: "getOrderSettingsRequest",
 	buildUrl: () => buildUrl(["orders", "settings"]),
@@ -2491,6 +2724,12 @@ export const getParentRolesRequest = {
 	verb: "GET",
 };
 
+export const getPaymentHistoryRequest = {
+	name: "getPaymentHistoryRequest",
+	buildUrl: (scopeId, orderId) => buildUrl(["orders", scopeId, orderId, "paymentHistory"]),
+	verb: "GET",
+};
+
 export const getPaymentProviderByIdRequest = {
 	name: "getPaymentProviderByIdRequest",
 	buildUrl: (scopeId, id) => buildUrl(["providers", scopeId, "payment", id]),
@@ -2513,6 +2752,13 @@ export const getPaymentProvidersMetadataRequest = {
 export const getPaymentProvidersRequest = {
 	name: "getPaymentProvidersRequest",
 	buildUrl: (scopeId, queryParams) => buildUrl(["providers", scopeId, "payment"], queryParams),
+	verb: "GET",
+};
+
+export const getPaymentRefundOptionsRequest = {
+	name: "getPaymentRefundOptionsRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber, queryParams) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "refundOptions"], queryParams),
 	verb: "GET",
 };
 
@@ -2557,7 +2803,7 @@ export const getPriceListsRequest = {
 
 export const getPrintableOrderUriRequest = {
 	name: "getPrintableOrderUriRequest",
-	buildUrl: (scopeId, orderId) => buildUrl(["orders", scopeId, orderId, "printuri"]),
+	buildUrl: (scopeId, orderId, queryParams) => buildUrl(["orders", scopeId, orderId, "printuri"], queryParams),
 	verb: "GET",
 };
 
@@ -2661,9 +2907,8 @@ export const getProductsByCategoryRequest = {
 
 export const getProductsByCategoryV2Request = {
 	name: "getProductsByCategoryV2Request",
-	buildUrl: (scopeId, categoryId, queryParams) =>
-		buildUrl(["categories", "v2", scopeId, categoryId, "products"], queryParams),
-	verb: "GET",
+	buildUrl: (scopeId, categoryId) => buildUrl(["categories", "v2", scopeId, categoryId, "products"]),
+	verb: "POST",
 };
 
 export const getProductsByIdsRequest = {
@@ -2782,6 +3027,12 @@ export const getProfileInstancesRequest = {
 	verb: "POST",
 };
 
+export const getProfileSettingsRequest = {
+	name: "getProfileSettingsRequest",
+	buildUrl: () => buildUrl(["metadata", "settings", "customer"]),
+	verb: "GET",
+};
+
 export const getPromoCodesCountRequest = {
 	name: "getPromoCodesCountRequest",
 	buildUrl: (scopeId, promotionId) => buildUrl(["promotions", scopeId, promotionId, "promoCodes", "count"]),
@@ -2822,7 +3073,8 @@ export const getRecurringOrderLineItemRequest = {
 
 export const getRecurringOrderLineItemsForCustomerRequest = {
 	name: "getRecurringOrderLineItemsForCustomerRequest",
-	buildUrl: (scopeId, customerId) => buildUrl(["recurringOrders", scopeId, "lineItems", "byCustomer", customerId]),
+	buildUrl: (scopeId, customerId, queryParams) =>
+		buildUrl(["recurringOrders", scopeId, "lineItems", "byCustomer", customerId], queryParams),
 	verb: "GET",
 };
 
@@ -2847,18 +3099,6 @@ export const getRegionsRequest = {
 export const getRequesterTasksInfoRequest = {
 	name: "getRequesterTasksInfoRequest",
 	buildUrl: queryParams => buildUrl(["tasks"], queryParams),
-	verb: "GET",
-};
-
-export const getRmaRequest = {
-	name: "getRmaRequest",
-	buildUrl: (scopeId, orderNumber, rmaNumber) => buildUrl(["orders", "RMA", scopeId, orderNumber, rmaNumber]),
-	verb: "GET",
-};
-
-export const getRmasByOrderRequest = {
-	name: "getRmasByOrderRequest",
-	buildUrl: (scopeId, orderNumber) => buildUrl(["orders", "RMA", scopeId, orderNumber]),
 	verb: "GET",
 };
 
@@ -2923,6 +3163,12 @@ export const getScopeChildrenRequest = {
 	verb: "GET",
 };
 
+export const getScopeExtendedConfigurationRequest = {
+	name: "getScopeExtendedConfigurationRequest",
+	buildUrl: scopeId => buildUrl(["scopes", scopeId, "extendedConfiguration"]),
+	verb: "GET",
+};
+
 export const getScopeRequest = {
 	name: "getScopeRequest",
 	buildUrl: (scopeId, queryParams) => buildUrl(["scopes", scopeId], queryParams),
@@ -2939,6 +3185,12 @@ export const getSearchQueryByNameRequest = {
 export const getSegmentRequest = {
 	name: "getSegmentRequest",
 	buildUrl: (segmentId, queryParams) => buildUrl(["segments", segmentId], queryParams),
+	verb: "GET",
+};
+
+export const getSegmentRoutingMetadataRequest = {
+	name: "getSegmentRoutingMetadataRequest",
+	buildUrl: queryParams => buildUrl(["providers", "routing", "segments", "metadata"], queryParams),
 	verb: "GET",
 };
 
@@ -3053,9 +3305,45 @@ export const getTasksInfoByCorrelationIdRequest = {
 	verb: "GET",
 };
 
+export const getTaxCategoriesListRequest = {
+	name: "getTaxCategoriesListRequest",
+	buildUrl: queryParams => buildUrl(["taxes", "taxCategories"], queryParams),
+	verb: "GET",
+};
+
 export const getTaxCategoriesRequest = {
 	name: "getTaxCategoriesRequest",
 	buildUrl: queryParams => buildUrl(["orders", "taxCategories"], queryParams),
+	verb: "GET",
+};
+
+export const getTaxCategoryByIdRequest = {
+	name: "getTaxCategoryByIdRequest",
+	buildUrl: id => buildUrl(["taxes", "taxCategory", id]),
+	verb: "GET",
+};
+
+export const getTaxJurisdictionGroupRequest = {
+	name: "getTaxJurisdictionGroupRequest",
+	buildUrl: id => buildUrl(["taxes", "jurisdictionGroups", id]),
+	verb: "GET",
+};
+
+export const getTaxJurisdictionGroupsRequest = {
+	name: "getTaxJurisdictionGroupsRequest",
+	buildUrl: () => buildUrl(["taxes", "jurisdictionGroups"]),
+	verb: "GET",
+};
+
+export const getTaxJurisdictionRequest = {
+	name: "getTaxJurisdictionRequest",
+	buildUrl: id => buildUrl(["taxes", "jurisdictions", id]),
+	verb: "GET",
+};
+
+export const getTaxJurisdictionsRequest = {
+	name: "getTaxJurisdictionsRequest",
+	buildUrl: () => buildUrl(["taxes", "jurisdictions"]),
 	verb: "GET",
 };
 
@@ -3080,6 +3368,18 @@ export const getTaxProvidersMetadataRequest = {
 export const getTaxProvidersRequest = {
 	name: "getTaxProvidersRequest",
 	buildUrl: (scopeId, queryParams) => buildUrl(["providers", scopeId, "tax"], queryParams),
+	verb: "GET",
+};
+
+export const getTaxRateByIdRequest = {
+	name: "getTaxRateByIdRequest",
+	buildUrl: (scopeId, id) => buildUrl(["taxes", "rates", scopeId, id]),
+	verb: "GET",
+};
+
+export const getTaxRatesRequest = {
+	name: "getTaxRatesRequest",
+	buildUrl: (scopeId, queryParams) => buildUrl(["taxes", "rates", scopeId], queryParams),
 	verb: "GET",
 };
 
@@ -3122,6 +3422,12 @@ export const getUsedLanguagesRequest = {
 export const getUserApplicationRequest = {
 	name: "getUserApplicationRequest",
 	buildUrl: () => buildUrl(["my", "application"]),
+	verb: "GET",
+};
+
+export const getUserApplicationsRequest = {
+	name: "getUserApplicationsRequest",
+	buildUrl: userName => buildUrl(["authorizations", userName, "applications"]),
 	verb: "GET",
 };
 
@@ -3212,6 +3518,12 @@ export const grantAuthorizationsRequest = {
 export const importCouponCodesRequest = {
 	name: "importCouponCodesRequest",
 	buildUrl: promotionId => buildUrl(["promotions", promotionId, "coupons", "import"]),
+	verb: "POST",
+};
+
+export const importFoundationSchemaRequest = {
+	name: "importFoundationSchemaRequest",
+	buildUrl: () => buildUrl(["integration", "foundation", "schema", "import"]),
 	verb: "POST",
 };
 
@@ -3313,6 +3625,12 @@ export const liberateCouponRequest = {
 	verb: "POST",
 };
 
+export const listFulfillmentPackagesRequest = {
+	name: "listFulfillmentPackagesRequest",
+	buildUrl: scopeId => buildUrl(["fulfillments", "packages", scopeId, "list"]),
+	verb: "POST",
+};
+
 export const loginRequest = {
 	name: "loginRequest",
 	buildUrl: scopeId => buildUrl(["membership", scopeId, "Login"]),
@@ -3334,6 +3652,13 @@ export const pauseCampaignRequest = {
 export const postProcessOrderRequest = {
 	name: "postProcessOrderRequest",
 	buildUrl: (scopeId, orderId) => buildUrl(["orders", scopeId, orderId, "postProcess"]),
+	verb: "POST",
+};
+
+export const processPaymentRefundOptionRequest = {
+	name: "processPaymentRefundOptionRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "refundOptions", "process"]),
 	verb: "POST",
 };
 
@@ -3496,12 +3821,6 @@ export const removeOrganizationsToCustomerRequest = {
 	verb: "DELETE",
 };
 
-export const removeStoresFromCustomerRequest = {
-	name: "removeStoresFromCustomerRequest",
-	buildUrl: (scopeId, customerId, queryParams) => buildUrl(["customers", scopeId, customerId, "stores"], queryParams),
-	verb: "DELETE",
-};
-
 export const removePaymentRequest = {
 	name: "removePaymentRequest",
 	buildUrl: (scopeId, customerId, cartName, id, queryParams) =>
@@ -3542,6 +3861,12 @@ export const removeShipmentRequest = {
 	verb: "DELETE",
 };
 
+export const removeStoresFromCustomerRequest = {
+	name: "removeStoresFromCustomerRequest",
+	buildUrl: (scopeId, customerId, queryParams) => buildUrl(["customers", scopeId, customerId, "stores"], queryParams),
+	verb: "DELETE",
+};
+
 export const removeUserFromGroupRequest = {
 	name: "removeUserFromGroupRequest",
 	buildUrl: (groupId, userName) => buildUrl(["groups", groupId, userName]),
@@ -3553,6 +3878,19 @@ export const renderOrderShipmentTemplateRequest = {
 	buildUrl: (scopeId, orderId, shipmentId, queryParams) =>
 		buildUrl(["orders", scopeId, orderId, "shipments", shipmentId, "renderTemplate"], queryParams),
 	verb: "GET",
+};
+
+export const renderPrintableOrderDetailRequest = {
+	name: "renderPrintableOrderDetailRequest",
+	buildUrl: (scopeId, orderId, queryParams) =>
+		buildUrl(["orders", scopeId, orderId, "print", "renderTemplate"], queryParams),
+	verb: "GET",
+};
+
+export const renderTemplateRequest = {
+	name: "renderTemplateRequest",
+	buildUrl: (scopeId, type, name) => buildUrl(["templates", scopeId, type, name, "render"]),
+	verb: "POST",
 };
 
 export const repairProductInheritanceRequest = {
@@ -3774,6 +4112,19 @@ export const searchSimilarProductsRequest = {
 	verb: "POST",
 };
 
+export const sendEmailTemplateRequest = {
+	name: "sendEmailTemplateRequest",
+	buildUrl: (scopeId, name) => buildUrl(["templates", scopeId, name, "sendEmail"]),
+	verb: "POST",
+};
+
+export const sendOrderReturnDocumentsNotificationRequest = {
+	name: "sendOrderReturnDocumentsNotificationRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "documents", "notify"]),
+	verb: "PUT",
+};
+
 export const setAdjustmentOrderRequest = {
 	name: "setAdjustmentOrderRequest",
 	buildUrl: (scopeId, orderId, shipmentId) =>
@@ -3811,6 +4162,13 @@ export const setFulfillmentLocationInventoryManagementRequest = {
 	name: "setFulfillmentLocationInventoryManagementRequest",
 	buildUrl: (scopeId, fulfillmentLocationId) =>
 		buildUrl(["fulfillmentLocations", scopeId, fulfillmentLocationId, "inventory"]),
+	verb: "PUT",
+};
+
+export const setReportingTablesColumnsActiveStateRequest = {
+	name: "setReportingTablesColumnsActiveStateRequest",
+	buildUrl: (databaseName, schemaName, tableName) =>
+		buildUrl(["reporting", databaseName, schemaName, tableName, "columns", "activeState"]),
 	verb: "PUT",
 };
 
@@ -4035,6 +4393,19 @@ export const updateCustomerSummaryRequest = {
 	verb: "PUT",
 };
 
+export const updateEntityTypeRequest = {
+	name: "updateEntityTypeRequest",
+	buildUrl: entityTypeName => buildUrl(["metadata", "EntityType", entityTypeName]),
+	verb: "PUT",
+};
+
+export const updateFulfillmentLocationTimeSlotQuotaExceptionRequest = {
+	name: "updateFulfillmentLocationTimeSlotQuotaExceptionRequest",
+	buildUrl: (scopeId, fulfillmentLocationId, slotId, quotaExceptionId) =>
+		buildUrl(["fulfillmentLocations", scopeId, fulfillmentLocationId, "quotaExceptions", slotId, quotaExceptionId]),
+	verb: "PUT",
+};
+
 export const updateFulfillmentLocationTimeSlotRequest = {
 	name: "updateFulfillmentLocationTimeSlotRequest",
 	buildUrl: (scopeId, fulfillmentLocationId, fulfillmentMethodType, slotId) =>
@@ -4059,6 +4430,12 @@ export const updateFulfillmentPackageTypeRequest = {
 	name: "updateFulfillmentPackageTypeRequest",
 	buildUrl: (scopeId, id) => buildUrl(["fulfillments", "packageTypes", scopeId, id]),
 	verb: "PUT",
+};
+
+export const updateFulfillmentPackagesRequest = {
+	name: "updateFulfillmentPackagesRequest",
+	buildUrl: scopeId => buildUrl(["fulfillments", "packages", scopeId, "bulkupdate"]),
+	verb: "POST",
 };
 
 export const updateFulfillmentProviderRequest = {
@@ -4112,6 +4489,33 @@ export const updateOrderDraftPaymentRequest = {
 export const updateOrderLookupTypeDefinitionRequest = {
 	name: "updateOrderLookupTypeDefinitionRequest",
 	buildUrl: lookupName => buildUrl(["metadata", "lookups", "order", lookupName]),
+	verb: "PUT",
+};
+
+export const updateOrderReturnCustomerRequest = {
+	name: "updateOrderReturnCustomerRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "customer"]),
+	verb: "PUT",
+};
+
+export const updateOrderReturnDocumentsRequest = {
+	name: "updateOrderReturnDocumentsRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "documents"]),
+	verb: "PUT",
+};
+
+export const updateOrderReturnStatesRequest = {
+	name: "updateOrderReturnStatesRequest",
+	buildUrl: (scopeId, orderNumber, orderReturnNumber) =>
+		buildUrl(["orders", "returns", scopeId, orderNumber, orderReturnNumber, "states"]),
+	verb: "PUT",
+};
+
+export const updateOrderReturnsProviderRequest = {
+	name: "updateOrderReturnsProviderRequest",
+	buildUrl: (scopeId, id) => buildUrl(["providers", scopeId, "orderReturns", id]),
 	verb: "PUT",
 };
 
@@ -4244,12 +4648,6 @@ export const updateRecurringOrderProgramRequest = {
 	verb: "PUT",
 };
 
-export const updateRmaRequest = {
-	name: "updateRmaRequest",
-	buildUrl: (scopeId, orderNumber, rmaNumber) => buildUrl(["orders", "RMA", scopeId, orderNumber, rmaNumber]),
-	verb: "PUT",
-};
-
 export const updateRoleRequest = {
 	name: "updateRoleRequest",
 	buildUrl: id => buildUrl(["roles", id]),
@@ -4325,9 +4723,39 @@ export const updateStoreScopeAssociationRequest = {
 	verb: "PUT",
 };
 
+export const updateTaxCategoryRequest = {
+	name: "updateTaxCategoryRequest",
+	buildUrl: id => buildUrl(["taxes", "taxCategory", id]),
+	verb: "PUT",
+};
+
+export const updateTaxJurisdictionGroupRequest = {
+	name: "updateTaxJurisdictionGroupRequest",
+	buildUrl: id => buildUrl(["taxes", "jurisdictionGroups", id]),
+	verb: "PUT",
+};
+
+export const updateTaxJurisdictionGroupsAssociatedJurisdictionsRequest = {
+	name: "updateTaxJurisdictionGroupsAssociatedJurisdictionsRequest",
+	buildUrl: id => buildUrl(["taxes", "jurisdictionGroups", id, "associatedJurisdictions"]),
+	verb: "PUT",
+};
+
+export const updateTaxJurisdictionRequest = {
+	name: "updateTaxJurisdictionRequest",
+	buildUrl: id => buildUrl(["taxes", "jurisdictions", id]),
+	verb: "PUT",
+};
+
 export const updateTaxProviderRequest = {
 	name: "updateTaxProviderRequest",
 	buildUrl: (scopeId, id) => buildUrl(["providers", scopeId, "tax", id]),
+	verb: "PUT",
+};
+
+export const updateTaxRateRequest = {
+	name: "updateTaxRateRequest",
+	buildUrl: (scopeId, id) => buildUrl(["taxes", "rates", scopeId, id]),
 	verb: "PUT",
 };
 
@@ -4367,12 +4795,6 @@ export const validatePromoCodeRequest = {
 	buildUrl: (scopeId, promotionId, promoCode) =>
 		buildUrl(["promotions", scopeId, promotionId, "promoCodes", promoCode, "validate"]),
 	verb: "POST",
-};
-
-export const validateProviderSettingsRequest = {
-	name: "validateProviderSettingsRequest",
-	buildUrl: queryParams => buildUrl(["providers", "validateProviderSettings"], queryParams),
-	verb: "GET",
 };
 
 export const validateUserRequest = {

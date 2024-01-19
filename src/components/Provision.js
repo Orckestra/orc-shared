@@ -11,6 +11,7 @@ import Head from "./Head";
 import I18n from "./I18n";
 import InternetExplorerWarningMessage from "./InternetExplorerWarningMessage";
 import Culture from "./Culture";
+import ScopeExtendedConfigurationLoader from "./ScopeExtendedConfigurationLoader";
 
 const GlobalStyle = createGlobalStyle`
 	html {
@@ -53,6 +54,7 @@ const Provision = ({ store, theme = {}, muiTheme, children }) => {
 											<InternetExplorerWarningMessage />
 										</I18n>
 									</DevPages>
+									<ScopeExtendedConfigurationLoader />
 								</React.Fragment>
 							</Authenticate>
 						</React.Fragment>

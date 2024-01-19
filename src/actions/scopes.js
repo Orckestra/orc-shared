@@ -1,6 +1,11 @@
 import { makeActionTypes } from "./makeApiAction";
 import makeOrcApiAction from "./makeOrcApiAction";
-import { getApplicationModules, getUserScopeRequest, getUserScopeTreeRequest } from "./requestsApi";
+import {
+	getApplicationModules,
+	getUserScopeRequest,
+	getUserScopeTreeRequest,
+	getScopeExtendedConfigurationRequest,
+} from "./requestsApi";
 import { overtureModule } from "../constants";
 
 export const validateOvertureApplication = () => {
@@ -60,3 +65,22 @@ export const applicationScopeHasChanged = (previousScope, newScope, moduleName) 
 		},
 	};
 };
+
+export const GET_SCOPE_EXTENDED_CONFIGURATION = "GET_SCOPE_EXTENDED_CONFIGURATION";
+
+export const [
+	GET_SCOPE_EXTENDED_CONFIGURATION_REQUEST,
+	GET_SCOPE_EXTENDED_CONFIGURATION_SUCCESS,
+	GET_SCOPE_EXTENDED_CONFIGURATION_FAILURE,
+] = makeActionTypes(GET_SCOPE_EXTENDED_CONFIGURATION);
+
+export const getScopeExtendedConfiguration = scope =>
+	makeOrcApiAction(
+		GET_SCOPE_EXTENDED_CONFIGURATION,
+		getScopeExtendedConfigurationRequest.buildUrl(scope),
+		getScopeExtendedConfigurationRequest.verb,
+		{
+			bailout: false,
+			meta: { scope },
+		},
+	);
