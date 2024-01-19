@@ -315,4 +315,33 @@ describe("Information Item", () => {
 
 		expect(component, "when mounted", "to satisfy", expected);
 	});
+
+	it("Renders Information Item properly with a header icon and custom header icon class", () => {
+		const label = "label";
+		const value = "value";
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem label={label} headerIcon={<span>the header icon</span>} headerIconClassName="CustomClass">
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<div>
+					<div>
+						<Typography children={label} />
+					</div>
+					<div className={"CustomClass"}>
+						<span>the header icon</span>
+					</div>
+				</div>
+				<MultipleLinesText>{value}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 });

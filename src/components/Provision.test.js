@@ -54,6 +54,13 @@ const fakeStore = {
 				loadedModulesScope: ["moduleA", "moduleB"],
 				modules: ["moduleA", "moduleB"],
 			},
+			navigation: {
+				route: {
+					match: { path: "/:scope/TheModuleName/:entityId", params: { scope: "TheOldScope", entityId: "loaderId" } },
+				},
+				moduleTabs: {},
+				config: { prependPath: "/:scope/", prependHref: "/Scope1/" },
+			},
 		}),
 	replaceReducer: () => {},
 };

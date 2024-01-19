@@ -11,6 +11,7 @@ import localeFactory, { cultureByDefault } from "./reducers/localeFactory";
 import navigationReducer from "./reducers/navigation";
 import requestReducer from "./reducers/request";
 import scopesReducer from "./reducers/scopes";
+import scopesExtendedConfigurationReducer from "./reducers/scopesExtendedConfiguration";
 import settingsReducer from "./reducers/settings";
 import toastReducer from "./reducers/toasts";
 import viewReducer from "./reducers/view";
@@ -59,6 +60,7 @@ const buildStore = (reducers, devOptions = {}) => {
 			router: connectRouter(history),
 			requests: requestReducer,
 			scopes: scopesReducer,
+			scopesExtendedConfiguration: scopesExtendedConfigurationReducer,
 			settings: settingsReducer,
 			toasts: toastReducer,
 			versionInfo: versionInfoReducer,

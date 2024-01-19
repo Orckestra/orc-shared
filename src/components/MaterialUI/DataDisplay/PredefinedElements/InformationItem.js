@@ -77,7 +77,7 @@ const InformationItemChildren = ({
 	return <MultipleLinesText textProps={multipleLinesTextProps} children={value} tooltipClasses={tooltipClasses} />;
 };
 
-const InformationItemHeader = ({ classes, label, headerIcon }) => {
+const InformationItemHeader = ({ classes, label, headerIcon, headerIconClassName }) => {
 	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
 	const headerText = (formattedLabel && <Typography className={classes.title} children={formattedLabel} />) ?? null;
 
@@ -85,7 +85,7 @@ const InformationItemHeader = ({ classes, label, headerIcon }) => {
 		return (
 			<div className={classes.headerRoot}>
 				<div className={classes.headerTextContainer}>{headerText}</div>
-				<div className={classes.headerIconContainer}>{headerIcon}</div>
+				<div className={classNames(classes.headerIconContainer, headerIconClassName)}>{headerIcon}</div>
 			</div>
 		);
 	}
@@ -99,6 +99,7 @@ const InformationItem = ({
 	required,
 	error,
 	headerIcon = undefined,
+	headerIconClassName = undefined,
 	showNotAvailable = false,
 	marginTop = 0,
 	isMaxLineCountEnabled,
@@ -109,7 +110,12 @@ const InformationItem = ({
 
 	return (
 		<div className={classes.container}>
-			<InformationItemHeader classes={classes} label={label} headerIcon={headerIcon} />
+			<InformationItemHeader
+				classes={classes}
+				label={label}
+				headerIcon={headerIcon}
+				headerIconClassName={headerIconClassName}
+			/>
 			<InformationItemChildren
 				classes={classes}
 				children={children}
