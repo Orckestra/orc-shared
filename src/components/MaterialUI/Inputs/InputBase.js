@@ -146,12 +146,15 @@ const InputBase = ({ inputProps }) => {
 			inputAttributes.min = -2147483648;
 		}
 
+		const decimalScale = numericInputProps?.decimalScale ?? 0;
+
+		const lengthForMin = Math.trunc(inputAttributes.min).toString().length;
+		const lengthForMax = Math.trunc(inputAttributes.max).toString().length;
+
+		inputAttributes.maxLength = Math.max(lengthForMin, lengthForMax) + (decimalScale > 0 ? decimalScale + 1 : 0);
+
 		inputAttributes.isAllowed = val => {
-			return (
-				val.value === "" ||
-				val.value === "-" ||
-				(val.floatValue >= inputAttributes.min && val.floatValue <= inputAttributes.max)
-			);
+			return val.value === "" || val.value === "-" || val.value !== null;
 		};
 	}
 

@@ -436,6 +436,166 @@ describe("AdvancedNumericInput", () => {
 		expect(advInput.props().decimalScale, "to be", 2);
 	});
 
+	it("Renders InputBase component as advanced numeric input without min max", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 2);
+		expect(advInput.props().min, "to be", -2147483648);
+		expect(advInput.props().max, "to be", 2147483647);
+		expect(advInput.props().maxLength, "to be", 14);
+	});
+
+	it("Renders InputBase component as advanced numeric input without min", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 0 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { max: 122 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 0);
+		expect(advInput.props().min, "to be", -2147483648);
+		expect(advInput.props().max, "to be", 122);
+		expect(advInput.props().maxLength, "to be", 11);
+	});
+
+	it("Renders InputBase component as advanced numeric input without max", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { min: -9.9 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 2);
+		expect(advInput.props().min, "to be", -9.9);
+		expect(advInput.props().max, "to be", 2147483647);
+		expect(advInput.props().maxLength, "to be", 13);
+	});
+
+	it("Renders InputBase component as advanced numeric input with negative min positive max", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 1 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { min: -999.9, max: 9.8 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 1);
+		expect(advInput.props().min, "to be", -999.9);
+		expect(advInput.props().max, "to be", 9.8);
+		expect(advInput.props().maxLength, "to be", 6);
+	});
+
+	it("Renders InputBase component as advanced numeric input with negative min large positive max", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 1 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { min: -9.9, max: 99999.8 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 1);
+		expect(advInput.props().min, "to be", -9.9);
+		expect(advInput.props().max, "to be", 99999.8);
+		expect(advInput.props().maxLength, "to be", 7);
+	});
+
+	it("Renders InputBase component as advanced numeric input with negative min negative max", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 3 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { min: -99.9, max: -9.8 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 3);
+		expect(advInput.props().min, "to be", -99.9);
+		expect(advInput.props().max, "to be", -9.8);
+		expect(advInput.props().maxLength, "to be", 7);
+	});
+
+	it("Renders InputBase component as advanced numeric input with positive min positive max", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 5 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { min: 9.9, max: 99.8 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+
+		const advInput = mountedComponent.find("AdvancedNumericInput");
+		expect(advInput.props().decimalScale, "to be", 5);
+		expect(advInput.props().min, "to be", 9.9);
+		expect(advInput.props().max, "to be", 99.8);
+		expect(advInput.props().maxLength, "to be", 8);
+	});
+
 	it("Change advanced numeric input value", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";
@@ -684,116 +844,6 @@ describe("AdvancedNumericInput", () => {
 		});
 
 		// no idea what to assert here, this test is mostly for code coverage
-	});
-
-	it("Change advanced numeric input value with min value out of default bounds", () => {
-		const inputProps = new InputBaseProps();
-		const aLabel = "aLabel";
-		const aValue = "12.2";
-		const metadata = {
-			test: "value",
-		};
-
-		inputProps.set(InputBaseProps.propNames.update, update);
-		inputProps.set(InputBaseProps.propNames.value, aValue);
-		inputProps.set(InputBaseProps.propNames.label, aLabel);
-		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
-		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
-		inputProps.set(InputBaseProps.propNames.metadata, metadata);
-
-		const component = <InputBase inputProps={inputProps} />;
-		const mountedComponent = mount(component);
-		const input = mountedComponent.find("input");
-		input.simulate("change", { target: { value: "-3147483648", focus: noop } });
-
-		expect(update, "not to have calls satisfying", [{ args: ["-3147483648", metadata] }]);
-
-		input.simulate("change", { target: { value: "-111", focus: noop } });
-		expect(update, "to have calls satisfying", [{ args: ["-111", metadata] }]);
-	});
-
-	it("Change advanced numeric input value with min value out of specified bounds", () => {
-		const inputProps = new InputBaseProps();
-		const aLabel = "aLabel";
-		const aValue = "12.2";
-		const metadata = {
-			test: "value",
-		};
-
-		inputProps.set(InputBaseProps.propNames.update, update);
-		inputProps.set(InputBaseProps.propNames.value, aValue);
-		inputProps.set(InputBaseProps.propNames.label, aLabel);
-		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
-		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
-		inputProps.set(InputBaseProps.propNames.metadata, metadata);
-		inputProps.set(InputBaseProps.propNames.inputAttributes, {
-			min: -100,
-		});
-
-		const component = <InputBase inputProps={inputProps} />;
-		const mountedComponent = mount(component);
-		const input = mountedComponent.find("input");
-		input.simulate("change", { target: { value: "-2000", focus: noop } });
-
-		expect(update, "not to have calls satisfying", [{ args: ["-2000", metadata] }]);
-
-		input.simulate("change", { target: { value: "-11", focus: noop } });
-		expect(update, "to have calls satisfying", [{ args: ["-11", metadata] }]);
-	});
-
-	it("Change advanced numeric input value with max value out of default bounds", () => {
-		const inputProps = new InputBaseProps();
-		const aLabel = "aLabel";
-		const aValue = "12.2";
-		const metadata = {
-			test: "value",
-		};
-
-		inputProps.set(InputBaseProps.propNames.update, update);
-		inputProps.set(InputBaseProps.propNames.value, aValue);
-		inputProps.set(InputBaseProps.propNames.label, aLabel);
-		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
-		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
-		inputProps.set(InputBaseProps.propNames.metadata, metadata);
-
-		const component = <InputBase inputProps={inputProps} />;
-		const mountedComponent = mount(component);
-		const input = mountedComponent.find("input");
-		input.simulate("change", { target: { value: "3147483648", focus: noop } });
-
-		expect(update, "not to have calls satisfying", [{ args: ["3147483648", metadata] }]);
-
-		input.simulate("change", { target: { value: "111", focus: noop } });
-		expect(update, "to have calls satisfying", [{ args: ["111", metadata] }]);
-	});
-
-	it("Change advanced numeric input value with max value out of specified bounds", () => {
-		const inputProps = new InputBaseProps();
-		const aLabel = "aLabel";
-		const aValue = "12.2";
-		const metadata = {
-			test: "value",
-		};
-
-		inputProps.set(InputBaseProps.propNames.update, update);
-		inputProps.set(InputBaseProps.propNames.value, aValue);
-		inputProps.set(InputBaseProps.propNames.label, aLabel);
-		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
-		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
-		inputProps.set(InputBaseProps.propNames.metadata, metadata);
-		inputProps.set(InputBaseProps.propNames.inputAttributes, {
-			max: 100,
-		});
-
-		const component = <InputBase inputProps={inputProps} />;
-		const mountedComponent = mount(component);
-		const input = mountedComponent.find("input");
-		input.simulate("change", { target: { value: "2000", focus: noop } });
-
-		expect(update, "not to have calls satisfying", [{ args: ["2000", metadata] }]);
-
-		input.simulate("change", { target: { value: "11", focus: noop } });
-		expect(update, "to have calls satisfying", [{ args: ["11", metadata] }]);
 	});
 
 	it("Change advanced numeric input value: dash is allowed", () => {
