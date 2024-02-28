@@ -64,6 +64,7 @@ export const List = styled.div`
 	border-right: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
 	display: flex;
 	flex-direction: column;
+	overflow-y: auto;
 `;
 
 const FilteredLink = ({ active, ...props }) => (props.to ? <Link {...props} /> : <div {...props} />);
