@@ -237,7 +237,7 @@ describe("Information Item", () => {
 
 		const component = (
 			<IntlProvider locale="en" messages={{ label }}>
-				<InformationItem label={label} required={true}>
+				<InformationItem label={label} required={false}>
 					{value}
 				</InformationItem>
 			</IntlProvider>
@@ -272,19 +272,31 @@ describe("Information Item", () => {
 
 	it("Renders Information Item with required", () => {
 		const label = "label";
-		const value = "value";
+		const value = <p>Value</p>;
 
-		const component = mount(
+		const component = (
 			<IntlProvider locale="en-US">
 				<InformationItem label={label} required={true}>
 					{value}
 				</InformationItem>
-			</IntlProvider>,
+			</IntlProvider>
 		);
 
-		const labelContainer = component.find("p").get(0);
+		const expected = (
+			<div>
+				<Typography
+					children={
+						<>
+							{label}
+							<span data-qa="required">*</span>
+						</>
+					}
+				/>
+				{value}
+			</div>
+		);
 
-		expect(labelContainer, "when mounted", "to have style rules satisfying", "to contain", 'content: " *"');
+		expect(component, "when mounted", "to satisfy", expected);
 	});
 
 	it("Renders Information Item properly with a header icon", () => {
