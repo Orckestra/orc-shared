@@ -1,6 +1,6 @@
 {
 	"name": "orc-shared",
-	"version": "5.7.0-dev.17",
+	"version": "5.7.0",
 	"description": "Shared code for Orckestra applications",
 	"main": "./src/index.js",
 	"exports": {
@@ -55,10 +55,10 @@
 		"@testing-library/react": "^10.4.9"
 	},
 	"peerDependencies": {
-		"orc-scripts": "2.0.0-dev.4"
+		"orc-scripts": "2.0.0"
 	},
 	"dependencies": {
-		"orc-scripts": "2.0.0-dev.4",
+		"orc-scripts": "2.0.0",
 		"react-number-format": "^5.3.0"
 	},
 	"sideEffects": false,
