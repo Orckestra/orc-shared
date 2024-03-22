@@ -30,6 +30,7 @@ import {
 	definitionEntityCustomAttributesSelector,
 	lookupByNameSelector,
 	mappedLookupsListSelector,
+	lookupExistAndIsActiveSelector,
 } from "./metadata";
 
 const lookups = {
@@ -1896,6 +1897,95 @@ describe("definitions", () => {
 			[state],
 			"to satisfy",
 			{},
+		);
+	});
+});
+
+describe("lookupExistAndIsActiveSelector", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: { locale: "it-IT" },
+			metadata: {
+				lookups: {
+					order: {
+						index: {
+							...lookups,
+							DistanceUOM: {
+								lookupName: "DistanceUOM",
+								values: {
+									Inches: {
+										value: "Inches",
+										displayName: {
+											"en-CA": "inEnCa",
+											"en-US": "inEnUS",
+											"fr-CA": "inFrCa",
+											"it-IT": "inItIt",
+										},
+										isActive: true,
+									},
+								},
+							},
+						},
+						list: [],
+					},
+				},
+			},
+		});
+	});
+
+	it("retrieves true when lookup exist and value is active", () => {
+		expect(
+			lookupExistAndIsActiveSelector,
+			"when called with",
+			["order", "DistanceUOM", "Inches"],
+			"when called with",
+			[state],
+			"to be",
+			true,
+		);
+	});
+
+	it("retrieves false when lookup exist and value is inactive", () => {
+		state = state.setIn(
+			["metadata", "lookups", "order", "index", "DistanceUOM", "values", "Inches", "isActive"],
+			false,
+		);
+
+		expect(
+			lookupExistAndIsActiveSelector,
+			"when called with",
+			["order", "DistanceUOM", "Inches"],
+			"when called with",
+			[state],
+			"to be",
+			false,
+		);
+	});
+
+	it("retrieves false when lookup exist and its values property is null", () => {
+		state = state.setIn(["metadata", "lookups", "order", "index", "DistanceUOM", "values"], null);
+
+		expect(
+			lookupExistAndIsActiveSelector,
+			"when called with",
+			["order", "DistanceUOM", "Inches"],
+			"when called with",
+			[state],
+			"to be",
+			false,
+		);
+	});
+
+	it("retrieves false when lookup exist and lookup value name does not exist", () => {
+		expect(
+			lookupExistAndIsActiveSelector,
+			"when called with",
+			["order", "DistanceUOM", "unknown"],
+			"when called with",
+			[state],
+			"to be",
+			false,
 		);
 	});
 });

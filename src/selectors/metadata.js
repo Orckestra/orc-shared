@@ -66,6 +66,15 @@ export const namedLookupLocalizedSelector = memoize((moduleName, lookupName, key
 	}),
 );
 
+export const lookupExistAndIsActiveSelector = memoize((moduleName, lookupName, key) =>
+	createSelector(lookupValuesSelector(moduleName, lookupName), lookups => {
+		const values = lookups.get("values");
+		if (values == null || key == null) return false;
+		const value = values.get(key);
+		return value?.get("isActive") === true;
+	}),
+);
+
 export const namedLookupLocalizedValuesSelector = memoize((moduleName, lookupName) =>
 	createSelector(lookupValuesSelector(moduleName, lookupName), currentLocaleOrDefault, (lookup, locale) =>
 		(lookup.get("values") || Immutable.Map()).map(lookupValue =>
