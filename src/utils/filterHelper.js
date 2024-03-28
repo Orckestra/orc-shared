@@ -1,5 +1,6 @@
 import { allValue } from "../constants";
 import { memoize } from "./index";
+import { getNotLocalizedString } from "./localizationHelper";
 
 export const getValueWithAll = value => {
 	if (!value) return allValue;
@@ -20,9 +21,10 @@ export const extractDropboxOptionsMemo = (data, config = undefined) => {
 	let options = [];
 	items.forEach(v => {
 		if (!activeKey || v.get(activeKey)) {
+			const value = v.get(valueKey);
 			options.push({
-				value: v.get(valueKey),
-				label: v.get(labelKey) || (fallbackLabelKey && v.get(fallbackLabelKey)),
+				value: value,
+				label: v.get(labelKey) || (fallbackLabelKey && v.get(fallbackLabelKey)) || getNotLocalizedString(value),
 				sortOrder: v.get(sortOrderKey),
 			});
 		}

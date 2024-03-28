@@ -43,8 +43,8 @@ describe("extractDropboxOptions", () => {
 		const result = extractDropboxOptions(lookup);
 
 		expect(result, "to equal", [
-			{ value: "value1", label: undefined, sortOrder: 0 },
-			{ value: "value3", label: undefined, sortOrder: 3 },
+			{ value: "value1", label: "[value1]", sortOrder: 0 },
+			{ value: "value3", label: "[value3]", sortOrder: 3 },
 		]);
 	});
 
@@ -60,8 +60,8 @@ describe("extractDropboxOptions", () => {
 		const result = extractDropboxOptions(lookups);
 
 		expect(result, "to equal", [
-			{ value: "value4", label: undefined, sortOrder: 0 },
-			{ value: "value6", label: undefined, sortOrder: 3 },
+			{ value: "value4", label: "[value4]", sortOrder: 0 },
+			{ value: "value6", label: "[value6]", sortOrder: 3 },
 		]);
 	});
 
@@ -77,8 +77,8 @@ describe("extractDropboxOptions", () => {
 		const result = extractDropboxOptions(lookup);
 
 		expect(result, "to equal", [
-			{ value: "value1", label: undefined, sortOrder: 0 },
-			{ value: "value3", label: undefined, sortOrder: 3 },
+			{ value: "value1", label: "[value1]", sortOrder: 0 },
+			{ value: "value3", label: "[value3]", sortOrder: 3 },
 		]);
 	});
 
