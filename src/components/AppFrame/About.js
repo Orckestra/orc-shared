@@ -13,6 +13,7 @@ import close from "../../content/close.png";
 import { getVersionSelector } from "../../selectors/versionInfo";
 import { currentLocaleOrDefault } from "../../selectors/locale";
 import sharedMessages from "./../../sharedMessages";
+import { trimStart } from "lodash";
 
 export const ABOUT_NAME = "__aboutBox";
 
@@ -125,7 +126,7 @@ export const About = ({ currentApplication }) => {
 								key="orc-shared-version"
 								message={{
 									...sharedMessages.orcSharedVersion,
-									values: { version: DEPENDENCIES["orc-shared"] },
+									values: { version: trimStart(DEPENDENCIES["orc-shared"], "^") },
 								}}
 							/>,
 					  ]
@@ -137,7 +138,7 @@ export const About = ({ currentApplication }) => {
 								key="orc-scripts-version"
 								message={{
 									...sharedMessages.orcScriptsVersion,
-									values: { version: DEPENDENCIES["orc-scripts"] },
+									values: { version: trimStart(DEPENDENCIES["orc-scripts"], "^") },
 								}}
 							/>,
 					  ]
@@ -149,7 +150,7 @@ export const About = ({ currentApplication }) => {
 								key="orc-secret-version"
 								message={{
 									...sharedMessages.orcSecretVersion,
-									values: { version: DEPENDENCIES["orc-secret"] },
+									values: { version: trimStart(DEPENDENCIES["orc-secret"], "^") },
 								}}
 							/>,
 					  ]

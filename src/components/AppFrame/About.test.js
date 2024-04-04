@@ -88,6 +88,67 @@ describe("About", () => {
 		);
 	});
 
+	it("renders an about box with normalized JS version", () => {
+		const orcSharedVersion = "^2.9.0";
+		const orcScriptsVersion = "^1.2.3";
+		const orcSecretVersion = "^5.1.7";
+
+		global.DEPENDENCIES = {
+			"orc-scripts": orcScriptsVersion,
+			"orc-secret": orcSecretVersion,
+			"orc-shared": orcSharedVersion,
+		};
+		global.BUILD_NUMBER = "2.3.2";
+		expect(
+			<Provider store={store}>
+				<IntlProvider locale="en-US" messages={messages}>
+					<About viewState={{ show: true }} currentApplication={{ displayName: "An application" }} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<IntlProvider locale="en-US" messages={messages}>
+				<AboutBox in>
+					<CloseButton>
+						<img src={close} alt="X" />
+					</CloseButton>
+					<img src={logoImage} alt="Orckestra" />
+					<AboutParagraph>
+						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
+						<br />
+						An application 2.3.2
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.orcSharedVersion"]).replace(
+							"{version}",
+							orcSharedVersion.replace("^", ""),
+						)}
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.orcScriptsVersion"]).replace(
+							"{version}",
+							orcScriptsVersion.replace("^", ""),
+						)}
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.orcSecretVersion"]).replace(
+							"{version}",
+							orcSecretVersion.replace("^", ""),
+						)}
+					</AboutParagraph>
+					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
+					<AboutParagraph>
+						<AboutLink href="https://www.orckestra.com">
+							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
+						</AboutLink>
+					</AboutParagraph>
+					<AboutParagraph>
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
+					</AboutParagraph>
+				</AboutBox>
+			</IntlProvider>,
+		);
+	});
+
 	it("view state handler update show value when clicking on close button", () =>
 		expect(
 			<Provider store={store}>
