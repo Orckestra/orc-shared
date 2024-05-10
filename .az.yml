@@ -15,6 +15,14 @@ variables:
   - group: npm publish token
 
 steps:
+- task: Bash@3
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  displayName: 'Push to mirror repository'
+  inputs:
+    targetType: 'inline'
+    script: |
+      git push --mirror https://dev.azure.com/orckestra001/OrckestraCommerce/_git/orc-shared_mirror
+
 - task: NodeTool@0
   displayName: 'Use Node 18.x'
   inputs:
