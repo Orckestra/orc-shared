@@ -21,7 +21,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push --mirror https://orckestra001@dev.azure.com/orckestra001/OrckestraCommerce/_git/orc-shared_mirror
+      git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push --mirror https://dev.azure.com/orckestra001/OrckestraCommerce/_git/orc-shared_mirror
 
 - task: NodeTool@0
   displayName: 'Use Node 18.x'
