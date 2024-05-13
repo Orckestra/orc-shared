@@ -18,7 +18,7 @@ steps:
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud'
-    organization: 'orckestra001'
+    organization: 'orckestra002'
     scannerMode: 'CLI' # 'MSBuild' | 'Other' | 'CLI'. Required. Choose the way to run the analysis. Default: MSBuild.
     #configMode: 'file' # 'file' | 'manual'. Required when scannerMode = CLI. Mode. Default: file.
     #configFile: 'sonar-project.properties' # string. Optional. Use when scannerMode = CLI && configMode = file. Settings File. Default: sonar-project.properties.
