@@ -178,11 +178,27 @@ describe("metadata", () => {
 		});
 
 		it("get order lookup success", () => {
-			const lookups = {
-				CanceledStatusReasons: {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: {
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: GET_ORDER_LOOKUP_SUCCESS,
+				payload: {
 					lookupName: "CanceledStatusReasons",
-					values: {
-						CanceledReason1: {
+					values: [
+						{
 							id: "e16d07f847284775b77cfb985724cf58",
 							value: "CanceledReason1",
 							lookupId: "CanceledStatusReasons",
@@ -190,7 +206,7 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-						CanceledReason2: {
+						{
 							id: "6bbfe77703c745d68b8eaceb9cd484b1",
 							value: "CanceledReason2",
 							lookupId: "CanceledStatusReasons",
@@ -198,29 +214,10 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-					},
+					],
 					isActive: true,
 					isSystem: true,
 				},
-				CartStatus: {
-					lookupName: "CartStatus",
-					values: {},
-					isActive: true,
-					isSystem: true,
-				},
-			};
-
-			const oldState = Immutable.fromJS({
-				lookups: {
-					order: {
-						index: { CartStatus: lookups.CartStatus },
-						list: [],
-					},
-				},
-			});
-			const action = {
-				type: GET_ORDER_LOOKUP_SUCCESS,
-				payload: lookups.CanceledStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -228,7 +225,37 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						order: {
-							index: lookups,
+							index: {
+								CanceledStatusReasons: {
+									lookupName: "CanceledStatusReasons",
+									values: {
+										CanceledReason1: {
+											id: "e16d07f847284775b77cfb985724cf58",
+											value: "CanceledReason1",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+										CanceledReason2: {
+											id: "6bbfe77703c745d68b8eaceb9cd484b1",
+											value: "CanceledReason2",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+									},
+									isActive: true,
+									isSystem: true,
+								},
+								CartStatus: {
+									lookupName: "CartStatus",
+									values: {},
+									isActive: true,
+									isSystem: true,
+								},
+							},
 							list: [],
 						},
 					},
@@ -237,11 +264,27 @@ describe("metadata", () => {
 		});
 
 		it("save order metadata success", () => {
-			const lookups = {
-				CanceledStatusReasons: {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: {
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: SAVE_ORDER_LOOKUP_SUCCESS,
+				payload: {
 					lookupName: "CanceledStatusReasons",
-					values: {
-						CanceledReason1: {
+					values: [
+						{
 							id: "e16d07f847284775b77cfb985724cf58",
 							value: "CanceledReason1",
 							lookupId: "CanceledStatusReasons",
@@ -249,7 +292,7 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-						CanceledReason2: {
+						{
 							id: "6bbfe77703c745d68b8eaceb9cd484b1",
 							value: "CanceledReason2",
 							lookupId: "CanceledStatusReasons",
@@ -257,29 +300,10 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-					},
+					],
 					isActive: true,
 					isSystem: true,
 				},
-				CartStatus: {
-					lookupName: "CartStatus",
-					values: {},
-					isActive: true,
-					isSystem: true,
-				},
-			};
-
-			const oldState = Immutable.fromJS({
-				lookups: {
-					order: {
-						index: { CartStatus: lookups.CartStatus },
-						list: [],
-					},
-				},
-			});
-			const action = {
-				type: SAVE_ORDER_LOOKUP_SUCCESS,
-				payload: lookups.CanceledStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -287,7 +311,37 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						order: {
-							index: lookups,
+							index: {
+								CanceledStatusReasons: {
+									lookupName: "CanceledStatusReasons",
+									values: {
+										CanceledReason1: {
+											id: "e16d07f847284775b77cfb985724cf58",
+											value: "CanceledReason1",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+										CanceledReason2: {
+											id: "6bbfe77703c745d68b8eaceb9cd484b1",
+											value: "CanceledReason2",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+									},
+									isActive: true,
+									isSystem: true,
+								},
+								CartStatus: {
+									lookupName: "CartStatus",
+									values: {},
+									isActive: true,
+									isSystem: true,
+								},
+							},
 							list: [],
 						},
 					},
@@ -296,11 +350,27 @@ describe("metadata", () => {
 		});
 
 		it("add order metadata success", () => {
-			const lookups = {
-				NewStatusReasons: {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					order: {
+						index: {
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: ADD_ORDER_LOOKUP_SUCCESS,
+				payload: {
 					lookupName: "NewStatusReasons",
-					values: {
-						CanceledReason1: {
+					values: [
+						{
 							id: "e16d07f847284775b77cfb985724cf58",
 							value: "CanceledReason1",
 							lookupId: "CanceledStatusReasons",
@@ -308,7 +378,7 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-						CanceledReason2: {
+						{
 							id: "6bbfe77703c745d68b8eaceb9cd484b1",
 							value: "CanceledReason2",
 							lookupId: "CanceledStatusReasons",
@@ -316,29 +386,10 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-					},
+					],
 					isActive: true,
 					isSystem: true,
 				},
-				CartStatus: {
-					lookupName: "CartStatus",
-					values: {},
-					isActive: true,
-					isSystem: true,
-				},
-			};
-
-			const oldState = Immutable.fromJS({
-				lookups: {
-					order: {
-						index: { CartStatus: lookups.CartStatus },
-						list: [],
-					},
-				},
-			});
-			const action = {
-				type: ADD_ORDER_LOOKUP_SUCCESS,
-				payload: lookups.NewStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -346,7 +397,37 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						order: {
-							index: lookups,
+							index: {
+								NewStatusReasons: {
+									lookupName: "NewStatusReasons",
+									values: {
+										CanceledReason1: {
+											id: "e16d07f847284775b77cfb985724cf58",
+											value: "CanceledReason1",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+										CanceledReason2: {
+											id: "6bbfe77703c745d68b8eaceb9cd484b1",
+											value: "CanceledReason2",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+									},
+									isActive: true,
+									isSystem: true,
+								},
+								CartStatus: {
+									lookupName: "CartStatus",
+									values: {},
+									isActive: true,
+									isSystem: true,
+								},
+							},
 							list: ["CartStatus", "NewStatusReasons"],
 							totalCount: 2,
 						},
@@ -745,11 +826,27 @@ describe("metadata", () => {
 		});
 
 		it("get customer lookup success", () => {
-			const lookups = {
-				CanceledStatusReasons: {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					customer: {
+						index: {
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: GET_CUSTOMER_LOOKUP_SUCCESS,
+				payload: {
 					lookupName: "CanceledStatusReasons",
-					values: {
-						CanceledReason1: {
+					values: [
+						{
 							id: "e16d07f847284775b77cfb985724cf58",
 							value: "CanceledReason1",
 							lookupId: "CanceledStatusReasons",
@@ -757,7 +854,7 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-						CanceledReason2: {
+						{
 							id: "6bbfe77703c745d68b8eaceb9cd484b1",
 							value: "CanceledReason2",
 							lookupId: "CanceledStatusReasons",
@@ -765,29 +862,10 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-					},
+					],
 					isActive: true,
 					isSystem: true,
 				},
-				CartStatus: {
-					lookupName: "CartStatus",
-					values: {},
-					isActive: true,
-					isSystem: true,
-				},
-			};
-
-			const oldState = Immutable.fromJS({
-				lookups: {
-					customer: {
-						index: { CartStatus: lookups.CartStatus },
-						list: [],
-					},
-				},
-			});
-			const action = {
-				type: GET_CUSTOMER_LOOKUP_SUCCESS,
-				payload: lookups.CanceledStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -795,7 +873,37 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						customer: {
-							index: lookups,
+							index: {
+								CanceledStatusReasons: {
+									lookupName: "CanceledStatusReasons",
+									values: {
+										CanceledReason1: {
+											id: "e16d07f847284775b77cfb985724cf58",
+											value: "CanceledReason1",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+										CanceledReason2: {
+											id: "6bbfe77703c745d68b8eaceb9cd484b1",
+											value: "CanceledReason2",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+									},
+									isActive: true,
+									isSystem: true,
+								},
+								CartStatus: {
+									lookupName: "CartStatus",
+									values: {},
+									isActive: true,
+									isSystem: true,
+								},
+							},
 							list: [],
 						},
 					},
@@ -804,11 +912,27 @@ describe("metadata", () => {
 		});
 
 		it("save customer metadata success", () => {
-			const lookups = {
-				CanceledStatusReasons: {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					customer: {
+						index: {
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: SAVE_CUSTOMER_LOOKUP_SUCCESS,
+				payload: {
 					lookupName: "CanceledStatusReasons",
-					values: {
-						CanceledReason1: {
+					values: [
+						{
 							id: "e16d07f847284775b77cfb985724cf58",
 							value: "CanceledReason1",
 							lookupId: "CanceledStatusReasons",
@@ -816,7 +940,7 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-						CanceledReason2: {
+						{
 							id: "6bbfe77703c745d68b8eaceb9cd484b1",
 							value: "CanceledReason2",
 							lookupId: "CanceledStatusReasons",
@@ -824,29 +948,10 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-					},
+					],
 					isActive: true,
 					isSystem: true,
 				},
-				CartStatus: {
-					lookupName: "CartStatus",
-					values: {},
-					isActive: true,
-					isSystem: true,
-				},
-			};
-
-			const oldState = Immutable.fromJS({
-				lookups: {
-					customer: {
-						index: { CartStatus: lookups.CartStatus },
-						list: [],
-					},
-				},
-			});
-			const action = {
-				type: SAVE_CUSTOMER_LOOKUP_SUCCESS,
-				payload: lookups.CanceledStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -854,7 +959,37 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						customer: {
-							index: lookups,
+							index: {
+								CanceledStatusReasons: {
+									lookupName: "CanceledStatusReasons",
+									values: {
+										CanceledReason1: {
+											id: "e16d07f847284775b77cfb985724cf58",
+											value: "CanceledReason1",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+										CanceledReason2: {
+											id: "6bbfe77703c745d68b8eaceb9cd484b1",
+											value: "CanceledReason2",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+									},
+									isActive: true,
+									isSystem: true,
+								},
+								CartStatus: {
+									lookupName: "CartStatus",
+									values: {},
+									isActive: true,
+									isSystem: true,
+								},
+							},
 							list: [],
 						},
 					},
@@ -863,11 +998,27 @@ describe("metadata", () => {
 		});
 
 		it("add customer metadata success", () => {
-			const lookups = {
-				NewStatusReasons: {
+			const oldState = Immutable.fromJS({
+				lookups: {
+					customer: {
+						index: {
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			});
+			const action = {
+				type: ADD_CUSTOMER_LOOKUP_SUCCESS,
+				payload: {
 					lookupName: "NewStatusReasons",
-					values: {
-						CanceledReason1: {
+					values: [
+						{
 							id: "e16d07f847284775b77cfb985724cf58",
 							value: "CanceledReason1",
 							lookupId: "CanceledStatusReasons",
@@ -875,7 +1026,7 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-						CanceledReason2: {
+						{
 							id: "6bbfe77703c745d68b8eaceb9cd484b1",
 							value: "CanceledReason2",
 							lookupId: "CanceledStatusReasons",
@@ -883,29 +1034,10 @@ describe("metadata", () => {
 							isActive: true,
 							isSystem: true,
 						},
-					},
+					],
 					isActive: true,
 					isSystem: true,
 				},
-				CartStatus: {
-					lookupName: "CartStatus",
-					values: {},
-					isActive: true,
-					isSystem: true,
-				},
-			};
-
-			const oldState = Immutable.fromJS({
-				lookups: {
-					customer: {
-						index: { CartStatus: lookups.CartStatus },
-						list: [],
-					},
-				},
-			});
-			const action = {
-				type: ADD_CUSTOMER_LOOKUP_SUCCESS,
-				payload: lookups.NewStatusReasons,
 			};
 			const newState = reducer(oldState, action);
 			return expect(newState, "not to be", oldState).and(
@@ -913,7 +1045,37 @@ describe("metadata", () => {
 				Immutable.fromJS({
 					lookups: {
 						customer: {
-							index: lookups,
+							index: {
+								NewStatusReasons: {
+									lookupName: "NewStatusReasons",
+									values: {
+										CanceledReason1: {
+											id: "e16d07f847284775b77cfb985724cf58",
+											value: "CanceledReason1",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+										CanceledReason2: {
+											id: "6bbfe77703c745d68b8eaceb9cd484b1",
+											value: "CanceledReason2",
+											lookupId: "CanceledStatusReasons",
+											sortOrder: 0,
+											isActive: true,
+											isSystem: true,
+										},
+									},
+									isActive: true,
+									isSystem: true,
+								},
+								CartStatus: {
+									lookupName: "CartStatus",
+									values: {},
+									isActive: true,
+									isSystem: true,
+								},
+							},
 							list: ["CartStatus", "NewStatusReasons"],
 							totalCount: 2,
 						},
