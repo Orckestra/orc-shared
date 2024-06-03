@@ -12,9 +12,12 @@ import classNames from "classnames";
 const useStyles = makeStyles(theme => ({
 	title: {
 		fontSize: theme.typography.fieldLabelSize,
-		color: props => (!props.error ? theme.palette.text.hint : theme.palette.error.main),
+		color: theme.palette.text.hint,
 		fontFamily: theme.typography.fontFamily,
 		marginBottom: theme.spacing(1),
+	},
+	titleError: {
+		color: theme.palette.error.main,
 	},
 	titleRequired: {
 		paddingLeft: theme.spacing(0.5),
@@ -76,12 +79,13 @@ const InformationItemChildren = ({
 	return <MultipleLinesText textProps={multipleLinesTextProps} children={value} tooltipClasses={tooltipClasses} />;
 };
 
-const InformationItemHeader = ({ classes, label, headerIcon, headerIconClassName, required }) => {
+const InformationItemHeader = ({ classes, label, headerIcon, headerIconClassName, required, error }) => {
 	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
+	const titleClasses = classNames(classes.title, { [classes.titleError]: error });
 	const headerText =
 		(formattedLabel && (
 			<Typography
-				className={classes.title}
+				className={titleClasses}
 				children={
 					<>
 						{formattedLabel}
@@ -129,6 +133,7 @@ const InformationItem = ({
 				classes={classes}
 				label={label}
 				required={required}
+				error={error}
 				headerIcon={headerIcon}
 				headerIconClassName={headerIconClassName}
 			/>
