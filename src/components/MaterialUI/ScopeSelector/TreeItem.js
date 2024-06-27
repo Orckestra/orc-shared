@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		alignItems: "center",
 	},
+	scopeLabelInactive: {
+		color: theme.palette.secondary.light,
+	},
 	scopeIcon: {
 		marginRight: theme.spacing(0.7),
 		height: theme.spacing(2.4),
@@ -102,7 +105,7 @@ export const ScopeIcon = ({ type }) => {
 	}
 };
 
-export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScope }) => {
+export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScope, isActive }) => {
 	const classes = useStyles({ hasChildren });
 
 	const icon = <ScopeIcon type={type} />;
@@ -116,7 +119,7 @@ export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScop
 	// 16.8 height of 1 lines of text
 
 	const label = (
-		<div className={classes.scopeLabel}>
+		<div className={classNames(classes.scopeLabel, isActive === false ? classes.scopeLabelInactive : "")}>
 			{icon}
 			<MultipleLinesText textProps={multipleLinesTextProps} children={name} />
 		</div>
@@ -153,6 +156,7 @@ const TreeItem = ({ scope, rootId, onScopeSelect, isScopeSelectable, children })
 					isRootScope={isRootScope}
 					isVirtualScope={isVirtualScope}
 					hasChildren={hasChildren}
+					isActive={scope.isActive}
 				/>
 			}
 			expandIcon={isRootScope ? null : expandIcon}
