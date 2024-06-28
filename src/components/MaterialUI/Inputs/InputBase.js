@@ -4,6 +4,7 @@ import InputBaseMUI from "@material-ui/core/InputBase";
 import InputBaseProps, { isInputProps } from "./InputBaseProps";
 import classNames from "classnames";
 import { NumericFormat, numericFormatter } from "react-number-format";
+import { trimSpacesAndLeadingZeros } from "../../../utils/inputHelper";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -207,6 +208,7 @@ const InputBase = ({ inputProps }) => {
 				formattingProps.fixedDecimalScale = true;
 			}
 
+			updateValue = trimSpacesAndLeadingZeros(updateValue, numericInputProps.defaultValue ?? "");
 			updateValue = numericFormatter(updateValue, formattingProps);
 		}
 
