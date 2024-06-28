@@ -664,6 +664,7 @@ describe("AdvancedNumericInput", () => {
 
 		input.simulate("blur", {});
 
+		// Update is called twice, once from onChangeHandler (from React) and once from onBlurInternal
 		expect(update, "to have calls satisfying", [{ args: ["12.2", metadata] }, { args: ["12.2", metadata] }]);
 	});
 
