@@ -9,6 +9,18 @@ describe("Numeric Input Helper", () => {
 		expect(trimSpacesAndLeadingZeros, "when called with", [" 000  ", "def"], "to equal", "def");
 	});
 
+	it("trimSpacesAndLeadingZeros should work on floating values", () => {
+		expect(trimSpacesAndLeadingZeros, "when called with", ["042.2", "def"], "to equal", "42.2");
+	});
+
+	it("trimSpacesAndLeadingZeros returns fallback on null value", () => {
+		expect(trimSpacesAndLeadingZeros, "when called with", [null, "def"], "to equal", "def");
+	});
+
+	it("trimSpacesAndLeadingZeros returns fallback on undefined value", () => {
+		expect(trimSpacesAndLeadingZeros, "when called with", [undefined, "def"], "to equal", "def");
+	});
+
 	it("limitNumericValueLength trims extra characters", () => {
 		expect(limitNumericValueLength, "when called with", ["01234567890"], "to equal", "012345678");
 	});

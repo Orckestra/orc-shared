@@ -208,7 +208,7 @@ const InputBase = ({ inputProps }) => {
 				formattingProps.fixedDecimalScale = true;
 			}
 
-			updateValue = trimSpacesAndLeadingZeros(updateValue, numericInputProps.defaultValue ?? "");
+			updateValue = trimSpacesAndLeadingZeros(updateValue, numericInputProps?.defaultValue ?? "");
 			updateValue = numericFormatter(updateValue, formattingProps);
 		}
 
