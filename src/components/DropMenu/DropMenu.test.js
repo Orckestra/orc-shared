@@ -93,6 +93,7 @@ describe("DropMenu", () => {
 		const clock = sinon.useFakeTimers();
 		const menuNode = document.createElement("div");
 		document.body.appendChild(menuNode);
+		// eslint-disable-next-line react/no-render-return-value
 		const menu = ReactDOM.render(
 			<div>
 				<div id="outside" />
@@ -212,6 +213,7 @@ describe("DropMenu", () => {
 			const clock = sinon.useFakeTimers();
 			const menuNode = document.createElement("div");
 			document.body.appendChild(menuNode);
+			// eslint-disable-next-line react/no-render-return-value
 			const menu = ReactDOM.render(
 				<div>
 					<div id="outside" />

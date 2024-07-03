@@ -19,7 +19,7 @@ export const InputField = ({ name, type = "undefined", label, labelOnly, placeho
 	const Input = inputs[type];
 	if (!Input) {
 		console.error(`Unknown type "${type}", cannot render field`);
-		return <p>Cannot render unknown type "{type}"</p>;
+		return <p>Cannot render unknown type &amp;{type}&amp;</p>;
 	}
 	return (
 		<Field

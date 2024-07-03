@@ -1,3 +1,5 @@
+/* eslint react/no-unknown-property: off */
+
 import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
