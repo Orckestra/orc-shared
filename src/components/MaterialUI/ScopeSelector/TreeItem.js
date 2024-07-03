@@ -105,7 +105,7 @@ export const ScopeIcon = ({ type }) => {
 	}
 };
 
-export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScope, isActive }) => {
+export const ScopeLabel = ({ name, type, isRootScope, hasChildren, isVirtualScope, isActive = true }) => {
 	const classes = useStyles({ hasChildren });
 
 	const icon = <ScopeIcon type={type} />;
