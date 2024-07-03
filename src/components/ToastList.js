@@ -104,8 +104,8 @@ const ListWrapper = styled(TransitionGroup)`
 export const ToastList = ({ toasts }) =>
 	ReactDOM.createPortal(
 		<ListWrapper>
-			{toasts.map(props => (
-				<Toast {...props} />
+			{toasts.map((props, idx) => (
+				<Toast key={"toast" + idx} {...props} />
 			))}
 		</ListWrapper>,
 		portal,

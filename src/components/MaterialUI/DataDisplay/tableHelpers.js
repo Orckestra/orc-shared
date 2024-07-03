@@ -66,7 +66,15 @@ const renderByType = (e, def, rowId, readOnly, transformedValue, index) => {
 			);
 			checkboxProps.set(CheckboxProps.propNames.metadata, { id: rowId, name: def.fieldName });
 
-			return [<Checkbox id={"select_" + transformedValue} data-row-id={rowId} checkboxProps={checkboxProps} />, null];
+			return [
+				<Checkbox
+					key={def.type + "_" + rowId}
+					id={"select_" + transformedValue}
+					data-row-id={rowId}
+					checkboxProps={checkboxProps}
+				/>,
+				null,
+			];
 
 		case "switch":
 			const switchProps = new SwitchProps();
@@ -85,7 +93,9 @@ const renderByType = (e, def, rowId, readOnly, transformedValue, index) => {
 			switchProps.set(SwitchProps.propNames.className, def.switch?.className);
 			switchProps.set(SwitchProps.propNames.metadata, { id: rowId, name: def.fieldName });
 
-			return transformedValue != null ? [<Switch data-row-id={rowId} switchProps={switchProps} />] : [null];
+			return transformedValue != null
+				? [<Switch key={def.type + "_" + rowId} data-row-id={rowId} switchProps={switchProps} />]
+				: [null];
 
 		case "radio":
 			const selectedValue = def.selectedValue;
@@ -107,7 +117,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue, index) => {
 				StandaloneRadioProps.propNames.readOnly,
 				def.transform?.readOnly != null ? def.transform.readOnly(e, readOnly, def) : readOnly,
 			);
-			return [<StandaloneRadio radioProps={radioProps} />];
+			return [<StandaloneRadio key={def.type + "_" + rowId} radioProps={radioProps} />];
 
 		case "textInput":
 			const inputBaseProps = new InputBaseProps();
@@ -124,7 +134,7 @@ const renderByType = (e, def, rowId, readOnly, transformedValue, index) => {
 			);
 			inputBaseProps.set(InputBaseProps.propNames.inputAttributes, def.inputAttributes);
 			inputBaseProps.set(InputBaseProps.propNames.metadata, { id: rowId, name: def.fieldName });
-			return [<InputBase inputProps={inputBaseProps} />];
+			return [<InputBase key={def.type + "_" + rowId} inputProps={inputBaseProps} />];
 		default:
 			return [defaultRendering(e, def, rowId, readOnly, transformedValue)];
 	}
