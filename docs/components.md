@@ -189,6 +189,8 @@ These components are used to route and display components according to URL paths
 
 A component that shows a scope bar with slide-out scope selector. Uses Redux view state to control scope selector panel visibility, scope filtering, and the scope tree state. Included in [AppFrame](#appframe), should probably not be called directly.
 
+The scope object supports a property that isActive; the default is 'true'. If isActive is 'false', then it uses theme.palette.secondary.light colour for the label.
+
 ## Selector
 
 - `options`: A list of objects containing a `label` and `value` field, used to populate the options list.
