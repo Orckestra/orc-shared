@@ -28,9 +28,10 @@ describe("withErrorBoundary", () => {
 			{ args: ["Caught an error: Fail, at boundary Failed"] },
 			{
 				args: [
-					"\n    in FailBall (created by ErrorBoundary)\n" +
-						"    in ErrorBoundary (created by BoundedFailBall)\n" +
-						"    in BoundedFailBall",
+					expect.it(
+						"to match",
+						/at FailBall.*withErrorBoundary\.test\.js.*at ErrorBoundary.*withErrorBoundary\.js.*at BoundedFailBall/s,
+					),
 				],
 			},
 		]);

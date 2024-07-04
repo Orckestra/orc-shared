@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unknown-property */
+
 import React from "react";
 import { useEditState, useDynamicEditState } from "./useEditState";
 import { TestWrapper } from "./../utils/testUtils";

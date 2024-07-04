@@ -70,6 +70,7 @@ describe("loadingScreen", () => {
 		const clock = sinon.useFakeTimers();
 		const menuNode = document.createElement("div");
 		document.body.appendChild(menuNode);
+		// eslint-disable-next-line react/no-render-return-value
 		const menu = ReactDOM.render(
 			<div>
 				<TestWrapper stylesProvider muiThemeProvider={{ theme }} provider={{ store }}>

@@ -93,7 +93,7 @@ describe("InputField", () => {
 			</SubjectWrapper>,
 			"when mounted",
 			"to satisfy",
-			<p>Cannot render unknown type "{"undefined"}"</p>,
+			<p>Cannot render unknown type &amp;{"undefined"}&amp;</p>,
 		).then(() =>
 			expect(console.error, "to have calls satisfying", [{ args: ['Unknown type "undefined", cannot render field'] }]),
 		));
