@@ -50,6 +50,14 @@ describe("TreeItem", () => {
 		children: ["TestSale"],
 	};
 
+	const inActiveScope = {
+		id: "TestInactive",
+		name: "Test Inactive",
+		type: scopeTypes.sale,
+		children: [],
+		isActive: false,
+	};
+
 	const saleScope = {
 		id: "TestSale",
 		name: "Test Sale",
@@ -99,6 +107,37 @@ describe("TreeItem", () => {
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 				<TreeItemMui
 					nodeId={virtualScope.id}
+					label={expectedVirtualLabel}
+					expandIcon={expandIcon}
+					collapseIcon={collapseIcon}
+				/>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Tree Item correctly for not active Scope", () => {
+		const expectedVirtualLabel = (
+			<ScopeLabel
+				name={inActiveScope.name}
+				type={inActiveScope.type}
+				isRootScope={false}
+				isVirtualScope={false}
+				isActive={false}
+			/>
+		);
+
+		const component = (
+			<TestWrapper provider={{ store }} memoryRouter stylesProvider muiThemeProvider={{ theme }}>
+				<TreeItem scope={inActiveScope} rootId={rootId} />
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<TreeItemMui
+					nodeId={inActiveScope.id}
 					label={expectedVirtualLabel}
 					expandIcon={expandIcon}
 					collapseIcon={collapseIcon}
