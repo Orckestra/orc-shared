@@ -112,7 +112,7 @@ const withDeferredPopper =
 		classProp.arrow = classProp.arrow ?? classes.arrow;
 
 		return (
-			<div className={classProp.popperContainer} data-qa="popperContainer">
+			<div className={classProp.popperContainer} data-qa="popperContainer" onClick={e => e.preventDefault()}>
 				{defaultComponent}
 				<Popper
 					placement={placement}
