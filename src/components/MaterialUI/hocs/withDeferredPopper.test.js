@@ -265,6 +265,7 @@ describe("withDeferredPopper", () => {
 		ignoreConsoleError(() => {
 			const event = {
 				currentTarget: wrapper,
+				preventDefault: jest.fn(),
 				stopPropagation: jest.fn(),
 			};
 
@@ -296,6 +297,7 @@ describe("withDeferredPopper", () => {
 		ignoreConsoleError(() => {
 			const event = {
 				currentTarget: null,
+				preventDefault: jest.fn(),
 				stopPropagation: jest.fn(),
 			};
 
