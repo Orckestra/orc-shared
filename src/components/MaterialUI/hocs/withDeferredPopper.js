@@ -78,16 +78,13 @@ const withDeferredPopper =
 		const defaultComponent = <Comp onClick={event => togglePopper(event)} {...props} />;
 
 		const togglePopper = function (event) {
-			const linkParent = event?._dispatchInstances?.filter(item => item.elementType === "a");
-			if (linkParent) {
-				event.preventDefault();
-			}
 			const isDisplayed = !popperState.isDisplayed;
 			const anchorElement = event.currentTarget;
 			setPopperState({
 				isDisplayed: isDisplayed,
 				anchorElement: anchorElement,
 			});
+			event.preventDefault();
 			event.bubbles = false;
 			event.stopPropagation();
 		};
