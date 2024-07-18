@@ -451,7 +451,7 @@ describe("DatePicker", () => {
 			<TestWrapper provider={{ store }} intlProvider>
 				<StylesProvider generateClassName={generateClassName}>
 					<MuiThemeProvider theme={createMuiTheme()}>
-						<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
+						<DatePicker useTime={true} readOnly={false} onChange={updater} value={date} />
 					</MuiThemeProvider>
 				</StylesProvider>
 			</TestWrapper>
