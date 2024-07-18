@@ -21,11 +21,11 @@ const useStyles = makeStyles(theme => ({
 	datePickerWrapper: {
 		display: "flex",
 		width: "auto",
-		padding: props => (props.readOnly ? "0" : theme.spacing(0.3, 0.5)),
-		border: props => (props.readOnly ? "none" : `1px solid ${theme.palette.grey.borders}`),
+		padding: theme.spacing(0.3, 0.5),
+		border: `1px solid ${theme.palette.grey.borders}`,
 		borderRadius: theme.shape.borderRadius,
 		alignItems: "center",
-		backgroundColor: props => (props.readOnly ? "inherit" : theme.palette.background.default),
+		backgroundColor: theme.palette.background.default,
 		"&:focus, &:focus-within": {
 			borderRadius: theme.shape.borderRadius,
 			borderColor: theme.palette.focus,
@@ -81,6 +81,11 @@ const useStyles = makeStyles(theme => ({
 			pointerEvents: "none",
 			opacity: 0.4,
 		},
+	},
+	datePickerWrapperReadOnly: {
+		padding: "0",
+		border: "none",
+		backgroundColor: "inherit",
 	},
 	disabled: {
 		border: `1px solid ${theme.palette.grey.light} !important`,
@@ -157,7 +162,14 @@ const WrappedDatePicker = ({
 
 	return (
 		<div className={classes.container}>
-			<label className={classNames(classes.datePickerWrapper, disabledCls, error ? classes.errorInput : null)}>
+			<label
+				className={classNames(
+					classes.datePickerWrapper,
+					readOnly ? classes.datePickerWrapperReadOnly : null,
+					disabledCls,
+					error ? classes.errorInput : null,
+				)}
+			>
 				<div className={classes.datePickerContainer}>
 					<DatePicker
 						{...props}

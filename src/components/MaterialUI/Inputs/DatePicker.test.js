@@ -3,8 +3,10 @@ import DatePicker, { createFormat } from "./DatePicker";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import Icon from "../DataDisplay/Icon";
-import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
+import { TestWrapper, createMuiTheme, generateClassName } from "./../../../utils/testUtils";
 import Immutable from "immutable";
+import { StylesProvider } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core";
 
 describe("DatePicker", () => {
 	let updater, state, store;
@@ -424,6 +426,38 @@ describe("DatePicker", () => {
 
 		const input = mountedComponent.find("input");
 		input.at(0).simulate("change", event);
+	});
+
+	it("should have readonly styles when readonly", () => {
+		const date = new Date("2020-06-30T00:00:00");
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<MuiThemeProvider theme={createMuiTheme()}>
+						<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
+					</MuiThemeProvider>
+				</StylesProvider>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+		expect(mountedComponent.exists(".makeStyles-datePickerWrapperReadOnly"), "to be true");
+	});
+
+	it("should have updatable styles when updatable", () => {
+		const date = new Date("2020-06-30T00:00:00");
+
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<MuiThemeProvider theme={createMuiTheme()}>
+						<DatePicker useTime={true} readOnly={false} onChange={updater} value={date} />
+					</MuiThemeProvider>
+				</StylesProvider>
+			</TestWrapper>
+		);
+		const mountedComponent = mount(component);
+		expect(mountedComponent.exists(".makeStyles-datePickerWrapperReadOnly"), "to be false");
 	});
 
 	it("should call onChange prop with useTimeZone", () => {
