@@ -497,10 +497,17 @@ describe("Select Component", () => {
 	});
 
 	it("Sorts select options correctly with alphabetical sorting", () => {
+		const emptyValue = "~~#~~";
+
 		const options = [
 			{ value: "c", label: "c" },
 			{ value: "a", label: "a" },
 			{ value: "b", label: "b" },
+			{ value: "e", label: "e" },
+			{ value: emptyValue, label: "empty" },
+			{ value: "f", label: "f" },
+			{ value: "g", label: "g" },
+			{ value: "h", label: "h" },
 			{ value: "d", label: "[d]" },
 		];
 
@@ -508,8 +515,6 @@ describe("Select Component", () => {
 
 		selectProps.set(SelectProps.propNames.sortType, sortTypeEnum.alphabetical);
 		selectProps.set(SelectProps.propNames.value, "b");
-		selectProps.set(SelectProps.propNames.showAllValue, "#All#");
-		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
@@ -525,7 +530,7 @@ describe("Select Component", () => {
 
 		const optionsKeys = mountedOptions.map(option => option.key);
 
-		expect(optionsKeys, "to equal", ["#All#", "d", "a", "b", "c"]);
+		expect(optionsKeys, "to equal", [emptyValue, "d", "a", "b", "c", "e", "f", "g", "h"]);
 	});
 
 	it("Sorts select options correctly with numeric sorting", () => {
