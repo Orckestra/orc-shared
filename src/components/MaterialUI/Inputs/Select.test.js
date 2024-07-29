@@ -496,6 +496,38 @@ describe("Select Component", () => {
 		expect(optionsKeys, "to equal", ["#All#", "a", "b", "c"]);
 	});
 
+	it("Sorts select options correctly with alphabetical sorting", () => {
+		const options = [
+			{ value: "c", label: "c" },
+			{ value: "a", label: "a" },
+			{ value: "b", label: "b" },
+			{ value: "d", label: "[d]" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.sortType, sortTypeEnum.alphabetical);
+		selectProps.set(SelectProps.propNames.value, "b");
+		selectProps.set(SelectProps.propNames.showAllValue, "#All#");
+		selectProps.set(SelectProps.propNames.showAllLabel, "Label");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const test = mountedComponent.find(SelectMUI);
+
+		const mountedOptions = test.props().children;
+
+		const optionsKeys = mountedOptions.map(option => option.key);
+
+		expect(optionsKeys, "to equal", ["#All#", "d", "a", "b", "c"]);
+	});
+
 	it("Sorts select options correctly with numeric sorting", () => {
 		const options = [
 			{ value: "BRC-409 - BRC-PROMENADES", label: "BRC-409 - BRC-PROMENADES", sortOrder: "BRC-409 - BRC-PROMENADES" },
