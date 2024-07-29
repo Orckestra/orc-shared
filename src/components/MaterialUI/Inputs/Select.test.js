@@ -503,11 +503,11 @@ describe("Select Component", () => {
 			{ value: "c", label: "c" },
 			{ value: "a", label: "a" },
 			{ value: "b", label: "b" },
-			{ value: "e", label: "e" },
-			{ value: emptyValue, label: "empty" },
 			{ value: "f", label: "f" },
-			{ value: "g", label: "g" },
+			{ value: emptyValue, label: "empty" },
 			{ value: "h", label: "h" },
+			{ value: "g", label: "g" },
+			{ value: "e", label: "e" },
 			{ value: "d", label: "[d]" },
 		];
 
