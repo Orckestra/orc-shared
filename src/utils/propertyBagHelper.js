@@ -149,7 +149,7 @@ export const getPropertyBagFormattedPrimitiveValue = (propertyBagValue, formatMe
 	}
 
 	if (dataTypesChecker.isBoolean(propertyBagValue[serializationTypeKey])) {
-		return Boolean(propertyBagValue.value)
+		return propertyBagValue.value
 			? formatMessage(sharedMessages.valueTypeWrapperTrue)
 			: formatMessage(sharedMessages.valueTypeWrapperFalse);
 	}
@@ -182,7 +182,7 @@ export const formatNumber = (value, precision) => Number(value).toFixed(precisio
 
 export const fixPropertyBagModifiedModel = (model, ...fields) => {
 	const fixProfileOperations = model => {
-		if (model.hasOwnProperty("profileOperations")) {
+		if (Object.prototype.hasOwnProperty.call(model, "profileOperations")) {
 			let { profilesToAdd, profilesToUpdate } = model.profileOperations;
 			if (profilesToAdd) {
 				const items = Array.isArray(profilesToAdd) ? profilesToAdd : Object.values(profilesToAdd);
@@ -224,7 +224,10 @@ export const fixPropertyBagEmptyValues = propertyBag => {
 	const modifiedFields = Object.keys(propertyBag);
 	modifiedFields.forEach(propertyName => {
 		let property = propertyBag[propertyName];
-		let propertyValue = property && isObject(property) && property.hasOwnProperty("value") ? property.value : property;
+		let propertyValue =
+			property && isObject(property) && Object.prototype.hasOwnProperty.call(property, "value")
+				? property.value
+				: property;
 		if (propertyValue === "") {
 			propertyBag[propertyName] = null;
 		}
