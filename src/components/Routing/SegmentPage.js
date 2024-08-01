@@ -168,7 +168,7 @@ const SegmentPage = ({
 	modulePrependPath,
 	entityIdResolver,
 }) => {
-	const classes = useStyles({ isComponentNull: !!!View });
+	const classes = useStyles({ isComponentNull: !View });
 	const pattern = new UrlPattern(path);
 	const baseHref = pattern.stringify(match.params);
 	const pages = [],
