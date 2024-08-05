@@ -1,6 +1,6 @@
 import sinon from "sinon";
 import { spyOnConsole } from "./testUtils";
-import { loadConfig, resetConfig, buildUrl } from "./buildUrl";
+import { loadConfig, resetConfig, buildUrl, buildExternalAppUrl } from "./buildUrl";
 
 describe("loadConfig", () => {
 	spyOnConsole();
@@ -70,6 +70,32 @@ describe("loadConfig", () => {
 					"to equal",
 					'https://example.com/api/?lavish=true&people=15&listThings=["Foo","Bar"]',
 				));
+		});
+	});
+
+	describe("buildExternalAppUrl", () => {
+		it("throws an error if called with an unknown app", () => {
+			expect(
+				() => expect(buildExternalAppUrl, "when called with", ["unknown", "fakeurl"]),
+				"to throw",
+				"Not implemented app 'unknown'",
+			);
+		});
+
+		it("should build an valid relative url with oms", () => {
+			expect(buildExternalAppUrl, "called with", ["oms", "fakeurl"], "to equal", "/oms/app/fakeurl");
+		});
+
+		it("should build an valid relative url with pim", () => {
+			expect(buildExternalAppUrl, "called with", ["pim", "fakeurl"], "to equal", "/pim/app/fakeurl");
+		});
+
+		it("should not be case sensitive about the app name", () => {
+			expect(buildExternalAppUrl, "called with", ["PIM", "fakeurl"], "to equal", "/pim/app/fakeurl");
+		});
+
+		it("should handle delimiter", () => {
+			expect(buildExternalAppUrl, "called with", ["pim", "/fakeurl"], "to equal", "/pim/app/fakeurl");
 		});
 	});
 });
