@@ -1,3 +1,5 @@
+import { applications } from "../constants";
+
 /* Constructs a URL search string from an object with key value pairs */
 const buildParamString = params =>
 	Object.entries(params)
@@ -37,8 +39,8 @@ export const buildExternalAppUrl = (app, relativeUrl) => {
 
 	let lowercaseApp = app.toLowerCase();
 	switch (lowercaseApp) {
-		case "oms":
-		case "pim":
+		case applications.oms:
+		case applications.pim:
 			return `/${lowercaseApp}/app/${url}`;
 		default:
 			throw new Error("Not implemented app '" + app + "'");

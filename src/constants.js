@@ -1,5 +1,10 @@
 export const infoBar = "infoBar";
 
+export const applications = {
+	oms: "oms",
+	pim: "pim",
+};
+
 export const scopeTypes = {
 	global: "Global",
 	virtual: "Virtual",
