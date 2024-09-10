@@ -142,8 +142,13 @@ const StepperModal = ({
 	modalProps.set(ModalProps.propNames.backdropClickCallback, backdropCallback ?? closeCallback);
 	modalProps.set(ModalProps.propNames.type, type);
 
-	const nextClick = useCallback(() => changeCurrentStep(step => step + 1), []);
-	const backClick = useCallback(() => changeCurrentStep(step => step - 1), []);
+	const nextClick = useCallback(customHandler => {
+		if (customHandler) {
+			customHandler();
+		}
+		changeCurrentStep(step => step + 1);
+	}, []);
+	const backClick = useCallback(customHandle => changeCurrentStep(step => step - 1), []);
 
 	const actionPanel = (
 		<>
@@ -159,11 +164,27 @@ const StepperModal = ({
 					<Button variant="outlined" onClick={closeCallback}>
 						<FormattedMessage {...sharedMessages.cancel} />
 					</Button>
-					{currentStep < steps.length - 1 && (
-						<Button variant="contained" color="primary" disabled={nextDisabled} onClick={nextClick} disableElevation>
-							<FormattedMessage {...sharedMessages.next} />
-						</Button>
-					)}
+
+					{currentStep < steps.length - 1 &&
+						(steps[currentStep]?.actions?.length > 0 ? (
+							steps[currentStep].actions.map(action => (
+								<Button
+									key={action.value}
+									variant="contained"
+									color="primary"
+									disabled={nextDisabled}
+									onClick={() => nextClick(action.handler)}
+									disableElevation
+								>
+									{action.label}
+								</Button>
+							))
+						) : (
+							<Button variant="contained" color="primary" disabled={nextDisabled} onClick={nextClick} disableElevation>
+								<FormattedMessage {...sharedMessages.next} />
+							</Button>
+						))}
+
 					{currentStep === steps.length - 1 && (
 						<Button
 							variant="contained"

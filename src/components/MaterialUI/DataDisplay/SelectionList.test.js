@@ -96,9 +96,6 @@ describe("SelectionList", () => {
 					</div>
 				</Grid>
 				<Grid>
-					<hr />
-				</Grid>
-				<Grid>
 					<div>Test</div>
 				</Grid>
 			</Grid>
@@ -128,9 +125,6 @@ describe("SelectionList", () => {
 						<ScrollableCustomList checked={[]} items={list} classes={{}} />
 						<div>{actionPanel}</div>
 					</div>
-				</Grid>
-				<Grid>
-					<hr />
 				</Grid>
 				<Grid>{infoPanel}</Grid>
 			</Grid>
