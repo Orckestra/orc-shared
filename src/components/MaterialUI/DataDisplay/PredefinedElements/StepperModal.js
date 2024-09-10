@@ -148,7 +148,7 @@ const StepperModal = ({
 		}
 		changeCurrentStep(step => step + 1);
 	}, []);
-	const backClick = useCallback(customHandle => changeCurrentStep(step => step - 1), []);
+	const backClick = useCallback(() => changeCurrentStep(step => step - 1), []);
 
 	const actionPanel = (
 		<>
