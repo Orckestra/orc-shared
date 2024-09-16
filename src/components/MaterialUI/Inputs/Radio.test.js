@@ -49,6 +49,7 @@ const ExpectComponentToBeRenderedProperly = radioProps => {
 	expect(radioElements.length, "to equal", radios.length);
 
 	radios.forEach(radio => {
+		const disabledOption = disabled ? true : radio.disabled ?? false;
 		let option =
 			radioElements.find(
 				x =>
@@ -57,7 +58,7 @@ const ExpectComponentToBeRenderedProperly = radioProps => {
 					x.props.control.type.options.name === "MuiRadio" &&
 					x.props.value === radio.value &&
 					x.props.label === radio.label &&
-					x.props.disabled === disabled,
+					x.props.disabled === disabledOption,
 			) || null;
 		expect(option, "not to be", null);
 	});
@@ -225,5 +226,38 @@ describe("Radio Component", () => {
 		radioProps.set(RadioProps.propNames.radios, radios);
 
 		ExpectEventToBeFiredWithOptionValue(radioProps, clickEvent, "option2");
+	});
+
+	it("Renders Radio component properly with options all disbaled", () => {
+		radios.forEach(radio => {
+			radio.disabled = true;
+		});
+
+		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
+		radioProps.set(RadioProps.propNames.defaultVal, "option1");
+		radioProps.set(RadioProps.propNames.value, "option1");
+		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.row, true);
+		radioProps.set(RadioProps.propNames.disabled, false);
+		radioProps.set(RadioProps.propNames.error, null);
+		radioProps.set(RadioProps.propNames.allowSingleRadio, true);
+
+		ExpectComponentToBeRenderedProperly(radioProps);
+	});
+
+	it("Renders Radio component properly with half options disbaled", () => {
+		radios[0].disabled = true;
+		radios[1].disabled = true;
+
+		radioProps.set(RadioProps.propNames.label, "aRadioLabel");
+		radioProps.set(RadioProps.propNames.defaultVal, "option1");
+		radioProps.set(RadioProps.propNames.value, "option1");
+		radioProps.set(RadioProps.propNames.radios, radios);
+		radioProps.set(RadioProps.propNames.row, true);
+		radioProps.set(RadioProps.propNames.disabled, false);
+		radioProps.set(RadioProps.propNames.error, null);
+		radioProps.set(RadioProps.propNames.allowSingleRadio, true);
+
+		ExpectComponentToBeRenderedProperly(radioProps);
 	});
 });

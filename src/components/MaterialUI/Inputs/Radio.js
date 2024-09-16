@@ -119,7 +119,7 @@ const Radio = ({ radioProps }) => {
 							key={`radiobutton_${radio.value}`}
 							value={radio.value}
 							label={radio.label}
-							disabled={disabled}
+							disabled={disabled ? true : radio.disabled ?? false}
 							control={
 								<RadioMui
 									color="primary"
