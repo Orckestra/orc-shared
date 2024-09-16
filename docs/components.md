@@ -175,6 +175,21 @@ Shows an element suitable for being used as a placeholder or load spinner in e.g
 
 Sets up the various providers and wrappers needed for an application. Should have one child element, in most cases a redux-connected `<AppFrame>`.
 
+## Radio
+
+- `name`: The name used to reference the value of the control.
+- `label`: The label for the control.
+- `defaultVal`: The default input element value.
+- `row`: Displays the group of buttons in a compact row.
+- `radios`: The radio buttons to be used, see usage below.
+- `disabled`: If defined, the disabled state for all radio buttons
+- `update`: The update handler that will be called if the radiobuttun option changes.
+- `value`: The current value of the radio button selected.
+
+Allows radio buttons to be displayed and be handled for updates.
+
+The radios option is an array of radio buttons to use, with the following options: - `value`: The value of the radio button. Will be used when calling the update function. - `label`: The label for the radio button. - `disabled`: If disabled is not defined by the group, will determing if the radio button is disabled.
+
 ## Relogin
 
 Checks the state, and if logged out renders an iframe that will log in the user again via Azure Active Directory. Used by [Provision](#provision) and should not be used independently.
