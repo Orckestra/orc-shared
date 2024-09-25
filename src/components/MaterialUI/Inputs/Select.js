@@ -145,6 +145,8 @@ export const SelectIconButton = props => {
 	);
 };
 
+const selectEmptyValue = "~~#~~";
+
 const Select = ({ options, selectProps, children }) => {
 	if (isSelectProps(selectProps) === false) {
 		throw new TypeError("selectProps property is not of type SelectProps");
@@ -177,6 +179,16 @@ const Select = ({ options, selectProps, children }) => {
 		);
 	} else if (sortType === sortTypeEnum.default) {
 		options.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));
+	} else if (sortType === sortTypeEnum.alphabetical) {
+		options.sort((a, b) => {
+			if (a.value === selectEmptyValue) {
+				return -1;
+			}
+			if (b.value === selectEmptyValue) {
+				return 1;
+			}
+			return a.label.localeCompare(b.label);
+		});
 	}
 
 	if (showAllValue && showAllLabel) {
@@ -207,7 +219,7 @@ const Select = ({ options, selectProps, children }) => {
 		const appliedClasses = classNames(classes.baseItem, clss);
 		const labelClss = classNames({
 			[classes.label]: true,
-			[classes.emptyLabel]: option.value === "" || option.value === "~~#~~",
+			[classes.emptyLabel]: option.value === "" || option.value === selectEmptyValue,
 		});
 
 		const disabled = !!option.disabled;

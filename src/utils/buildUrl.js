@@ -1,3 +1,5 @@
+import { applications } from "../constants";
+
 /* Constructs a URL search string from an object with key value pairs */
 const buildParamString = params =>
 	Object.entries(params)
@@ -31,6 +33,19 @@ export const loadConfig = () =>
 			buildUrl = (pathParts = [], parameters) =>
 				`${host}/${pathParts.join("/")}` + (parameters ? "?" + buildParamString(parameters) : "");
 		});
+
+export const buildExternalAppUrl = (app, relativeUrl) => {
+	const url = relativeUrl[0] === "/" ? relativeUrl.substring(1) : relativeUrl;
+
+	let lowercaseApp = app.toLowerCase();
+	switch (lowercaseApp) {
+		case applications.oms:
+		case applications.pim:
+			return `/${lowercaseApp}/app/${url}`;
+		default:
+			throw new Error("Not implemented app '" + app + "'");
+	}
+};
 
 /* Reset function for testing, never use this in actual code */
 export const resetConfig = () => {

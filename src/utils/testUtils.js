@@ -15,6 +15,7 @@ const sinon = require("sinon");
 /* istanbul ignore next */
 export const spyOnConsole = (spyNames = ["log", "warn", "error"]) => {
 	let spiedFuncs;
+	// eslint-disable-next-line no-undef
 	beforeEach(() => {
 		spiedFuncs = spyNames.map(funcName => {
 			const func = sinon.spy().named("console." + funcName);
@@ -23,6 +24,7 @@ export const spyOnConsole = (spyNames = ["log", "warn", "error"]) => {
 			return oldFunc;
 		});
 	});
+	// eslint-disable-next-line no-undef
 	afterEach(() => {
 		spiedFuncs.forEach((func, index) => {
 			const name = spyNames[index];
@@ -74,34 +76,35 @@ export const PropStruct = React.forwardRef((props, ref) => (
 				value === undefined || value === null
 					? null
 					: value === "__ignore"
-					? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
-					: [
-							<dt key={"dt-" + key}>{`${key}:`}</dt>,
-							<dd key={"dd-" + key}>
-								{key === "children" ? (
-									value
-								) : typeof value === "object" ? (
-									value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
-										"React <" + (value.type.name || value.type) + ">"
+						? [<Ignore key={"dt-" + key} />, <Ignore key={"dd-" + key} />]
+						: [
+								<dt key={"dt-" + key}>{`${key}:`}</dt>,
+								<dd key={"dd-" + key}>
+									{key === "children" ? (
+										value
+									) : typeof value === "object" ? (
+										value["$$typeof"] && value["$$typeof"] === Symbol.for("react.element") ? (
+											"React <" + (value.type.name || value.type) + ">"
+										) : (
+											<PropStruct {...value} />
+										)
+									) : typeof value === "function" ? (
+										"Function"
+									) : typeof value === "string" ? (
+										`string "${value}"`
+									) : typeof value === "symbol" ? (
+										`symbol ${value.toString()}`
 									) : (
-										<PropStruct {...value} />
-									)
-								) : typeof value === "function" ? (
-									"Function"
-								) : typeof value === "string" ? (
-									`string "${value}"`
-								) : typeof value === "symbol" ? (
-									`symbol ${value.toString()}`
-								) : (
-									typeof value + " " + value
-								)}
-							</dd>,
-					  ],
+										typeof value + " " + value
+									)}
+								</dd>,
+							],
 			)}
 	</dl>
 ));
 
 export const ignoreConsoleError = func => {
+	// eslint-disable-next-line no-undef
 	jest.spyOn(console, "error");
 	console.error.mockImplementation(() => {});
 

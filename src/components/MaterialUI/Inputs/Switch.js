@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import SwitchMui from "@material-ui/core/Switch";
 import { makeStyles } from "@material-ui/core/styles";
 import SwitchProps, { isSwitchProps } from "./SwitchProps";
@@ -21,13 +22,19 @@ export const useStyles = makeStyles(theme => ({
 	input: {
 		left: "-250%",
 		width: "600%",
-		cursor: props => (props.readOnly ? "default" : "inherit"),
+		cursor: "inherit",
+	},
+	inputReadOnly: {
+		cursor: "default",
 	},
 	thumb: {
 		width: theme.spacing(1.3),
 		height: theme.spacing(1.3),
 		backgroundColor: theme.palette.background.default,
-		display: props => (props.readOnly ? "none" : "inherit"),
+		display: "inherit",
+	},
+	thumbReadOnly: {
+		display: "none",
 	},
 	track: {
 		backgroundColor: theme.palette.grey.borders,
@@ -45,13 +52,19 @@ export const useStyles = makeStyles(theme => ({
 		"&:before": {
 			content: props => `"${props.formattedOnCaption}"`,
 			left: theme.spacing(0.9),
-			right: props => props.readOnly && theme.spacing(0.9),
 			opacity: 0,
 		},
 		"&:after": {
 			content: props => `"${props.formattedOffCaption}"`,
 			right: theme.spacing(0.9),
-			left: props => props.readOnly && theme.spacing(0.9),
+		},
+	},
+	trackReadOnly: {
+		"&:before": {
+			right: theme.spacing(0.9),
+		},
+		"&:after": {
+			left: theme.spacing(0.9),
 		},
 	},
 	checked: {
@@ -95,8 +108,17 @@ const Switch = ({ switchProps }) => {
 	const formattedOnCaption = onCaption != null ? formatMessage(onCaption) : "";
 	const formattedOffCaption = offCaption != null ? formatMessage(offCaption) : "";
 
-	const classes = useStyles({ formattedOnCaption, formattedOffCaption, readOnly });
-	const switchClasses = { ...classes, ...className };
+	const classes = useStyles({ formattedOnCaption, formattedOffCaption });
+	const switchClasses = {
+		root: classes.root,
+		switchBase: classes.switchBase,
+		input: classNames(classes.input, { [classes.inputReadOnly]: readOnly }),
+		thumb: classNames(classes.thumb, { [classes.thumbReadOnly]: readOnly }),
+		track: classNames(classes.track, { [classes.trackReadOnly]: readOnly }),
+		checked: classes.checked,
+		disabled: classes.disabled,
+		...className,
+	};
 
 	return (
 		<SwitchMui

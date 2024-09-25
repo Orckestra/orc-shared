@@ -643,6 +643,55 @@ describe("AdvancedNumericInput", () => {
 		expect(update, "to have calls satisfying", [{ args: ["12.20", metadata] }]);
 	});
 
+	it("OnBlur trims spaces and leading zeros of values", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "012.2";
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 1 });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		// Update is called twice, once from onChangeHandler (from React) and once from onBlurInternal
+		expect(update, "to have calls satisfying", [{ args: ["12.2", metadata] }, { args: ["12.2", metadata] }]);
+	});
+
+	it("OnBlur use default value if trim spaces and leading zeroes returns empty ", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "";
+		const metadata = {
+			test: "value",
+		};
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2, defaultValue: "84" });
+		inputProps.set(InputBaseProps.propNames.metadata, metadata);
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+
+		input.simulate("blur", {});
+
+		expect(update, "to have calls satisfying", [{ args: ["84.00", metadata] }]);
+	});
+
 	it("Onblur send a formatted string instead of a number", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";

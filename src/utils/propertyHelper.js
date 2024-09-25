@@ -22,13 +22,13 @@ export function getPropertyOrDefault(obj, property, defaultValue, ignoreCase = f
 	}
 
 	if (ignoreCase === false && startWith === false) {
-		return obj.hasOwnProperty(property) ? obj[property] : defaultValue;
+		return Object.prototype.hasOwnProperty.call(obj, property) ? obj[property] : defaultValue;
 	}
 
 	const compareFunction = startWith ? caseInsensitiveStartWithCompare : caseInsensitiveCompare;
 
 	for (let prop in obj) {
-		if (obj.hasOwnProperty(prop) && compareFunction(prop, property)) {
+		if (Object.prototype.hasOwnProperty.call(obj, prop) && compareFunction(prop, property)) {
 			return obj[prop];
 		}
 	}
@@ -39,12 +39,12 @@ export function getPropertyOrDefault(obj, property, defaultValue, ignoreCase = f
 export const isObjectContainsPropertyWithValue = (obj, propertyName, value) => {
 	if (obj === null || obj === undefined) return false;
 
-	if (obj.hasOwnProperty(propertyName) && obj[propertyName] === value) {
+	if (Object.prototype.hasOwnProperty.call(obj, propertyName) && obj[propertyName] === value) {
 		return true;
 	}
 
 	for (let prop in obj) {
-		if (obj.hasOwnProperty(prop) && typeof obj[prop] === "object") {
+		if (Object.prototype.hasOwnProperty.call(obj, prop) && typeof obj[prop] === "object") {
 			if (isObjectContainsPropertyWithValue(obj[prop], propertyName, value)) return true;
 		}
 	}
@@ -55,12 +55,12 @@ export const isObjectContainsPropertyWithValue = (obj, propertyName, value) => {
 export const isObjectContainsPropertyWithAnyValue = (obj, propertyName) => {
 	if (!obj) return false;
 
-	if (obj.hasOwnProperty(propertyName) && obj[propertyName]) {
+	if (Object.prototype.hasOwnProperty.call(obj, propertyName) && obj[propertyName]) {
 		return true;
 	}
 
 	for (let prop in obj) {
-		if (obj.hasOwnProperty(prop) && typeof obj[prop] === "object") {
+		if (Object.prototype.hasOwnProperty.call(obj, prop) && typeof obj[prop] === "object") {
 			if (isObjectContainsPropertyWithAnyValue(obj[prop], propertyName)) return true;
 		}
 	}

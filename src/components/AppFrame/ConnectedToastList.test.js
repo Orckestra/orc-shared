@@ -169,7 +169,9 @@ describe("ConnectedToastList", () => {
 		try {
 			ReactDOM.unmountComponentAtNode(appRoot);
 			ReactDOM.unmountComponentAtNode(document.getElementById("toast"));
-		} catch (_) {}
+		} catch {
+			// don't do anything
+		}
 		document.body.removeChild(appRoot);
 	});
 });

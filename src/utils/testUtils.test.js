@@ -187,7 +187,7 @@ describe("PropStruct", () => {
 				<dt>num:</dt>
 				<dd>number 1</dd>
 				<dt>str:</dt>
-				<dd>string "foo"</dd>
+				<dd>string &quot;foo&quot;</dd>
 			</dl>,
 		));
 
@@ -198,7 +198,7 @@ describe("PropStruct", () => {
 			"to satisfy",
 			<dl id="testProps">
 				<dt>id:</dt>
-				<dd>string "testProps"</dd>
+				<dd>string &quot;testProps&quot;</dd>
 			</dl>,
 		));
 
@@ -261,7 +261,7 @@ describe("PropStruct", () => {
 					<div id="tc2" />
 				</dd>
 				<dt>foo:</dt>
-				<dd>string "bar"</dd>
+				<dd>string &quot;bar&quot;</dd>
 			</dl>,
 		));
 
@@ -275,7 +275,7 @@ describe("PropStruct", () => {
 				<dd>
 					<dl>
 						<dt>bar:</dt>
-						<dd>string "false"</dd>
+						<dd>string &quot;false&quot;</dd>
 						<dt>foo:</dt>
 						<dd>boolean true</dd>
 					</dl>

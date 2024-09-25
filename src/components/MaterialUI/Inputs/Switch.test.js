@@ -6,6 +6,9 @@ import { ignoreConsoleError } from "../../../utils/testUtils";
 import SwitchProps from "./SwitchProps";
 import Switch from "./Switch";
 import { IntlProvider } from "react-intl";
+import { StylesProvider } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core";
+import { generateClassName, createMuiTheme } from "~/utils/testUtils";
 
 const messages = {
 	captionOn: "is On",
@@ -75,6 +78,42 @@ describe("Switch Component", () => {
 		const switchMui = mountedComponent.find(SwitchMUI).find("input");
 		switchMui.simulate("change", { target: { checked: true } });
 		expect(update, "to have calls satisfying", [{ args: [true, {}] }]);
+	});
+
+	it("Renders readonly switch with readonly styles", () => {
+		const switchProps = new SwitchProps();
+		switchProps.set(SwitchProps.propNames.readOnly, true);
+		const component = (
+			<IntlProvider locale="en-US">
+				<StylesProvider generateClassName={generateClassName}>
+					<MuiThemeProvider theme={createMuiTheme()}>
+						<Switch switchProps={switchProps} />
+					</MuiThemeProvider>
+				</StylesProvider>
+			</IntlProvider>
+		);
+		const mountedComponent = mount(component);
+		expect(mountedComponent.exists(".makeStyles-inputReadOnly"), "to be true");
+		expect(mountedComponent.exists(".makeStyles-thumbReadOnly"), "to be true");
+		expect(mountedComponent.exists(".makeStyles-trackReadOnly"), "to be true");
+	});
+
+	it("Renders updatable switch with updatable styles", () => {
+		const switchProps = new SwitchProps();
+		switchProps.set(SwitchProps.propNames.readOnly, false);
+		const component = (
+			<IntlProvider locale="en-US">
+				<StylesProvider generateClassName={generateClassName}>
+					<MuiThemeProvider theme={createMuiTheme()}>
+						<Switch switchProps={switchProps} />
+					</MuiThemeProvider>
+				</StylesProvider>
+			</IntlProvider>
+		);
+		const mountedComponent = mount(component);
+		expect(mountedComponent.exists(".makeStyles-inputReadOnly"), "to be false");
+		expect(mountedComponent.exists(".makeStyles-thumbReadOnly"), "to be false");
+		expect(mountedComponent.exists(".makeStyles-trackReadOnly"), "to be false");
 	});
 
 	it("Checkbox component handles uncheck", () => {

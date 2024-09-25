@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { ScrollableCustomList } from "./TransferList";
-import Divider from "./Divider";
-import DividerProps from "./dividerProps";
 
 const useStyles = makeStyles(theme => ({
 	title: {
@@ -13,6 +11,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	listHeight: {
 		height: props => props.height && theme.spacing(props.height),
+	},
+	listHeightWithBorder: {
+		height: props => props.height && theme.spacing(props.height),
+		borderRight: `1px solid ${theme.palette.grey.borders}`,
 	},
 	paper: {
 		flexGrow: 1,
@@ -32,9 +34,6 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: theme.spacing(1.5),
 		},
 	},
-	divider: {
-		margin: "auto",
-	},
 	paperLeft: {
 		border: `1px solid ${theme.palette.grey.borders}`,
 	},
@@ -45,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: "column",
 		height: "100%",
+		boxSizing: "border-box",
 	},
 }));
 
@@ -98,15 +98,9 @@ const SelectionList = ({
 	};
 
 	const showDivider = infoPanel && divider;
-	const dividerProps = new DividerProps();
-	dividerProps.set(DividerProps.propNames.orientation, "vertical");
-	dividerProps.set(DividerProps.propNames.light, true);
-	dividerProps.setStyle(DividerProps.ruleNames.vertical, classes.divider);
 
 	infoPanelXs = infoPanelXs ?? defaultInfoPanelXs;
 	infoPanel = infoPanel ?? defaultPanel;
-
-	const dividerDiff = showDivider ? 1 : 0;
 
 	const listComponent = (
 		<div className={classes.listContainer}>
@@ -129,23 +123,15 @@ const SelectionList = ({
 		</div>
 	);
 
-	const dividerComponent = showDivider && (
-		<Grid item>
-			<Divider dividerProps={dividerProps} />
-		</Grid>
-	);
-
 	return (
 		<Grid container spacing={2}>
-			<Grid item xs={12 - infoPanelXs - dividerDiff} className={classes.listHeight}>
+			<Grid item xs={12 - infoPanelXs} className={showDivider ? classes.listHeightWithBorder : classes.listHeight}>
 				{listComponent}
 			</Grid>
-			{dividerComponent}
 			<Grid item xs={infoPanelXs}>
 				{infoPanel}
 			</Grid>
 		</Grid>
 	);
 };
-
 export default SelectionList;

@@ -15,6 +15,14 @@ variables:
   - group: npm publish token
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'orckestra001'
+    scannerMode: 'CLI' # 'MSBuild' | 'Other' | 'CLI'. Required. Choose the way to run the analysis. Default: MSBuild.
+    #configMode: 'file' # 'file' | 'manual'. Required when scannerMode = CLI. Mode. Default: file.
+    #configFile: 'sonar-project.properties' # string. Optional. Use when scannerMode = CLI && configMode = file. Settings File. Default: sonar-project.properties.
+
 - task: NodeTool@0
   displayName: 'Use Node 18.x'
   inputs:
@@ -110,3 +118,9 @@ steps:
     customCommand: 'publish --tag $(NpmTag)'
   env:
     NPM_TOKEN: $(NpmPublishToken)
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -100,6 +100,21 @@ export const TabLink = React.forwardRef((props, ref) => {
 	);
 });
 
+const createEntityId = (entityIdResolver, params, href, path) => {
+	let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
+	if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
+
+	const entityId =
+		typeof entityIdResolver === "function"
+			? entityIdResolver({ match: { params } })
+			: resolveEntityId(href, path, entityIdKey);
+
+	return {
+		entityId,
+		entityIdKey,
+	};
+};
+
 const MuiBar = ({ module, moduleName, pages }) => {
 	const tabs = React.useRef(null);
 	const classes = useStyles();
@@ -122,14 +137,17 @@ const MuiBar = ({ module, moduleName, pages }) => {
 
 	const tabLabels = [];
 
-	const handleChange = (_, value) => {
-		if (typeof value === "number" && value >= 0 && value < pages.length) {
-			const href = pages[value].href;
-			history.push(href);
-		} else {
-			history.push(module.href);
-		}
-	};
+	const handleChange = useCallback(
+		(_, value) => {
+			if (typeof value === "number" && value >= 0 && value < pages.length) {
+				const href = pages[value].href;
+				history.push(href);
+			} else {
+				history.push(module.href);
+			}
+		},
+		[history, module, pages],
+	);
 
 	const selectProps = new SelectProps();
 	selectProps.set(SelectProps.propNames.iconSelect, true);
@@ -142,10 +160,13 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		</div>
 	);
 
-	const getNewIndex = oldIndex => {
-		const newIndex = oldIndex + 1 >= tabLabels.length ? oldIndex - 1 : oldIndex + 1;
-		return newIndex;
-	};
+	const getNewIndex = useCallback(
+		oldIndex => {
+			const newIndex = oldIndex + 1 >= tabLabels.length ? oldIndex - 1 : oldIndex + 1;
+			return newIndex;
+		},
+		[tabLabels.length],
+	);
 
 	const tabCloseHandler = (event, closeCallback, isModified, href, path, entityIdKey, entityId, index) => {
 		event.stopPropagation();
@@ -178,8 +199,6 @@ const MuiBar = ({ module, moduleName, pages }) => {
 		resizeHandler();
 	}, [resizeHandler, module, pages]);
 
-	const closingActions = [];
-
 	const allTabs = (
 		<div className={classes.container}>
 			<ResizeDetector onResize={resizeHandler} />
@@ -208,12 +227,7 @@ const MuiBar = ({ module, moduleName, pages }) => {
 						{ href, label, outsideScope, close, path, params, mustTruncate, icon, isDetails, entityIdResolver },
 						index,
 					) => {
-						let entityIdKey = Object.keys(params).find(p => p.toLowerCase().endsWith("id"));
-						if (!entityIdKey) entityIdKey = tryGetNewEntityIdKey(href);
-						const entityId =
-							typeof entityIdResolver === "function"
-								? entityIdResolver({ match: { params } })
-								: resolveEntityId(href, path, entityIdKey);
+						const { entityId, entityIdKey } = createEntityId(entityIdResolver, params, href, path);
 						const isModified = modifiedTabs.includes(href);
 						const isError = tabsWithErrors.includes(href);
 						const tabLabel = <TabLabel label={label} />;
@@ -243,18 +257,6 @@ const MuiBar = ({ module, moduleName, pages }) => {
 							label: tabLabel,
 							sortOrder: index,
 						});
-
-						if (entityId != null) {
-							closingActions.push({
-								entityId: entityId,
-								closeTab: (event, executeHandlerOnly = false) => {
-									close(event, executeHandlerOnly);
-									if (executeHandlerOnly === false) {
-										handleChange(null, getNewIndex(index));
-									}
-								},
-							});
-						}
 
 						return (
 							<Tab
@@ -286,8 +288,27 @@ const MuiBar = ({ module, moduleName, pages }) => {
 	);
 
 	React.useEffect(() => {
+		const closingActions = [];
+
+		pages.forEach((page, index) => {
+			const { href, close, path, params, entityIdResolver } = page;
+			const { entityId } = createEntityId(entityIdResolver, params, href, path);
+
+			if (entityId != null) {
+				closingActions.push({
+					entityId: entityId,
+					closeTab: (event, executeHandlerOnly = false) => {
+						close(event, executeHandlerOnly);
+						if (executeHandlerOnly === false) {
+							handleChange(null, getNewIndex(index));
+						}
+					},
+				});
+			}
+		});
+
 		dispatchRedux(setClosingTabHandlerActions(moduleName, closingActions));
-	}, [dispatchRedux, moduleName, closingActions]);
+	}, [dispatchRedux, getNewIndex, handleChange, moduleName, pages]);
 
 	return allTabs;
 };

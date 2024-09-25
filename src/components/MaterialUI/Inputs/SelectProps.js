@@ -4,6 +4,7 @@ export const sortTypeEnum = {
 	none: 0,
 	default: 1,
 	numeric: 2,
+	alphabetical: 3,
 };
 
 class SelectProps extends ComponentProps {

@@ -8,6 +8,7 @@ const TestComp = () => {
 	const addNotification = useNotification(snackPack, setSnackPack);
 	return (
 		<div>
+			{/* eslint-disable-next-line react/no-unknown-property */}
 			<div id="notification" snacks={snackPack} onClick={(message, type) => addNotification(message, type)} />
 		</div>
 	);

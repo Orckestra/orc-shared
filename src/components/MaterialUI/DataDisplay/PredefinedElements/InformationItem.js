@@ -12,14 +12,16 @@ import classNames from "classnames";
 const useStyles = makeStyles(theme => ({
 	title: {
 		fontSize: theme.typography.fieldLabelSize,
-		color: props => (!props.error ? theme.palette.text.hint : theme.palette.error.main),
+		color: theme.palette.text.hint,
 		fontFamily: theme.typography.fontFamily,
 		marginBottom: theme.spacing(1),
-
-		"&:after": {
-			content: props => props.required && '" *"',
-			color: theme.palette.error.main,
-		},
+	},
+	titleError: {
+		color: theme.palette.error.main,
+	},
+	titleRequired: {
+		paddingLeft: theme.spacing(0.5),
+		color: theme.palette.error.main,
 	},
 	value: {
 		fontSize: theme.typography.fontSize,
@@ -77,9 +79,26 @@ const InformationItemChildren = ({
 	return <MultipleLinesText textProps={multipleLinesTextProps} children={value} tooltipClasses={tooltipClasses} />;
 };
 
-const InformationItemHeader = ({ classes, label, headerIcon, headerIconClassName }) => {
+const InformationItemHeader = ({ classes, label, headerIcon, headerIconClassName, required, error }) => {
 	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
-	const headerText = (formattedLabel && <Typography className={classes.title} children={formattedLabel} />) ?? null;
+	const titleClasses = classNames(classes.title, { [classes.titleError]: error });
+	const headerText =
+		(formattedLabel && (
+			<Typography
+				className={titleClasses}
+				children={
+					<>
+						{formattedLabel}
+						{required && (
+							<span data-qa="required" className={classes.titleRequired}>
+								*
+							</span>
+						)}
+					</>
+				}
+			/>
+		)) ??
+		null;
 
 	if (headerIcon) {
 		return (
@@ -113,6 +132,8 @@ const InformationItem = ({
 			<InformationItemHeader
 				classes={classes}
 				label={label}
+				required={required}
+				error={error}
 				headerIcon={headerIcon}
 				headerIconClassName={headerIconClassName}
 			/>

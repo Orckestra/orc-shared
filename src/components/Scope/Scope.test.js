@@ -121,7 +121,9 @@ beforeEach(() => {
 afterEach(() => {
 	try {
 		ReactDOM.unmountComponentAtNode(appRoot);
-	} catch (_) {}
+	} catch {
+		// don't do anything
+	}
 	document.body.removeChild(appRoot);
 	document.body.removeChild(modalRoot);
 });
