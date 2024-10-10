@@ -180,7 +180,13 @@ const StepperModal = ({
 								</Button>
 							))
 						) : (
-							<Button variant="contained" color="primary" disabled={nextDisabled} onClick={nextClick} disableElevation>
+							<Button
+								variant="contained"
+								color="primary"
+								disabled={nextDisabled}
+								onClick={() => nextClick()}
+								disableElevation
+							>
 								<FormattedMessage {...sharedMessages.next} />
 							</Button>
 						))}
