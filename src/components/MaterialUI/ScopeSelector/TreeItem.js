@@ -169,7 +169,7 @@ const TreeItem = ({ scope, rootId, onScopeSelect, isScopeSelectable, children })
 				selected: classNames({ [classes.virtualScopeSelected]: !isSelectable }),
 			}}
 		>
-			{children}
+			{hasChildren ? children : null}
 		</TreeItemMui>
 	);
 };
