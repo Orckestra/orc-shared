@@ -3,6 +3,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CheckboxGroupProps, { isCheckboxGroupProps } from "./CheckboxGroupProps";
 import Checkbox from "./Checkbox";
 import CheckboxProps from "./CheckboxProps";
+import TooltippedIcon from "../DataDisplay/TooltippedElements/TooltippedIcon";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -31,6 +32,19 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.error.main,
 		fontSize: theme.typography.fieldLabelSize,
 		float: "left",
+	},
+	warningIcon: {
+		width: "1em",
+		height: "1em",
+		fontSize: 18,
+		alignSelf: "center",
+		marginRight: theme.spacing(2),
+		"& > svg": {
+			color: theme.palette.error.main,
+		},
+	},
+	checkboxItem: {
+		display: "flex",
 	},
 }));
 
@@ -73,7 +87,15 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 					checkboxProps.set(CheckboxProps.propNames.label, option.label ?? option.value);
 					checkboxProps.set(CheckboxProps.propNames.readOnly, readOnly);
 					checkboxProps.set(CheckboxProps.propNames.disabled, disabled);
-					return <Checkbox key={index} checkboxProps={checkboxProps} />;
+
+					return (
+						<div key={index} className={classes.checkboxItem}>
+							<Checkbox checkboxProps={checkboxProps} />
+							{option.warningMessage && (
+								<TooltippedIcon className={classes.warningIcon} titleValue={option.warningMessage} id="warning" />
+							)}
+						</div>
+					);
 				})}
 			</div>
 			{error && <div className={classes.errorText}>{error}</div>}
