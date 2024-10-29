@@ -5,6 +5,7 @@ import Checkbox from "./Checkbox";
 import CheckboxProps from "./CheckboxProps";
 import TooltippedIcon from "../DataDisplay/TooltippedElements/TooltippedIcon";
 import { makeStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -31,6 +32,9 @@ const useStyles = makeStyles(theme => ({
 		"& > svg": {
 			color: theme.palette.error.main,
 		},
+	},
+	checkboxItemWarning: {
+		color: theme.palette.error.main,
 	},
 	checkboxItem: props => ({
 		display: "flex",
@@ -84,7 +88,10 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 					checkboxProps.set(CheckboxProps.propNames.disabled, disabled);
 
 					return (
-						<div key={index} className={classes.checkboxItem}>
+						<div
+							key={index}
+							className={classNames(classes.checkboxItem, { [classes.checkboxItemWarning]: !!option.warningMessage })}
+						>
 							<Checkbox checkboxProps={checkboxProps} />
 							{option.warningMessage && (
 								<TooltippedIcon className={classes.warningIcon} titleValue={option.warningMessage} id="warning" />
