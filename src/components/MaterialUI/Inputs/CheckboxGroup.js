@@ -3,7 +3,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CheckboxGroupProps, { isCheckboxGroupProps } from "./CheckboxGroupProps";
 import Checkbox from "./Checkbox";
 import CheckboxProps from "./CheckboxProps";
+import TooltippedIcon from "../DataDisplay/TooltippedElements/TooltippedIcon";
 import { makeStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -14,17 +16,6 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: props => (props.row ? "row" : "column"),
 		flexWrap: "wrap",
-		"& .MuiFormControlLabel-root": {
-			[theme.breakpoints.up("xs")]: {},
-			[theme.breakpoints.up("sm")]: {},
-			[theme.breakpoints.up("md")]: { width: "45%" },
-			[theme.breakpoints.up("lg")]: { width: "30%" },
-			[theme.breakpoints.up("xl")]: { width: "20%" },
-
-			"& + .MuiFormControlLabel-root": {
-				marginTop: theme.spacing(1),
-			},
-		},
 	},
 	errorText: {
 		marginTop: theme.spacing(0.5),
@@ -32,6 +23,28 @@ const useStyles = makeStyles(theme => ({
 		fontSize: theme.typography.fieldLabelSize,
 		float: "left",
 	},
+	warningIcon: {
+		width: "1em",
+		height: "1em",
+		fontSize: 16,
+		alignSelf: "center",
+		marginRight: theme.spacing(2),
+		"& > svg": {
+			color: theme.palette.error.main,
+		},
+	},
+	checkboxItemWarning: {
+		color: theme.palette.error.main,
+	},
+	checkboxItem: props => ({
+		display: "flex",
+		[theme.breakpoints.up("xs")]: {},
+		[theme.breakpoints.up("sm")]: {},
+		[theme.breakpoints.up("md")]: props.row ? { width: "45%" } : {},
+		[theme.breakpoints.up("lg")]: props.row ? { width: "30%" } : {},
+		[theme.breakpoints.up("xl")]: props.row ? { width: "20%" } : {},
+		marginTop: theme.spacing(1),
+	}),
 }));
 
 const CheckboxGroup = ({ checkboxGroupProps }) => {
@@ -73,7 +86,18 @@ const CheckboxGroup = ({ checkboxGroupProps }) => {
 					checkboxProps.set(CheckboxProps.propNames.label, option.label ?? option.value);
 					checkboxProps.set(CheckboxProps.propNames.readOnly, readOnly);
 					checkboxProps.set(CheckboxProps.propNames.disabled, disabled);
-					return <Checkbox key={index} checkboxProps={checkboxProps} />;
+
+					return (
+						<div
+							key={index}
+							className={classNames(classes.checkboxItem, { [classes.checkboxItemWarning]: !!option.warningMessage })}
+						>
+							<Checkbox checkboxProps={checkboxProps} />
+							{option.warningMessage && (
+								<TooltippedIcon className={classes.warningIcon} titleValue={option.warningMessage} id="warning" />
+							)}
+						</div>
+					);
 				})}
 			</div>
 			{error && <div className={classes.errorText}>{error}</div>}

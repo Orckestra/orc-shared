@@ -7,6 +7,7 @@ import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import CheckboxGroupProps from "./CheckboxGroupProps";
 import CheckboxProps from "./CheckboxProps";
+import TooltippedIcon from "../DataDisplay/TooltippedElements/TooltippedIcon";
 
 describe("CheckboxGroup Component", () => {
 	let update, container;
@@ -74,10 +75,60 @@ describe("CheckboxGroup Component", () => {
 		const expected = (
 			<div>
 				<div>
-					<Checkbox key={1} checkboxProps={checkbox1Props} />
-					<Checkbox key={2} checkboxProps={checkbox2Props} />
-					<Checkbox key={3} checkboxProps={checkbox3Props} />
-					<Checkbox key={4} checkboxProps={checkbox4Props} />
+					<div key={1}>
+						<Checkbox checkboxProps={checkbox1Props} />
+					</div>
+					<div key={2}>
+						<Checkbox checkboxProps={checkbox2Props} />
+					</div>
+					<div key={3}>
+						<Checkbox checkboxProps={checkbox3Props} />
+					</div>
+					<div key={4}>
+						<Checkbox checkboxProps={checkbox4Props} />
+					</div>
+				</div>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders CheckboxGroup component with one warning", () => {
+		const props = new CheckboxGroupProps();
+		const options = [
+			{ value: "option1", sortOrder: 1 },
+			{ value: "option2", sortOrder: 2, warningMessage: "warning message" },
+		];
+
+		props.set(CheckboxGroupProps.propNames.update, update);
+		props.set(CheckboxGroupProps.propNames.value, "option1|option2");
+		props.set(CheckboxGroupProps.propNames.options, options);
+		const component = <CheckboxGroup checkboxGroupProps={props} />;
+
+		const checkbox1Props = new CheckboxProps();
+		checkbox1Props.set(CheckboxProps.propNames.update, update);
+		checkbox1Props.set(CheckboxProps.propNames.value, true);
+		checkbox1Props.set(CheckboxProps.propNames.label, "option1");
+		checkbox1Props.set(CheckboxProps.propNames.readOnly, false);
+		checkbox1Props.set(CheckboxProps.propNames.disabled, false);
+
+		const checkbox2Props = new CheckboxProps();
+		checkbox2Props.set(CheckboxProps.propNames.update, update);
+		checkbox2Props.set(CheckboxProps.propNames.value, false);
+		checkbox2Props.set(CheckboxProps.propNames.label, "option2");
+		checkbox2Props.set(CheckboxProps.propNames.readOnly, false);
+		checkbox2Props.set(CheckboxProps.propNames.disabled, false);
+		const expected = (
+			<div>
+				<div>
+					<div key={1}>
+						<Checkbox checkboxProps={checkbox1Props} />
+					</div>
+					<div key={2}>
+						<Checkbox checkboxProps={checkbox2Props} />
+						<TooltippedIcon titleValue={"warning message"} id="warning" />
+					</div>
 				</div>
 			</div>
 		);
