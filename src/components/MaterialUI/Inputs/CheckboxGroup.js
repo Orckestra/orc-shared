@@ -15,17 +15,6 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: props => (props.row ? "row" : "column"),
 		flexWrap: "wrap",
-		"& .MuiFormControlLabel-root": {
-			[theme.breakpoints.up("xs")]: {},
-			[theme.breakpoints.up("sm")]: {},
-			[theme.breakpoints.up("md")]: { width: "45%" },
-			[theme.breakpoints.up("lg")]: { width: "30%" },
-			[theme.breakpoints.up("xl")]: { width: "20%" },
-
-			"& + .MuiFormControlLabel-root": {
-				marginTop: theme.spacing(1),
-			},
-		},
 	},
 	errorText: {
 		marginTop: theme.spacing(0.5),
@@ -36,16 +25,22 @@ const useStyles = makeStyles(theme => ({
 	warningIcon: {
 		width: "1em",
 		height: "1em",
-		fontSize: 18,
+		fontSize: 16,
 		alignSelf: "center",
 		marginRight: theme.spacing(2),
 		"& > svg": {
 			color: theme.palette.error.main,
 		},
 	},
-	checkboxItem: {
+	checkboxItem: props => ({
 		display: "flex",
-	},
+		[theme.breakpoints.up("xs")]: {},
+		[theme.breakpoints.up("sm")]: {},
+		[theme.breakpoints.up("md")]: props.row ? { width: "45%" } : {},
+		[theme.breakpoints.up("lg")]: props.row ? { width: "30%" } : {},
+		[theme.breakpoints.up("xl")]: props.row ? { width: "20%" } : {},
+		marginTop: theme.spacing(1),
+	}),
 }));
 
 const CheckboxGroup = ({ checkboxGroupProps }) => {
