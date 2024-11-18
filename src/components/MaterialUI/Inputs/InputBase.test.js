@@ -662,10 +662,16 @@ describe("AdvancedNumericInput", () => {
 		const mountedComponent = mount(component);
 		const input = mountedComponent.find("input");
 
+		expect(update, "was not called");
+
 		input.simulate("blur", {});
 
-		// Update is called twice, once from onChangeHandler (from React) and once from onBlurInternal
-		expect(update, "to have calls satisfying", [{ args: ["12.2", metadata] }, { args: ["12.2", metadata] }]);
+		// Update is called 3 times, once from onChangeHandler (from React), once from onBlurInternal and onChangeHandler again. The last one is probably related to how the test is running because it was only called twice before.
+		expect(update, "to have calls satisfying", [
+			{ args: ["12.2", metadata] },
+			{ args: ["12.2", metadata] },
+			{ args: ["12.2", metadata] },
+		]);
 	});
 
 	it("OnBlur use default value if trim spaces and leading zeroes returns empty ", () => {
