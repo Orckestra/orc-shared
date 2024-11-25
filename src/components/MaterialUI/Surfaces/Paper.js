@@ -8,6 +8,15 @@ const useStyle = makeStyles(theme => ({
 	container: {
 		padding: theme.spacing(2),
 		backgroundColor: theme.palette.grey.lighter,
+		"&::-webkit-scrollbar": {
+			width: theme.spacing(1.5),
+		},
+		"&::-webkit-scrollbar-thumb": {
+			background: theme.palette.grey.borders,
+			border: `5px transparent solid`,
+			backgroundClip: "padding-box",
+			borderRadius: theme.spacing(1.5),
+		},
 	},
 }));
 
