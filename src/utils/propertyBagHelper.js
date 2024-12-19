@@ -11,6 +11,7 @@ import { parseGuid } from "./parseHelper";
 
 export const customDataType = {
 	money: "Money",
+	moneyDecimal: "moneyDecimal",
 	priceTieredRateTable: "PriceTieredRateTable",
 	quantityTieredRateTable: "QuantityTieredRateTable",
 	password: "Password",
@@ -70,6 +71,8 @@ export const toJsonCargo = (attribute, value) => {
 			switch (attribute.customDataType) {
 				case customDataType.money:
 					return createJsonCargo(jsonCargoType.double, Number(formatNumber(value, 2)));
+				case customDataType.moneyDecimal:
+					return createJsonCargo(jsonCargoType.decimal, Number(formatNumber(value, 2)));
 				case customDataType.priceTieredRateTable:
 				case customDataType.quantityTieredRateTable:
 					return createTieredTableJsonCargo(value);

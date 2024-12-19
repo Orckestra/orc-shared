@@ -171,6 +171,7 @@ export const serializationTypeKey = "__type";
 export const jsonCargoType = {
 	boolean: "Boolean",
 	double: "Double",
+	decimal: "Decimal",
 	dateTime: "DateTime",
 	integer: "Int32",
 	stringArray: "String[]",

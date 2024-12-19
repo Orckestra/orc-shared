@@ -78,6 +78,8 @@ describe("toJsonCargo function", () => {
 		[15.4321, attributeDataType.decimal, null, { __type: "ValueOfDouble", value: 15.4321 }],
 		[15.4321, attributeDataType.customType, customDataType.money, { __type: "ValueOfDouble", value: 15.43 }],
 		[15.4285, attributeDataType.customType, customDataType.money, { __type: "ValueOfDouble", value: 15.43 }],
+		[15.4321, attributeDataType.customType, customDataType.moneyDecimal, { __type: "ValueOfDecimal", value: 15.43 }],
+		[15.4285, attributeDataType.customType, customDataType.moneyDecimal, { __type: "ValueOfDecimal", value: 15.43 }],
 		[
 			["d22679f2-5807-4068-b17f-700742d97503"],
 			attributeDataType.entityReference,
