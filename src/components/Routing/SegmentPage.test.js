@@ -5,8 +5,8 @@ import { createMemoryHistory } from "history";
 import SegmentPage, { Wrapper, Item, List } from "./SegmentPage";
 import Grid from "@material-ui/core/Grid";
 import TooltippedTypography from "./../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
-import { TestWrapper, createMuiTheme } from "../../utils/testUtils";
-import translations from "~/translations/en-US.json";
+import { TestWrapper, createMuiTheme, extractMessages } from "../../utils/testUtils";
+import sharedMessages from "../../sharedMessages";
 
 const View1 = () => <div id="view1" />;
 const View2 = () => <div id="view2" />;
@@ -20,12 +20,20 @@ jest.mock("translations/en-US.json", () => ({
 
 const ComponentLabel = () => <p>Component</p>;
 
+const messages = extractMessages(sharedMessages);
+
 describe("SegmentPage", () => {
 	let state, store, segments;
 
 	const theme = createMuiTheme();
 
-	const intlProvider = { messages: translations };
+	const intlProvider = { messages };
+
+	const getLabelValueSelector = () => {
+		return () => ({
+			version: "test version",
+		});
+	};
 
 	beforeEach(() => {
 		state = Immutable.fromJS({
@@ -113,6 +121,14 @@ describe("SegmentPage", () => {
 				label: "HiddenBySelector",
 				hide: () => state => true,
 			},
+			"/eight": {
+				label: sharedMessages.orcSharedVersion,
+				labelValueSelector: getLabelValueSelector,
+			},
+			"/nine": {
+				label: { ...sharedMessages.copyright, values: {} },
+				labelValueSelector: () => "",
+			},
 		};
 	});
 
@@ -169,6 +185,20 @@ describe("SegmentPage", () => {
 								<Grid container alignItems="center" wrap="nowrap">
 									<Grid item>DisabledSectionBySelector</Grid>
 									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item to="/foo/meep/entityIdValue/eight">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>Orc-Shared Framework test version</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item to="/foo/meep/entityIdValue/nine">
+								<Grid container alignItems="center" wrap="nowrap">
+									<div>
+										<span />
+									</div>
+									<div />
 								</Grid>
 							</Item>
 						</List>
@@ -237,6 +267,20 @@ describe("SegmentPage", () => {
 									<Grid container alignItems="center" wrap="nowrap">
 										<Grid item>DisabledSectionBySelector</Grid>
 										<Grid item></Grid>
+									</Grid>
+								</Item>
+								<Item to="/foo/meep/entityIdValue/eight">
+									<Grid container alignItems="center" wrap="nowrap">
+										<Grid item>Orc-Shared Framework test version</Grid>
+										<Grid item></Grid>
+									</Grid>
+								</Item>
+								<Item to="/foo/meep/entityIdValue/nine">
+									<Grid container alignItems="center" wrap="nowrap">
+										<div>
+											<span />
+										</div>
+										<div />
 									</Grid>
 								</Item>
 							</List>
@@ -353,6 +397,20 @@ describe("SegmentPage", () => {
 									<Grid item></Grid>
 								</Grid>
 							</Item>
+							<Item to="/foo/meep/entityIdValue/eight">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>Orc-Shared Framework test version</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item to="/foo/meep/entityIdValue/nine">
+								<Grid container alignItems="center" wrap="nowrap">
+									<div>
+										<span />
+									</div>
+									<div />
+								</Grid>
+							</Item>
 						</List>
 					</MemoryRouter>
 					<View1 />
@@ -419,6 +477,20 @@ describe("SegmentPage", () => {
 								<Grid container alignItems="center" wrap="nowrap">
 									<Grid item>DisabledSectionBySelector</Grid>
 									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item to="/foo/meep/entityIdValue/eight">
+								<Grid container alignItems="center" wrap="nowrap">
+									<Grid item>Orc-Shared Framework test version</Grid>
+									<Grid item></Grid>
+								</Grid>
+							</Item>
+							<Item to="/foo/meep/entityIdValue/nine">
+								<Grid container alignItems="center" wrap="nowrap">
+									<div>
+										<span />
+									</div>
+									<div />
 								</Grid>
 							</Item>
 						</List>

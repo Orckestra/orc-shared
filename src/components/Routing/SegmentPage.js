@@ -98,7 +98,19 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 	let hideSelector = state => (typeof config.hide === "function" ? config.hide(params)(state) : config.hide ?? false);
 	const isHide = useSelector(hideSelector);
 	const asterix = <span className={classes.asterix}>*</span>;
+
+	if (config.labelValueSelector) {
+		const values = config.labelValueSelector(params);
+
+		if (typeof values === "function") {
+			config.label.values = values;
+		} else if (config.label.values) {
+			delete config.label.values;
+		}
+	}
+
 	const text = <Text message={config.label} />;
+
 	const getSectionLabelClassName = (isModified, isError, isDisabled) => {
 		let className = classes.label;
 		if (isModified) className = `${className} ${classes.modifiedLabel}`;
