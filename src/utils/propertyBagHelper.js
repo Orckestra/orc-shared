@@ -11,7 +11,7 @@ import { parseGuid } from "./parseHelper";
 
 export const customDataType = {
 	money: "Money",
-	moneyDecimal: "moneyDecimal",
+	moneyDecimal: "MoneyDecimal",
 	priceTieredRateTable: "PriceTieredRateTable",
 	quantityTieredRateTable: "QuantityTieredRateTable",
 	password: "Password",
