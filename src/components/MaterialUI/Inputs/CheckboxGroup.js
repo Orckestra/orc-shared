@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: props => (props.row ? "row" : "column"),
 		flexWrap: "wrap",
+		marginLeft: "8px",
 	},
 	errorText: {
 		marginTop: theme.spacing(0.5),
@@ -38,7 +39,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	checkboxItem: props => ({
 		display: "flex",
-		[theme.breakpoints.up("xs")]: {},
+		flex: 1,
+		[theme.breakpoints.up("xs")]: {}, // the breakpoints are used to force the text to wrap
 		[theme.breakpoints.up("sm")]: {},
 		[theme.breakpoints.up("md")]: props.row ? { width: "45%" } : {},
 		[theme.breakpoints.up("lg")]: props.row ? { width: "30%" } : {},
