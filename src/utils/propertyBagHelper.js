@@ -18,6 +18,7 @@ export const customDataType = {
 	carrierProviderSelector: "CarrierProviderSelector",
 	routingProviderSelector: "RoutingProviderSelector",
 	multipleCarrierProvidersSelector: "MultipleCarrierProvidersSelector",
+	serviceLevelSelector: "ServiceLevelSelector",
 };
 
 const tieredAttributeTypes = [customDataType.priceTieredRateTable, customDataType.quantityTieredRateTable];
@@ -80,6 +81,7 @@ export const toJsonCargo = (attribute, value) => {
 				case customDataType.carrierProviderSelector: // To be properly handled when user story 61801 will be addressed
 				case customDataType.routingProviderSelector: // To be properly handled when user story 61801 will be addressed
 				case customDataType.multipleCarrierProvidersSelector: // To be properly handled when user story 61801 will be addressed
+				case customDataType.serviceLevelSelector:
 					return value;
 				default:
 					throw new Error(`toJsonCargo: attribute.customDataType ${attribute.customDataType} is not implemented`);
