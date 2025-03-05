@@ -137,6 +137,7 @@ A select control which loads its values from a lookup definition.
   - `disabled`: A boolean the disable or enable the option
   - `action`: A method to call when the option is clicked
 - `label`: The button label
+- `name`: A name used to identify the element
 
 Renders a button with an integrated menu. The menu will be positioned below the button. The options are displayed in the order they are defined in the `options` array. The options are divided using the `Divider` component using the `light` and `middle` variant.
 
