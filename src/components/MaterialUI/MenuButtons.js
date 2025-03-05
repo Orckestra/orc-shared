@@ -54,7 +54,7 @@ const StyledMenu = props => {
 	);
 };
 
-const MenuButton = ({ options, label, name }) => {
+const MenuButton = ({ options, label }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useMenuStyles();
 
@@ -73,7 +73,6 @@ const MenuButton = ({ options, label, name }) => {
 	return (
 		<>
 			<Button
-				aria-controls={name}
 				aria-haspopup="true"
 				variant="outlined"
 				color="primary"
@@ -83,7 +82,7 @@ const MenuButton = ({ options, label, name }) => {
 			>
 				{label}
 			</Button>
-			<StyledMenu id={name} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+			<StyledMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
 				{options?.map(({ key, component, disabled, action }, index) => (
 					<div key={key}>
 						<MenuItem
