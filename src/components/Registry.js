@@ -1,6 +1,6 @@
 import React from "react";
 import InformationItem from "./MaterialUI/DataDisplay/PredefinedElements/InformationItem";
-import sharedMessages from "~/sharedMessages";
+import sharedMessages from "../sharedMessages";
 import { useIntl } from "react-intl";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,7 +19,7 @@ const Registry = ({ dateCreated, createdBy, lastModifiedDate, lastModifiedBy, ad
 
 	const created = formatDate(dateCreated);
 	const lastModified = formatDate(lastModifiedDate);
-
+	0;
 	const registry = (
 		<Box className={classes.registry} display="flex" flexDirection="column">
 			{dateCreated !== undefined && <InformationItem label={sharedMessages.created} children={created} />}
