@@ -279,6 +279,26 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.valueTypeWrapperFalse",
 		defaultMessage: "False",
 	},
+	registry: {
+		id: "orc-shared.registry",
+		defaultMessage: "Registry",
+	},
+	created: {
+		id: "orc-shared.created",
+		defaultMessage: "Date Created",
+	},
+	createdBy: {
+		id: "orc-shared.createdBy",
+		defaultMessage: "Created By",
+	},
+	lastModified: {
+		id: "orc-shared.lastModified",
+		defaultMessage: "Last Modified",
+	},
+	lastModifiedBy: {
+		id: "orc-shared.lastModifiedBy",
+		defaultMessage: "Last Modified By",
+	},
 });
 
 export default sharedMessages;
