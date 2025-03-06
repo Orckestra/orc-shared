@@ -22,10 +22,10 @@ const Registry = ({ dateCreated, createdBy, lastModifiedDate, lastModifiedBy, ad
 
 	const registry = (
 		<Box className={classes.registry} display="flex" flexDirection="column">
-			{dateCreated !== undefined && <InformationItem label={sharedMessages.dateCreated} children={created} />}
+			{dateCreated !== undefined && <InformationItem label={sharedMessages.created} children={created} />}
 			{createdBy !== undefined && <InformationItem label={sharedMessages.createdBy} children={createdBy} />}
 			{lastModifiedDate !== undefined && (
-				<InformationItem label={sharedMessages.lastModifiedDate} children={lastModified} />
+				<InformationItem label={sharedMessages.lastModified} children={lastModified} />
 			)}
 			{lastModifiedBy !== undefined && (
 				<InformationItem label={sharedMessages.lastModifiedBy} children={lastModifiedBy} />

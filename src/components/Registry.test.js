@@ -29,9 +29,9 @@ describe("Registry", () => {
 		const expected = (
 			<TestWrapper intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
 				<Box display="flex" flexDirection="column">
-					<InformationItem label={sharedMessages.dateCreated} children="10/6/2020" />
+					<InformationItem label={sharedMessages.created} children="10/6/2020" />
 					<InformationItem label={sharedMessages.createdBy} children={createdBy} />
-					<InformationItem label={sharedMessages.lastModifiedDate} children="10/6/2020" />
+					<InformationItem label={sharedMessages.lastModified} children="10/6/2020" />
 					<InformationItem label={sharedMessages.lastModifiedBy} children={lastModifiedBy} />
 				</Box>
 			</TestWrapper>
@@ -70,9 +70,9 @@ describe("Registry", () => {
 		const expected = (
 			<TestWrapper intlProvider={{ messages }} stylesProvider muiThemeProvider={{ theme }}>
 				<Box display="flex" flexDirection="column">
-					<InformationItem label={sharedMessages.dateCreated} children="10/6/2020" />
+					<InformationItem label={sharedMessages.created} children="10/6/2020" />
 					<InformationItem label={sharedMessages.createdBy} children={createdBy} />
-					<InformationItem label={sharedMessages.lastModifiedDate} children="10/6/2020" />
+					<InformationItem label={sharedMessages.lastModified} children="10/6/2020" />
 					<InformationItem label={sharedMessages.lastModifiedBy} children={lastModifiedBy} />
 					<InformationItem label={sharedMessages.about} children={"some date"} />
 					<InformationItem label={sharedMessages.help} children={"Hugh Mann"} />
