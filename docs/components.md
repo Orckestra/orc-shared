@@ -129,6 +129,17 @@ See also the more [detailed documentation for list components](lists.md).
 
 A select control which loads its values from a lookup definition.
 
+## MenuButton
+
+- `options`: An array of options. Each option must have the following properties:
+  - `key`: A key used to identify the option
+  - `component`: A React component this will render the option
+  - `disabled`: A boolean the disable or enable the option
+  - `action`: A method to call when the option is clicked
+- `label`: The button label
+
+Renders a button with an integrated menu. The menu will be positioned below the button. The options are displayed in the order they are defined in the `options` array. The options are divided using the `Divider` component using the `light` and `middle` variant.
+
 ## Modal
 
 - `look`: The appearance of the dialog box. One of `'default'` or `'dark'`.
