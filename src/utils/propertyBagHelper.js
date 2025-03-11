@@ -19,6 +19,7 @@ export const customDataType = {
 	routingProviderSelector: "RoutingProviderSelector",
 	multipleCarrierProvidersSelector: "MultipleCarrierProvidersSelector",
 	serviceLevelSelector: "ServiceLevelSelector",
+	percentageDecimal: "PercentageDecimal",
 };
 
 const tieredAttributeTypes = [customDataType.priceTieredRateTable, customDataType.quantityTieredRateTable];
@@ -73,6 +74,7 @@ export const toJsonCargo = (attribute, value) => {
 				case customDataType.money:
 					return createJsonCargo(jsonCargoType.double, Number(formatNumber(value, 2)));
 				case customDataType.moneyDecimal:
+				case customDataType.percentageDecimal:
 					return createJsonCargo(jsonCargoType.decimal, Number(formatNumber(value, 2)));
 				case customDataType.priceTieredRateTable:
 				case customDataType.quantityTieredRateTable:
