@@ -8,6 +8,7 @@ import Icon from "../DataDisplay/Icon";
 import DropDownMenu from "./DropDownMenu";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
+import Menu from "@material-ui/core/Menu";
 
 describe("DropDownMenu", () => {
 	let store, menuItems, container;
@@ -91,5 +92,28 @@ describe("DropDownMenu", () => {
 
 		expect(menuItems[0].action, "to have calls satisfying", [{ args: [payload, "aContext"] }]);
 		expect(menuItems[1].action, "to have calls satisfying", [{ args: [payload, "myContext"] }]);
+	});
+
+	it("should handle onClick event on the menu", () => {
+		const payload = "payload";
+
+		const component = (
+			<Provider store={store}>
+				<DropDownMenu payload={payload} menuItems={menuItems} />
+			</Provider>
+		);
+
+		const mountedComponent = mount(component);
+
+		const event = {
+			preventDefault: sinon.spy().named("preventDefault"),
+			stopPropagation: sinon.spy().named("stopPropagation"),
+		};
+
+		const dropDownMenu = mountedComponent.find(Menu).at(0);
+		dropDownMenu.invoke("onClick")(event);
+
+		expect(event.preventDefault, "was called");
+		expect(event.stopPropagation, "was called");
 	});
 });

@@ -47,6 +47,13 @@ const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new Dr
 		setAnchorEl(null);
 	};
 
+	// Even though we do nothing, we need to avoid mouse event propagation when the mouse
+	// button is released after hovering out the menu
+	const onMainMenuClick = event => {
+		event.preventDefault();
+		event.stopPropagation();
+	};
+
 	const onMenuItemClick = (action, itemContext) => event => {
 		onClose(event);
 		action(payload, itemContext);
@@ -76,6 +83,7 @@ const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new Dr
 				classes={{ paper: classes.menu }}
 				id="scope-menu"
 				open={isOpened}
+				onClick={onMainMenuClick}
 				onClose={onClose}
 				autoFocus={autoFocus}
 				anchorEl={anchorEl}
