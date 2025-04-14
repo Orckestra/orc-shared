@@ -11,6 +11,7 @@ describe("Switch Props", () => {
 			"readOnly",
 			"className",
 			"id",
+			"error",
 			"metadata",
 		];
 
@@ -27,6 +28,7 @@ describe("Switch Props", () => {
 			"readOnly",
 			"className",
 			"id",
+			"error",
 			"metadata",
 		];
 
