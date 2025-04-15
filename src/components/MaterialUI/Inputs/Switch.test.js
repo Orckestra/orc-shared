@@ -60,6 +60,29 @@ describe("Switch Component", () => {
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
 
+	it("Renders Switch component with an error", () => {
+		const switchProps = new SwitchProps();
+
+		switchProps.set(SwitchProps.propNames.update, update);
+		switchProps.set(SwitchProps.propNames.value, true);
+		switchProps.set(SwitchProps.propNames.error, "an error");
+		switchProps.set(SwitchProps.propNames.onCaption, { id: "captionOn" });
+		switchProps.set(SwitchProps.propNames.offCaption, { id: "captionOff" });
+
+		const component = (
+			<IntlProvider messages={messages} locale="en-US">
+				<Switch switchProps={switchProps} />
+			</IntlProvider>
+		);
+
+		const mountedComponent = mount(component);
+		const expectedSwitch = <SwitchMUI checked={true} />;
+		const expectedError = <div>an error</div>;
+
+		expect(mountedComponent.containsMatchingElement(expectedSwitch), "to be truthy");
+		expect(mountedComponent.containsMatchingElement(expectedError), "to be truthy");
+	});
+
 	it("Checkbox component handles check", () => {
 		const switchProps = new SwitchProps();
 

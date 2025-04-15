@@ -87,6 +87,16 @@ export const useStyles = makeStyles(theme => ({
 			backgroundColor: `${theme.palette.grey.borders} !important`,
 		},
 	},
+	container: {
+		display: "flex",
+		flexDirection: "column",
+	},
+	errorText: {
+		marginTop: theme.spacing(0.5),
+		color: theme.palette.error.main,
+		fontSize: theme.typography.fieldLabelSize,
+		float: "left",
+	},
 }));
 
 const Switch = ({ switchProps }) => {
@@ -100,6 +110,7 @@ const Switch = ({ switchProps }) => {
 	const value = switchProps?.get(SwitchProps.propNames.value) || false;
 	const onCaption = switchProps?.get(SwitchProps.propNames.onCaption);
 	const offCaption = switchProps?.get(SwitchProps.propNames.offCaption);
+	const error = switchProps?.get(SwitchProps.propNames.error);
 	const disabled = switchProps?.get(SwitchProps.propNames.disabled) || false;
 	const readOnly = switchProps?.get(SwitchProps.propNames.readOnly);
 	const className = switchProps?.get(SwitchProps.propNames.className) || "";
@@ -120,7 +131,7 @@ const Switch = ({ switchProps }) => {
 		...className,
 	};
 
-	return (
+	const switchComponent = (
 		<SwitchMui
 			disabled={disabled}
 			classes={switchClasses}
@@ -128,6 +139,16 @@ const Switch = ({ switchProps }) => {
 			onChange={e => (!readOnly ? update(e.target.checked, metadata) : null)}
 			color={"primary"}
 		/>
+	);
+
+	return (
+		(error && (
+			<div className={classes.container}>
+				{switchComponent}
+				<div className={classNames(classes.errorText)}>{error}</div>
+			</div>
+		)) ||
+		switchComponent
 	);
 };
 

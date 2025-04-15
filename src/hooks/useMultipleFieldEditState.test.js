@@ -5,7 +5,7 @@ import Immutable from "immutable";
 import sinon from "sinon";
 import { mount } from "enzyme";
 import * as useDispatchWithModulesDataMock from "./useDispatchWithModulesData";
-import { setEditModelField, setEditModelFieldError } from "./../actions/view";
+import { removeEditModelFieldError, setEditModelField, setEditModelFieldError } from "./../actions/view";
 import { validationErrorTypes } from "./../constants";
 import _ from "lodash";
 
@@ -398,6 +398,54 @@ describe("useMultipleFieldEditState", () => {
 
 			expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
 				args: [setEditModelFieldError, [[id, fieldName], "customRule", entityId, sectionName]],
+			});
+		} finally {
+			useDispatchWithModulesDataStub.restore();
+		}
+	});
+
+	it("Updates edit view value and reset error correctly with custom validation rules when validation was passed", () => {
+		const useDispatchWithModulesDataSpy = sinon.spy();
+		const useDispatchWithModulesDataStub = sinon
+			.stub(useDispatchWithModulesDataMock, "useDispatchWithModulesData")
+			.returns(useDispatchWithModulesDataSpy);
+
+		try {
+			// TODOJOC
+			const mountedComponent = mountComponent();
+
+			const fieldComponent = mountedComponent.find(`#id1-prop1-update`);
+
+			const event = {
+				target: {
+					value: "anotherValue",
+				},
+			};
+
+			fieldComponent.invoke("onClick")(event);
+
+			const resetEvent = {
+				target: {
+					value: "custom",
+				},
+			};
+
+			fieldComponent.invoke("onClick")(resetEvent);
+
+			const id = "id1";
+			const fieldName = "prop1";
+			const initialFieldValue = fieldInitialValues[id][fieldName];
+
+			expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+				args: [setEditModelField, [[id, fieldName], "anotherValue", initialFieldValue, entityId, sectionName]],
+			});
+
+			expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+				args: [setEditModelFieldError, [[id, fieldName], "customRule", entityId, sectionName]],
+			});
+
+			expect(useDispatchWithModulesDataSpy, "to have a call satisfying", {
+				args: [removeEditModelFieldError, [[id, fieldName], entityId, sectionName]],
 			});
 		} finally {
 			useDispatchWithModulesDataStub.restore();

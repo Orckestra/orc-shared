@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { validationRules } from "../utils/modelValidationHelper";
 import { getModifiedModels } from "../selectors/view";
-import { setEditModelField, setEditModelFieldError } from "../actions/view";
+import { setEditModelField, setEditModelFieldError, removeEditModelFieldError } from "../actions/view";
 import { useDispatchWithModulesData } from "./../hooks/useDispatchWithModulesData";
 
 /* This hook is used when a component has a dynamic number of fields that can be edited (e.g.: Orders' Custom Configuration Parameters).
@@ -25,7 +25,7 @@ const useMultipleFieldEditState = (entityId, sectionName, initialValues, extende
 	const mergedValidationRules = { ...validationRules, ...extendedValidationRules };
 	const modifiedStates = useSelector(getModifiedModels(entityId))[sectionName] || {};
 
-	const useDynamicFieldState = (id, fieldName, errorTypes = []) => {
+	const useDynamicFieldState = (id, fieldName, errorTypes = [], fieldDependencies = {}) => {
 		const keys = [id, fieldName];
 
 		const initialValue = initialValues[id]?.[fieldName] ?? "";
@@ -42,12 +42,15 @@ const useMultipleFieldEditState = (entityId, sectionName, initialValues, extende
 			dispatch(setEditModelField, [keys, initialValue, initialValue, entityId, sectionName]);
 		};
 
-		const isEditStateValid = value => {
+		const isEditStateValid = (value, dependencies = {}) => {
 			const valueToValidate = value ?? editState.value;
 
 			let hasAnyValidationErrors = false;
 			errorTypes.forEach(errorType => {
-				const isValid = mergedValidationRules[errorType](valueToValidate, id, fieldName);
+				const isValid = mergedValidationRules[errorType](valueToValidate, id, fieldName, {
+					...fieldDependencies,
+					...dependencies,
+				});
 
 				if (isValid === false) {
 					dispatch(setEditModelFieldError, [keys, errorType, entityId, sectionName]);
@@ -56,6 +59,10 @@ const useMultipleFieldEditState = (entityId, sectionName, initialValues, extende
 					return;
 				}
 			});
+
+			if (!hasAnyValidationErrors) {
+				dispatch(removeEditModelFieldError, [keys, entityId, sectionName]);
+			}
 
 			return !hasAnyValidationErrors;
 		};
