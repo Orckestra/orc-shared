@@ -31,6 +31,7 @@ import {
 	lookupByNameSelector,
 	mappedLookupsListSelector,
 	lookupExistAndIsActiveSelector,
+	namedLookupsValuesSelector,
 } from "./metadata";
 
 const lookups = {
@@ -407,6 +408,109 @@ describe("namedLookupValuesSelector", () => {
 			"Annulla per motivo 1",
 		);
 	});
+});
+
+describe("namedLookupsValuesSelector", () => {
+	let state;
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			locale: { locale: "it-IT" },
+			metadata: {
+				lookups: {
+					order: {
+						index: {
+							CanceledStatusReasons: {
+								lookupName: "CanceledStatusReasons",
+								values: {
+									CanceledReason1: {
+										id: "e16d07f847284775b77cfb985724cf58",
+										value: "CanceledReason1",
+										lookupId: "CanceledStatusReasons",
+										sortOrder: 0,
+										isActive: true,
+										isSystem: true,
+										displayName: {
+											"en-CA": "Cancel for reason 1",
+											"en-US": "Cancel for reason 1",
+											"fr-CA": "Annulé pour raison 1",
+											"it-IT": "Annulla per motivo 1",
+										},
+									},
+									CanceledReason2: {
+										id: "6bbfe77703c745d68b8eaceb9cd484b1",
+										value: "CanceledReason2",
+										lookupId: "CanceledStatusReasons",
+										sortOrder: 0,
+										isActive: true,
+										isSystem: true,
+										displayName: {
+											"en-CA": "Cancel for reason 2",
+											"en-US": "Cancel for reason 2",
+											"fr-CA": "Annulé pour raison 2",
+											"it-IT": "Annulla per motivo 2",
+										},
+									},
+								},
+								isActive: true,
+								isSystem: true,
+							},
+							CartStatus: {
+								lookupName: "CartStatus",
+								values: {},
+								isActive: true,
+								isSystem: true,
+							},
+						},
+						list: [],
+					},
+				},
+			},
+		});
+	});
+
+	it("gets the value list for multiple named lookups", () =>
+		expect(
+			namedLookupsValuesSelector,
+			"when called with",
+			["order", ["CanceledStatusReasons", "CartStatus"]],
+			"when called with",
+			[state],
+			"to satisfy",
+			Immutable.fromJS({
+				CanceledStatusReasons: {
+					CanceledReason1: {
+						id: "e16d07f847284775b77cfb985724cf58",
+						value: "CanceledReason1",
+						lookupId: "CanceledStatusReasons",
+						sortOrder: 0,
+						isActive: true,
+						isSystem: true,
+						displayName: "Annulla per motivo 1",
+					},
+					CanceledReason2: {
+						id: "6bbfe77703c745d68b8eaceb9cd484b1",
+						value: "CanceledReason2",
+						lookupId: "CanceledStatusReasons",
+						sortOrder: 0,
+						isActive: true,
+						isSystem: true,
+						displayName: "Annulla per motivo 2",
+					},
+				},
+				CartStatus: {},
+			}),
+		));
+
+	it("will get an empty Map if lookup does not exist", () =>
+		expect(
+			namedLookupsValuesSelector,
+			"when called with",
+			["order", ["NotALookup"]],
+			"when called with",
+			[state],
+			"to equal",
+			Immutable.fromJS({}),
+		));
 });
 
 describe("selectCurrentLookupDetails", () => {
