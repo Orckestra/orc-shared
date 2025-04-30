@@ -53,6 +53,23 @@ export const namedLookupValuesSelector = memoize((moduleName, lookupName) =>
 	),
 );
 
+export const namedLookupsValuesSelector = memoize((moduleName, lookupNames) =>
+	createSelector(lookupSelector(moduleName), currentLocaleOrDefault, (lookups, locale) => {
+		const lookupsValues = {};
+
+		each(lookupNames, name => {
+			const lookup = lookups.get(name);
+			if (!lookup) return;
+
+			lookupsValues[name] = lookup
+				.get("values", Immutable.Map())
+				.map(lookupValue => setTranslationWithFallbackField(locale, lookupValue, "name", "displayName"));
+		});
+
+		return Immutable.fromJS(lookupsValues);
+	}),
+);
+
 export const selectCurrentLookupDetails = memoize((moduleName, lookupName) =>
 	namedLookupSelector(moduleName, lookupName),
 );
@@ -340,7 +357,7 @@ export const variantPropertyKeyValuesSelector = memoize(({ definitionName }, pro
 							? {
 									...acc,
 									[rec]: resolveProductPropertyValue(propertyMap[camelCase(rec)], propertyBag[rec], locale, lookups),
-							  }
+								}
 							: acc,
 					{},
 				);
