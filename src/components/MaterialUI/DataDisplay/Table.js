@@ -310,6 +310,8 @@ const FullTable = React.forwardRef((props, ref) => {
 		) {
 			props.scrollLoader(props.latestPage + 1);
 		}
+
+		sessionStorage.setItem("table-scroll", evt.target.scrollTop);
 	};
 
 	return (
@@ -392,6 +394,13 @@ const Table = ({
 		selectedRows,
 		selectedRowsChanged,
 	);
+
+	useEffect(() => {
+		const scrollPosition = sessionStorage.getItem("table-scroll");
+		if (refScrolled?.current) {
+			refScrolled.current.scrollTop = scrollPosition;
+		}
+	}, []);
 
 	const classes = useStyles({
 		withoutTopBorder,
