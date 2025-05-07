@@ -49,6 +49,12 @@ describe("toJsonCargo function", () => {
 		["aTextValue", attributeDataType.text, null, "aTextValue"],
 		["aPassword", attributeDataType.customType, customDataType.password, "aPassword"],
 		[
+			"aCarrierReferenceFieldSelector",
+			attributeDataType.customType,
+			customDataType.carrierReferenceFieldSelector,
+			"aCarrierReferenceFieldSelector",
+		],
+		[
 			"aCarrierProviderSelector",
 			attributeDataType.customType,
 			customDataType.carrierProviderSelector,
