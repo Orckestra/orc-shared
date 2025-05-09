@@ -10,6 +10,7 @@ import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
 import ResizeDetector from "react-resize-detector";
 import { isEqual } from "lodash";
+import useViewState from "../../../hooks/useViewState";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -303,6 +304,24 @@ const buildTableRows = (
 };
 
 const FullTable = React.forwardRef((props, ref) => {
+	const [scrollbarViewState, updateScrollbarViewState] = useViewState("inventoryScrollBar");
+	const [scrollbar, setScrollbarPosition] = useState(scrollbarViewState.scrollBarPosition);
+
+	useEffect(
+		() => {
+			const handler = setTimeout(() => {
+				if (props.tableName) {
+					updateScrollbarViewState("scrollBarPosition", scrollbar);
+				}
+			}, 500);
+			return () => {
+				clearTimeout(handler);
+			};
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[scrollbar],
+	);
+
 	const scrollEvent = evt => {
 		if (
 			evt.target.scrollHeight - (evt.target.scrollTop + evt.target.offsetHeight) < 100 &&
@@ -311,8 +330,15 @@ const FullTable = React.forwardRef((props, ref) => {
 			props.scrollLoader(props.latestPage + 1);
 		}
 
-		sessionStorage.setItem("table-scroll", evt.target.scrollTop);
+		setScrollbarPosition(evt.target.scrollTop);
 	};
+
+	useEffect(() => {
+		if (scrollbarViewState.scrollBarPosition > 0) {
+			ref.current.scrollTop = scrollbarViewState.scrollBarPosition;
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<div
@@ -372,6 +398,7 @@ const Table = ({
 	const selectedRows = tableProps?.get(TableProps.propNames.selectedRows) || null;
 	const selectedRowsChanged = tableProps?.get(TableProps.propNames.selectedRowsChanged) || null;
 	const constrained = tableProps?.get(TableProps.propNames.constrained) || false;
+	const tableName = tableProps?.get(TableProps.propNames.tableName) || null;
 
 	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
 	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
@@ -476,6 +503,7 @@ const Table = ({
 				deepPropsComparation={deepPropsComparation}
 				isEditingMode={isEditingMode}
 				context={context}
+				tableName={tableName}
 			/>
 		</TableContainer>
 	);
