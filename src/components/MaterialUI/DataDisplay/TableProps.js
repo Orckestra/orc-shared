@@ -12,6 +12,8 @@ class TableProps extends ComponentProps {
 		selectedRows: "selectedRows",
 		selectedRowsChanged: "selectedRowsChanged",
 		constrained: "constrained",
+		tableName: "tableName",
+		saveScrollbarPosition: "saveScrollbarPosition",
 	};
 
 	static ruleNames = {
@@ -37,6 +39,8 @@ class TableProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.selectedRows, null);
 		this.componentProps.set(this.constructor.propNames.selectedRowsChanged, null);
 		this.componentProps.set(this.constructor.propNames.constrained, false);
+		this.componentProps.set(this.constructor.propNames.tableName, null);
+		this.componentProps.set(this.constructor.propNames.saveScrollbarPosition, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.tableHeader, null);
 		this.componentClasses.set(this.constructor.ruleNames.tableRow, null);

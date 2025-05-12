@@ -304,13 +304,64 @@ const buildTableRows = (
 };
 
 const FullTable = React.forwardRef((props, ref) => {
-	const [scrollbarViewState, updateScrollbarViewState] = useViewState("inventoryScrollBar");
+	return props.saveScrollbarPosition ? (
+		<FullTableWithSavedScrollbar {...props} ref={ref} />
+	) : (
+		<DefaultFullTable {...props} ref={ref} />
+	);
+});
+
+const DefaultFullTable = React.forwardRef((props, ref) => {
+	const defaultScrollEvent = evt => {
+		if (
+			evt.target.scrollHeight - (evt.target.scrollTop + evt.target.offsetHeight) < 100 &&
+			props.dataRows.length === props.latestPage * props.pageLength
+		) {
+			props.scrollLoader(props.latestPage + 1);
+		}
+	};
+
+	return (
+		<div
+			key="actualTable"
+			className={classNames(props.classes.tableContainer, props.customClasses.tableContainer)}
+			ref={ref}
+			onScroll={props.scrollEvent ?? defaultScrollEvent}
+		>
+			<ResizeDetector onResize={props.onResize} />
+			<TableMui
+				className={classNames(
+					props.classes.table,
+					props.customClasses.table,
+					props.constrained ? props.classes.tableConstrained : "",
+				)}
+			>
+				<TableHead className={classNames(props.classes.tableHeader, props.customClasses.tableHeader)}>
+					<TableRow>{props.tableHeaders}</TableRow>
+				</TableHead>
+				<MemoTableBody
+					className={classNames(props.classes.tableBody, props.customClasses.tableBody)}
+					dataRows={props.dataRows}
+					tableRows={props.tableRows}
+					selectedNumber={props.selectedNumber}
+					deepPropsComparation={props.deepPropsComparation}
+					isEditingMode={props.isEditingMode}
+					context={props.context}
+				/>
+			</TableMui>
+			{props.tableRows.length > 0 ? null : <div className={props.classes.placeholder}>{props.placeholder}</div>}
+		</div>
+	);
+});
+
+const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
+	const [scrollbarViewState, updateScrollbarViewState] = useViewState(props.tableName + "ScrollbarPosition");
 	const [scrollbar, setScrollbarPosition] = useState(scrollbarViewState.scrollBarPosition);
 
 	useEffect(
 		() => {
 			const handler = setTimeout(() => {
-				if (props.tableName) {
+				if (props.saveScrollbarPosition) {
 					updateScrollbarViewState("scrollBarPosition", scrollbar);
 				}
 			}, 500);
@@ -340,37 +391,7 @@ const FullTable = React.forwardRef((props, ref) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return (
-		<div
-			key="actualTable"
-			className={classNames(props.classes.tableContainer, props.customClasses.tableContainer)}
-			ref={ref}
-			onScroll={scrollEvent}
-		>
-			<ResizeDetector onResize={props.onResize} />
-			<TableMui
-				className={classNames(
-					props.classes.table,
-					props.customClasses.table,
-					props.constrained ? props.classes.tableConstrained : "",
-				)}
-			>
-				<TableHead className={classNames(props.classes.tableHeader, props.customClasses.tableHeader)}>
-					<TableRow>{props.tableHeaders}</TableRow>
-				</TableHead>
-				<MemoTableBody
-					className={classNames(props.classes.tableBody, props.customClasses.tableBody)}
-					dataRows={props.dataRows}
-					tableRows={props.tableRows}
-					selectedNumber={props.selectedNumber}
-					deepPropsComparation={props.deepPropsComparation}
-					isEditingMode={props.isEditingMode}
-					context={props.context}
-				/>
-			</TableMui>
-			{props.tableRows.length > 0 ? null : <div className={props.classes.placeholder}>{props.placeholder}</div>}
-		</div>
-	);
+	return <DefaultFullTable {...props} ref={ref} scrollEvent={scrollEvent} />;
 });
 
 const Table = ({
@@ -399,6 +420,7 @@ const Table = ({
 	const selectedRowsChanged = tableProps?.get(TableProps.propNames.selectedRowsChanged) || null;
 	const constrained = tableProps?.get(TableProps.propNames.constrained) || false;
 	const tableName = tableProps?.get(TableProps.propNames.tableName) || null;
+	const saveScrollbarPosition = tableProps?.get(TableProps.propNames.saveScrollbarPosition) || false;
 
 	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
 	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
@@ -411,6 +433,10 @@ const Table = ({
 	if ((selectedRows && !selectedRowsChanged) || (!selectedRows && selectedRowsChanged))
 		throw new Error("Both 'selectedRows' and 'selectedRowsChanged' need to be defined if one of them is.");
 
+	if (saveScrollbarPosition && !tableName) {
+		throw new Error("prop 'tableName' is required if 'saveScrollbarPosition' is set to true");
+	}
+
 	const refScrolled = useRef();
 
 	const [scrolled, setScrolled] = useState(0);
@@ -421,13 +447,6 @@ const Table = ({
 		selectedRows,
 		selectedRowsChanged,
 	);
-
-	useEffect(() => {
-		const scrollPosition = sessionStorage.getItem("table-scroll");
-		if (refScrolled?.current) {
-			refScrolled.current.scrollTop = scrollPosition;
-		}
-	}, []);
 
 	const classes = useStyles({
 		withoutTopBorder,
@@ -504,6 +523,7 @@ const Table = ({
 				isEditingMode={isEditingMode}
 				context={context}
 				tableName={tableName}
+				saveScrollbarPosition={saveScrollbarPosition}
 			/>
 		</TableContainer>
 	);

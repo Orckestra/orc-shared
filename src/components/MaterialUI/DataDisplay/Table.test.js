@@ -19,6 +19,8 @@ import ResizeDetector from "react-resize-detector";
 import CheckboxMui from "../Inputs/Checkbox";
 import { cloneDeep } from "lodash";
 import TooltippedTypography from "./TooltippedElements/TooltippedTypography";
+import Immutable from "immutable";
+import { TestWrapper } from "../../../utils/testUtils";
 
 const TestComp = ({ classToTest, styleProps }) => {
 	const classes = useStyles({ ...styleProps });
@@ -506,6 +508,22 @@ describe("Table", () => {
 		{ fieldName: "a1", label: headerLabels.column1 },
 		{ fieldName: "a2", label: headerLabels.column2 },
 	];
+
+	let store, state;
+
+	beforeEach(() => {
+		state = Immutable.fromJS({
+			modules: {
+				tree: {},
+			},
+			view: {},
+		});
+		store = {
+			subscribe: () => {},
+			getState: () => state,
+			dispatch: sinon.spy().named("dispatch"),
+		};
+	});
 
 	it("Fails if tableProps has wrong type", () => {
 		ignoreConsoleError(() => {
@@ -1112,5 +1130,66 @@ describe("Table", () => {
 		const style = row1Props.dataRows[0].style;
 
 		expect(style.customClass, "to equal", "specialClass");
+	});
+
+	it("handle scrolling event with save ", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.tableName, "test");
+		tableProps.set(TableProps.propNames.saveScrollbarPosition, true);
+
+		const scrollLoader = sinon.spy().named("scrollLoader");
+
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<Table
+					rows={rows}
+					headers={headers}
+					pageLength={2}
+					latestPage={1}
+					tableProps={tableProps}
+					scrollLoader={scrollLoader}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+
+		const scrollEvent = document.createEvent("MouseEvents");
+		scrollEvent.initEvent("scroll", true, false);
+
+		const table = mountedComponent.find(TableMui);
+
+		table.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 40, offsetHeight: 100 },
+		});
+
+		expect(scrollLoader, "was not called");
+
+		table.simulate("scroll", {
+			target: { scrollHeight: 1000, scrollTop: 850, offsetHeight: 100 },
+		});
+
+		return expect(scrollLoader, "to have calls satisfying", [{ args: [2] }])
+			.then(() => new Promise(r => setTimeout(r, 600)))
+			.then(() =>
+				expect(store.dispatch, "to have calls satisfying", [
+					{
+						args: [
+							{
+								type: "VIEW_STATE_SET_FIELD",
+								payload: {
+									name: "testScrollbarPosition",
+									field: "scrollBarPosition",
+									value: 850,
+								},
+							},
+						],
+					},
+				]),
+			);
 	});
 });

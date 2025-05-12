@@ -30,6 +30,8 @@ describe("TableProps Props", () => {
 			"selectedRows",
 			"selectedRowsChanged",
 			"constrained",
+			"tableName",
+			"saveScrollbarPosition",
 		];
 
 		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];
