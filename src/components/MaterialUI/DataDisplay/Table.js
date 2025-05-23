@@ -327,6 +327,7 @@ const DefaultFullTable = React.forwardRef((props, ref) => {
 			className={classNames(props.classes.tableContainer, props.customClasses.tableContainer)}
 			ref={ref}
 			onScroll={props.scrollEvent ?? defaultScrollEvent}
+			data-qa="scrollable-table-div"
 		>
 			<ResizeDetector onResize={props.onResize} />
 			<TableMui
@@ -355,15 +356,17 @@ const DefaultFullTable = React.forwardRef((props, ref) => {
 });
 
 const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
+	if (props.saveScrollbarPosition && !props.tableName) {
+		throw new Error("prop 'tableName' is required if 'saveScrollbarPosition' is set to true.");
+	}
+
 	const [scrollbarViewState, updateScrollbarViewState] = useViewState(props.tableName + "ScrollbarPosition");
 	const [scrollbar, setScrollbarPosition] = useState(scrollbarViewState.scrollBarPosition);
 
 	useEffect(
 		() => {
 			const handler = setTimeout(() => {
-				if (props.saveScrollbarPosition) {
-					updateScrollbarViewState("scrollBarPosition", scrollbar);
-				}
+				updateScrollbarViewState("scrollBarPosition", scrollbar);
 			}, 500);
 			return () => {
 				clearTimeout(handler);
@@ -432,10 +435,6 @@ const Table = ({
 
 	if ((selectedRows && !selectedRowsChanged) || (!selectedRows && selectedRowsChanged))
 		throw new Error("Both 'selectedRows' and 'selectedRowsChanged' need to be defined if one of them is.");
-
-	if (saveScrollbarPosition && !tableName) {
-		throw new Error("prop 'tableName' is required if 'saveScrollbarPosition' is set to true");
-	}
 
 	const refScrolled = useRef();
 

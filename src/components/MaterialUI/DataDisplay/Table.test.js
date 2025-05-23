@@ -1132,6 +1132,22 @@ describe("Table", () => {
 		expect(style.customClass, "to equal", "specialClass");
 	});
 
+	it("Table throws if saveScrollbar is true but tableName is falsy", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.tableName, null);
+		tableProps.set(TableProps.propNames.saveScrollbarPosition, true);
+
+		ignoreConsoleError(() => {
+			const component = <Table rows={rows} headers={headers} tableProps={tableProps} />;
+			expect(() => mount(component), "to throw a", Error).then(error => {
+				expect(error, "to have message", "prop 'tableName' is required if 'saveScrollbarPosition' is set to true.");
+			});
+		});
+	});
+
 	it("handle scrolling event with save ", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
 
@@ -1191,5 +1207,41 @@ describe("Table", () => {
 					},
 				]),
 			);
+	});
+
+	it("should initialize scrollbar to saved state", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		state = state.setIn(
+			["view", "testScrollbarPosition"],
+			Immutable.fromJS({
+				scrollBarPosition: 800,
+			}),
+		);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.tableName, "test");
+		tableProps.set(TableProps.propNames.saveScrollbarPosition, true);
+
+		const scrollLoader = sinon.spy().named("scrollLoader");
+
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<Table
+					rows={rows}
+					headers={headers}
+					pageLength={2}
+					latestPage={1}
+					tableProps={tableProps}
+					scrollLoader={scrollLoader}
+				/>
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+		const scrollableDiv = mountedComponent.find({ "data-qa": "scrollable-table-div" });
+		expect(scrollableDiv?.getElement()?.ref?.current?.scrollTop, "to equal", 800);
 	});
 });
