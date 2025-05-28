@@ -10,6 +10,7 @@ import TableProps, { isTableProps } from "./TableProps";
 import classNames from "classnames";
 import ResizeDetector from "react-resize-detector";
 import { isEqual } from "lodash";
+import useViewState from "../../../hooks/useViewState";
 
 export const useStyles = makeStyles(theme => ({
 	container: {
@@ -303,6 +304,14 @@ const buildTableRows = (
 };
 
 const FullTable = React.forwardRef((props, ref) => {
+	return props.saveScrollbarPosition ? (
+		<FullTableWithSavedScrollbar {...props} ref={ref} />
+	) : (
+		<DefaultFullTable {...props} ref={ref} />
+	);
+});
+
+const DefaultFullTable = React.forwardRef((props, ref) => {
 	const scrollEvent = evt => {
 		if (
 			evt.target.scrollHeight - (evt.target.scrollTop + evt.target.offsetHeight) < 100 &&
@@ -310,6 +319,8 @@ const FullTable = React.forwardRef((props, ref) => {
 		) {
 			props.scrollLoader(props.latestPage + 1);
 		}
+
+		props.saveScrollBarPosition?.(evt);
 	};
 
 	return (
@@ -318,6 +329,7 @@ const FullTable = React.forwardRef((props, ref) => {
 			className={classNames(props.classes.tableContainer, props.customClasses.tableContainer)}
 			ref={ref}
 			onScroll={scrollEvent}
+			data-qa="scrollable-table-div"
 		>
 			<ResizeDetector onResize={props.onResize} />
 			<TableMui
@@ -345,6 +357,41 @@ const FullTable = React.forwardRef((props, ref) => {
 	);
 });
 
+const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
+	if (props.saveScrollbarPosition && !props.tableName) {
+		throw new Error("prop 'tableName' is required if 'saveScrollbarPosition' is set to true.");
+	}
+
+	const [scrollbarViewState, updateScrollbarViewState] = useViewState(props.tableName + "ScrollbarPosition");
+	const [scrollbar, setScrollbarPosition] = useState(scrollbarViewState.scrollBarPosition);
+
+	useEffect(
+		() => {
+			const handler = setTimeout(() => {
+				updateScrollbarViewState("scrollBarPosition", scrollbar);
+			}, 500);
+			return () => {
+				clearTimeout(handler);
+			};
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[scrollbar],
+	);
+
+	const saveScrollBarPosition = evt => {
+		setScrollbarPosition(evt.target.scrollTop);
+	};
+
+	useEffect(() => {
+		if (scrollbarViewState.scrollBarPosition > 0) {
+			ref.current.scrollTop = scrollbarViewState.scrollBarPosition;
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	return <DefaultFullTable {...props} ref={ref} saveScrollBarPosition={saveScrollBarPosition} />;
+});
+
 const Table = ({
 	tableInfo,
 	headers,
@@ -370,6 +417,8 @@ const Table = ({
 	const selectedRows = tableProps?.get(TableProps.propNames.selectedRows) || null;
 	const selectedRowsChanged = tableProps?.get(TableProps.propNames.selectedRowsChanged) || null;
 	const constrained = tableProps?.get(TableProps.propNames.constrained) || false;
+	const tableName = tableProps?.get(TableProps.propNames.tableName) || null;
+	const saveScrollbarPosition = tableProps?.get(TableProps.propNames.saveScrollbarPosition) || false;
 
 	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
 	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
@@ -467,6 +516,8 @@ const Table = ({
 				deepPropsComparation={deepPropsComparation}
 				isEditingMode={isEditingMode}
 				context={context}
+				tableName={tableName}
+				saveScrollbarPosition={saveScrollbarPosition}
 			/>
 		</TableContainer>
 	);
