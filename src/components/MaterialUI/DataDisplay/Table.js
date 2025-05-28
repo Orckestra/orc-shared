@@ -312,13 +312,15 @@ const FullTable = React.forwardRef((props, ref) => {
 });
 
 const DefaultFullTable = React.forwardRef((props, ref) => {
-	const defaultScrollEvent = evt => {
+	const scrollEvent = evt => {
 		if (
 			evt.target.scrollHeight - (evt.target.scrollTop + evt.target.offsetHeight) < 100 &&
 			props.dataRows.length === props.latestPage * props.pageLength
 		) {
 			props.scrollLoader(props.latestPage + 1);
 		}
+
+		props.saveScrollBarPosition?.(evt);
 	};
 
 	return (
@@ -326,7 +328,7 @@ const DefaultFullTable = React.forwardRef((props, ref) => {
 			key="actualTable"
 			className={classNames(props.classes.tableContainer, props.customClasses.tableContainer)}
 			ref={ref}
-			onScroll={props.scrollEvent ?? defaultScrollEvent}
+			onScroll={scrollEvent}
 			data-qa="scrollable-table-div"
 		>
 			<ResizeDetector onResize={props.onResize} />
@@ -376,14 +378,7 @@ const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
 		[scrollbar],
 	);
 
-	const scrollEvent = evt => {
-		if (
-			evt.target.scrollHeight - (evt.target.scrollTop + evt.target.offsetHeight) < 100 &&
-			props.dataRows.length === props.latestPage * props.pageLength
-		) {
-			props.scrollLoader(props.latestPage + 1);
-		}
-
+	const saveScrollBarPosition = evt => {
 		setScrollbarPosition(evt.target.scrollTop);
 	};
 
@@ -394,7 +389,7 @@ const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return <DefaultFullTable {...props} ref={ref} scrollEvent={scrollEvent} />;
+	return <DefaultFullTable {...props} ref={ref} saveScrollBarPosition={saveScrollBarPosition} />;
 });
 
 const Table = ({
