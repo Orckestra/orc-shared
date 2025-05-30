@@ -19,6 +19,7 @@ export const platformRoles = {
 	Editor: "Editor",
 	Reader: "Reader",
 	Recipient: "Recipient",
+	PasswordReset: "PasswordReset",
 };
 
 export const roleGroups = {
