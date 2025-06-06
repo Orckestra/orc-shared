@@ -167,6 +167,7 @@ const Select = ({ options, selectProps, children }) => {
 	const disabled = selectProps?.get(SelectProps.propNames.disabled) || false;
 	const error = selectProps?.get(SelectProps.propNames.error);
 	const native = selectProps?.get(SelectProps.propNames.native);
+	const onClose = selectProps?.get(SelectProps.propNames.onClose);
 	const inputProps = selectProps?.get(SelectProps.propNames.inputProps);
 	const hasError = !!error;
 
@@ -243,6 +244,7 @@ const Select = ({ options, selectProps, children }) => {
 		<SelectMUI
 			value={value}
 			onChange={handleChange}
+			onClose={onClose}
 			disableUnderline={true}
 			IconComponent={SelectIcon}
 			MenuProps={defaultMenuProps}

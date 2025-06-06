@@ -56,10 +56,7 @@ describe("FieldElements", () => {
 										name: "combo",
 										label: "Combined fields",
 										proportions: ["300px", 100],
-										fields: [
-											{ type: "CheckboxInput", name: "item" },
-											{ type: "EmailInput", name: "otheritem" },
-										],
+										fields: [{ type: "CheckboxInput", name: "item" }],
 									},
 									{
 										type: "List",
@@ -111,13 +108,7 @@ describe("FieldElements", () => {
 					<IntlProvider locale="en">
 						<FormContext.Provider value={{ values }}>
 							<Combination label="Combined fields" proportions={["300px", 100]}>
-								<FieldElements
-									fields={[
-										{ type: "CheckboxInput", name: "item" },
-										{ type: "EmailInput", name: "otheritem" },
-									]}
-									getUpdater={getUpdater}
-								/>
+								<FieldElements fields={[{ type: "CheckboxInput", name: "item" }]} getUpdater={getUpdater} />
 							</Combination>
 						</FormContext.Provider>
 					</IntlProvider>

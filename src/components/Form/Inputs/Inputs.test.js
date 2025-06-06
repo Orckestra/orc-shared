@@ -6,7 +6,6 @@ describe("Input field collection", () => {
 			Button: expect.it("to be a function"),
 			CheckboxInput: expect.it("to be a function"),
 			DateInput: expect.it("to be a function"),
-			EmailInput: expect.it("to be a function"),
 			NumberInput: expect.it("to be a function"),
 			MultiSelector: expect.it("to be a function"),
 			LineLabel: expect.it("to be a function"),

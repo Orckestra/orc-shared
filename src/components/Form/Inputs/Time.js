@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { getThemeProp } from "../../../utils";
 import Icon from "../../Icon";
-import { FormInput, getEventUpdater } from "./Text";
+import { FormInput, inputEventUpdater } from "./Text";
 import { ButtonWrapper, InputButton } from "./FieldButtons";
 
 // TODO: Time dialog on focus, prevent default behavior in Edge, Firefox
@@ -24,7 +24,7 @@ export const TimeButton = styled(InputButton)`
 
 export const TimeInput = ({ update, required, value, ...props }) => (
 	<ButtonWrapper invalid={required && !value}>
-		<FormInput type="time" onChange={getEventUpdater(update)} value={value} {...props} />
+		<FormInput type="time" onChange={inputEventUpdater(update)} value={value} {...props} />
 		<TimeButton>
 			<TimeIcon />
 		</TimeButton>
