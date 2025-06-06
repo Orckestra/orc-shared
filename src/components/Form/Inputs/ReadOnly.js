@@ -1,34 +1,40 @@
 import React from "react";
-import styled from "styled-components";
-import Text from "../../Text";
+import { makeStyles } from "@material-ui/core/styles";
+import { FormattedMessage } from "react-intl";
 
-export const CenterWrapper = styled.div`
-	min-height: 30px;
-	display: flex;
-	align-items: center;
-`;
+const useStyles = makeStyles(() => ({
+	centerWrapper: {
+		minHeight: 30,
+		display: "flex",
+		alignItems: "center",
+	},
+	readOnlyBlock: {
+		margin: 0,
+	},
+	label: {
+		margin: 0,
+		fontSize: 16,
+	},
+}));
 
-export const ReadOnlyBlock = styled.p`
-	margin: 0;
-`;
+export const ReadOnly = ({ value }) => {
+	const classes = useStyles();
 
-export const ReadOnly = ({ value }) => (
-	<CenterWrapper>
-		<ReadOnlyBlock>
-			<Text message={value} />
-		</ReadOnlyBlock>
-	</CenterWrapper>
-);
+	return (
+		<div className={classes.centerWrapper}>
+			<p className={classes.readOnlyBlock}>{typeof value === "string" ? value : <FormattedMessage {...value} />}</p>
+		</div>
+	);
+};
 
-export const Label = styled.p`
-	margin: 0;
-	font-size: 16px;
-`;
+export const LineLabel = ({ value }) => {
+	const classes = useStyles();
 
-export const LineLabel = ({ value }) => (
-	<CenterWrapper>
-		<Label>
-			<Text message={value} />
-		</Label>
-	</CenterWrapper>
-);
+	return (
+		<div className={classes.centerWrapper}>
+			<p className={classes.label}>{typeof value === "string" ? value : <FormattedMessage {...value} />}</p>
+		</div>
+	);
+};
+
+export default ReadOnly;

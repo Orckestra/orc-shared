@@ -1,20 +1,28 @@
-import styled from "styled-components";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 
-const Form = styled.div`
-	box-sizing: border-box;
-	flex-basis: 0;
-	flex-shrink: 0;
-	flex-grow: ${({ spanWidth = 1 }) => spanWidth};
-	display: flex;
-	flex-direction: column;
-	padding: 0;
-	padding-right: 20px;
-	padding-top: 0;
-	font-size: 12px;
+const useStyles = makeStyles(() => ({
+	form: {
+		boxSizing: "border-box",
+		flexBasis: 0,
+		flexShrink: 0,
+		display: "flex",
+		flexDirection: "column",
+		padding: 0,
+		paddingRight: 20,
+		paddingTop: 0,
+		fontSize: 12,
+		flexGrow: props => props.spanWidth,
+		"&:first-child": {
+			paddingLeft: 20,
+		},
+	},
+}));
 
-	&:first-child {
-		padding-left: 20px;
-	}
-`;
+const Form = ({ spanWidth = 1, children }) => {
+	const classes = useStyles({ spanWidth });
+
+	return <div className={classes.form}>{children}</div>;
+};
 
 export default Form;

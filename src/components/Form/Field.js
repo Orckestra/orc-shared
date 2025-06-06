@@ -1,81 +1,68 @@
 import React from "react";
-import styled, { css } from "styled-components";
-import { ifFlag, getThemeProp } from "../../utils";
-import Text from "../Text";
+import { makeStyles } from "@material-ui/core/styles";
+import { FormattedMessage } from "react-intl";
 
-export const FieldBox = styled.div`
-	flex: 0 1 auto;
-	display: flex;
-	flex-direction: column;
-	margin-top: 20px;
-	position: relative;
-`;
-
-export const Label = styled.label`
-	${ifFlag(
-		"invalid",
-		css`
-			color: ${getThemeProp(["colors", "error"], "#ce4844")};
-		`,
-		css`
-			color: ${getThemeProp(["colors", "textMedium"], "#999999")};
-		`,
-	)}
-	min-height: 17px;
-	${ifFlag(
-		"center",
-		css`
-			text-align: center;
-		`,
-	)};
-	${ifFlag(
-		"labelOnly",
-		"",
-		css`
-			margin-bottom: 10px;
-		`,
-	)};
-	${ifFlag(
-		"required",
-		css`
-			&::after {
-				content: " *";
-				color: #666;
-			}
-		`,
-	)}
-`;
-
-export const RequiredNotice = styled.div`
-	position: absolute;
-	bottom: -1.6em;
-	right: 0;
-	color: ${getThemeProp(["colors", "error"], "#ce4844")};
-`;
+const useStyles = makeStyles(theme => ({
+	fieldBox: {
+		flex: "0 1 auto",
+		display: "flex",
+		flexDirection: "column",
+		marginTop: 20,
+		position: "relative",
+	},
+	label: {
+		minHeight: 17,
+		color: theme.palette.text.hint,
+		marginBottom: "10px",
+	},
+	invalidLabel: {
+		color: theme.palette.error.main,
+	},
+	centerLabel: {
+		textAlign: "center",
+	},
+	labelOnly: {
+		marginBottom: "0px",
+	},
+	requiredLabel: {
+		"&::after": {
+			content: '" *"',
+			color: "#666",
+		},
+	},
+	requiredNotice: {
+		position: "absolute",
+		bottom: "-1.6em",
+		right: 0,
+		color: theme.palette.error.main,
+	},
+}));
 
 const Field = ({ id, label, center, labelOnly, required, invalid, children }) => {
-	const reqFlag = { invalid };
-	if (required) reqFlag.required = true;
+	const classes = useStyles();
+
 	return (
-		<FieldBox>
+		<div className={classes.fieldBox}>
 			{label !== undefined ? (
-				<Label
+				<label
 					htmlFor={labelOnly ? undefined : id}
-					labelOnly={labelOnly}
-					id={id + "_label"}
-					center={center}
-					{...reqFlag}
+					id={`${id}_label`}
+					className={`${classes.label} 
+						${invalid ? classes.invalidLabel : ""}
+						${center ? classes.centerLabel : ""}
+						${labelOnly ? classes.labelOnly : ""}
+						${required ? classes.requiredLabel : ""}`}
 				>
-					<Text message={label} />
-				</Label>
+					{typeof label === "string" ? label : <FormattedMessage {...label} />}
+				</label>
 			) : null}
 			{labelOnly ? null : children}
 			{!labelOnly && required && invalid ? (
-				<RequiredNotice>
-					<Text message={required} />
-				</RequiredNotice>
+				<div className={classes.requiredNotice}>
+					{typeof required === "string" ? required : <FormattedMessage {...required} />}
+				</div>
 			) : null}
-		</FieldBox>
+		</div>
 	);
 };
 

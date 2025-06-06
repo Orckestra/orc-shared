@@ -1,42 +1,47 @@
 import React from "react";
-import styled from "styled-components";
-import { getThemeProp } from "../../utils";
-import Text from "../Text";
+import { makeStyles } from "@material-ui/core/styles";
+import { FormattedMessage } from "react-intl";
 
-export const FieldsetBox = styled.fieldset`
-	position: relative;
-	box-sizing: border-box;
-	display: flex;
-	align-self: stretch;
-	flex-direction: column;
-	flex-wrap: wrap;
-	border: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	border-radius: 5px;
-	margin-top: 45px;
-	margin-left: 0;
-	margin-bottom: 0;
-	padding: 20px;
-	padding-top: 0;
-	background-color: #fafafa;
-`;
-export const Legend = styled.legend`
-	position: absolute;
-	top: -2em;
-	left: -4px;
-	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
-	font-style: italic;
-	font-size: 13px;
-	text-transform: uppercase;
-	color: ${getThemeProp(["colors", "application", "base"], "#333333")};
-`;
+const useStyles = makeStyles(theme => ({
+	fieldsetBox: {
+		position: "relative",
+		boxSizing: "border-box",
+		display: "flex",
+		alignSelf: "stretch",
+		flexDirection: "column",
+		flexWrap: "wrap",
+		border: `1px solid ${theme.palette.grey.borders}`,
+		borderRadius: 5,
+		marginTop: 45,
+		marginLeft: 0,
+		marginBottom: 0,
+		padding: 20,
+		paddingTop: 0,
+		backgroundColor: "#fafafa",
+	},
+	legend: {
+		position: "absolute",
+		top: "-2em",
+		left: -4,
+		fontFamily: theme.typography.button.fontFamily,
+		fontStyle: "italic",
+		fontSize: 13,
+		textTransform: "uppercase",
+		color: theme.palette.primary.main,
+	},
+}));
 
-const Fieldset = ({ label, children }) => (
-	<FieldsetBox>
-		<Legend>
-			<Text message={label} />
-		</Legend>
-		{children}
-	</FieldsetBox>
-);
+const Fieldset = ({ label, children }) => {
+	const classes = useStyles();
+
+	return (
+		<fieldset className={classes.fieldsetBox}>
+			<legend className={classes.legend}>
+				<FormattedMessage {...label} />
+			</legend>
+			{children}
+		</fieldset>
+	);
+};
 
 export default Fieldset;
