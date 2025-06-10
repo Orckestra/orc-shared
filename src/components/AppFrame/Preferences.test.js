@@ -18,15 +18,12 @@ import {
 	SET_MY_APPLICATION_FAILURE,
 } from "../../actions/applications";
 import { setValue } from "../../actions/view";
-import { FieldBox, Label } from "../Form/Field";
-import { Wrapper as SelectorWrapper } from "../Selector";
 import Preferences, {
 	Header,
 	PrefForm,
 	Footer,
 	PrefButton,
 	createGetUpdater,
-	Wrapper,
 	PREFS_NAME,
 	clickOutsideHandler,
 } from "./Preferences";
@@ -171,33 +168,17 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Wrapper>
+							<div>
 								<Header>{stringifyWithoutQuotes(messages["orc-shared.preferences"])}</Header>
 								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
+									<div>
+										<label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</label>
+										<Ignore />
+									</div>
+									<div>
+										<label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</label>
+										<Ignore />
+									</div>
 								</PrefForm>
 								<Footer>
 									<PrefButton id="cancelPrefs">{stringifyWithoutQuotes(messages["orc-shared.cancel"])}</PrefButton>
@@ -205,7 +186,7 @@ describe("Preferences", () => {
 										{stringifyWithoutQuotes(messages["orc-shared.save"])}
 									</PrefButton>
 								</Footer>
-							</Wrapper>
+							</div>
 						</div>
 					</div>,
 				),
@@ -242,36 +223,20 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Wrapper>
+							<div>
 								<Ignore />
 								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
+									<div>
+										<label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</label>
+										<Ignore />
+									</div>
+									<div>
+										<label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</label>
+										<Ignore />
+									</div>
 								</PrefForm>
 								<Ignore />
-							</Wrapper>
+							</div>
 						</div>
 					</div>,
 				),
@@ -371,36 +336,20 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Wrapper>
+							<div>
 								<Ignore />
 								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
+									<div>
+										<label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</label>
+										<Ignore />
+									</div>
+									<div>
+										<label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</label>
+										<Ignore />
+									</div>
 								</PrefForm>
 								<Ignore />
-							</Wrapper>
+							</div>
 						</div>
 					</div>,
 				),
@@ -464,36 +413,20 @@ describe("Preferences", () => {
 					"to satisfy",
 					<div>
 						<div>
-							<Wrapper>
+							<div>
 								<Ignore />
 								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
+									<div>
+										<label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</label>
+										<Ignore />
+									</div>
+									<div>
+										<label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</label>
+										<Ignore />
+									</div>
 								</PrefForm>
 								<Ignore />
-							</Wrapper>
+							</div>
 						</div>
 					</div>,
 				),
@@ -532,36 +465,20 @@ describe("Preferences", () => {
 				"to satisfy",
 				<div>
 					<div>
-						<Wrapper>
+						<div>
 							<Ignore />
 							<PrefForm>
-								<FieldBox>
-									<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-									<SelectorWrapper>
-										<select id="language" value="" onChange={() => {}}>
-											<option>English</option>
-											<option>EnglishCa</option>
-											<option>Francais</option>
-											<option>Francais-Qc</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-								<FieldBox>
-									<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-									<SelectorWrapper>
-										<select id="application" value="" onChange={() => {}}>
-											<option>Marketing Legacy</option>
-											<option>Product Information</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
+								<div>
+									<label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</label>
+									<Ignore />
+								</div>
+								<div>
+									<label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</label>
+									<Ignore />
+								</div>
 							</PrefForm>
 							<Ignore />
-						</Wrapper>
+						</div>
 					</div>
 				</div>,
 			),

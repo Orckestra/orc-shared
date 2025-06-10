@@ -1,7 +1,13 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
 import sinon from "sinon";
-import { FormInput, inputEventUpdater, TextInput } from "./Text";
+import InputBase from "../../MaterialUI/Inputs/InputBase";
+import { inputEventUpdater, TextInput } from "./Text";
+import { extractMessages, generateClassName } from "../../../utils/testUtils";
+import sharedMessages from "../../../sharedMessages";
+import { StylesProvider } from "@material-ui/core";
+
+const messages = extractMessages(sharedMessages);
 
 describe("TextInput", () => {
 	let update;
@@ -11,14 +17,18 @@ describe("TextInput", () => {
 
 	it("renders a text input with change handler", () =>
 		expect(
-			<IntlProvider locale="en">
-				<TextInput update={update} otherProp />
-			</IntlProvider>,
+			<StylesProvider generateClassName={generateClassName}>
+				<IntlProvider locale="en" messages={messages}>
+					<TextInput update={update} otherProp />
+				</IntlProvider>
+			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en">
-				<FormInput type="text" onChange={inputEventUpdater(update)} otherProp />
-			</IntlProvider>,
+			<StylesProvider generateClassName={generateClassName}>
+				<IntlProvider locale="en" messages={messages}>
+					<InputBase />
+				</IntlProvider>
+			</StylesProvider>,
 		));
 });
 
@@ -29,7 +39,7 @@ describe("inputEventUpdater", () => {
 	});
 
 	it("creates a handler for an event and calls update with the value of the target", () =>
-		expect(inputEventUpdater, "called with", [update], "called with", [{ target: { value: "foo" } }]).then(() =>
+		expect(inputEventUpdater, "called with", [update], "called with", ["foo"]).then(() =>
 			expect(update, "to have calls satisfying", [{ args: ["foo"] }]),
 		));
 

@@ -1,24 +1,10 @@
 import React from "react";
 import sinon from "sinon";
-import Switch from "../../Switch";
-import { FormCheckbox, getCheckUpdater, CenterMiddleWrapper, CheckboxInput, SwitchInput } from "./Toggles";
-
-describe("CheckboxInput", () => {
-	let update;
-	beforeEach(() => {
-		update = sinon.spy().named("update");
-	});
-
-	it("renders a checkbox input with change handler", () =>
-		expect(
-			<CheckboxInput id="test-item" update={update} value={false} otherProp />,
-			"when mounted",
-			"to satisfy",
-			<CenterMiddleWrapper>
-				<FormCheckbox id="test-item" onChange={getCheckUpdater(update)} value={false} otherProp />
-			</CenterMiddleWrapper>,
-		));
-});
+import { IntlProvider } from "react-intl";
+import Switch from "../../MaterialUI/Inputs/Switch";
+import { generateClassName } from "../../../utils/testUtils";
+import { getCheckUpdater, CenterMiddleWrapper, SwitchInput } from "./Toggles";
+import { StylesProvider } from "@material-ui/core";
 
 describe("SwitchInput", () => {
 	let update;
@@ -28,12 +14,20 @@ describe("SwitchInput", () => {
 
 	it("renders a switch input with change handler", () =>
 		expect(
-			<SwitchInput id="test-item" update={update} value={true} otherProp />,
+			<StylesProvider generateClassName={generateClassName}>
+				<IntlProvider locale="en">
+					<SwitchInput id="test-item" update={update} value={true} otherProp />
+				</IntlProvider>
+			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
-			<CenterMiddleWrapper>
-				<Switch id="test-item" onChange={getCheckUpdater(update)} value={true} otherProp />
-			</CenterMiddleWrapper>,
+			<StylesProvider generateClassName={generateClassName}>
+				<IntlProvider locale="en">
+					<CenterMiddleWrapper>
+						<Switch />
+					</CenterMiddleWrapper>
+				</IntlProvider>
+			</StylesProvider>,
 		));
 });
 

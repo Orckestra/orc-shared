@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import { CenterWrapper, ReadOnlyBlock, ReadOnly, Label, LineLabel } from "./ReadOnly";
+import { ReadOnly, LineLabel } from "./ReadOnly";
 
 describe("ReadOnly", () => {
 	it("renders a read-only value in a form", () =>
@@ -19,9 +19,9 @@ describe("ReadOnly", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<CenterWrapper>
-				<ReadOnlyBlock>Read Only</ReadOnlyBlock>
-			</CenterWrapper>,
+			<div>
+				<p>Read Only</p>
+			</div>,
 		));
 });
 
@@ -39,8 +39,8 @@ describe("LineLabel", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<CenterWrapper>
-				<Label>A text value</Label>
-			</CenterWrapper>,
+			<div>
+				<p>A text value</p>
+			</div>,
 		));
 });

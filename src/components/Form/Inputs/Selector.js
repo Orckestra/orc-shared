@@ -2,7 +2,7 @@ import React from "react";
 import Select from "../../MaterialUI/Inputs/Select";
 import SelectProps from "../../MaterialUI/Inputs/SelectProps";
 
-const Selector = ({ value, options, update, placeholder, ...props }) => {
+const Selector = ({ value, options, update, ...props }) => {
 	const selectProps = new SelectProps();
 
 	selectProps.set(SelectProps.propNames.value, value);

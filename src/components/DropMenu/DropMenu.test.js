@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { act } from "react-dom/test-utils";
 import sinon from "sinon";
-import DropMenu, { AnchorWrapper, Wrapper } from "./index";
+import DropMenu, { Wrapper } from "./index";
 import Menu, { Drawer, List, Item, ItemIcon } from "./Menu";
 import { getStyledClassSelector } from "../../utils/testUtils";
 
@@ -22,7 +22,7 @@ describe("DropMenu", () => {
 			"when mounted",
 			"to satisfy",
 			<Wrapper className="test-class">
-				<AnchorWrapper id="testAnchor">TestLabel</AnchorWrapper>
+				<div id="testAnchor">TestLabel</div>
 				<Menu id="testDropdown" menuItems={[]} />
 			</Wrapper>,
 		));
@@ -35,9 +35,9 @@ describe("DropMenu", () => {
 			"when mounted",
 			"to satisfy",
 			<Wrapper>
-				<AnchorWrapper id="testAnchor" open>
+				<div id="testAnchor" open>
 					TestLabel
-				</AnchorWrapper>
+				</div>
 				<Menu id="testDropdown" open menuItems={[]} />
 			</Wrapper>,
 		));
@@ -71,9 +71,9 @@ describe("DropMenu", () => {
 			{ type: "click", target: "#testAnchor" },
 			"to satisfy",
 			<Wrapper className="test-class">
-				<AnchorWrapper id="testAnchor" open>
+				<div id="testAnchor" open>
 					TestLabel
-				</AnchorWrapper>
+				</div>
 				<Drawer in>
 					<List id="testDropdown">
 						<Item>
@@ -126,9 +126,9 @@ describe("DropMenu", () => {
 			expect(
 				menu,
 				"to contain",
-				<AnchorWrapper id="testAnchor" open={false}>
+				<div id="testAnchor" open={false}>
 					TestLabel
-				</AnchorWrapper>,
+				</div>,
 			);
 			act(() => {
 				clock.tick(1000); // Wait for the menu to unrender
@@ -150,9 +150,9 @@ describe("DropMenu", () => {
 				"when mounted",
 				"to satisfy",
 				<Wrapper className="test-class">
-					<AnchorWrapper id="testAnchor">
+					<div id="testAnchor">
 						<TestAnchor open={false} />
-					</AnchorWrapper>
+					</div>
 					<Menu id="testDropdown" menuItems={[]} />
 				</Wrapper>,
 			));
@@ -165,9 +165,9 @@ describe("DropMenu", () => {
 				"when mounted",
 				"to satisfy",
 				<Wrapper>
-					<AnchorWrapper id="testAnchor" open>
+					<div id="testAnchor" open>
 						<TestAnchor open />
-					</AnchorWrapper>
+					</div>
 					<Menu id="testDropdown" open menuItems={[]} />
 				</Wrapper>,
 			));
@@ -190,10 +190,10 @@ describe("DropMenu", () => {
 				"with event",
 				{ type: "click", target: "#testAnchor" },
 				"to satisfy",
-				<Wrapper>
-					<AnchorWrapper id="testAnchor" open>
+				<Wrapper className="test-class">
+					<div id="testAnchor" open>
 						<TestAnchor open />
-					</AnchorWrapper>
+					</div>
 					<Drawer in>
 						<List id="testDropdown">
 							<Item>
@@ -280,10 +280,10 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<AnchorWrapper>TestLabel 1</AnchorWrapper>
+						<div>TestLabel 1</div>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<AnchorWrapper>TestLabel 2</AnchorWrapper>
+						<div>TestLabel 2</div>
 					</Wrapper>
 				</div>,
 			));
@@ -308,10 +308,10 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<AnchorWrapper>TestLabel 1</AnchorWrapper>
+						<div>TestLabel 1</div>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<AnchorWrapper>TestLabel 2</AnchorWrapper>
+						<div>TestLabel 2</div>
 					</Wrapper>
 				</div>,
 			);
@@ -323,10 +323,10 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<AnchorWrapper>TestLabel 1</AnchorWrapper>
+						<div>TestLabel 1</div>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<AnchorWrapper open>TestLabel 2</AnchorWrapper>
+						<div open>TestLabel 2</div>
 						<Drawer in>
 							<List>
 								<Item>
@@ -353,7 +353,7 @@ describe("DropMenu", () => {
 				"to satisfy",
 				<div>
 					<Wrapper className="test-class-1">
-						<AnchorWrapper open>TestLabel 1</AnchorWrapper>
+						<div open>TestLabel 1</div>
 						<Drawer in>
 							<List>
 								<Item>
@@ -368,7 +368,7 @@ describe("DropMenu", () => {
 						</Drawer>
 					</Wrapper>
 					<Wrapper className="test-class-2">
-						<AnchorWrapper>TestLabel 2</AnchorWrapper>
+						<div>TestLabel 2</div>
 					</Wrapper>
 				</div>,
 			);

@@ -1,6 +1,9 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { FormButton, PositionedButton } from "./Button";
+import { IntlProvider } from "react-intl";
+import FormButton from "./Button";
+import Button from "@material-ui/core/Button";
+import Icon from "../../MaterialUI/DataDisplay/Icon";
 
 describe("FormButton", () => {
 	let update;
@@ -17,7 +20,9 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<FormButton id="testId" update={update} icon="test-icon" otherProp />
+				<IntlProvider locale="en">
+					<FormButton id="testId" update={update} icon="test-icon" otherProp />
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -28,7 +33,7 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<PositionedButton id="testId" otherProp onClick={update} icon="test-icon" />
+				<Button id="testId" otherProp onClick={update} startIcon={<Icon id="test-icon" />} variant="outlined"></Button>
 			</Provider>,
 		));
 
@@ -41,7 +46,14 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<FormButton id="testId" update={update} buttonText="Push this" otherProp />
+				<IntlProvider locale="en">
+					<FormButton
+						id="testId"
+						update={update}
+						buttonText={{ id: "PushThis", defaultMessage: "Push this" }}
+						otherProp
+					/>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -52,7 +64,9 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<PositionedButton id="testId" otherProp onClick={update} label="Push this" />
+				<Button id="testId" otherProp onClick={update} variant="outlined">
+					Push this
+				</Button>
 			</Provider>,
 		));
 
@@ -65,7 +79,15 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<FormButton id="testId" update={update} icon="test-icon" buttonText="Push this" otherProp />
+				<IntlProvider locale="en">
+					<FormButton
+						id="testId"
+						update={update}
+						icon="test-icon"
+						buttonText={{ id: "PushThis", defaultMessage: "Push this" }}
+						otherProp
+					/>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -76,7 +98,9 @@ describe("FormButton", () => {
 					getState: () => ({}),
 				}}
 			>
-				<PositionedButton id="testId" otherProp onClick={update} icon="test-icon" label="Push this" />
+				<Button id="testId" otherProp onClick={update} startIcon={<Icon id="test-icon" />} variant="outlined">
+					Push this
+				</Button>
 			</Provider>,
 		));
 });
