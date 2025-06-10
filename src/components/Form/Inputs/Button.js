@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import withId from "../../../hocs/withId";
 import Button from "@material-ui/core/Button";
+import withId from "../../../hocs/withId";
 import Icon from "../../MaterialUI/DataDisplay/Icon";
 import { FormattedMessage } from "react-intl";
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const FormButton = ({ id, icon, buttonText, update, "aria-labelledby": aria, primary, ...props }) => {
+const FormButton = ({ id, icon, buttonText, update, primary, ...props }) => {
 	const classes = useStyles();
 
 	return (
@@ -50,10 +50,12 @@ const FormButton = ({ id, icon, buttonText, update, "aria-labelledby": aria, pri
 			className={`${classes.positionedButton} ${primary ? classes.primaryButton : ""}`}
 			onClick={update}
 			variant="outlined"
-			startIcon={<Icon id={icon} className={`${classes.buttonIcon} ${primary ? classes.primaryIcon : ""}`} />}
+			startIcon={
+				icon ? <Icon id={icon} className={`${classes.buttonIcon} ${primary ? classes.primaryIcon : ""}`} /> : null
+			}
 			{...props}
 		>
-			<FormattedMessage {...buttonText} />
+			{buttonText ? <FormattedMessage {...buttonText} /> : null}
 		</Button>
 	);
 };

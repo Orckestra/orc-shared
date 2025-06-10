@@ -28,7 +28,7 @@ const splitFields = (fields, cols) => {
 export const FormContext = createContext();
 FormContext.displayName = "FormContext";
 
-const FormPage = ({ formName, cols = [1, 1, 1], getUpdater, fields, values, wide }) => {
+export const FormPage = ({ formName, cols = [1, 1, 1], getUpdater, fields, values, wide }) => {
 	const classes = useStyles();
 	let colSpans = wide ? [] : cols;
 	const colFields = splitFields(fields, colSpans.length);
