@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { IntlProvider } from "react-intl";
 import Field from "./Field";
 
 describe("Field", () => {
@@ -58,9 +59,11 @@ describe("Field", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Field id="field" label="A test" required="Required" invalid>
-					<div id="child" />
-				</Field>
+				<IntlProvider locale="en">
+					<Field id="field" label="A test" required={{ id: "required", defaultMessage: "Required" }} invalid>
+						<div id="child" />
+					</Field>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",

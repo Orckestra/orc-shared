@@ -3,7 +3,7 @@ import sinon from "sinon";
 import { IntlProvider } from "react-intl";
 import Switch from "../../MaterialUI/Inputs/Switch";
 import { generateClassName } from "../../../utils/testUtils";
-import { SwitchInput } from "./Toggles";
+import { switchEventUpdater, SwitchInput } from "./Toggles";
 import { StylesProvider } from "@material-ui/core";
 
 describe("SwitchInput", () => {
@@ -29,4 +29,18 @@ describe("SwitchInput", () => {
 				</IntlProvider>
 			</StylesProvider>,
 		));
+});
+
+describe("switchEventUpdater", () => {
+	let update;
+	beforeEach(() => {
+		update = sinon.spy().named("update");
+	});
+
+	it("creates a handler for an event and calls update with the value of the target", () =>
+		expect(switchEventUpdater, "called with", [update], "called with", ["foo"]).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["foo"] }]),
+		));
+
+	it("is memoized", () => expect(switchEventUpdater, "called with", [update], "to be", switchEventUpdater(update)));
 });

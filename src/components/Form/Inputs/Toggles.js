@@ -1,7 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { memoize } from "../../../utils";
 import Switch from "../../MaterialUI/Inputs/Switch";
 import SwitchProps from "../../MaterialUI/Inputs/SwitchProps";
+
+export const switchEventUpdater = memoize(update => value => update(value));
 
 const useStyles = makeStyles({
 	centerMiddleWrapper: {
@@ -21,7 +24,7 @@ export const SwitchInput = ({ update, value, ...props }) => {
 	switchProps.set(SwitchProps.propNames.onCaption, props.onCaption);
 	switchProps.set(SwitchProps.propNames.offCaption, props.offCaption);
 	switchProps.set(SwitchProps.propNames.disabled, props.disabled);
-	switchProps.set(SwitchProps.propNames.update, input => update(input));
+	switchProps.set(SwitchProps.propNames.update, switchEventUpdater(update));
 
 	return (
 		<div className={classes.centerMiddleWrapper}>

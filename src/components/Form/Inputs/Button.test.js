@@ -85,6 +85,7 @@ describe("FormButton", () => {
 						update={update}
 						icon="test-icon"
 						buttonText={{ id: "PushThis", defaultMessage: "Push this" }}
+						primary
 						otherProp
 					/>
 				</IntlProvider>
