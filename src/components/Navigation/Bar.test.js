@@ -6,7 +6,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import sinon from "sinon";
-import { getStyledClassSelector } from "../../utils/testUtils";
+import { StylesProvider } from "@material-ui/core";
+import { getStyledClassSelector, generateClassName } from "../../utils/testUtils";
 import Tab, { PageTab } from "./Tab";
 import Bar, { TabBar, ScrollableBar, InnerBar, useTabScroll, StyledMenu, MenuButton } from "./Bar";
 
@@ -180,42 +181,44 @@ describe("Bar", () => {
 				}}
 			>
 				<Router history={history}>
-					<IntlProvider locale="en">
-						<Bar
-							module={{
-								icon: "test",
-								label: "A module",
-								href: "/Foo/modu",
-								mappedFrom: "/Foo/modu",
-							}}
-							pages={[
-								{
-									href: "/Foo/modu/1",
-									mappedFrom: "/Foo/modu/1",
-									label: "Page 1",
-									close: closers[0],
-								},
-								{
-									href: "/Foo/modu/2",
-									mappedFrom: "/Foo/modu/2",
-									label: "Page 2",
-									close: closers[1],
-								},
-								{
-									href: "/Foo/modu/3",
-									mappedFrom: "/Foo/modu/3",
-									label: "Page 3",
-									close: closers[2],
-								},
-								{
-									href: "/Foo/modu/4",
-									mappedFrom: "/Foo/modu/4",
-									label: "Page 4",
-									close: closers[3],
-								},
-							]}
-						/>
-					</IntlProvider>
+					<StylesProvider generateClassName={generateClassName}>
+						<IntlProvider locale="en">
+							<Bar
+								module={{
+									icon: "test",
+									label: "A module",
+									href: "/Foo/modu",
+									mappedFrom: "/Foo/modu",
+								}}
+								pages={[
+									{
+										href: "/Foo/modu/1",
+										mappedFrom: "/Foo/modu/1",
+										label: "Page 1",
+										close: closers[0],
+									},
+									{
+										href: "/Foo/modu/2",
+										mappedFrom: "/Foo/modu/2",
+										label: "Page 2",
+										close: closers[1],
+									},
+									{
+										href: "/Foo/modu/3",
+										mappedFrom: "/Foo/modu/3",
+										label: "Page 3",
+										close: closers[2],
+									},
+									{
+										href: "/Foo/modu/4",
+										mappedFrom: "/Foo/modu/4",
+										label: "Page 4",
+										close: closers[3],
+									},
+								]}
+							/>
+						</IntlProvider>
+					</StylesProvider>
 				</Router>
 			</Provider>,
 			root,
@@ -248,56 +251,58 @@ describe("Bar", () => {
 					}}
 				>
 					<MemoryRouter>
-						<IntlProvider locale="en">
-							<TabBar>
-								<Tab key="/Foo/modu" module icon="test" href="/Foo/modu" mappedFrom="/Foo/modu" label="A module" />
-								<ScrollableBar>
-									<Tab
-										key="/Foo/modu/1"
-										href="/Foo/modu/1"
-										mappedFrom="/Foo/modu/1"
-										label="Page 1"
-										close={closers[0]}
-										hide={false}
-									/>
-									<Tab
-										key="/Foo/modu/2"
-										href="/Foo/modu/2"
-										mappedFrom="/Foo/modu/2"
-										label="Page 2"
-										close={closers[1]}
-										hide={false}
-									/>
-									<Tab
-										key="/Foo/modu/3"
-										href="/Foo/modu/3"
-										mappedFrom="/Foo/modu/3"
-										label="Page 3"
-										close={closers[2]}
-										hide={true}
-									/>
-									<Tab
-										key="/Foo/modu/4"
-										href="/Foo/modu/4"
-										mappedFrom="/Foo/modu/4"
-										label="Page 4"
-										close={closers[3]}
-										hide={true}
-									/>
-								</ScrollableBar>
-								<StyledMenu
-									id="navigationTabs"
-									menuItems={[
-										{ label: "Page 1", id: "/Foo/modu/1" },
-										{ label: "Page 2", id: "/Foo/modu/2" },
-										{ label: "Page 3", id: "/Foo/modu/3" },
-										{ label: "Page 4", id: "/Foo/modu/4" },
-									]}
-								>
-									<MenuButton />
-								</StyledMenu>
-							</TabBar>
-						</IntlProvider>
+						<StylesProvider generateClassName={generateClassName}>
+							<IntlProvider locale="en">
+								<TabBar>
+									<Tab key="/Foo/modu" module icon="test" href="/Foo/modu" mappedFrom="/Foo/modu" label="A module" />
+									<ScrollableBar>
+										<Tab
+											key="/Foo/modu/1"
+											href="/Foo/modu/1"
+											mappedFrom="/Foo/modu/1"
+											label="Page 1"
+											close={closers[0]}
+											hide={false}
+										/>
+										<Tab
+											key="/Foo/modu/2"
+											href="/Foo/modu/2"
+											mappedFrom="/Foo/modu/2"
+											label="Page 2"
+											close={closers[1]}
+											hide={false}
+										/>
+										<Tab
+											key="/Foo/modu/3"
+											href="/Foo/modu/3"
+											mappedFrom="/Foo/modu/3"
+											label="Page 3"
+											close={closers[2]}
+											hide={true}
+										/>
+										<Tab
+											key="/Foo/modu/4"
+											href="/Foo/modu/4"
+											mappedFrom="/Foo/modu/4"
+											label="Page 4"
+											close={closers[3]}
+											hide={true}
+										/>
+									</ScrollableBar>
+									<StyledMenu
+										id="navigationTabs"
+										menuItems={[
+											{ label: "Page 1", id: "/Foo/modu/1" },
+											{ label: "Page 2", id: "/Foo/modu/2" },
+											{ label: "Page 3", id: "/Foo/modu/3" },
+											{ label: "Page 4", id: "/Foo/modu/4" },
+										]}
+									>
+										<MenuButton />
+									</StyledMenu>
+								</TabBar>
+							</IntlProvider>
+						</StylesProvider>
 					</MemoryRouter>
 				</Provider>,
 			);

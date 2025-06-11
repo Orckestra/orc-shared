@@ -1,87 +1,80 @@
 import React from "react";
-import styled from "styled-components";
-import transition from "styled-transition-group";
-import { getThemeProp, ifFlag, safeGet } from "../../utils";
-import Icon from "../Icon";
-import Text from "../Text";
+import { makeStyles } from "@material-ui/core/styles";
+import { FormattedMessage } from "react-intl";
+import Icon from "../MaterialUI/DataDisplay/Icon";
 
-export const Drawer = transition.div`
-	position: absolute;
-	z-index: 19999;
-	margin: 4px 0 0;
-	${ifFlag("alignRight", "right", "left")}: 0;
+const useStyles = makeStyles(theme => ({
+	drawer: {
+		position: "absolute",
+		zIndex: 19999,
+		margin: "4px 0 0",
+		left: props => (props.alignRight ? "auto" : "0"),
+		right: props => (props.alignRight ? "0" : "auto"),
+		transition: "opacity 100ms ease-out",
 
-	transition: opacity ${props => props.timeout}ms ease-out;
+		"&.enter-active": {
+			opacity: 1,
+			visibility: "visible",
+		},
+		"&.exit-active": {
+			opacity: 0,
+			visibility: "hidden",
+		},
+	},
+	list: {
+		color: theme.palette.text.primary,
+		backgroundColor: "white",
+		border: `1px solid ${theme.palette.text.hint}`,
+		borderRadius: "5px",
+		listStyleType: "none",
+		padding: "5px 0",
+		margin: "0",
+		fontFamily: "Open Sans, sans-serif",
+		fontSize: "12px",
+		width: "max-content",
+	},
+	item: {
+		boxSizing: "border-box",
+		height: "30px",
+		minWidth: "178px",
+		padding: "9px 12px",
+		display: "flex",
+		alignItems: "center",
+		cursor: "pointer",
+		"&:hover": {
+			backgroundColor: theme.palette.primary.main,
+			color: "white",
+		},
+	},
+	itemIcon: {
+		paddingRight: "11px",
+		fontSize: "17px",
+	},
+}));
 
-	&:enter {
-		opacity: 0.01;
-	}
-	&:enter-active {
-		opacity: 1;
-	}
-	&:exit {
-		opacity: 1;
-	}
-	&:exit-active {
-		opacity: 0.01;
-	}
-`;
-Drawer.defaultProps = {
-	unmountOnExit: true,
-	timeout: 100,
+const Menu = ({ id, open, menuItems, reset, alignRight }) => {
+	const classes = useStyles({ alignRight });
+
+	return (
+		<div className={`${classes.drawer} ${open ? "enter-active" : "exit-active"}`}>
+			<ul id={id} className={classes.list}>
+				{menuItems.map(item => (
+					<li
+						id={item.id}
+						key={item.id || item.label?.id + (item.icon || "")}
+						className={classes.item}
+						onClick={event => {
+							reset();
+							item.handler(event);
+						}}
+					>
+						{item.icon ? <Icon id={item.icon} className={classes.itemIcon} /> : null}
+						{typeof item.label === "string" ? item.label : <FormattedMessage {...item.label} />}
+					</li>
+				))}
+			</ul>
+		</div>
+	);
 };
-
-export const List = styled.ul`
-	color: ${getThemeProp(["colors", "text"], "#333333")};
-	background-color: white;
-	border: 1px solid ${getThemeProp(["colors", "border"], "#999999")};
-	border-radius: 5px;
-	list-style-type: none;
-	padding: 5px 0;
-	margin: 0;
-	font-family: Open Sans, sans-serif;
-	font-size: 12px;
-	width: max-content;
-`;
-
-export const Item = styled.li`
-	box-sizing: border-box;
-	height: 30px;
-	min-width: 178px;
-	padding: 9px 12px;
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-
-	&:hover {
-		background-color: ${getThemeProp(["colors", "application", "base"], "#ffffff")};
-		color: white;
-	}
-`;
-
-export const ItemIcon = styled(Icon)`
-	padding-right: 11px;
-	font-size: 17px;
-`;
-
-const Menu = ({ id, open, menuItems, reset, alignRight }) => (
-	<Drawer in={open} alignRight={alignRight}>
-		<List id={id}>
-			{menuItems.map(item => (
-				<Item
-					id={item.id}
-					key={item.id || (item.label && safeGet(item.label, "id")) + (item.icon || "")}
-					onClick={event => {
-						reset();
-						item.handler(event);
-					}}
-				>
-					{item.icon ? <ItemIcon id={item.icon} /> : null}
-					<Text message={item.label} />
-				</Item>
-			))}
-		</List>
-	</Drawer>
-);
 
 export default Menu;

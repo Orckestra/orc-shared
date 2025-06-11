@@ -13,7 +13,7 @@ describe("Combination", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Combination label="A combination" proportions={[30, 70]}>
+				<Combination label="A combination" proportions={[30, 70, undefined]}>
 					<div id="child1" />
 					<div id="child2" />
 				</Combination>
