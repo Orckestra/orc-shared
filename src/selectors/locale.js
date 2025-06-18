@@ -28,7 +28,7 @@ export const defaultCulture = createSelector(localeData, locale => locale.get("d
 export const orderedCultureList = createSelector(cultureList, defaultCulture, (cultures, defaultCulture) =>
 	cultures.sort((a, b) => {
 		/*istanbul ignore if */ if (a === defaultCulture) return -1;
-		if (b === defaultCulture) return 1;
+		/*istanbul ignore if */ if (b === defaultCulture) return 1;
 		return 0;
 	}),
 );
