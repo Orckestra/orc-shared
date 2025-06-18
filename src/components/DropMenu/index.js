@@ -1,33 +1,37 @@
 import React from "react";
-import styled from "styled-components";
+import { makeStyles } from "@material-ui/core/styles";
 import Menu from "./Menu";
 import useToggle from "../../hooks/useToggle";
 import withClickOutside from "../../hocs/withClickOutside";
 
-export const Wrapper = withClickOutside(styled.div`
-	position: relative;
-`);
+const useStyles = makeStyles(() => ({
+	wrapper: {
+		position: "relative",
+	},
+}));
 
-export const AnchorWrapper = styled.div``;
+export const Wrapper = withClickOutside(
+	React.forwardRef(({ children, className }, ref) => {
+		const classes = useStyles();
 
-export const Background = styled.div`
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	z-index: 19998;
-`;
+		return (
+			<div ref={ref} className={`${classes.wrapper} ${className ? className : ""}`}>
+				{children}
+			</div>
+		);
+	}),
+);
 
 const DropMenu = ({ id, initOpen, menuItems, alignRight, className = "", children }) => {
 	const [open, toggle, reset] = useToggle(initOpen);
+
 	return (
 		<Wrapper className={className} onClickOutside={reset}>
-			<AnchorWrapper id={id + "Anchor"} onClick={toggle} open={open}>
+			<div id={id + "Anchor"} onClick={toggle}>
 				{React.Children.map(children, child =>
 					typeof child === "object" ? React.cloneElement(child, { open }) : child,
 				)}
-			</AnchorWrapper>
+			</div>
 			<Menu id={id + "Dropdown"} {...{ open, menuItems, reset }} alignRight={alignRight} />
 		</Wrapper>
 	);

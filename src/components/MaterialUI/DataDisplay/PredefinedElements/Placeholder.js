@@ -8,20 +8,25 @@ import Skeleton from "@material-ui/lab/Skeleton";
 const useStyles = makeStyles(theme => ({
 	placeholder: {
 		margin: `${theme.spacing(10)} auto`,
+		"& > *": {
+			color: theme.palette.grey.icon,
+		},
+	},
+	placeholderError: {
+		"& > *": {
+			color: theme.palette.error.main,
+		},
 	},
 	placeholderImage: {
 		fontSize: theme.spacing(14),
-		color: theme.palette.grey.icon,
 	},
 	placeholderTitle: {
 		marginTop: theme.spacing(1),
 		fontSize: theme.typography.h1Size,
-		color: theme.palette.grey.icon,
 	},
 	placeholderSubtitle: {
 		marginTop: theme.spacing(1),
 		fontSize: theme.typography.h3Size,
-		color: theme.palette.grey.icon,
 	},
 	placeholderRow: {
 		alignSelf: "flex-start",
@@ -58,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Placeholder = ({ icon, title, subtitle, cellList = [] }) => {
+const Placeholder = ({ icon, title, subtitle, cellList = [], error = false }) => {
 	const classes = useStyles();
 	return (
 		<>
@@ -90,7 +95,12 @@ const Placeholder = ({ icon, title, subtitle, cellList = [] }) => {
 					</div>
 				) : null}
 				{(icon || title || subtitle) && (
-					<Grid container direction="column" alignItems="center" className={classes.placeholder}>
+					<Grid
+						container
+						direction="column"
+						alignItems="center"
+						className={`${classes.placeholder} ${error ? classes.placeholderError : ""}`}
+					>
 						{icon ? <Icon className={classes.placeholderImage} id={icon} /> : null}
 						{title ? <Typography className={classes.placeholderTitle}>{title}</Typography> : null}
 						{subtitle ? <Typography className={classes.placeholderSubtitle}>{subtitle}</Typography> : null}

@@ -1,11 +1,14 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
+import { generateClassName } from "../../utils/testUtils";
 import { IntlProvider } from "react-intl";
 import Form from "./FormElement";
 import FieldElements from "./FieldElements";
-import { FieldBox, Label } from "./Field";
-import { FormPage, Wrapper, FormContext } from "./Form";
+import Field from "./Field";
+import { FormPage, FormContext } from "./Form";
+import { StylesProvider } from "@material-ui/core";
+import { TextInput } from "./Inputs/Text";
 
 describe("FormPage", () => {
 	let state, store, getUpdater, fields, manyFields, values;
@@ -36,94 +39,110 @@ describe("FormPage", () => {
 	it("renders a form with a single field", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormPage formName="testForm" fields={fields} getUpdater={getUpdater} values={values} />
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormPage formName="testForm" fields={fields} getUpdater={getUpdater} values={values} />
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormContext.Provider value={{ values, formName: "testForm" }}>
-						<Wrapper>
-							<Form spanWidth={1}>
-								<FieldBox>
-									<Label>A text</Label>
-									<input value="foo" id="text1" onChange={() => {}} data-test-id="testForm_text1" />
-								</FieldBox>
-							</Form>
-						</Wrapper>
-					</FormContext.Provider>
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormContext.Provider value={{ values, formName: "testForm" }}>
+							<div>
+								<Form spanWidth={1}>
+									<Field>
+										<label>A text</label>
+										<TextInput value="foo" />
+									</Field>
+								</Form>
+							</div>
+						</FormContext.Provider>
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 		));
 
 	it("still respects 'wide' flag", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormPage wide fields={fields} getUpdater={getUpdater} values={values} />
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormPage wide fields={fields} getUpdater={getUpdater} values={values} />
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormContext.Provider value={{ values }}>
-						<Wrapper>
-							<Form spanWidth={1}>
-								<FieldElements getUpdater={getUpdater} fields={fields} />
-							</Form>
-						</Wrapper>
-					</FormContext.Provider>
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormContext.Provider value={{ values }}>
+							<div>
+								<Form spanWidth={1}>
+									<FieldElements getUpdater={getUpdater} fields={fields} />
+								</Form>
+							</div>
+						</FormContext.Provider>
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 		));
 
 	it("still respects 'wide' flag with multiple fields", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormPage wide cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormPage wide cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormContext.Provider value={{ values }}>
-						<Wrapper>
-							<Form spanWidth={1}>
-								<FieldElements getUpdater={getUpdater} fields={manyFields} />
-							</Form>
-						</Wrapper>
-					</FormContext.Provider>
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormContext.Provider value={{ values }}>
+							<div>
+								<Form spanWidth={1}>
+									<FieldElements getUpdater={getUpdater} fields={manyFields} />
+								</Form>
+							</div>
+						</FormContext.Provider>
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 		));
 
 	it("renders a form with a multiple fields", () =>
 		expect(
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormPage cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormPage cols={[2, 1]} fields={manyFields} getUpdater={getUpdater} values={values} />
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
 			<Provider store={store}>
-				<IntlProvider locale="en">
-					<FormContext.Provider value={{ values }}>
-						<Wrapper>
-							<Form spanWidth={2}>
-								<FieldElements getUpdater={getUpdater} fields={manyFields.slice(0, 5)} />
-							</Form>
-							<Form spanWidth={1}>
-								<FieldElements getUpdater={getUpdater} fields={manyFields.slice(5, 10)} />
-							</Form>
-						</Wrapper>
-					</FormContext.Provider>
-				</IntlProvider>
+				<StylesProvider generateClassName={generateClassName}>
+					<IntlProvider locale="en">
+						<FormContext.Provider value={{ values }}>
+							<div>
+								<Form spanWidth={2}>
+									<FieldElements getUpdater={getUpdater} fields={manyFields.slice(0, 5)} />
+								</Form>
+								<Form spanWidth={1}>
+									<FieldElements getUpdater={getUpdater} fields={manyFields.slice(5, 10)} />
+								</Form>
+							</div>
+						</FormContext.Provider>
+					</IntlProvider>
+				</StylesProvider>
 			</Provider>,
 		));
 });

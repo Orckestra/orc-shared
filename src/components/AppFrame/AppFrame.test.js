@@ -18,7 +18,6 @@ import {
 import { ScopeBar, Bar as BarWrapper } from "../Scope";
 import AppFrame, { Base, ViewPort } from "./AppFrame";
 import ApplicationSelector from "./ApplicationSelector";
-import { Wrapper as MenuWrapper } from "../DropMenu";
 import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
 import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
 import { BlockWithA } from "./MenuItem";
@@ -265,9 +264,7 @@ describe("AppFrame", () => {
 										Marketing Legacy
 									</AppLabel>
 								</AppBox>
-								<MenuWrapper>
-									<Ignore />
-								</MenuWrapper>
+								<Ignore />
 								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
@@ -321,9 +318,7 @@ describe("AppFrame", () => {
 										Marketing Legacy
 									</AppLabel>
 								</AppBox>
-								<MenuWrapper>
-									<Ignore />
-								</MenuWrapper>
+								<Ignore />
 								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
@@ -377,9 +372,7 @@ describe("AppFrame", () => {
 										<AppLogo />
 									</AppLabel>
 								</AppBox>
-								<MenuWrapper>
-									<Ignore />
-								</MenuWrapper>
+								<Ignore />
 								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
@@ -437,9 +430,7 @@ describe("AppFrame", () => {
 										<AppLogo />
 									</AppLabel>
 								</AppBox>
-								<MenuWrapper>
-									<Ignore />
-								</MenuWrapper>
+								<Ignore />
 								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
@@ -497,9 +488,7 @@ describe("AppFrame", () => {
 										Marketing Legacy
 									</AppLabel>
 								</AppBox>
-								<MenuWrapper>
-									<Ignore />
-								</MenuWrapper>
+								<Ignore />
 								<HelpLink>Help</HelpLink>
 							</Wrapper>
 							<SideBar>
@@ -785,9 +774,7 @@ describe("AppFrame", () => {
 											Marketing Legacy
 										</AppLabel>
 									</AppBox>
-									<MenuWrapper>
-										<Ignore />
-									</MenuWrapper>
+									<Ignore />
 									<HelpLink>Help</HelpLink>
 								</Wrapper>
 								<SideBar>

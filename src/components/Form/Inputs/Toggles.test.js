@@ -1,24 +1,10 @@
 import React from "react";
 import sinon from "sinon";
-import Switch from "../../Switch";
-import { FormCheckbox, getCheckUpdater, CenterMiddleWrapper, CheckboxInput, SwitchInput } from "./Toggles";
-
-describe("CheckboxInput", () => {
-	let update;
-	beforeEach(() => {
-		update = sinon.spy().named("update");
-	});
-
-	it("renders a checkbox input with change handler", () =>
-		expect(
-			<CheckboxInput id="test-item" update={update} value={false} otherProp />,
-			"when mounted",
-			"to satisfy",
-			<CenterMiddleWrapper>
-				<FormCheckbox id="test-item" onChange={getCheckUpdater(update)} value={false} otherProp />
-			</CenterMiddleWrapper>,
-		));
-});
+import { IntlProvider } from "react-intl";
+import Switch from "../../MaterialUI/Inputs/Switch";
+import { generateClassName } from "../../../utils/testUtils";
+import { switchEventUpdater, SwitchInput } from "./Toggles";
+import { StylesProvider } from "@material-ui/core";
 
 describe("SwitchInput", () => {
 	let update;
@@ -28,25 +14,33 @@ describe("SwitchInput", () => {
 
 	it("renders a switch input with change handler", () =>
 		expect(
-			<SwitchInput id="test-item" update={update} value={true} otherProp />,
+			<StylesProvider generateClassName={generateClassName}>
+				<IntlProvider locale="en">
+					<SwitchInput id="test-item" update={update} value={true} otherProp />
+				</IntlProvider>
+			</StylesProvider>,
 			"when mounted",
 			"to satisfy",
-			<CenterMiddleWrapper>
-				<Switch id="test-item" onChange={getCheckUpdater(update)} value={true} otherProp />
-			</CenterMiddleWrapper>,
+			<StylesProvider generateClassName={generateClassName}>
+				<IntlProvider locale="en">
+					<div>
+						<Switch />
+					</div>
+				</IntlProvider>
+			</StylesProvider>,
 		));
 });
 
-describe("getCheckUpdater", () => {
+describe("switchEventUpdater", () => {
 	let update;
 	beforeEach(() => {
 		update = sinon.spy().named("update");
 	});
 
-	it("creates a handler for an event and calls update with the 'checked' attribute of the target", () =>
-		expect(getCheckUpdater, "called with", [update], "called with", [{ target: { checked: true } }]).then(() =>
-			expect(update, "to have calls satisfying", [{ args: [true] }]),
+	it("creates a handler for an event and calls update with the value of the target", () =>
+		expect(switchEventUpdater, "called with", [update], "called with", ["foo"]).then(() =>
+			expect(update, "to have calls satisfying", [{ args: ["foo"] }]),
 		));
 
-	it("is memoized", () => expect(getCheckUpdater, "called with", [update], "to be", getCheckUpdater(update)));
+	it("is memoized", () => expect(switchEventUpdater, "called with", [update], "to be", switchEventUpdater(update)));
 });

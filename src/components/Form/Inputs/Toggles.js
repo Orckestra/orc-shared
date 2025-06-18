@@ -1,33 +1,34 @@
 import React from "react";
-import styled from "styled-components";
+import { makeStyles } from "@material-ui/core/styles";
 import { memoize } from "../../../utils";
-import Checkbox from "../../Checkbox";
-import Switch from "../../Switch";
+import Switch from "../../MaterialUI/Inputs/Switch";
+import SwitchProps from "../../MaterialUI/Inputs/SwitchProps";
 
-export const FormCheckbox = styled(Checkbox)`
-	height: 30px;
-	display: flex;
-	align-self: flex-start;
-	align-items: center;
-`;
+export const switchEventUpdater = memoize(update => value => update(value));
 
-export const getCheckUpdater = memoize(update => e => update(e.target.checked));
+const useStyles = makeStyles({
+	centerMiddleWrapper: {
+		minHeight: 30,
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+});
 
-export const CenterMiddleWrapper = styled.div`
-	min-height: 30px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
+export const SwitchInput = ({ update, value, ...props }) => {
+	const classes = useStyles();
 
-export const CheckboxInput = ({ update, value, ...props }) => (
-	<CenterMiddleWrapper>
-		<FormCheckbox onChange={getCheckUpdater(update)} value={value} {...props} />
-	</CenterMiddleWrapper>
-);
+	const switchProps = new SwitchProps();
 
-export const SwitchInput = ({ update, value, ...props }) => (
-	<CenterMiddleWrapper>
-		<Switch onChange={getCheckUpdater(update)} value={value} {...props} />
-	</CenterMiddleWrapper>
-);
+	switchProps.set(SwitchProps.propNames.value, value);
+	switchProps.set(SwitchProps.propNames.onCaption, props.onCaption);
+	switchProps.set(SwitchProps.propNames.offCaption, props.offCaption);
+	switchProps.set(SwitchProps.propNames.disabled, props.disabled);
+	switchProps.set(SwitchProps.propNames.update, switchEventUpdater(update));
+
+	return (
+		<div className={classes.centerMiddleWrapper}>
+			<Switch switchProps={switchProps} />
+		</div>
+	);
+};

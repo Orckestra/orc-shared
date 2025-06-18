@@ -89,7 +89,7 @@ describe("InputField", () => {
 	it("gives error message if given no type", () =>
 		expect(
 			<SubjectWrapper store={store} values={{}}>
-				<InputField label="A bad field" otherProp />
+				<InputField label={{ id: "BadField", defaultMessage: "A bad field" }} otherProp />
 			</SubjectWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -100,12 +100,7 @@ describe("InputField", () => {
 
 	Object.keys(inputs).forEach(type => {
 		describe("input type " + type, () => {
-			let Input,
-				val,
-				emptyVal,
-				target,
-				options,
-				center = false;
+			let Input, val, emptyVal, target, options;
 			beforeEach(() => {
 				Input = inputs[type];
 				target = "input";
@@ -123,16 +118,12 @@ describe("InputField", () => {
 						val = "thing";
 					}
 					target = "select";
-				} else if (type === "CheckboxInput" || type === "SwitchInput") {
+				} else if (type === "SwitchInput") {
 					val = true;
-					center = true;
-				} else if (type === "TranslationInput") {
-					val = { "en-US": "Words", "fr-CA": "Des mots" };
-					emptyVal = undefined;
 				} else if (type === "DateInput") {
 					val = "2014-05-22";
 					emptyVal = "";
-				} else if (type === "Button" || type === "SmallButton") {
+				} else if (type === "Button") {
 					target = "button";
 				}
 			});
@@ -143,7 +134,7 @@ describe("InputField", () => {
 						<InputField
 							name="fieldName"
 							type={type}
-							label={`A ${type} field`}
+							label={{ id: "BadField", defaultMessage: "A bad field" }}
 							placeholder={{
 								id: "foo.bar",
 								defaultMessage: "Placeholder",
@@ -155,7 +146,7 @@ describe("InputField", () => {
 					"when mounted",
 					"to satisfy",
 					<PatternWrapper store={store}>
-						<Field wasBlurred center={center} id="fieldName" label={`A ${type} field`}>
+						<Field wasBlurred id="fieldName" label={{ id: "BadField", defaultMessage: "A bad field" }}>
 							<Input
 								id="fieldName"
 								data-test-id="field_fieldName"
@@ -174,7 +165,7 @@ describe("InputField", () => {
 						<InputField
 							name="fieldName"
 							type={type}
-							label={`A ${type} field`}
+							label={{ id: "BadField", defaultMessage: "A bad field" }}
 							placeholder={{
 								id: "foo.bar",
 								defaultMessage: "Placeholder",
@@ -186,7 +177,7 @@ describe("InputField", () => {
 					"when mounted",
 					"to satisfy",
 					<PatternWrapper store={store}>
-						<Field center={center} id="fieldName" label={`A ${type} field`}>
+						<Field id="fieldName" label={{ id: "BadField", defaultMessage: "A bad field" }}>
 							<Input
 								id="fieldName"
 								data-test-id="testForm_fieldName"
@@ -199,7 +190,7 @@ describe("InputField", () => {
 					</PatternWrapper>,
 				));
 
-			const cannotRequire = ["CheckboxInput", "SwitchInput", "LineLabel", "ReadOnly"];
+			const cannotRequire = ["SwitchInput", "LineLabel", "ReadOnly", "Selector"];
 			if (!cannotRequire.includes(type)) {
 				it("renders a required field", () =>
 					expect(
@@ -207,12 +198,13 @@ describe("InputField", () => {
 							<InputField
 								name="fieldName"
 								type={type}
-								label={`A ${type} field`}
+								label={{ id: "BadField", defaultMessage: "A bad field" }}
 								placeholder={{
 									id: "foo.bar",
 									defaultMessage: "Placeholder",
 								}}
 								required={`A ${type} field is a required field`}
+								update={() => {}}
 								options={options}
 								otherProp
 							/>
@@ -224,10 +216,9 @@ describe("InputField", () => {
 						<SubjectWrapper store={store} values={{ fieldName: val }}>
 							<Field
 								wasBlurred
-								center={center}
 								id="fieldName"
-								label={`A ${type} field`}
 								required={`A ${type} field is a required field`}
+								label={{ id: "BadField", defaultMessage: "A bad field" }}
 							>
 								<Input id="fieldName" value={val} otherProp placeholder="Placeholder" options={options} required />
 							</Field>
@@ -240,7 +231,7 @@ describe("InputField", () => {
 							<InputField
 								name="fieldName"
 								type={type}
-								label={`A ${type} field`}
+								label={{ id: "BadField", defaultMessage: "A bad field" }}
 								placeholder={{
 									id: "foo.bar",
 									defaultMessage: "Placeholder",
@@ -255,10 +246,9 @@ describe("InputField", () => {
 						<PatternWrapper store={store}>
 							<Field
 								wasBlurred
-								center={center}
 								id="fieldName"
-								label={`A ${type} field`}
 								required={`A ${type} field is a required field`}
+								label={{ id: "BadField", defaultMessage: "A bad field" }}
 								invalid
 							>
 								<Input id="fieldName" value={emptyVal} otherProp placeholder="Placeholder" options={options} required />
@@ -272,7 +262,7 @@ describe("InputField", () => {
 							<InputField
 								name="fieldName"
 								type={type}
-								label={`A ${type} field`}
+								label={{ id: "BadField", defaultMessage: "A bad field" }}
 								placeholder={{
 									id: "foo.bar",
 									defaultMessage: "Placeholder",
@@ -287,10 +277,9 @@ describe("InputField", () => {
 						<PatternWrapper store={store}>
 							<Field
 								wasBlurred
-								center={center}
 								id="fieldName"
-								label={`A ${type} field`}
 								required={`A ${type} field is a required field`}
+								label={{ id: "BadField", defaultMessage: "A bad field" }}
 								invalid
 							>
 								<Input
@@ -310,17 +299,22 @@ describe("InputField", () => {
 			it("modifies the field name if inside a list", () =>
 				expect(
 					<SubjectWrapper store={store} values={{ fieldName: val }} index={12}>
-						<InputField name="fieldName" type={type} label={`A ${type} field`} options={options} otherProp />
+						<InputField
+							name="fieldName"
+							type={type}
+							label={{ id: "BadField", defaultMessage: "A bad field" }}
+							options={options}
+							otherProp
+						/>
 					</SubjectWrapper>,
 					"when mounted",
 					"to satisfy",
 					<PatternWrapper store={store}>
 						<Field
 							wasBlurred
-							center={center}
 							id="fieldName[12]"
 							data-test-id="field_fieldName[12]"
-							label={`A ${type} field`}
+							label={{ id: "BadField", defaultMessage: "A bad field" }}
 						>
 							<Input id="fieldName[12]" value={val} otherProp options={options} />
 						</Field>
