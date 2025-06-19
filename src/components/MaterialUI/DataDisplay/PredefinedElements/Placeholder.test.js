@@ -151,7 +151,9 @@ describe("Placeholder", () => {
 	});
 
 	it("Renders placeholder with all parametres", () => {
-		const component = <Placeholder icon={icon} title={title} subtitle={subtitle} cellList={cellList} error={true} />;
+		const component = (
+			<Placeholder icon={icon} animateIcon title={title} subtitle={subtitle} cellList={cellList} error={true} />
+		);
 
 		const mountedComponent = mount(component);
 		const expected = (

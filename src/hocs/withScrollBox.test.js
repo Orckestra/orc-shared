@@ -22,4 +22,16 @@ describe("withScrollBox", () => {
 				</div>,
 			),
 		));
+
+	it("forwards the ref to the scroll box div", () => {
+		const ref = React.createRef();
+
+		return expect(withScrollBox, "when called with", [TestComp]).then(EnhComp => {
+			const element = <EnhComp ref={ref} />;
+			return expect(() => expect(element, "when mounted", "to be truthy"), "not to throw").then(() => {
+				expect(ref.current, "to be defined");
+				expect(ref.current.nodeType, "to equal", 1);
+			});
+		});
+	});
 });

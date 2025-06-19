@@ -11,15 +11,20 @@ const useStyles = makeStyles({
 	},
 });
 
-const withScrollBox =
-	WrappedComp =>
-	({ onScroll, ...otherProps }) => {
+const withScrollBox = WrappedComp =>
+	React.forwardRef(({ onScroll, ...otherProps }, externalRef) => {
 		const classes = useStyles();
+
+		const mergeRef = (node, measureRef) => {
+			measureRef(node);
+
+			if (externalRef) externalRef.current = node;
+		};
 
 		return (
 			<Measure bounds>
 				{({ measureRef, contentRect }) => (
-					<div className={classes.scrollbox} onScroll={onScroll} ref={measureRef}>
+					<div className={classes.scrollbox} onScroll={onScroll} ref={node => mergeRef(node, measureRef)}>
 						<WrappedComp
 							{...otherProps}
 							height={safeGet(contentRect, "bounds", "height")}
@@ -29,6 +34,6 @@ const withScrollBox =
 				)}
 			</Measure>
 		);
-	};
+	});
 
 export default withScrollBox;
