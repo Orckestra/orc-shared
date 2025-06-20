@@ -60,10 +60,20 @@ const useStyles = makeStyles(theme => ({
 	},
 	root: {
 		flexGrow: 1,
+		display: "flex",
+	},
+	animatePlaceholderImage: {
+		animation: "$rotate 4s linear infinite",
+		margin: "auto",
+	},
+	"@keyframes rotate": {
+		to: {
+			transform: "rotate(1turn)",
+		},
 	},
 }));
 
-const Placeholder = ({ icon, title, subtitle, cellList = [], error = false }) => {
+const Placeholder = ({ icon, title, subtitle, cellList = [], error = false, animateIcon = false }) => {
 	const classes = useStyles();
 	return (
 		<>
@@ -101,7 +111,12 @@ const Placeholder = ({ icon, title, subtitle, cellList = [], error = false }) =>
 						alignItems="center"
 						className={`${classes.placeholder} ${error ? classes.placeholderError : ""}`}
 					>
-						{icon ? <Icon className={classes.placeholderImage} id={icon} /> : null}
+						{icon ? (
+							<Icon
+								className={`${classes.placeholderImage} ${animateIcon ? classes.animatePlaceholderImage : ""}`}
+								id={icon}
+							/>
+						) : null}
 						{title ? <Typography className={classes.placeholderTitle}>{title}</Typography> : null}
 						{subtitle ? <Typography className={classes.placeholderSubtitle}>{subtitle}</Typography> : null}
 					</Grid>
