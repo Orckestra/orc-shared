@@ -6,101 +6,108 @@ export const ListInfoPropertyName = "listInfo";
 const standardInfoKeys = ["scope", "page", "filters", "sorting", "totalCount", "nextPageToLoad", "index", "list"];
 
 class ListReducerHelper {
-	static setNextPageToLoad = (state, nextPageToLoad) => {
-		return state.setIn([ListInfoPropertyName, "nextPageToLoad"], nextPageToLoad);
+	constructor(groupPropertyName) {
+		this.groupPropertyName = groupPropertyName;
+	}
+
+	setNextPageToLoad = (state, nextPageToLoad) => {
+		return state.setIn([this.groupPropertyName, "nextPageToLoad"], nextPageToLoad);
 	};
 
-	static setResults = (state, listInfo, forceReset = false) => {
+	setResults = (state, listInfo, forceReset = false) => {
 		return state.withMutations(s => {
-			const page = s.getIn([ListInfoPropertyName, "nextPageToLoad"]);
+			const page = s.getIn([this.groupPropertyName, "nextPageToLoad"]);
 
 			const entities = Immutable.fromJS(listInfo.indexEntities || {});
 			if (page === 1 || forceReset) {
-				s.setIn([ListInfoPropertyName, "index"], entities);
-				s.setIn([ListInfoPropertyName, "list"], Immutable.fromJS(listInfo.listEntities));
+				s.setIn([this.groupPropertyName, "index"], entities);
+				s.setIn([this.groupPropertyName, "list"], Immutable.fromJS(listInfo.listEntities));
 			} else {
-				s.mergeIn([ListInfoPropertyName, "index"], entities);
+				s.mergeIn([this.groupPropertyName, "index"], entities);
 				s.setIn(
-					[ListInfoPropertyName, "list"],
-					s.getIn([ListInfoPropertyName, "list"]).concat(Immutable.fromJS(listInfo.listEntities)),
+					[this.groupPropertyName, "list"],
+					s.getIn([this.groupPropertyName, "list"]).concat(Immutable.fromJS(listInfo.listEntities)),
 				);
 			}
 
-			s.setIn([ListInfoPropertyName, "totalCount"], listInfo.totalCount);
+			s.setIn([this.groupPropertyName, "totalCount"], listInfo.totalCount);
 		});
 	};
 
-	static setCurrentInfo = (state, { resetList, scope, filters, sorting, ...others }) => {
+	setCurrentInfo = (state, { resetList, scope, filters, sorting, ...others } = {}) => {
 		return state.withMutations(s => {
 			if (resetList) {
-				s.setIn([ListInfoPropertyName, "nextPageToLoad"], 1);
-				s.setIn([ListInfoPropertyName, "page"], null);
-				s.setIn([ListInfoPropertyName, "index"], Immutable.fromJS({}));
-				s.setIn([ListInfoPropertyName, "list"], Immutable.fromJS([]));
-				s.setIn([ListInfoPropertyName, "totalCount"], 0);
+				s.setIn([this.groupPropertyName, "nextPageToLoad"], 1);
+				s.setIn([this.groupPropertyName, "page"], null);
+				s.setIn([this.groupPropertyName, "index"], Immutable.fromJS({}));
+				s.setIn([this.groupPropertyName, "list"], Immutable.fromJS([]));
+				s.setIn([this.groupPropertyName, "totalCount"], 0);
 			} else {
-				const nextPageToLoad = state.getIn([ListInfoPropertyName, "nextPageToLoad"]);
-				s.setIn([ListInfoPropertyName, "nextPageToLoad"], nextPageToLoad);
-				s.setIn([ListInfoPropertyName, "page"], nextPageToLoad);
+				const nextPageToLoad = state.getIn([this.groupPropertyName, "nextPageToLoad"]);
+				s.setIn([this.groupPropertyName, "nextPageToLoad"], nextPageToLoad);
+				s.setIn([this.groupPropertyName, "page"], nextPageToLoad);
 			}
 
-			s.setIn([ListInfoPropertyName, "scope"], scope);
-			s.setIn([ListInfoPropertyName, "filters"], Immutable.fromJS(filters ?? null));
-			s.setIn([ListInfoPropertyName, "sorting"], Immutable.fromJS(sorting ?? null));
+			s.setIn([this.groupPropertyName, "scope"], scope ?? null);
+			s.setIn([this.groupPropertyName, "filters"], Immutable.fromJS(filters ?? null));
+			s.setIn([this.groupPropertyName, "sorting"], Immutable.fromJS(sorting ?? null));
 
 			const otherKeys = Object.keys(others);
 
-			s.get(ListInfoPropertyName)
+			s.get(this.groupPropertyName)
 				.keySeq()
 				.forEach(key => {
 					if (!standardInfoKeys.includes(key) && !otherKeys.includes(key)) {
-						s.removeIn([ListInfoPropertyName, key]);
+						s.removeIn([this.groupPropertyName, key]);
 					}
 				});
 
 			otherKeys.forEach(key => {
-				s.setIn([ListInfoPropertyName, key], isObject(others[key]) ? Immutable.fromJS(others[key]) : others[key]);
+				s.setIn([this.groupPropertyName, key], isObject(others[key]) ? Immutable.fromJS(others[key]) : others[key]);
 			});
 		});
 	};
 
-	static addIndexWithMutations = (mutator, id, value) => {
-		mutator.setIn([ListInfoPropertyName, "index", id], Immutable.fromJS(value));
+	addIndexWithMutations = (mutator, id, value) => {
+		mutator.setIn([this.groupPropertyName, "index", id], Immutable.fromJS(value));
 	};
 
-	static appendIdToListWithMutations = (mutator, id) => {
-		mutator.setIn([ListInfoPropertyName, "list"], mutator.getIn([ListInfoPropertyName, "list"]).push(id));
+	appendIdToListWithMutations = (mutator, id) => {
+		mutator.setIn([this.groupPropertyName, "list"], mutator.getIn([this.groupPropertyName, "list"]).push(id));
 	};
 
-	static updateIndexWithMutations = (mutator, id, value) => {
-		const key = [ListInfoPropertyName, "index", id];
+	updateIndexWithMutations = (mutator, id, value) => {
+		const key = [this.groupPropertyName, "index", id];
 		if (mutator.getIn(key)) {
 			mutator.setIn(key, Immutable.fromJS(value));
 		}
 	};
 
-	static removeFromIndexWithMutations = (mutator, id) => {
-		mutator.removeIn([ListInfoPropertyName, "index", id]);
+	removeFromIndexWithMutations = (mutator, id) => {
+		mutator.removeIn([this.groupPropertyName, "index", id]);
 	};
 
-	static resetListInfo = (state, propertiesToKeep = {}) => {
+	resetListInfo = (state, propertiesToKeep = {}) => {
 		let updatedState = state
-			.setIn([ListInfoPropertyName, "page"], null)
-			.setIn([ListInfoPropertyName, "nextPageToLoad"], 1)
-			.setIn([ListInfoPropertyName, "index"], Immutable.fromJS({}))
-			.setIn([ListInfoPropertyName, "list"], Immutable.fromJS([]))
-			.setIn([ListInfoPropertyName, "totalCount"], 0);
+			.setIn([this.groupPropertyName, "nextPageToLoad"], 1)
+			.setIn([this.groupPropertyName, "index"], Immutable.fromJS({}))
+			.setIn([this.groupPropertyName, "list"], Immutable.fromJS([]))
+			.setIn([this.groupPropertyName, "totalCount"], 0);
 
 		if (!propertiesToKeep.filters) {
-			updatedState = updatedState.setIn([ListInfoPropertyName, "filters"], null);
+			updatedState = updatedState.setIn([this.groupPropertyName, "filters"], null);
 		}
 
 		if (!propertiesToKeep.sorting) {
-			updatedState = updatedState.setIn([ListInfoPropertyName, "sorting"], null);
+			updatedState = updatedState.setIn([this.groupPropertyName, "sorting"], null);
 		}
 
 		if (!propertiesToKeep.scope) {
-			updatedState = updatedState.setIn([ListInfoPropertyName, "scope"], null);
+			updatedState = updatedState.setIn([this.groupPropertyName, "scope"], null);
+		}
+
+		if (!propertiesToKeep.page) {
+			updatedState = updatedState.setIn([this.groupPropertyName, "page"], null);
 		}
 
 		return updatedState;
@@ -108,8 +115,12 @@ class ListReducerHelper {
 }
 
 class ListSelectorHelper {
-	static getCurrentInfo = state => {
-		const listInfo = state.get(ListInfoPropertyName);
+	constructor(groupPropertyName) {
+		this.groupPropertyName = groupPropertyName;
+	}
+
+	getCurrentInfo = state => {
+		const listInfo = state.get(this.groupPropertyName) || Immutable.Map();
 
 		const info = {
 			currentScope: listInfo.get("scope"),
@@ -130,30 +141,39 @@ class ListSelectorHelper {
 		return info;
 	};
 
-	static getIndex = state => {
-		return state.getIn([ListInfoPropertyName, "index"]);
+	getIndex = state => {
+		return state.getIn([this.groupPropertyName, "index"]);
 	};
 
-	static getList = state => {
-		return state.getIn([ListInfoPropertyName, "list"]);
+	getList = state => {
+		return state.getIn([this.groupPropertyName, "list"]);
 	};
 
-	static getNextPageToLoad = state => {
-		return state.getIn([ListInfoPropertyName, "nextPageToLoad"]);
+	getNextPageToLoad = state => {
+		return state.getIn([this.groupPropertyName, "nextPageToLoad"]);
 	};
 }
 
 class ListHelper {
-	static reducer = ListReducerHelper;
-	static selector = ListSelectorHelper;
+	constructor(groupPropertyName = ListInfoPropertyName) {
+		this.groupPropertyName = groupPropertyName;
+		this.reducer = new ListReducerHelper(this.groupPropertyName);
+		this.selector = new ListSelectorHelper(this.groupPropertyName);
+	}
 
-	static createInitialListInfo = (additionalValues = null) => {
-		return ListHelper.createListInfoFrom({
+	static defaultInstance = new ListHelper();
+	static reducer = ListHelper.defaultInstance.reducer;
+	static selector = ListHelper.defaultInstance.selector;
+	static createInitialListInfo = ListHelper.defaultInstance.createInitialListInfo;
+	static createListInfoFrom = ListHelper.defaultInstance.createListInfoFrom;
+
+	createInitialListInfo = (additionalValues = null) => {
+		return this.createListInfoFrom({
 			...additionalValues,
 		});
 	};
 
-	static createListInfoFrom = ({
+	createListInfoFrom = ({
 		sorting,
 		filters,
 		scope,
@@ -165,7 +185,7 @@ class ListHelper {
 		...additionalValues
 	} = {}) => {
 		return {
-			[ListInfoPropertyName]: {
+			[this.groupPropertyName]: {
 				sorting: sorting ?? null,
 				filters: filters ?? null,
 				scope: scope ?? null,

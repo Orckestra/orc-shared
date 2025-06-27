@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from "react";
 import TableMui from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
@@ -392,136 +392,136 @@ const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
 	return <DefaultFullTable {...props} ref={ref} saveScrollBarPosition={saveScrollBarPosition} />;
 });
 
-const Table = ({
-	tableInfo,
-	headers,
-	rows,
-	scrollLoader,
-	latestPage,
-	pageLength,
-	placeholder,
-	tableProps,
-	context,
-}) => {
-	if (isTableProps(tableProps) === false) {
-		throw new TypeError("tableProps property is not of type TableProps");
-	}
+const Table = React.forwardRef(
+	({ tableInfo, headers, rows, scrollLoader, latestPage, pageLength, placeholder, tableProps, context }, ref) => {
+		if (isTableProps(tableProps) === false) {
+			throw new TypeError("tableProps property is not of type TableProps");
+		}
 
-	const customClasses = tableProps?.get(TableProps.propNames.classes) || {};
-	const selectMode = tableProps?.get(TableProps.propNames.selectMode) || false;
-	const stickyHeader = tableProps?.get(TableProps.propNames.stickyHeader) || false;
-	const withoutTopBorder = tableProps?.get(TableProps.propNames.withoutTopBorder) || false;
-	const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
-	const deepPropsComparation = tableProps?.get(TableProps.propNames.deepPropsComparation) || false;
-	const isEditingMode = tableProps?.get(TableProps.propNames.isEditingMode) || false;
-	const selectedRows = tableProps?.get(TableProps.propNames.selectedRows) || null;
-	const selectedRowsChanged = tableProps?.get(TableProps.propNames.selectedRowsChanged) || null;
-	const constrained = tableProps?.get(TableProps.propNames.constrained) || false;
-	const tableName = tableProps?.get(TableProps.propNames.tableName) || null;
-	const saveScrollbarPosition = tableProps?.get(TableProps.propNames.saveScrollbarPosition) || false;
+		const customClasses = tableProps?.get(TableProps.propNames.classes) || {};
+		const selectMode = tableProps?.get(TableProps.propNames.selectMode) || false;
+		const stickyHeader = tableProps?.get(TableProps.propNames.stickyHeader) || false;
+		const withoutTopBorder = tableProps?.get(TableProps.propNames.withoutTopBorder) || false;
+		const onRowClick = tableProps?.get(TableProps.propNames.onRowClick) || null;
+		const deepPropsComparation = tableProps?.get(TableProps.propNames.deepPropsComparation) || false;
+		const isEditingMode = tableProps?.get(TableProps.propNames.isEditingMode) || false;
+		const selectedRows = tableProps?.get(TableProps.propNames.selectedRows) || null;
+		const selectedRowsChanged = tableProps?.get(TableProps.propNames.selectedRowsChanged) || null;
+		const constrained = tableProps?.get(TableProps.propNames.constrained) || false;
+		const tableName = tableProps?.get(TableProps.propNames.tableName) || null;
+		const saveScrollbarPosition = tableProps?.get(TableProps.propNames.saveScrollbarPosition) || false;
 
-	customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
-	customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
-	customClasses["tableCell"] = tableProps?.getStyle(TableProps.ruleNames.tableCell) || null;
-	customClasses["headerCell"] = tableProps?.getStyle(TableProps.ruleNames.headerCell) || null;
-	customClasses["tableContainer"] = tableProps?.getStyle(TableProps.ruleNames.tableContainer) || null;
-	customClasses["container"] = tableProps?.getStyle(TableProps.ruleNames.container) || null;
-	customClasses["table"] = tableProps?.getStyle(TableProps.ruleNames.table) || null;
+		customClasses["tableHeader"] = tableProps?.getStyle(TableProps.ruleNames.tableHeader) || null;
+		customClasses["tableRow"] = tableProps?.getStyle(TableProps.ruleNames.tableRow) || null;
+		customClasses["tableCell"] = tableProps?.getStyle(TableProps.ruleNames.tableCell) || null;
+		customClasses["headerCell"] = tableProps?.getStyle(TableProps.ruleNames.headerCell) || null;
+		customClasses["tableContainer"] = tableProps?.getStyle(TableProps.ruleNames.tableContainer) || null;
+		customClasses["container"] = tableProps?.getStyle(TableProps.ruleNames.container) || null;
+		customClasses["table"] = tableProps?.getStyle(TableProps.ruleNames.table) || null;
 
-	if ((selectedRows && !selectedRowsChanged) || (!selectedRows && selectedRowsChanged))
-		throw new Error("Both 'selectedRows' and 'selectedRowsChanged' need to be defined if one of them is.");
+		if ((selectedRows && !selectedRowsChanged) || (!selectedRows && selectedRowsChanged))
+			throw new Error("Both 'selectedRows' and 'selectedRowsChanged' need to be defined if one of them is.");
 
-	const refScrolled = useRef();
+		const refScrolled = useRef();
 
-	const [scrolled, setScrolled] = useState(0);
-	const [tableSize, setTableSize] = useState({ width: 0, height: 0 });
+		useImperativeHandle(ref, () => ({
+			scrollToTop: () => {
+				if (refScrolled.current.scrollTop > 0) {
+					refScrolled.current.scrollTop = 0;
+				}
+			},
+		}));
 
-	const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(
-		rows,
-		selectedRows,
-		selectedRowsChanged,
-	);
+		const [scrolled, setScrolled] = useState(0);
+		const [tableSize, setTableSize] = useState({ width: 0, height: 0 });
 
-	const classes = useStyles({
-		withoutTopBorder,
-		selectMode,
-		stickyHeader,
-		scrolled,
-		onRowClick,
-	});
+		const [selectedNumber, tableSelectionStatus, selectionMethods] = useTableSelection(
+			rows,
+			selectedRows,
+			selectedRowsChanged,
+		);
 
-	useEffect(() => {
-		const handleResize = () => {
-			if (refScrolled.current.offsetHeight < refScrolled.current.scrollHeight)
-				setScrolled(refScrolled.current.offsetWidth - refScrolled.current.clientWidth);
-			else setScrolled(0);
-		};
+		const classes = useStyles({
+			withoutTopBorder,
+			selectMode,
+			stickyHeader,
+			scrolled,
+			onRowClick,
+		});
 
-		handleResize();
+		useEffect(() => {
+			const handleResize = () => {
+				if (refScrolled.current.offsetHeight < refScrolled.current.scrollHeight)
+					setScrolled(refScrolled.current.offsetWidth - refScrolled.current.clientWidth);
+				else setScrolled(0);
+			};
 
-		window.addEventListener("resize", handleResize);
+			handleResize();
+
+			window.addEventListener("resize", handleResize);
+
+			/* istanbul ignore next */
+			return () => window.removeEventListener("resize", handleResize);
+		}, [refScrolled, tableSize.width, tableSize.height]);
+
+		const tableHeaders = buildTableHeaders(
+			headers,
+			classes,
+			customClasses,
+			selectMode,
+			tableSelectionStatus,
+			selectionMethods,
+		);
+
+		const tableRows = buildTableRows(
+			rows,
+			classes,
+			customClasses,
+			selectMode,
+			onRowClick,
+			selectionMethods,
+			deepPropsComparation,
+			context,
+			isEditingMode,
+		);
+
+		const stickerTableHeader =
+			stickyHeader === true ? (
+				<StickerTableHeader selectMode={selectMode} classes={classes} tableHeaders={tableHeaders} />
+			) : null;
 
 		/* istanbul ignore next */
-		return () => window.removeEventListener("resize", handleResize);
-	}, [refScrolled, tableSize.width, tableSize.height]);
+		const onResize = useCallback((width, height) => setTableSize({ width: width, height: height }), [setTableSize]);
 
-	const tableHeaders = buildTableHeaders(
-		headers,
-		classes,
-		customClasses,
-		selectMode,
-		tableSelectionStatus,
-		selectionMethods,
-	);
-
-	const tableRows = buildTableRows(
-		rows,
-		classes,
-		customClasses,
-		selectMode,
-		onRowClick,
-		selectionMethods,
-		deepPropsComparation,
-		context,
-		isEditingMode,
-	);
-
-	const stickerTableHeader =
-		stickyHeader === true ? (
-			<StickerTableHeader selectMode={selectMode} classes={classes} tableHeaders={tableHeaders} />
-		) : null;
-
-	/* istanbul ignore next */
-	const onResize = useCallback((width, height) => setTableSize({ width: width, height: height }), [setTableSize]);
-
-	return (
-		<TableContainer className={classNames(classes.container, customClasses.container)}>
-			{tableInfo}
-			{stickerTableHeader}
-			<FullTable
-				ref={refScrolled}
-				classes={classes}
-				customClasses={customClasses}
-				constrained={constrained}
-				onResize={onResize}
-				selectedNumber={selectedNumber}
-				scrollLoader={scrollLoader}
-				tableHeaders={tableHeaders}
-				dataRows={rows}
-				tableRows={tableRows}
-				stickyHeader={stickyHeader}
-				latestPage={latestPage}
-				pageLength={pageLength}
-				placeholder={placeholder}
-				deepPropsComparation={deepPropsComparation}
-				isEditingMode={isEditingMode}
-				context={context}
-				tableName={tableName}
-				saveScrollbarPosition={saveScrollbarPosition}
-			/>
-		</TableContainer>
-	);
-};
+		return (
+			<TableContainer className={classNames(classes.container, customClasses.container)}>
+				{tableInfo}
+				{stickerTableHeader}
+				<FullTable
+					ref={refScrolled}
+					classes={classes}
+					customClasses={customClasses}
+					constrained={constrained}
+					onResize={onResize}
+					selectedNumber={selectedNumber}
+					scrollLoader={scrollLoader}
+					tableHeaders={tableHeaders}
+					dataRows={rows}
+					tableRows={tableRows}
+					stickyHeader={stickyHeader}
+					latestPage={latestPage}
+					pageLength={pageLength}
+					placeholder={placeholder}
+					deepPropsComparation={deepPropsComparation}
+					isEditingMode={isEditingMode}
+					context={context}
+					tableName={tableName}
+					saveScrollbarPosition={saveScrollbarPosition}
+				/>
+			</TableContainer>
+		);
+	},
+);
 
 export default React.memo(
 	Table,

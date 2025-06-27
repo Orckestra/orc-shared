@@ -195,6 +195,17 @@ describe("ListSelectorHelper", () => {
 			prop2: { subprop: "a" },
 		});
 	});
+
+	it("getCurrentInfo with empty state", () => {
+		const value = ListHelper.selector.getCurrentInfo(initialState.set(ListInfoPropertyName));
+		expect(value, "to equal", {
+			currentSorting: undefined,
+			currentFilters: undefined,
+			currentScope: undefined,
+			currentPage: undefined,
+			totalCount: undefined,
+		});
+	});
 });
 
 describe("ListReducerHelper", () => {
@@ -496,6 +507,26 @@ describe("ListReducerHelper", () => {
 		);
 	});
 
+	it("setCurrentInfo without details", () => {
+		const newState = ListHelper.reducer.setCurrentInfo(initialState);
+		expect(
+			newState,
+			"to equal",
+			Immutable.fromJS(
+				ListHelper.createListInfoFrom({
+					sorting: null,
+					filters: null,
+					scope: null,
+					page: 2,
+					nextPageToLoad: 2,
+					index: { c: 1 },
+					list: [1, 2, 3],
+					totalCount: 10,
+				}),
+			),
+		);
+	});
+
 	it("addIndexWithMutations", () => {
 		const newState = initialState.withMutations(s => ListHelper.reducer.addIndexWithMutations(s, "d", 888));
 		expect(
@@ -651,7 +682,12 @@ describe("ListReducerHelper", () => {
 	});
 
 	it("resetListInfo with properties to keep", () => {
-		const newState = ListHelper.reducer.resetListInfo(initialState, { filters: true, sorting: true, scope: true });
+		const newState = ListHelper.reducer.resetListInfo(initialState, {
+			filters: true,
+			sorting: true,
+			scope: true,
+			page: true,
+		});
 		expect(
 			newState,
 			"to equal",
@@ -660,7 +696,7 @@ describe("ListReducerHelper", () => {
 					sorting: { a: 1 },
 					filters: { b: 1 },
 					scope: "canada",
-					page: null,
+					page: 1,
 					nextPageToLoad: 1,
 					index: {},
 					list: [],
