@@ -14,10 +14,15 @@ const getColumnDefs = () => [
 	},
 ];
 
-const TestComp = ({ stateName, sortAndFilterFn, initialSort = {}, initialFilters = {}, tableRef = undefined }) => {
+const TestComp = ({
+	stateName,
+	allRecords,
+	sortAndFilterFn,
+	initialSort = {},
+	initialFilters = {},
+	tableRef = undefined,
+}) => {
 	const internalTableRef = useRef(null);
-
-	const allRecords = Array.from(Array(50).keys()).map(k => ({ name: "n" + k }));
 
 	const params = {
 		viewStateName: stateName,
@@ -92,9 +97,6 @@ const TestComp = ({ stateName, sortAndFilterFn, initialSort = {}, initialFilters
 				pageLength={20}
 			/>
 		</div>
-		// <div id="test" onClick={() => setTick(tick + 1)} data-live={live}>
-		// 	{tick}
-		// </div>
 	);
 };
 
@@ -112,7 +114,13 @@ const sortAndFilter = ({ list, filters, sorting }) => {
 	return list;
 };
 
-describe("useInMemoryPaging", () => {
+const standardListRecords = Array.from(Array(50).keys()).map(k => ({ name: "n" + k }));
+const immutableListRecord = Immutable.fromJS(standardListRecords);
+
+describe.each([
+	["useInMemoryPaging with standard list", standardListRecords],
+	["useInMemoryPaging with Immutable list", immutableListRecord],
+])("%s", (title, listValues) => {
 	spyOnConsole(["warn", "error"]);
 
 	let state, store;
@@ -129,7 +137,7 @@ describe("useInMemoryPaging", () => {
 	it("initial state", () => {
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
 			</Provider>
 		);
 
@@ -160,7 +168,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
 			</Provider>
 		);
 
@@ -182,7 +190,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
 			</Provider>
 		);
 
@@ -219,7 +227,13 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} initialSort={null} initialFilters={null} />
+				<TestComp
+					allRecords={listValues}
+					stateName={"inMemory"}
+					sortAndFilterFn={sortAndFilter}
+					initialSort={null}
+					initialFilters={null}
+				/>
 			</Provider>
 		);
 
@@ -264,7 +278,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilterCustom} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilterCustom} />
 			</Provider>
 		);
 
@@ -295,7 +309,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} />
 			</Provider>
 		);
 
@@ -326,7 +340,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={null} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={null} />
 			</Provider>
 		);
 
@@ -354,7 +368,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
 			</Provider>
 		);
 
@@ -384,7 +398,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
 			</Provider>
 		);
 
@@ -412,7 +426,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
 			</Provider>
 		);
 
@@ -464,7 +478,7 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
 			</Provider>
 		);
 
@@ -516,13 +530,15 @@ describe("useInMemoryPaging", () => {
 
 		const component = (
 			<Provider store={store}>
-				<TestComp stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
 			</Provider>
 		);
 
 		const mountedComponent = mount(component);
 		mountedComponent.setProps({
-			children: <TestComp stateName={"inMemory"} sortAndFilterFn={list => list} tableRef={tableRef} />,
+			children: (
+				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={list => list} tableRef={tableRef} />
+			),
 		});
 		mountedComponent.update();
 
