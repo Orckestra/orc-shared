@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import sinon from "sinon";
@@ -1243,5 +1243,119 @@ describe("Table", () => {
 		const mountedComponent = mount(component);
 		const scrollableDiv = mountedComponent.find({ "data-qa": "scrollable-table-div" });
 		expect(scrollableDiv?.getElement()?.ref?.current?.scrollTop, "to equal", 800);
+	});
+
+	it("should scroll to top", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		state = state.setIn(
+			["view", "testScrollbarPosition"],
+			Immutable.fromJS({
+				scrollBarPosition: 800,
+			}),
+		);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.tableName, "test");
+		tableProps.set(TableProps.propNames.saveScrollbarPosition, true);
+
+		const scrollLoader = sinon.spy().named("scrollLoader");
+
+		const CustomTable = () => {
+			const ref = useRef(null);
+
+			const clickToTop = () => {
+				ref.current && ref.current.scrollToTop();
+			};
+
+			return (
+				<>
+					<input type="button" onClick={clickToTop} data-qa="scroll-btn" />
+					<Table
+						ref={ref}
+						rows={rows}
+						headers={headers}
+						pageLength={2}
+						latestPage={1}
+						tableProps={tableProps}
+						scrollLoader={scrollLoader}
+					/>
+				</>
+			);
+		};
+
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<CustomTable />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+		const scrollableDiv = mountedComponent.find({ "data-qa": "scrollable-table-div" });
+		expect(scrollableDiv?.getElement()?.ref?.current?.scrollTop, "to equal", 800);
+
+		const scrollBtn = mountedComponent.find({ "data-qa": "scroll-btn" });
+		scrollBtn.simulate("click");
+
+		expect(scrollableDiv?.getElement()?.ref?.current?.scrollTop, "to equal", 0);
+	});
+
+	it("should not scroll to top because already at the top", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, elements);
+
+		state = state.setIn(
+			["view", "testScrollbarPosition"],
+			Immutable.fromJS({
+				scrollBarPosition: 0,
+			}),
+		);
+
+		const tableProps = new TableProps();
+
+		tableProps.set(TableProps.propNames.selectMode, true);
+		tableProps.set(TableProps.propNames.tableName, "test");
+		tableProps.set(TableProps.propNames.saveScrollbarPosition, true);
+
+		const scrollLoader = sinon.spy().named("scrollLoader");
+
+		const CustomTable = () => {
+			const ref = useRef(null);
+
+			const clickToTop = () => {
+				ref.current && ref.current.scrollToTop();
+			};
+
+			return (
+				<>
+					<input type="button" onClick={clickToTop} data-qa="scroll-btn" />
+					<Table
+						ref={ref}
+						rows={rows}
+						headers={headers}
+						pageLength={2}
+						latestPage={1}
+						tableProps={tableProps}
+						scrollLoader={scrollLoader}
+					/>
+				</>
+			);
+		};
+
+		const component = (
+			<TestWrapper provider={{ store }}>
+				<CustomTable />
+			</TestWrapper>
+		);
+
+		const mountedComponent = mount(component);
+		const scrollableDiv = mountedComponent.find({ "data-qa": "scrollable-table-div" });
+		expect(scrollableDiv?.getElement()?.ref?.current?.scrollTop, "to equal", 0);
+
+		const scrollBtn = mountedComponent.find({ "data-qa": "scroll-btn" });
+		scrollBtn.simulate("click");
+
+		expect(scrollableDiv?.getElement()?.ref?.current?.scrollTop, "to equal", 0);
 	});
 });
