@@ -36,8 +36,6 @@ Two types, `ReadOnly` and `LineLabel` provide a way to display data without prov
 
 The standard input type, which is used for unspecialized text values, is `TextInput`. This, like other basic inputs, can be provided with a `placeholder` and any other attributes applicable to `<input type="text" />` elements.
 
-An `EmailInput` is equivalent to the above, but uses the DOM `<input type="email" />` element. <!-- Additional field types for url, tel, etc.? -->
-
 The `NumberInput` field type provides a setup for entering numbers. It has spinner buttons to increment or decrement the number given, and uses the `<input type="number" />` element to provide native functions.
 
 For picking one of a set of option, the `Selector` input type will provide a classic selection dropdown, with similar semantics to the DOM `<select />` element. The `options` prop should be an array of the available options given as objects containing `label` and `value` fields. See also [the `<Selector>` component](components.md#selector)

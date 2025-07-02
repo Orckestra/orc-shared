@@ -10,7 +10,6 @@ import { SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE } from "../../acti
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
-import { Wrapper as MenuWrapper } from "../DropMenu";
 import Topbar, { Wrapper, AppBox, CurrentApp, AppLabel, AppLogo, useMenuProps } from "./Topbar";
 import { HelpLink } from "./Help";
 
@@ -85,9 +84,7 @@ describe("Topbar", () => {
 						Test label
 					</AppLabel>
 				</AppBox>
-				<MenuWrapper>
-					<Ignore />
-				</MenuWrapper>
+				<Ignore />
 				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
@@ -108,9 +105,7 @@ describe("Topbar", () => {
 						<AppLogo />
 					</AppLabel>
 				</AppBox>
-				<MenuWrapper>
-					<Ignore />
-				</MenuWrapper>
+				<Ignore />
 				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));
@@ -131,9 +126,7 @@ describe("Topbar", () => {
 						<AppLogo />
 					</AppLabel>
 				</AppBox>
-				<MenuWrapper>
-					<Ignore />
-				</MenuWrapper>
+				<Ignore />
 				<HelpLink>Help</HelpLink>
 			</Wrapper>,
 		));

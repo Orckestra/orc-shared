@@ -1,11 +1,20 @@
-import styled from "styled-components";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 
-const ColumnWrapper = styled.div`
-	flex: 0 1 100%;
-	display: flex;
-	flex-direction: column;
-	min-height: 0;
-	min-width: 0;
-`;
+const useStyles = makeStyles(() => ({
+	columnWrapper: {
+		flex: "0 1 100%",
+		display: "flex",
+		flexDirection: "column",
+		minHeight: 0,
+		minWidth: 0,
+	},
+}));
+
+const ColumnWrapper = ({ children }) => {
+	const classes = useStyles();
+
+	return <div className={classes.columnWrapper}>{children}</div>;
+};
 
 export default ColumnWrapper;

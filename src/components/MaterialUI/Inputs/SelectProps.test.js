@@ -12,6 +12,7 @@ describe("Select Props", () => {
 			"iconSelect",
 			"disabled",
 			"error",
+			"onClose",
 			"native",
 			"inputProps",
 		];
@@ -30,6 +31,7 @@ describe("Select Props", () => {
 			"iconSelect",
 			"disabled",
 			"error",
+			"onClose",
 			"native",
 			"inputProps",
 		];

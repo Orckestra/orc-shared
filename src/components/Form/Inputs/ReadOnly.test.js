@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import { CenterWrapper, ReadOnlyBlock, ReadOnly, Label, LineLabel } from "./ReadOnly";
+import { ReadOnly, LineLabel } from "./ReadOnly";
 
 describe("ReadOnly", () => {
 	it("renders a read-only value in a form", () =>
@@ -19,13 +19,51 @@ describe("ReadOnly", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<CenterWrapper>
-				<ReadOnlyBlock>Read Only</ReadOnlyBlock>
-			</CenterWrapper>,
+			<div>
+				<p>Read Only</p>
+			</div>,
+		));
+
+	it("renders a read-only text in a form", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<ReadOnly value="Read Only" />
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<p>Read Only</p>
+			</div>,
 		));
 });
 
 describe("LineLabel", () => {
+	it("renders a formatted text in large font", () =>
+		expect(
+			<Provider
+				store={{
+					subscribe: () => {},
+					dispatch: () => {},
+					getState: () => ({}),
+				}}
+			>
+				<IntlProvider locale="en">
+					<LineLabel value={{ id: "test.textValue", defaultMessage: "A text value" }} />
+				</IntlProvider>
+			</Provider>,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<p>A text value</p>
+			</div>,
+		));
+
 	it("renders a text in large font", () =>
 		expect(
 			<Provider
@@ -39,8 +77,8 @@ describe("LineLabel", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<CenterWrapper>
-				<Label>A text value</Label>
-			</CenterWrapper>,
+			<div>
+				<p>A text value</p>
+			</div>,
 		));
 });

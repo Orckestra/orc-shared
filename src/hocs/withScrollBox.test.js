@@ -1,5 +1,5 @@
 import React from "react";
-import withScrollBox, { Scrollbox } from "./withScrollBox";
+import withScrollBox from "./withScrollBox";
 
 const TestComp = ({ children }) => <div>{children}</div>;
 TestComp.displayName = "TestComp";
@@ -11,7 +11,7 @@ describe("withScrollBox", () => {
 				<EnhComp other="prop">This is inside the box</EnhComp>,
 				"when mounted",
 				"to satisfy",
-				<Scrollbox>
+				<div>
 					<TestComp
 						other="prop"
 						height={expect.it("to be undefined") /* jsdom can't do sizes*/}
@@ -19,7 +19,19 @@ describe("withScrollBox", () => {
 					>
 						This is inside the box
 					</TestComp>
-				</Scrollbox>,
+				</div>,
 			),
 		));
+
+	it("forwards the ref to the scroll box div", () => {
+		const ref = React.createRef();
+
+		return expect(withScrollBox, "when called with", [TestComp]).then(EnhComp => {
+			const element = <EnhComp ref={ref} />;
+			return expect(() => expect(element, "when mounted", "to be truthy"), "not to throw").then(() => {
+				expect(ref.current, "to be defined");
+				expect(ref.current.nodeType, "to equal", 1);
+			});
+		});
+	});
 });

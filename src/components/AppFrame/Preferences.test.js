@@ -1,7 +1,5 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
-import { IntlProvider } from "react-intl";
 import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
@@ -18,22 +16,20 @@ import {
 	SET_MY_APPLICATION_FAILURE,
 } from "../../actions/applications";
 import { setValue } from "../../actions/view";
-import { FieldBox, Label } from "../Form/Field";
-import { Wrapper as SelectorWrapper } from "../Selector";
 import Preferences, {
 	Header,
 	PrefForm,
 	Footer,
 	PrefButton,
-	createGetUpdater,
-	Wrapper,
 	PREFS_NAME,
 	clickOutsideHandler,
+	stateEventUpdater,
 } from "./Preferences";
 import { RESET_VERSION_INFO } from "../../actions/versionInfo";
-import { extractMessages } from "./../../utils/testUtils";
+import { extractMessages, TestWrapper } from "./../../utils/testUtils";
 import sharedMessages from "./../../sharedMessages";
 import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
+import InformationItem from "../MaterialUI/DataDisplay/PredefinedElements/InformationItem";
 
 const messages = extractMessages(sharedMessages);
 
@@ -151,11 +147,9 @@ describe("Preferences", () => {
 
 	it("renders a form dialog", () => {
 		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<Preferences />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<Preferences />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -169,45 +163,29 @@ describe("Preferences", () => {
 						target: getStyledClassSelector(PrefButton) + ":last-child",
 					},
 					"to satisfy",
-					<div>
+					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
 						<div>
-							<Wrapper>
-								<Header>{stringifyWithoutQuotes(messages["orc-shared.preferences"])}</Header>
-								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
+							<div>
+								<div>
+									<Header>{stringifyWithoutQuotes(messages["orc-shared.preferences"])}</Header>
+									<PrefForm>
+										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
+										</InformationItem>
+										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-								</PrefForm>
-								<Footer>
-									<PrefButton id="cancelPrefs">{stringifyWithoutQuotes(messages["orc-shared.cancel"])}</PrefButton>
-									<PrefButton id="savePrefs" primary>
-										{stringifyWithoutQuotes(messages["orc-shared.save"])}
-									</PrefButton>
-								</Footer>
-							</Wrapper>
+										</InformationItem>
+									</PrefForm>
+									<Footer>
+										<PrefButton id="cancelPrefs">{stringifyWithoutQuotes(messages["orc-shared.cancel"])}</PrefButton>
+										<PrefButton id="savePrefs" primary>
+											{stringifyWithoutQuotes(messages["orc-shared.save"])}
+										</PrefButton>
+									</Footer>
+								</div>
+							</div>
 						</div>
-					</div>,
+					</TestWrapper>,
 				),
 			)
 			.then(() =>
@@ -222,11 +200,9 @@ describe("Preferences", () => {
 	it("shows view state fields, saves language change", () => {
 		state = state.setIn(["view", PREFS_NAME], Immutable.fromJS({ show: true, language: "fr-CA" }));
 		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<Preferences />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<Preferences />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -240,40 +216,24 @@ describe("Preferences", () => {
 						target: getStyledClassSelector(PrefButton) + ":last-child",
 					},
 					"to satisfy",
-					<div>
+					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
 						<div>
-							<Wrapper>
-								<Ignore />
-								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
+							<div>
+								<div>
+									<Ignore />
+									<PrefForm>
+										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
+										</InformationItem>
+										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={4} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-								</PrefForm>
-								<Ignore />
-							</Wrapper>
+										</InformationItem>
+									</PrefForm>
+									<Ignore />
+								</div>
+							</div>
 						</div>
-					</div>,
+					</TestWrapper>,
 				),
 			)
 			.then(() =>
@@ -351,11 +311,9 @@ describe("Preferences", () => {
 	it("shows view state fields, saves application change", () => {
 		state = state.setIn(["view", PREFS_NAME], Immutable.fromJS({ show: true, application: 3 }));
 		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<Preferences />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<Preferences />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -369,40 +327,24 @@ describe("Preferences", () => {
 						target: getStyledClassSelector(PrefButton) + ":last-child",
 					},
 					"to satisfy",
-					<div>
+					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
 						<div>
-							<Wrapper>
-								<Ignore />
-								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="en-US" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
+							<div>
+								<div>
+									<Ignore />
+									<PrefForm>
+										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
+										</InformationItem>
+										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-								</PrefForm>
-								<Ignore />
-							</Wrapper>
+										</InformationItem>
+									</PrefForm>
+									<Ignore />
+								</div>
+							</div>
 						</div>
-					</div>,
+					</TestWrapper>,
 				),
 			)
 			.then(() =>
@@ -444,11 +386,9 @@ describe("Preferences", () => {
 	it("clears and closes", () => {
 		state = state.setIn(["view", PREFS_NAME], Immutable.fromJS({ show: true, language: "fr-CA", application: 3 }));
 		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<Preferences />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<Preferences />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -462,40 +402,24 @@ describe("Preferences", () => {
 						target: getStyledClassSelector(PrefButton) + ":first-child",
 					},
 					"to satisfy",
-					<div>
+					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
 						<div>
-							<Wrapper>
-								<Ignore />
-								<PrefForm>
-									<FieldBox>
-										<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-										<SelectorWrapper>
-											<select id="language" value="fr-CA" onChange={() => {}}>
-												<option>English</option>
-												<option>EnglishCa</option>
-												<option>Francais</option>
-												<option>Francais-Qc</option>
-											</select>
+							<div>
+								<div>
+									<Ignore />
+									<PrefForm>
+										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
+										</InformationItem>
+										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-									<FieldBox>
-										<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-										<SelectorWrapper>
-											<select id="application" value={3} onChange={() => {}}>
-												<option>Marketing Legacy</option>
-												<option>Product Information</option>
-											</select>
-											<Ignore />
-											<Ignore />
-										</SelectorWrapper>
-									</FieldBox>
-								</PrefForm>
-								<Ignore />
-							</Wrapper>
+										</InformationItem>
+									</PrefForm>
+									<Ignore />
+								</div>
+							</div>
 						</div>
-					</div>,
+					</TestWrapper>,
 				),
 			)
 			.then(() =>
@@ -518,11 +442,9 @@ describe("Preferences", () => {
 			.deleteIn(["locale", "defaultCulture"])
 			.deleteIn(["settings", "defaultApp"]);
 		expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<Preferences />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<Preferences />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			null,
@@ -530,66 +452,46 @@ describe("Preferences", () => {
 			expect(
 				modalRoot,
 				"to satisfy",
-				<div>
+				<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
 					<div>
-						<Wrapper>
-							<Ignore />
-							<PrefForm>
-								<FieldBox>
-									<Label id="language_label">{stringifyWithoutQuotes(messages["orc-shared.displayLanguage"])}</Label>
-									<SelectorWrapper>
-										<select id="language" value="" onChange={() => {}}>
-											<option>English</option>
-											<option>EnglishCa</option>
-											<option>Francais</option>
-											<option>Francais-Qc</option>
-										</select>
+						<div>
+							<div>
+								<Ignore />
+								<PrefForm>
+									<InformationItem label={sharedMessages.displayLanguage}>
 										<Ignore />
+									</InformationItem>
+									<InformationItem label={sharedMessages.defaultApp}>
 										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-								<FieldBox>
-									<Label id="application_label">{stringifyWithoutQuotes(messages["orc-shared.defaultApp"])}</Label>
-									<SelectorWrapper>
-										<select id="application" value="" onChange={() => {}}>
-											<option>Marketing Legacy</option>
-											<option>Product Information</option>
-										</select>
-										<Ignore />
-										<Ignore />
-									</SelectorWrapper>
-								</FieldBox>
-							</PrefForm>
-							<Ignore />
-						</Wrapper>
+									</InformationItem>
+								</PrefForm>
+								<Ignore />
+							</div>
+						</div>
 					</div>
-				</div>,
+				</TestWrapper>,
 			),
 		);
 	});
 
-	describe("createGetUpdater", () => {
-		let update, update2;
+	describe("stateEventUpdater", () => {
+		let update;
 		beforeEach(() => {
 			update = sinon.spy().named("update");
-			update2 = () => {};
 		});
-		it("returns an update function", () =>
-			expect(createGetUpdater, "when called with", [update], "called with", ["testField"], "called with", [
-				"testValue",
-			]).then(() => expect(update, "to have calls satisfying", [{ args: ["testField", "testValue"] }])));
 
-		it("memoizes on update function and field name", () => {
-			const update1_1 = createGetUpdater(update)("111");
-			const update1_2 = createGetUpdater(update)("222");
-			const update2_1 = createGetUpdater(update2)("111");
-			const update2_2 = createGetUpdater(update2)("222");
-			expect(createGetUpdater, "called with", [update]).then(f =>
-				expect(f, "called with", ["111"], "to be", update1_1).and("called with", ["222"], "to be", update1_2),
-			);
-			expect(createGetUpdater, "called with", [update2]).then(f =>
-				expect(f, "called with", ["111"], "to be", update2_1).and("called with", ["222"], "to be", update2_2),
-			);
-		});
+		it("creates a handler for an event and calls update with the value of the target", () =>
+			expect(stateEventUpdater, "called with", [update, "application"], "called with", ["foo"]).then(() =>
+				expect(update, "to have calls satisfying", [{ args: ["application", "foo"] }]),
+			));
+
+		it("is memoized", () =>
+			expect(
+				stateEventUpdater,
+				"called with",
+				[update, "application"],
+				"to be",
+				stateEventUpdater(update, "application"),
+			));
 	});
 });

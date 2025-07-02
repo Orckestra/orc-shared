@@ -706,6 +706,7 @@ const setThemeOverrides = theme => ({
 			},
 			".Mui-error &": {
 				borderColor: theme.palette.error.main,
+				boxShadow: "none",
 			},
 		},
 		adornedStart: {
