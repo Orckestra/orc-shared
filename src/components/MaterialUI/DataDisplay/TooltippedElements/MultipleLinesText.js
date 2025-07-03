@@ -41,7 +41,7 @@ const MultipleLinesText = ({ children, titleValue, textProps, tooltipClasses }) 
 
 	return (
 		<TooltippedTextClamp
-			disableCssClamp={true}
+			disableCssClamp={false}
 			clamp={lineCount}
 			className={classNames(classes.clampedText, customStyles)}
 			children={children.toString()}

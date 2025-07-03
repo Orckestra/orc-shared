@@ -17,7 +17,7 @@ describe("MultipleLinesText", () => {
 
 		const mountedComponent = mount(component);
 		const expected = (
-			<TextClamp disableCssClamp={true} clamp={lineCount}>
+			<TextClamp disableCssClamp={false} clamp={lineCount}>
 				{text}
 			</TextClamp>
 		);
