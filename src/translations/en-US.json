@@ -58,6 +58,7 @@
 	"orc-shared.scopeChangeWithUnsavedDataConfirmation": "One or more entities opened will be closed with unsaved data. Would you like to change scope?",
 	"orc-shared.scopeChangeWithUnsavedDataTitle": "Confirm scope change without saving data",
 	"orc-shared.scopeFilterPlaceholder": "Type a scope name",
+	"orc-shared.search": "Search",
 	"orc-shared.shared": "Shared",
 	"orc-shared.showFewerLanguages": "Show fewer languages",
 	"orc-shared.showMoreLanguages": "Show more languages",

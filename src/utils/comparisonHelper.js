@@ -117,8 +117,19 @@ export const doesObjectContainsTextCaseInsensitive = (obj, searchTerm, propertie
 	const loweredSearchTerm = searchTerm.toLowerCase();
 	const propertiesToSearch = properties.length > 0 ? properties : Object.keys(obj);
 	const result =
-		propertiesToSearch.find(
-			key => typeof obj[key] === "string" && caseInsensitiveIncludes(obj[key], loweredSearchTerm),
-		) !== undefined;
+		propertiesToSearch.find(key => {
+			if (typeof obj[key] === "string") {
+				return caseInsensitiveIncludes(obj[key], loweredSearchTerm);
+			}
+
+			if (typeof obj[key] === "object" && obj[key]) {
+				const objectValues = Object.values(obj[key]);
+				return objectValues.find(
+					ovKey => typeof ovKey === "string" && caseInsensitiveIncludes(ovKey, loweredSearchTerm),
+				);
+			}
+
+			return false;
+		}) !== undefined;
 	return result;
 };

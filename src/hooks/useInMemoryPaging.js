@@ -20,7 +20,6 @@ const useInMemoryPaging = ({
 	sortAndFilterFn,
 }) => {
 	const [viewState, updateViewState] = useViewState(viewStateName);
-	const internalSortAndFilterFn = useRef(sortAndFilterFn);
 	const internalInitialSort = useRef(initialSort);
 	const internalInitialFilters = useRef(initialFilters);
 
@@ -28,12 +27,6 @@ const useInMemoryPaging = ({
 	const sorting = viewState.sorting ?? internalInitialSort.current;
 	const currentPage = viewState.currentPage ?? 1;
 	const nextPageToLoad = viewState.nextPageToLoad ?? 1;
-
-	if (internalSortAndFilterFn.current !== sortAndFilterFn) {
-		console.warn(
-			"[useInMemoryPaging]: a different value for sortAndFilterFn was detected between renders, ensure that it never changes (define it outside of your component).",
-		);
-	}
 
 	const setFilter = filters => {
 		scrollTableRef(tableRef);
@@ -60,13 +53,13 @@ const useInMemoryPaging = ({
 	);
 
 	const [rows, totalCount] = useMemo(() => {
-		let list = internalSortAndFilterFn.current({
+		const list = sortAndFilterFn({
 			list: unwrapImmutable(records),
 			filters: filters,
 			sorting: sorting,
 		});
 		return [unwrapImmutable(list.slice(0, currentPage * pageSize)), list.length];
-	}, [currentPage, pageSize, records, filters, sorting, internalSortAndFilterFn]);
+	}, [currentPage, pageSize, records, filters, sorting, sortAndFilterFn]);
 
 	return {
 		rows,

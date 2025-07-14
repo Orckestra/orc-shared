@@ -384,10 +384,41 @@ const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
 
 	useEffect(() => {
 		if (scrollbarViewState.scrollBarPosition > 0) {
+			// The Table component usually display the provided list ASAP however it can happen that the Table is not fully rendered with its items when we attempt to change the scrollTop value.
+			// The timer should ensure that the list is rendered before attempting to change the scrollTop if the first attempt was not able to set the scroll position
+			// 		This edge case was found using these steps:
+			//          * Create an organization with 50+ customers
+			//          * Go to the customer section of the organization and scroll down a bit
+			//          * Wait 1 second for the scroll position to be stored
+			//          * Go to the organization list (click on the tab)
+			//          * Go back to the organization (its tab should still be visible)
+			//          * We expect the customer list to remember its scroll position but it wasn't the case
+			//
+			// In addition to the timer, the tableName was added as a dependency to force the effect to execute again when it changes.
+			// This edge case was found using these steps:
+			//     * Create an organization with 50+ customers
+			//     * Go to the customer section of the organization and scroll down a bit
+			//     * Wait 1 second for the scroll position to be stored
+			//     * Go to the organization list (click on the tab)
+			//     * Go back to the organization (its tab should still be visible)
+			//     * We expect the customer list to remember its scroll position but it wasn't the case
+			//
+			// Both of these edge cases depend on the timing of the browser
+
+			const previousScrollTop = ref.current.scrollTop;
 			ref.current.scrollTop = scrollbarViewState.scrollBarPosition;
+
+			// Note AD20250714: I was not able to create a test for the code below because it needs to run in a real browser otherwise the behavior with scrollTop does not match reality
+			/* istanbul ignore if */
+			if (ref.current.scrollTop === previousScrollTop) {
+				setTimeout(() => {
+					// using a timer to give a chance to the UI to populate the list
+					ref.current.scrollTop = scrollbarViewState.scrollBarPosition;
+				}, 250);
+			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [props.tableName]); // forcing this effect to run again when the tableName changes
 
 	return <DefaultFullTable {...props} ref={ref} saveScrollBarPosition={saveScrollBarPosition} />;
 });

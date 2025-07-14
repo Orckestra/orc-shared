@@ -512,40 +512,4 @@ describe.each([
 			],
 		});
 	});
-
-	it("mutating sortAndFilterFn should display a warning", () => {
-		state = state.setIn(
-			["view", "inMemory"],
-			Immutable.fromJS({
-				currentPage: 2,
-				nextPageToLoad: 2,
-			}),
-		);
-
-		const tableRef = {
-			current: {
-				scrollToTop: sinon.spy().named("tableRefcurrent"),
-			},
-		};
-
-		const component = (
-			<Provider store={store}>
-				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={sortAndFilter} tableRef={tableRef} />
-			</Provider>
-		);
-
-		const mountedComponent = mount(component);
-		mountedComponent.setProps({
-			children: (
-				<TestComp allRecords={listValues} stateName={"inMemory"} sortAndFilterFn={list => list} tableRef={tableRef} />
-			),
-		});
-		mountedComponent.update();
-
-		expect(console.warn, "to have a call satisfying", {
-			args: [
-				"[useInMemoryPaging]: a different value for sortAndFilterFn was detected between renders, ensure that it never changes (define it outside of your component).",
-			],
-		});
-	});
 });
