@@ -227,8 +227,18 @@ describe("doesObjectContainsTextCaseInsensitive function", () => {
 		expect(result, "to be", true);
 	});
 
-	it("only look at first level properties (not deep)", function () {
+	it("does look at second level properties of type string", function () {
 		const result = doesObjectContainsTextCaseInsensitive({ prop: { prop2: "VALUE" } }, "val");
+		expect(result, "to be", true);
+	});
+
+	it("does not look at second level properties of type number", function () {
+		const result = doesObjectContainsTextCaseInsensitive({ prop: { prop2: 123 } }, "val");
+		expect(result, "to be", false);
+	});
+
+	it("does not look at third level properties", function () {
+		const result = doesObjectContainsTextCaseInsensitive({ prop: { prop2: { prop3: "VALUE" } } }, "val");
 		expect(result, "to be", false);
 	});
 

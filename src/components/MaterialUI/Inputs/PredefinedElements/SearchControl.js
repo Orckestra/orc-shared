@@ -255,6 +255,7 @@ const SearchControl = ({
 	const searchSection = (
 		<IconButton
 			data-qa="searchButton"
+			data-testid="searchButton"
 			variant="contained"
 			disabled={disabled}
 			classes={{ root: classes.searchButton }}

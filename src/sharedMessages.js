@@ -299,6 +299,10 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.lastModifiedBy",
 		defaultMessage: "Last Modified By",
 	},
+	search: {
+		id: "orc-shared.search",
+		defaultMessage: "Search",
+	},
 });
 
 export default sharedMessages;
