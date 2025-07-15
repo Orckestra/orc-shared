@@ -395,15 +395,9 @@ const FullTableWithSavedScrollbar = React.forwardRef((props, ref) => {
 			//          * We expect the customer list to remember its scroll position but it wasn't the case
 			//
 			// In addition to the timer, the tableName was added as a dependency to force the effect to execute again when it changes.
-			// This edge case was found using these steps:
-			//     * Create an organization with 50+ customers
-			//     * Go to the customer section of the organization and scroll down a bit
-			//     * Wait 1 second for the scroll position to be stored
-			//     * Go to the organization list (click on the tab)
-			//     * Go back to the organization (its tab should still be visible)
-			//     * We expect the customer list to remember its scroll position but it wasn't the case
-			//
-			// Both of these edge cases depend on the timing of the browser
+			// The tableName value in the organization's customers page is composed with 2 parts: "OrganizationCustomers_" + organizationId. This allows 2 organizations to use different scroll position for their respective customers pages.
+			// When the page first load, it is possible for organizationId to not yet be defined (strange but it's routing related) and because of that this useEffect was executed but with an unknown scrollBarPosition.
+			// The organizationId will be set on the next render and this useEffect needs be executed again to have the list scrolled to the correct position.
 
 			const previousScrollTop = ref.current.scrollTop;
 			ref.current.scrollTop = scrollbarViewState.scrollBarPosition;
