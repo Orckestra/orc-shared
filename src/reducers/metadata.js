@@ -1,7 +1,7 @@
 import Immutable from "immutable";
 import { normalize } from "normalizr";
 import { definitionsListSchema } from "../schemas/definitions";
-import { profileAttributeGroupsListSchema } from "../schemas/metadata";
+import { orderAttributeGroupsListSchema, profileAttributeGroupsListSchema } from "../schemas/metadata";
 import { productDefinitionsListSchema } from "../schemas/productDefinitions";
 import {
 	GET_ORDER_LOOKUPS_SUCCESS,
@@ -26,6 +26,7 @@ import {
 	UPDATE_PROFILE_DEFINITION_SUCCESS,
 	GET_ORDER_LOOKUP_SUCCESS,
 	GET_CUSTOMER_LOOKUP_SUCCESS,
+	GET_ORDER_ATTRIBUTE_GROUPS_SUCCESS,
 } from "../actions/metadata";
 
 export const ORDER_MODULE_NAME = "order";
@@ -153,6 +154,10 @@ const metadataReducer = (state = initialState, action) => {
 		case GET_PROFILE_ATTRIBUTE_GROUPS_SUCCESS: {
 			const normalizedData = normalize(action.payload?.profileAttributeGroups, profileAttributeGroupsListSchema);
 			return state.set("profileAttributeGroups", Immutable.fromJS(normalizedData.entities.metadata));
+		}
+		case GET_ORDER_ATTRIBUTE_GROUPS_SUCCESS: {
+			const normalizedData = normalize(action.payload?.orderAttributeGroups, orderAttributeGroupsListSchema);
+			return state.set("orderAttributeGroups", Immutable.fromJS(normalizedData.entities.metadata));
 		}
 		case SAVE_ORDER_LOOKUP_SUCCESS:
 		case GET_ORDER_LOOKUP_SUCCESS:
