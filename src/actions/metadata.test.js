@@ -66,6 +66,10 @@ import {
 	GET_CUSTOMER_LOOKUP_SUCCESS,
 	GET_CUSTOMER_LOOKUP_FAILURE,
 	GET_CUSTOMER_LOOKUP_REQUEST,
+	GET_ORDER_ATTRIBUTE_GROUPS_SUCCESS,
+	getOrderAttributeGroups,
+	GET_ORDER_ATTRIBUTE_GROUPS_REQUEST,
+	GET_ORDER_ATTRIBUTE_GROUPS_FAILURE,
 } from "./metadata";
 
 jest.mock("../utils/buildUrl", () => {
@@ -588,6 +592,29 @@ describe("getProfileAttributeGroups", () => {
 					GET_PROFILE_ATTRIBUTE_GROUPS_FAILURE,
 				],
 				endpoint: 'URL: metadata/attributegroups/profile ""',
+				method: "GET",
+				body: undefined,
+				credentials: "include",
+				bailout: expect.it("to be a function"),
+				headers: {
+					Accept: "application/json; charset=utf-8",
+					"Content-Type": "application/json",
+				},
+				options: { redirect: "follow" },
+			},
+		}));
+});
+
+describe("getOrderAttributeGroups", () => {
+	it("creates a RSAA to get order definitions", () =>
+		expect(getOrderAttributeGroups, "when called", "to exhaustively satisfy", {
+			[RSAA]: {
+				types: [
+					GET_ORDER_ATTRIBUTE_GROUPS_REQUEST,
+					GET_ORDER_ATTRIBUTE_GROUPS_SUCCESS,
+					GET_ORDER_ATTRIBUTE_GROUPS_FAILURE,
+				],
+				endpoint: 'URL: metadata/attributegroups/order ""',
 				method: "GET",
 				body: undefined,
 				credentials: "include",

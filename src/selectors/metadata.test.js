@@ -18,7 +18,6 @@ import {
 	productPropertyValueSelector,
 	productPropertyValuesSelector,
 	variantPropertyKeyValuesSelector,
-	profileAttributeGroupsSelector,
 	selectCurrentLookupDetails,
 	mappedDefinitionsListSelector,
 	baseAttributesSelector,
@@ -1367,6 +1366,29 @@ describe("definitions", () => {
 							allowPriceLists: true,
 						},
 					},
+					order: {
+						ORDER: {
+							displayName: {
+								"en-CA": "Order",
+								"en-US": "Order",
+								"fr-CA": "ORDER",
+							},
+							entityTypeName: "CUSTOMER",
+							isBuiltIn: true,
+							attributes: [
+								baseBuitInAttribute1,
+								baseBuitInAttribute2,
+								customProfileAttribute1,
+								customProfileAttribute2,
+								baseBuitInAttribute4,
+								baseBuitInAttribute3,
+								baseCustomAttribute1,
+								baseCustomAttribute3,
+								baseCustomAttribute2,
+							],
+							isSharedEntity: true,
+						},
+					},
 				},
 				profileAttributeGroups: {
 					Default: {
@@ -1388,18 +1410,19 @@ describe("definitions", () => {
 						},
 					},
 				},
+				orderAttributeGroups: {
+					Default: {
+						displayOrder: 1,
+						name: "Default",
+						displayName: {
+							"en-US": "Default en-US",
+							"en-CA": "Default en-CA",
+							"fr-CA": "Default fr-CA",
+						},
+					},
+				},
 			},
 		});
-	});
-
-	it("will get null if profileAttributeGroups are not found in metadata", () => {
-		const newState = Immutable.fromJS({
-			locale: {},
-			metadata: {
-				profileAttributeGroups: {},
-			},
-		});
-		expect(profileAttributeGroupsSelector, "when called with", [newState], "to satisfy", null);
 	});
 
 	it("will return correct customer profile definition", () => {
@@ -1586,6 +1609,64 @@ describe("definitions", () => {
 			["customer", "CUSTOMER"],
 			"when called with",
 			[state],
+			"to satisfy",
+			expected,
+		);
+	});
+
+	it("will return correct custom order attributes definition in correct order", () => {
+		const expectedGroup1 = customProfileAttribute1.groupId;
+		const expectedItem1 = {
+			...customProfileAttribute1,
+			...{ displayName: customProfileAttribute1.displayName["en-US"] },
+		};
+
+		const expectedBaseCustomWithOrder1 = {
+			...baseCustomAttribute1,
+			...{ displayName: baseCustomAttribute1.displayName["en-US"] },
+		};
+
+		const expectedBaseCustomWithOrder2 = {
+			...baseCustomAttribute2,
+			...{ displayName: baseCustomAttribute2.displayName["en-US"] },
+		};
+
+		const expectedBaseCustomWithOrder3 = {
+			...baseCustomAttribute3,
+			...{ displayName: baseCustomAttribute3.displayName["en-US"] },
+		};
+
+		const expected = Immutable.fromJS({
+			[expectedGroup1]: {
+				id: expectedGroup1,
+				name: "Default en-US",
+				baseAttributes: [expectedBaseCustomWithOrder1, expectedBaseCustomWithOrder2, expectedBaseCustomWithOrder3],
+				profileAttributes: [expectedItem1],
+			},
+		});
+
+		expect(
+			groupedCustomAttributesDefinitionSelector,
+			"when called with",
+			["order", "ORDER"],
+			"when called with",
+			[state],
+			"to satisfy",
+			expected,
+		);
+	});
+
+	it("will return correct custom attributes definition in correct order for unknown module", () => {
+		const expected = Immutable.fromJS({});
+
+		const newState = state.removeIn(["metadata", "profileAttributeGroups"]);
+
+		expect(
+			groupedCustomAttributesDefinitionSelector,
+			"when called with",
+			["invalid", "invalid"],
+			"when called with",
+			[newState],
 			"to satisfy",
 			expected,
 		);

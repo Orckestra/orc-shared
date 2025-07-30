@@ -16,6 +16,7 @@ import {
 	createCustomerLookupTypeDefinitionRequest,
 	getCustomerLookupRequest,
 	getOrderLookupRequest,
+	getOrderAttributeGroupsRequest,
 } from "./requestsApi";
 
 export const lookupsPageLength = 20;
@@ -181,6 +182,16 @@ export const [
 
 export const getProfileAttributeGroups = () =>
 	makeOrcApiAction(GET_PROFILE_ATTRIBUTE_GROUPS, getProfileAttributeGroupsRequest.buildUrl());
+
+const GET_ORDER_ATTRIBUTE_GROUPS = "GET_ORDER_ATTRIBUTE_GROUPS";
+export const [
+	GET_ORDER_ATTRIBUTE_GROUPS_REQUEST,
+	GET_ORDER_ATTRIBUTE_GROUPS_SUCCESS,
+	GET_ORDER_ATTRIBUTE_GROUPS_FAILURE,
+] = makeActionTypes(GET_ORDER_ATTRIBUTE_GROUPS);
+
+export const getOrderAttributeGroups = () =>
+	makeOrcApiAction(GET_ORDER_ATTRIBUTE_GROUPS, getOrderAttributeGroupsRequest.buildUrl());
 
 export const SET_PAGED_CUSTOMER_LOOKUPS_CURRENT_INFO = "SET_PAGED_CUSTOMER_LOOKUPS_CURRENT_INFO";
 export const setPagedCustomerLookupsCurrentInfo = (page = 1, resetList = false) => ({

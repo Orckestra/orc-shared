@@ -62,6 +62,12 @@ export const getCustomerLookupsRequest = {
 	verb: "GET",
 };
 
+export const getOrderAttributeGroupsRequest = {
+	name: "getOrderAttributeGroupsRequest",
+	buildUrl: () => buildUrl(["metadata", "attributegroups", "order"]),
+	verb: "GET",
+};
+
 export const getOrderDefinitionRequest = {
 	name: "getOrderDefinitionRequest",
 	buildUrl: (name, queryParams) => buildUrl(["metadata", "definitions", "order", name], queryParams),

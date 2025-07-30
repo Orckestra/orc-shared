@@ -8,6 +8,7 @@ getCountriesRequest
 getCustomerDefinitionsRequest
 getCustomerLookupRequest
 getCustomerLookupsRequest
+getOrderAttributeGroupsRequest
 getOrderDefinitionRequest
 getOrderLookupRequest
 getOrderLookupsRequest
