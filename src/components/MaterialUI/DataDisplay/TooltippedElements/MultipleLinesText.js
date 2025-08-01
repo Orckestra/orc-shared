@@ -39,6 +39,10 @@ const MultipleLinesText = ({ children, titleValue, textProps, tooltipClasses }) 
 		[isClamped, setIsClamped],
 	);
 
+	if (!children) {
+		return null;
+	}
+
 	return (
 		<TooltippedTextClamp
 			disableCssClamp={true}

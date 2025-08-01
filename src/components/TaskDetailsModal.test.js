@@ -78,9 +78,7 @@ describe("TaskDetailsModal", () => {
 		const expectedContent = (
 			<div>
 				<InformationItem label={sharedMessages.taskId}>1234</InformationItem>
-				<InformationItem label={sharedMessages.taskStatus}>
-					<Ignore />
-				</InformationItem>
+				<InformationItem label={sharedMessages.taskStatus} />
 				<InformationItem label={sharedMessages.taskLogs}>
 					<textarea />
 				</InformationItem>

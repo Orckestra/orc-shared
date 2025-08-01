@@ -89,4 +89,10 @@ describe("MultipleLinesText", () => {
 			expect(() => mount(component), "to throw a", TypeError);
 		});
 	});
+
+	it("Returns null if children is null", () => {
+		const component = <MultipleLinesText>{null}</MultipleLinesText>;
+		const mountedComponent = shallow(component);
+		expect(mountedComponent.isEmptyRender(), "to be true");
+	});
 });
