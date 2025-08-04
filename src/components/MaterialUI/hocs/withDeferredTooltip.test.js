@@ -47,6 +47,33 @@ describe("withDeferredTooltip", () => {
 		expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
 	});
 
+	it("Wraps passed component in Mui tooltip if mouse enter event was triggered and scrollHeight is bigger than clientHeight", () => {
+		const Wrapper = props => <ComponentToBeTooltipped {...props} />;
+
+		const TooltippedCompponent = withDeferredTooltip(Wrapper);
+
+		const mountedTooltippedComponent = shallow(<TooltippedCompponent titleValue="test" />);
+
+		const event = {
+			target: {
+				offsetWidth: 0,
+				scrollWidth: 0,
+				scrollHeight: 200,
+				clientHeight: 100,
+			},
+		};
+
+		mountedTooltippedComponent.find(Wrapper).invoke("onMouseEnter")(event);
+
+		let expected = (
+			<MuiTooltip>
+				<Wrapper />
+			</MuiTooltip>
+		);
+
+		expect(mountedTooltippedComponent.containsMatchingElement(expected), "to be true");
+	});
+
 	it("Does not wrap passed component in Mui tooltip if scrollWidth is same as offsetWidth", () => {
 		const Wrapper = props => <ComponentToBeTooltipped {...props} />;
 

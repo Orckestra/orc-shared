@@ -22,6 +22,7 @@ import {
 	ADD_CUSTOMER_LOOKUP_SUCCESS,
 	GET_ORDER_LOOKUP_SUCCESS,
 	GET_CUSTOMER_LOOKUP_SUCCESS,
+	GET_ORDER_ATTRIBUTE_GROUPS_SUCCESS,
 } from "../actions/metadata";
 import reducer from "./metadata";
 
@@ -1548,6 +1549,36 @@ describe("profileAttributeGroups", () => {
 			Immutable.fromJS({
 				profileAttributeGroups: {
 					Default: profileAttributeGroupsPayload,
+				},
+			}),
+		);
+	});
+});
+
+describe("orderAttributeGroups", () => {
+	it("saves orderAttributeGroups metadata", () => {
+		const orderAttributeGroupsPayload = {
+			displayOrder: 1,
+			name: "Default",
+			displayName: {
+				"en-US": "Default",
+				"fr-CA": "Défaut",
+			},
+			isSystem: false,
+		};
+		const oldState = Immutable.fromJS({
+			orderAttributeGroups: {},
+		});
+		const action = {
+			type: GET_ORDER_ATTRIBUTE_GROUPS_SUCCESS,
+			payload: { orderAttributeGroups: [orderAttributeGroupsPayload] },
+		};
+		const newState = reducer(oldState, action);
+		return expect(newState, "not to be", oldState).and(
+			"to equal",
+			Immutable.fromJS({
+				orderAttributeGroups: {
+					Default: orderAttributeGroupsPayload,
 				},
 			}),
 		);

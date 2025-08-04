@@ -17,7 +17,10 @@ const withDeferredTooltip =
 			if (alwaysDisplay) {
 				setShouldBeTooltipped(true);
 			} else {
-				setShouldBeTooltipped(event.target.offsetWidth < event.target.scrollWidth);
+				setShouldBeTooltipped(
+					event.target.offsetWidth < event.target.scrollWidth || // for single line
+						event.target.scrollHeight > event.target.clientHeight,
+				); // for multiple lines
 			}
 		};
 

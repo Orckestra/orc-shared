@@ -210,26 +210,29 @@ export const baseAttributesSelector = memoize((moduleName, entityName) =>
 	createSelector(mappedDefinitionAttributesSelector(moduleName, entityName), filterIsBuiltInAttributes(true)),
 );
 
-export const profileAttributeGroupsSelector = createSelector(metadata, currentLocaleOrDefault, (meta, locale) => {
-	const groups = meta.get("profileAttributeGroups");
-	return !groups?.size ? null : groups?.map(x => setTranslationWithFallbackField(locale, x, "name", "displayName"));
-});
+export const moduleAttributeGroupsSelector = memoize(moduleName =>
+	createSelector(metadata, currentLocaleOrDefault, (meta, locale) => {
+		const metaDataGroupName = moduleName === "order" ? "orderAttributeGroups" : "profileAttributeGroups";
+		const groups = meta.get(metaDataGroupName);
+		return !groups?.size ? null : groups?.map(x => setTranslationWithFallbackField(locale, x, "name", "displayName"));
+	}),
+);
 
 export const groupedCustomAttributesDefinitionSelector = memoize((moduleName, entityName) =>
 	createSelector(
-		profileAttributeGroupsSelector,
+		moduleAttributeGroupsSelector(moduleName),
 		customAttributesSelector(moduleName, entityName),
 		currentLocaleOrDefault,
-		(allProfileAttributeGroups, attributes) =>
+		(allAttributeGroups, attributes) =>
 			attributes
 				.groupBy(item => item.get("groupId"))
 				.map(group => {
 					const groupId = group.first().get("groupId");
-					const profileAttributeGroup = allProfileAttributeGroups?.get(groupId);
+					const attributeGroup = allAttributeGroups?.get(groupId);
 					return Immutable.fromJS({
 						id: groupId,
-						name: profileAttributeGroup?.get("displayName"),
-						displayOrder: profileAttributeGroup?.get("displayOrder"),
+						name: attributeGroup?.get("displayName"),
+						displayOrder: attributeGroup?.get("displayOrder"),
 					})
 						.set(
 							"baseAttributes",

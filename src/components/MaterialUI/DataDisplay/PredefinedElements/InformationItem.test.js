@@ -126,9 +126,6 @@ describe("Information Item", () => {
 		const label = "label";
 		const value = "value";
 
-		const multipleLinesTextProps = new TextProps();
-		multipleLinesTextProps.set(TextProps.propNames.lineCount, 2);
-
 		const component = (
 			<IntlProvider locale="en-US">
 				<InformationItem label={label} isMaxLineCountEnabled={null}>
@@ -140,7 +137,7 @@ describe("Information Item", () => {
 		const expected = (
 			<div>
 				<Typography children={label} />
-				<MultipleLinesText textProps={multipleLinesTextProps}>{value}</MultipleLinesText>
+				<MultipleLinesText>{value}</MultipleLinesText>
 			</div>
 		);
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
-import Field, { FieldBox, Label, RequiredNotice } from "./Field";
+import { IntlProvider } from "react-intl";
+import Field from "./Field";
 
 describe("Field", () => {
 	it("renders a field with a label", () =>
@@ -18,12 +19,12 @@ describe("Field", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<FieldBox>
-				<Label htmlFor="field" id="field_label">
+			<div>
+				<label htmlFor="field" id="field_label">
 					A test
-				</Label>
+				</label>
 				<div id="child" />
-			</FieldBox>,
+			</div>,
 		));
 
 	it("renders a required field with a label", () =>
@@ -41,12 +42,12 @@ describe("Field", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<FieldBox>
-				<Label htmlFor="field" id="field_label" required>
+			<div>
+				<label htmlFor="field" id="field_label">
 					A test
-				</Label>
+				</label>
 				<div id="child" />
-			</FieldBox>,
+			</div>,
 		));
 
 	it("renders a missing required field with a label", () =>
@@ -58,19 +59,21 @@ describe("Field", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Field id="field" label="A test" required="Required" invalid>
-					<div id="child" />
-				</Field>
+				<IntlProvider locale="en">
+					<Field id="field" label="A test" required={{ id: "required", defaultMessage: "Required" }} invalid>
+						<div id="child" />
+					</Field>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<FieldBox>
-				<Label htmlFor="field" id="field_label" required invalid>
+			<div>
+				<label htmlFor="field" id="field_label">
 					A test
-				</Label>
+				</label>
 				<div id="child" />
-				<RequiredNotice>Required</RequiredNotice>
-			</FieldBox>,
+				<div>Required</div>
+			</div>,
 		));
 
 	it("renders a field with no label", () =>
@@ -80,9 +83,9 @@ describe("Field", () => {
 			</Field>,
 			"when mounted",
 			"to satisfy",
-			<FieldBox>
+			<div>
 				<div id="child" />
-			</FieldBox>,
+			</div>,
 		));
 
 	it("renders only its label when flagged", () =>
@@ -100,11 +103,9 @@ describe("Field", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<FieldBox>
-				<Label labelOnly id="field_label" required>
-					A test
-				</Label>
-			</FieldBox>,
+			<div>
+				<label id="field_label">A test</label>
+			</div>,
 		));
 
 	it("renders a field with a centered label", () =>
@@ -122,34 +123,11 @@ describe("Field", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<FieldBox>
-				<Label htmlFor="field" center id="field_label">
+			<div>
+				<label htmlFor="field" id="field_label">
 					A test
-				</Label>
+				</label>
 				<div id="child" />
-			</FieldBox>,
-		));
-});
-
-describe("Label", () => {
-	it("renders a mark on required labels", () =>
-		expect(
-			<Label required>A text</Label>,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			'::after {content: " *";',
-		));
-
-	it("when not flagged renders a label with bottom margin", () =>
-		expect(<Label>A text</Label>, "when mounted", "to have style rules satisfying", "to contain", "margin-bottom:"));
-
-	it("when flagged renders a label without margin", () =>
-		expect(
-			<Label labelOnly>A text</Label>,
-			"when mounted",
-			"to have style rules satisfying",
-			"not to contain",
-			"margin-bottom",
+			</div>,
 		));
 });

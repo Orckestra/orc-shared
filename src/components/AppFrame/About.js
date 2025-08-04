@@ -77,7 +77,7 @@ export const AboutParagraph = styled.p`
 `;
 
 export const AboutLink = styled.a`
-	color: #23527c;
+	color: #337ab7;
 	text-decoration: none;
 `;
 
@@ -86,7 +86,7 @@ export const getClickOutsideHandler = ({ show }, updateViewState) => {
 		? event => {
 				event.stopPropagation();
 				updateViewState("show", false);
-		  }
+			}
 		: () => {};
 };
 
@@ -117,7 +117,7 @@ export const About = ({ currentApplication }) => {
 								key="application-version"
 								message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
 							/>,
-					  ]
+						]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-shared"]
 					? [
@@ -129,7 +129,7 @@ export const About = ({ currentApplication }) => {
 									values: { version: trimStart(DEPENDENCIES["orc-shared"], "^") },
 								}}
 							/>,
-					  ]
+						]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-scripts"]
 					? [
@@ -141,7 +141,7 @@ export const About = ({ currentApplication }) => {
 									values: { version: trimStart(DEPENDENCIES["orc-scripts"], "^") },
 								}}
 							/>,
-					  ]
+						]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-secret"]
 					? [
@@ -153,7 +153,7 @@ export const About = ({ currentApplication }) => {
 									values: { version: trimStart(DEPENDENCIES["orc-secret"], "^") },
 								}}
 							/>,
-					  ]
+						]
 					: null}
 			</AboutParagraph>
 			<AboutParagraph long>
