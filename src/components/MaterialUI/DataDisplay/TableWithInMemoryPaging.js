@@ -50,6 +50,7 @@ const TableWithInMemoryPaging = ({
 	placeholderIcon = null,
 	placeholderTitle = null,
 	placeholderSubtitle = null,
+	rowKeyField = "id",
 }) => {
 	const { formatMessage } = useIntl();
 	const tableRef = useRef(null);
@@ -79,7 +80,7 @@ const TableWithInMemoryPaging = ({
 		sortAndFilterFn: sortAndFilter,
 	});
 
-	const { headers, rows } = buildHeaderAndRowFromConfig(columnDefs, rowsSlice, isReadMode);
+	const { headers, rows } = buildHeaderAndRowFromConfig(columnDefs, rowsSlice, isReadMode, rowKeyField);
 	const placeholder = (
 		<Placeholder
 			icon={placeholderIcon}

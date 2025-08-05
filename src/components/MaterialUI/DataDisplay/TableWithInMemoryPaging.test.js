@@ -4,7 +4,7 @@ import { mount } from "enzyme";
 import Table from "./Table";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
 import TableInfoBar from "./PredefinedElements/TableInfoBar";
-import { extractMessages } from "../../../utils/testUtils";
+import { extractMessages, spyOnConsole } from "../../../utils/testUtils";
 import TableProps from "./TableProps";
 import { createMuiTheme } from "./../../../utils/testUtils";
 import { TestWrapper } from "../../../utils/testUtils";
@@ -15,6 +15,7 @@ import SectionToolbar from "./PredefinedElements/SectionToolbar";
 import buildStore from "../../../buildStore";
 import { fireEvent, render, getByPlaceholderText, getByTestId, queryAllByRole } from "@testing-library/react";
 import Placeholder from "./PredefinedElements/Placeholder";
+import { cloneDeep } from "lodash";
 
 const messages = extractMessages(sharedMessages);
 
@@ -32,6 +33,8 @@ describe("TableWithInMemoryPaging", () => {
 	const theme = createMuiTheme();
 
 	let store;
+
+	spyOnConsole(["error"]);
 
 	beforeEach(() => {
 		global.SUPPORTED_LOCALES = undefined;
@@ -417,5 +420,38 @@ describe("TableWithInMemoryPaging", () => {
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders TableWithInMemoryPaging with a different key", () => {
+		const configDefs = getColumnDefs();
+		const records = cloneDeep(standardListRecords);
+		records.forEach(record => {
+			record.anotherId = record.id;
+			delete record.id;
+		});
+
+		const component = (
+			<TestWrapper
+				provider={{ store }}
+				memoryRouter
+				intlProvider={{ messages }}
+				stylesProvider
+				muiThemeProvider={{ theme }}
+			>
+				<div>
+					<TableWithInMemoryPaging
+						sortedRows={records}
+						tableName={"StateName"}
+						columnDefs={configDefs}
+						searchProperties={["name"]}
+						rowKeyField="anotherId"
+					/>
+				</div>
+			</TestWrapper>
+		);
+
+		render(component);
+
+		expect(console.error, "was not called");
 	});
 });
