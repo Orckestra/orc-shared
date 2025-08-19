@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { getThemeProp, memoize, unwrapImmutable } from "../../utils";
+import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import { memoize, unwrapImmutable } from "../../utils";
 import Sidepanel from "../Sidepanel";
-import Button from "../Button";
-import Text from "../Text";
 import useViewState from "../../hooks/useViewState";
 import { setValue } from "../../actions/view";
 import { setDefaultLanguage } from "../../actions/locale";
@@ -22,59 +22,68 @@ import Select from "../MaterialUI/Inputs/Select";
 
 export const PREFS_NAME = "__prefsDialog";
 
-export const PrefPanel = styled(Sidepanel)`
-	background-color: #f7f7f7;
-	border-left: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	border-top-left-radius: 5px;
-	top: 40px;
-	box-shadow: -3px 2px 5px 0px rgba(0, 0, 0, 0.2);
-	z-index: 9998;
-	transition: right 400ms ease-out;
-`;
+const useStyles = makeStyles(theme => ({
+	prefPanel: {
+		backgroundColor: "#f7f7f7",
+		borderLeft: `1px solid ${theme.palette.grey.borders}`,
+		borderTop: `1px solid ${theme.palette.grey.borders}`,
+		borderTopLeftRadius: "5px",
+		top: "40px",
+		boxShadow: "-3px 2px 5px 0px rgba(0, 0, 0, 0.2)",
+		zIndex: 9998,
+		transition: "right 400ms ease-out",
+	},
+	header: {
+		flex: "0 0 auto",
+		borderBottom: `1px solid ${theme.palette.grey.borders}`,
+		borderTopLeftRadius: "5px",
+		padding: "15px 30px",
+		height: "18px",
+		fontSize: "15px",
+		fontFamily: theme.typography.button.fontFamily,
+		textTransform: "uppercase",
+		color: theme.palette.primary.main,
+		backgroundColor: "#ffffff",
+	},
+	prefForm: {
+		flex: "1 1 auto",
+		display: "flex",
+		flexDirection: "column",
+		padding: "20px 30px",
+		fontSize: "12px",
+	},
+	footer: {
+		flex: "0 0 auto",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "flex-end",
+		backgroundColor: "#ffffff",
+		borderTop: `1px solid ${theme.palette.grey.borders}`,
+		paddingRight: "10px",
+		height: "60px",
+	},
+	prefButton: {
+		marginRight: "20px",
+		minWidth: "110px",
+	},
+	wrapper: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%",
+	},
+}));
 
-export const Wrapper = withClickOutside(styled.div`
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-`);
+export const Wrapper = withClickOutside(
+	React.forwardRef(({ children }, ref) => {
+		const classes = useStyles();
 
-export const Header = styled.div`
-	flex: 0 0 auto;
-	border-bottom: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	border-top-left-radius: 5px;
-	padding: 15px 30px;
-	height: 18px;
-	font-size: 15px;
-	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
-	text-transform: uppercase;
-	color: ${getThemeProp(["colors", "application", "base"], "#ccc")};
-	background-color: #ffffff;
-`;
-
-export const PrefForm = styled.div`
-	flex: 1 1 auto;
-	display: flex;
-	flex-direction: column;
-	padding: 20px 30px;
-	font-size: 12px;
-`;
-
-export const Footer = styled.div`
-	flex: 0 0 auto;
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	background-color: #ffffff;
-	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	padding-right: 10px;
-	height: 60px;
-`;
-
-export const PrefButton = styled(Button)`
-	margin-right: 20px;
-	min-width: 110px;
-`;
+		return (
+			<div ref={ref} className={classes.wrapper}>
+				{children}
+			</div>
+		);
+	}),
+);
 
 export const stateEventUpdater = memoize((update, key) => value => update(key, value));
 
@@ -125,32 +134,34 @@ export const clickOutsideHandler = e => {
 };
 
 export const Preferences = () => {
+	const classes = useStyles();
+
 	const { show, save, clear, languageOptions, languageSelectProps, applicationOptions, applicationSelectProps } =
 		usePreferenceSetup();
 	return (
-		<PrefPanel in={show} width="380px" timeout={400}>
+		<Sidepanel in={show} width="380px" timeout={400} className={classes.prefPanel}>
 			<Wrapper onClickOutside={clickOutsideHandler}>
-				<Header>
-					<Text message={sharedMessages.preferences} />
-				</Header>
-				<PrefForm>
+				<div className={classes.header}>
+					<FormattedMessage {...sharedMessages.preferences} />
+				</div>
+				<div className={classes.prefForm}>
 					<InformationItem label={sharedMessages.displayLanguage}>
 						<Select options={languageOptions} selectProps={languageSelectProps} />
 					</InformationItem>
 					<InformationItem label={sharedMessages.defaultApp}>
 						<Select options={applicationOptions} selectProps={applicationSelectProps} />
 					</InformationItem>
-				</PrefForm>
-				<Footer>
-					<PrefButton id="cancelPrefs" onClick={clear}>
-						<Text message={sharedMessages.cancel} />
-					</PrefButton>
-					<PrefButton id="savePrefs" primary onClick={save}>
-						<Text message={sharedMessages.save} />
-					</PrefButton>
-				</Footer>
+				</div>
+				<div className={classes.footer}>
+					<Button id="cancelPrefs" onClick={clear} className={classes.prefButton} variant="outlined">
+						<FormattedMessage {...sharedMessages.cancel} />
+					</Button>
+					<Button id="savePrefs" onClick={save} className={classes.prefButton} variant="outlined" color="primary">
+						<FormattedMessage {...sharedMessages.save} />
+					</Button>
+				</div>
 			</Wrapper>
-		</PrefPanel>
+		</Sidepanel>
 	);
 };
 

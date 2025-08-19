@@ -1,8 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useIntl } from "react-intl";
-import { getThemeProp } from "../../utils";
+import { makeStyles } from "@material-ui/core/styles";
 import { selectCurrentUsername } from "../../selectors/authentication";
 import { setStateField } from "../../actions/view";
 import { signOut } from "../../actions/authentication";
@@ -14,12 +13,36 @@ import Anchor from "./Anchor";
 import Help from "./Help";
 import sharedMessages from "./../../sharedMessages";
 
-export const Wrapper = styled.div`
-	height: 40px;
-	color: ${getThemeProp(["colors", "textMedium"], "#999999")};
-	display: flex;
-	justify-content: space-between;
-`;
+const useStyles = makeStyles(theme => ({
+	wrapper: {
+		height: "40px",
+		color: theme.palette.text.hint,
+		display: "flex",
+		justifyContent: "space-between",
+	},
+	appBox: {
+		height: "100%",
+		display: "flex",
+		flex: 1,
+		alignItems: "stretch",
+	},
+	appLabel: {
+		backgroundColor: "#000000",
+		color: theme.palette.primary.light,
+		fontFamily: theme.typography.button.fontFamily,
+		fontSize: "14px",
+		textTransform: "uppercase",
+		paddingRight: "20px",
+		paddingLeft: "6px",
+		display: "flex",
+		alignItems: "center",
+	},
+	appLogo: {
+		height: "30px",
+		marginRight: "10px",
+	},
+}));
+
 export const useMenuProps = () => {
 	const intl = useIntl();
 	const dispatch = useDispatch();
@@ -58,52 +81,36 @@ export const Menu = () => {
 	);
 };
 
-export const AppBox = styled.div`
-	height: 100%;
-	display: flex;
-	flex: 1;
-	align-items: stretch;
-`;
+export const CurrentApp = ({ displayName, iconUri }) => {
+	const classes = useStyles();
 
-export const AppLabel = styled.div`
-	background-color: #000000;
-	color: ${getThemeProp(["colors", "application", "primary"], "#ffffff")};
-	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
-	font-size: 14px;
-	text-transform: uppercase;
-	padding-right: 20px;
-	padding-left: 6px;
-	display: flex;
-	align-items: center;
-`;
-
-export const AppLogo = styled.img.attrs(() => ({ alt: "" }))`
-	height: 30px;
-	margin-right: 10px;
-`;
-
-export const CurrentApp = ({ displayName, iconUri }) => (
-	<AppLabel>
-		<AppLogo src={iconUri} />
-		{displayName}
-	</AppLabel>
-);
+	return (
+		<div className={classes.appLabel}>
+			<img src={iconUri} className={classes.appLogo} />
+			{displayName}
+		</div>
+	);
+};
 CurrentApp.displayName = "CurrentApp";
 
-const Topbar = ({ applications, applicationId, currentApplication, onClick, helpUrl, ...config }) => (
-	<Wrapper onClick={onClick}>
-		<AppBox>
-			<ApplicationSelector
-				{...{
-					applications,
-					applicationId,
-				}}
-			/>
-			<CurrentApp {...(currentApplication || {})} />
-		</AppBox>
-		<Menu {...config} />
-		<Help {...{ helpUrl }} />
-	</Wrapper>
-);
+const Topbar = ({ applications, applicationId, currentApplication, onClick, helpUrl, ...config }) => {
+	const classes = useStyles();
+
+	return (
+		<div onClick={onClick} className={classes.wrapper}>
+			<div className={classes.appBox}>
+				<ApplicationSelector
+					{...{
+						applications,
+						applicationId,
+					}}
+				/>
+				<CurrentApp {...(currentApplication || {})} />
+			</div>
+			<Menu {...config} />
+			<Help {...{ helpUrl }} />
+		</div>
+	);
+};
 
 export default Topbar;

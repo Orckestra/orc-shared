@@ -1,9 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useSelector } from "react-redux";
-import styled, { css } from "styled-components";
-import transition from "styled-transition-group";
-import { ifFlag } from "../../utils";
+import { makeStyles } from "@material-ui/core/styles";
 import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
@@ -19,67 +17,68 @@ export const ABOUT_NAME = "__aboutBox";
 
 const getModalRoot = () => document.getElementById("modal");
 
-export const AboutBox = withClickOutside(transition.div`
-	box-sizing: border-box;
-	z-index: 9999;
-	position: absolute;
-	top: calc(50% - 210px);
-	left: calc(50% - 210px);
-	height: 420px;
-	width: 420px;
-	padding: 15px 20px;
-	color: #ffffff;
-	font-size: 13px;
-	line-height: 16px;
-	background: #0a0a07 url(${bgImage});
-	transition: opacity ${props => props.timeout}ms ease-out;
+const useStyles = makeStyles(() => ({
+	aboutBox: props => ({
+		boxSizing: "border-box",
+		zIndex: 9999,
+		position: "absolute",
+		top: "calc(50% - 210px)",
+		left: "calc(50% - 210px)",
+		height: "420px",
+		width: "420px",
+		padding: "15px 20px",
+		color: "#ffffff",
+		fontSize: "13px",
+		lineHeight: "16px",
+		background: `#0a0a07 url(${props.bgImage})`,
 
-	&:enter {
-		opacity: 0;
-	}
-	&:enter-active {
-		opacity: 1;
-	}
-	&:exit {
-		opacity: 1;
-	}
-	&:exit-active {
-		opacity: 0;
-	}
-`);
-AboutBox.defaultProps = { timeout: 800, unmountOnExit: true };
+		"&.enter-active": {
+			opacity: 1,
+			transition: "none",
+		},
+		"&.exit-active": {
+			opacity: 0,
+			transition: "opacity 800ms ease-out",
+		},
+	}),
+	closeButton: {
+		zIndex: 9999,
+		position: "absolute",
+		color: "#ffffff",
+		top: "15px",
+		right: "20px",
+		margin: "0",
+		cursor: "pointer",
+		opacity: "1",
 
-export const CloseButton = styled.p`
-	z-index: 9999;
-	position: absolute;
-	color: #ffffff;
-	top: 15px;
-	right: 20px;
-	margin: 0;
-	cursor: pointer;
-	opacity: 1;
+		"&:hover": {
+			opacity: 0.75,
+		},
+	},
+	aboutLink: {
+		color: "#337ab7",
+		textDecoration: "none",
+	},
+	aboutParagraph: {
+		marginTop: "20px",
+	},
+	longAboutParagraph: props => ({
+		marginTop: "20px",
+		fontSize: props.lang?.startsWith("fr") ? "10px" : undefined,
+	}),
+}));
 
-	&:hover {
-		opacity: 0.75;
-	}
-`;
+export const AboutBox = withClickOutside(
+	React.forwardRef(({ children, className }, ref) => {
+		const classes = useStyles({ bgImage });
 
-export const AboutParagraph = styled.p`
-	margin-top: 20px;
-	${ifFlag(
-		"long",
-		css`
-			html[lang^="fr"] & {
-				font-size: 10px;
-			}
-		`,
-	)}
-`;
-
-export const AboutLink = styled.a`
-	color: #337ab7;
-	text-decoration: none;
-`;
+		return (
+			<div ref={ref} className={`${classes.aboutBox} ${className ? className : ""}`}>
+				{children}
+			</div>
+		);
+	}),
+);
 
 export const getClickOutsideHandler = ({ show }, updateViewState) => {
 	return show
@@ -91,6 +90,9 @@ export const getClickOutsideHandler = ({ show }, updateViewState) => {
 };
 
 export const About = ({ currentApplication }) => {
+	const lang = document.documentElement.lang;
+	const classes = useStyles({ lang });
+
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
 	const version = useSelector(getVersionSelector);
 	const locale = useSelector(currentLocaleOrDefault);
@@ -98,12 +100,12 @@ export const About = ({ currentApplication }) => {
 	const aboutLinkUrl = "https://www.orckestra.com".concat(locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "");
 
 	return (
-		<AboutBox in={viewState.show} onClickOutside={closeAboutBox}>
-			<CloseButton onClick={closeAboutBox}>
+		<AboutBox className={`${viewState.show ? "enter-active" : "exit-active"}`} onClickOutside={closeAboutBox}>
+			<p className={classes.closeButton} onClick={closeAboutBox}>
 				<img src={close} alt="X" />
-			</CloseButton>
+			</p>
 			<img src={logoImage} width="250" alt="Orckestra" />
-			<AboutParagraph>
+			<p className={classes.aboutParagraph}>
 				<Text
 					message={{
 						...sharedMessages.ccVersion,
@@ -155,16 +157,16 @@ export const About = ({ currentApplication }) => {
 							/>,
 						]
 					: null}
-			</AboutParagraph>
-			<AboutParagraph long>
+			</p>
+			<p className={classes.longAboutParagraph}>
 				<Text message={sharedMessages.copyrightTermsNotice} />
-			</AboutParagraph>
-			<AboutParagraph>
-				<AboutLink href={aboutLinkUrl} target="_blank">
+			</p>
+			<p className={classes.aboutParagraph}>
+				<a className={classes.aboutLink} href={aboutLinkUrl} target="_blank" rel="noreferrer">
 					<Text message={sharedMessages.ccName} />
-				</AboutLink>
-			</AboutParagraph>
-			<AboutParagraph>
+				</a>
+			</p>
+			<p className={classes.aboutParagraph}>
 				<Text
 					message={{
 						...sharedMessages.copyright,
@@ -175,7 +177,7 @@ export const About = ({ currentApplication }) => {
 				/>
 				<br />
 				<Text message={sharedMessages.allRightsReserved} />
-			</AboutParagraph>
+			</p>
 		</AboutBox>
 	);
 };
