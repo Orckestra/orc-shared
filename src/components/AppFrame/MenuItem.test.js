@@ -101,7 +101,9 @@ describe("MenuItem", () => {
 			<MemoryRouter>
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
-					<Ignore />
+					<div className="show">
+						<div></div>
+					</div>
 					<span>Test</span>
 				</Link>
 			</MemoryRouter>,
@@ -119,7 +121,9 @@ describe("MenuItem", () => {
 			<MemoryRouter>
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
-					<Ignore />
+					<div className="show">
+						<div></div>
+					</div>
 					<span>Test</span>
 				</Link>
 			</MemoryRouter>,
