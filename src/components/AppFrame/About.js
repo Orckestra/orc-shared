@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useSelector } from "react-redux";
+import { FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/core/styles";
-import Text from "../Text";
 import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
@@ -64,7 +64,7 @@ const useStyles = makeStyles(() => ({
 	},
 	longAboutParagraph: props => ({
 		marginTop: "20px",
-		fontSize: props.lang?.startsWith("fr") ? "10px" : undefined,
+		fontSize: props.lang?.toLowerCase().startsWith("fr") ? "10px" : undefined,
 	}),
 }));
 
@@ -106,77 +106,53 @@ export const About = ({ currentApplication }) => {
 			</p>
 			<img src={logoImage} width="250" alt="Orckestra" />
 			<p className={classes.aboutParagraph}>
-				<Text
-					message={{
-						...sharedMessages.ccVersion,
-						values: { version: version },
-					}}
-				/>
+				<FormattedMessage {...sharedMessages.ccVersion} values={{ version: version }} />
 				{currentApplication && currentApplication.displayName
-					? [
-							<br key="application-br" />,
-							<Text
-								key="application-version"
-								message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
-							/>,
-						]
+					? [<br key="application-br" />, currentApplication.displayName.concat(" ", window.BUILD_NUMBER)]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-shared"]
 					? [
 							<br key="orc-shared-br" />,
-							<Text
+							<FormattedMessage
 								key="orc-shared-version"
-								message={{
-									...sharedMessages.orcSharedVersion,
-									values: { version: trimStart(DEPENDENCIES["orc-shared"], "^") },
-								}}
+								{...sharedMessages.orcSharedVersion}
+								values={{ version: trimStart(DEPENDENCIES["orc-shared"], "^") }}
 							/>,
 						]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-scripts"]
 					? [
 							<br key="orc-scripts-br" />,
-							<Text
+							<FormattedMessage
 								key="orc-scripts-version"
-								message={{
-									...sharedMessages.orcScriptsVersion,
-									values: { version: trimStart(DEPENDENCIES["orc-scripts"], "^") },
-								}}
+								{...sharedMessages.orcScriptsVersion}
+								values={{ version: trimStart(DEPENDENCIES["orc-scripts"], "^") }}
 							/>,
 						]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-secret"]
 					? [
 							<br key="orc-secret-br" />,
-							<Text
+							<FormattedMessage
 								key="orc-secret-version"
-								message={{
-									...sharedMessages.orcSecretVersion,
-									values: { version: trimStart(DEPENDENCIES["orc-secret"], "^") },
-								}}
+								{...sharedMessages.orcSecretVersion}
+								values={{ version: trimStart(DEPENDENCIES["orc-secret"], "^") }}
 							/>,
 						]
 					: null}
 			</p>
 			<p className={classes.longAboutParagraph}>
-				<Text message={sharedMessages.copyrightTermsNotice} />
+				<FormattedMessage {...sharedMessages.copyrightTermsNotice} />
 			</p>
 			<p className={classes.aboutParagraph}>
 				<a className={classes.aboutLink} href={aboutLinkUrl} target="_blank" rel="noreferrer">
-					<Text message={sharedMessages.ccName} />
+					<FormattedMessage {...sharedMessages.ccName} />
 				</a>
 			</p>
 			<p className={classes.aboutParagraph}>
-				<Text
-					message={{
-						...sharedMessages.copyright,
-						values: {
-							year: new Date().getFullYear(),
-						},
-					}}
-				/>
+				<FormattedMessage {...sharedMessages.copyright} values={{ year: new Date().getFullYear() }} />
 				<br />
-				<Text message={sharedMessages.allRightsReserved} />
+				<FormattedMessage {...sharedMessages.allRightsReserved} />
 			</p>
 		</AboutBox>
 	);

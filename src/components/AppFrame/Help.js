@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		paddingRight: "10px",
 		textDecoration: "none",
 		"&:hover": {
-			color: theme.palette.primary.main,
+			color: theme.palette.primary.light,
 		},
 	},
 }));

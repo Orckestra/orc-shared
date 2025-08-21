@@ -112,7 +112,7 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 				onClick={reset}
 			/>
 			<Sidebar {...{ open, toggle, modules: menuItemFromModules, activeModules }} />
-			<div onClick={reset} className={classes.viewPort}>
+			<div onClick={reset} className={classes.viewPort} data-test-id="viewport">
 				{noScope && !forceShowScope.includes(moduleName) ? (
 					<React.Fragment>
 						<ScopeBar />

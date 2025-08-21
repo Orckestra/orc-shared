@@ -3,7 +3,6 @@ import Immutable from "immutable";
 import { RSAA } from "redux-api-middleware";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { getStyledClassSelector } from "../../utils/testUtils";
 import { CHANGE_LOCALE } from "../../actions/locale";
 import {
 	SET_DEFAULT_LANGUAGE_REQUEST,
@@ -16,20 +15,13 @@ import {
 	SET_MY_APPLICATION_FAILURE,
 } from "../../actions/applications";
 import { setValue } from "../../actions/view";
-import Preferences, {
-	Header,
-	PrefForm,
-	Footer,
-	PrefButton,
-	PREFS_NAME,
-	clickOutsideHandler,
-	stateEventUpdater,
-} from "./Preferences";
+import Preferences, { PREFS_NAME, clickOutsideHandler, stateEventUpdater } from "./Preferences";
 import { RESET_VERSION_INFO } from "../../actions/versionInfo";
 import { extractMessages, TestWrapper } from "./../../utils/testUtils";
 import sharedMessages from "./../../sharedMessages";
 import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
 import InformationItem from "../MaterialUI/DataDisplay/PredefinedElements/InformationItem";
+import Button from "@material-ui/core/Button";
 
 const messages = extractMessages(sharedMessages);
 
@@ -160,28 +152,30 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(PrefButton) + ":last-child",
+						target: "#savePrefs",
 					},
 					"to satisfy",
 					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
 						<div>
 							<div>
 								<div>
-									<Header>{stringifyWithoutQuotes(messages["orc-shared.preferences"])}</Header>
-									<PrefForm>
+									<div>{stringifyWithoutQuotes(messages["orc-shared.preferences"])}</div>
+									<div>
 										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
 										</InformationItem>
 										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
 										</InformationItem>
-									</PrefForm>
-									<Footer>
-										<PrefButton id="cancelPrefs">{stringifyWithoutQuotes(messages["orc-shared.cancel"])}</PrefButton>
-										<PrefButton id="savePrefs" primary>
+									</div>
+									<div>
+										<Button id="cancelPrefs" variant="outlined">
+											{stringifyWithoutQuotes(messages["orc-shared.cancel"])}
+										</Button>
+										<Button id="savePrefs" variant="outlined" color="primary">
 											{stringifyWithoutQuotes(messages["orc-shared.save"])}
-										</PrefButton>
-									</Footer>
+										</Button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -213,7 +207,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(PrefButton) + ":last-child",
+						target: "#savePrefs",
 					},
 					"to satisfy",
 					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
@@ -221,14 +215,14 @@ describe("Preferences", () => {
 							<div>
 								<div>
 									<Ignore />
-									<PrefForm>
+									<div>
 										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
 										</InformationItem>
 										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
 										</InformationItem>
-									</PrefForm>
+									</div>
 									<Ignore />
 								</div>
 							</div>
@@ -324,7 +318,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(PrefButton) + ":last-child",
+						target: "#savePrefs",
 					},
 					"to satisfy",
 					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
@@ -332,14 +326,14 @@ describe("Preferences", () => {
 							<div>
 								<div>
 									<Ignore />
-									<PrefForm>
+									<div>
 										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
 										</InformationItem>
 										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
 										</InformationItem>
-									</PrefForm>
+									</div>
 									<Ignore />
 								</div>
 							</div>
@@ -399,7 +393,7 @@ describe("Preferences", () => {
 					"with event",
 					{
 						type: "click",
-						target: getStyledClassSelector(PrefButton) + ":first-child",
+						target: "#cancelPrefs",
 					},
 					"to satisfy",
 					<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
@@ -407,14 +401,14 @@ describe("Preferences", () => {
 							<div>
 								<div>
 									<Ignore />
-									<PrefForm>
+									<div>
 										<InformationItem label={sharedMessages.displayLanguage}>
 											<Ignore />
 										</InformationItem>
 										<InformationItem label={sharedMessages.defaultApp}>
 											<Ignore />
 										</InformationItem>
-									</PrefForm>
+									</div>
 									<Ignore />
 								</div>
 							</div>
@@ -457,14 +451,14 @@ describe("Preferences", () => {
 						<div>
 							<div>
 								<Ignore />
-								<PrefForm>
+								<div>
 									<InformationItem label={sharedMessages.displayLanguage}>
 										<Ignore />
 									</InformationItem>
 									<InformationItem label={sharedMessages.defaultApp}>
 										<Ignore />
 									</InformationItem>
-								</PrefForm>
+								</div>
 								<Ignore />
 							</div>
 						</div>

@@ -97,7 +97,7 @@ const Topbar = ({ applications, applicationId, currentApplication, onClick, help
 	const classes = useStyles();
 
 	return (
-		<div onClick={onClick} className={classes.wrapper}>
+		<div onClick={onClick} className={classes.wrapper} data-test-id="wrapper">
 			<div className={classes.appBox}>
 				<ApplicationSelector
 					{...{
