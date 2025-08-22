@@ -109,7 +109,7 @@ const MenuItem = ({ open = false, label = "", icon, alert, isHidden = false, hre
 	}
 
 	if (isHidden) {
-		return null;
+		return false;
 	}
 
 	const ItemWrapper = menuToggle ? "a" : FilteredLink;
