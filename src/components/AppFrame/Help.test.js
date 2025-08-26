@@ -2,7 +2,7 @@ import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
-import Help, { HelpLink } from "./Help";
+import Help from "./Help";
 import { extractMessages } from "./../../utils/testUtils";
 import sharedMessages from "./../../sharedMessages";
 import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
@@ -50,7 +50,7 @@ describe("Help", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<HelpLink href="any_help_url.com">{stringifyWithoutQuotes(messages["orc-shared.help"])}</HelpLink>,
+			<a href="any_help_url.com">{stringifyWithoutQuotes(messages["orc-shared.help"])}</a>,
 		));
 
 	it("sets css for help button ", () =>
@@ -62,6 +62,6 @@ describe("Help", () => {
 			</Provider>,
 			"when mounted",
 			"to have style rules satisfying",
-			expect.it("to contain", "cursor: pointer;").and("to contain", ":hover {color: #cccccc;}"),
+			expect.it("to contain", "cursor: pointer;").and("to contain", ":hover {color: #7986cb;}"),
 		));
 });

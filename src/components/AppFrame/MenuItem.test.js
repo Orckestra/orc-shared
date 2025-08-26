@@ -1,11 +1,14 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
 import { MemoryRouter } from "react-router-dom";
 import { Ignore } from "unexpected-reaction";
-import MenuItem, { Block, MenuIcon, Label, Alert, AlertMessage } from "./MenuItem";
+import MenuItem from "./MenuItem";
+import { Link } from "react-router-dom";
+import Icon from "../MaterialUI/DataDisplay/Icon";
+import sharedMessages from "./../../sharedMessages";
+import { extractMessages, TestWrapper } from "./../../utils/testUtils";
 
-const BlockWithA = Block.withComponent("a");
+const messages = extractMessages(sharedMessages);
 
 describe("MenuItem", () => {
 	let store = {
@@ -24,10 +27,11 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" data-test-id="test" to="/foo/test">
-					<MenuIcon id="cake" />
+				<Link id="test" data-test-id="test" to="/foo/test">
+					<Icon id="cake" />
 					<Ignore />
-				</Block>
+					<Ignore />
+				</Link>
 			</MemoryRouter>,
 		));
 
@@ -41,10 +45,11 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<BlockWithA id="test" menuToggle>
-					<MenuIcon id="cake" />
+				<a id="test">
+					<Icon id="cake" />
 					<Ignore />
-				</BlockWithA>
+					<Ignore />
+				</a>
 			</MemoryRouter>,
 		));
 
@@ -58,10 +63,11 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Label>Test</Label>
-				</Block>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<Ignore />
+					<span>Test</span>
+				</Link>
 			</MemoryRouter>,
 		));
 
@@ -75,12 +81,11 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Label show>
-						<Ignore />
-					</Label>
-				</Block>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<Ignore />
+					<span></span>
+				</Link>
 			</MemoryRouter>,
 		));
 
@@ -94,11 +99,13 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Alert />
-					<Label>Test</Label>
-				</Block>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<div className="show">
+						<div></div>
+					</div>
+					<span>Test</span>
+				</Link>
 			</MemoryRouter>,
 		));
 
@@ -112,11 +119,13 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Alert type="confirm" />
-					<Label>Test</Label>
-				</Block>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<div className="show">
+						<div></div>
+					</div>
+					<span>Test</span>
+				</Link>
 			</MemoryRouter>,
 		));
 
@@ -130,13 +139,13 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Alert>
-						<AlertMessage in>Test message</AlertMessage>
-					</Alert>
-					<Label>Test</Label>
-				</Block>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<div>
+						<div className="show">Test message</div>
+					</div>
+					<span>Test</span>
+				</Link>
 			</MemoryRouter>,
 		));
 
@@ -156,15 +165,13 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Alert type="warn">
-						<AlertMessage in type="warn">
-							Test message
-						</AlertMessage>
-					</Alert>
-					<Label>Test</Label>
-				</Block>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<div>
+						<div className="show">Test message</div>
+					</div>
+					<span>Test</span>
+				</Link>
 			</MemoryRouter>,
 		));
 
@@ -192,31 +199,27 @@ describe("MenuItem", () => {
 		const hide = state => false;
 
 		expect(
-			<Provider store={store}>
-				<MemoryRouter>
-					<MenuItem
-						id="test"
-						href="/foo/test"
-						icon="cake"
-						label="Test"
-						alert={{ message: "Test message", type: "warn" }}
-						hide={hide}
-					/>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} memoryRouter>
+				<MenuItem
+					id="test"
+					href="/foo/test"
+					icon="cake"
+					label={{ id: "Test", defaultMessage: "Test" }}
+					alert={{ message: "Test message", type: "warn" }}
+					hide={hide}
+				/>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Alert type="warn">
-						<AlertMessage in type="warn">
-							Test message
-						</AlertMessage>
-					</Alert>
-					<Label>Test</Label>
-				</Block>
-			</MemoryRouter>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} memoryRouter>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<div>
+						<div className="show">Test message</div>
+					</div>
+					<span>Test</span>
+				</Link>
+			</TestWrapper>,
 		);
 	});
 
@@ -237,108 +240,14 @@ describe("MenuItem", () => {
 			"when mounted",
 			"to satisfy",
 			<MemoryRouter>
-				<Block id="test" to="/foo/test">
-					<MenuIcon id="cake" />
-					<Alert type="warn">
-						<AlertMessage in type="warn">
-							Test message
-						</AlertMessage>
-					</Alert>
-					<Label>Test</Label>
-				</Block>
+				<Link id="test" to="/foo/test">
+					<Icon id="cake" />
+					<div>
+						<div className="show">Test message</div>
+					</div>
+					<span>Test</span>
+				</Link>
 			</MemoryRouter>,
 		);
-	});
-
-	describe("Block", () => {
-		it("sets text color to highlight if active", () =>
-			expect(
-				<MemoryRouter>
-					<Block to="" active />
-				</MemoryRouter>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"color: #ffffff;",
-			));
-
-		it("sets text color to grey if not active", () =>
-			expect(
-				<MemoryRouter>
-					<Block to="" />
-				</MemoryRouter>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"color: #999999;",
-			));
-
-		it("adds a hover rule if menu flag is unset", () =>
-			expect(
-				<MemoryRouter>
-					<Block to="" />
-				</MemoryRouter>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to match",
-				/:hover\s*\{[^}]*\bcolor: #ffffff;[^}]*\}/,
-			));
-
-		it("does not add a hover rule if menuToggle flag is set", () =>
-			expect(
-				<MemoryRouter>
-					<Block to="" menuToggle />
-				</MemoryRouter>,
-				"when mounted",
-				"to have style rules satisfying",
-				"not to match",
-				/:hover\s*\{[^}]*\bcolor: #ffffff;[^}]*\}/,
-			));
-	});
-
-	describe("Label", () => {
-		it("sets full opacity if open", () =>
-			expect(<Label show />, "when mounted", "to have style rules satisfying", "to contain", "opacity: 1;"));
-
-		it("sets zero opacity if not open", () =>
-			expect(<Label />, "when mounted", "to have style rules satisfying", "to contain", "opacity: 0;"));
-	});
-
-	describe("Alert", () => {
-		it("has a default color (red)", () =>
-			expect(<Alert />, "when mounted", "to have style rules satisfying", "to match", /border: \d+px solid red/));
-
-		it("has a default color", () =>
-			expect(
-				<ThemeProvider theme={{ colors: { toasts: { test: "blue" } } }}>
-					<Alert type="test" />
-				</ThemeProvider>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to match",
-				/border: \d+px solid blue/,
-			));
-	});
-
-	describe("AlertMessage", () => {
-		it("has a default color (red)", () =>
-			expect(
-				<AlertMessage in message="Test" />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"background-color: red",
-			));
-
-		it("has a default color", () =>
-			expect(
-				<ThemeProvider theme={{ colors: { toasts: { test: "blue" } } }}>
-					<AlertMessage in message="Test" type="test" />
-				</ThemeProvider>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"background-color: blue",
-			));
 	});
 });

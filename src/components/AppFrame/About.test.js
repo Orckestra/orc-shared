@@ -6,13 +6,14 @@ import sinon from "sinon";
 import bgImage from "../../content/aboutBackground.png";
 import logoImage from "../../content/aboutLogo.png";
 import close from "../../content/close.png";
-import { ABOUT_NAME, AboutBox, AboutParagraph, AboutLink, About, getClickOutsideHandler, CloseButton } from "./About";
+import { ABOUT_NAME, AboutBox, About, getClickOutsideHandler } from "./About";
 import { setStateField } from "../../actions/view";
-import { extractMessages } from "./../../utils/testUtils";
+import { extractMessages, TestWrapper } from "./../../utils/testUtils";
 import sharedMessages from "./../../sharedMessages";
 import { stringifyWithoutQuotes } from "./../../utils/parseHelper";
 
 const messages = extractMessages(sharedMessages);
+
 describe("About", () => {
 	let state, store;
 	const ccVersion = "5.1.9.5";
@@ -48,20 +49,18 @@ describe("About", () => {
 		};
 		global.BUILD_NUMBER = "2.3.2";
 		expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<About viewState={{ show: true }} currentApplication={{ displayName: "An application" }} />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<About currentApplication={{ displayName: "An application" }} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US" messages={messages}>
-				<AboutBox in>
-					<CloseButton>
+			<TestWrapper intlProvider={{ messages }} stylesProvider>
+				<AboutBox className="enter-active">
+					<p>
 						<img src={close} alt="X" />
-					</CloseButton>
+					</p>
 					<img src={logoImage} alt="Orckestra" />
-					<AboutParagraph>
+					<p>
 						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
 						<br />
 						An application 2.3.2
@@ -71,20 +70,68 @@ describe("About", () => {
 						{stringifyWithoutQuotes(messages["orc-shared.orcScriptsVersion"]).replace("{version}", orcScriptsVersion)}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.orcSecretVersion"]).replace("{version}", orcSecretVersion)}
-					</AboutParagraph>
-					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
-					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com">
-							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
-						</AboutLink>
-					</AboutParagraph>
-					<AboutParagraph>
+					</p>
+					<p>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</p>
+					<p>
+						<a href="https://www.orckestra.com">{stringifyWithoutQuotes(messages["orc-shared.ccName"])}</a>
+					</p>
+					<p>
 						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
-					</AboutParagraph>
+					</p>
 				</AboutBox>
-			</IntlProvider>,
+			</TestWrapper>,
+		);
+	});
+
+	it("renders a closed about box", () => {
+		const orcSharedVersion = "2.9.0";
+		const orcScriptsVersion = "1.2.3";
+		const orcSecretVersion = "5.1.7";
+
+		global.DEPENDENCIES = {
+			"orc-scripts": orcScriptsVersion,
+			"orc-secret": orcSecretVersion,
+			"orc-shared": orcSharedVersion,
+		};
+		global.BUILD_NUMBER = "2.3.2";
+		state = state.setIn(["view", ABOUT_NAME, "show"], false);
+
+		expect(
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<About currentApplication={{ displayName: "An application" }} />
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper intlProvider={{ messages }} stylesProvider>
+				<AboutBox className="exit-active">
+					<p>
+						<img src={close} alt="X" />
+					</p>
+					<img src={logoImage} alt="Orckestra" />
+					<p>
+						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
+						<br />
+						An application 2.3.2
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.orcSharedVersion"]).replace("{version}", orcSharedVersion)}
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.orcScriptsVersion"]).replace("{version}", orcScriptsVersion)}
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.orcSecretVersion"]).replace("{version}", orcSecretVersion)}
+					</p>
+					<p>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</p>
+					<p>
+						<a href="https://www.orckestra.com">{stringifyWithoutQuotes(messages["orc-shared.ccName"])}</a>
+					</p>
+					<p>
+						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
+						<br />
+						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
+					</p>
+				</AboutBox>
+			</TestWrapper>,
 		);
 	});
 
@@ -100,20 +147,18 @@ describe("About", () => {
 		};
 		global.BUILD_NUMBER = "2.3.2";
 		expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<About viewState={{ show: true }} currentApplication={{ displayName: "An application" }} />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<About currentApplication={{ displayName: "An application" }} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US" messages={messages}>
-				<AboutBox in>
-					<CloseButton>
+			<TestWrapper intlProvider={{ messages }} stylesProvider>
+				<AboutBox className="enter-active">
+					<p>
 						<img src={close} alt="X" />
-					</CloseButton>
+					</p>
 					<img src={logoImage} alt="Orckestra" />
-					<AboutParagraph>
+					<p>
 						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
 						<br />
 						An application 2.3.2
@@ -132,20 +177,18 @@ describe("About", () => {
 							"{version}",
 							orcSecretVersion.replace("^", ""),
 						)}
-					</AboutParagraph>
-					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
-					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com">
-							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
-						</AboutLink>
-					</AboutParagraph>
-					<AboutParagraph>
+					</p>
+					<p>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</p>
+					<p>
+						<a href="https://www.orckestra.com">{stringifyWithoutQuotes(messages["orc-shared.ccName"])}</a>
+					</p>
+					<p>
 						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
-					</AboutParagraph>
+					</p>
 				</AboutBox>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 
@@ -153,95 +196,90 @@ describe("About", () => {
 		expect(
 			<Provider store={store}>
 				<IntlProvider locale="en-US" messages={messages}>
-					<About viewState={{ show: true }} />
+					<About />
 				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"with event",
 			{ type: "click", target: '[alt="X"]' },
-		).then(() =>
-			expect(store.dispatch, "to have calls satisfying", [{ args: [setStateField(ABOUT_NAME, "show", false)] }]),
+		).then(
+			() => expect(store.dispatch, "to have calls satisfying", [{ args: [setStateField(ABOUT_NAME, "show", false)] }]),
+			expect.it("to have class", "exit-active"),
 		));
 
 	it("renders an about box with messages and background images but without versions", () => {
 		global.DEPENDENCIES = {};
 		global.BUILD_NUMBER = null;
 		expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<About viewState={{ show: true }} />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<About />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 
-			<IntlProvider locale="en-US" messages={messages}>
-				<AboutBox in>
-					<CloseButton>
+			<TestWrapper intlProvider={{ messages }} stylesProvider>
+				<AboutBox className="enter-active">
+					<p>
 						<img src={close} alt="X" />
-					</CloseButton>
+					</p>
 					<img src={logoImage} alt="Orckestra" />
-					<AboutParagraph>
-						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
-					</AboutParagraph>
-					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
-					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com">
-							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
-						</AboutLink>
-					</AboutParagraph>
-					<AboutParagraph>
+					<p>{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}</p>
+					<p>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</p>
+					<p>
+						<a href="https://www.orckestra.com">{stringifyWithoutQuotes(messages["orc-shared.ccName"])}</a>
+					</p>
+					<p>
 						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
-					</AboutParagraph>
+					</p>
 				</AboutBox>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 
 	it("renders an about box with about ling to the french version of the web site.", () => {
 		state = state.setIn(["locale", "locale"], "FR-FR");
+
+		Object.defineProperty(document.documentElement, "lang", {
+			value: "FR-FR",
+			configurable: true,
+		});
+
 		expect(
-			<Provider store={store}>
-				<IntlProvider locale="en-US" messages={messages}>
-					<About viewState={{ show: true }} />
-				</IntlProvider>
-			</Provider>,
+			<TestWrapper provider={{ store }} intlProvider={{ messages }} stylesProvider>
+				<About />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<IntlProvider locale="en-US" messages={messages}>
-				<AboutBox in>
-					<CloseButton>
+			<TestWrapper intlProvider={{ messages }} stylesProvider>
+				<AboutBox className="enter-active">
+					<p>
 						<img src={close} alt="X" />
-					</CloseButton>
+					</p>
 					<img src={logoImage} alt="Orckestra" />
-					<AboutParagraph>
-						{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}
-					</AboutParagraph>
-					<AboutParagraph long>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</AboutParagraph>
-					<AboutParagraph>
-						<AboutLink href="https://www.orckestra.com/fr">
-							{stringifyWithoutQuotes(messages["orc-shared.ccName"])}
-						</AboutLink>
-					</AboutParagraph>
-					<AboutParagraph>
+					<p>{stringifyWithoutQuotes(messages["orc-shared.ccVersion"]).replace("{version}", ccVersion)}</p>
+					<p>{stringifyWithoutQuotes(messages["orc-shared.copyrightTermsNotice"])}</p>
+					<p>
+						<a href="https://www.orckestra.com/fr">{stringifyWithoutQuotes(messages["orc-shared.ccName"])}</a>
+					</p>
+					<p>
 						{stringifyWithoutQuotes(messages["orc-shared.copyright"]).replace("{year}", new Date().getFullYear())}
 						<br />
 						{stringifyWithoutQuotes(messages["orc-shared.allRightsReserved"])}
-					</AboutParagraph>
+					</p>
 				</AboutBox>
-			</IntlProvider>,
+			</TestWrapper>,
 		);
 	});
 
 	describe("AboutBox", () => {
 		it("has a background image", () =>
-			expect(<AboutBox in />, "when mounted", "to have style rules satisfying", "to contain", bgImage));
+			expect(<AboutBox />, "when mounted", "to have style rules satisfying", "to contain", bgImage));
 
 		it("renders an opacity-transitioning box", () =>
 			expect(
-				<AboutBox in />,
+				<AboutBox />,
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",

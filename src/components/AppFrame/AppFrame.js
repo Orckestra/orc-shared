@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 import { useIntl } from "react-intl";
 import pt from "prop-types";
-import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
-import { ifFlag, getThemeProp, unwrapImmutable } from "../../utils";
+import { makeStyles } from "@material-ui/core/styles";
+import { unwrapImmutable } from "../../utils";
 import { getApplications } from "../../actions/applications";
 import useToggle from "../../hooks/useToggle";
 import useLoader from "../../hooks/useLoader";
@@ -25,42 +25,36 @@ import sharedMessages from "../../sharedMessages";
 import ActionModal from "../MaterialUI/DataDisplay/PredefinedElements/ActionModal";
 import { logoutSelector } from "../../selectors/requests";
 
-export const Base = styled.div`
-	background-color: ${getThemeProp(["colors", "bgDark"], "#333333")};
-	height: 100%;
-	overflow: hidden;
-	${ifFlag(
-		"preferencesOpen",
-		css`
-			pointer-events: none;
-		`,
-	)};
-`;
-
-export const ViewPort = styled.div`
-	overflow: hidden;
-	background-color: white;
-	border-top-left-radius: 10px;
-	height: calc(100% - 40px);
-	width: calc(100% - 50px);
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	display: flex;
-	flex-direction: column;
-	transition: width 0.3s ease-out;
-	${ifFlag(
-		"open",
-		css`
-			width: calc(100% - 200px);
-		`,
-	)};
-`;
+const useStyles = makeStyles(theme => ({
+	base: props => ({
+		backgroundColor: theme.palette.grey.dark,
+		height: "100%",
+		overflow: "hidden",
+		pointerEvents: props.preferencesOpen ? "none" : undefined,
+	}),
+	viewPort: props => ({
+		overflow: "hidden",
+		backgroundColor: "white",
+		borderTopLeftRadius: "10px",
+		height: "calc(100% - 40px)",
+		position: "absolute",
+		bottom: 0,
+		right: 0,
+		display: "flex",
+		flexDirection: "column",
+		transition: "width 0.3s ease-out",
+		width: props.toggleOpen ? "calc(100% - 200px)" : "calc(100% - 50px)",
+	}),
+}));
 
 const getApp = (apps, id) => apps.filter(app => app.name === id)[0];
 
 const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, noScope, forceShowScope = [] }) => {
 	const { formatMessage } = useIntl();
+	const [prefViewState] = useViewState(PREFS_NAME);
+	const [open, toggle, reset] = useToggle(initOpen);
+
+	const classes = useStyles({ preferencesOpen: prefViewState.show, toggleOpen: open });
 
 	const locale = useSelector(currentLocale);
 	const needLogin = useSelector(logoutSelector);
@@ -68,7 +62,6 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 	const moduleName = useSelector(selectCurrentModuleName);
 	const [helpUrl] = useApplicationHelpUrl(applicationId);
 	useLoader(getApplications(), state => localizedAppSelector(state).size);
-	const [open, toggle, reset] = useToggle(initOpen);
 	const currentApplication = getApp(applications, applicationId);
 	useLoader(getVersionInfo(locale), () => locale === null || helpUrl !== null);
 
@@ -100,10 +93,8 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 		[modules],
 	);
 
-	const [prefViewState] = useViewState(PREFS_NAME);
-
 	return (
-		<Base preferencesOpen={prefViewState.show}>
+		<div className={classes.base}>
 			<ConnectedToastList />
 			<ActionModal
 				title={formatMessage(sharedMessages.error)}
@@ -121,7 +112,7 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 				onClick={reset}
 			/>
 			<Sidebar {...{ open, toggle, modules: menuItemFromModules, activeModules }} />
-			<ViewPort open={open} onClick={reset}>
+			<div onClick={reset} className={classes.viewPort} data-test-id="viewport">
 				{noScope && !forceShowScope.includes(moduleName) ? (
 					<React.Fragment>
 						<ScopeBar />
@@ -130,11 +121,11 @@ const AppFrame = ({ initOpen, applicationId, modules, activeModules, children, n
 				) : (
 					<Scope>{children}</Scope>
 				)}
-			</ViewPort>
+			</div>
 			<About currentApplication={currentApplication} />
 			<LoadingScreen />
 			<Preferences />
-		</Base>
+		</div>
 	);
 };
 AppFrame.displayName = "AppFrame";

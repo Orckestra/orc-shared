@@ -1,29 +1,32 @@
 import React from "react";
-import styled from "styled-components";
-import Text from "../Text";
-import { getThemeProp } from "../../utils";
+import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/core/styles";
 import sharedMessages from "./../../sharedMessages";
 
-export const HelpLink = styled.a`
-	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
-	font-size: 12px;
-	text-transform: uppercase;
-	color: ${getThemeProp(["colors", "textLight"], "#cccccc")};
-	width: 40px;
-	cursor: pointer;
-	padding-top: 14px;
-	padding-right: 10px;
-	text-decoration: none;
-	&:hover {
-		color: ${getThemeProp(["colors", "application", "base"], "#cccccc")};
-	}
-`;
+const useStyles = makeStyles(theme => ({
+	helpLink: {
+		fontFamily: theme.typography.button.fontFamily,
+		fontSize: "12px",
+		textTransform: "uppercase",
+		color: theme.palette.grey.borders,
+		width: "40px",
+		cursor: "pointer",
+		paddingTop: "14px",
+		paddingRight: "10px",
+		textDecoration: "none",
+		"&:hover": {
+			color: theme.palette.primary.light,
+		},
+	},
+}));
 
 const Help = ({ helpUrl }) => {
+	const classes = useStyles();
+
 	return (
-		<HelpLink href={helpUrl} target="_blank">
-			<Text message={sharedMessages.help} />
-		</HelpLink>
+		<a href={helpUrl} target="_blank" rel="noreferrer" className={classes.helpLink}>
+			<FormattedMessage {...sharedMessages.help} />
+		</a>
 	);
 };
 

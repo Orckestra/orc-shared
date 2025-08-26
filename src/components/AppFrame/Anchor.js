@@ -1,43 +1,41 @@
 import React from "react";
-import styled from "styled-components";
-import { getThemeProp, ifFlag } from "../../utils";
-import Icon from "../Icon";
+import { makeStyles } from "@material-ui/core/styles";
+import Icon from "../MaterialUI/DataDisplay/Icon";
 
-export const Header = styled.div`
-	display: flex;
-	cursor: pointer;
-	box-sizing: border-box;
-	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
-	font-size: 12px;
-	text-transform: uppercase;
-	height: 40px;
-	min-width: 180px;
-	padding-top: 14px;
-	padding-right: 14px;
-	color: ${ifFlag("open", getThemeProp(["colors", "application", "primary"], "#ccc"), "#ccc")};
+const useStyles = makeStyles(theme => ({
+	header: props => ({
+		display: "flex",
+		cursor: "pointer",
+		boxSizing: "border-box",
+		fontFamily: theme.typography.button.fontFamily,
+		fontSize: "12px",
+		textTransform: "uppercase",
+		height: "40px",
+		minWidth: "180px",
+		paddingTop: "14px",
+		paddingRight: "14px",
+		color: props.open ? theme.palette.primary.light : theme.palette.text.disabled,
 
-	&:hover {
-		color: ${getThemeProp(["colors", "application", "primary"], "#ccc")};
-	}
-`;
+		"&:hover": {
+			color: theme.palette.primary.light,
+		},
+	}),
+	indicator: props => ({
+		fontSize: "12px",
+		padding: "0 11px",
+		color: props.open ? theme.palette.text.disabled : theme.palette.primary.light,
+	}),
+}));
 
-export const Indicator = styled(Icon).attrs(props => ({
-	id: ifFlag(
-		"open",
-		getThemeProp(["icons", "indicators", "up"], "chevron-up"),
-		getThemeProp(["icons", "indicators", "down"], "chevron-down"),
-	)(props),
-}))`
-	font-size: 12px;
-	padding: 0 11px;
-	color: ${ifFlag("open", "#ccc", getThemeProp(["colors", "application", "primary"], "#ccc"))};
-`;
+const Anchor = ({ menuLabel, open }) => {
+	const classes = useStyles({ open });
 
-const Anchor = ({ menuLabel, open }) => (
-	<Header {...{ open }}>
-		{menuLabel}
-		<Indicator open={open} />
-	</Header>
-);
+	return (
+		<div className={classes.header}>
+			{menuLabel}
+			<Icon id={open ? "chevron-up" : "dropdown-chevron-down"} className={classes.indicator} />
+		</div>
+	);
+};
 
 export default Anchor;

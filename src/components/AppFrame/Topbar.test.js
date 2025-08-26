@@ -10,8 +10,7 @@ import { SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE } from "../../acti
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
-import Topbar, { Wrapper, AppBox, CurrentApp, AppLabel, AppLogo, useMenuProps } from "./Topbar";
-import { HelpLink } from "./Help";
+import Topbar, { CurrentApp, useMenuProps } from "./Topbar";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -76,17 +75,17 @@ describe("Topbar", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Wrapper onClick={clicker}>
-				<AppBox>
+			<div onClick={clicker}>
+				<div>
 					<ApplicationSelector {...props} />
-					<AppLabel>
-						<AppLogo src="/test/url" />
+					<div>
+						<img src="/test/url" />
 						Test label
-					</AppLabel>
-				</AppBox>
+					</div>
+				</div>
 				<Ignore />
-				<HelpLink>Help</HelpLink>
-			</Wrapper>,
+				<a>Help</a>
+			</div>,
 		));
 
 	it("doesn't break if no current app", () =>
@@ -98,16 +97,16 @@ describe("Topbar", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Wrapper onClick={clicker}>
-				<AppBox>
+			<div onClick={clicker}>
+				<div>
 					<Ignore />
-					<AppLabel>
-						<AppLogo />
-					</AppLabel>
-				</AppBox>
+					<div>
+						<img />
+					</div>
+				</div>
 				<Ignore />
-				<HelpLink>Help</HelpLink>
-			</Wrapper>,
+				<a>Help</a>
+			</div>,
 		));
 
 	it("doesn't break if no apps at all", () =>
@@ -119,16 +118,16 @@ describe("Topbar", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<Wrapper onClick={clicker}>
-				<AppBox>
+			<div onClick={clicker}>
+				<div>
 					<Ignore />
-					<AppLabel>
-						<AppLogo />
-					</AppLabel>
-				</AppBox>
+					<div>
+						<img />
+					</div>
+				</div>
 				<Ignore />
-				<HelpLink>Help</HelpLink>
-			</Wrapper>,
+				<a>Help</a>
+			</div>,
 		));
 });
 
@@ -239,9 +238,9 @@ describe("CurrentApp", () => {
 			<CurrentApp displayName="Test label" iconUri="/test/url" />,
 			"when mounted",
 			"to satisfy",
-			<AppLabel>
-				<AppLogo src="/test/url" />
+			<div>
+				<img src="/test/url" />
 				Test label
-			</AppLabel>,
+			</div>,
 		));
 });

@@ -1,147 +1,127 @@
 import React, { useRef } from "react";
-import styled, { css } from "styled-components";
-import transition from "styled-transition-group";
+import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import { getThemeProp, ifFlag } from "../../utils";
-import Text from "../Text";
-import Icon from "../Icon";
+import { FormattedMessage } from "react-intl";
+import Icon from "../MaterialUI/DataDisplay/Icon";
 
-const FilteredLink = ({ menuToggle, staticContext, dispatch, active, component, ...props }) => <Link {...props} />;
+const getToastColor = (theme, alertType) => {
+	const toastBorderColors = {
+		error: theme.palette.error.main,
+		warn: theme.palette.warning.main,
+		confirm: theme.palette.success.main,
+	};
+	return toastBorderColors[alertType] || "red";
+};
 
-export const Block = styled(FilteredLink)`
-	display: block;
-	position: relative;
-	padding: 0 10px;
-	margin-bottom: 35px;
-	color: ${ifFlag(
-		"active",
-		getThemeProp(["colors", "application", "highlight"]),
-		getThemeProp(["colors", "textMedium"], "#999999"),
-	)};
-	text-decoration: none;
-	cursor: pointer;
+const useStyles = makeStyles(theme => ({
+	block: props => ({
+		display: "block",
+		position: "relative",
+		padding: "0 10px",
+		marginBottom: "35px",
+		textDecoration: "none",
+		cursor: "pointer",
+		color: props.active ? theme.palette.primary.light : theme.palette.text.hint,
 
-	${ifFlag(
-		"menuToggle",
-		"",
-		css`
-			&:hover {
-				color: ${getThemeProp(["colors", "application", "highlight"], "#ffffff")};
-			}
-		`,
-	)};
-`;
+		"&:hover": {
+			color: props.menuToggle ? undefined : theme.palette.primary.light,
+		},
+	}),
+	alert: props => {
+		const toastColor = getToastColor(theme, props.alertType);
 
-export const BlockWithA = Block.withComponent("a");
+		return {
+			borderRadius: "50%",
+			border: `4px solid ${toastColor}`,
+			position: "absolute",
+			top: 0,
+			left: "27px",
+			visibility: "hidden",
 
-export const Alert = styled.div`
-	border-radius: 50%;
-	border: 4px solid ${getThemeProp(["colors", "toasts", props => props.type], "red")};
-	position: absolute;
-	top: 0;
-	left: 27px;
-`;
+			"&.show": {
+				visibility: "visible",
+			},
+		};
+	},
+	alertMessage: props => {
+		const toastColor = getToastColor(theme, props.alertType);
 
-const transformTime = ({ timeout }) => timeout;
-const opacityTime = ({ timeout }) => Math.round(timeout * 0.5);
-const opacityDelay = ({ timeout }) => Math.round(timeout * 0.25);
-// XXX: The below is a hack to get syntax highlighting in transition styles.
-// Adding the "transition" tag to styled-components tags would solve it.
-const alertStyling = css`
-	position: absolute;
-	z-index: 10000;
-	top: calc(-10px - 0.7em);
-	left: 22px;
-	width: auto;
-	width: max-content;
-	border-radius: 5px;
-	padding: 10px 15px;
-	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-	color: ${getThemeProp(["colors", "textWhite"], "#efefef")};
-	background-color: ${getThemeProp(["colors", "toasts", props => props.type], "red")};
-	font-size: 11px;
-	font-weight: bold;
-	line-height: 1.2;
+		return {
+			position: "absolute",
+			zIndex: 10000,
+			top: "calc(-10px - 0.7em)",
+			left: "22px",
+			width: "max-content",
+			borderRadius: "5px",
+			padding: "10px 15px",
+			boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.5)",
+			color: theme.palette.grey.light,
+			backgroundColor: toastColor,
+			fontSize: "11px",
+			fontWeight: "bold",
+			lineHeight: 1.2,
+			transition: `transform 200ms cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 100ms 50ms ease-out`,
+			opacity: 0.01,
+			transform: "translateX(-50%) scaleX(0)",
 
-	&::before {
-		content: "";
-		position: absolute;
-		top: calc(10px + 0.2em);
-		left: -0.9em;
-		border: solid transparent;
-		border-width: 0.4em 0.9em 0.4em 0;
-		border-right-color: ${getThemeProp(["colors", "toasts", props => props.type], "red")};
-	}
-`;
-const transitionStatement = css`
-	transition: transform ${transformTime}ms cubic-bezier(0.68, -0.55, 0.27, 1.55),
-		opacity ${opacityTime}ms ${opacityDelay}ms ease-out;
-`;
-export const AlertMessage = transition.div`
-	${alertStyling}
-	${transitionStatement}
+			"&::before": {
+				content: "",
+				position: "absolute",
+				top: "calc(10px + 0.2em)",
+				left: "-0.9em",
+				border: "solid transparent",
+				borderWidth: "0.4em 0.9em 0.4em 0",
+				borderRightColor: toastColor,
+			},
 
-	&:enter {
-		opacity: 0.01;
-		transform: translateX(-50%) scaleX(0);
-	}
-	&:enter-active {
-		opacity: 1;
-		transform: translateX(0) scaleX(1);
-	}
-	&:exit {
-		opacity: 1;
-		transform: translateX(0) scaleX(1);
-	}
-	&:exit-active {
-		opacity: 0.01;
-		transform: translateX(-50%) scaleX(0);
-	}
-`;
-AlertMessage.defaultProps = { timeout: 200, unmountOnExit: true, appear: true };
+			"&.show": {
+				opacity: 1,
+				transform: "translateX(0) scaleX(1)",
+			},
+		};
+	},
+	menuIcon: props => ({
+		fontSize: "24px",
+		verticalAlign: "middle",
+		color: props.active ? theme.palette.primary.light : theme.palette.text.hint,
+	}),
+	label: props => ({
+		fontFamily: theme.typography.button.fontFamily,
+		fontSize: "13px",
+		verticalAlign: "middle",
+		textTransform: "uppercase",
+		paddingLeft: "10px",
+		transition: "opacity 0.3s ease-out",
+		opacity: props.showLabel ? 1 : 0,
+	}),
+}));
 
-export const MenuIcon = styled(Icon)`
-	font-size: 24px;
-	vertical-align: middle;
-`;
+const FilteredLink = ({ staticContext, dispatch, component, ...props }) => <Link {...props} />;
 
-export const Label = styled.span`
-	font-family: ${getThemeProp(["fonts", "header"], "sans-serif")};
-	font-size: 13px;
-	vertical-align: middle;
-	text-transform: uppercase;
-	padding-left: 10px;
+const MenuItem = ({ open = false, label = "", icon, alert, isHidden = false, href, menuToggle, active, ...props }) => {
+	const classes = useStyles({ active: active, menuToggle: menuToggle, alertType: alert?.type, showLabel: open });
 
-	transition: opacity 0.3s ease-out;
-	opacity: ${ifFlag("show", 1, 0)};
-`;
-
-const MenuItem = ({ open = false, label = "", icon, alert, isHidden = false, href, ...props }) => {
-	let ItemWrapper = Block;
-	if (props.menuToggle) {
-		ItemWrapper = BlockWithA;
-	}
 	const alertMessage = useRef("");
-	if (alert && alert.message) {
+	const showAlert = !!alert;
+	const showAlertMessage = !!alert?.message;
+	if (showAlert && showAlertMessage) {
 		alertMessage.current = alert.message;
 	}
 
+	if (isHidden) {
+		return false;
+	}
+
+	const ItemWrapper = menuToggle ? "a" : FilteredLink;
+
 	return (
-		!isHidden && (
-			<ItemWrapper to={href} {...props}>
-				<MenuIcon id={icon} />
-				{alert ? (
-					<Alert type={alert.type}>
-						<AlertMessage in={!!alert.message} type={alert.type}>
-							<Text message={alertMessage.current} />
-						</AlertMessage>
-					</Alert>
-				) : null}
-				<Label show={open}>
-					<Text message={label} />
-				</Label>
-			</ItemWrapper>
-		)
+		<ItemWrapper to={href} className={classes.block} {...props}>
+			<Icon id={icon} className={classes.menuIcon} />
+			<div className={`${classes.alert} ${showAlert ? "show" : undefined}`}>
+				<div className={`${classes.alertMessage} ${showAlertMessage ? "show" : undefined}`}>{alertMessage.current}</div>
+			</div>
+			<span className={classes.label}>{typeof label === "string" ? label : <FormattedMessage {...label} />}</span>
+		</ItemWrapper>
 	);
 };
 

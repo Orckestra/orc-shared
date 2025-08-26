@@ -1,28 +1,21 @@
 import React from "react";
 import Immutable from "immutable";
-import { ThemeProvider } from "styled-components";
 import { RSAA } from "redux-api-middleware";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
 import { mount, simulate } from "unexpected-reaction";
 import { mount as enzymeMount } from "enzyme";
-import { getStyledClassSelector } from "../../utils/testUtils";
-import I18n from "../I18n";
+import { TestWrapper, extractMessages } from "../../utils/testUtils";
 import {
 	GET_APPLICATIONS_REQUEST,
 	GET_APPLICATIONS_SUCCESS,
 	GET_APPLICATIONS_FAILURE,
 } from "../../actions/applications";
 import { ScopeBar, Bar as BarWrapper } from "../Scope";
-import AppFrame, { Base, ViewPort } from "./AppFrame";
+import AppFrame from "./AppFrame";
 import ApplicationSelector from "./ApplicationSelector";
-import { Wrapper, AppBox, AppLabel, AppLogo } from "./Topbar";
-import { Bar as SideBar, MenuToggle, Logo } from "./Sidebar";
-import { BlockWithA } from "./MenuItem";
-import { HelpLink } from "./Help";
-import { About } from "./About";
+import { MenuToggle, Logo } from "./Sidebar";
+import { ABOUT_NAME } from "./About";
 import {
 	GET_VERSION_INFO_FAILURE,
 	GET_VERSION_INFO_REQUEST,
@@ -32,6 +25,9 @@ import LoadingScreen from "../MaterialUI/Feedback/loadingScreen";
 import ActionModal from "../MaterialUI/DataDisplay/PredefinedElements/ActionModal";
 import sharedMessages from "../../sharedMessages";
 import Button from "@material-ui/core/Button";
+import Preferences from "./Preferences";
+
+const messages = extractMessages(sharedMessages);
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -212,7 +208,7 @@ describe("AppFrame", () => {
 			},
 			settings: { defaultScope: "myScope", defaultApp: "12" },
 			versionInfo: { version: "4.2", defaultHelpUrl: "help_url", moduleHelpUrls: [] },
-			view: { scopeSelector: { filter: "1" }, __prefsDialog: { show: false } },
+			view: { scopeSelector: { filter: "1" }, __prefsDialog: { show: false }, [ABOUT_NAME]: { show: true } },
 			toasts: { queue: [] },
 			requests: {
 				actives: Immutable.Map(),
@@ -241,51 +237,52 @@ describe("AppFrame", () => {
 		];
 		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<Base>
-							<Wrapper>
-								<AppBox>
-									<ApplicationSelector {...props} />
-									<AppLabel>
-										<AppLogo />
-										Marketing Legacy
-									</AppLabel>
-								</AppBox>
-								<Ignore />
-								<HelpLink>Help</HelpLink>
-							</Wrapper>
-							<SideBar>
-								<MenuToggle />
-								<Ignore />
-								<Ignore />
-								<Ignore />
-								<Logo />
-							</SideBar>
-							<ViewPort>
-								<ScopeBar name="Test 1" />
-								<TestComp1 key="1" />
-								<TestComp2 key="2" />
-								<TestComp3 key="3" />
-							</ViewPort>
-							<About messages={props.aboutMessages} />
-							<LoadingScreen />
-						</Base>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<div>
+							<ApplicationSelector {...props} />
+							<div>
+								<img />
+								Marketing Legacy
+							</div>
+						</div>
+						<Ignore />
+						<a>Help</a>
+					</div>
+					<div>
+						<MenuToggle />
+						<Ignore />
+						<Ignore />
+						<Ignore />
+						<Logo />
+					</div>
+					<div>
+						<ScopeBar name="Test 1" />
+						<TestComp1 key="1" />
+						<TestComp2 key="2" />
+						<TestComp3 key="3" />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 
 		expect(document.title, "to equal", "Marketing Legacy");
@@ -295,48 +292,49 @@ describe("AppFrame", () => {
 		props.modules = undefined;
 		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<Base>
-							<Wrapper>
-								<AppBox>
-									<ApplicationSelector {...props} />
-									<AppLabel>
-										<AppLogo />
-										Marketing Legacy
-									</AppLabel>
-								</AppBox>
-								<Ignore />
-								<HelpLink>Help</HelpLink>
-							</Wrapper>
-							<SideBar>
-								<MenuToggle />
-								<Logo />
-							</SideBar>
-							<ViewPort>
-								<ScopeBar name="Test 1" />
-								<TestComp1 key="1" />
-								<TestComp2 key="2" />
-								<TestComp3 key="3" />
-							</ViewPort>
-							<About messages={props.aboutMessages} />
-							<LoadingScreen />
-						</Base>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<div>
+							<ApplicationSelector {...props} />
+							<div>
+								<img />
+								Marketing Legacy
+							</div>
+						</div>
+						<Ignore />
+						<a>Help</a>
+					</div>
+					<div>
+						<MenuToggle />
+						<Logo />
+					</div>
+					<div>
+						<ScopeBar name="Test 1" />
+						<TestComp1 key="1" />
+						<TestComp2 key="2" />
+						<TestComp3 key="3" />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 
 		expect(document.title, "to equal", "Marketing Legacy");
@@ -350,50 +348,51 @@ describe("AppFrame", () => {
 		];
 		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame {...props} applicationId="other" />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} applicationId="other" />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<Base>
-							<Wrapper>
-								<AppBox>
-									<ApplicationSelector {...props} />
-									<AppLabel>
-										<AppLogo />
-									</AppLabel>
-								</AppBox>
-								<Ignore />
-								<HelpLink>Help</HelpLink>
-							</Wrapper>
-							<SideBar>
-								<MenuToggle />
-								<Ignore />
-								<Ignore />
-								<Ignore />
-								<Logo />
-							</SideBar>
-							<ViewPort>
-								<ScopeBar name="Test 1" />
-								<TestComp1 key="1" />
-								<TestComp2 key="2" />
-								<TestComp3 key="3" />
-							</ViewPort>
-							<About messages={props.aboutMessages} />
-							<LoadingScreen />
-						</Base>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<div>
+							<ApplicationSelector {...props} />
+							<div>
+								<img />
+							</div>
+						</div>
+						<Ignore />
+						<a>Help</a>
+					</div>
+					<div>
+						<MenuToggle />
+						<Ignore />
+						<Ignore />
+						<Ignore />
+						<Logo />
+					</div>
+					<div>
+						<ScopeBar name="Test 1" />
+						<TestComp1 key="1" />
+						<TestComp2 key="2" />
+						<TestComp3 key="3" />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 
 		expect(document.title, "to equal", "other");
@@ -408,50 +407,51 @@ describe("AppFrame", () => {
 		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		state = state.setIn(["applications", "list"], Immutable.fromJS([]));
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame {...props} applicationId="other" />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} applicationId="other" />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<Base>
-							<Wrapper>
-								<AppBox>
-									<ApplicationSelector {...props} />
-									<AppLabel>
-										<AppLogo />
-									</AppLabel>
-								</AppBox>
-								<Ignore />
-								<HelpLink>Help</HelpLink>
-							</Wrapper>
-							<SideBar>
-								<MenuToggle />
-								<Ignore />
-								<Ignore />
-								<Ignore />
-								<Logo />
-							</SideBar>
-							<ViewPort>
-								<ScopeBar name="Test 1" />
-								<TestComp1 key="1" />
-								<TestComp2 key="2" />
-								<TestComp3 key="3" />
-							</ViewPort>
-							<About messages={props.aboutMessages} />
-							<LoadingScreen />
-						</Base>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<div>
+							<ApplicationSelector {...props} />
+							<div>
+								<img />
+							</div>
+						</div>
+						<Ignore />
+						<a>Help</a>
+					</div>
+					<div>
+						<MenuToggle />
+						<Ignore />
+						<Ignore />
+						<Ignore />
+						<Logo />
+					</div>
+					<div>
+						<ScopeBar name="Test 1" />
+						<TestComp1 key="1" />
+						<TestComp2 key="2" />
+						<TestComp3 key="3" />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 
 		expect(document.title, "to equal", "other");
@@ -465,50 +465,52 @@ describe("AppFrame", () => {
 		];
 		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		return expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame noScope {...props} />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame noScope {...props} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<Base>
-							<Wrapper>
-								<AppBox>
-									<ApplicationSelector {...props} />
-									<AppLabel>
-										<AppLogo />
-										Marketing Legacy
-									</AppLabel>
-								</AppBox>
-								<Ignore />
-								<HelpLink>Help</HelpLink>
-							</Wrapper>
-							<SideBar>
-								<MenuToggle />
-								<Ignore />
-								<Ignore />
-								<Ignore />
-								<Logo />
-							</SideBar>
-							<ViewPort>
-								<BarWrapper />
-								<TestComp1 />
-								<TestComp2 />
-								<TestComp3 />
-							</ViewPort>
-							<LoadingScreen />
-						</Base>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<div>
+							<ApplicationSelector {...props} />
+							<div>
+								<img />
+								Marketing Legacy
+							</div>
+						</div>
+						<Ignore />
+						<a>Help</a>
+					</div>
+					<div>
+						<MenuToggle />
+						<Ignore />
+						<Ignore />
+						<Ignore />
+						<Logo />
+					</div>
+					<div>
+						<BarWrapper />
+						<TestComp1 />
+						<TestComp2 />
+						<TestComp3 />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 	});
 
@@ -521,166 +523,184 @@ describe("AppFrame", () => {
 		];
 		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 		return expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<Base preferencesOpen={true}>
-							<Ignore />
-							<Ignore />
-							<Ignore />
-							<Ignore />
-						</Base>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<Ignore />
+					<Ignore />
+					<Ignore />
+					<Ignore />
+				</div>
+			</TestWrapper>,
 		);
 	});
 
 	it("provides open flag, toggle and reset functions", () => {
 		const element = mount(
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>,
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(BlockWithA),
+			target: "#sidebarMenuToggle",
 		});
 		expect(
 			element,
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<Base>
-						<Wrapper>
-							<Ignore />
-							<Ignore />
-							<Ignore />
-						</Wrapper>
-						<SideBar open>
-							<MenuToggle open />
-							<Logo />
-						</SideBar>
-						<ViewPort open>
-							<Ignore />
-						</ViewPort>
-						<LoadingScreen />
-					</Base>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<Ignore />
+						<Ignore />
+						<Ignore />
+					</div>
+					<div>
+						<MenuToggle open />
+						<Logo />
+					</div>
+					<div>
+						<Ignore />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(Wrapper),
+			target: '[data-test-id="wrapper"]',
 		});
 		expect(
 			element,
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<Base>
-						<Wrapper>
-							<Ignore />
-							<Ignore />
-							<Ignore />
-						</Wrapper>
-						<SideBar>
-							<MenuToggle />
-							<Logo />
-						</SideBar>
-						<ViewPort>
-							<Ignore />
-						</ViewPort>
-						<LoadingScreen />
-					</Base>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<Ignore />
+						<Ignore />
+						<Ignore />
+					</div>
+					<div>
+						<MenuToggle />
+						<Logo />
+					</div>
+					<div>
+						<Ignore />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(BlockWithA),
+			target: "#sidebarMenuToggle",
 		});
 		expect(
 			element,
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<Base>
-						<Wrapper>
-							<Ignore />
-							<Ignore />
-							<Ignore />
-						</Wrapper>
-						<SideBar open>
-							<MenuToggle open />
-							<Logo />
-						</SideBar>
-						<ViewPort open>
-							<Ignore />
-						</ViewPort>
-						<LoadingScreen />
-					</Base>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<Ignore />
+						<Ignore />
+						<Ignore />
+					</div>
+					<div>
+						<MenuToggle open />
+						<Logo />
+					</div>
+					<div>
+						<Ignore />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 		simulate(element, {
 			type: "click",
-			target: getStyledClassSelector(ViewPort),
+			target: '[data-test-id="viewport"]',
 		});
 		expect(
 			element,
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<Base>
-						<Wrapper>
-							<Ignore />
-							<Ignore />
-							<Ignore />
-						</Wrapper>
-						<SideBar>
-							<MenuToggle />
-							<Logo />
-						</SideBar>
-						<ViewPort>
-							<Ignore />
-						</ViewPort>
-						<LoadingScreen />
-					</Base>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<div>
+						<Ignore />
+						<Ignore />
+						<Ignore />
+					</div>
+					<div>
+						<MenuToggle />
+						<Logo />
+					</div>
+					<div>
+						<Ignore />
+					</div>
+					<LoadingScreen />
+				</div>
+			</TestWrapper>,
 		);
 	});
 
 	it("loads applications if not found", () => {
 		state = state.setIn(["applications", "list"], Immutable.List());
 		return expect(
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>,
 			"when mounted",
 			"to be truthy",
 		).then(() =>
@@ -703,15 +723,15 @@ describe("AppFrame", () => {
 	it("loads version info if no help url yet", () => {
 		state = state.setIn(["versionInfo", "defaultHelpUrl"], null);
 		return expect(
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<MemoryRouter initialEntries={["/Foo/bar"]}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</MemoryRouter>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>,
 			"when mounted",
 			"to be truthy",
 		).then(() =>
@@ -749,54 +769,54 @@ describe("AppFrame", () => {
 		const actions = [{ label: sharedMessages.refresh, handler: refreshCallback, isPrimary: true }];
 
 		expect(
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Provider store={store}>
-				<ThemeProvider theme={{}}>
-					<I18n>
-						<MemoryRouter initialEntries={["/Foo/bar"]}>
-							<Base>
-								<ActionModal open={true} title={title} message={message} actions={actions} />
-								<Wrapper>
-									<AppBox>
-										<ApplicationSelector {...props} />
-										<AppLabel>
-											<AppLogo />
-											Marketing Legacy
-										</AppLabel>
-									</AppBox>
-									<Ignore />
-									<HelpLink>Help</HelpLink>
-								</Wrapper>
-								<SideBar>
-									<MenuToggle />
-									<Ignore />
-									<Ignore />
-									<Ignore />
-									<Logo />
-								</SideBar>
-								<ViewPort>
-									<ScopeBar name="Test 1" />
-									<TestComp1 key="1" />
-									<TestComp2 key="2" />
-									<TestComp3 key="3" />
-								</ViewPort>
-								<About messages={props.aboutMessages} />
-								<LoadingScreen />
-							</Base>
-						</MemoryRouter>
-					</I18n>
-				</ThemeProvider>
-			</Provider>,
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<div>
+					<ActionModal open={true} title={title} message={message} actions={actions} />
+					<div>
+						<div>
+							<ApplicationSelector {...props} />
+							<div>
+								<img />
+								Marketing Legacy
+							</div>
+						</div>
+						<Ignore />
+						<a>Help</a>
+					</div>
+					<div>
+						<MenuToggle />
+						<Ignore />
+						<Ignore />
+						<Ignore />
+						<Logo />
+					</div>
+					<div>
+						<ScopeBar name="Test 1" />
+						<TestComp1 key="1" />
+						<TestComp2 key="2" />
+						<TestComp3 key="3" />
+					</div>
+					<LoadingScreen />
+					<Preferences />
+				</div>
+			</TestWrapper>,
 		);
 	});
 
@@ -811,15 +831,15 @@ describe("AppFrame", () => {
 		props.children = [<TestComp1 key="1" />, <TestComp2 key="2" />, <TestComp3 key="3" />];
 
 		const component = (
-			<Provider store={store}>
-				<MemoryRouter initialEntries={["/Foo/bar"]}>
-					<ThemeProvider theme={{}}>
-						<I18n>
-							<AppFrame {...props} />
-						</I18n>
-					</ThemeProvider>
-				</MemoryRouter>
-			</Provider>
+			<TestWrapper
+				provider={{ store }}
+				stylesProvider
+				muiThemeProvider
+				intlProvider={{ messages }}
+				memoryRouter={{ initialEntries: ["/Foo/bar"] }}
+			>
+				<AppFrame {...props} />
+			</TestWrapper>
 		);
 
 		const mountedComponent = enzymeMount(component);
@@ -832,32 +852,4 @@ describe("AppFrame", () => {
 
 		expect(locationReloadSpy, "was called");
 	});
-});
-
-describe("ViewPort", () => {
-	it("does not translate when closed", () =>
-		expect(<ViewPort />, "when mounted", "to have style rules satisfying", "to contain", "width: calc(100% - 50px)"));
-
-	it("translates to the side when open", () =>
-		expect(
-			<ViewPort open />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"width: calc(100% - 200px);",
-		));
-});
-
-describe("Base", () => {
-	it("pointer-events should be to default when preferences is hidden", () =>
-		expect(<Base />, "when mounted", "to have style rules satisfying", "not to contain", "pointer-events: none;"));
-
-	it("pointer-events should be none when preferences is shown", () =>
-		expect(
-			<Base preferencesOpen={true} />,
-			"when mounted",
-			"to have style rules satisfying",
-			"to contain",
-			"pointer-events: none;",
-		));
 });

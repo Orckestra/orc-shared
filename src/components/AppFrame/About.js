@@ -1,10 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useSelector } from "react-redux";
-import styled, { css } from "styled-components";
-import transition from "styled-transition-group";
-import { ifFlag } from "../../utils";
-import Text from "../Text";
+import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/core/styles";
 import withClickOutside from "../../hocs/withClickOutside";
 import useViewState from "../../hooks/useViewState";
 import bgImage from "../../content/aboutBackground.png";
@@ -19,67 +17,68 @@ export const ABOUT_NAME = "__aboutBox";
 
 const getModalRoot = () => document.getElementById("modal");
 
-export const AboutBox = withClickOutside(transition.div`
-	box-sizing: border-box;
-	z-index: 9999;
-	position: absolute;
-	top: calc(50% - 210px);
-	left: calc(50% - 210px);
-	height: 420px;
-	width: 420px;
-	padding: 15px 20px;
-	color: #ffffff;
-	font-size: 13px;
-	line-height: 16px;
-	background: #0a0a07 url(${bgImage});
-	transition: opacity ${props => props.timeout}ms ease-out;
+const useStyles = makeStyles(() => ({
+	aboutBox: props => ({
+		boxSizing: "border-box",
+		zIndex: 9999,
+		position: "absolute",
+		top: "calc(50% - 210px)",
+		left: "calc(50% - 210px)",
+		height: "420px",
+		width: "420px",
+		padding: "15px 20px",
+		color: "#ffffff",
+		fontSize: "13px",
+		lineHeight: "16px",
+		background: `#0a0a07 url(${props.bgImage})`,
 
-	&:enter {
-		opacity: 0;
-	}
-	&:enter-active {
-		opacity: 1;
-	}
-	&:exit {
-		opacity: 1;
-	}
-	&:exit-active {
-		opacity: 0;
-	}
-`);
-AboutBox.defaultProps = { timeout: 800, unmountOnExit: true };
+		"&.enter-active": {
+			opacity: 1,
+			transition: "none",
+		},
+		"&.exit-active": {
+			opacity: 0,
+			transition: "opacity 800ms ease-out",
+		},
+	}),
+	closeButton: {
+		zIndex: 9999,
+		position: "absolute",
+		color: "#ffffff",
+		top: "15px",
+		right: "20px",
+		margin: "0",
+		cursor: "pointer",
+		opacity: "1",
 
-export const CloseButton = styled.p`
-	z-index: 9999;
-	position: absolute;
-	color: #ffffff;
-	top: 15px;
-	right: 20px;
-	margin: 0;
-	cursor: pointer;
-	opacity: 1;
+		"&:hover": {
+			opacity: 0.75,
+		},
+	},
+	aboutLink: {
+		color: "#337ab7",
+		textDecoration: "none",
+	},
+	aboutParagraph: {
+		marginTop: "20px",
+	},
+	longAboutParagraph: props => ({
+		marginTop: "20px",
+		fontSize: props.lang?.toLowerCase().startsWith("fr") ? "10px" : undefined,
+	}),
+}));
 
-	&:hover {
-		opacity: 0.75;
-	}
-`;
+export const AboutBox = withClickOutside(
+	React.forwardRef(({ children, className }, ref) => {
+		const classes = useStyles({ bgImage });
 
-export const AboutParagraph = styled.p`
-	margin-top: 20px;
-	${ifFlag(
-		"long",
-		css`
-			html[lang^="fr"] & {
-				font-size: 10px;
-			}
-		`,
-	)}
-`;
-
-export const AboutLink = styled.a`
-	color: #337ab7;
-	text-decoration: none;
-`;
+		return (
+			<div ref={ref} className={`${classes.aboutBox} ${className ? className : ""}`}>
+				{children}
+			</div>
+		);
+	}),
+);
 
 export const getClickOutsideHandler = ({ show }, updateViewState) => {
 	return show
@@ -91,6 +90,9 @@ export const getClickOutsideHandler = ({ show }, updateViewState) => {
 };
 
 export const About = ({ currentApplication }) => {
+	const lang = document.documentElement.lang;
+	const classes = useStyles({ lang });
+
 	const [viewState, updateViewState] = useViewState(ABOUT_NAME);
 	const version = useSelector(getVersionSelector);
 	const locale = useSelector(currentLocaleOrDefault);
@@ -98,84 +100,60 @@ export const About = ({ currentApplication }) => {
 	const aboutLinkUrl = "https://www.orckestra.com".concat(locale.substr(0, 2).toLowerCase() === "fr" ? "/fr" : "");
 
 	return (
-		<AboutBox in={viewState.show} onClickOutside={closeAboutBox}>
-			<CloseButton onClick={closeAboutBox}>
+		<AboutBox className={`${viewState.show ? "enter-active" : "exit-active"}`} onClickOutside={closeAboutBox}>
+			<p className={classes.closeButton} onClick={closeAboutBox}>
 				<img src={close} alt="X" />
-			</CloseButton>
+			</p>
 			<img src={logoImage} width="250" alt="Orckestra" />
-			<AboutParagraph>
-				<Text
-					message={{
-						...sharedMessages.ccVersion,
-						values: { version: version },
-					}}
-				/>
+			<p className={classes.aboutParagraph}>
+				<FormattedMessage {...sharedMessages.ccVersion} values={{ version: version }} />
 				{currentApplication && currentApplication.displayName
-					? [
-							<br key="application-br" />,
-							<Text
-								key="application-version"
-								message={currentApplication.displayName.concat(" ", window.BUILD_NUMBER)}
-							/>,
-						]
+					? [<br key="application-br" />, currentApplication.displayName.concat(" ", window.BUILD_NUMBER)]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-shared"]
 					? [
 							<br key="orc-shared-br" />,
-							<Text
+							<FormattedMessage
 								key="orc-shared-version"
-								message={{
-									...sharedMessages.orcSharedVersion,
-									values: { version: trimStart(DEPENDENCIES["orc-shared"], "^") },
-								}}
+								{...sharedMessages.orcSharedVersion}
+								values={{ version: trimStart(DEPENDENCIES["orc-shared"], "^") }}
 							/>,
 						]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-scripts"]
 					? [
 							<br key="orc-scripts-br" />,
-							<Text
+							<FormattedMessage
 								key="orc-scripts-version"
-								message={{
-									...sharedMessages.orcScriptsVersion,
-									values: { version: trimStart(DEPENDENCIES["orc-scripts"], "^") },
-								}}
+								{...sharedMessages.orcScriptsVersion}
+								values={{ version: trimStart(DEPENDENCIES["orc-scripts"], "^") }}
 							/>,
 						]
 					: null}
 				{DEPENDENCIES && DEPENDENCIES["orc-secret"]
 					? [
 							<br key="orc-secret-br" />,
-							<Text
+							<FormattedMessage
 								key="orc-secret-version"
-								message={{
-									...sharedMessages.orcSecretVersion,
-									values: { version: trimStart(DEPENDENCIES["orc-secret"], "^") },
-								}}
+								{...sharedMessages.orcSecretVersion}
+								values={{ version: trimStart(DEPENDENCIES["orc-secret"], "^") }}
 							/>,
 						]
 					: null}
-			</AboutParagraph>
-			<AboutParagraph long>
-				<Text message={sharedMessages.copyrightTermsNotice} />
-			</AboutParagraph>
-			<AboutParagraph>
-				<AboutLink href={aboutLinkUrl} target="_blank">
-					<Text message={sharedMessages.ccName} />
-				</AboutLink>
-			</AboutParagraph>
-			<AboutParagraph>
-				<Text
-					message={{
-						...sharedMessages.copyright,
-						values: {
-							year: new Date().getFullYear(),
-						},
-					}}
-				/>
+			</p>
+			<p className={classes.longAboutParagraph}>
+				<FormattedMessage {...sharedMessages.copyrightTermsNotice} />
+			</p>
+			<p className={classes.aboutParagraph}>
+				<a className={classes.aboutLink} href={aboutLinkUrl} target="_blank" rel="noreferrer">
+					<FormattedMessage {...sharedMessages.ccName} />
+				</a>
+			</p>
+			<p className={classes.aboutParagraph}>
+				<FormattedMessage {...sharedMessages.copyright} values={{ year: new Date().getFullYear() }} />
 				<br />
-				<Text message={sharedMessages.allRightsReserved} />
-			</AboutParagraph>
+				<FormattedMessage {...sharedMessages.allRightsReserved} />
+			</p>
 		</AboutBox>
 	);
 };
