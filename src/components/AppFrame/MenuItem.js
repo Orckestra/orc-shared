@@ -104,7 +104,7 @@ const MenuItem = ({ open = false, label = "", icon, alert, isHidden = false, hre
 	const alertMessage = useRef("");
 	const showAlert = !!alert;
 	const showAlertMessage = !!alert?.message;
-	if (alert && alert.message) {
+	if (showAlert && showAlertMessage) {
 		alertMessage.current = alert.message;
 	}
 
