@@ -283,7 +283,7 @@ describe("About", () => {
 				"when mounted",
 				"to have style rules satisfying",
 				"to contain",
-				"transition: opacity 800ms ease-out;",
+				"transition: opacity 800ms ease-out, visibility 800ms linear 800ms;",
 			));
 	});
 
