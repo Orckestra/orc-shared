@@ -35,10 +35,12 @@ const useStyles = makeStyles(() => ({
 		"&.enter-active": {
 			opacity: 1,
 			transition: "none",
+			visibility: "visible",
 		},
 		"&.exit-active": {
 			opacity: 0,
-			transition: "opacity 800ms ease-out",
+			transition: "opacity 800ms ease-out, visibility 800ms linear 800ms;",
+			visibility: "hidden",
 		},
 	}),
 	closeButton: {
