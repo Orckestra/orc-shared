@@ -2,12 +2,14 @@ import React from "react";
 import { mount } from "enzyme";
 import { IntlProvider } from "react-intl";
 import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 import InformationItem from "./InformationItem";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
 import { stringifyWithoutQuotes } from "./../../../../utils/parseHelper";
 import sharedMessages from "./../../../../sharedMessages";
 import { extractMessages } from "./../../../../utils/testUtils";
 import TextProps from "../../textProps";
+import TooltippedIcon from "../TooltippedElements/TooltippedIcon";
 
 const messages = extractMessages(sharedMessages);
 
@@ -347,6 +349,37 @@ describe("Information Item", () => {
 						<span>the header icon</span>
 					</div>
 				</div>
+				<MultipleLinesText>{value}</MultipleLinesText>
+			</div>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Information Item properly with a header tooltip and custom header tooltip class", () => {
+		const label = "label";
+		const value = "value";
+		const headerTooltip = "tooltip text";
+
+		const component = (
+			<IntlProvider locale="en-US">
+				<InformationItem
+					label={label}
+					headerTooltip={headerTooltip}
+					headerTooltipIcon="info"
+					headerTooltipClassName="CustomClass"
+				>
+					{value}
+				</InformationItem>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<div>
+				<Grid>
+					<Typography children={label} />
+					<TooltippedIcon titleValue={headerTooltip} id="info" className="CustomClass" />
+				</Grid>
 				<MultipleLinesText>{value}</MultipleLinesText>
 			</div>
 		);

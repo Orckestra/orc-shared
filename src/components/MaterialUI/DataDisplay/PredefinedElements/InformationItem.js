@@ -2,12 +2,14 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 import MultipleLinesText from "../TooltippedElements/MultipleLinesText";
 import TextProps from "../../textProps";
 import { isReactComponent } from "../../../../utils/propertyValidator";
 import sharedMessages from "../../../../sharedMessages";
 import { useIntl } from "react-intl";
 import classNames from "classnames";
+import TooltippedIcon from "../TooltippedElements/TooltippedIcon";
 
 const useStyles = makeStyles(theme => ({
 	title: {
@@ -54,6 +56,9 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: "column",
 		justifyContent: "flex-start",
 	},
+	headerTooltip: {
+		paddingLeft: theme.spacing(0.5),
+	},
 }));
 
 const InformationItemChildren = ({
@@ -79,7 +84,17 @@ const InformationItemChildren = ({
 	return <MultipleLinesText textProps={multipleLinesTextProps} children={value} tooltipClasses={tooltipClasses} />;
 };
 
-const InformationItemHeader = ({ classes, label, headerIcon, headerIconClassName, required, error }) => {
+const InformationItemHeader = ({
+	classes,
+	label,
+	headerIcon,
+	headerIconClassName,
+	required,
+	error,
+	headerTooltip,
+	headerTooltipIcon,
+	headerTooltipClassName,
+}) => {
 	const formattedLabel = typeof label === "object" ? <FormattedMessage {...label} /> : label;
 	const titleClasses = classNames(classes.title, { [classes.titleError]: error });
 	const headerText =
@@ -100,6 +115,19 @@ const InformationItemHeader = ({ classes, label, headerIcon, headerIconClassName
 		)) ??
 		null;
 
+	if (headerTooltip) {
+		return (
+			<Grid container wrap="nowrap">
+				{headerText}
+				<TooltippedIcon
+					titleValue={headerTooltip}
+					id={headerTooltipIcon}
+					className={classNames(classes.headerTooltip, headerTooltipClassName)}
+				/>
+			</Grid>
+		);
+	}
+
 	if (headerIcon) {
 		return (
 			<div className={classes.headerRoot}>
@@ -119,6 +147,9 @@ const InformationItem = ({
 	error,
 	headerIcon = undefined,
 	headerIconClassName = undefined,
+	headerTooltip = undefined,
+	headerTooltipIcon = undefined,
+	headerTooltipClassName = undefined,
 	showNotAvailable = false,
 	marginTop = 0,
 	isMaxLineCountEnabled,
@@ -136,6 +167,9 @@ const InformationItem = ({
 				error={error}
 				headerIcon={headerIcon}
 				headerIconClassName={headerIconClassName}
+				headerTooltip={headerTooltip}
+				headerTooltipIcon={headerTooltipIcon}
+				headerTooltipClassName={headerTooltipClassName}
 			/>
 			<InformationItemChildren
 				classes={classes}
