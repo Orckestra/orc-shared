@@ -1,7 +1,7 @@
 import {
-	getTimeZone,
-	getTimeZoneByName,
-	getTimeZoneName,
+	getIanaTimeZone,
+	getIanaTimeZoneFromWindowsName,
+	getWindowsTimeZone,
 	convertTimeToLocalTimeZone,
 	convertTimeToOtherTimeZone,
 } from "./timezoneHelper";
@@ -20,21 +20,21 @@ describe("Timezone Helper", () => {
 	});
 
 	it("Retrieves customer timezone", () => {
-		expect(getTimeZone, "called with", [], "to satisfy", "Europe/Amsterdam");
+		expect(getIanaTimeZone, "called with", [], "to satisfy", "Europe/Amsterdam");
 	});
 
 	it("Retrieves timezone short name by passed name", () => {
 		const timezoneName = "Central America Standard Time";
-		expect(getTimeZoneByName, "called with", [timezoneName], "to satisfy", "America/Guatemala");
+		expect(getIanaTimeZoneFromWindowsName, "called with", [timezoneName], "to satisfy", "America/Guatemala");
 	});
 
 	it("Returns user timezone if passed name is not found", () => {
 		const timezoneName = "Test Timezone";
-		expect(getTimeZoneByName, "called with", [timezoneName], "to satisfy", "Europe/Amsterdam");
+		expect(getIanaTimeZoneFromWindowsName, "called with", [timezoneName], "to satisfy", "Europe/Amsterdam");
 	});
 
 	it("Retrieves user timezone name", () => {
-		expect(getTimeZoneName, "called with", [], "to satisfy", "W. Europe Standard Time");
+		expect(getWindowsTimeZone, "called with", [], "to satisfy", "W. Europe Standard Time");
 	});
 
 	it("Retrieves user local timezone date", () => {

@@ -6,12 +6,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "./TimePicker";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-	getTimeZoneByName,
-	convertTimeToOtherTimeZone,
+	getIanaTimeZoneFromWindowsName,
 	convertTimeToLocalTimeZone,
+	getWindowsTimeZone,
 } from "../../../utils/timezoneHelper";
-import { namedLookupLocalizedSelector } from "../../../selectors/metadata";
-import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -139,24 +137,31 @@ const WrappedDatePicker = ({
 	readOnly,
 	showTimeSelectOnly,
 	metadata,
-	timePickerTimeZone,
+	timePickerWindowsTimeZone,
 	error,
 	timeOption,
 	...props
 }) => {
 	const classes = useStyles({ readOnly });
-	const timeZoneName = getTimeZoneByName(timePickerTimeZone);
-	const startDate = value
-		? timePickerTimeZone && useTimeZone
-			? convertTimeToLocalTimeZone(new Date(value), timeZoneName)
-			: new Date(value)
-		: null;
+
+	const ianaTimeZone =
+		useTimeZone && timePickerWindowsTimeZone ? getIanaTimeZoneFromWindowsName(timePickerWindowsTimeZone) : null;
+
+	const computeDateWithTimezone = React.useCallback(
+		date => {
+			return date ? (ianaTimeZone ? convertTimeToLocalTimeZone(new Date(date), ianaTimeZone) : new Date(date)) : null;
+		},
+		[ianaTimeZone],
+	);
+
+	const startDate = computeDateWithTimezone(value);
 	const disabledCls = classNames({ [classes.disabled]: props.disabled });
-	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", timePickerTimeZone));
+
+	const windowsTimeZoneName = useTime && showTimeZone ? (timePickerWindowsTimeZone ?? getWindowsTimeZone()) : null;
 
 	const updateDate = (date, metadata) => {
 		if (onChange) {
-			onChange(useTimeZone && timePickerTimeZone ? convertTimeToOtherTimeZone(date, timeZoneName) : date, metadata);
+			onChange(computeDateWithTimezone(date), metadata);
 		}
 	};
 
@@ -179,13 +184,7 @@ const WrappedDatePicker = ({
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
-							useTime ? (
-								<TimePicker
-									showTimeZone={showTimeZone}
-									requestedTimeZone={localizedTimeZoneName}
-									timeOption={timeOption}
-								/>
-							) : null
+							useTime ? <TimePicker windowsTimeZone={windowsTimeZoneName} timeOption={timeOption} /> : null
 						}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}
