@@ -1,21 +1,24 @@
 import React from "react";
 import Immutable from "immutable";
-import { Provider } from "react-redux";
 import { getDefaultLocale } from "react-datepicker";
-import Culture from "./Culture";
+import Culture, { customFnsLocale } from "./Culture";
+import { extractMessages, TestWrapper } from "../utils/testUtils";
+import sharedMessages from "../sharedMessages";
+import { mount } from "enzyme";
+
+const messages = extractMessages(sharedMessages);
 
 describe("Culture", () => {
-	let state, store, languageGetter;
+	let state, store;
 
 	beforeEach(() => {
-		languageGetter = jest.spyOn(window.navigator, "language", "get");
-
 		state = Immutable.fromJS({
 			requests: {},
 			settings: {
 				defaultScope: "aDefaultScope",
 			},
 			locale: {
+				locale: "en-US",
 				supportedLocales: [
 					{ language: "English", cultureIso: "en" },
 					{ language: "Français", cultureIso: "fr" },
@@ -30,17 +33,14 @@ describe("Culture", () => {
 	});
 
 	afterEach(() => {
-		languageGetter.mockReset();
 		jest.clearAllMocks();
 	});
 
 	it("shows the wrapped component if authenticated and default scope is known", () => {
-		languageGetter.mockReturnValue(null);
-
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages, locale: "zz-ZZ" }}>
 				<Culture />
-			</Provider>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", null);
@@ -50,12 +50,11 @@ describe("Culture", () => {
 
 	it("shows the wrapped component if authenticated and default scope is known 222", () => {
 		state = state.setIn(["locale", "supportedLocales"], [{ language: "English", cultureIso: "en" }]);
-		languageGetter.mockReturnValue("en-GB");
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages, locale: "en-GB" }}>
 				<Culture />
-			</Provider>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", null);
@@ -71,16 +70,28 @@ describe("Culture", () => {
 				{ language: "EnglishMy", cultureIso: "enMy" },
 			],
 		);
-		languageGetter.mockReturnValue("fr-FR");
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider={{ messages, locale: "fr-FR" }}>
 				<Culture />
-			</Provider>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", null);
 
 		expect(getDefaultLocale(), "to equal", "fr-FR");
+	});
+
+	it("computes right localized day and month with Italian culture ", () => {
+		const component = (
+			<TestWrapper provider={{ store }} intlProvider={{ messages, locale: "it-IT" }}>
+				<Culture />
+			</TestWrapper>
+		);
+
+		mount(component);
+
+		expect(customFnsLocale.localize.day(1), "to equal", "Mo");
+		expect(customFnsLocale.localize.month(6), "to equal", "July");
 	});
 });

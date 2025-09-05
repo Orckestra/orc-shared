@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import { makeStyles } from "@material-ui/core/styles";
 import Select from "./Select";
 import SelectProps from "./SelectProps";
-import { getTimeZoneName } from "../../../utils/timezoneHelper";
+import { getWindowsTimeZone } from "../../../utils/timezoneHelper";
 import { namedLookupLocalizedSelector } from "../../../selectors/metadata";
 import { useSelector } from "react-redux";
 
@@ -65,8 +66,8 @@ const ampmOptions = [
 	{ value: "PM", label: "PM" },
 ];
 
-const isBrowserUsingAMPM = () =>
-	!!new Date(Date.UTC(2020, 7, 30, 3, 0, 0)).toLocaleTimeString().match(/am|a.m|pm|p.m/i);
+const isBrowserUsingAMPM = locale =>
+	!!new Date(Date.UTC(2020, 7, 30, 3, 0, 0)).toLocaleTimeString(locale).match(/am|a.m|pm|p.m/i);
 
 export const parseTime = timeStr => {
 	var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
@@ -184,17 +185,18 @@ export const MinsSelect = ({ updateTimeOptions, time, values = minOptions }) => 
 	);
 };
 
-const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone, timeOption }) => {
+const TimePicker = ({ value, onChange, showTimeZone, windowsTimeZone, timeOption }) => {
 	const classes = useStyles();
-	showAMPM = showAMPM ?? isBrowserUsingAMPM();
+	const { locale } = useIntl();
+	const showAMPM = isBrowserUsingAMPM(locale);
 	const [time, setTime] = useState(parseTime(value || "00:00"));
 
 	useEffect(() => {
 		setTime(parseTime(value || "00:00"));
 	}, [value, setTime]);
 
-	const userTimeZone = getTimeZoneName();
-	const localizedTimeZoneName = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", userTimeZone, null));
+	const timeZone = windowsTimeZone ?? getWindowsTimeZone();
+	const localizedTimeZone = useSelector(namedLookupLocalizedSelector("customer", "TimeZone", timeZone));
 
 	const onTimeChange = datetime => {
 		if (onChange) {
@@ -227,15 +229,6 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 		onTimeChange(time);
 	};
 
-	const getTimeZone = requestedTimeZone => {
-		if (requestedTimeZone) return requestedTimeZone;
-		if (!localizedTimeZoneName) {
-			var timezone = new Date().toString().match(/GMT(\S+) \(([^)]+)\)/i);
-			return `${timezone[2]} (GMT${timezone[1]})`;
-		}
-		return localizedTimeZoneName;
-	};
-
 	return (
 		<div className={classes.timeWrapper}>
 			<span className={classes.timePickerWrapper}>
@@ -244,9 +237,7 @@ const TimePicker = ({ value, onChange, showTimeZone, showAMPM, requestedTimeZone
 				<MinsSelect updateTimeOptions={updateTimeOptions} time={time} values={timeOption?.minutes} />
 				<AMPMSelect showAMPM={showAMPM} updateTimeOptions={updateTimeOptions} time={time} />
 			</span>
-			{showTimeZone && (
-				<label className={classes.timeZoneWrapper}>{showTimeZone && getTimeZone(requestedTimeZone)}</label>
-			)}
+			{showTimeZone && <label className={classes.timeZoneWrapper}>{localizedTimeZone}</label>}
 		</div>
 	);
 };

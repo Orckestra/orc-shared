@@ -303,6 +303,186 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.search",
 		defaultMessage: "Search",
 	},
+	sundayMin: {
+		id: "orc-shared.sundayMin",
+		defaultMessage: "Su",
+	},
+	mondayMin: {
+		id: "orc-shared.mondayMin",
+		defaultMessage: "Mo",
+	},
+	tuesdayMin: {
+		id: "orc-shared.tuesdayMin",
+		defaultMessage: "Tu",
+	},
+	wednesdayMin: {
+		id: "orc-shared.wednesdayMin",
+		defaultMessage: "We",
+	},
+	thursdayMin: {
+		id: "orc-shared.thursdayMin",
+		defaultMessage: "Th",
+	},
+	fridayMin: {
+		id: "orc-shared.fridayMin",
+		defaultMessage: "Fr",
+	},
+	saturdayMin: {
+		id: "orc-shared.saturdayMin",
+		defaultMessage: "Sa",
+	},
+	sundayShort: {
+		id: "orc-shared.sundayShort",
+		defaultMessage: "Sun",
+	},
+	mondayShort: {
+		id: "orc-shared.mondayShort",
+		defaultMessage: "Mon",
+	},
+	tuesdayShort: {
+		id: "orc-shared.tuesdayShort",
+		defaultMessage: "Tue",
+	},
+	wednesdayShort: {
+		id: "orc-shared.wednesdayShort",
+		defaultMessage: "Wed",
+	},
+	thursdayShort: {
+		id: "orc-shared.thursdayShort",
+		defaultMessage: "Thu",
+	},
+	fridayShort: {
+		id: "orc-shared.fridayShort",
+		defaultMessage: "Fri",
+	},
+	saturdayShort: {
+		id: "orc-shared.saturdayShort",
+		defaultMessage: "Sat",
+	},
+	sunday: {
+		id: "orc-shared.sunday",
+		defaultMessage: "Sunday",
+	},
+	monday: {
+		id: "orc-shared.monday",
+		defaultMessage: "Monday",
+	},
+	tuesday: {
+		id: "orc-shared.tuesday",
+		defaultMessage: "Tuesday",
+	},
+	wednesday: {
+		id: "orc-shared.wednesday",
+		defaultMessage: "Wednesday",
+	},
+	thursday: {
+		id: "orc-shared.thursday",
+		defaultMessage: "Thursday",
+	},
+	friday: {
+		id: "orc-shared.friday",
+		defaultMessage: "Friday",
+	},
+	saturday: {
+		id: "orc-shared.saturday",
+		defaultMessage: "Saturday",
+	},
+	januaryShort: {
+		id: "orc-shared.januaryShort",
+		defaultMessage: "Jan",
+	},
+	februaryShort: {
+		id: "orc-shared.februaryShort",
+		defaultMessage: "Feb",
+	},
+	marchShort: {
+		id: "orc-shared.marchShort",
+		defaultMessage: "Mar",
+	},
+	aprilShort: {
+		id: "orc-shared.aprilShort",
+		defaultMessage: "Apr",
+	},
+	mayShort: {
+		id: "orc-shared.mayShort",
+		defaultMessage: "May",
+	},
+	juneShort: {
+		id: "orc-shared.juneShort",
+		defaultMessage: "Jun",
+	},
+	julyShort: {
+		id: "orc-shared.julyShort",
+		defaultMessage: "Jul",
+	},
+	augustShort: {
+		id: "orc-shared.augustShort",
+		defaultMessage: "Aug",
+	},
+	septemberShort: {
+		id: "orc-shared.septemberShort",
+		defaultMessage: "Sep",
+	},
+	octoberShort: {
+		id: "orc-shared.octoberShort",
+		defaultMessage: "Oct",
+	},
+	novemberShort: {
+		id: "orc-shared.novemberShort",
+		defaultMessage: "Nov",
+	},
+	decemberShort: {
+		id: "orc-shared.decemberShort",
+		defaultMessage: "Dec",
+	},
+	january: {
+		id: "orc-shared.january",
+		defaultMessage: "January",
+	},
+	february: {
+		id: "orc-shared.february",
+		defaultMessage: "February",
+	},
+	march: {
+		id: "orc-shared.march",
+		defaultMessage: "March",
+	},
+	april: {
+		id: "orc-shared.april",
+		defaultMessage: "April",
+	},
+	may: {
+		id: "orc-shared.may",
+		defaultMessage: "May",
+	},
+	june: {
+		id: "orc-shared.june",
+		defaultMessage: "June",
+	},
+	july: {
+		id: "orc-shared.july",
+		defaultMessage: "July",
+	},
+	august: {
+		id: "orc-shared.august",
+		defaultMessage: "August",
+	},
+	september: {
+		id: "orc-shared.september",
+		defaultMessage: "September",
+	},
+	october: {
+		id: "orc-shared.october",
+		defaultMessage: "October",
+	},
+	november: {
+		id: "orc-shared.november",
+		defaultMessage: "November",
+	},
+	december: {
+		id: "orc-shared.december",
+		defaultMessage: "December",
+	},
 });
 
 export default sharedMessages;

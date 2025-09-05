@@ -269,7 +269,7 @@ describe("DatePicker", () => {
 		const expectedDate = "06/30/2020 12:00 AM";
 		expect(
 			<TestWrapper provider={{ store }} intlProvider stylesProvider muiThemeProvider={{ theme }}>
-				<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} />
+				<DatePicker useTime={true} readOnly={true} onChange={updater} value={date} showTimeZone={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -348,7 +348,7 @@ describe("DatePicker", () => {
 					useTime={true}
 					useDate={false}
 					showTimeSelectOnly={true}
-					timePickerTimeZone={requestTimeZone}
+					timePickerWindowsTimeZone={requestTimeZone}
 				/>
 			</TestWrapper>
 		);
@@ -375,7 +375,7 @@ describe("DatePicker", () => {
 					useTime={true}
 					useDate={false}
 					showTimeSelectOnly={true}
-					timePickerTimeZone={null}
+					timePickerWindowsTimeZone={null}
 				/>
 			</TestWrapper>
 		);
@@ -400,7 +400,7 @@ describe("DatePicker", () => {
 					useTime={true}
 					useDate={false}
 					showTimeSelectOnly={true}
-					timePickerTimeZone={requestTimeZone}
+					timePickerWindowsTimeZone={requestTimeZone}
 				/>
 			</TestWrapper>
 		);
@@ -419,7 +419,12 @@ describe("DatePicker", () => {
 		const requestTimeZone = "Eastern Standard Time";
 		const component = (
 			<TestWrapper provider={{ store }} intlProvider>
-				<DatePicker value={date} useDate={false} showTimeSelectOnly={true} timePickerTimeZone={requestTimeZone} />
+				<DatePicker
+					value={date}
+					useDate={false}
+					showTimeSelectOnly={true}
+					timePickerWindowsTimeZone={requestTimeZone}
+				/>
 			</TestWrapper>
 		);
 		const mountedComponent = mount(component);
@@ -477,7 +482,7 @@ describe("DatePicker", () => {
 					useDate={false}
 					useTimeZone={true}
 					showTimeSelectOnly={true}
-					timePickerTimeZone={requestTimeZone}
+					timePickerWindowsTimeZone={requestTimeZone}
 				/>
 			</TestWrapper>
 		);

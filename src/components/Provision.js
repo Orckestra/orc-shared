@@ -43,13 +43,13 @@ const Provision = ({ store, theme = {}, muiTheme, children }) => {
 					<MuiThemeProvider theme={muiTheme}>
 						<React.Fragment>
 							<Head />
-							<Culture />
 							<GlobalStyle />
 							<Authenticate>
 								<React.Fragment>
 									<Fonts />
 									<DevPages>
 										<I18n>
+											<Culture />
 											{React.Children.only(children)}
 											<InternetExplorerWarningMessage />
 										</I18n>
