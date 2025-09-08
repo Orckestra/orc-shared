@@ -67,7 +67,7 @@ const ampmOptions = [
 ];
 
 const isBrowserUsingAMPM = locale =>
-	!!new Date(Date.UTC(2020, 7, 30, 3, 0, 0)).toLocaleTimeString(locale).match(/am|a.m|pm|p.m/i);
+	!!new Date(Date.UTC(2020, 7, 30, 3, 0, 0)).toLocaleTimeString(locale).match(/am|a\.m|pm|p\.m/i);
 
 export const parseTime = timeStr => {
 	var time = timeStr.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
