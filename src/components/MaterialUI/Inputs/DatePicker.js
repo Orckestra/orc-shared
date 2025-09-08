@@ -184,7 +184,9 @@ const WrappedDatePicker = ({
 						showTimeInput={useTime ?? false}
 						useTime={useTime ?? false}
 						customTimeInput={
-							useTime ? <TimePicker windowsTimeZone={windowsTimeZoneName} timeOption={timeOption} /> : null
+							useTime ? (
+								<TimePicker showTimeZone={showTimeZone} windowsTimeZone={windowsTimeZoneName} timeOption={timeOption} />
+							) : null
 						}
 						timeInputLabel={timeInputLabel ?? ""}
 						readOnly={readOnly}
