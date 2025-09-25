@@ -118,7 +118,11 @@ const MenuItem = ({ open = false, label = "", icon, alert, isHidden = false, hre
 		<ItemWrapper to={href} className={classes.block} {...props}>
 			<Icon id={icon} className={classes.menuIcon} />
 			<div className={`${classes.alert} ${showAlert ? "show" : undefined}`}>
-				<div className={`${classes.alertMessage} ${showAlertMessage ? "show" : undefined}`}>{alertMessage.current}</div>
+				{alertMessage.current && (
+					<div className={`${classes.alertMessage} show`}>
+						<FormattedMessage {...alertMessage.current} />
+					</div>
+				)}
 			</div>
 			<span className={classes.label}>{typeof label === "string" ? label : <FormattedMessage {...label} />}</span>
 		</ItemWrapper>

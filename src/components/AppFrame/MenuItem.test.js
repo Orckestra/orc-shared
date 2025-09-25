@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Icon from "../MaterialUI/DataDisplay/Icon";
 import sharedMessages from "./../../sharedMessages";
 import { extractMessages, TestWrapper } from "./../../utils/testUtils";
+import { IntlProvider } from "react-intl";
 
 const messages = extractMessages(sharedMessages);
 
@@ -101,9 +102,7 @@ describe("MenuItem", () => {
 			<MemoryRouter>
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
-					<div className="show">
-						<div></div>
-					</div>
+					<div className="show"></div>
 					<span>Test</span>
 				</Link>
 			</MemoryRouter>,
@@ -121,9 +120,7 @@ describe("MenuItem", () => {
 			<MemoryRouter>
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
-					<div className="show">
-						<div></div>
-					</div>
+					<div className="show"></div>
 					<span>Test</span>
 				</Link>
 			</MemoryRouter>,
@@ -131,10 +128,12 @@ describe("MenuItem", () => {
 
 	it("shows activity message", () =>
 		expect(
-			<Provider store={store}>
-				<MemoryRouter>
-					<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert={{ message: "Test message" }} />
-				</MemoryRouter>
+			<Provider store={store} intlProvider={{ messages }}>
+				<IntlProvider locale="en-US" timeZone="UTC" messages={messages}>
+					<MemoryRouter>
+						<MenuItem id="test" href="/foo/test" icon="cake" label="Test" alert={{ message: sharedMessages.about }} />
+					</MemoryRouter>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -142,7 +141,7 @@ describe("MenuItem", () => {
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
 					<div>
-						<div className="show">Test message</div>
+						<div className="show">About</div>
 					</div>
 					<span>Test</span>
 				</Link>
@@ -152,15 +151,17 @@ describe("MenuItem", () => {
 	it("shows activity type on messages", () =>
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<MenuItem
-						id="test"
-						href="/foo/test"
-						icon="cake"
-						label="Test"
-						alert={{ message: "Test message", type: "warn" }}
-					/>
-				</MemoryRouter>
+				<IntlProvider locale="en-US" timeZone="UTC" messages={messages}>
+					<MemoryRouter>
+						<MenuItem
+							id="test"
+							href="/foo/test"
+							icon="cake"
+							label="Test"
+							alert={{ message: sharedMessages.about, type: "warn" }}
+						/>
+					</MemoryRouter>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -168,7 +169,7 @@ describe("MenuItem", () => {
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
 					<div>
-						<div className="show">Test message</div>
+						<div className="show">About</div>
 					</div>
 					<span>Test</span>
 				</Link>
@@ -178,16 +179,18 @@ describe("MenuItem", () => {
 	it("shows nothing if isHidden is true", () => {
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<MenuItem
-						id="test"
-						href="/foo/test"
-						icon="cake"
-						label="Test"
-						alert={{ message: "Test message", type: "warn" }}
-						isHidden={true}
-					/>
-				</MemoryRouter>
+				<IntlProvider locale="en-US" timeZone="UTC" messages={messages}>
+					<MemoryRouter>
+						<MenuItem
+							id="test"
+							href="/foo/test"
+							icon="cake"
+							label="Test"
+							alert={{ message: sharedMessages.about, type: "warn" }}
+							isHidden={true}
+						/>
+					</MemoryRouter>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to equal",
@@ -204,8 +207,8 @@ describe("MenuItem", () => {
 					id="test"
 					href="/foo/test"
 					icon="cake"
-					label={{ id: "Test", defaultMessage: "Test" }}
-					alert={{ message: "Test message", type: "warn" }}
+					label={sharedMessages.help}
+					alert={{ message: sharedMessages.about, type: "warn" }}
 					hide={hide}
 				/>
 			</TestWrapper>,
@@ -215,9 +218,9 @@ describe("MenuItem", () => {
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
 					<div>
-						<div className="show">Test message</div>
+						<div className="show">About</div>
 					</div>
-					<span>Test</span>
+					<span>Help</span>
 				</Link>
 			</TestWrapper>,
 		);
@@ -226,16 +229,18 @@ describe("MenuItem", () => {
 	it("shows properly if hide is undefined", () => {
 		expect(
 			<Provider store={store}>
-				<MemoryRouter>
-					<MenuItem
-						id="test"
-						href="/foo/test"
-						icon="cake"
-						label="Test"
-						alert={{ message: "Test message", type: "warn" }}
-						hide={undefined}
-					/>
-				</MemoryRouter>
+				<IntlProvider locale="en-US" timeZone="UTC" messages={messages}>
+					<MemoryRouter>
+						<MenuItem
+							id="test"
+							href="/foo/test"
+							icon="cake"
+							label="Test"
+							alert={{ message: sharedMessages.about, type: "warn" }}
+							hide={undefined}
+						/>
+					</MemoryRouter>
+				</IntlProvider>
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -243,7 +248,7 @@ describe("MenuItem", () => {
 				<Link id="test" to="/foo/test">
 					<Icon id="cake" />
 					<div>
-						<div className="show">Test message</div>
+						<div className="show">About</div>
 					</div>
 					<span>Test</span>
 				</Link>
