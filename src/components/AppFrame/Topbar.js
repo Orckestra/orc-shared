@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useIntl } from "react-intl";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,8 @@ import DropMenu from "../DropMenu";
 import Anchor from "./Anchor";
 import Help from "./Help";
 import sharedMessages from "./../../sharedMessages";
+import classNames from "classnames";
+import { areEqualCaseInsensitive } from "../../utils/comparisonHelper";
 
 const useStyles = makeStyles(theme => ({
 	wrapper: {
@@ -40,6 +42,22 @@ const useStyles = makeStyles(theme => ({
 	appLogo: {
 		height: "30px",
 		marginRight: "10px",
+	},
+	qaContainerColor: {
+		backgroundColor: "#FF6467",
+		color: theme.palette.primary.dark,
+	},
+	intContainerColor: {
+		backgroundColor: "#FF8904",
+		color: theme.palette.primary.dark,
+	},
+	stgContainerColor: {
+		backgroundColor: "#FFDF20",
+		color: theme.palette.primary.dark,
+	},
+	localdevContainerColor: {
+		backgroundColor: "#BBF451",
+		color: theme.palette.primary.dark,
 	},
 }));
 
@@ -81,13 +99,133 @@ export const Menu = () => {
 	);
 };
 
+export const sanitizeEnvironmentCode = envCode => {
+	if (!envCode) {
+		return envCode;
+	}
+
+	envCode = envCode.toLowerCase();
+
+	const partialEnvCodes = [
+		"prd", // to support the old prdhi / prdlow used by SBD
+		"int", // to support int, int2, etc
+		"qa", // to support qa, qa2, etc
+		"stg", // to support stg, stg2, etc
+		"localdev", // local development of the platform by product or service teams
+	];
+
+	for (const partialEnvCode of partialEnvCodes) {
+		if (envCode.startsWith(partialEnvCode)) {
+			return partialEnvCode;
+		}
+	}
+
+	return envCode; // other names will be used as-is
+};
+
+export const getAppEnvironmentInfo = (currentLocation, uiContainerName) => {
+	let environmentCode = null;
+	let sanitizedEnvironmentCode = null;
+	const domainMatch = currentLocation?.match(
+		/^(?<appName>[^.]+)\.(?<envCode>[^.]+)\.(?<clientCode>[^.]+)\.orckestra\.(cloud|org)$/,
+	);
+
+	if (domainMatch) {
+		environmentCode = domainMatch.groups.envCode;
+	} else if (
+		currentLocation?.toLowerCase().endsWith("develop.orckestra.cloud") ||
+		currentLocation?.toLowerCase() === "localhost"
+	) {
+		environmentCode = "localdev";
+	}
+
+	sanitizedEnvironmentCode = sanitizeEnvironmentCode(environmentCode);
+
+	if (!sanitizedEnvironmentCode || sanitizedEnvironmentCode === "rel") {
+		// we never want a different color / text for our rel environment
+		return {
+			name: "",
+			cssClassCategory: null,
+		};
+	}
+
+	if (!uiContainerName) {
+		uiContainerName = "prd"; // fallback in case the container is not defined in a meta tag
+	}
+
+	const needCustomCssClass =
+		(!!sanitizedEnvironmentCode && !areEqualCaseInsensitive(sanitizedEnvironmentCode, "prd")) ||
+		!areEqualCaseInsensitive(uiContainerName, "prd");
+
+	let cssClassCategory = null;
+
+	const nameParts = [];
+
+	if (!areEqualCaseInsensitive(sanitizedEnvironmentCode, "prd")) {
+		nameParts.push(environmentCode);
+	}
+
+	if (needCustomCssClass) {
+		if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "prd")) {
+			cssClassCategory = "qa"; // if we end up here, it means that our prd environment is using a different UI container
+		} else if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "localdev")) {
+			cssClassCategory = "localdev";
+		} else if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "qa")) {
+			cssClassCategory = "qa";
+		} else if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "stg")) {
+			cssClassCategory = "stg";
+		} else {
+			// any other container have the int look
+			cssClassCategory = "int";
+		}
+
+		if (
+			!areEqualCaseInsensitive(uiContainerName, "prd") &&
+			!areEqualCaseInsensitive(sanitizedEnvironmentCode, "localdev")
+		) {
+			nameParts.push(`${window.BUILD_NUMBER}/${uiContainerName}`);
+		}
+	}
+
+	return {
+		name: nameParts.join(" — "),
+		cssClassCategory: cssClassCategory,
+	};
+};
+
 export const CurrentApp = ({ displayName, iconUri }) => {
 	const classes = useStyles();
+	const containerInfo = useMemo(() => {
+		return getAppEnvironmentInfo(
+			window.location.hostname,
+			document.querySelector('meta[name="cdn-container-name"]')?.getAttribute("content"),
+		);
+	}, []);
+
+	let name;
+
+	if (containerInfo.name) {
+		if (displayName) {
+			// to avoid issues with tests where "undefined" ends up in the name
+			name = `${displayName} — ${containerInfo.name}`;
+		} else {
+			name = ` — ${containerInfo.name}`;
+		}
+	} else {
+		name = displayName;
+	}
 
 	return (
-		<div className={classes.appLabel}>
+		<div
+			className={classNames(classes.appLabel, {
+				[classes.qaContainerColor]: containerInfo.cssClassCategory === "qa",
+				[classes.intContainerColor]: containerInfo.cssClassCategory === "int",
+				[classes.stgContainerColor]: containerInfo.cssClassCategory === "stg",
+				[classes.localdevContainerColor]: containerInfo.cssClassCategory === "localdev",
+			})}
+		>
 			<img src={iconUri} className={classes.appLogo} />
-			{displayName}
+			{name}
 		</div>
 	);
 };
