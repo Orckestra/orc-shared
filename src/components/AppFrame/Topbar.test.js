@@ -10,7 +10,7 @@ import { SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE } from "../../acti
 import { PREFS_NAME } from "./Preferences";
 import { ABOUT_NAME } from "./About";
 import ApplicationSelector from "./ApplicationSelector";
-import Topbar, { CurrentApp, useMenuProps } from "./Topbar";
+import Topbar, { CurrentApp, getAppEnvironmentInfo, sanitizeEnvironmentCode, useMenuProps } from "./Topbar";
 
 jest.mock("../../utils/buildUrl", () => {
 	const modExport = {};
@@ -80,7 +80,7 @@ describe("Topbar", () => {
 					<ApplicationSelector {...props} />
 					<div>
 						<img src="/test/url" />
-						Test label
+						Test label — localdev
 					</div>
 				</div>
 				<Ignore />
@@ -102,6 +102,7 @@ describe("Topbar", () => {
 					<Ignore />
 					<div>
 						<img />
+						{" — localdev"}
 					</div>
 				</div>
 				<Ignore />
@@ -123,6 +124,7 @@ describe("Topbar", () => {
 					<Ignore />
 					<div>
 						<img />
+						{" — localdev"}
 					</div>
 				</div>
 				<Ignore />
@@ -232,7 +234,20 @@ describe("useMenuProps", () => {
 		));
 });
 
-describe("CurrentApp", () => {
+describe("CurrentApp for production site", () => {
+	const { location } = window;
+
+	beforeAll(() => {
+		delete window.location;
+
+		window.location = {
+			hostname: "oco.prd.platform.orckestra.cloud",
+		};
+	});
+	afterAll(() => {
+		window.location = location;
+	});
+
 	it("renders the app logo and name", () =>
 		expect(
 			<CurrentApp displayName="Test label" iconUri="/test/url" />,
@@ -243,4 +258,144 @@ describe("CurrentApp", () => {
 				Test label
 			</div>,
 		));
+});
+
+describe("CurrentApp for localhost", () => {
+	it("renders the app logo and name and with build info", () => {
+		expect(
+			<CurrentApp displayName="Test label" iconUri="/test/url" />,
+			"when mounted",
+			"to satisfy",
+			<div>
+				<img src="/test/url" />
+				Test label — localdev
+			</div>,
+		);
+	});
+});
+
+describe("sanitizeEnvironmentCode", () => {
+	it.each([
+		[null, null],
+		[undefined, undefined],
+		["demo1", "demo1"],
+		["prd", "prd"],
+		["prdhi", "prd"],
+		["prd2", "prd"],
+		["qa", "qa"],
+		["qahi", "qa"],
+		["qa2", "qa"],
+		["int", "int"],
+		["inthi", "int"],
+		["int2", "int"],
+		["stg", "stg"],
+		["stghi", "stg"],
+		["stg2", "stg"],
+		["localdev", "localdev"],
+		["localdevhi", "localdev"],
+		["localdev2", "localdev"],
+	])("Should sanitize %s as %s", (code, expectedSanitizedVersion) => {
+		const sanitizedVersion = sanitizeEnvironmentCode(code);
+
+		expect(sanitizedVersion, "to equal", expectedSanitizedVersion);
+	});
+});
+
+describe("getAppEnvironmentInfo", () => {
+	let originalBuildNumber;
+
+	beforeEach(() => {
+		originalBuildNumber = window.BUILD_NUMBER;
+		window.BUILD_NUMBER = "1.2-alpha888";
+	});
+
+	afterEach(() => {
+		window.BUILD_NUMBER = originalBuildNumber;
+	});
+
+	it.each([
+		[null, "prd", "", null],
+		["", "prd", "", null],
+		["prd", null, "", null],
+		["prd", "", "", null],
+		["prd", "prd", "", null],
+		["prd", "qa", "1.2-alpha888/qa", "qa"],
+		["prd", "int", "1.2-alpha888/int", "qa"],
+		["qa", "prd", "qa", "qa"],
+		["qa", "qa", "qa — 1.2-alpha888/qa", "qa"],
+		["qa", "int", "qa — 1.2-alpha888/int", "qa"],
+		["int", "prd", "int", "int"],
+		["int", "qa", "int — 1.2-alpha888/qa", "int"],
+		["int", "int", "int — 1.2-alpha888/int", "int"],
+		["stg", "prd", "stg", "stg"],
+		["stg", "stg", "stg — 1.2-alpha888/stg", "stg"],
+		["stg", "int", "stg — 1.2-alpha888/int", "stg"],
+		["demo1", "prd", "demo1", "int"],
+		["demo1", "stg", "demo1 — 1.2-alpha888/stg", "int"],
+		["demo1", "int", "demo1 — 1.2-alpha888/int", "int"],
+		["rel", "prd", "", null],
+		["rel", "stg", "", null],
+		["rel", "int", "", null],
+		["localdev", "prd", "localdev", "localdev"],
+		["localdev", "qa", "localdev", "localdev"],
+	])(
+		"getAppEnvironmentInfo for %s url and %s UI container",
+		(envCode, uiContainerName, expectedName, expectedCssClassCategory) => {
+			const info = getAppEnvironmentInfo(
+				envCode ? `oco.${envCode}.platform.orckestra.cloud` : envCode,
+				uiContainerName,
+			);
+
+			const expected = {
+				name: expectedName,
+				cssClassCategory: expectedCssClassCategory,
+			};
+
+			expect(info, "to equal", expected);
+		},
+	);
+
+	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and prd UI container", () => {
+		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "prd");
+
+		const expected = {
+			name: "localdev",
+			cssClassCategory: "localdev",
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and qa UI container", () => {
+		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "qa");
+
+		const expected = {
+			name: "localdev — 1.2-alpha888/qa",
+			cssClassCategory: "localdev",
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (local.develop.orckestra.cloud) and prd UI container", () => {
+		const info = getAppEnvironmentInfo("local.develop.orckestra.cloud", "prd");
+
+		const expected = {
+			name: "localdev",
+			cssClassCategory: "localdev",
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (localhost) and prd UI container", () => {
+		const info = getAppEnvironmentInfo("localhost", "prd");
+
+		const expected = {
+			name: "localdev",
+			cssClassCategory: "localdev",
+		};
+
+		expect(info, "to equal", expected);
+	});
 });
