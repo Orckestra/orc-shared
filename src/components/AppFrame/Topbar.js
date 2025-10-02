@@ -44,20 +44,20 @@ const useStyles = makeStyles(theme => ({
 		marginRight: "10px",
 	},
 	qaContainerColor: {
-		backgroundColor: "#FF6467",
-		color: theme.palette.primary.dark,
+		backgroundColor: "#9F0F18",
+		color: "#FFFFFF",
 	},
 	intContainerColor: {
-		backgroundColor: "#FF8904",
-		color: theme.palette.primary.dark,
+		backgroundColor: "#FCA311",
+		color: "#000000",
 	},
 	stgContainerColor: {
-		backgroundColor: "#FFDF20",
-		color: theme.palette.primary.dark,
+		backgroundColor: "#19B9E6",
+		color: "#000000",
 	},
 	localdevContainerColor: {
-		backgroundColor: "#BBF451",
-		color: theme.palette.primary.dark,
+		backgroundColor: "#87E911",
+		color: "#000000",
 	},
 }));
 
@@ -126,6 +126,8 @@ export const sanitizeEnvironmentCode = envCode => {
 export const getAppEnvironmentInfo = (currentLocation, uiContainerName) => {
 	let environmentCode = null;
 	let sanitizedEnvironmentCode = null;
+	let isDeployedLocalDevEnv = false;
+
 	const domainMatch = currentLocation?.match(
 		/^(?<appName>[^.]+)\.(?<envCode>[^.]+)\.(?<clientCode>[^.]+)\.orckestra\.(cloud|org)$/,
 	);
@@ -133,11 +135,17 @@ export const getAppEnvironmentInfo = (currentLocation, uiContainerName) => {
 	if (domainMatch) {
 		environmentCode = domainMatch.groups.envCode;
 	} else if (
-		currentLocation?.toLowerCase().endsWith("develop.orckestra.cloud") ||
+		currentLocation?.toLowerCase().endsWith("local.develop.orckestra.cloud") ||
 		currentLocation?.toLowerCase() === "localhost"
 	) {
 		environmentCode = "localdev";
+	} else if (currentLocation?.toLowerCase().endsWith("develop.orckestra.cloud")) {
+		environmentCode = "localdev";
+		isDeployedLocalDevEnv = true;
 	}
+
+	// uncomment if you want to force a specific environment / color
+	// environmentCode = "prd";
 
 	sanitizedEnvironmentCode = sanitizeEnvironmentCode(environmentCode);
 
@@ -166,23 +174,28 @@ export const getAppEnvironmentInfo = (currentLocation, uiContainerName) => {
 	}
 
 	if (needCustomCssClass) {
+		let needBuildNumber = false;
+		const isPrdUiContainer = areEqualCaseInsensitive(uiContainerName, "prd");
+
 		if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "prd")) {
 			cssClassCategory = "qa"; // if we end up here, it means that our prd environment is using a different UI container
+			needBuildNumber = !isPrdUiContainer;
 		} else if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "localdev")) {
 			cssClassCategory = "localdev";
+			needBuildNumber = !isPrdUiContainer && isDeployedLocalDevEnv;
 		} else if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "qa")) {
 			cssClassCategory = "qa";
+			needBuildNumber = !isPrdUiContainer;
 		} else if (areEqualCaseInsensitive(sanitizedEnvironmentCode, "stg")) {
 			cssClassCategory = "stg";
+			needBuildNumber = !isPrdUiContainer;
 		} else {
 			// any other container have the int look
 			cssClassCategory = "int";
+			needBuildNumber = !isPrdUiContainer;
 		}
 
-		if (
-			!areEqualCaseInsensitive(uiContainerName, "prd") &&
-			!areEqualCaseInsensitive(sanitizedEnvironmentCode, "localdev")
-		) {
+		if (needBuildNumber) {
 			nameParts.push(`${window.BUILD_NUMBER}/${uiContainerName}`);
 		}
 	}

@@ -336,6 +336,8 @@ describe("getAppEnvironmentInfo", () => {
 		["rel", "prd", "", null],
 		["rel", "stg", "", null],
 		["rel", "int", "", null],
+		["localdev", "prd", "localdev", "localdev"],
+		["localdev", "qa", "localdev", "localdev"],
 	])(
 		"getAppEnvironmentInfo for %s url and %s UI container",
 		(envCode, uiContainerName, expectedName, expectedCssClassCategory) => {
@@ -358,6 +360,17 @@ describe("getAppEnvironmentInfo", () => {
 
 		const expected = {
 			name: "localdev",
+			cssClassCategory: "localdev",
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and qa UI container", () => {
+		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "qa");
+
+		const expected = {
+			name: "localdev — 1.2-alpha888/qa",
 			cssClassCategory: "localdev",
 		};
 
