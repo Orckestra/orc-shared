@@ -3,7 +3,17 @@ import { isObject } from "lodash";
 
 export const ListInfoPropertyName = "listInfo";
 
-const standardInfoKeys = ["scope", "page", "filters", "sorting", "totalCount", "nextPageToLoad", "index", "list"];
+const standardInfoKeys = [
+	"scope",
+	"page",
+	"filters",
+	"sorting",
+	"totalCount",
+	"nextPageToLoad",
+	"index",
+	"list",
+	"searchRequested",
+];
 
 class ListReducerHelper {
 	constructor(groupPropertyName) {
@@ -12,6 +22,10 @@ class ListReducerHelper {
 
 	setNextPageToLoad = (state, nextPageToLoad) => {
 		return state.setIn([this.groupPropertyName, "nextPageToLoad"], nextPageToLoad);
+	};
+
+	setSearchRequested = (state, searchRequested) => {
+		return state.setIn([this.groupPropertyName, "searchRequested"], searchRequested);
 	};
 
 	setResults = (state, listInfo, forceReset = false) => {
@@ -51,6 +65,7 @@ class ListReducerHelper {
 			s.setIn([this.groupPropertyName, "scope"], scope ?? null);
 			s.setIn([this.groupPropertyName, "filters"], Immutable.fromJS(filters ?? null));
 			s.setIn([this.groupPropertyName, "sorting"], Immutable.fromJS(sorting ?? null));
+			s.setIn([this.groupPropertyName, "searchRequested"], false);
 
 			const otherKeys = Object.keys(others);
 
@@ -90,6 +105,7 @@ class ListReducerHelper {
 	resetListInfo = (state, propertiesToKeep = {}) => {
 		let updatedState = state
 			.setIn([this.groupPropertyName, "nextPageToLoad"], 1)
+			.setIn([this.groupPropertyName, "searchRequested"], false)
 			.setIn([this.groupPropertyName, "index"], Immutable.fromJS({}))
 			.setIn([this.groupPropertyName, "list"], Immutable.fromJS([]))
 			.setIn([this.groupPropertyName, "totalCount"], 0);
@@ -128,6 +144,7 @@ class ListSelectorHelper {
 			currentFilters: listInfo.get("filters")?.toJS(),
 			currentSorting: listInfo.get("sorting")?.toJS(),
 			totalCount: listInfo.get("totalCount"),
+			searchRequested: listInfo.get("searchRequested"),
 		};
 
 		listInfo.mapKeys((key, value) => {
@@ -151,6 +168,10 @@ class ListSelectorHelper {
 
 	getNextPageToLoad = state => {
 		return state.getIn([this.groupPropertyName, "nextPageToLoad"]);
+	};
+
+	getSearchRequested = state => {
+		return state.getIn([this.groupPropertyName, "searchRequested"]);
 	};
 }
 
@@ -182,6 +203,7 @@ class ListHelper {
 		index,
 		list,
 		totalCount,
+		searchRequested,
 		...additionalValues
 	} = {}) => {
 		return {
@@ -194,6 +216,7 @@ class ListHelper {
 				index: index ?? {},
 				list: list ?? [],
 				totalCount: totalCount ?? 0,
+				searchRequested: searchRequested ?? false,
 				...additionalValues,
 			},
 		};
