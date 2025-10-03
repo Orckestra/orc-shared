@@ -14,6 +14,7 @@ describe("createInitialListInfo", () => {
 				index: {},
 				list: [],
 				totalCount: 0,
+				searchRequested: false,
 			},
 		});
 	});
@@ -33,6 +34,7 @@ describe("createInitialListInfo", () => {
 				index: {},
 				list: [],
 				totalCount: 0,
+				searchRequested: false,
 				prop1: 123,
 				prop2: { subprop: "a" },
 			},
@@ -49,6 +51,7 @@ describe("createInitialListInfo", () => {
 			index: { c: 1 },
 			list: [1, 2, 3],
 			totalCount: 10,
+			searchRequested: false,
 			prop1: 123,
 			prop2: { subprop: "a" },
 		});
@@ -62,6 +65,7 @@ describe("createInitialListInfo", () => {
 				index: { c: 1 },
 				list: [1, 2, 3],
 				totalCount: 10,
+				searchRequested: false,
 				prop1: 123,
 				prop2: { subprop: "a" },
 			},
@@ -82,6 +86,7 @@ describe("createListInfoFrom", () => {
 				index: {},
 				list: [],
 				totalCount: 0,
+				searchRequested: false,
 			},
 		});
 	});
@@ -101,6 +106,7 @@ describe("createListInfoFrom", () => {
 				index: {},
 				list: [],
 				totalCount: 0,
+				searchRequested: false,
 				prop1: 123,
 				prop2: { subprop: "a" },
 			},
@@ -117,6 +123,7 @@ describe("createListInfoFrom", () => {
 			index: { c: 1 },
 			list: [1, 2, 3],
 			totalCount: 10,
+			searchRequested: false,
 			prop1: 123,
 			prop2: { subprop: "a" },
 		});
@@ -130,6 +137,7 @@ describe("createListInfoFrom", () => {
 				index: { c: 1 },
 				list: [1, 2, 3],
 				totalCount: 10,
+				searchRequested: false,
 				prop1: 123,
 				prop2: { subprop: "a" },
 			},
@@ -148,6 +156,7 @@ describe("ListSelectorHelper", () => {
 			index: { c: 1 },
 			list: [1, 2, 3],
 			totalCount: 10,
+			searchRequested: true,
 			prop1: 123,
 			prop2: { subprop: "a" },
 		}),
@@ -168,6 +177,11 @@ describe("ListSelectorHelper", () => {
 		expect(value, "to equal", Immutable.fromJS({ c: 1 }));
 	});
 
+	it("getSearchRequested", () => {
+		const value = ListHelper.selector.getSearchRequested(initialState);
+		expect(value, "to equal", true);
+	});
+
 	it("getCurrentInfo", () => {
 		const value = ListHelper.selector.getCurrentInfo(initialState);
 		expect(value, "to equal", {
@@ -176,6 +190,7 @@ describe("ListSelectorHelper", () => {
 			currentScope: "canada",
 			currentPage: 1,
 			totalCount: 10,
+			searchRequested: true,
 			prop1: 123,
 			prop2: { subprop: "a" },
 		});
@@ -191,6 +206,7 @@ describe("ListSelectorHelper", () => {
 			currentScope: "canada",
 			currentPage: 1,
 			totalCount: 10,
+			searchRequested: true,
 			prop1: 123,
 			prop2: { subprop: "a" },
 		});
@@ -204,6 +220,7 @@ describe("ListSelectorHelper", () => {
 			currentScope: undefined,
 			currentPage: undefined,
 			totalCount: undefined,
+			searchRequested: undefined,
 		});
 	});
 });
@@ -219,6 +236,7 @@ describe("ListReducerHelper", () => {
 			index: { c: 1 },
 			list: [1, 2, 3],
 			totalCount: 10,
+			searchRequested: false,
 			prop1: 123,
 			prop2: { subprop: "a" },
 		}),
@@ -239,6 +257,30 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
+					prop1: 123,
+					prop2: { subprop: "a" },
+				}),
+			),
+		);
+	});
+
+	it("setSearchRequested", () => {
+		const newState = ListHelper.reducer.setSearchRequested(initialState, true);
+		expect(
+			newState,
+			"to equal",
+			Immutable.fromJS(
+				ListHelper.createListInfoFrom({
+					sorting: { a: 1 },
+					filters: { b: 1 },
+					scope: "canada",
+					page: 1,
+					nextPageToLoad: 2,
+					index: { c: 1 },
+					list: [1, 2, 3],
+					totalCount: 10,
+					searchRequested: true,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -269,6 +311,7 @@ describe("ListReducerHelper", () => {
 					index: { d: 1 },
 					list: [4, 5, 6],
 					totalCount: 222,
+					searchRequested: undefined,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -300,6 +343,7 @@ describe("ListReducerHelper", () => {
 					index: {},
 					list: [4, 5, 6],
 					totalCount: 222,
+					searchRequested: undefined,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -327,6 +371,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1, d: 1 },
 					list: [1, 2, 3, 4, 5, 6],
 					totalCount: 222,
+					searchRequested: undefined,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -354,6 +399,7 @@ describe("ListReducerHelper", () => {
 					index: { d: 1 },
 					list: [4, 5, 6],
 					totalCount: 222,
+					searchRequested: undefined,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -384,6 +430,7 @@ describe("ListReducerHelper", () => {
 					index: {},
 					list: [],
 					totalCount: 0,
+					searchRequested: false,
 					prop1: 456,
 					prop2: { subprop: "b" },
 				}),
@@ -414,6 +461,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 456,
 					prop2: { subprop: "b" },
 				}),
@@ -444,6 +492,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 456,
 					prop3: 789,
 				}),
@@ -472,6 +521,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 				}),
 			),
 		);
@@ -500,6 +550,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 456,
 					prop2: { subprop: "b" },
 				}),
@@ -522,6 +573,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 				}),
 			),
 		);
@@ -542,6 +594,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1, d: 888 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -564,6 +617,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3, 888],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -586,6 +640,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 888 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -608,6 +663,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -630,6 +686,7 @@ describe("ListReducerHelper", () => {
 					index: {},
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -652,6 +709,7 @@ describe("ListReducerHelper", () => {
 					index: { c: 1 },
 					list: [1, 2, 3],
 					totalCount: 10,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -674,6 +732,7 @@ describe("ListReducerHelper", () => {
 					index: {},
 					list: [],
 					totalCount: 0,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
@@ -701,6 +760,7 @@ describe("ListReducerHelper", () => {
 					index: {},
 					list: [],
 					totalCount: 0,
+					searchRequested: false,
 					prop1: 123,
 					prop2: { subprop: "a" },
 				}),
