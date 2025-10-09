@@ -314,36 +314,62 @@ describe("getAppEnvironmentInfo", () => {
 	});
 
 	it.each([
-		[null, "prd", "", null],
-		["", "prd", "", null],
-		["prd", null, "", null],
-		["prd", "", "", null],
-		["prd", "prd", "", null],
-		["prd", "qa", "1.2-alpha888/qa", "qa"],
-		["prd", "int", "1.2-alpha888/int", "qa"],
-		["qa", "prd", "qa", "qa"],
-		["qa", "qa", "qa — 1.2-alpha888/qa", "qa"],
-		["qa", "int", "qa — 1.2-alpha888/int", "qa"],
-		["int", "prd", "int", "int"],
-		["int", "qa", "int — 1.2-alpha888/qa", "int"],
-		["int", "int", "int — 1.2-alpha888/int", "int"],
-		["stg", "prd", "stg", "stg"],
-		["stg", "stg", "stg — 1.2-alpha888/stg", "stg"],
-		["stg", "int", "stg — 1.2-alpha888/int", "stg"],
-		["demo1", "prd", "demo1", "int"],
-		["demo1", "stg", "demo1 — 1.2-alpha888/stg", "int"],
-		["demo1", "int", "demo1 — 1.2-alpha888/int", "int"],
-		["rel", "prd", "", null],
-		["rel", "stg", "", null],
-		["rel", "int", "", null],
-		["localdev", "prd", "localdev", "localdev"],
-		["localdev", "qa", "localdev", "localdev"],
+		[null, "prd", true, "", null],
+		["", "prd", true, "", null],
+		["prd", null, true, "", null],
+		["prd", "", true, "", null],
+		["prd", "prd", true, "", null],
+		["prd", "qa", true, "1.2-alpha888/qa", "qa"],
+		["prd", "int", true, "1.2-alpha888/int", "qa"],
+		["qa", "prd", true, "qa", "qa"],
+		["qa", "qa", true, "qa — 1.2-alpha888/qa", "qa"],
+		["qa", "int", true, "qa — 1.2-alpha888/int", "qa"],
+		["int", "prd", true, "int", "int"],
+		["int", "qa", true, "int — 1.2-alpha888/qa", "int"],
+		["int", "int", true, "int — 1.2-alpha888/int", "int"],
+		["stg", "prd", true, "stg", "stg"],
+		["stg", "stg", true, "stg — 1.2-alpha888/stg", "stg"],
+		["stg", "int", true, "stg — 1.2-alpha888/int", "stg"],
+		["demo1", "prd", true, "demo1", "int"],
+		["demo1", "stg", true, "demo1 — 1.2-alpha888/stg", "int"],
+		["demo1", "int", true, "demo1 — 1.2-alpha888/int", "int"],
+		["rel", "prd", true, "rel", "int"],
+		["rel", "stg", true, "rel — 1.2-alpha888/stg", "int"],
+		["rel", "int", true, "rel — 1.2-alpha888/int", "int"],
+		["localdev", "prd", true, "localdev", "localdev"],
+		["localdev", "qa", true, "localdev", "localdev"],
+
+		[null, "prd", false, "", null],
+		["", "prd", false, "", null],
+		["prd", null, false, "", null],
+		["prd", "", false, "", null],
+		["prd", "prd", false, "", null],
+		["prd", "qa", false, "", null],
+		["prd", "int", false, "", null],
+		["qa", "prd", false, "", null],
+		["qa", "qa", false, "", null],
+		["qa", "int", false, "", null],
+		["int", "prd", false, "", null],
+		["int", "qa", false, "", null],
+		["int", "int", false, "", null],
+		["stg", "prd", false, "", null],
+		["stg", "stg", false, "", null],
+		["stg", "int", false, "", null],
+		["demo1", "prd", false, "", null],
+		["demo1", "stg", false, "", null],
+		["demo1", "int", false, "", null],
+		["rel", "prd", false, "", null],
+		["rel", "stg", false, "", null],
+		["rel", "int", false, "", null],
+		["localdev", "prd", false, "", null],
+		["localdev", "qa", false, "", null],
 	])(
-		"getAppEnvironmentInfo for %s url and %s UI container",
-		(envCode, uiContainerName, expectedName, expectedCssClassCategory) => {
+		"getAppEnvironmentInfo for %s url, %s UI container and %s header-colors",
+		(envCode, uiContainerName, headerColors, expectedName, expectedCssClassCategory) => {
 			const info = getAppEnvironmentInfo(
 				envCode ? `oco.${envCode}.platform.orckestra.cloud` : envCode,
 				uiContainerName,
+				headerColors,
 			);
 
 			const expected = {
@@ -355,8 +381,8 @@ describe("getAppEnvironmentInfo", () => {
 		},
 	);
 
-	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and prd UI container", () => {
-		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "prd");
+	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and prd UI container and with header colors", () => {
+		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "prd", true);
 
 		const expected = {
 			name: "localdev",
@@ -366,8 +392,8 @@ describe("getAppEnvironmentInfo", () => {
 		expect(info, "to equal", expected);
 	});
 
-	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and qa UI container", () => {
-		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "qa");
+	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and qa UI container and with header colors", () => {
+		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "qa", true);
 
 		const expected = {
 			name: "localdev — 1.2-alpha888/qa",
@@ -377,8 +403,8 @@ describe("getAppEnvironmentInfo", () => {
 		expect(info, "to equal", expected);
 	});
 
-	it("getAppEnvironmentInfo for localdev (local.develop.orckestra.cloud) and prd UI container", () => {
-		const info = getAppEnvironmentInfo("local.develop.orckestra.cloud", "prd");
+	it("getAppEnvironmentInfo for localdev (local.develop.orckestra.cloud) and prd UI container and with header colors", () => {
+		const info = getAppEnvironmentInfo("local.develop.orckestra.cloud", "prd", true);
 
 		const expected = {
 			name: "localdev",
@@ -388,12 +414,56 @@ describe("getAppEnvironmentInfo", () => {
 		expect(info, "to equal", expected);
 	});
 
-	it("getAppEnvironmentInfo for localdev (localhost) and prd UI container", () => {
-		const info = getAppEnvironmentInfo("localhost", "prd");
+	it("getAppEnvironmentInfo for localdev (localhost) and prd UI container and with header colors", () => {
+		const info = getAppEnvironmentInfo("localhost", "prd", true);
 
 		const expected = {
 			name: "localdev",
 			cssClassCategory: "localdev",
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and prd UI container and without header colors", () => {
+		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "prd", false);
+
+		const expected = {
+			name: "",
+			cssClassCategory: null,
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (occ-dev-oco.develop.orckestra.cloud) and qa UI container and without header colors", () => {
+		const info = getAppEnvironmentInfo("occ-dev-oco.develop.orckestra.cloud", "qa", false);
+
+		const expected = {
+			name: "",
+			cssClassCategory: null,
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (local.develop.orckestra.cloud) and prd UI container and without header colors", () => {
+		const info = getAppEnvironmentInfo("local.develop.orckestra.cloud", "prd", false);
+
+		const expected = {
+			name: "",
+			cssClassCategory: null,
+		};
+
+		expect(info, "to equal", expected);
+	});
+
+	it("getAppEnvironmentInfo for localdev (localhost) and prd UI container and without header colors", () => {
+		const info = getAppEnvironmentInfo("localhost", "prd", false);
+
+		const expected = {
+			name: "",
+			cssClassCategory: null,
 		};
 
 		expect(info, "to equal", expected);

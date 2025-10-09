@@ -123,7 +123,7 @@ export const sanitizeEnvironmentCode = envCode => {
 	return envCode; // other names will be used as-is
 };
 
-export const getAppEnvironmentInfo = (currentLocation, uiContainerName) => {
+export const getAppEnvironmentInfo = (currentLocation, uiContainerName, enableHeaderColors) => {
 	let environmentCode = null;
 	let sanitizedEnvironmentCode = null;
 	let isDeployedLocalDevEnv = false;
@@ -149,8 +149,8 @@ export const getAppEnvironmentInfo = (currentLocation, uiContainerName) => {
 
 	sanitizedEnvironmentCode = sanitizeEnvironmentCode(environmentCode);
 
-	if (!sanitizedEnvironmentCode || sanitizedEnvironmentCode === "rel") {
-		// we never want a different color / text for our rel environment
+	if (!sanitizedEnvironmentCode || !enableHeaderColors) {
+		// we never want a different color / text for unknown environment
 		return {
 			name: "",
 			cssClassCategory: null,
@@ -212,6 +212,7 @@ export const CurrentApp = ({ displayName, iconUri }) => {
 		return getAppEnvironmentInfo(
 			window.location.hostname,
 			document.querySelector('meta[name="cdn-container-name"]')?.getAttribute("content"),
+			(document.querySelector('meta[name="header-colors"]')?.getAttribute("content") ?? "true") === "true",
 		);
 	}, []);
 
