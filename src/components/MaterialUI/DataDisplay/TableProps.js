@@ -24,6 +24,7 @@ class TableProps extends ComponentProps {
 		tableContainer: "tableContainer",
 		container: "container",
 		table: "table",
+		placeholderContainer: "placeholderContainer",
 	};
 
 	constructor() {
@@ -47,6 +48,7 @@ class TableProps extends ComponentProps {
 		this.componentClasses.set(this.constructor.ruleNames.tableCell, null);
 		this.componentClasses.set(this.constructor.ruleNames.headerCell, null);
 		this.componentClasses.set(this.constructor.ruleNames.tableContainer, null);
+		this.componentClasses.set(this.constructor.ruleNames.placeholderContainer, null);
 		this.componentClasses.set(this.constructor.ruleNames.container, null);
 		this.componentClasses.set(this.constructor.ruleNames.table, null);
 

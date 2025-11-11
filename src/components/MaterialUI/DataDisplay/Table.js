@@ -352,7 +352,11 @@ const DefaultFullTable = React.forwardRef((props, ref) => {
 					context={props.context}
 				/>
 			</TableMui>
-			{props.tableRows.length > 0 ? null : <div className={props.classes.placeholder}>{props.placeholder}</div>}
+			{props.tableRows.length > 0 ? null : (
+				<div className={classNames(props.classes.placeholder, props.customClasses.placeholderContainer)}>
+					{props.placeholder}
+				</div>
+			)}
 		</div>
 	);
 });
@@ -441,6 +445,7 @@ const Table = React.forwardRef(
 		customClasses["tableCell"] = tableProps?.getStyle(TableProps.ruleNames.tableCell) || null;
 		customClasses["headerCell"] = tableProps?.getStyle(TableProps.ruleNames.headerCell) || null;
 		customClasses["tableContainer"] = tableProps?.getStyle(TableProps.ruleNames.tableContainer) || null;
+		customClasses["placeholderContainer"] = tableProps?.getStyle(TableProps.ruleNames.placeholderContainer) || null;
 		customClasses["container"] = tableProps?.getStyle(TableProps.ruleNames.container) || null;
 		customClasses["table"] = tableProps?.getStyle(TableProps.ruleNames.table) || null;
 
