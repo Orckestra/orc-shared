@@ -69,6 +69,7 @@ const SectionExpansionPanel = ({
 	expansionPanelId,
 	expansionPanelProps,
 	expansionPanelActionsProps,
+	headerClassName,
 }) => {
 	if (isExpansionPanelProps(expansionPanelProps) === false) {
 		throw new TypeError("expansionPanelProps property is not of type ExpansionPanelProps");
@@ -122,7 +123,7 @@ const SectionExpansionPanel = ({
 				expandIcon={<Icon id="dropdown-chevron-down" />}
 				IconButtonProps={defaultSummaryStyles}
 				classes={{
-					root: classNames(classes.summaryRoot, constrained ? classes.constrainedSummaryRoot : ""),
+					root: classNames(classes.summaryRoot, headerClassName, constrained ? classes.constrainedSummaryRoot : ""),
 					expanded: classNames(classes.panelExpanded),
 					content: classNames(classes.summaryContent, constrained ? classes.constrainedSummaryContent : ""),
 					expandIcon: classNames(classes.summaryExpandIconRoot),

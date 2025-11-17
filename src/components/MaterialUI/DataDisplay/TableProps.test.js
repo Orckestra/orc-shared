@@ -12,7 +12,16 @@ describe("TableProps Props", () => {
 			"constrained",
 		];
 
-		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];
+		const ruleNames = [
+			"tableHeader",
+			"tableRow",
+			"tableCell",
+			"headerCell",
+			"tableContainer",
+			"placeholderContainer",
+			"container",
+			"table",
+		];
 
 		expect(TableProps.propNames, "to have keys", propNames);
 		expect(TableProps.ruleNames, "to have keys", ruleNames);
@@ -34,7 +43,16 @@ describe("TableProps Props", () => {
 			"saveScrollbarPosition",
 		];
 
-		const ruleNames = ["tableHeader", "tableRow", "tableCell", "headerCell", "tableContainer", "container", "table"];
+		const ruleNames = [
+			"tableHeader",
+			"tableRow",
+			"tableCell",
+			"headerCell",
+			"tableContainer",
+			"placeholderContainer",
+			"container",
+			"table",
+		];
 
 		const tableProps = new TableProps();
 

@@ -3,15 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import Icon from "../MaterialUI/DataDisplay/Icon";
-
-const getToastColor = (theme, alertType) => {
-	const toastBorderColors = {
-		error: theme.palette.error.main,
-		warn: theme.palette.warning.main,
-		confirm: theme.palette.success.main,
-	};
-	return toastBorderColors[alertType] || "red";
-};
+import { getToastColor } from "../../utils/toastHelper";
 
 const useStyles = makeStyles(theme => ({
 	block: props => ({

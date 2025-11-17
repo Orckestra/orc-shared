@@ -54,11 +54,6 @@ const baseTheme = {
 			Sale: "sales-scope",
 			Dependant: "dependent-scope",
 		},
-		// toast: {
-		// 	confirm: "checkmark-circle",
-		// 	warn: "warning",
-		// 	error: "cross-circle",
-		// },
 		prev: "arrow-small-left",
 		next: "arrow-small-right",
 		menu: "app-list",

@@ -1102,6 +1102,26 @@ describe("Table", () => {
 		expect(placeHolder.length, "to equal", 1);
 	});
 
+	it("Renders Table with placeholder and custom class if rows are empty", () => {
+		const { headers, rows } = buildHeaderAndRowFromConfig(config, []);
+
+		const placeholder = <Placeholder />;
+
+		const tableProps = new TableProps();
+		tableProps.setStyle(TableProps.ruleNames.placeholderContainer, "placeholder-container-custom-class");
+
+		const component = <Table rows={rows} headers={headers} placeholder={placeholder} tableProps={tableProps} />;
+
+		const mountedComponent = mount(component);
+
+		const placeHolder = mountedComponent.find(Placeholder);
+		expect(placeHolder.exists(), "to be true");
+
+		const placeholderContainer = placeHolder.parent();
+		expect(placeholderContainer.exists(), "to be true");
+		expect(placeholderContainer.hasClass("placeholder-container-custom-class"), "to be true");
+	});
+
 	it("Renders Table with tableInfo if provided", () => {
 		const { headers, rows } = buildHeaderAndRowFromConfig(config, []);
 

@@ -3,10 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { Ignore } from "unexpected-reaction";
-import { ThemeProvider } from "styled-components";
-import { shade } from "polished";
-import Icon from "./Icon";
-import FullToastList, { Toast, ToastBox, ToastIcon, CloseIcon } from "./ToastList";
+import Icon from "./MaterialUI/DataDisplay/Icon";
+import FullToastList, { Toast } from "./ToastList";
+import { CSSTransition } from "react-transition-group";
 
 class RenderToast extends React.Component {
 	render() {
@@ -47,10 +46,11 @@ describe("ToastList", () => {
 			return expect(
 				toastRoot,
 				"to contain",
-				<ToastBox in>
-					<Ignore />
-					[No message]
-				</ToastBox>,
+				<CSSTransition in>
+					<div>
+						<span>[No message]</span>
+					</div>
+				</CSSTransition>,
 			);
 		});
 	});
@@ -70,10 +70,11 @@ describe("Toast", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToastBox in>
-				<Ignore />
-				this is a toast
-			</ToastBox>,
+			<CSSTransition in>
+				<div>
+					<span>this is a toast</span>
+				</div>
+			</CSSTransition>,
 		));
 
 	it("shows a translated message", () =>
@@ -91,10 +92,11 @@ describe("Toast", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToastBox in>
-				<Ignore />
-				This is a toast
-			</ToastBox>,
+			<CSSTransition in>
+				<div>
+					<span>This is a toast</span>
+				</div>
+			</CSSTransition>,
 		));
 
 	it("shows an icon", () =>
@@ -110,10 +112,11 @@ describe("Toast", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToastBox in>
-				<ToastIcon type="confirm" />
-				<Ignore />
-			</ToastBox>,
+			<CSSTransition in>
+				<div>
+					<Ignore />
+				</div>
+			</CSSTransition>,
 		));
 
 	it("shows a close icon if a close function is given", () =>
@@ -129,88 +132,11 @@ describe("Toast", () => {
 			</Provider>,
 			"when mounted",
 			"to satisfy",
-			<ToastBox in>
-				<Ignore />
-				<Ignore />
-				<CloseIcon onClick={expect.it("to be a function")} />
-			</ToastBox>,
+			<CSSTransition in>
+				<div>
+					<Ignore />
+					<Icon id="close" onClick={expect.it("to be a function")} />
+				</div>
+			</CSSTransition>,
 		));
-
-	describe("with types", () => {
-		let theme;
-		beforeEach(() => {
-			theme = {
-				colors: {
-					toasts: {
-						test: "#ff0000",
-					},
-				},
-				icons: {
-					toast: {
-						test: "test-icon",
-					},
-				},
-			};
-		});
-
-		it("renders a default type", () =>
-			expect(
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
-					<ThemeProvider theme={theme}>
-						<Toast in />
-					</ThemeProvider>
-				</Provider>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"background-color: #999;",
-			).and("when mounted", "to contain", <Icon id="bubble-chat-2" />));
-
-		it("renders a set type", () =>
-			expect(
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
-					<ThemeProvider theme={theme}>
-						<Toast in type="test" />
-					</ThemeProvider>
-				</Provider>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"background-color: #ff0000;",
-			).and("when mounted", "to contain", <Icon id="test-icon" />));
-
-		it("darkens close icon background on hover", () =>
-			expect(
-				<ThemeProvider theme={theme}>
-					<CloseIcon type="" />
-				</ThemeProvider>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				":hover {background-color: " + shade(0.3, "#999") + ";}",
-			));
-
-		it("darkens close icon background on hover with set type", () =>
-			expect(
-				<ThemeProvider theme={theme}>
-					<CloseIcon type="test" />
-				</ThemeProvider>,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				":hover {background-color: " + shade(0.3, "#ff0000") + ";}",
-			));
-	});
 });
