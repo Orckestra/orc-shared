@@ -165,7 +165,7 @@ const StepperModal = ({
 						<FormattedMessage {...sharedMessages.cancel} />
 					</Button>
 
-					{currentStep < steps.length - 1 &&
+					{(currentStep < steps.length - 1 || steps[currentStep]?.isIntermediate) &&
 						(steps[currentStep]?.actions?.length > 0 ? (
 							steps[currentStep].actions.map(action => (
 								<Button
@@ -191,7 +191,7 @@ const StepperModal = ({
 							</Button>
 						))}
 
-					{currentStep === steps.length - 1 && (
+					{currentStep === steps.length - 1 && !steps[currentStep]?.isIntermediate && (
 						<Button
 							variant="contained"
 							color="primary"

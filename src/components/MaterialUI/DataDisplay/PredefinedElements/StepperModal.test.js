@@ -335,6 +335,80 @@ describe("StepperModal", () => {
 		expect(okCallback, "was called");
 	});
 
+	it("Renders StepperModal correctly without confirm button for an intermediate step", () => {
+		const open = true;
+		const title = "title";
+		const backdropClickCallback = jest.fn();
+		const okCallback = jest.fn();
+		const cancelCallback = jest.fn();
+		const modalProps = new ModalProps();
+		const actions = [
+			{
+				value: "first value",
+				label: "first action",
+				Handler: () => {},
+			},
+			{
+				value: "second value",
+				label: "second action",
+				Handler: () => {},
+			},
+		];
+		const steps = [{ title: "step1", content: <div>content</div>, actions, isIntermediate: true }];
+
+		const titleComponent = (
+			<div>
+				<div>{title}</div>
+				<div>step1</div>
+			</div>
+		);
+		const messageComponent = <div>{steps[0].content}</div>;
+
+		modalProps.set(ModalProps.propNames.title, titleComponent);
+		modalProps.set(ModalProps.propNames.open, open);
+		modalProps.set(ModalProps.propNames.backdropClickCallback, backdropClickCallback);
+		modalProps.set(ModalProps.propNames.type, "wide");
+
+		const actionPanel = (
+			<div>
+				<div></div>
+				<div>
+					<Button variant="outlined" disabled={false} onClick={() => cancelCallback()}>
+						{sharedMessages.cancel.defaultMessage}
+					</Button>
+					<Button variant="contained" color="primary" disabled={false} onClick={() => {}} disableElevation>
+						first action
+					</Button>
+					<Button variant="contained" color="primary" disabled={false} onClick={() => {}} disableElevation>
+						second action
+					</Button>
+				</div>
+			</div>
+		);
+
+		modalProps.set(ModalProps.propNames.actionPanel, actionPanel);
+
+		const component = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<StepperModal
+					steps={steps}
+					title={title}
+					open={open}
+					confirmCallback={okCallback}
+					closeCallback={cancelCallback}
+				/>
+			</IntlProvider>
+		);
+
+		const expected = (
+			<IntlProvider locale="en-US" messages={messages}>
+				<Modal message={messageComponent} modalProps={modalProps} />
+			</IntlProvider>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Render closed modal", () => {
 		const open = false;
 
