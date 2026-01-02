@@ -18,6 +18,9 @@ export const Treeview = ({
 	openAll,
 	name,
 	defaultNodeState = {},
+	labelClassName,
+	leafClassName,
+	branchClassName,
 	...otherProps
 }) => {
 	const [viewState, updateViewState] = useViewState(name);
@@ -34,6 +37,9 @@ export const Treeview = ({
 					selectedNodeId,
 					nodeState,
 					updateNodeState,
+					labelClassName,
+					leafClassName,
+					branchClassName,
 					otherProps,
 				}}
 			>

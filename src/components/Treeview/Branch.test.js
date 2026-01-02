@@ -6,22 +6,14 @@ describe("Branch", () => {
 
 	it("sets styling for showing a branch structure", () =>
 		expect(
-			<Branch
-				theme={{
-					treeSettings: {
-						branchIndent: 10,
-						branchLength: 12,
-						branchHeight: 14,
-					},
-				}}
-			/>,
+			<Branch />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
-				.it("to contain", "margin-left: 10px;")
-				.and("to contain", "padding-left: 12px;")
-				.and("to match", /:last-child::after {[^}]*left: -24px;[^}]*}/)
-				.and("to match", /:last-child::after {[^}]*top: -14px;[^}]*}/),
+				.it("to contain", "margin-left: 14px;")
+				.and("to contain", "padding-left: 15px;")
+				.and("to match", /:last-child::after {[^}]*left: -31px;[^}]*}/)
+				.and("to match", /:last-child::after {[^}]*top: -20px;[^}]*}/),
 		));
 });
 
@@ -30,20 +22,12 @@ describe("Wrapper", () => {
 
 	it("sets styling for showing the root of a tree structure", () =>
 		expect(
-			<Wrapper
-				theme={{
-					treeSettings: {
-						branchIndent: 10,
-						branchLength: 12,
-						branchHeight: 14,
-					},
-				}}
-			/>,
+			<Wrapper />,
 			"when mounted",
 			"to have style rules satisfying",
 			expect
 				.it("to contain", "margin-left: 0;")
-				.and("to contain", "padding: 7px;")
-				.and("to contain", "> ." + Branch.styledComponentId + " {margin-left: 15px;}"),
+				.and("to contain", "padding: 10px;")
+				.and("to contain", "{margin-left: 21px;}"),
 		));
 });

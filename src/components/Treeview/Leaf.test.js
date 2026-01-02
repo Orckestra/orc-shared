@@ -10,17 +10,9 @@ describe("Leaf", () => {
 
 	it("sets styling for a branch structure", () =>
 		expect(
-			<Leaf
-				theme={{
-					treeSettings: {
-						branchIndent: 10,
-						branchLength: 12,
-						branchHeight: 14,
-					},
-				}}
-			/>,
+			<Leaf />,
 			"when mounted",
 			"to have style rules satisfying",
-			expect.it("to match", /:last-child::after {[^}]*left: -13px;[^}]*}/),
+			expect.it("to match", /:last-child::after {[^}]*left: -16px;[^}]*}/),
 		));
 });

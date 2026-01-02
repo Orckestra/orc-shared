@@ -7,7 +7,6 @@ describe("getTheme", () => {
 	it("gives a theme object containing colors,  icon names", () =>
 		expect(getTheme, "called with", [], "to satisfy", {
 			colors: { error: "#ce4844" },
-			treeSettings: {},
 			icons: {},
 			fonts: {
 				base: "Open Sans, sans-serif",
@@ -80,7 +79,6 @@ describe("getTheme", () => {
 			"to satisfy",
 			{
 				colors: { error: "#FF00FF" },
-				treeSettings: {},
 				icons: {},
 				fonts: {
 					base: "serif",
