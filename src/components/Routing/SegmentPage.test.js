@@ -195,9 +195,7 @@ describe("SegmentPage", () => {
 							</Item>
 							<Item to="/foo/meep/entityIdValue/nine">
 								<Grid container alignItems="center" wrap="nowrap">
-									<div>
-										<span />
-									</div>
+									<div>{`© {year} Orckestra Technologies Inc.`}</div>
 									<div />
 								</Grid>
 							</Item>
@@ -277,9 +275,7 @@ describe("SegmentPage", () => {
 								</Item>
 								<Item to="/foo/meep/entityIdValue/nine">
 									<Grid container alignItems="center" wrap="nowrap">
-										<div>
-											<span />
-										</div>
+										<div>{`© {year} Orckestra Technologies Inc.`}</div>
 										<div />
 									</Grid>
 								</Item>
@@ -405,9 +401,7 @@ describe("SegmentPage", () => {
 							</Item>
 							<Item to="/foo/meep/entityIdValue/nine">
 								<Grid container alignItems="center" wrap="nowrap">
-									<div>
-										<span />
-									</div>
+									<div>{`© {year} Orckestra Technologies Inc.`}</div>
 									<div />
 								</Grid>
 							</Item>
@@ -487,9 +481,7 @@ describe("SegmentPage", () => {
 							</Item>
 							<Item to="/foo/meep/entityIdValue/nine">
 								<Grid container alignItems="center" wrap="nowrap">
-									<div>
-										<span />
-									</div>
+									<div>{`© {year} Orckestra Technologies Inc.`}</div>
 									<div />
 								</Grid>
 							</Item>

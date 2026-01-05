@@ -1,9 +1,9 @@
 import React, { useState, isValidElement, cloneElement } from "react";
+import { FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Text from "../../Text";
 import DropDownMenuProps, { isDropDownMenuProps } from "./DropDownMenuProps";
 
 const useStyles = makeStyles(theme => ({
@@ -95,7 +95,7 @@ const DropDownMenu = ({ payload, menuItems, children, dropDownMenuProps = new Dr
 						onClick={onMenuItemClick(action, itemContext)}
 						disabled={disabled}
 					>
-						<Text message={title} />
+						{typeof title === "string" ? title : <FormattedMessage {...title} />}
 					</MenuItem>
 				))}
 			</Menu>

@@ -1,5 +1,4 @@
 import safeGet from "./safeGet";
-import { getThemeProp, ifFlag, switchEnum } from "./styledPropFuncs";
 import unwrapImmutable from "./unwrapImmutable";
 import logPass from "./logPass";
 import normalizeForSearch from "./normalizeForSearch";
@@ -18,8 +17,6 @@ export {
 	debounce,
 	flatten,
 	flattenObj,
-	getThemeProp,
-	ifFlag,
 	insertIcons,
 	loadConfig,
 	logPass,
@@ -30,6 +27,5 @@ export {
 	setTranslationWithFallbackValue,
 	setTranslationWithFallbackField,
 	stripKey,
-	switchEnum,
 	unwrapImmutable,
 };

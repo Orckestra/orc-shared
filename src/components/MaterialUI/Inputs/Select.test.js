@@ -669,4 +669,49 @@ describe("Select Component", () => {
 
 		expect(muiSelect.prop("open"), "to be true");
 	});
+
+	it("Renders Select component with multiple values", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.multiple, true);
+		selectProps.set(SelectProps.propNames.value, ["aValue"]);
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI
+					value={["aValue"]}
+					disableUnderline={true}
+					IconComponent={ChevronDown}
+					error={false}
+					multiple={true}
+					renderValue={selected => selected.join(", ")}
+				>
+					<MenuItem key="aValue" value="aValue">
+						<TooltippedTypography children="aLabel" titleValue="aLabel" />
+					</MenuItem>
+					<MenuItem key="anotherValue" value="anotherValue">
+						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+					</MenuItem>
+				</SelectMUI>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
 });

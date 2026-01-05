@@ -1,6 +1,6 @@
 import React from "react";
-import Spritesheet, { Wrapper, IconBlock } from "./Spritesheet";
-import Icon from "./Icon";
+import Spritesheet from "./Spritesheet";
+import Icon from "./MaterialUI/DataDisplay/Icon";
 
 describe("Spritesheet", () => {
 	beforeEach(() => {
@@ -19,16 +19,16 @@ describe("Spritesheet", () => {
 			<Spritesheet />,
 			"when mounted",
 			"to satisfy",
-			<Wrapper>
-				<IconBlock>
+			<div>
+				<div>
 					<Icon id="test-1" /> {"test-1"}
-				</IconBlock>
-				<IconBlock>
+				</div>
+				<div>
 					<Icon id="test-2" /> {"test-2"}
-				</IconBlock>
-				<IconBlock>
+				</div>
+				<div>
 					<Icon id="test-3" /> {"test-3"}
-				</IconBlock>
-			</Wrapper>,
+				</div>
+			</div>,
 		));
 });

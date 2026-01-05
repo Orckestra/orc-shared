@@ -1,5 +1,4 @@
 import React from "react";
-import { Provider } from "react-redux";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
 import { mount } from "enzyme";
@@ -14,7 +13,7 @@ describe("DropDownMenu", () => {
 	let store, menuItems, container;
 	beforeEach(() => {
 		menuItems = [
-			{ title: "asd", action: sinon.spy().named("action"), itemContext: "aContext" },
+			{ title: { id: "asd", defaultMessage: "asd" }, action: sinon.spy().named("action"), itemContext: "aContext" },
 			{ title: "asd2", action: sinon.spy().named("action"), itemContext: "myContext" },
 		];
 		store = {
@@ -73,9 +72,9 @@ describe("DropDownMenu", () => {
 		const payload = "payload";
 
 		ReactDOM.render(
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider>
 				<DropDownMenu payload={payload} menuItems={menuItems} />
-			</Provider>,
+			</TestWrapper>,
 			container,
 		);
 
@@ -98,9 +97,9 @@ describe("DropDownMenu", () => {
 		const payload = "payload";
 
 		const component = (
-			<Provider store={store}>
+			<TestWrapper provider={{ store }} intlProvider>
 				<DropDownMenu payload={payload} menuItems={menuItems} />
-			</Provider>
+			</TestWrapper>
 		);
 
 		const mountedComponent = mount(component);

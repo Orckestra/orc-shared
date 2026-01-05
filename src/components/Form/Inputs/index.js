@@ -1,5 +1,5 @@
 import Selector from "./Selector";
-import MultiSelector from "../../MultiSelector";
+import MultiSelector from "./MultiSelector";
 import Button from "./Button";
 import { ReadOnly } from "./ReadOnly";
 import { SwitchInput } from "./Toggles";

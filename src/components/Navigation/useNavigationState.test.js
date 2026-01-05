@@ -6,10 +6,9 @@ import Immutable from "immutable";
 import { mount } from "enzyme";
 import sinon from "sinon";
 import { spyOnConsole } from "../../utils/testUtils";
-import { REMOVE_TAB } from "../../actions/navigation";
 import { resetLastScope } from "../../selectors/navigation";
 import useNavigationState, { getPageData } from "./useNavigationState";
-import Bar from "./Bar";
+import TabBar from "../MaterialUI/Navigation/TabBar";
 import { PropStruct } from "../../utils/testUtils";
 import { cloneDeep } from "lodash";
 
@@ -107,6 +106,8 @@ describe("useNavigationState", () => {
 					},
 					"test/notexist": {
 						href: "/TestScope/test/notexist",
+						path: "/:scope/notexist",
+						params: { scope: "TestScope" },
 					},
 				},
 				moduleTabs: {
@@ -158,6 +159,14 @@ describe("useNavigationState", () => {
 			settings: {
 				defaultScope: "myScope",
 			},
+			modules: {
+				tree: {},
+			},
+			view: {
+				edit: {
+					test: {},
+				},
+			},
 		});
 		store = {
 			subscribe: () => {},
@@ -189,6 +198,7 @@ describe("useNavigationState", () => {
 				},
 			},
 		};
+
 		modulesWithSelector = {
 			test: {
 				icon: "thing",
@@ -215,7 +225,7 @@ describe("useNavigationState", () => {
 				},
 			},
 		};
-		TestBar = makeTestComp(Bar);
+		TestBar = makeTestComp(TabBar);
 		TestProps = makeTestComp(PropStruct);
 	});
 	afterEach(() => {
@@ -240,7 +250,7 @@ describe("useNavigationState", () => {
 			<Provider store={store}>
 				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<Bar
+						<TabBar
 							module={{
 								icon: "thing",
 								label: "Thing",
@@ -281,7 +291,7 @@ describe("useNavigationState", () => {
 			<Provider store={store}>
 				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<Bar
+						<TabBar
 							module={{
 								icon: "thing",
 								label: "Thing",
@@ -295,10 +305,10 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/page1",
 									mappedFrom: "/TestScope/test/page1",
 									active: true,
-									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
 									scopeNotSupported: false,
+									params: { scope: "TestScope", entityId: "page1" },
 								},
 								{
 									label: {
@@ -311,11 +321,11 @@ describe("useNavigationState", () => {
 									href: "/OtherScope/test/foo",
 									mappedFrom: "/OtherScope/test/foo",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									mustTruncate: true,
 									outsideScope: true,
 									scopeNotSupported: false,
+									params: { scope: "OtherScope", entityId: "foo" },
 								},
 								{
 									label: {
@@ -328,11 +338,11 @@ describe("useNavigationState", () => {
 									href: "/OtherScope/test/bar",
 									mappedFrom: "/OtherScope/test/bar",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									mustTruncate: true,
 									outsideScope: true,
 									scopeNotSupported: false,
+									params: { scope: "OtherScope", entityId: "bar" },
 								},
 								{
 									label: {
@@ -343,16 +353,18 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/page3",
 									mappedFrom: "/TestScope/test/page3",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
 									scopeNotSupported: false,
+									params: { scope: "TestScope", entityId: "page3" },
 								},
 								{
 									href: "/TestScope/test/notexist",
 									mappedFrom: "/TestScope/test/notexist",
 									label: "[Not found]",
+									path: "__ignore",
 									active: false,
+									params: { scope: "TestScope", entityId: "notexist" },
 								},
 							]}
 							moduleName="test"
@@ -386,7 +398,7 @@ describe("useNavigationState", () => {
 			<Provider store={store}>
 				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<Bar
+						<TabBar
 							module={{
 								icon: "thing",
 								label: "Thing",
@@ -400,10 +412,10 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/page1",
 									mappedFrom: "/TestScope/test/page1",
 									active: true,
-									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
 									scopeNotSupported: false,
+									params: { scope: "TestScope", entityId: "page1" },
 								},
 								{
 									label: {
@@ -416,11 +428,11 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/foo",
 									mappedFrom: "/TestScope/test/foo",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									mustTruncate: true,
 									outsideScope: true,
 									scopeNotSupported: true,
+									params: { scope: "TestScope", entityId: "foo" },
 								},
 								{
 									label: {
@@ -433,11 +445,11 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/bar",
 									mappedFrom: "/TestScope/test/bar",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									mustTruncate: true,
 									outsideScope: true,
 									scopeNotSupported: true,
+									params: { scope: "TestScope", entityId: "bar" },
 								},
 								{
 									label: {
@@ -448,16 +460,18 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/page3",
 									mappedFrom: "/TestScope/test/page3",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
 									scopeNotSupported: false,
+									params: { scope: "TestScope", entityId: "page3" },
 								},
 								{
 									href: "/TestScope/test/notexist",
 									mappedFrom: "/TestScope/test/notexist",
 									label: "[Not found]",
+									path: "__ignore",
 									active: false,
+									params: { scope: "TestScope", entityId: "notexist" },
 								},
 							]}
 							moduleName="test"
@@ -499,7 +513,7 @@ describe("useNavigationState", () => {
 			<Provider store={storeWithEmptyScopes}>
 				<IntlProvider locale="en">
 					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<Bar
+						<TabBar
 							module={{
 								icon: "thing",
 								label: "Thing",
@@ -513,10 +527,10 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/page1",
 									mappedFrom: "/TestScope/test/page1",
 									active: true,
-									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
 									scopeNotSupported: false,
+									params: { scope: "TestScope", entityId: "page1" },
 								},
 								{
 									label: {
@@ -529,11 +543,11 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/foo",
 									mappedFrom: "/TestScope/test/foo",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									mustTruncate: true,
 									outsideScope: true,
 									scopeNotSupported: true,
+									params: { scope: "TestScope", entityId: "foo" },
 								},
 								{
 									label: {
@@ -546,11 +560,11 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/bar",
 									mappedFrom: "/TestScope/test/bar",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									mustTruncate: true,
 									outsideScope: true,
 									scopeNotSupported: true,
+									params: { scope: "TestScope", entityId: "bar" },
 								},
 								{
 									label: {
@@ -561,16 +575,18 @@ describe("useNavigationState", () => {
 									href: "/TestScope/test/page3",
 									mappedFrom: "/TestScope/test/page3",
 									active: false,
-									params: "__ignore",
 									path: "__ignore",
 									outsideScope: false,
 									scopeNotSupported: false,
+									params: { scope: "TestScope", entityId: "page3" },
 								},
 								{
 									href: "/TestScope/test/notexist",
 									mappedFrom: "/TestScope/test/notexist",
 									label: "[Not found]",
+									path: "__ignore",
 									active: false,
+									params: { scope: "TestScope", entityId: "notexist" },
 								},
 							]}
 							moduleName="test"
@@ -626,11 +642,11 @@ describe("useNavigationState", () => {
 					tabIndex: {
 						test: {
 							href: "/TestScope/test",
-							params: { scope: "TestScope" },
+							params: { scope: "page1", entityId: "page1" },
 						},
 						"test/page2": {
 							href: "/TestScope/test/page2",
-							params: { scope: "TestScope" },
+							params: { scope: "page2", entityId: "page2" },
 						},
 					},
 					mappedHrefs: {
@@ -641,7 +657,7 @@ describe("useNavigationState", () => {
 						match: {
 							url: "/TestScope/test/page1",
 							path: "/:scope/test/page1",
-							params: { scope: "TestScope" },
+							params: { scope: "page2", entityId: "page2" },
 						},
 					},
 					config: { prependPath: "/:scope/", prependHref: "/TestScope/" },
@@ -671,6 +687,11 @@ describe("useNavigationState", () => {
 				},
 				settings: {
 					defaultScope: "myScope",
+				},
+				view: {
+					edit: {
+						test: {},
+					},
 				},
 			});
 			modules = {
@@ -722,8 +743,8 @@ describe("useNavigationState", () => {
 							active: false,
 							outsideScope: false,
 							scopeNotSupported: false,
-							params: "__ignore",
 							close: () => {},
+							params: { scope: "page2", entityId: "page2" },
 						},
 					]}
 					moduleName="test"
@@ -794,10 +815,16 @@ describe("useNavigationState", () => {
 				settings: {
 					defaultScope: "myScope",
 				},
+				view: {
+					edit: {
+						test: {},
+					},
+				},
 			});
 			page = {
 				label: { id: "page", defaultMessage: "Page {someField}" },
 				component: TestComp1,
+				params: { scope: "TestScope", entityId: "page" },
 			};
 			modules = page => ({
 				test: {
@@ -830,7 +857,7 @@ describe("useNavigationState", () => {
 				<Provider store={store}>
 					<IntlProvider locale="en">
 						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
-							<Bar
+							<TabBar
 								module={{
 									icon: "thing",
 									label: "Thing",
@@ -892,7 +919,7 @@ describe("useNavigationState", () => {
 				<Provider store={store}>
 					<IntlProvider locale="en">
 						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
-							<Bar
+							<TabBar
 								module={{
 									icon: "thing",
 									label: "Thing",
@@ -951,7 +978,7 @@ describe("useNavigationState", () => {
 				<Provider store={store}>
 					<IntlProvider locale="en">
 						<MemoryRouter initialEntries={["/TestScope/test/foo"]}>
-							<Bar
+							<TabBar
 								module={{
 									icon: "thing",
 									label: "Thing",
@@ -1008,240 +1035,6 @@ describe("useNavigationState", () => {
 		});
 	});
 
-	it("provides a close handler for tabs", () => {
-		const fakeEvent = {
-			stopPropagation: sinon.spy().named("stopPropagation"),
-			preventDefault: sinon.spy().named("preventDefault"),
-		};
-		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<TestBar modules={modules} />
-					</MemoryRouter>
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-			]),
-		);
-	});
-
-	it("Tab closing handler is not invoked when entity selector returns invalid entity", () => {
-		const fakeEvent = {
-			stopPropagation: sinon.spy().named("stopPropagation"),
-			preventDefault: sinon.spy().named("preventDefault"),
-		};
-
-		const closingHandler = sinon.spy().named("closingHandler");
-		const entitySelector = sinon.spy(() => ({ entityId: "entityId" })).named("entitySelector");
-
-		modules.test.closingTabHandler = {
-			handler: closingHandler,
-			entitySelector: entitySelector,
-		};
-
-		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<TestBar modules={modules} />
-					</MemoryRouter>
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-				expect(closingHandler, "was not called"),
-				expect(entitySelector, "was called once"),
-			]),
-		);
-	});
-
-	it("Tab closing handler is not invoked when entity selector returns undefined", () => {
-		const fakeEvent = {
-			stopPropagation: sinon.spy().named("stopPropagation"),
-			preventDefault: sinon.spy().named("preventDefault"),
-		};
-
-		const closingHandler = sinon.spy().named("closingHandler");
-		const entitySelector = sinon.spy(() => {}).named("entitySelector");
-
-		modules.test.closingTabHandler = {
-			handler: closingHandler,
-			entitySelector: entitySelector,
-		};
-
-		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<TestBar modules={modules} />
-					</MemoryRouter>
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-				expect(closingHandler, "was not called"),
-				expect(entitySelector, "was called once"),
-			]),
-		);
-	});
-
-	it("Tab closing handler is not invoked when entity selector returns invalid entity id", () => {
-		const fakeEvent = {
-			stopPropagation: sinon.spy().named("stopPropagation"),
-			preventDefault: sinon.spy().named("preventDefault"),
-		};
-
-		const closingHandler = sinon.spy().named("closingHandler");
-		const entitySelector = sinon.spy(() => ({ entity: {} })).named("entitySelector");
-
-		modules.test.closingTabHandler = {
-			handler: closingHandler,
-			entitySelector: entitySelector,
-		};
-
-		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<TestBar modules={modules} />
-					</MemoryRouter>
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-				expect(closingHandler, "was not called"),
-				expect(entitySelector, "was called once"),
-			]),
-		);
-	});
-
-	it("Ensure tab closing handler is invoked when closing a tab", () => {
-		const fakeEvent = {
-			stopPropagation: sinon.spy().named("stopPropagation"),
-			preventDefault: sinon.spy().named("preventDefault"),
-		};
-
-		const closingHandler = sinon.spy().named("closingHandler");
-		const entitySelector = sinon.spy(() => ({ entityId: "entityId", entity: {} })).named("entitySelector");
-
-		modules.test.closingTabHandler = {
-			handler: closingHandler,
-			entitySelector: entitySelector,
-		};
-
-		return expect(
-			<Provider store={store}>
-				<IntlProvider locale="en">
-					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
-						<TestBar modules={modules} />
-					</MemoryRouter>
-				</IntlProvider>
-			</Provider>,
-			"when mounted",
-			"with event",
-			{
-				type: "click",
-				target: '[data-href="/TestScope/test/page3"] svg',
-				data: fakeEvent,
-			},
-		).then(() =>
-			Promise.all([
-				expect(store.dispatch, "to have calls satisfying", [
-					{
-						args: [
-							{
-								type: REMOVE_TAB,
-								payload: { module: "test", path: "/TestScope/test/page3" },
-							},
-						],
-					},
-				]),
-				expect(fakeEvent.stopPropagation, "was called once"),
-				expect(fakeEvent.preventDefault, "was called once"),
-				expect(entitySelector, "was called once"),
-				expect(closingHandler, "was called once"),
-			]),
-		);
-	});
-
 	it("Ensure tab closing handler is invoked when explicitly closing a tab", () => {
 		const fakeEvent = {
 			stopPropagation: sinon.spy().named("stopPropagation"),
@@ -1276,6 +1069,70 @@ describe("useNavigationState", () => {
 		expect(fakeEvent.preventDefault, "was not called");
 		expect(closingHandler, "was called once");
 		expect(entitySelector, "was called once");
+	});
+
+	it("Ensure tab closing handler is invoked when explicitly closing a tab with an event", () => {
+		const fakeEvent = {
+			stopPropagation: sinon.spy().named("stopPropagation"),
+			preventDefault: sinon.spy().named("preventDefault"),
+		};
+
+		const closingHandler = sinon.spy().named("closingHandler");
+		const entitySelector = () => null;
+
+		modules.test.closingTabHandler = {
+			handler: closingHandler,
+			entitySelector: entitySelector,
+		};
+		modules.test.pageScopeSelector = () => undefined;
+
+		const component = (
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modules} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>
+		);
+
+		mount(component);
+
+		expect(firstPagTabClose, "not to be null");
+
+		firstPagTabClose(fakeEvent);
+
+		expect(fakeEvent.stopPropagation, "was called");
+		expect(fakeEvent.preventDefault, "was called");
+	});
+
+	it("Ensure tab closing handler is invoked when explicitly closing a tab without a closing handler", () => {
+		const fakeEvent = {
+			stopPropagation: sinon.spy().named("stopPropagation"),
+			preventDefault: sinon.spy().named("preventDefault"),
+		};
+		modules.test.closingTabHandler = {
+			entitySelector: () => null,
+		};
+
+		const component = (
+			<Provider store={store}>
+				<IntlProvider locale="en">
+					<MemoryRouter initialEntries={["/TestScope/test/page1"]}>
+						<TestBar modules={modules} />
+					</MemoryRouter>
+				</IntlProvider>
+			</Provider>
+		);
+
+		mount(component);
+
+		expect(firstPagTabClose, "not to be null");
+
+		firstPagTabClose(fakeEvent);
+
+		expect(fakeEvent.stopPropagation, "was called");
+		expect(fakeEvent.preventDefault, "was called");
 	});
 });
 describe("getPageData", () => {

@@ -9,13 +9,6 @@ This code can be used to set up the standard infrastructure of Orckestra apps.
 
 Constructs a state store with support for dev tools (as browser extension), routing, localization, API access and Immutable state.
 
-## `getTheme`
-
-- `highlight`: A string containing a CSS color.
-- `overrides`: An object containing values to be merged into the returned theme.
-
-Builds a theme objedct for use with `styled-components`. This contains lengths, colors, fonts and icon names for use in the application. As a side effect of importing `getTheme.js`, the standard UI fonts (Roboto Condensed and Open Sans) will also be imported.
-
 ## spawnerMiddleware
 
 This middleware is added by default when using `buildStore`. and permits adding 'spawners' to action types. Spawners are functions which can create and dispatch a new action based on the caught action and current state,
@@ -27,14 +20,6 @@ The `utils` folder contains a number of useful utility functions, for use in var
 ### Content utilities
 
 `insertIcons(svgString)` takes a string of SVG, parses it and inserts it into the body of the DOM. It is useful for adding dynamically and/or statically imported icon sheets (i.e. collections of `<symbol>` tags) to the site, as Webpack will provide the string content of imported SVG files. If the imported SVG is malformed, no SVG will be injected. If the SVG contains non-`<symbol>` SVG, behavior is undefined but likely shows the SVG in a non-useful way.
-
-### Utilities for `styled-components`
-
-`getThemeProp(path, defaultValue)` will return a prop function (suitable for use in a styled-components template string) that finds the value indicated by `path` (an array of strings), or returns `defaultValue` if that fails. Both `defaultValue` and elements of `path` may be prop functions themselves.
-
-`ifFlag(flag, thenVal, elseVal)` returns a prop function that checks if a prop of name `flag` is true, and returns `thenVal` if it is, `elseVal` if it is not. Both of the value parameters may be prop functions.
-
-`switchEnum(propName, cases)` returns a prop function that will fetch a value (including functions) based on a property. `propName` defines the name of the property to select by, `cases` should be a key/value object. The `'default'` key is used if no key is matched.
 
 ### API utilities
 
@@ -76,10 +61,6 @@ These should generally never be used for live code, but are highly useful tools 
 
 `getElmClasses(element, parentType)` creates an array containing all class names attached to the element given. The `parentType` parameter can be used to suppress nesting validation output for e.g. `<td>` elements and others which cannot legitimally reside under a `<div>`.
 
-`getClassName(element, index, parentType)` will extract the indexed class name of an element, and is most useful for querying for styled components in a DOM tree. It does not include the class selector prefix (i.e. it outputs "myClass", not ".myClass"), so if used as a selector, the class name should be prefixed with a period. `index` is zero-based, and defaults to 0. In most cases you will not need this parameter.
-
 `getClassSelector(element, index, parentType)` will generate a string containing a CSS selector that targets the given element's class. If index is -1, all classes on the element will be used together, otherwise it works as on `getClassName` above.
-
-`getStyledClassSelector(StyledComponent)` discovers the most-specific class targeting elements of the `StyledComponent` type. Either the component itself or an element rendered from it (i.e. `<StyledComponent />`) will work. If the passed element is not a rendered styled component, it will throw an error.
 
 `<PropStruct />` is a React component that renders an ordered format of the properties given to it. This is extremely useful for testing hooks, higher order components and other cases where the properties passed to a component are important.

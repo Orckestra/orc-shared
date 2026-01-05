@@ -18,17 +18,6 @@ Intended as the outermost visual component of an application, and handles the si
 
 A wrapper component that ensures a user is logged in to the service before rendering anything. Used by [Provision](#provision), (q.v.) thus not to be used directly by app developers.
 
-## Button
-
-- `primary`: If this flag is set, the button will be highlighted as a primary button.
-- `active`: If this flag is set, the button will be shown as currently active. Implies a toggle function.
-
-A styled `<button>`, set up to look consistent across the UI. Use this as a drop-in replacement for `<button>` elements where needed. For most purposes, however, the [`IconButton` component](#iconbutton) is a better choice.
-
-## Checkbox
-
-Shows a pretty checkbox. The same props are accepted as for `<input type="checked" />` elements. Use `value` for whether the checkbox is checked or not, rather than `checked`. If no `id` is passed, one will be generated and used.
-
 ## ColumnWrapper
 
 This is a default column wrapper (for column layouts) available to be used by the applications. This will ensure all applications experience the same behavior for columns layouts used in lists.
@@ -84,19 +73,6 @@ Redux-connected internationalization-provider. Use this as a wrapper component f
 
 Shows a single SVG icon, according to the icon id given. Requires `content/icons.svg` (or another, similarly structured SVG sprite sheet) to have been inserted in the DOM. Size is controlled by setting the CSS font-size.
 
-## IconButton
-
-- `icon`: ID of icon to show.
-- `label`: String or message descriptor of button text label.
-
-Renders a styled button with an icon, a label, or both. This component should be your first choice for this purpose, as it will handle the look and feel of the button in a consistent manner.
-
-Properties not listed above are passed through to the underlying `Button` component, so any handlers, flags (`primary` for example), etc. can be passed this way.
-
-## Input
-
-A styled input field to be used in place of `<input>`. Takes the same props as this element and should be used as a replacement of it. Avoid using this for checkboxes, instead use the `Checkbox` component.
-
 ## LookupSelect
 
 A select control which loads its values from a lookup definition.
@@ -126,15 +102,6 @@ Shows a modal dialog box, which will close if clicked outside.
 
 Intended to convert a module table into a page rendering system, it sets up a `Navigation` bar (q.v.) and a set of `Route` elements (from `react-router`, via the Routing components in this library) that render the components associated with different routes. Typically used by feeding it the application's module table and placing it as the child of the `AppFrame`.
 
-## MultiSelector
-
-- `options`: A list of objects containing a `label` and `value` field, used to populate the options list.
-- `placeholder`: A placeholder text to show if no option is selected.
-- `value`: An array of currently selected values.
-- `update`: A function which updates the `value` (in application state, typically).
-
-A styled replacement for the `<selector multiple />` element, based on [Selector](#selector) below.
-
 ## Navigation
 
 - `modules`: The module object of the application. See [documentation](moduleFile.md).
@@ -146,8 +113,8 @@ Renders a tabbed navigation bar for the currently selected module. Used by (Modu
 - `icon`: The `id` of an icon to be shown.
 - `title`: A string or message descriptor to be rendered as large text.
 - `subtitle`: A string or message descriptor to be shown below the title, slightly smaller.
-- `animate`: A flag, if set the icon will rotate.
-- `warn`: A flag, if set the placeholder is shown in dark red rather than grey.
+- `animateIcon`: A flag, if set the icon will rotate.
+- `error`: A flag, if set the placeholder is shown in dark red rather than grey.
 
 Shows an element suitable for being used as a placeholder or load spinner in e.g. lists without content.
 
@@ -189,21 +156,12 @@ A component that shows a scope bar with slide-out scope selector. Uses Redux vie
 
 The scope object supports a property that isActive; the default is 'true'. If isActive is 'false', then it uses theme.palette.secondary.light colour for the label.
 
-## Selector
-
-- `options`: A list of objects containing a `label` and `value` field, used to populate the options list.
-- `placeholder`: A placeholder text to show if no option is selected.
-- `value`: The value of the currently selected option.
-- `update`: A function which updates the `value` (in application state, typically).
-
-A styled replacement for the standard `<select>` element, widely known for its resistance to styling. Renders a dropdown selector with a list of options, selectable by mouse or keyboard.
-
 ## Sidepanel
 
 - `timeout`: The time taken for the sliding animation, in milliseconds. Default 1000.
 - `width`: The width of the panel. Controls both element size and animation. Default 200px.
 
-Renders a side panel which will slide into view from the left side of the screen. Can and should be styled with `styled-components`.
+Renders a side panel which will slide into view from the left side of the screen.
 
 ## SpriteSheet
 
@@ -231,14 +189,6 @@ Renders a wizard like component with seperate steps and a Next and Previous butt
 
 Displays a horizontal toggle switch. This is a wrapper around a `<input type="checkbox" />`, so any props that work with that will also work here. Use `value` to set the value, not `checked`. If no `id` is passed, one will be generated and used.
 
-## Text
-
-- `message`: A string or `react-intl` message descriptor to be rendered.
-
-Will selectively render a plain text string or a translated `react-intl` message. If the message requires values but does not have them along (in `message.values`), will render a placeholder. If it fails (e.g. there is no message or it is faulty) will render the error message in bold bright red.
-
-If `message.value` contains a function, this is interpreted as a Redux selector, and used as such. It is expected to return an object containing values, which will be validated as mentioned above.
-
 ## ToastList
 
 - `toasts`: An array containing prop objects for the toasts to be shown, each as follows:
@@ -247,30 +197,6 @@ If `message.value` contains a function, this is interpreted as a Redux selector,
   - `closeFunc`: A function that is called when the close icon is clicked. Optional.
 
 Shows a list of message boxes in the upper right corner, displaying the selected icon and message. It is up to the showing component to determine when to remove a toast, to this end a close function hook is provided to allow user interaction. Types may be defined in the theme by setting `toastColors` and `icons.toast`: each of these should be an object with type names as keys, giving the background color and icon of the toast type, respectively. The list is rendered in a portal with the id `"toast"`, which is automatically created.
-
-## Toolbar
-
-- `tools`: Array of objects denoting the tools to be shown.
-
-Shows a toolbar. The buttons etc. shown on this toolbar are defined via the `tools` prop, which contains an array of objects. Each of these has a type, one of `input`, `button`, `group`, `label`, `separator` and `spacer`, as well as the props to be passed to that tool element.
-
-`input` and `button` will show suitably styled versions of the DOM elements of the same name, and take the same props. `button` also takes a label prop, which can contain an `icon` id and/or a `text`, as per [IconButton](#iconbutton).
-
-`group` has its own `tools` prop, which can be an array of `input` and/or `button` configurations, which will be shown as a joined group of controls.
-
-The `label` type takes a string or message descriptor in its `label` field, and shows it on the toolbar, suitably formatted.
-
-Lastly, `separator` will show a vertical bar, and `spacer` will take up any surplus space available on the toolbar - this can be used to right-justify some tools, in the otherwise left-justified toolbar.
-
-For examples of use, it is recommended to consult the [test file](../src/components/Toolbar.test.js), which demonstrates the available functionality.
-
-## Tooltip
-
-- `message`: The text to be shown, may be a plain string or a message descriptor.
-
-When hovering over the parent element of the tooltip, it will be shown on screen after a 1.5 second delay. It will be positioned to the right of the element. The parent element must be positioned (i.e. must have a `position` style property), or the tooltip will appear in an undefined location.
-
-The tooltip is hidden by moving it outside of view. This is by design, as it allows screen readers to access the text, enabling use by visually impaired users.
 
 ## Treeview
 

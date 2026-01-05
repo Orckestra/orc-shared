@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 		alignItems: "center",
 		padding: "10px",
 		width: "100%",
-		textTransform: props => (props.isGlobal ? "uppercase" : "none"),
+		textTransform: props.isGlobal ? "uppercase" : "none",
 		...(props.isClickable
 			? {
 					"&:hover": {

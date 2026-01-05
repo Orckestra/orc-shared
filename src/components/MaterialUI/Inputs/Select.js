@@ -145,6 +145,8 @@ export const SelectIconButton = props => {
 	);
 };
 
+const renderMultipleValues = selected => selected?.join(", ");
+
 const selectEmptyValue = "~~#~~";
 
 const Select = ({ options, selectProps, children }) => {
@@ -169,6 +171,7 @@ const Select = ({ options, selectProps, children }) => {
 	const native = selectProps?.get(SelectProps.propNames.native);
 	const onClose = selectProps?.get(SelectProps.propNames.onClose);
 	const inputProps = selectProps?.get(SelectProps.propNames.inputProps);
+	const multiple = selectProps?.get(SelectProps.propNames.multiple);
 	const hasError = !!error;
 
 	if (sortType === sortTypeEnum.numeric) {
@@ -252,6 +255,8 @@ const Select = ({ options, selectProps, children }) => {
 			error={hasError}
 			native={native}
 			inputProps={inputProps}
+			multiple={multiple}
+			renderValue={multiple ? renderMultipleValues : undefined}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
@@ -275,6 +280,8 @@ const Select = ({ options, selectProps, children }) => {
 			error={hasError}
 			native={native}
 			inputProps={inputProps}
+			multiple={multiple}
+			renderValue={multiple ? renderMultipleValues : undefined}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),

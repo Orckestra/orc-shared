@@ -1,7 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
-import Placeholder from "./Placeholder";
+import Placeholder from "./MaterialUI/DataDisplay/PredefinedElements/Placeholder";
 import ErrorPlaceholder from "./ErrorPlaceholder";
 
 describe("ErrorPlaceholder", () => {
@@ -14,9 +13,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ThemeProvider theme={{}}>
-					<ErrorPlaceholder message="Error" />
-				</ThemeProvider>
+				<ErrorPlaceholder message="Error" />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -27,7 +24,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Placeholder icon="error" warn title="Error" />
+				<Placeholder icon="report-problem-triangle" error title="Error" />
 			</Provider>,
 		));
 
@@ -40,9 +37,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ThemeProvider theme={{ icons: { error: "error" } }}>
-					<ErrorPlaceholder message="Error" description="This failed" />
-				</ThemeProvider>
+				<ErrorPlaceholder message="Error" description="This failed" />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -53,7 +48,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Placeholder icon="error" warn title="Error" subtitle="This failed" />
+				<Placeholder icon="report-problem-triangle" error title="Error" subtitle="This failed" />
 			</Provider>,
 		));
 
@@ -67,9 +62,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ThemeProvider theme={{}}>
-					<ErrorPlaceholder message="Error" onClick={handler} />
-				</ThemeProvider>
+				<ErrorPlaceholder message="Error" onClick={handler} />
 			</Provider>,
 			"when mounted",
 			"to satisfy",
@@ -80,7 +73,7 @@ describe("ErrorPlaceholder", () => {
 					getState: () => ({}),
 				}}
 			>
-				<Placeholder icon="error" warn title="Error" onClick={handler} />
+				<Placeholder icon="report-problem-triangle" error title="Error" onClick={handler} />
 			</Provider>,
 		);
 	});

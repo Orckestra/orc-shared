@@ -1,7 +1,6 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
 import { Loader } from "./Authenticate";
 import ApplicationModuleLoader from "./ApplicationModuleLoader";
 import { mount } from "enzyme";
@@ -66,17 +65,13 @@ describe("ApplicationModuleLoader", () => {
 		state = state.setIn(["settings", "defaultScope"], null);
 		return expect(
 			<Provider store={store(state)}>
-				<ThemeProvider theme={{}}>
-					<ApplicationModuleLoader>
-						<TestComp />
-					</ApplicationModuleLoader>
-				</ThemeProvider>
+				<ApplicationModuleLoader>
+					<TestComp />
+				</ApplicationModuleLoader>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<ThemeProvider theme={{}}>
-				<Loader />
-			</ThemeProvider>,
+			<Loader />,
 		);
 	});
 
@@ -84,17 +79,13 @@ describe("ApplicationModuleLoader", () => {
 		state = state.setIn(["settings", "loadedModulesScope"], Immutable.fromJS(["moduleA"]));
 		return expect(
 			<Provider store={store(state)}>
-				<ThemeProvider theme={{}}>
-					<ApplicationModuleLoader>
-						<TestComp />
-					</ApplicationModuleLoader>
-				</ThemeProvider>
+				<ApplicationModuleLoader>
+					<TestComp />
+				</ApplicationModuleLoader>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<ThemeProvider theme={{}}>
-				<Loader />
-			</ThemeProvider>,
+			<Loader />,
 		);
 	});
 
@@ -103,11 +94,9 @@ describe("ApplicationModuleLoader", () => {
 
 		const component = (
 			<Provider store={theStore}>
-				<ThemeProvider theme={{}}>
-					<ApplicationModuleLoader>
-						<TestComp />
-					</ApplicationModuleLoader>
-				</ThemeProvider>
+				<ApplicationModuleLoader>
+					<TestComp />
+				</ApplicationModuleLoader>
 			</Provider>
 		);
 
@@ -128,11 +117,9 @@ describe("ApplicationModuleLoader", () => {
 
 		const component = (
 			<Provider store={theStore}>
-				<ThemeProvider theme={{}}>
-					<ApplicationModuleLoader>
-						<TestComp />
-					</ApplicationModuleLoader>
-				</ThemeProvider>
+				<ApplicationModuleLoader>
+					<TestComp />
+				</ApplicationModuleLoader>
 			</Provider>
 		);
 

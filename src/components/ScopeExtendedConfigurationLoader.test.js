@@ -1,7 +1,6 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
 import ScopeExtendedConfigurationLoader from "./ScopeExtendedConfigurationLoader";
 import { mount } from "enzyme";
 import { getScopeExtendedConfiguration } from "../actions/scopes";
@@ -58,9 +57,7 @@ describe("ScopeExtendedConfigurationLoader", () => {
 
 		const component = (
 			<Provider store={theStore}>
-				<ThemeProvider theme={{}}>
-					<ScopeExtendedConfigurationLoader />
-				</ThemeProvider>
+				<ScopeExtendedConfigurationLoader />
 			</Provider>
 		);
 

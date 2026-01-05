@@ -1,5 +1,4 @@
 import React from "react";
-import { isStyledComponent } from "styled-components";
 import { mount } from "unexpected-reaction";
 import { Ignore } from "unexpected-reaction";
 import createThemes from "./../components/MaterialUI/muiThemes";
@@ -54,15 +53,6 @@ export const getClassSelector = (elm, index, container) => {
 		const className = getClassName(elm, index, container) || "";
 		return className && "." + className;
 	}
-};
-
-export const getStyledClassSelector = elm => {
-	const component = elm.type || elm;
-	if (!isStyledComponent(component)) {
-		throw new Error("<" + (component.name || component) + " /> is not a styled component");
-	}
-	// Styled component toString() function returns a stable class name
-	return component.toString();
 };
 
 export const firstItemComparator = (a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0);

@@ -5,11 +5,6 @@ import Navigation from "./index";
 import TabBar from "../MaterialUI/Navigation/TabBar";
 import { TestWrapper, createMuiTheme } from "./../../utils/testUtils";
 
-jest.mock("./Tab", () => ({
-	__esModule: true,
-	default: require("../../utils/testUtils").PropStruct,
-}));
-
 const TestComp = () => <div />;
 const TestComp1 = () => <div />;
 const TestComp2 = () => <div />;
