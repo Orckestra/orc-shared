@@ -8,12 +8,6 @@ A combination of the redux store connector with the `react-router` router, enabl
 
 Deprecated in favor of hooks from the [`react-redux`](https://react-redux.js.org/next/api/hooks) and [`react-router`](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/hooks.md) libraries.
 
-## `withAuthentication(Component)`
-
-Used to add an authentication check and loader/error message if not authenticated. Not usually used for app building, but is part of the AppFrame component.
-
-Deprecated in favor of the [Authenticate component](components.md#authenticate).
-
 ## `withClickOutside(Component)`
 
 Adds support for a `onClickOutside` prop to the component. This prop should be a function, and is used as an event handler for clicks outside the elements rendered by the component. Useful for e.g. closing dropdowns, intercepting clicks outside a modal dialog, etc. Clicks outside are handled during the capture phase, on `window.document`. This permits stopping event propagation at this point, before any DOM elements are allowed to respond to it.

@@ -1,9 +1,7 @@
 import React from "react";
-import styled, { css } from "styled-components";
 import { Switch, Route, Redirect, Link } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 import UrlPattern from "url-pattern";
-import { ifFlag, getThemeProp } from "../../utils";
-import Text from "../Text";
 import FullPage from "./FullPage";
 import SubPage from "./SubPage";
 import Segment from "./Segment";
@@ -44,58 +42,50 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 	},
 	wrapper: {
+		boxSizing: "border-box",
+		display: "flex",
+		borderTop: `1px solid ${theme.palette.grey.borders}`,
+		flex: "0 1 100%",
+		height: "calc(100% - 90px)",
+		minHeight: 0,
+
 		"div[class^='AppFrame__ViewPort'] > div&:nth-child(3)": {
 			marginTop: props => (props.isComponentNull ? null : theme.spacing(6)),
 		},
 	},
+	list: {
+		flex: "0 0.1 15%",
+		borderRight: `1px solid ${theme.palette.grey.borders}`,
+		display: "flex",
+		flexDirection: "column",
+		overflowY: "auto",
+	},
+	item: {
+		display: "block",
+		whiteSpace: "nowrap",
+		minWidth: "max-content",
+		padding: "15px 20px",
+		fontWeight: "bold",
+		fontSize: "13px",
+		textDecoration: "none",
+		cursor: "pointer",
+		color: theme.palette.text.primary,
+
+		"&:hover": {
+			backgroundColor: "#f7f7f7",
+		},
+
+		"&.active": {
+			backgroundColor: "#b4cfe3",
+		},
+	},
 }));
-
-export const Wrapper = styled.div`
-	box-sizing: border-box;
-	display: flex;
-	border-top: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	flex: 0 1 100%;
-	height: calc(100% - 90px);
-	min-height: 0;
-`;
-
-export const List = styled.div`
-	flex: 0 0.1 15%;
-	border-right: 1px solid ${getThemeProp(["colors", "borderLight"], "#cccccc")};
-	display: flex;
-	flex-direction: column;
-	overflow-y: auto;
-`;
 
 const FilteredLink = ({ active, ...props }) => (props.to ? <Link {...props} /> : <div {...props} />);
 
-export const Item = styled(FilteredLink)`
-	display: block;
-	white-space: nowrap;
-	min-width: max-content;
-	padding: 15px 20px;
-	font-weight: bold;
-	font-size: 13px;
-	text-decoration: none;
-	cursor: pointer;
-	color: ${getThemeProp(["colors", "text"], "#333333")};
-
-	${ifFlag(
-		"active",
-		css`
-			background-color: #b4cfe3;
-		`,
-		css`
-			&:hover {
-				background-color: #f7f7f7;
-			}
-		`,
-	)};
-`;
-
 export const SegmentItem = ({ isModified, isError, isActive, segpath, config, baseHref, params }) => {
 	const classes = useStyles();
-	let hideSelector = state => (typeof config.hide === "function" ? config.hide(params)(state) : config.hide ?? false);
+	let hideSelector = state => (typeof config.hide === "function" ? config.hide(params)(state) : (config.hide ?? false));
 	const isHide = useSelector(hideSelector);
 	const asterix = <span className={classes.asterix}>*</span>;
 
@@ -103,13 +93,13 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 		const values = config.labelValueSelector(params);
 
 		if (typeof values === "function") {
-			config.label.values = values;
+			config.label.values = values();
 		} else if (config.label.values) {
 			delete config.label.values;
 		}
 	}
 
-	const text = <Text message={config.label} />;
+	const text = typeof config.label === "string" ? config.label : <FormattedMessage {...config.label} />;
 
 	const getSectionLabelClassName = (isModified, isError, isDisabled) => {
 		let className = classes.label;
@@ -121,7 +111,7 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 	};
 
 	let disableSelector = state =>
-		typeof config.disabled === "function" ? config.disabled(params)(state) : config.disabled ?? false;
+		typeof config.disabled === "function" ? config.disabled(params)(state) : (config.disabled ?? false);
 	const isDisabled = useSelector(disableSelector);
 	const sectionLabelClassName = getSectionLabelClassName(isModified, isError, isDisabled);
 
@@ -152,11 +142,37 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 		<>
 			{!isHide && isDisabled && <Item>{finalLabel}</Item>}
 			{!isHide && !isDisabled && (
-				<Item to={baseHref + segpath} active={isActive}>
+				<Item active={isActive} to={baseHref + segpath}>
 					{finalLabel}
 				</Item>
 			)}
 		</>
+	);
+};
+
+export const Wrapper = ({ children }) => {
+	const classes = useStyles();
+
+	return (
+		<div className={classes.wrapper} key="Segments">
+			{children}
+		</div>
+	);
+};
+
+export const List = ({ children }) => {
+	const classes = useStyles();
+
+	return <div className={classes.list}>{children}</div>;
+};
+
+export const Item = ({ active, to, children, onClick }) => {
+	const classes = useStyles();
+
+	return (
+		<FilteredLink className={classNames(classes.item, active ? "active" : undefined)} to={to} onClick={onClick}>
+			{children}
+		</FilteredLink>
 	);
 };
 
@@ -257,8 +273,8 @@ const SegmentPage = ({
 			<Route
 				render={() => [
 					View ? <View key="View" {...componentProps} /> : null,
-					<Wrapper className={classes.wrapper} key="Segments">
-						<List>
+					<div className={classes.wrapper} key="Segments">
+						<div className={classes.list}>
 							{segmentEntries.map(([segpath, config]) => {
 								const isModified = modifiedSections.includes(segpath.replace("/", ""));
 								const isError = sectionsWithErrors.includes(segpath.replace("/", ""));
@@ -276,13 +292,13 @@ const SegmentPage = ({
 									/>
 								);
 							})}
-						</List>
+						</div>
 						<Switch>
 							{segmentElements}
 							<Redirect exact path={path} to={baseHref + Object.keys(segments)[0]} />
 						</Switch>
 						<Switch>{subpages}</Switch>
-					</Wrapper>,
+					</div>,
 				]}
 			/>
 		</Switch>

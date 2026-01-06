@@ -1,11 +1,14 @@
 import React from "react";
 import sinon from "sinon";
 import { Ignore } from "unexpected-reaction";
-import { getStyledClassSelector, PropStruct } from "../../utils/testUtils";
+import { PropStruct, TestWrapper } from "../../utils/testUtils";
 import Node, { RootNode, LeafNode, TreeContext } from "./Node";
 import { Branch } from "./Branch";
 import { Leaf, Root } from "./Leaf";
 import { BeforeIndicator, Indicator, NonIndicator, Label } from "./Label";
+import { createMuiTheme } from "../../utils/testUtils";
+
+const theme = createMuiTheme();
 
 describe("RootNode", () => {
 	let contextValue, Wrap;
@@ -19,30 +22,38 @@ describe("RootNode", () => {
 
 	it("renders a root node", () =>
 		expect(
-			<Wrap>
-				<RootNode thing="stuff" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<RootNode thing="stuff" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Root>
-				<Label>
-					<PropStruct thing="stuff" foo={true} bar={false} />
-				</Label>
-			</Root>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Root>
+					<Label>
+						<PropStruct thing="stuff" foo={true} bar={false} />
+					</Label>
+				</Root>
+			</TestWrapper>,
 		));
 
 	it("renders a selected root node", () =>
 		expect(
-			<Wrap>
-				<RootNode thing="stuff" isSelectedNode={true} />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<RootNode thing="stuff" isSelectedNode={true} />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Root>
-				<Label isSelectedNode={true}>
-					<PropStruct thing="stuff" foo={true} bar={false} />
-				</Label>
-			</Root>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Root>
+					<Label isSelectedNode={true}>
+						<PropStruct thing="stuff" foo={true} bar={false} />
+					</Label>
+				</Root>
+			</TestWrapper>,
 		));
 });
 
@@ -62,84 +73,104 @@ describe("LeafNode", () => {
 
 	it("renders a closed node with children", () =>
 		expect(
-			<Wrap>
-				<LeafNode thing="stuff" id="testNode" children={["foo"]} />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<LeafNode thing="stuff" id="testNode" children={["foo"]} />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Leaf>
-				<BeforeIndicator />
-				<Indicator open={undefined} onClick={expect.it("to be a function")} />
-				<Label>
-					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
-				</Label>
-			</Leaf>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Leaf>
+					<BeforeIndicator />
+					<Indicator open={undefined} onClick={expect.it("to be a function")} />
+					<Label>
+						<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
+					</Label>
+				</Leaf>
+			</TestWrapper>,
 		));
 
 	it("renders a closed node with children", () =>
 		expect(
-			<Wrap>
-				<LeafNode open thing="stuff" id="testNode" children={["foo"]} />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<LeafNode open thing="stuff" id="testNode" children={["foo"]} />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Leaf>
-				<BeforeIndicator />
-				<Indicator open={true} onClick={expect.it("to be a function")} />
-				<Label>
-					<PropStruct open={true} thing="stuff" id="testNode" foo={true} bar={false} />
-				</Label>
-			</Leaf>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Leaf>
+					<BeforeIndicator />
+					<Indicator open={true} onClick={expect.it("to be a function")} />
+					<Label>
+						<PropStruct open={true} thing="stuff" id="testNode" foo={true} bar={false} />
+					</Label>
+				</Leaf>
+			</TestWrapper>,
 		));
 
 	it("renders a node with no children", () =>
 		expect(
-			<Wrap>
-				<LeafNode thing="stuff" id="testNode" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<LeafNode thing="stuff" id="testNode" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Leaf>
-				<NonIndicator />
-				<Label>
-					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
-				</Label>
-			</Leaf>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Leaf>
+					<NonIndicator />
+					<Label>
+						<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
+					</Label>
+				</Leaf>
+			</TestWrapper>,
 		));
 
 	it("renders a selected node", () =>
 		expect(
-			<Wrap>
-				<LeafNode thing="stuff" id="testNode" isSelectedNode={true} />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<LeafNode thing="stuff" id="testNode" isSelectedNode={true} />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
-			<Leaf>
-				<NonIndicator />
-				<Label isSelectedNode={true}>
-					<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
-				</Label>
-			</Leaf>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Leaf>
+					<NonIndicator />
+					<Label isSelectedNode={true}>
+						<PropStruct thing="stuff" id="testNode" foo={true} bar={false} />
+					</Label>
+				</Leaf>
+			</TestWrapper>,
 		));
 
 	it("updates nodeState on click on the indicator, opening if closed", () =>
 		expect(
-			<Wrap>
-				<LeafNode thing="stuff" id="testNode" children={["foo"]} />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<LeafNode thing="stuff" id="testNode" children={["foo"]} />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(Indicator) },
+			{ type: "click", target: '[data-qa="indicator"]' },
 		).then(() => expect(updater, "to have calls satisfying", [{ args: [{ otherNode: false, testNode: true }] }])));
 
 	it("updates nodeState on click on the indicator, closing if open", () =>
 		expect(
-			<Wrap>
-				<LeafNode open thing="stuff" id="testNode" children={["foo"]} />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<LeafNode open thing="stuff" id="testNode" children={["foo"]} />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"with event",
-			{ type: "click", target: getStyledClassSelector(Indicator) },
+			{ type: "click", target: '[data-qa="indicator"]' },
 		).then(() => expect(updater, "to have calls satisfying", [{ args: [{ otherNode: false, testNode: false }] }])));
 });
 
@@ -168,9 +199,11 @@ describe("Node", () => {
 
 	it("renders a nonexistent node as nothing", () =>
 		expect(
-			<Wrap>
-				<Node id="nonExistent" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node id="nonExistent" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect.it("not to contain", <Leaf />).and("not to contain", <Branch />),
@@ -178,20 +211,24 @@ describe("Node", () => {
 
 	it("renders a childless node as only the leaf", () =>
 		expect(
-			<Wrap>
-				<Node id="exists" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node id="exists" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect
 				.it(
 					"to satisfy",
-					<div>
-						<Leaf>
-							<NonIndicator />
-							<Ignore />
-						</Leaf>
-					</div>,
+					<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+						<div>
+							<Leaf>
+								<NonIndicator />
+								<Ignore />
+							</Leaf>
+						</div>
+					</TestWrapper>,
 				)
 				.and(
 					"queried for first",
@@ -204,19 +241,23 @@ describe("Node", () => {
 
 	it("renders a childless root node as only the leaf", () =>
 		expect(
-			<Wrap>
-				<Node root id="exists" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node root id="exists" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect
 				.it(
 					"to satisfy",
-					<div>
-						<Root>
-							<Ignore />
-						</Root>
-					</div>,
+					<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+						<div>
+							<Root>
+								<Ignore />
+							</Root>
+						</div>
+					</TestWrapper>,
 				)
 				.and(
 					"queried for first",
@@ -229,29 +270,33 @@ describe("Node", () => {
 
 	it("renders a node with children as leaf and branch", () =>
 		expect(
-			<Wrap>
-				<Node id="hasKids" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node id="hasKids" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect
 				.it(
 					"to satisfy",
-					<div>
-						<Leaf>
-							<BeforeIndicator />
-							<Indicator open />
-							<Label>
-								<Ignore />
-							</Label>
-						</Leaf>
-						<Branch>
+					<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+						<div>
 							<Leaf>
-								<Ignore />
-								<Ignore />
+								<BeforeIndicator />
+								<Indicator open />
+								<Label>
+									<Ignore />
+								</Label>
 							</Leaf>
-						</Branch>
-					</div>,
+							<Branch>
+								<Leaf>
+									<Ignore />
+									<Ignore />
+								</Leaf>
+							</Branch>
+						</div>
+					</TestWrapper>,
 				)
 				.and(
 					"queried for first",
@@ -261,7 +306,7 @@ describe("Node", () => {
 				)
 				.and(
 					"queried for first",
-					getStyledClassSelector(Branch),
+					"[data-qa='branch']",
 					"to contain",
 					<PropStruct id="exists" other="data" open={false} foo={true} bar={false} />,
 				),
@@ -270,51 +315,59 @@ describe("Node", () => {
 	it("renders a selected node", () => {
 		contextValue.selectedNodeId = "hasKids";
 		expect(
-			<Wrap>
-				<Node id="hasKids" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node id="hasKids" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect.it(
 				"to satisfy",
-				<div>
-					<Leaf>
-						<BeforeIndicator />
-						<Indicator open />
-						<Label isSelectedNode={true}>
-							<Ignore />
-						</Label>
-					</Leaf>
-					<Branch>
+				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+					<div>
 						<Leaf>
-							<Ignore />
-							<Ignore />
+							<BeforeIndicator />
+							<Indicator open />
+							<Label isSelectedNode={true}>
+								<Ignore />
+							</Label>
 						</Leaf>
-					</Branch>
-				</div>,
+						<Branch>
+							<Leaf>
+								<Ignore />
+								<Ignore />
+							</Leaf>
+						</Branch>
+					</div>
+				</TestWrapper>,
 			),
 		);
 	});
 
 	it("renders a closed node with children as only the leaf", () =>
 		expect(
-			<Wrap>
-				<Node id="isClosed" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node id="isClosed" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect
 				.it(
 					"to satisfy",
-					<div>
-						<Leaf>
-							<BeforeIndicator />
-							<Indicator />
-							<Label>
-								<Ignore />
-							</Label>
-						</Leaf>
-					</div>,
+					<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+						<div>
+							<Leaf>
+								<BeforeIndicator />
+								<Indicator />
+								<Label>
+									<Ignore />
+								</Label>
+							</Leaf>
+						</div>
+					</TestWrapper>,
 				)
 				.and(
 					"queried for first",
@@ -328,47 +381,19 @@ describe("Node", () => {
 	it("renders a selected root node", () => {
 		contextValue.selectedNodeId = "isClosed";
 		expect(
-			<Wrap>
-				<Node root id="isClosed" />
-			</Wrap>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node root id="isClosed" />
+				</Wrap>
+			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			expect.it(
 				"to satisfy",
-				<div>
-					<Root>
-						<Label isSelectedNode={true}>
-							<Ignore />
-						</Label>
-					</Root>
-					<Branch>
-						<Leaf>
-							<Ignore />
-							<Ignore />
-							<Ignore />
-						</Leaf>
-						<Branch>
-							<Ignore />
-						</Branch>
-					</Branch>
-				</div>,
-			),
-		);
-	});
-
-	it("renders a root node with children as leaf and branch", () =>
-		expect(
-			<Wrap>
-				<Node root id="isClosed" />
-			</Wrap>,
-			"when mounted",
-			"to satisfy",
-			expect
-				.it(
-					"to satisfy",
+				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
 					<div>
 						<Root>
-							<Label>
+							<Label isSelectedNode={true}>
 								<Ignore />
 							</Label>
 						</Root>
@@ -382,7 +407,43 @@ describe("Node", () => {
 								<Ignore />
 							</Branch>
 						</Branch>
-					</div>,
+					</div>
+				</TestWrapper>,
+			),
+		);
+	});
+
+	it("renders a root node with children as leaf and branch", () =>
+		expect(
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Wrap>
+					<Node root id="isClosed" />
+				</Wrap>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			expect
+				.it(
+					"to satisfy",
+					<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+						<div>
+							<Root>
+								<Label>
+									<Ignore />
+								</Label>
+							</Root>
+							<Branch>
+								<Leaf>
+									<Ignore />
+									<Ignore />
+									<Ignore />
+								</Leaf>
+								<Branch>
+									<Ignore />
+								</Branch>
+							</Branch>
+						</div>
+					</TestWrapper>,
 				)
 				.and(
 					"queried for first",
@@ -400,29 +461,33 @@ describe("Node", () => {
 
 		it("renders a node with children as leaf and branch", () =>
 			expect(
-				<Wrap>
-					<Node id="hasKids" />
-				</Wrap>,
+				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+					<Wrap>
+						<Node id="hasKids" />
+					</Wrap>
+				</TestWrapper>,
 				"when mounted",
 				"to satisfy",
 				expect
 					.it(
 						"to satisfy",
-						<div>
-							<Leaf>
-								<BeforeIndicator />
-								<Indicator open />
-								<Label>
-									<Ignore />
-								</Label>
-							</Leaf>
-							<Branch>
+						<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+							<div>
 								<Leaf>
-									<Ignore />
-									<Ignore />
+									<BeforeIndicator />
+									<Indicator open />
+									<Label>
+										<Ignore />
+									</Label>
 								</Leaf>
-							</Branch>
-						</div>,
+								<Branch>
+									<Leaf>
+										<Ignore />
+										<Ignore />
+									</Leaf>
+								</Branch>
+							</div>
+						</TestWrapper>,
 					)
 					.and(
 						"queried for first",
@@ -432,7 +497,7 @@ describe("Node", () => {
 					)
 					.and(
 						"queried for first",
-						getStyledClassSelector(Branch),
+						"[data-qa='branch']",
 						"to contain",
 						<PropStruct id="exists" other="data" open={true} foo={true} bar={false} />,
 					),
@@ -440,33 +505,37 @@ describe("Node", () => {
 
 		it("renders a closed node with children as if open", () =>
 			expect(
-				<Wrap>
-					<Node id="isClosed" />
-				</Wrap>,
+				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+					<Wrap>
+						<Node id="isClosed" />
+					</Wrap>
+				</TestWrapper>,
 				"when mounted",
 				"to satisfy",
 				expect
 					.it(
 						"to satisfy",
-						<div>
-							<Leaf>
-								<BeforeIndicator />
-								<Indicator open />
-								<Label>
-									<Ignore />
-								</Label>
-							</Leaf>
-							<Branch>
+						<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+							<div>
 								<Leaf>
-									<Ignore />
-									<Ignore />
-									<Ignore />
+									<BeforeIndicator />
+									<Indicator open />
+									<Label>
+										<Ignore />
+									</Label>
 								</Leaf>
 								<Branch>
-									<Ignore />
+									<Leaf>
+										<Ignore />
+										<Ignore />
+										<Ignore />
+									</Leaf>
+									<Branch>
+										<Ignore />
+									</Branch>
 								</Branch>
-							</Branch>
-						</div>,
+							</div>
+						</TestWrapper>,
 					)
 					.and(
 						"queried for first",
@@ -476,7 +545,7 @@ describe("Node", () => {
 					)
 					.and(
 						"queried for first",
-						getStyledClassSelector(Branch),
+						"[data-qa='branch']",
 						"to contain",
 						<PropStruct id="hasKids" other="info" open={true} foo={true} bar={false} />,
 					),

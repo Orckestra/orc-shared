@@ -1,6 +1,7 @@
-import { getThemeProp } from "../../utils";
-
-// Functions to easily get the tree settings from theme, or sensible defaults
-export const branchIndent = getThemeProp(["treeSettings", "branchIndent"], 14);
-export const branchLength = getThemeProp(["treeSettings", "branchLength"], 15);
-export const branchHeight = getThemeProp(["treeSettings", "branchHeight"], 18);
+// in px
+// How far from parent left edge to vertical branch under it
+export const branchIndent = 14;
+// How far from vertical branch to children's left edge
+export const branchLength = 15;
+// How far up from bottom edge of node should horizontal branch sit
+export const branchHeight = 20;

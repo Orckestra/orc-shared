@@ -1,47 +1,65 @@
-import styled, { css } from "styled-components";
-import { ifFlag, getThemeProp } from "../../utils";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { branchIndent, branchLength, branchHeight } from "./settings";
+import classNames from "classnames";
 
-const baseBranch = css`
-	margin: 0;
-	font-size: 13px;
-	list-style-type: none;
-	border-width: 0;
-	border-style: solid;
-	border-color: #666;
-	position: relative;
-`;
+const useStyles = makeStyles(theme => {
+	const base = {
+		margin: 0,
+		fontSize: "13px",
+		listStyleType: "none",
+		borderWidth: 0,
+		borderStyle: "solid",
+		borderColor: "#666",
+		position: "relative",
+	};
 
-export const Branch = styled.ul`
-	${baseBranch}
+	return {
+		branch: props => ({
+			...base,
+			marginLeft: `${branchIndent}px`,
+			padding: "0",
+			paddingLeft: `${branchLength}px`,
+			borderLeftWidth: "1px",
 
-	margin-left: ${branchIndent}px;
-	padding: 0;
-	padding-left: ${branchLength}px;
-	border-left-width: 1px;
+			"&:last-child::after": {
+				/* blocker - hides lowest part of vertical branch */
+				content: '""',
+				backgroundColor: props.dark ? theme.palette.grey.dark : "#fff",
+				position: "absolute",
+				left: `-${branchIndent + branchLength + 2}px`,
+				bottom: 0,
+				top: `-${branchHeight}px`,
+				width: "1px",
+			},
+		}),
+		wrapper: {
+			...base,
+			overflowY: "auto",
+			overflowX: "hidden",
+			marginLeft: 0,
+			padding: `${branchLength - 5}px`,
 
-	&:last-child::after {
-		/* blocker - hides lowest part of vertical branch */
-		content: " ";
-		background-color: ${ifFlag("dark", getThemeProp(["colors", "bgDark"], "#333333"), "#fff")};
-		position: absolute;
-		left: -${props => branchIndent(props) + branchLength(props) + 2}px;
-		bottom: 0;
-		top: -${branchHeight}px;
-		width: 1px;
-	}
-`;
+			"& > $branch": {
+				/* First Branch immediately under Wrapper needs margin adjusted to look right */
+				marginLeft: `${1.5 * branchIndent}px`,
+			},
+		},
+	};
+});
 
-export const Wrapper = styled.ul`
-	${baseBranch}
+export const Branch = ({ dark, branchClassName, children }) => {
+	const classes = useStyles({ dark });
 
-	overflow-y: auto;
-	overflow-x: hidden;
-	margin-left: 0;
-	padding: ${props => branchLength(props) - 5}px;
+	return (
+		<ul className={classNames(classes.branch, branchClassName)} data-qa="branch">
+			{children}
+		</ul>
+	);
+};
 
-	& > ${Branch} {
-		/* First Branch immediately under Wrapper needs margin adjusted to look right */
-		margin-left: ${props => 1.5 * branchIndent(props)}px;
-	}
-`;
+export const Wrapper = ({ children }) => {
+	const classes = useStyles();
+
+	return <ul className={classes.wrapper}>{children}</ul>;
+};

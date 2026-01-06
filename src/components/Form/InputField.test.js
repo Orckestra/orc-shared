@@ -114,10 +114,11 @@ describe("InputField", () => {
 					if (type === "MultiSelector") {
 						val = ["thing"];
 						emptyVal = [];
+						target = "[role='button']";
 					} else {
 						val = "thing";
+						target = "select";
 					}
-					target = "select";
 				} else if (type === "SwitchInput") {
 					val = true;
 				} else if (type === "DateInput") {

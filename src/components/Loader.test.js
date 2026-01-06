@@ -1,11 +1,11 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
 import { mount, act } from "unexpected-reaction";
 import sinon from "sinon";
 import { spyOnConsole } from "../utils/testUtils";
 import ErrorPlaceholder from "./ErrorPlaceholder";
 import Loader, { Loading } from "./Loader";
+import ColumnWrapper from "./ColumnWrapper";
 
 describe("Loader placeholder", () => {
 	let clock;
@@ -18,11 +18,9 @@ describe("Loader placeholder", () => {
 
 	it("renders null, then load spinner if no props set", () => {
 		const loader = mount(
-			<ThemeProvider theme={{ icons: { loading: "test-loader" } }}>
-				<div>
-					<Loading />
-				</div>
-			</ThemeProvider>,
+			<div>
+				<Loading />
+			</div>,
 		);
 		expect(loader, "to satisfy", <div />);
 		act(() => {
@@ -34,7 +32,7 @@ describe("Loader placeholder", () => {
 			"svg",
 			"to satisfy",
 			<svg>
-				<use href="#icon-test-loader" />
+				<use href="#icon-orckestra-loader" />
 			</svg>,
 		);
 	});
@@ -50,9 +48,7 @@ describe("Loader placeholder", () => {
 						getState: () => ({}),
 					}}
 				>
-					<ThemeProvider theme={{}}>
-						<Loading {...{ error }} />
-					</ThemeProvider>
+					<Loading {...{ error }} />
 				</Provider>,
 				"when mounted",
 				"to satisfy",
@@ -63,9 +59,7 @@ describe("Loader placeholder", () => {
 						getState: () => ({}),
 					}}
 				>
-					<ThemeProvider theme={{}}>
-						<ErrorPlaceholder message="This is a test" />
-					</ThemeProvider>
+					<ErrorPlaceholder message="This is a test" />
 				</Provider>,
 			);
 		});
@@ -73,9 +67,9 @@ describe("Loader placeholder", () => {
 });
 
 describe("Loader", () => {
-	let clock, buttonLoader, errorLoader;
+	let clock, componentLoader, errorLoader;
 	beforeEach(() => {
-		buttonLoader = () => import("./Button");
+		componentLoader = () => import("./ColumnWrapper");
 		errorLoader = () => Promise.reject(new Error("This is not right"));
 		clock = sinon.useFakeTimers();
 	});
@@ -85,13 +79,11 @@ describe("Loader", () => {
 	spyOnConsole(["error"]);
 
 	it("loads the component", () => {
-		const Comp = Loader(buttonLoader);
+		const Comp = Loader(componentLoader);
 		const loader = mount(
-			<ThemeProvider theme={{}}>
-				<div>
-					<Comp />
-				</div>
-			</ThemeProvider>,
+			<div>
+				<Comp />
+			</div>,
 		);
 		expect(loader, "to satisfy", <div />);
 		act(() => {
@@ -115,7 +107,7 @@ describe("Loader", () => {
 				loader,
 				"to satisfy",
 				<div>
-					<button />
+					<ColumnWrapper />
 				</div>,
 			).then(() => expect(console.error, "was not called")),
 		);
@@ -131,11 +123,9 @@ describe("Loader", () => {
 					getState: () => ({}),
 				}}
 			>
-				<ThemeProvider theme={{}}>
-					<div>
-						<Comp />
-					</div>
-				</ThemeProvider>
+				<div>
+					<Comp />
+				</div>
 			</Provider>,
 		);
 		expect(loader, "to satisfy", <div />);
@@ -148,7 +138,7 @@ describe("Loader", () => {
 			"svg",
 			"to satisfy",
 			<svg>
-				<use href="#icon-loading" />
+				<use href="#icon-orckestra-loader" />
 			</svg>,
 		);
 		let load;
@@ -166,11 +156,9 @@ describe("Loader", () => {
 						getState: () => ({}),
 					}}
 				>
-					<ThemeProvider theme={{}}>
-						<div>
-							<ErrorPlaceholder message="This is not right" />
-						</div>
-					</ThemeProvider>
+					<div>
+						<ErrorPlaceholder message="This is not right" />
+					</div>
 				</Provider>,
 			).then(() => expect(console.error, "was called")),
 		);

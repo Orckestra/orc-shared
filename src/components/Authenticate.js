@@ -1,12 +1,23 @@
 import React from "react";
-import styled, { withTheme } from "styled-components";
-import { getThemeProp, safeGet } from "../utils";
-import Placeholder from "../components/Placeholder";
+import { makeStyles } from "@material-ui/core/styles";
+import { safeGet } from "../utils";
 import { useSelector } from "react-redux";
 import { unwrapImmutable } from "../utils";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 import { ERROR, LOGOUT } from "../reducers/request";
 import ApplicationModuleLoader from "./ApplicationModuleLoader";
+import Placeholder from "./MaterialUI/DataDisplay/PredefinedElements/Placeholder";
+
+const useStyles = makeStyles({
+	wrapper: {
+		display: "flex",
+		width: "60%",
+		height: "100%",
+		padding: "0 20vw",
+		flexDirection: "column",
+		justifyContent: "center",
+	},
+});
 
 export const useAuthenticationData = () => ({
 	loading: useSelector(state => state.getIn(["requests", "actives", GET_AUTHENTICATION_PROFILE])),
@@ -15,34 +26,31 @@ export const useAuthenticationData = () => ({
 	needLogin: useSelector(state => state.getIn(["requests", LOGOUT])),
 });
 
-export const Wrapper = styled.div`
-	display: flex;
-	width: 60%;
-	height: 100%;
-	padding: 0 20vw;
-	flex-direction: column;
-	justify-content: center;
-`;
+export const Loader = () => {
+	const classes = useStyles();
 
-export const Loader = withTheme(props => (
-	<Wrapper>
-		<Placeholder icon={getThemeProp(["icons", "loading"], "loading")(props)} animate />
-	</Wrapper>
-));
+	return (
+		<div className={classes.wrapper}>
+			<Placeholder icon="orckestra-loader" animateIcon />
+		</div>
+	);
+};
 
 export const Error = ({ requestError, needLogin }) => {
+	const classes = useStyles();
+
 	if (needLogin) {
 		return (
-			<Wrapper>
+			<div className={classes.wrapper}>
 				<h1>Not logged in</h1>
-			</Wrapper>
+			</div>
 		);
 	}
 	return (
-		<Wrapper>
+		<div className={classes.wrapper}>
 			<h1>{safeGet(requestError, "payload", "message") || "An error occurred"}</h1>
 			Last failing action: <pre>{JSON.stringify(requestError, null, 2)}</pre>
-		</Wrapper>
+		</div>
 	);
 };
 

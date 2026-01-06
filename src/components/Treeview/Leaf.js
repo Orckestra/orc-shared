@@ -1,24 +1,43 @@
-import styled from "styled-components";
-import { ifFlag, getThemeProp } from "../../utils";
-import { branchLength, branchHeight } from "./settings";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { branchLength } from "./settings";
+import classNames from "classnames";
 
-export const Root = styled.li`
-	position: relative;
-	display: flex;
-	align-items: center;
-`;
+const useStyles = makeStyles(theme => ({
+	root: {
+		position: "relative",
+		display: "flex",
+		alignItems: "center",
+	},
+	leaf: props => ({
+		"&:last-child::after": {
+			/* blocker - hides lowest part of vertical branch */
+			content: '""',
+			backgroundColor: props.dark ? theme.palette.grey.dark : "#fff",
+			position: "absolute",
+			top: "calc(50%)",
+			left: `-${branchLength + 1}px`,
+			bottom: 0,
+			width: "1px",
+			height: "50%",
+		},
+	}),
+}));
 
-export const Leaf = styled(Root)`
-	&:last-child::after {
-		/* blocker - hides lowest part of vertical branch */
-		content: " ";
-		background-color: ${ifFlag("dark", getThemeProp(["colors", "bgDark"], "#333333"), "#fff")};
-		position: absolute;
-		top: calc(50%);
-		left: -${props => branchLength(props) + 1}px;
-		bottom: 0;
-		height: ${branchHeight}px;
-		width: 1px;
-		height: 50%;
-	}
-`;
+export const Root = ({ dark, leafClassName, children }) => {
+	const classes = useStyles({ dark });
+
+	return (
+		<li className={classNames(classes.root, classes.leaf, leafClassName)} data-qa="leaf">
+			{children}
+		</li>
+	);
+};
+
+export const Leaf = ({ dark, leafClassName, children }) => {
+	return (
+		<Root leafClassName={leafClassName} dark={dark}>
+			{children}
+		</Root>
+	);
+};

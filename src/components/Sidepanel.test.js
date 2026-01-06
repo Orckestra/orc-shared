@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Sidepanel, { PanelDrawer } from "./Sidepanel";
+import Sidepanel from "./Sidepanel";
 
 class RenderSidepanel extends React.Component {
 	render() {
@@ -32,7 +32,7 @@ describe("Sidepanel", () => {
 		document.body.removeChild(modalRoot);
 	});
 
-	it("renders a PanelDrawer in a portal", () => {
+	it("renders sidepanel in a portal", () => {
 		ReactDOM.render(
 			<RenderSidepanel in>
 				<div id="inner">Foo</div>
@@ -42,32 +42,54 @@ describe("Sidepanel", () => {
 		return expect(modalRoot, "queried for first", "div#inner", "to be a", "DOMElement");
 	});
 
-	describe("PanelDrawer", () => {
-		it("sets the width it is given", () =>
-			expect(
-				<PanelDrawer in width="25vw" />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"width: 25vw;",
-			));
+	it("sets the width it is given", () => {
+		ReactDOM.render(
+			<Sidepanel in width="25vw">
+				<div id="inner">Foo</div>
+			</Sidepanel>,
+			appRoot,
+		);
+		return expect(
+			modalRoot,
+			"queried for first",
+			"div#modal > div",
+			"to have style rules satisfying",
+			"to contain",
+			"width: 25vw",
+		);
+	});
 
-		it("sets transition according to timeout", () =>
-			expect(
-				<PanelDrawer in timeout={300} />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"transition: transform 300ms",
-			));
+	it("sets transition according to timeout", () => {
+		ReactDOM.render(
+			<Sidepanel in timeout={300}>
+				<div id="inner">Foo</div>
+			</Sidepanel>,
+			appRoot,
+		);
+		return expect(
+			modalRoot,
+			"queried for first",
+			"div#modal > div",
+			"to have style rules satisfying",
+			"to contain",
+			"transition: transform 300ms",
+		);
+	});
 
-		it("sets default transition", () =>
-			expect(
-				<PanelDrawer in />,
-				"when mounted",
-				"to have style rules satisfying",
-				"to contain",
-				"transition: transform 1000ms",
-			));
+	it("sets default transition", () => {
+		ReactDOM.render(
+			<Sidepanel in>
+				<div id="inner">Foo</div>
+			</Sidepanel>,
+			appRoot,
+		);
+		return expect(
+			modalRoot,
+			"queried for first",
+			"div#modal > div",
+			"to have style rules satisfying",
+			"to contain",
+			"transition: transform 1000ms",
+		);
 	});
 });

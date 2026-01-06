@@ -8,7 +8,7 @@ import TableMui from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { buildHeaderAndRowFromConfig } from "./tableHelpers";
-import Placeholder from "../../Placeholder";
+import Placeholder from "./PredefinedElements/Placeholder";
 import TableInfoBar from "./PredefinedElements/TableInfoBar";
 import { ignoreConsoleError } from "../../../utils/testUtils";
 import TableProps from "./TableProps";

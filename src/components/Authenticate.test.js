@@ -1,8 +1,7 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
-import Authenticate, { Loader, Wrapper } from "./Authenticate";
+import Authenticate, { Loader } from "./Authenticate";
 import { ERROR, LOGOUT } from "../reducers/request";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 
@@ -64,17 +63,13 @@ describe("Authenticate", () => {
 		state = state.setIn(["requests", "actives", GET_AUTHENTICATION_PROFILE], true);
 		return expect(
 			<Provider store={store(state)}>
-				<ThemeProvider theme={{}}>
-					<Authenticate>
-						<TestComp />
-					</Authenticate>
-				</ThemeProvider>
+				<Authenticate>
+					<TestComp />
+				</Authenticate>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<ThemeProvider theme={{}}>
-				<Loader />
-			</ThemeProvider>,
+			<Loader />,
 		);
 	});
 
@@ -82,17 +77,13 @@ describe("Authenticate", () => {
 		state = state.setIn(["settings", "defaultScope"], null);
 		return expect(
 			<Provider store={store(state)}>
-				<ThemeProvider theme={{}}>
-					<Authenticate applicationModuleReady={false}>
-						<TestComp />
-					</Authenticate>
-				</ThemeProvider>
+				<Authenticate applicationModuleReady={false}>
+					<TestComp />
+				</Authenticate>
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<ThemeProvider theme={{}}>
-				<Loader />
-			</ThemeProvider>,
+			<Loader />,
 		);
 	});
 
@@ -105,10 +96,10 @@ describe("Authenticate", () => {
 				</Authenticate>
 			</Provider>,
 			"when mounted",
-			"to exhaustively satisfy",
-			<Wrapper>
+			"to satisfy",
+			<div>
 				<h1>Not logged in</h1>
-			</Wrapper>,
+			</div>,
 		);
 	});
 
@@ -127,8 +118,8 @@ describe("Authenticate", () => {
 				</Authenticate>
 			</Provider>,
 			"when mounted",
-			"to exhaustively satisfy",
-			<Wrapper>
+			"to satisfy",
+			<div>
 				<h1>404 - NotFound</h1>
 				{"Last failing action: "}
 				<pre>
@@ -140,7 +131,7 @@ describe("Authenticate", () => {
 						"  }\n" +
 						"}"}
 				</pre>
-			</Wrapper>,
+			</div>,
 		);
 	});
 
@@ -158,11 +149,11 @@ describe("Authenticate", () => {
 				</Authenticate>
 			</Provider>,
 			"when mounted",
-			"to exhaustively satisfy",
-			<Wrapper>
+			"to satisfy",
+			<div>
 				<h1>An error occurred</h1>
 				Last failing action: <pre>{'{\n  "type": "TEST_ACTION"\n}'}</pre>
-			</Wrapper>,
+			</div>,
 		);
 	});
 });

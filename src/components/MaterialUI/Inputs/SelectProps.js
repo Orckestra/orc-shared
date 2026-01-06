@@ -21,6 +21,7 @@ class SelectProps extends ComponentProps {
 		onClose: "onClose",
 		native: "native",
 		inputProps: "inputProps",
+		multiple: "multiple",
 	};
 
 	static ruleNames = {
@@ -42,6 +43,7 @@ class SelectProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.onClose, null);
 		this.componentProps.set(this.constructor.propNames.native, null);
 		this.componentProps.set(this.constructor.propNames.inputProps, null);
+		this.componentProps.set(this.constructor.propNames.multiple, null);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.paper, null);

@@ -15,6 +15,7 @@ describe("Select Props", () => {
 			"onClose",
 			"native",
 			"inputProps",
+			"multiple",
 		];
 
 		expect(SelectProps.propNames, "to have keys", propNames);
@@ -34,6 +35,7 @@ describe("Select Props", () => {
 			"onClose",
 			"native",
 			"inputProps",
+			"multiple",
 		];
 
 		const selectProps = new SelectProps();

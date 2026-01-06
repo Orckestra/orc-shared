@@ -1,35 +1,37 @@
 import React from "react";
-import styled from "styled-components";
-import Icon from "./Icon";
+import { makeStyles } from "@material-ui/core";
+import Icon from "./MaterialUI/DataDisplay/Icon";
 
-export const Wrapper = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	overflow-y: auto;
-	height: 100%;
-`;
-
-export const IconBlock = styled.div`
-	flex: 0 0 30%;
-	border: 1px solid #999;
-	margin: 5px;
-	padding: 5px 10px;
-	font-size: 24px;
-`;
+const useStyles = makeStyles({
+	wrapper: {
+		display: "flex",
+		flexWrap: "wrap",
+		justifyContent: "space-around",
+		overflowY: "auto",
+		height: "100%",
+	},
+	iconBlock: {
+		flex: "0 0 30%",
+		border: "1px solid #999",
+		margin: "5px",
+		padding: "5px 10px",
+		fontSize: "24px",
+	},
+});
 
 const arrify = thing => [].slice.call(thing);
 
 const SpriteSheet = () => {
+	const classes = useStyles();
 	const iconIds = arrify(document.querySelectorAll('symbol[id^="icon-"]')).map(elm => elm.id.replace(/^icon-/, ""));
 	return (
-		<Wrapper>
+		<div className={classes.wrapper}>
 			{iconIds.map(id => (
-				<IconBlock key={id}>
+				<div className={classes.iconBlock} key={id}>
 					<Icon id={id} /> {id}
-				</IconBlock>
+				</div>
 			))}
-		</Wrapper>
+		</div>
 	);
 };
 
