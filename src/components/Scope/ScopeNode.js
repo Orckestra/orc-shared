@@ -41,6 +41,7 @@ export const ScopeNode = ({
 	isAuthorizedScope,
 	closeSelector,
 	contentLabelClassName,
+	scopeTextClassName,
 	iconClassName,
 	onClick,
 	children,
@@ -63,7 +64,7 @@ export const ScopeNode = ({
 			data-qa="content-label"
 		>
 			<ScopeIcon type={type} className={classNames(classes.scopeIcon, iconClassName)} />
-			<div className={classes.scopeText}>{name || id}</div>
+			<div className={classNames(classes.scopeText, scopeTextClassName)}>{name || id}</div>
 			{children}
 		</div>
 	);
