@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import useScopeSelect from "./useScopeSelect";
 import { ScopeIcon } from "../MaterialUI/ScopeSelector/TreeItem";
 import classNames from "classnames";
 
@@ -34,37 +33,20 @@ const useStyles = makeStyles(theme => ({
 	}),
 }));
 
-export const ScopeNode = ({
-	type,
-	name,
-	id,
-	isAuthorizedScope,
-	closeSelector,
-	contentLabelClassName,
-	scopeTextClassName,
-	iconClassName,
-	onClick,
-	children,
-}) => {
-	const [navigate] = useScopeSelect(id);
-
-	if (!onClick && isAuthorizedScope && type !== "Virtual") {
-		onClick = event => {
-			navigate(event);
-			closeSelector(event);
-		};
-	}
+export const ScopeNode = ({ type, scopeId, name, contentLabelClassName, iconClassName, onClick, children }) => {
 	const classes = useStyles({ isGlobal: type === "Global", isClickable: onClick !== undefined });
+
+	const displayValue = (name || scopeId) ?? null;
 
 	return (
 		<div
-			id={"selectorNode" + id}
+			id={"selectorNode" + (scopeId ?? "scopeUnknown")}
 			className={classNames(classes.contentLabel, contentLabelClassName)}
 			onClick={onClick}
 			data-qa="content-label"
 		>
 			<ScopeIcon type={type} className={classNames(classes.scopeIcon, iconClassName)} />
-			<div className={classNames(classes.scopeText, scopeTextClassName)}>{name || id}</div>
+			{displayValue && <div className={classes.scopeText}>{displayValue}</div>}
 			{children}
 		</div>
 	);

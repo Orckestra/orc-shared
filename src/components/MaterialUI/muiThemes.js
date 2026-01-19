@@ -1,5 +1,5 @@
-import "@fontsource/open-sans/400.css";
-import "@fontsource/roboto-condensed/400.css";
+import "@fontsource/open-sans/latin.css";
+import "@fontsource/roboto-condensed/latin.css";
 
 import { createTheme } from "@material-ui/core/styles";
 import { alpha, darken } from "@material-ui/core/styles/colorManipulator";

@@ -1,13 +1,13 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import { Loader } from "./Authenticate";
 import ApplicationModuleLoader from "./ApplicationModuleLoader";
 import { mount } from "enzyme";
 import { getDefaultScope, getScopes } from "../actions/scopes";
 import sinon from "sinon";
 import { initializeFirstModuleScope } from "../actions/modules";
 import { scopeTypes } from "../constants";
+import LoadingIcon from "./LoadingIcon";
 
 const TestComp = () => {
 	return <div className="test" />;
@@ -71,7 +71,7 @@ describe("ApplicationModuleLoader", () => {
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<Loader />,
+			<LoadingIcon />,
 		);
 	});
 
@@ -85,7 +85,7 @@ describe("ApplicationModuleLoader", () => {
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<Loader />,
+			<LoadingIcon />,
 		);
 	});
 

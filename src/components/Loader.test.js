@@ -2,10 +2,13 @@ import React from "react";
 import { Provider } from "react-redux";
 import { mount, act } from "unexpected-reaction";
 import sinon from "sinon";
-import { spyOnConsole } from "../utils/testUtils";
+import { createMuiTheme, spyOnConsole, TestWrapper } from "../utils/testUtils";
 import ErrorPlaceholder from "./ErrorPlaceholder";
 import Loader, { Loading } from "./Loader";
 import ColumnWrapper from "./ColumnWrapper";
+import LoadingIcon from "./LoadingIcon";
+
+const theme = createMuiTheme();
 
 describe("Loader placeholder", () => {
 	let clock;
@@ -18,9 +21,11 @@ describe("Loader placeholder", () => {
 
 	it("renders null, then load spinner if no props set", () => {
 		const loader = mount(
-			<div>
-				<Loading />
-			</div>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<Loading />
+				</div>
+			</TestWrapper>,
 		);
 		expect(loader, "to satisfy", <div />);
 		act(() => {
@@ -28,12 +33,12 @@ describe("Loader placeholder", () => {
 		});
 		expect(
 			loader,
-			"queried for first",
-			"svg",
 			"to satisfy",
-			<svg>
-				<use href="#icon-orckestra-loader" />
-			</svg>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<LoadingIcon />
+				</div>
+			</TestWrapper>,
 		);
 	});
 
@@ -81,9 +86,11 @@ describe("Loader", () => {
 	it("loads the component", () => {
 		const Comp = Loader(componentLoader);
 		const loader = mount(
-			<div>
-				<Comp />
-			</div>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<Comp />
+				</div>
+			</TestWrapper>,
 		);
 		expect(loader, "to satisfy", <div />);
 		act(() => {
@@ -91,12 +98,12 @@ describe("Loader", () => {
 		});
 		expect(
 			loader,
-			"queried for first",
-			"svg",
 			"to satisfy",
-			<svg>
-				<use />
-			</svg>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<LoadingIcon />
+				</div>
+			</TestWrapper>,
 		);
 		let load;
 		act(() => {
@@ -106,27 +113,29 @@ describe("Loader", () => {
 			expect(
 				loader,
 				"to satisfy",
-				<div>
-					<ColumnWrapper />
-				</div>,
+				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+					<div>
+						<ColumnWrapper />
+					</div>
+				</TestWrapper>,
 			).then(() => expect(console.error, "was not called")),
 		);
 	});
 
 	it("errors out", () => {
 		const Comp = Loader(errorLoader);
+		const store = {
+			subscribe: () => {},
+			dispatch: () => {},
+			getState: () => ({}),
+		};
+
 		const loader = mount(
-			<Provider
-				store={{
-					subscribe: () => {},
-					dispatch: () => {},
-					getState: () => ({}),
-				}}
-			>
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }}>
 				<div>
 					<Comp />
 				</div>
-			</Provider>,
+			</TestWrapper>,
 		);
 		expect(loader, "to satisfy", <div />);
 		act(() => {
@@ -134,12 +143,12 @@ describe("Loader", () => {
 		});
 		expect(
 			loader,
-			"queried for first",
-			"svg",
 			"to satisfy",
-			<svg>
-				<use href="#icon-orckestra-loader" />
-			</svg>,
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<LoadingIcon />
+				</div>
+			</TestWrapper>,
 		);
 		let load;
 		act(() => {
@@ -149,17 +158,11 @@ describe("Loader", () => {
 			expect(
 				loader,
 				"to satisfy",
-				<Provider
-					store={{
-						subscribe: () => {},
-						dispatch: () => {},
-						getState: () => ({}),
-					}}
-				>
+				<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }}>
 					<div>
 						<ErrorPlaceholder message="This is not right" />
 					</div>
-				</Provider>,
+				</TestWrapper>,
 			).then(() => expect(console.error, "was called")),
 		);
 	});
