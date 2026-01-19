@@ -10,9 +10,9 @@ import { createMuiTheme } from "../../utils/testUtils";
 const theme = createMuiTheme();
 
 describe("ScopeNode", () => {
-	let closeSelector, store;
+	let onClick, store;
 	beforeEach(() => {
-		closeSelector = sinon.spy().named("close");
+		onClick = sinon.spy().named("onClick");
 		store = {
 			subscribe: () => {},
 			dispatch: () => {},
@@ -26,12 +26,12 @@ describe("ScopeNode", () => {
 	it("displays an icon and a label for a scope", () =>
 		expect(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<ScopeNode name="A scope" type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
+				<ScopeNode name="A scope" type="test" scopeId="ScopeId" isAuthorizedScope={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<div id="selectorNodeScopeId" onClick={closeSelector}>
+				<div id="selectorNodeScopeId">
 					<ScopeIcon type="test" />
 					<div>A scope</div>
 				</div>
@@ -41,12 +41,12 @@ describe("ScopeNode", () => {
 	it("displays an icon and a label for the global scope", () =>
 		expect(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<ScopeNode name="A scope" type="Global" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
+				<ScopeNode name="A scope" type="Global" scopeId="ScopeId" isAuthorizedScope={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<div id="selectorNodeScopeId" onClick={closeSelector}>
+				<div id="selectorNodeScopeId">
 					<ScopeIcon type="Global" />
 					<div>A scope</div>
 				</div>
@@ -56,7 +56,7 @@ describe("ScopeNode", () => {
 	it("displays an icon and a label for an unauthorized scope", () =>
 		expect(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<ScopeNode name="A scope" type="test" id="ScopeId" closeSelector={closeSelector} />
+				<ScopeNode name="A scope" type="test" scopeId="ScopeId" />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -71,12 +71,12 @@ describe("ScopeNode", () => {
 	it("displays an icon and a the fallback id for a scope when name is undefined", () =>
 		expect(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<ScopeNode type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
+				<ScopeNode type="test" scopeId="ScopeId" isAuthorizedScope={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<div id="selectorNodeScopeId" onClick={closeSelector}>
+				<div id="selectorNodeScopeId">
 					<ScopeIcon type="test" />
 					<div>ScopeId</div>
 				</div>
@@ -86,12 +86,12 @@ describe("ScopeNode", () => {
 	it("displays an icon and a the fallback id for a scope when name is null", () =>
 		expect(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<ScopeNode name={null} type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
+				<ScopeNode name={null} type="test" scopeId="ScopeId" isAuthorizedScope={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<div id="selectorNodeScopeId" onClick={closeSelector}>
+				<div id="selectorNodeScopeId">
 					<ScopeIcon type="test" />
 					<div>ScopeId</div>
 				</div>
@@ -101,7 +101,7 @@ describe("ScopeNode", () => {
 	it("handles virtual scopes", () =>
 		expect(
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<ScopeNode name="A scope" type="Virtual" id="ScopeId" isAuthorizedScope={true} closeSelector={closeSelector} />
+				<ScopeNode name="A scope" type="Virtual" scopeId="ScopeId" isAuthorizedScope={true} />
 			</TestWrapper>,
 			"when mounted",
 			"to satisfy",
@@ -113,26 +113,40 @@ describe("ScopeNode", () => {
 			</TestWrapper>,
 		));
 
-	it("Call onScopeSelect on Node click if scope type is not virtual", () => {
+	it("displays an icon without label for a scope with custom children", () =>
+		expect(
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
+				<ScopeNode type="test" isAuthorizedScope={true}>
+					<div>Another Display Test</div>
+				</ScopeNode>
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
+				<div id="selectorNodescopeUnknown">
+					<ScopeIcon type="test" />
+					<div>Another Display Test</div>
+				</div>
+			</TestWrapper>,
+		));
+
+	it("Call onClick on Node click when defined", () => {
 		const component = (
 			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider={{ theme }} memoryRouter={{}}>
-				<ScopeNode name="A scope" type="test" id="ScopeId" closeSelector={closeSelector} isAuthorizedScope={true} />
+				<ScopeNode name="A scope" type="test" scopeId="ScopeId" onClick={onClick} isAuthorizedScope={true} />
 			</TestWrapper>
 		);
-
-		const preventDefaultSpy = sinon.spy();
 
 		const mountedComponent = mount(component);
 
 		const event = {
-			preventDefault: preventDefaultSpy,
+			preventDefault: () => {},
 		};
 
-		const node = mountedComponent.find("[data-qa='content-label']");
+		const node = mountedComponent.find("[data-qa='content-label']").first();
 
 		node.invoke("onClick")(event);
 
-		expect(preventDefaultSpy, "was called");
-		expect(closeSelector, "to have a call satisfying", { args: [event] });
+		expect(onClick, "to have a call satisfying", { args: [event] });
 	});
 });

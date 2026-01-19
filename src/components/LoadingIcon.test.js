@@ -1,8 +1,22 @@
 import React from "react";
-import Placeholder from "./MaterialUI/DataDisplay/PredefinedElements/Placeholder";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import LoadingIcon from "./LoadingIcon";
+import { createMuiTheme, TestWrapper } from "../utils/testUtils";
+
+const theme = createMuiTheme();
 
 describe("LoadingIcon", () => {
 	it("shows a spinning load icon", () =>
-		expect(<LoadingIcon />, "when mounted", "to satisfy", <Placeholder icon="orckestra-loader" animateIcon />));
+		expect(
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<LoadingIcon />
+			</TestWrapper>,
+			"when mounted",
+			"to satisfy",
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
+					<CircularProgress size={100} color="inherit" />
+				</div>
+			</TestWrapper>,
+		));
 });

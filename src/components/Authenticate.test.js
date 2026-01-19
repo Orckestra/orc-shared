@@ -1,9 +1,10 @@
 import React from "react";
 import Immutable from "immutable";
 import { Provider } from "react-redux";
-import Authenticate, { Loader } from "./Authenticate";
+import Authenticate from "./Authenticate";
 import { ERROR, LOGOUT } from "../reducers/request";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
+import LoadingIcon from "./LoadingIcon";
 
 const TestComp = () => {
 	return <div className="test" />;
@@ -69,7 +70,7 @@ describe("Authenticate", () => {
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<Loader />,
+			<LoadingIcon />,
 		);
 	});
 
@@ -83,7 +84,7 @@ describe("Authenticate", () => {
 			</Provider>,
 			"when mounted",
 			"to exhaustively satisfy",
-			<Loader />,
+			<LoadingIcon />,
 		);
 	});
 

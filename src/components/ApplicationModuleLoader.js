@@ -6,9 +6,9 @@ import {
 	getApplicationModulesSelector,
 	getLoadedModulesScopeSelector,
 } from "../selectors/settings";
-import { Loader } from "./Authenticate";
 import { overtureModule, scopeTypes } from "../constants";
 import { initializeFirstModuleScope } from "../actions/modules";
+import LoadingIcon from "./LoadingIcon";
 
 const ApplicationModuleLoader = ({ children }) => {
 	const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const ApplicationModuleLoader = ({ children }) => {
 	const applicationModuleReady = scopeLoadedFromAllModules && defaultScope != null;
 
 	if (!applicationModuleReady) {
-		return <Loader />;
+		return <LoadingIcon />;
 	}
 
 	return React.Children.only(children);

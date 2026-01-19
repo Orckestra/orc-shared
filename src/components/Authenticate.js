@@ -6,7 +6,7 @@ import { unwrapImmutable } from "../utils";
 import { GET_AUTHENTICATION_PROFILE } from "../actions/authentication";
 import { ERROR, LOGOUT } from "../reducers/request";
 import ApplicationModuleLoader from "./ApplicationModuleLoader";
-import Placeholder from "./MaterialUI/DataDisplay/PredefinedElements/Placeholder";
+import LoadingIcon from "./LoadingIcon";
 
 const useStyles = makeStyles({
 	wrapper: {
@@ -25,16 +25,6 @@ export const useAuthenticationData = () => ({
 	requestError: unwrapImmutable(useSelector(state => state.getIn(["requests", ERROR]) || null)),
 	needLogin: useSelector(state => state.getIn(["requests", LOGOUT])),
 });
-
-export const Loader = () => {
-	const classes = useStyles();
-
-	return (
-		<div className={classes.wrapper}>
-			<Placeholder icon="orckestra-loader" animateIcon />
-		</div>
-	);
-};
 
 export const Error = ({ requestError, needLogin }) => {
 	const classes = useStyles();
@@ -58,7 +48,7 @@ const Authenticate = ({ children }) => {
 	const { loading, authedUser, requestError, needLogin } = useAuthenticationData();
 
 	if (loading) {
-		return <Loader />;
+		return <LoadingIcon />;
 	}
 	if (!authedUser) {
 		return <Error {...{ requestError, needLogin }} />;
