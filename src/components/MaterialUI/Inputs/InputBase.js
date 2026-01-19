@@ -232,28 +232,28 @@ const InputBase = ({ inputProps }) => {
 				if (textToDisplay) {
 					const currentValue = parseInt(textToDisplay, 10);
 					if (currentValue + 1 <= inputAttributes.max) {
-						setInputText(currentValue + 1);
+						setInputText((currentValue + 1).toString());
 					}
 				} else {
 					let currentValue = getInitialNumericValue();
 					if (currentValue === 0 && currentValue + 1 <= inputAttributes.max) {
 						currentValue++;
 					}
-					setInputText(currentValue);
+					setInputText(currentValue.toString());
 				}
 			};
 			const decreaseNumericValue = () => {
 				if (textToDisplay) {
 					const currentValue = parseInt(textToDisplay, 10);
 					if (currentValue - 1 >= inputAttributes.min) {
-						setInputText(currentValue - 1);
+						setInputText((currentValue - 1).toString());
 					}
 				} else {
 					let currentValue = getInitialNumericValue();
 					if (currentValue === 0 && currentValue - 1 >= inputAttributes.min) {
 						currentValue--;
 					}
-					setInputText(currentValue);
+					setInputText(currentValue.toString());
 				}
 			};
 
