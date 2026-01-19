@@ -413,6 +413,21 @@ const InputBase = ({ inputProps }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [inputText, metadata, timeoutDelay, update, value]);
 
+	if (onKeyDown) {
+		if (inputAttributes.onKeyDown) {
+			const originalKeyDown = inputAttributes.onKeyDown;
+			inputAttributes.onKeyDown = event => {
+				originalKeyDown(event);
+
+				if (!event.isDefaultPrevented()) {
+					onKeyDown(event);
+				}
+			};
+		} else {
+			inputAttributes.onKeyDown = onKeyDown;
+		}
+	}
+
 	return (
 		<div className={classes.container}>
 			<div className={classes.inputContainer}>
@@ -432,7 +447,6 @@ const InputBase = ({ inputProps }) => {
 						placeholder={placeholder}
 						value={textToDisplay}
 						fullWidth={true}
-						onKeyDown={onKeyDown}
 						onWheel={onWheel}
 						onChange={event => onChangeHandler(event)}
 						error={!!error}

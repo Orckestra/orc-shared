@@ -1002,6 +1002,54 @@ describe("AdvancedNumericInput", () => {
 		btnDecrease.simulate("mouseDown");
 	});
 
+	it("Advanced numeric input value without decimals but with custom onKeyDown with prevent default", () => {
+		const keydownSpy = sinon.stub().callsFake(e => {
+			e.preventDefault();
+		});
+
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 0 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { onKeyDown: keydownSpy });
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+		input.simulate("keydown", { key: "ArrowUp" });
+
+		expect(keydownSpy, "was called once");
+		expect(update, "was not called");
+	});
+
+	it("Advanced numeric input value without decimals but with custom onKeyDown without prevent default", () => {
+		const keydownSpy = sinon.stub().callsFake(e => {});
+
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 0 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { onKeyDown: keydownSpy });
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+		input.simulate("keydown", { key: "ArrowUp" });
+
+		expect(keydownSpy, "was called once");
+		expect(update, "to have calls satisfying", [{ args: ["1", null] }]);
+	});
+
 	it("Change advanced numeric input value, empty initial value with increase button", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";
