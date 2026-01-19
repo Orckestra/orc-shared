@@ -186,6 +186,7 @@ const InputBase = ({ inputProps }) => {
 
 	let controlSpecificSuffix = null;
 	let onKeyDown = null;
+	let onWheel = null;
 
 	if (isAdvancedNumericInput && numericInputProps) {
 		Object.keys(numericInputProps).forEach(key => {
@@ -293,6 +294,14 @@ const InputBase = ({ inputProps }) => {
 					event.preventDefault();
 					event.stopPropagation();
 
+					decreaseNumericValue();
+				}
+			};
+
+			onWheel = event => {
+				if (event.deltaY < 0) {
+					increaseNumericValue();
+				} else {
 					decreaseNumericValue();
 				}
 			};
@@ -406,6 +415,7 @@ const InputBase = ({ inputProps }) => {
 						value={textToDisplay}
 						fullWidth={true}
 						onKeyDown={onKeyDown}
+						onWheel={onWheel}
 						onChange={event => onChangeHandler(event)}
 						error={!!error}
 						inputProps={inputAttributes}

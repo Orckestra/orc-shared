@@ -1102,7 +1102,7 @@ describe("AdvancedNumericInput", () => {
 		expect(update, "to have calls satisfying", [{ args: ["5", null] }]);
 	});
 
-	it("Change advanced numeric input value, empty initial value, min=5, max=15, key up set value to 5", () => {
+	it("Change advanced numeric input value, empty initial value, min=5, max=15, key up set value to 1", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";
 		const aValue = "";
@@ -1118,6 +1118,26 @@ describe("AdvancedNumericInput", () => {
 		const mountedComponent = mount(component);
 		const input = mountedComponent.find("input");
 		input.simulate("keydown", { key: "ArrowUp" });
+
+		expect(update, "to have calls satisfying", [{ args: ["1", null] }]);
+	});
+
+	it("Change advanced numeric input value, empty initial value, min=5, max=15, scroll up set value to 1", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 0 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { min: -5, max: 15 });
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+		input.simulate("wheel", { deltaY: -100 });
 
 		expect(update, "to have calls satisfying", [{ args: ["1", null] }]);
 	});
@@ -1260,7 +1280,7 @@ describe("AdvancedNumericInput", () => {
 		expect(update, "to have calls satisfying", [{ args: ["5", null] }]);
 	});
 
-	it("Change advanced numeric input value, empty initial value, min=5, max=15, key down set value to 5", () => {
+	it("Change advanced numeric input value, empty initial value, min=5, max=15, key down set value to 1", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";
 		const aValue = "";
@@ -1276,6 +1296,26 @@ describe("AdvancedNumericInput", () => {
 		const mountedComponent = mount(component);
 		const input = mountedComponent.find("input");
 		input.simulate("keydown", { key: "ArrowDown" });
+
+		expect(update, "to have calls satisfying", [{ args: ["-1", null] }]);
+	});
+
+	it("Change advanced numeric input value, empty initial value, min=5, max=15, scroll down set value to 1", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 0 });
+		inputProps.set(InputBaseProps.propNames.inputAttributes, { min: -5, max: 15 });
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const input = mountedComponent.find("input");
+		input.simulate("wheel", { deltaY: 100 });
 
 		expect(update, "to have calls satisfying", [{ args: ["-1", null] }]);
 	});
