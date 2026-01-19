@@ -964,6 +964,24 @@ describe("AdvancedNumericInput", () => {
 		expect(btn.length, "to be", 0);
 	});
 
+	it("Disabled advanced numeric input value without decimals should not have the increase/decrease buttons", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.disabled, true);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 0 });
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const btn = mountedComponent.find("[data-qa='increase']").hostNodes();
+		expect(btn.length, "to equal", 0);
+	});
+
 	it("Change advanced numeric input value, empty initial value with increase button", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";

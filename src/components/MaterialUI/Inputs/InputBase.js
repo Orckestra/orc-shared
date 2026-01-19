@@ -216,7 +216,7 @@ const InputBase = ({ inputProps }) => {
 			return val.value === "" || val.value === "-" || val.value !== null;
 		};
 
-		if (decimalScale === 0) {
+		if (decimalScale === 0 && !disabled) {
 			const getInitialNumericValue = () => {
 				if (0 >= inputAttributes.min && 0 <= inputAttributes.max) {
 					return 0;
