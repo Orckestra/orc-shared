@@ -982,6 +982,26 @@ describe("AdvancedNumericInput", () => {
 		expect(btn.length, "to equal", 0);
 	});
 
+	it("Advanced numeric input value without decimals, simulate onMouseDown to make code coverage happy", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 0 });
+
+		const component = <InputBase inputProps={inputProps} />;
+		const mountedComponent = mount(component);
+		const btnIncrease = mountedComponent.find("[data-qa='increase']").hostNodes();
+		const btnDecrease = mountedComponent.find("[data-qa='decrease']").hostNodes();
+
+		btnIncrease.simulate("mouseDown");
+		btnDecrease.simulate("mouseDown");
+	});
+
 	it("Change advanced numeric input value, empty initial value with increase button", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";

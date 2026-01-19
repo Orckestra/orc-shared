@@ -258,6 +258,10 @@ const InputBase = ({ inputProps }) => {
 				}
 			};
 
+			const focusInput = target => {
+				target.closest(".InputBase-input-wrapper").getElementsByTagName("input")[0].focus();
+			};
+
 			controlSpecificSuffix = (
 				<div className={classes.numericSpinnerContainer}>
 					<IconButton
@@ -265,7 +269,13 @@ const InputBase = ({ inputProps }) => {
 						tabIndex="-1"
 						data-qa="increase"
 						disabled={disabled}
-						onClick={() => increaseNumericValue()}
+						onMouseDown={event => event.preventDefault()} // prevent the button from stealing focus
+						onClick={event => {
+							event.preventDefault();
+							event.stopPropagation();
+							increaseNumericValue();
+							focusInput(event.target);
+						}}
 					>
 						<Icon id="chevron-up" />
 					</IconButton>
@@ -275,7 +285,13 @@ const InputBase = ({ inputProps }) => {
 						tabIndex="-1"
 						data-qa="decrease"
 						disabled={disabled}
-						onClick={() => decreaseNumericValue()}
+						onMouseDown={event => event.preventDefault()} // prevent the button from stealing focus
+						onClick={event => {
+							event.preventDefault();
+							event.stopPropagation();
+							decreaseNumericValue();
+							focusInput(event.target);
+						}}
 					>
 						<Icon id="chevron-down" />
 					</IconButton>
@@ -304,6 +320,8 @@ const InputBase = ({ inputProps }) => {
 				} else {
 					decreaseNumericValue();
 				}
+
+				focusInput(event.target);
 			};
 		}
 	}
@@ -399,7 +417,7 @@ const InputBase = ({ inputProps }) => {
 		<div className={classes.container}>
 			<div className={classes.inputContainer}>
 				{label && <label className={`${classes.prepend} ${disabled && classes.disabledPrepend}`}>{label}</label>}
-				<div style={{ display: "flex" }}>
+				<div style={{ display: "flex" }} className="InputBase-input-wrapper">
 					<InputBaseMUI
 						classes={{
 							input: classNames(classes.controlInput, inputBaseInputStyle),
