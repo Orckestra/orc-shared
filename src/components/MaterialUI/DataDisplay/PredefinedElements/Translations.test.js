@@ -50,7 +50,9 @@ describe("Translations ", () => {
 				<div>
 					<div>
 						<label>{"en-US"}</label>
-						<InputBase />
+						<div>
+							<InputBase />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -61,7 +63,9 @@ describe("Translations ", () => {
 				<div>
 					<div>
 						<label>{"en-CA"}</label>
-						<InputBase />
+						<div>
+							<InputBase />
+						</div>
 					</div>
 				</div>
 			</div>,
@@ -69,7 +73,9 @@ describe("Translations ", () => {
 				<div>
 					<div>
 						<label>{"fr-CA"}</label>
-						<InputBase />
+						<div>
+							<InputBase />
+						</div>
 					</div>
 				</div>
 			</div>,
@@ -102,7 +108,9 @@ describe("Translations ", () => {
 				<div>
 					<div>
 						<label>{"en-US"}</label>
-						<InputBase />
+						<div>
+							<InputBase />
+						</div>
 					</div>
 					<div>{aError}</div>
 				</div>
@@ -114,7 +122,9 @@ describe("Translations ", () => {
 				<div>
 					<div>
 						<label>{"en-CA"}</label>
-						<InputBase />
+						<div>
+							<InputBase />
+						</div>
 					</div>
 				</div>
 			</div>,
@@ -122,7 +132,9 @@ describe("Translations ", () => {
 				<div>
 					<div>
 						<label>{"fr-CA"}</label>
-						<InputBase />
+						<div>
+							<InputBase />
+						</div>
 					</div>
 				</div>
 			</div>,
