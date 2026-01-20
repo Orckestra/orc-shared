@@ -8,29 +8,29 @@ import sharedMessages from "../sharedMessages";
 const useStyles = makeStyles(theme => ({
 	container: {
 		fontFamily: "'Open Sans', sans-serif",
-		fontSize: "14px",
+		fontSize: theme.spacing(1.4),
 		background: "rgba(255,255,255,0.85)",
-		maxWidth: "700px",
-		width: "calc(100% - 40px)",
+		maxWidth: theme.spacing(70),
+		width: `calc(100% - ${theme.spacing(4)})`,
 		display: "block",
 		top: "50%",
 		left: "50%",
 		position: "absolute",
-		boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+		boxShadow: `${theme.spacing(0, 0.4, 0.8, 0)} rgba(0, 0, 0, 0.2), ${theme.spacing(0, 0.6, 2, 0)} rgba(0, 0, 0, 0.19)`,
 		transform: "translateY(-50%) translateX(-50%)",
-		padding: "80px",
-		borderRadius: "3px",
+		padding: theme.spacing(8),
+		borderRadius: theme.spacing(0.3),
 		"& header": {
-			paddingBottom: "20px",
-			marginBottom: "20px",
+			paddingBottom: theme.spacing(2),
+			marginBottom: theme.spacing(2),
 			borderBottom: "1px solid #999",
 			"& h1": {
 				fontWeight: 400,
-				fontWize: "30px",
+				fontWize: theme.spacing(3),
 				marginTop: 0,
-				marginBottom: "5px",
+				marginBottom: theme.spacing(0.5),
 				"& p": {
-					fontSize: "16px",
+					fontSize: theme.spacing(1.6),
 					margin: 0,
 					color: "#999",
 					fontWeight: 400,
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 		flexWrap: "wrap",
 		width: "100%",
 		boxSizing: "border-box",
-		marginTop: "40px",
+		marginTop: theme.spacing(4),
 	},
 	gridItem: {
 		display: "flex",
@@ -52,16 +52,16 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: "column",
 	},
 	browserIconContainer: {
-		width: "48px",
+		width: theme.spacing(4.8),
 		textAlign: "center",
 	},
 	browserIconCaption: {
-		fontSize: "11px",
+		fontSize: theme.spacing(1.1),
 		color: "#999",
 	},
 	browserIcon: {
 		stroke: "none",
-		fontSize: "48px",
+		fontSize: theme.spacing(4.8),
 	},
 }));
 

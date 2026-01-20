@@ -6,13 +6,13 @@ import sharedMessages from "./../../sharedMessages";
 const useStyles = makeStyles(theme => ({
 	helpLink: {
 		fontFamily: theme.typography.button.fontFamily,
-		fontSize: "12px",
+		fontSize: theme.spacing(1.2),
 		textTransform: "uppercase",
 		color: theme.palette.grey.borders,
-		width: "40px",
+		width: theme.spacing(4),
 		cursor: "pointer",
-		paddingTop: "14px",
-		paddingRight: "10px",
+		paddingTop: theme.spacing(1.4),
+		paddingRight: theme.spacing(1),
 		textDecoration: "none",
 		"&:hover": {
 			color: theme.palette.primary.light,

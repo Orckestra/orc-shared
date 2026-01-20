@@ -9,9 +9,9 @@ import { getScopeModuleInformationSelector } from "../../selectors/modules";
 const useStyles = makeStyles(theme => ({
 	bar: {
 		boxSizing: "border-box",
-		paddingTop: "60px",
-		height: "calc(100% - 40px)",
-		width: "200px",
+		paddingTop: theme.spacing(6),
+		height: `calc(100% - ${theme.spacing(4)})`,
+		width: theme.spacing(20),
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "flex-start",
@@ -19,9 +19,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	logoSvg: {
 		flex: "0 0 auto",
-		margin: "auto 12.5px 7px",
-		height: "25px",
-		width: "25px",
+		margin: `auto ${theme.spacing(1.25, 0.7)}`,
+		height: theme.spacing(2.5),
+		width: theme.spacing(2.5),
 		fillRule: "evenodd",
 		clipRule: "evenodd",
 		fill: "#666666",

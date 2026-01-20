@@ -1,22 +1,22 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "../MaterialUI/DataDisplay/Icon";
-import { branchLength } from "./settings";
+import { branchLengthSpacing } from "./settings";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	beforeIndicator: {
 		backgroundColor: "#666",
-		marginLeft: `-${branchLength + 1}px`,
-		width: `${branchLength + 1}px`,
-		height: "1px",
+		marginLeft: `-${theme.spacing(branchLengthSpacing + 0.1)}`,
+		width: `${theme.spacing(branchLengthSpacing + 0.1)}`,
+		height: theme.spacing(0.1),
 		zIndex: 99,
 		position: "absolute",
 	},
 	nonIndicator: {
-		height: "1px",
-		width: `${branchLength + 21}px`,
-		margin: `auto 0 auto -${branchLength + 1}px`,
+		height: theme.spacing(0.1),
+		width: `${theme.spacing(branchLengthSpacing + 2.1)}`,
+		margin: `auto 0 auto -${theme.spacing(branchLengthSpacing + 0.1)}`,
 		backgroundColor: "#666",
 		alignSelf: "stretch",
 		flex: "0 0 auto",
@@ -30,8 +30,8 @@ const useStyles = makeStyles(theme => ({
 		border: props.isSelectedNode ? `1px solid ${theme.palette.grey.borders}` : undefined,
 	}),
 	indicator: props => ({
-		fontSize: "10px",
-		padding: "10px 0 10px 10px",
+		fontSize: theme.spacing(1),
+		padding: theme.spacing(1, 0, 1, 1),
 		cursor: "pointer",
 		flex: "0 0 auto",
 		color: props.open

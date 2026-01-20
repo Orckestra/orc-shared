@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 		width: 60,
 		height: 25,
 		animation: false,
-		borderRadius: "15px",
+		borderRadius: theme.spacing(1.5),
 	},
 	radioSkeleton: {
 		width: 17,

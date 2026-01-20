@@ -1,12 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { branchIndent, branchLength, branchHeight } from "./settings";
+import { branchIndentSpacing, branchLengthSpacing, branchHeightSpacing } from "./settings";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => {
 	const base = {
 		margin: 0,
-		fontSize: "13px",
+		fontSize: theme.spacing(1.3),
 		listStyleType: "none",
 		borderWidth: 0,
 		borderStyle: "solid",
@@ -17,20 +17,20 @@ const useStyles = makeStyles(theme => {
 	return {
 		branch: props => ({
 			...base,
-			marginLeft: `${branchIndent}px`,
+			marginLeft: `${theme.spacing(branchIndentSpacing)}`,
 			padding: "0",
-			paddingLeft: `${branchLength}px`,
-			borderLeftWidth: "1px",
+			paddingLeft: `${theme.spacing(branchLengthSpacing)}`,
+			borderLeftWidth: theme.spacing(0.1),
 
 			"&:last-child::after": {
 				/* blocker - hides lowest part of vertical branch */
 				content: '""',
 				backgroundColor: props.dark ? theme.palette.grey.dark : "#fff",
 				position: "absolute",
-				left: `-${branchIndent + branchLength + 2}px`,
+				left: `-${theme.spacing(branchIndentSpacing + branchLengthSpacing + 0.2)}`,
 				bottom: 0,
-				top: `-${branchHeight}px`,
-				width: "1px",
+				top: `-${theme.spacing(branchHeightSpacing)}`,
+				width: theme.spacing(0.1),
 			},
 		}),
 		wrapper: {
@@ -38,11 +38,11 @@ const useStyles = makeStyles(theme => {
 			overflowY: "auto",
 			overflowX: "hidden",
 			marginLeft: 0,
-			padding: `${branchLength - 5}px`,
+			padding: `${theme.spacing(branchLengthSpacing - 0.5)}`,
 
 			"& > $branch": {
 				/* First Branch immediately under Wrapper needs margin adjusted to look right */
-				marginLeft: `${1.5 * branchIndent}px`,
+				marginLeft: `${theme.spacing(branchIndentSpacing * 1.5)}`,
 			},
 		},
 	};

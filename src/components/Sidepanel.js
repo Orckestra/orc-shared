@@ -6,16 +6,16 @@ import classNames from "classnames";
 
 const getModalRoot = () => document.getElementById("modal");
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	panel: props => ({
 		position: "absolute",
 		top: 0,
 		bottom: 0,
 		right: 0,
-		width: props.width,
+		width: theme.spacing(props.widthSpacing),
 
 		"&.enter": {
-			transform: `translateX(${props.width})`,
+			transform: `translateX(${theme.spacing(props.widthSpacing)})`,
 		},
 		"&.enter-active": {
 			transform: "translateX(0)",
@@ -25,14 +25,14 @@ const useStyles = makeStyles({
 			transform: "translateX(0)",
 		},
 		"&.exit-active": {
-			transform: `translateX(${props.width})`,
+			transform: `translateX(${theme.spacing(props.widthSpacing)})`,
 			transition: `transform ${props.timeout}ms ease-out`,
 		},
 	}),
-});
+}));
 
-const Sidepanel = ({ in: inProp, width = "300px", timeout = 1000, children, className }) => {
-	const classes = useStyles({ width, timeout });
+const Sidepanel = ({ in: inProp, widthSpacing = 30, timeout = 1000, children, className }) => {
+	const classes = useStyles({ widthSpacing, timeout });
 
 	const panel = (
 		<CSSTransition in={inProp} timeout={timeout} unmountOnExit>

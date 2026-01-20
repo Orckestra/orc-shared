@@ -17,19 +17,19 @@ export const ABOUT_NAME = "__aboutBox";
 
 const getModalRoot = () => document.getElementById("modal");
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	aboutBox: props => ({
 		boxSizing: "border-box",
 		zIndex: 9999,
 		position: "absolute",
-		top: "calc(50% - 210px)",
-		left: "calc(50% - 210px)",
-		height: "420px",
-		width: "420px",
-		padding: "15px 20px",
+		top: `calc(50% - ${theme.spacing(21)})`,
+		left: `calc(50% - ${theme.spacing(21)})`,
+		height: theme.spacing(42),
+		width: theme.spacing(42),
+		padding: theme.spacing(1.5, 2),
 		color: "#ffffff",
-		fontSize: "13px",
-		lineHeight: "16px",
+		fontSize: theme.spacing(1.3),
+		lineHeight: theme.spacing(1.6),
 		background: `#0a0a07 url(${props.bgImage})`,
 
 		"&.enter-active": {
@@ -47,8 +47,8 @@ const useStyles = makeStyles(() => ({
 		zIndex: 9999,
 		position: "absolute",
 		color: "#ffffff",
-		top: "15px",
-		right: "20px",
+		top: theme.spacing(1.5),
+		right: theme.spacing(2),
 		margin: "0",
 		cursor: "pointer",
 		opacity: "1",
@@ -62,11 +62,11 @@ const useStyles = makeStyles(() => ({
 		textDecoration: "none",
 	},
 	aboutParagraph: {
-		marginTop: "20px",
+		marginTop: theme.spacing(2),
 	},
 	longAboutParagraph: props => ({
-		marginTop: "20px",
-		fontSize: props.lang?.toLowerCase().startsWith("fr") ? "10px" : undefined,
+		marginTop: theme.spacing(2),
+		fontSize: props.lang?.toLowerCase().startsWith("fr") ? theme.spacing(1) : undefined,
 	}),
 }));
 

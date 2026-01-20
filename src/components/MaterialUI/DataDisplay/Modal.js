@@ -24,12 +24,12 @@ const useStyles = makeStyles(theme => ({
 	},
 	containerWide: {
 		width: theme.spacing(106.4),
-		height: `calc(100% - 80px)`,
+		height: `calc(100% - ${theme.spacing(8)})`,
 		maxHeight: theme.spacing(73),
 	},
 	containerFullwidth: {
-		width: `calc(100% - 80px)`,
-		height: `calc(100% - 80px)`,
+		width: `calc(100% - ${theme.spacing(8)})`,
+		height: `calc(100% - ${theme.spacing(8)})`,
 	},
 	title: {
 		height: theme.spacing(4),

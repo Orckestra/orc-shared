@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 	label: {
 		minHeight: 17,
 		color: theme.palette.text.hint,
-		marginBottom: "10px",
+		marginBottom: theme.spacing(1),
 	},
 	invalidLabel: {
 		color: theme.palette.error.main,
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 		textAlign: "center",
 	},
 	labelOnly: {
-		marginBottom: "0px",
+		marginBottom: 0,
 	},
 	requiredLabel: {
 		"&::after": {

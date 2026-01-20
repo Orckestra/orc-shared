@@ -104,7 +104,7 @@ export const useStyles = makeStyles(theme => ({
 		"&:focus-within": {
 			zIndex: 99,
 			border: `${theme.spacing(0.1)} solid ${theme.palette.focus}`,
-			boxShadow: `0 0 4px ${theme.palette.focus}`,
+			boxShadow: `0 0 ${theme.spacing(0.4)} ${theme.palette.focus}`,
 		},
 	},
 	selectRoot: {

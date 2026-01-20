@@ -13,7 +13,7 @@ const useStyle = makeStyles(theme => ({
 		},
 		"&::-webkit-scrollbar-thumb": {
 			background: theme.palette.grey.borders,
-			border: `5px transparent solid`,
+			border: `${theme.spacing(0.5)} transparent solid`,
 			backgroundClip: "padding-box",
 			borderRadius: theme.spacing(1.5),
 		},

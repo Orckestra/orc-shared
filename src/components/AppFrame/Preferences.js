@@ -27,19 +27,19 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: "#f7f7f7",
 		borderLeft: `1px solid ${theme.palette.grey.borders}`,
 		borderTop: `1px solid ${theme.palette.grey.borders}`,
-		borderTopLeftRadius: "5px",
-		top: "40px",
-		boxShadow: "-3px 2px 5px 0px rgba(0, 0, 0, 0.2)",
+		borderTopLeftRadius: theme.spacing(0.5),
+		top: theme.spacing(4),
+		boxShadow: `${theme.spacing(-0.3, 0.2, 0.5, 0)} rgba(0, 0, 0, 0.2)`,
 		zIndex: 9998,
 		transition: "right 400ms ease-out",
 	},
 	header: {
 		flex: "0 0 auto",
 		borderBottom: `1px solid ${theme.palette.grey.borders}`,
-		borderTopLeftRadius: "5px",
-		padding: "15px 30px",
-		height: "18px",
-		fontSize: "15px",
+		borderTopLeftRadius: theme.spacing(0.5),
+		padding: theme.spacing(1.5, 3),
+		height: theme.spacing(1.8),
+		fontSize: theme.spacing(1.5),
 		fontFamily: theme.typography.button.fontFamily,
 		textTransform: "uppercase",
 		color: theme.palette.primary.main,
@@ -49,8 +49,8 @@ const useStyles = makeStyles(theme => ({
 		flex: "1 1 auto",
 		display: "flex",
 		flexDirection: "column",
-		padding: "20px 30px",
-		fontSize: "12px",
+		padding: theme.spacing(2, 3),
+		fontSize: theme.spacing(1.2),
 	},
 	footer: {
 		flex: "0 0 auto",
@@ -59,12 +59,12 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: "flex-end",
 		backgroundColor: "#ffffff",
 		borderTop: `1px solid ${theme.palette.grey.borders}`,
-		paddingRight: "10px",
-		height: "60px",
+		paddingRight: theme.spacing(1),
+		height: theme.spacing(6),
 	},
 	prefButton: {
-		marginRight: "20px",
-		minWidth: "110px",
+		marginRight: theme.spacing(2),
+		minWidth: theme.spacing(11),
 	},
 	wrapper: {
 		display: "flex",
@@ -139,7 +139,7 @@ export const Preferences = () => {
 	const { show, save, clear, languageOptions, languageSelectProps, applicationOptions, applicationSelectProps } =
 		usePreferenceSetup();
 	return (
-		<Sidepanel in={show} width="380px" timeout={400} className={classes.prefPanel}>
+		<Sidepanel in={show} widthSpacing={38} timeout={400} className={classes.prefPanel}>
 			<Wrapper onClickOutside={clickOutsideHandler}>
 				<div className={classes.header}>
 					<FormattedMessage {...sharedMessages.preferences} />

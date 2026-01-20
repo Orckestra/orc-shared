@@ -9,8 +9,8 @@ const useStyles = makeStyles(theme => ({
 	block: props => ({
 		display: "block",
 		position: "relative",
-		padding: "0 10px",
-		marginBottom: "35px",
+		padding: theme.spacing(0, 1),
+		marginBottom: theme.spacing(3.5),
 		textDecoration: "none",
 		cursor: "pointer",
 		color: props.active ? theme.palette.primary.light : theme.palette.text.hint,
@@ -24,10 +24,10 @@ const useStyles = makeStyles(theme => ({
 
 		return {
 			borderRadius: "50%",
-			border: `4px solid ${toastColor}`,
+			border: `${theme.spacing(0.4)} solid ${toastColor}`,
 			position: "absolute",
 			top: 0,
-			left: "27px",
+			left: theme.spacing(2.7),
 			visibility: "hidden",
 
 			"&.show": {
@@ -41,15 +41,15 @@ const useStyles = makeStyles(theme => ({
 		return {
 			position: "absolute",
 			zIndex: 10000,
-			top: "calc(-10px - 0.7em)",
-			left: "22px",
+			top: `calc(${theme.spacing(-1)} - 0.7em)`,
+			left: theme.spacing(2.2),
 			width: "max-content",
-			borderRadius: "5px",
-			padding: "10px 15px",
-			boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.5)",
+			borderRadius: theme.spacing(0.5),
+			padding: theme.spacing(1, 1.5),
+			boxShadow: `${theme.spacing(0, 0.2, 0.4, 0)} rgba(0, 0, 0, 0.5)`,
 			color: theme.palette.grey.light,
 			backgroundColor: toastColor,
-			fontSize: "11px",
+			fontSize: theme.spacing(1.1),
 			fontWeight: "bold",
 			lineHeight: 1.2,
 			transition: `transform 200ms cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 100ms 50ms ease-out`,
@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 			"&::before": {
 				content: "",
 				position: "absolute",
-				top: "calc(10px + 0.2em)",
+				top: `calc(${theme.spacing(1)} + 0.2em)`,
 				left: "-0.9em",
 				border: "solid transparent",
 				borderWidth: "0.4em 0.9em 0.4em 0",
@@ -73,16 +73,16 @@ const useStyles = makeStyles(theme => ({
 		};
 	},
 	menuIcon: props => ({
-		fontSize: "24px",
+		fontSize: theme.spacing(2.4),
 		verticalAlign: "middle",
 		color: props.active ? theme.palette.primary.light : theme.palette.text.hint,
 	}),
 	label: props => ({
 		fontFamily: theme.typography.button.fontFamily,
-		fontSize: "13px",
+		fontSize: theme.spacing(1.3),
 		verticalAlign: "middle",
 		textTransform: "uppercase",
-		paddingLeft: "10px",
+		paddingLeft: theme.spacing(1),
 		transition: "opacity 0.3s ease-out",
 		opacity: props.showLabel ? 1 : 0,
 	}),

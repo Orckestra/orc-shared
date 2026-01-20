@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	active: {
 		backgroundColor: `${theme.palette.primary.dark} !important`,
-		boxShadow: "inset 10px 0 10px 1px rgba(0,0,0,0.18)",
+		boxShadow: `inset ${theme.spacing(1, 0, 1, 0.1)} rgba(0,0,0,0.18)`,
 
 		"&:after": {
 			borderLeftColor: `${theme.palette.primary.dark} !important`,

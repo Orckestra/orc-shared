@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		borderTop: `1px solid ${theme.palette.grey.borders}`,
 		flex: "0 1 100%",
-		height: "calc(100% - 90px)",
+		height: `calc(100% - ${theme.spacing(9)})`,
 		minHeight: 0,
 
 		"div[class^='AppFrame__ViewPort'] > div&:nth-child(3)": {
@@ -64,9 +64,9 @@ const useStyles = makeStyles(theme => ({
 		display: "block",
 		whiteSpace: "nowrap",
 		minWidth: "max-content",
-		padding: "15px 20px",
+		padding: theme.spacing(1.5, 2),
 		fontWeight: "bold",
-		fontSize: "13px",
+		fontSize: theme.spacing(1.3),
 		textDecoration: "none",
 		cursor: "pointer",
 		color: theme.palette.text.primary,

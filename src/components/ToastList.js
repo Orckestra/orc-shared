@@ -19,11 +19,11 @@ const useStyles = makeStyles(theme => ({
 
 		return {
 			display: "flex",
-			width: "390px",
-			marginTop: "10px",
-			padding: "17px",
-			borderRadius: "5px",
-			fontSize: "14px",
+			width: theme.spacing(39),
+			marginTop: theme.spacing(1),
+			padding: theme.spacing(1.7),
+			borderRadius: theme.spacing(0.5),
+			fontSize: theme.spacing(1.4),
 			color: "white",
 			backgroundColor: toastColor,
 			zIndex: 10000,
@@ -59,18 +59,18 @@ const useStyles = makeStyles(theme => ({
 	},
 	listWrapper: {
 		position: "absolute",
-		top: "40px",
-		right: "16px",
+		top: theme.spacing(4),
+		right: theme.spacing(1.6),
 		display: "flex",
 		flexDirection: "column",
 	},
 	closeIcon: {
-		padding: "2px",
-		borderRadius: "2px",
-		strokeWidth: "2px",
+		padding: theme.spacing(0.2),
+		borderRadius: theme.spacing(0.2),
+		strokeWidth: theme.spacing(0.2),
 		cursor: "pointer",
 		marginLeft: "auto",
-		fontSize: "20px",
+		fontSize: theme.spacing(2),
 	},
 }));
 
