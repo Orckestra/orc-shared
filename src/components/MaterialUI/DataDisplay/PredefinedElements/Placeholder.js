@@ -44,18 +44,18 @@ const useStyles = makeStyles(theme => ({
 	},
 	textSkeleton: {
 		width: "100%",
-		height: 6,
+		height: theme.spacing(0.6),
 		animation: false,
 	},
 	chipSkeleton: {
-		width: 60,
-		height: 25,
+		width: theme.spacing(6),
+		height: theme.spacing(2.5),
 		animation: false,
 		borderRadius: theme.spacing(1.5),
 	},
 	radioSkeleton: {
-		width: 17,
-		height: 17,
+		width: theme.spacing(1.7),
+		height: theme.spacing(1.7),
 		animation: false,
 	},
 	root: {

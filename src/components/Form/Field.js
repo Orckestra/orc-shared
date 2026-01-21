@@ -7,11 +7,11 @@ const useStyles = makeStyles(theme => ({
 		flex: "0 1 auto",
 		display: "flex",
 		flexDirection: "column",
-		marginTop: 20,
+		marginTop: theme.spacing(2),
 		position: "relative",
 	},
 	label: {
-		minHeight: 17,
+		minHeight: theme.spacing(1.7),
 		color: theme.palette.text.hint,
 		marginBottom: theme.spacing(1),
 	},

@@ -49,17 +49,27 @@ describe("Indicator", () => {
 
 describe("BeforeIndicator", () => {
 	it("renders a branch continuation before indicator", () =>
-		expect(<BeforeIndicator />, "when mounted", "to have style rules satisfying", "to contain", "margin-left: -16px;"));
+		expect(
+			<MuiThemeProvider theme={theme}>
+				<BeforeIndicator />
+			</MuiThemeProvider>,
+			"when mounted",
+			"to have style rules satisfying",
+			"to contain",
+			"margin-left: -1rem;",
+		));
 });
 
 describe("NonIndicator", () => {
 	it("renders a branch continuation", () =>
 		expect(
-			<NonIndicator />,
+			<MuiThemeProvider theme={theme}>
+				<NonIndicator />
+			</MuiThemeProvider>,
 			"when mounted",
 			"to have style rules satisfying",
 			"to contain",
-			"margin: auto 0 auto -16px;",
+			"margin: auto 0 auto -1rem;",
 		));
 });
 

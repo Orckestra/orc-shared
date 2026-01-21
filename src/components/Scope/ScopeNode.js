@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 	}),
 }));
 
-export const ScopeNode = ({ type, scopeId, name, contentLabelClassName, iconClassName, onClick, children }) => {
+export const ScopeNode = ({ type, scopeId, name, contentLabelClassName, onClick, children }) => {
 	const classes = useStyles({ isGlobal: type === "Global", isClickable: onClick !== undefined });
 
 	const displayValue = (name || scopeId) ?? null;
