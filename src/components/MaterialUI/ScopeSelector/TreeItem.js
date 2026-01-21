@@ -11,19 +11,6 @@ import { scopeTypes } from "./../../../constants";
 const useStyles = makeStyles(theme => ({
 	group: {
 		marginLeft: props => (props.isRootScope ? theme.spacing(1.2) : theme.spacing(3.2)),
-		// to hide unnecessary border part
-		// "& > div > div > :last-child": {
-		//   "&:after": {
-		//     content: "''",
-		//     backgroundColor: theme.palette.grey.light,
-		//     position: "absolute",
-		//     top: theme.spacing(1.2),
-		//     left: theme.spacing(-2.1),
-		//     height: "100%",
-		//     bottom: 0,
-		//     width: "1px",
-		//   },
-		// }
 	},
 	rootIconContainer: {
 		marginRight: 0,
@@ -73,33 +60,23 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export const ScopeIcon = ({ type }) => {
+export const ScopeIcon = ({ type, scopeIconClass }) => {
 	const classes = useStyles();
 	const theme = useTheme();
 
-	const globalIcon = <Icon className={classes.scopeIcon} color="primary" fontSize="medium" id="global-scope" />;
-	const virtualIcon = (
-		<Icon className={classes.scopeIcon} themeColor={theme.palette.grey.dark} fontSize="medium" id="virtual-scope" />
-	);
-	const salesIcon = <Icon className={classes.scopeIcon} color="primary" fontSize="medium" id="sales-scope" />;
-	const dependentIcon = (
-		<Icon
-			className={classes.scopeIcon}
-			themeColor={theme.palette.success.main}
-			fontSize="medium"
-			id="dependent-scope"
-		/>
-	);
+	const iconClass = classNames(classes.scopeIcon, scopeIconClass);
 
 	switch (type) {
 		case scopeTypes.global:
-			return globalIcon;
+			return <Icon className={iconClass} color="primary" fontSize="medium" id="global-scope" />;
 		case scopeTypes.virtual:
-			return virtualIcon;
+			return <Icon className={iconClass} themeColor={theme.palette.grey.dark} fontSize="medium" id="virtual-scope" />;
 		case scopeTypes.sale:
-			return salesIcon;
+			return <Icon className={iconClass} color="primary" fontSize="medium" id="sales-scope" />;
 		case scopeTypes.dependant:
-			return dependentIcon;
+			return (
+				<Icon className={iconClass} themeColor={theme.palette.success.main} fontSize="medium" id="dependent-scope" />
+			);
 		default:
 			return null;
 	}

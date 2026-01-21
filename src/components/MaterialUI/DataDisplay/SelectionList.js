@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		"&::-webkit-scrollbar-thumb": {
 			background: theme.palette.grey.borders,
-			border: `5px white solid`,
+			border: `${theme.spacing(0.5)} white solid`,
 			backgroundClip: "padding-box",
 			borderRadius: theme.spacing(1.5),
 		},

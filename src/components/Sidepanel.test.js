@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Sidepanel from "./Sidepanel";
+import { createMuiTheme, TestWrapper } from "../utils/testUtils";
+
+const theme = createMuiTheme();
 
 class RenderSidepanel extends React.Component {
 	render() {
@@ -44,9 +47,11 @@ describe("Sidepanel", () => {
 
 	it("sets the width it is given", () => {
 		ReactDOM.render(
-			<Sidepanel in width="25vw">
-				<div id="inner">Foo</div>
-			</Sidepanel>,
+			<TestWrapper muiThemeProvider={{ theme }}>
+				<Sidepanel in widthSpacing={25}>
+					<div id="inner">Foo</div>
+				</Sidepanel>
+			</TestWrapper>,
 			appRoot,
 		);
 		return expect(
@@ -55,7 +60,7 @@ describe("Sidepanel", () => {
 			"div#modal > div",
 			"to have style rules satisfying",
 			"to contain",
-			"width: 25vw",
+			"width: 15.625rem",
 		);
 	});
 

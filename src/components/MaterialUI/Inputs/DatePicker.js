@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 		"&:focus, &:focus-within": {
 			borderRadius: theme.shape.borderRadius,
 			borderColor: theme.palette.focus,
-			boxShadow: `0 0 4px ${theme.palette.focus}`,
+			boxShadow: `0 0 ${theme.spacing(0.4)} ${theme.palette.focus}`,
 			outline: "none",
 		},
 		"& .react-datepicker": {

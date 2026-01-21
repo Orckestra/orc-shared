@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import Icon from "./MaterialUI/DataDisplay/Icon";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	wrapper: {
 		display: "flex",
 		flexWrap: "wrap",
@@ -13,11 +13,11 @@ const useStyles = makeStyles({
 	iconBlock: {
 		flex: "0 0 30%",
 		border: "1px solid #999",
-		margin: "5px",
-		padding: "5px 10px",
-		fontSize: "24px",
+		margin: theme.spacing(0.5),
+		padding: theme.spacing(0.5, 1),
+		fontSize: theme.spacing(2.4),
 	},
-});
+}));
 
 const arrify = thing => [].slice.call(thing);
 

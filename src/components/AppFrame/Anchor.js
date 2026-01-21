@@ -8,12 +8,12 @@ const useStyles = makeStyles(theme => ({
 		cursor: "pointer",
 		boxSizing: "border-box",
 		fontFamily: theme.typography.button.fontFamily,
-		fontSize: "12px",
+		fontSize: theme.spacing(1.2),
 		textTransform: "uppercase",
-		height: "40px",
-		minWidth: "180px",
-		paddingTop: "14px",
-		paddingRight: "14px",
+		height: theme.spacing(4),
+		minWidth: theme.spacing(18),
+		paddingTop: theme.spacing(1.4),
+		paddingRight: theme.spacing(1.4),
 		color: props.open ? theme.palette.primary.light : theme.palette.text.disabled,
 
 		"&:hover": {
@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
 		},
 	}),
 	indicator: props => ({
-		fontSize: "12px",
-		padding: "0 11px",
+		fontSize: theme.spacing(1.2),
+		padding: theme.spacing(0, 1.1),
 		color: props.open ? theme.palette.text.disabled : theme.palette.primary.light,
 	}),
 }));

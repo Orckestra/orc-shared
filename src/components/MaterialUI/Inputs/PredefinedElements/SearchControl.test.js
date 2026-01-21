@@ -47,7 +47,7 @@ describe("useStyles", () => {
 			expect
 				.it("to contain", "z-index: 99;")
 				.and("to contain", "border: 0.0625rem solid #4fa1f0;")
-				.and("to contain", "box-shadow: 0 0 4px #4fa1f0;"),
+				.and("to contain", "box-shadow: 0 0 0.25rem #4fa1f0;"),
 		);
 	});
 });

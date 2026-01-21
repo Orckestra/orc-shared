@@ -17,7 +17,7 @@ import { areEqualCaseInsensitive } from "../../utils/comparisonHelper";
 
 const useStyles = makeStyles(theme => ({
 	wrapper: {
-		height: "40px",
+		height: theme.spacing(4),
 		color: theme.palette.text.hint,
 		display: "flex",
 		justifyContent: "space-between",
@@ -32,16 +32,16 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: "#000000",
 		color: theme.palette.primary.light,
 		fontFamily: theme.typography.button.fontFamily,
-		fontSize: "14px",
+		fontSize: theme.spacing(1.4),
 		textTransform: "uppercase",
-		paddingRight: "20px",
-		paddingLeft: "6px",
+		paddingRight: theme.spacing(2),
+		paddingLeft: theme.spacing(0.6),
 		display: "flex",
 		alignItems: "center",
 	},
 	appLogo: {
-		height: "30px",
-		marginRight: "10px",
+		height: theme.spacing(3),
+		marginRight: theme.spacing(1),
 	},
 	qaContainerColor: {
 		backgroundColor: "#9F0F18",

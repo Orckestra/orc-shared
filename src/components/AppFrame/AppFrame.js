@@ -35,15 +35,15 @@ const useStyles = makeStyles(theme => ({
 	viewPort: props => ({
 		overflow: "hidden",
 		backgroundColor: "white",
-		borderTopLeftRadius: "10px",
-		height: "calc(100% - 40px)",
+		borderTopLeftRadius: theme.spacing(1),
+		height: `calc(100% - ${theme.spacing(4)})`,
 		position: "absolute",
 		bottom: 0,
 		right: 0,
 		display: "flex",
 		flexDirection: "column",
 		transition: "width 0.3s ease-out",
-		width: props.toggleOpen ? "calc(100% - 200px)" : "calc(100% - 50px)",
+		width: props.toggleOpen ? `calc(100% - ${theme.spacing(20)})` : `calc(100% - ${theme.spacing(5)})`,
 	}),
 }));
 

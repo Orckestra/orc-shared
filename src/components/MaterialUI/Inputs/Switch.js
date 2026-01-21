@@ -39,7 +39,7 @@ export const useStyles = makeStyles(theme => ({
 	track: {
 		backgroundColor: theme.palette.grey.borders,
 		opacity: "1 !important",
-		borderRadius: "20px",
+		borderRadius: theme.spacing(2),
 		position: "relative",
 		"&:before, &:after": {
 			display: "inline-block",

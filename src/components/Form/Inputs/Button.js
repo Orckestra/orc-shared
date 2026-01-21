@@ -9,10 +9,10 @@ const useStyles = makeStyles(theme => ({
 	positionedButton: {
 		width: "max-content",
 		position: "relative",
-		padding: "6px 14px !important",
+		padding: `${theme.spacing(0.6, 1.4)} !important`,
 		"&:hover": {
 			borderColor: "#4fa1f0",
-			boxShadow: "0 0 4px #4fa1f0",
+			boxShadow: `${theme.spacing(0, 0, 0.4)} #4fa1f0`,
 			outline: "none",
 			backgroundColor: "#f7f7f7 !important",
 		},

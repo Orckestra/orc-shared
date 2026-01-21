@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: props => (props.row ? "row" : "column"),
 		flexWrap: "wrap",
-		marginLeft: "8px",
+		marginLeft: theme.spacing(0.8),
 	},
 	errorText: {
 		marginTop: theme.spacing(0.5),

@@ -5,10 +5,10 @@ import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
 	scopeIcon: {
-		fontSize: "20px",
-		verticalAlign: "middle",
-		paddingRight: "8px",
-		flexShrink: 0,
+		paddingRight: theme.spacing(0.8),
+		marginRight: theme.spacing(0),
+		height: theme.spacing(2),
+		width: theme.spacing(2),
 	},
 	scopeText: {
 		overflowWrap: "break-word",
@@ -17,9 +17,8 @@ const useStyles = makeStyles(theme => ({
 		boxSizing: "border-box",
 		display: "flex",
 		alignItems: "center",
-		padding: "10px",
+		padding: theme.spacing(1),
 		width: "100%",
-		textTransform: props.isGlobal ? "uppercase" : "none",
 		...(props.isClickable
 			? {
 					"&:hover": {
@@ -33,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 	}),
 }));
 
-export const ScopeNode = ({ type, scopeId, name, contentLabelClassName, iconClassName, onClick, children }) => {
+export const ScopeNode = ({ type, scopeId, name, contentLabelClassName, onClick, children }) => {
 	const classes = useStyles({ isGlobal: type === "Global", isClickable: onClick !== undefined });
 
 	const displayValue = (name || scopeId) ?? null;
@@ -45,7 +44,7 @@ export const ScopeNode = ({ type, scopeId, name, contentLabelClassName, iconClas
 			onClick={onClick}
 			data-qa="content-label"
 		>
-			<ScopeIcon type={type} className={classNames(classes.scopeIcon, iconClassName)} />
+			<ScopeIcon type={type} scopeIconClass={classes.scopeIcon} />
 			{displayValue && <div className={classes.scopeText}>{displayValue}</div>}
 			{children}
 		</div>

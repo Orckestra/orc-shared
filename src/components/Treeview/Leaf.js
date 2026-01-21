@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { branchLength } from "./settings";
+import { branchLengthSpacing } from "./settings";
 import classNames from "classnames";
 
 const useStyles = makeStyles(theme => ({
@@ -16,9 +16,9 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: props.dark ? theme.palette.grey.dark : "#fff",
 			position: "absolute",
 			top: "calc(50%)",
-			left: `-${branchLength + 1}px`,
+			left: `-${theme.spacing(branchLengthSpacing + 0.1)}`,
 			bottom: 0,
-			width: "1px",
+			width: theme.spacing(0.1),
 			height: "50%",
 		},
 	}),
