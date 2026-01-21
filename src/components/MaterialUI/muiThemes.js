@@ -35,7 +35,7 @@ const commonTheme = {
 		fontWeightBlack: 900,
 		button: {
 			fontFamily: '"Roboto Condensed", sans-serif',
-			fontWeight: 500,
+			fontWeight: 400,
 			fontSize: 13,
 			lineHeight: 1.0,
 			letterSpacing: "0.0em",
