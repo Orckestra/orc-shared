@@ -153,6 +153,29 @@ export const AdvancedNumericInput = props => {
 	);
 };
 
+export const AdvancedIntegerInput = props => {
+	const { integerButtons, ...other } = props;
+
+	return (
+		<div style={{ display: "flex" }} className="InputBase-input-wrapper">
+			<AdvancedNumericInput {...other} />
+			{integerButtons}
+		</div>
+	);
+};
+
+const getInputComponent = (isAdvancedNumericInput, decimalScale) => {
+	if (isAdvancedNumericInput) {
+		if (decimalScale === 0) {
+			return AdvancedIntegerInput;
+		}
+
+		return AdvancedNumericInput;
+	}
+
+	return undefined;
+};
+
 const InputBase = ({ inputProps }) => {
 	if (isInputProps(inputProps) === false) {
 		throw new TypeError("inputProps property is not of type InputBaseProps");
@@ -178,13 +201,13 @@ const InputBase = ({ inputProps }) => {
 	const numericInputProps = inputProps?.get(InputBaseProps.propNames.numericInputProps) || null;
 
 	const isAdvancedNumericInput = type.toLowerCase() === "advancednumericinput";
-	const inputComponent = isAdvancedNumericInput ? AdvancedNumericInput : undefined;
+	const decimalScale = numericInputProps?.decimalScale ?? 0;
+	const inputComponent = getInputComponent(isAdvancedNumericInput, decimalScale);
 	const inputControlType = isAdvancedNumericInput ? "text" : type;
 	const [inputText, setInputText] = React.useState(null);
 	const textToDisplay = inputText ?? value;
 	const classes = useStyles({ label, errorPosition, isAdvancedNumericInput });
 
-	let controlSpecificSuffix = null;
 	let onKeyDown = null;
 	let onWheel = null;
 
@@ -204,8 +227,6 @@ const InputBase = ({ inputProps }) => {
 		if (inputAttributes.min === undefined) {
 			inputAttributes.min = -2147483648;
 		}
-
-		const decimalScale = numericInputProps?.decimalScale ?? 0;
 
 		const lengthForMin = Math.trunc(inputAttributes.min).toString().length;
 		const lengthForMax = Math.trunc(inputAttributes.max).toString().length;
@@ -262,7 +283,7 @@ const InputBase = ({ inputProps }) => {
 				target.closest(".InputBase-input-wrapper").getElementsByTagName("input")[0].focus();
 			};
 
-			controlSpecificSuffix = (
+			inputAttributes.integerButtons = (
 				<div className={classes.numericSpinnerContainer}>
 					<IconButton
 						className={classes.numericSpinnerUp}
@@ -432,36 +453,33 @@ const InputBase = ({ inputProps }) => {
 		<div className={classes.container}>
 			<div className={classes.inputContainer}>
 				{label && <label className={`${classes.prepend} ${disabled && classes.disabledPrepend}`}>{label}</label>}
-				<div style={{ display: "flex" }} className="InputBase-input-wrapper">
-					<InputBaseMUI
-						classes={{
-							input: classNames(classes.controlInput, inputBaseInputStyle),
-							error: classes.errorInput,
-							disabled: classes.disabled,
-							multiline: classes.multiline,
-							inputMultiline: classes.inputMultiline,
-						}}
-						onBlur={onBlurInternal}
-						onClick={onClick}
-						type={inputControlType}
-						placeholder={placeholder}
-						value={textToDisplay}
-						fullWidth={true}
-						onWheel={onWheel}
-						onChange={event => onChangeHandler(event)}
-						error={!!error}
-						inputProps={inputAttributes}
-						inputComponent={inputComponent}
-						disabled={disabled}
-						multiline={multiline}
-						startAdornment={startAdornment}
-						endAdornment={endAdornment}
-						minRows={rows}
-						title={tooltipText}
-						autoComplete={autoComplete}
-					/>
-					{controlSpecificSuffix}
-				</div>
+				<InputBaseMUI
+					classes={{
+						input: classNames(classes.controlInput, inputBaseInputStyle),
+						error: classes.errorInput,
+						disabled: classes.disabled,
+						multiline: classes.multiline,
+						inputMultiline: classes.inputMultiline,
+					}}
+					onBlur={onBlurInternal}
+					onClick={onClick}
+					type={inputControlType}
+					placeholder={placeholder}
+					value={textToDisplay}
+					fullWidth={true}
+					onWheel={onWheel}
+					onChange={event => onChangeHandler(event)}
+					error={!!error}
+					inputProps={inputAttributes}
+					inputComponent={inputComponent}
+					disabled={disabled}
+					multiline={multiline}
+					startAdornment={startAdornment}
+					endAdornment={endAdornment}
+					minRows={rows}
+					title={tooltipText}
+					autoComplete={autoComplete}
+				/>
 			</div>
 			{error && <div className={classNames(classes.errorText, errorTextStyle)}>{error}</div>}
 		</div>
