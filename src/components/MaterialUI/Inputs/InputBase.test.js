@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import InputBase, { AdvancedNumericInput } from "./InputBase";
+import InputBase, { AdvancedIntegerInput, AdvancedNumericInput } from "./InputBase";
 import InputBaseMUI from "@material-ui/core/InputBase";
 import sinon from "sinon";
 import { ignoreConsoleError } from "../../../utils/testUtils";
@@ -399,7 +399,26 @@ describe("AdvancedNumericInput", () => {
 		container = null;
 	});
 
-	it("Renders InputBase component as advanced numeric input", () => {
+	it("Renders InputBase component as advanced numeric input with decimals", () => {
+		const inputProps = new InputBaseProps();
+		const aLabel = "aLabel";
+		const aValue = "value";
+
+		inputProps.set(InputBaseProps.propNames.update, update);
+		inputProps.set(InputBaseProps.propNames.value, aValue);
+		inputProps.set(InputBaseProps.propNames.label, aLabel);
+		inputProps.set(InputBaseProps.propNames.type, "AdvancedNumericInput");
+		inputProps.set(InputBaseProps.propNames.numericInputProps, { decimalScale: 2 });
+
+		const component = <InputBase inputProps={inputProps} />;
+
+		const mountedComponent = mount(component);
+		const expected = <InputBaseMUI value={aValue} title="" inputComponent={AdvancedNumericInput} />;
+
+		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
+	});
+
+	it("Renders InputBase component as advanced numeric input without decimals", () => {
 		const inputProps = new InputBaseProps();
 		const aLabel = "aLabel";
 		const aValue = "value";
@@ -412,7 +431,7 @@ describe("AdvancedNumericInput", () => {
 		const component = <InputBase inputProps={inputProps} />;
 
 		const mountedComponent = mount(component);
-		const expected = <InputBaseMUI value={aValue} title="" inputComponent={AdvancedNumericInput} />;
+		const expected = <InputBaseMUI value={aValue} title="" inputComponent={AdvancedIntegerInput} />;
 
 		expect(mountedComponent.containsMatchingElement(expected), "to be truthy");
 	});
