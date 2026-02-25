@@ -232,8 +232,8 @@ const Select = ({ options = [], selectProps, children }) => {
 			});
 		}
 
-		return allOptions?.map(option => {
-			let clss = option?.level ? classes["level" + option.level] : "";
+		return allOptions.map(option => {
+			const clss = option?.level ? classes["level" + option.level] : "";
 			const appliedClasses = classNames(classes.baseItem, clss);
 			const labelClss = classNames({
 				[classes.label]: true,
