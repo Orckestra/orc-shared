@@ -483,6 +483,14 @@ const sharedMessages = defineMessages({
 		id: "orc-shared.december",
 		defaultMessage: "December",
 	},
+	selectAll: {
+		id: "orc-shared.selectAll",
+		defaultMessage: "Select All",
+	},
+	clear: {
+		id: "orc-shared.clear",
+		defaultMessage: "Clear",
+	},
 });
 
 export default sharedMessages;
