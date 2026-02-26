@@ -194,15 +194,23 @@ const Select = ({ options = [], selectProps, children }) => {
 
 	const windowSize = useWindowSize();
 
-	const multipleSelectWidthFactor = windowSize.innerWidth > 1400 ? 1 : 0.75;
+	// When too many elements are selected from the list, the component can be longer than the screen, not very convenient
+	// We need a fix length unfortunately, for large screen, we use 100% of the multipleSelectWidth, for medium length, 75%
+	// But for very small width, we use the inner width of the browser minus 150px (completely arbitrary value), otherwise
+	// the drop-down is too large and hard to read
+	const multipleSelectWidthFactor = windowSize.innerWidth > 1200 ? 1 : 0.75;
+	const multipleWidthSpacing =
+		windowSize.innerWidth > 750
+			? (multipleSelectWidth / 10) * multipleSelectWidthFactor
+			: (windowSize.innerWidth - 150) / 10;
 	const classes = useStyles({
 		multiple,
 		autoWidth,
-		multipleWidthSpacing: (multipleSelectWidth / 10) * multipleSelectWidthFactor,
+		multipleWidthSpacing,
 	});
 
 	const buildOptionsItems = () => {
-		const allOptions = showAllValue && showAllLabel ? [...options] : options;
+		const allOptions = [...options];
 
 		if (sortType === sortTypeEnum.numeric) {
 			allOptions.sort((a, b) =>
