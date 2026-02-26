@@ -1,12 +1,13 @@
 import React from "react";
 import sinon from "sinon";
-import Selector, { selectEventUpdater } from "./Selector";
+import Selector from "./Selector";
 import { TestWrapper, createMuiTheme } from "./../../../utils/testUtils";
 import Immutable from "immutable";
 import SelectMUI from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import TooltippedTypography from "../../MaterialUI/DataDisplay/TooltippedElements/TooltippedTypography";
 import Icon from "../../MaterialUI/DataDisplay/Icon";
+import { mount } from "enzyme";
 
 describe("Selector", () => {
 	let update, state, store, chevronDown;
@@ -88,18 +89,32 @@ describe("Selector", () => {
 			</TestWrapper>,
 		);
 	});
-});
 
-describe("selectEventUpdater", () => {
-	let update;
-	beforeEach(() => {
-		update = sinon.spy().named("update");
+	it("Update is invoked when selection has changed", () => {
+		const mountedComponent = mount(
+			<TestWrapper provider={{ store }} stylesProvider muiThemeProvider intlProvider>
+				<Selector
+					update={update}
+					required={true}
+					value={null}
+					options={[
+						{ value: "English", label: "English" },
+						{ value: "Francais", label: "Francais" },
+					]}
+				/>
+			</TestWrapper>,
+		);
+
+		const selectMui = mountedComponent.find(SelectMUI);
+
+		const event = {
+			target: {
+				value: "Francais",
+			},
+		};
+
+		selectMui.invoke("onChange")(event);
+
+		expect(update, "to have calls satisfying", [{ args: ["Francais"] }]);
 	});
-
-	it("creates a handler for an event and calls update with the value of the target", () =>
-		expect(selectEventUpdater, "called with", [update], "called with", ["foo"]).then(() =>
-			expect(update, "to have calls satisfying", [{ args: ["foo"] }]),
-		));
-
-	it("is memoized", () => expect(selectEventUpdater, "called with", [update], "to be", selectEventUpdater(update)));
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import Select, { SelectIconButton } from "./Select";
+import Select, { renderMultipleValues, SelectIconButton } from "./Select";
 import SelectMUI from "@material-ui/core/Select";
 import sinon from "sinon";
 import { ignoreConsoleError, createMuiTheme, TestWrapper } from "../../../utils/testUtils";
@@ -9,6 +9,7 @@ import TooltippedTypography from "./../DataDisplay/TooltippedElements/Tooltipped
 import { ListSubheader, MuiThemeProvider } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Icon from "./../DataDisplay/Icon";
+import FormControl from "@material-ui/core/FormControl";
 
 describe("Select Component", () => {
 	let update, container;
@@ -75,12 +76,13 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
-	it("Renders Select component with indent classes", () => {
+	it("Renders Select component without errors with a larger width", () => {
 		const options = [
-			{ value: "aValue", label: "aLabel", level: 0 },
-			{ value: "anotherValue", label: "anotherLabel", level: 1 },
-			{ value: "aThirdValue", label: "aThirdLabel", level: 2 },
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
 		];
+
+		Object.defineProperty(window, "innerWidth", { configurable: true, value: 1800 });
 
 		const selectProps = new SelectProps();
 
@@ -103,12 +105,49 @@ describe("Select Component", () => {
 					<MenuItem key="aValue" value="aValue">
 						<TooltippedTypography children="aLabel" titleValue="aLabel" />
 					</MenuItem>
-					<MenuItem key="anotherValue" value="anotherValue" className="makeStyles-level1">
+					<MenuItem key="anotherValue" value="anotherValue">
 						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
 					</MenuItem>
-					<MenuItem key="aThirdValue" value="aThirdValue" className="makeStyles-level2">
-						<TooltippedTypography noWrap children="aThirdLabel" titleValue="aThirdLabel" />
-					</MenuItem>
+				</SelectMUI>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Select component using native mode", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel", level: 0 },
+			{ value: "anotherValue", label: "anotherLabel", level: 1 },
+			{ value: "aThirdValue", label: "aThirdLabel", level: 2 },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.native, true);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps}>
+					<div>French Fries</div>
+					<div>Smashed Potatoes</div>
+					<div>Fried Green Tomatoes</div>
+				</Select>
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI native value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={false}>
+					<div>French Fries</div>
+					<div>Smashed Potatoes</div>
+					<div>Fried Green Tomatoes</div>
 				</SelectMUI>
 			</TestWrapper>
 		);
@@ -262,8 +301,8 @@ describe("Select Component", () => {
 		};
 
 		const expected = (
-			<div>
-				<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<div>
 					<SelectMUI value="aValue" disableUnderline={true} IconComponent={ChevronDown} error={true}>
 						<MenuItem key="aValue" value="aValue">
 							<TooltippedTypography children="aLabel" titleValue="aLabel" />
@@ -272,9 +311,9 @@ describe("Select Component", () => {
 							<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
 						</MenuItem>
 					</SelectMUI>
-				</TestWrapper>
-				<div>an error message</div>
-			</div>
+					<div>an error message</div>
+				</div>
+			</TestWrapper>
 		);
 
 		expect(component, "when mounted", "to satisfy", expected);
@@ -637,6 +676,51 @@ describe("Select Component", () => {
 		expect(component, "when mounted", "to satisfy", expected);
 	});
 
+	it("Renders Icon Select component correctly using native mode", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+		];
+
+		const selectProps = new SelectProps();
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.value, "aValue");
+		selectProps.set(SelectProps.propNames.iconSelect, true);
+		selectProps.set(SelectProps.propNames.native, true);
+
+		const theme = createMuiTheme();
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps}>
+					<div>French Fries</div>
+					<div>Smashed Potatoes</div>
+					<div>Fried Green Tomatoes</div>
+				</Select>
+			</TestWrapper>
+		);
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<SelectMUI
+					native
+					open={false}
+					value="aValue"
+					disableUnderline={true}
+					IconComponent={SelectIconButton}
+					error={false}
+				>
+					<div>French Fries</div>
+					<div>Smashed Potatoes</div>
+					<div>Fried Green Tomatoes</div>
+				</SelectMUI>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
 	it("Changes Icon Select open state on click", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
@@ -674,13 +758,14 @@ describe("Select Component", () => {
 		const options = [
 			{ value: "aValue", label: "aLabel" },
 			{ value: "anotherValue", label: "anotherLabel" },
+			{ value: "thirdValue", label: "thirdLabel" },
 		];
 
 		const selectProps = new SelectProps();
 
 		selectProps.set(SelectProps.propNames.update, update);
 		selectProps.set(SelectProps.propNames.multiple, true);
-		selectProps.set(SelectProps.propNames.value, ["aValue"]);
+		selectProps.set(SelectProps.propNames.value, ["aValue", "thirdValue"]);
 
 		const component = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
@@ -694,21 +779,76 @@ describe("Select Component", () => {
 
 		const expected = (
 			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
-				<SelectMUI
-					value={["aValue"]}
-					disableUnderline={true}
-					IconComponent={ChevronDown}
-					error={false}
-					multiple={true}
-					renderValue={selected => selected.join(", ")}
-				>
-					<MenuItem key="aValue" value="aValue">
-						<TooltippedTypography children="aLabel" titleValue="aLabel" />
-					</MenuItem>
-					<MenuItem key="anotherValue" value="anotherValue">
-						<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
-					</MenuItem>
-				</SelectMUI>
+				<FormControl>
+					<SelectMUI
+						value={["aValue", "thirdValue"]}
+						disableUnderline={true}
+						IconComponent={ChevronDown}
+						error={false}
+						multiple={true}
+						renderValue={value => renderMultipleValues(value, options)}
+					>
+						<MenuItem key="aValue" value="aValue">
+							<TooltippedTypography children="aLabel" titleValue="aLabel" />
+						</MenuItem>
+						<MenuItem key="anotherValue" value="anotherValue">
+							<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+						</MenuItem>
+					</SelectMUI>
+				</FormControl>
+			</TestWrapper>
+		);
+
+		expect(component, "when mounted", "to satisfy", expected);
+	});
+
+	it("Renders Icon Select component correctly using multiple mode and render value", () => {
+		const options = [
+			{ value: "aValue", label: "aLabel" },
+			{ value: "anotherValue", label: "anotherLabel" },
+			{ value: "thirdValue", label: "thirdLabel" },
+		];
+
+		const selectProps = new SelectProps();
+
+		const renderValues = values => values.join("#,#");
+
+		selectProps.set(SelectProps.propNames.update, update);
+		selectProps.set(SelectProps.propNames.multiple, true);
+		selectProps.set(SelectProps.propNames.value, ["aValue", "thirdValue"]);
+		selectProps.set(SelectProps.propNames.renderValue, renderValues);
+
+		const theme = createMuiTheme();
+
+		const component = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<Select options={options} selectProps={selectProps} />
+			</TestWrapper>
+		);
+
+		const ChevronDown = props => {
+			return <Icon id="dropdown-chevron-down" {...props} />;
+		};
+
+		const expected = (
+			<TestWrapper stylesProvider muiThemeProvider={{ theme }}>
+				<FormControl>
+					<SelectMUI
+						value={["aValue", "thirdValue"]}
+						disableUnderline={true}
+						IconComponent={ChevronDown}
+						error={false}
+						multiple={true}
+						renderValue={renderValues}
+					>
+						<MenuItem key="aValue" value="aValue">
+							<TooltippedTypography children="aLabel" titleValue="aLabel" />
+						</MenuItem>
+						<MenuItem key="anotherValue" value="anotherValue">
+							<TooltippedTypography noWrap children="anotherLabel" titleValue="anotherLabel" />
+						</MenuItem>
+					</SelectMUI>
+				</FormControl>
 			</TestWrapper>
 		);
 

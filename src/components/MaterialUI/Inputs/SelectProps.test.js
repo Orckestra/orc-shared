@@ -16,6 +16,10 @@ describe("Select Props", () => {
 			"native",
 			"inputProps",
 			"multiple",
+			"autoWidth",
+			"autoFocus",
+			"renderValue",
+			"multipleSelectWidth",
 		];
 
 		expect(SelectProps.propNames, "to have keys", propNames);
@@ -36,6 +40,10 @@ describe("Select Props", () => {
 			"native",
 			"inputProps",
 			"multiple",
+			"autoWidth",
+			"autoFocus",
+			"renderValue",
+			"multipleSelectWidth",
 		];
 
 		const selectProps = new SelectProps();

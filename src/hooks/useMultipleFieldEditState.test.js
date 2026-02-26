@@ -411,7 +411,6 @@ describe("useMultipleFieldEditState", () => {
 			.returns(useDispatchWithModulesDataSpy);
 
 		try {
-			// TODOJOC
 			const mountedComponent = mountComponent();
 
 			const fieldComponent = mountedComponent.find(`#id1-prop1-update`);

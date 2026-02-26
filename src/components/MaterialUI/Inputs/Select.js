@@ -8,11 +8,13 @@ import TooltippedTypography from "./../DataDisplay/TooltippedElements/Tooltipped
 import Icon from "./../DataDisplay/Icon";
 import IconButton from "@material-ui/core/IconButton";
 import { ListSubheader } from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const useStyles = makeStyles(theme => ({
-	baseItem: {
-		maxWidth: theme.spacing(35),
-	},
+	baseItem: props => ({
+		...(props.autoWidth ? { maxWidth: theme.spacing(35) } : { maxWidth: theme.spacing(props.multipleWidthSpacing) }),
+	}),
 	level0: {},
 	level1: {
 		paddingLeft: theme.spacing(theme.indent),
@@ -42,10 +44,8 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: "column",
 	},
-	selectPaper: {
+	selectPaper: props => ({
 		border: `1px solid ${theme.palette.grey.borders}`,
-		minWidth: `auto !important`,
-		width: `auto !important`,
 		"& ul": {
 			minWidth: theme.spacing(17.5),
 			maxHeight: theme.spacing(30),
@@ -62,16 +62,23 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: 0,
 			whiteSpace: "normal",
 			"&:hover": {
-				backgroundColor: theme.palette.primary.light,
+				backgroundColor: theme.palette.primary.main,
 			},
 			"&:focus, &:active": {
 				borderRadius: 0,
+				boxShadow: props.multiple ? "none" : `0 0 ${theme.spacing(0.4)} #4fa1f0`,
 				"&:hover": {
-					backgroundColor: theme.palette.primary.light,
+					backgroundColor: theme.palette.primary.main,
 				},
 			},
 		},
-	},
+		...(props.autoWidth
+			? {
+					minWidth: `auto !important`,
+					width: `auto !important`,
+				}
+			: {}),
+	}),
 	label: {
 		fontSize: theme.typography.fontSize,
 		color: theme.palette.grey.dark,
@@ -104,6 +111,10 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.grey.light,
 		border: 0,
 	},
+	formControl: props => ({
+		maxWidth: theme.spacing(props.multipleWidthSpacing),
+		minWidth: theme.spacing(props.multipleWidthSpacing),
+	}),
 }));
 
 const MenuProps = {
@@ -145,19 +156,22 @@ export const SelectIconButton = props => {
 	);
 };
 
-const renderMultipleValues = selected => selected?.join(", ");
+export const renderMultipleValues = (value, options) => {
+	return options
+		.filter(x => value.indexOf(x.value) !== -1)
+		.map(x => x.label)
+		.join(", ");
+};
 
 const selectEmptyValue = "~~#~~";
 
-const Select = ({ options, selectProps, children }) => {
+const Select = ({ options = [], selectProps, children }) => {
 	if (isSelectProps(selectProps) === false) {
 		throw new TypeError("selectProps property is not of type SelectProps");
 	}
 
 	const [open, setOpen] = useState(false);
 	const ref = useRef(null);
-
-	const classes = useStyles();
 
 	const update = selectProps?.get(SelectProps.propNames.update);
 	const value = selectProps?.get(SelectProps.propNames.value) ?? "";
@@ -171,36 +185,86 @@ const Select = ({ options, selectProps, children }) => {
 	const native = selectProps?.get(SelectProps.propNames.native);
 	const onClose = selectProps?.get(SelectProps.propNames.onClose);
 	const inputProps = selectProps?.get(SelectProps.propNames.inputProps);
-	const multiple = selectProps?.get(SelectProps.propNames.multiple);
+	const multiple = selectProps?.get(SelectProps.propNames.multiple) || false;
+	const renderValue = selectProps?.get(SelectProps.propNames.renderValue);
+	const autoWidth = selectProps?.get(SelectProps.propNames.autoWidth);
+	const autoFocus = selectProps?.get(SelectProps.propNames.autoFocus);
+	const multipleSelectWidth = selectProps?.get(SelectProps.propNames.multipleSelectWidth);
 	const hasError = !!error;
 
-	if (sortType === sortTypeEnum.numeric) {
-		options.sort((a, b) =>
-			a.sortOrder.localeCompare(b.sortOrder, undefined, {
-				numeric: true,
-				sensitivity: "base",
-			}),
-		);
-	} else if (sortType === sortTypeEnum.default) {
-		options.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));
-	} else if (sortType === sortTypeEnum.alphabetical) {
-		options.sort((a, b) => {
-			if (a.value === selectEmptyValue) {
-				return -1;
-			}
-			if (b.value === selectEmptyValue) {
-				return 1;
-			}
-			return a.label.localeCompare(b.label);
-		});
-	}
+	const windowSize = useWindowSize();
 
-	if (showAllValue && showAllLabel) {
-		options.unshift({
-			value: showAllValue,
-			label: showAllLabel,
+	// When too many elements are selected from the list, the component can be longer than the screen, not very convenient
+	// We need a fix length unfortunately, for large screen, we use 100% of the multipleSelectWidth, for medium length, 75%
+	// But for very small width, we use the inner width of the browser minus 150px (completely arbitrary value), otherwise
+	// the drop-down is too large and hard to read
+	const multipleSelectWidthFactor = windowSize.innerWidth > 1200 ? 1 : 0.75;
+	const multipleWidthSpacing =
+		windowSize.innerWidth > 750
+			? (multipleSelectWidth / 10) * multipleSelectWidthFactor
+			: (windowSize.innerWidth - 150) / 10;
+	const classes = useStyles({
+		multiple,
+		autoWidth,
+		multipleWidthSpacing,
+	});
+
+	const buildOptionsItems = () => {
+		const allOptions = [...options];
+
+		if (sortType === sortTypeEnum.numeric) {
+			allOptions.sort((a, b) =>
+				a.sortOrder.localeCompare(b.sortOrder, undefined, {
+					numeric: true,
+					sensitivity: "base",
+				}),
+			);
+		} else if (sortType === sortTypeEnum.default) {
+			allOptions.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));
+		} else if (sortType === sortTypeEnum.alphabetical) {
+			allOptions.sort((a, b) => {
+				if (a.value === selectEmptyValue) {
+					return -1;
+				}
+				if (b.value === selectEmptyValue) {
+					return 1;
+				}
+				return a.label.localeCompare(b.label);
+			});
+		}
+
+		if (showAllValue && showAllLabel) {
+			allOptions.unshift({
+				value: showAllValue,
+				label: showAllLabel,
+			});
+		}
+
+		return allOptions.map(option => {
+			const clss = option?.level ? classes["level" + option.level] : "";
+			const appliedClasses = classNames(classes.baseItem, clss);
+			const labelClss = classNames({
+				[classes.label]: true,
+				[classes.emptyLabel]: option.value === "" || option.value === selectEmptyValue,
+			});
+
+			const disabled = !!option.disabled;
+			const groupHeader = !!option.isGroupHeader;
+			if (groupHeader) {
+				return (
+					<ListSubheader key={option.value} className={appliedClasses}>
+						{option.label}
+					</ListSubheader>
+				);
+			} else {
+				return (
+					<MenuItem key={option.value} value={option.value} className={appliedClasses} disabled={disabled}>
+						<TooltippedTypography noWrap className={labelClss} children={option.label} titleValue={option.label} />
+					</MenuItem>
+				);
+			}
 		});
-	}
+	};
 
 	const handleChange = event => {
 		update(event.target.value);
@@ -208,66 +272,21 @@ const Select = ({ options, selectProps, children }) => {
 
 	const defaultMenuProps = {
 		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
+		autoFocus,
 		...MenuProps,
 		...positionOverride,
 	};
 
 	const iconSelectMenuProps = {
 		classes: { paper: classNames(classes.selectPaper, selectProps?.getStyle(SelectProps.ruleNames.paper)) },
+		autoFocus,
 		...positionOverride,
 		...getIconButtonMenuProps(ref.current),
 	};
 
-	const items = options?.map(option => {
-		let clss = option?.level ? classes["level" + option.level] : "";
-		const appliedClasses = classNames(classes.baseItem, clss);
-		const labelClss = classNames({
-			[classes.label]: true,
-			[classes.emptyLabel]: option.value === "" || option.value === selectEmptyValue,
-		});
+	const items = native ? null : buildOptionsItems();
 
-		const disabled = !!option.disabled;
-		const groupHeader = !!option.isGroupHeader;
-		if (groupHeader) {
-			return (
-				<ListSubheader key={option.value} className={appliedClasses}>
-					{option.label}
-				</ListSubheader>
-			);
-		} else {
-			return (
-				<MenuItem key={option.value} value={option.value} className={appliedClasses} disabled={disabled}>
-					<TooltippedTypography noWrap className={labelClss} children={option.label} titleValue={option.label} />
-				</MenuItem>
-			);
-		}
-	});
-
-	const defaultSelect = (
-		<SelectMUI
-			value={value}
-			onChange={handleChange}
-			onClose={onClose}
-			disableUnderline={true}
-			IconComponent={SelectIcon}
-			MenuProps={defaultMenuProps}
-			disabled={disabled}
-			error={hasError}
-			native={native}
-			inputProps={inputProps}
-			multiple={multiple}
-			renderValue={multiple ? renderMultipleValues : undefined}
-			classes={{
-				icon: classes.icon,
-				root: selectProps?.getStyle(SelectProps.ruleNames.root),
-				disabled: classes.disabled,
-			}}
-		>
-			{native ? children : items}
-		</SelectMUI>
-	);
-
-	const iconSelect = (
+	const iconSelect = isIconSelect && (
 		<SelectMUI
 			open={open}
 			value={value}
@@ -281,7 +300,6 @@ const Select = ({ options, selectProps, children }) => {
 			native={native}
 			inputProps={inputProps}
 			multiple={multiple}
-			renderValue={multiple ? renderMultipleValues : undefined}
 			classes={{
 				icon: classes.icon,
 				root: selectProps?.getStyle(SelectProps.ruleNames.root),
@@ -290,20 +308,49 @@ const Select = ({ options, selectProps, children }) => {
 			}}
 			onClick={() => setOpen(!open)}
 		>
-			{native ? children : items}
+			{items ?? children}
 		</SelectMUI>
 	);
 
-	const select = isIconSelect ? iconSelect : defaultSelect;
+	// Render the normal select is the icon one is NULL
+	const selectToRender = iconSelect || (
+		<SelectMUI
+			value={value}
+			onChange={handleChange}
+			onClose={onClose}
+			disableUnderline={true}
+			IconComponent={SelectIcon}
+			autoWidth={autoWidth}
+			MenuProps={defaultMenuProps}
+			disabled={disabled}
+			error={hasError}
+			native={native}
+			inputProps={inputProps}
+			multiple={multiple}
+			renderValue={renderValue ?? (multiple ? value => renderMultipleValues(value, options) : undefined)}
+			classes={{
+				icon: classes.icon,
+				root: selectProps?.getStyle(SelectProps.ruleNames.root),
+				disabled: classes.disabled,
+			}}
+		>
+			{items ?? children}
+		</SelectMUI>
+	);
 
-	return (
-		(error && (
-			<div className={classes.container}>
-				{select}
-				<div className={classNames(classes.errorText)}>{error}</div>
-			</div>
-		)) ||
-		select
+	const selectToRenderWithError = hasError && (
+		<div className={classes.container}>
+			{selectToRender}
+			<div className={classNames(classes.errorText)}>{error}</div>
+		</div>
+	);
+
+	const selectControl = selectToRenderWithError || selectToRender;
+
+	return multiple === false ? (
+		selectControl
+	) : (
+		<FormControl className={classes.formControl}>{selectControl}</FormControl>
 	);
 };
 

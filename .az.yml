@@ -68,6 +68,7 @@ steps:
     customCommand: 'run coverage'
 
 - task: Npm@1
+  continueOnError: true
   displayName: 'npm run coveralls'
   inputs:
     command: 'custom'

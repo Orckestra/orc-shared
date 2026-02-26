@@ -22,6 +22,10 @@ class SelectProps extends ComponentProps {
 		native: "native",
 		inputProps: "inputProps",
 		multiple: "multiple",
+		autoWidth: "autoWidth",
+		autoFocus: "autoFocus",
+		renderValue: "renderValue",
+		multipleSelectWidth: "multipleSelectWidth",
 	};
 
 	static ruleNames = {
@@ -43,7 +47,11 @@ class SelectProps extends ComponentProps {
 		this.componentProps.set(this.constructor.propNames.onClose, null);
 		this.componentProps.set(this.constructor.propNames.native, null);
 		this.componentProps.set(this.constructor.propNames.inputProps, null);
-		this.componentProps.set(this.constructor.propNames.multiple, null);
+		this.componentProps.set(this.constructor.propNames.multiple, false);
+		this.componentProps.set(this.constructor.propNames.autoWidth, true);
+		this.componentProps.set(this.constructor.propNames.autoFocus, true);
+		this.componentProps.set(this.constructor.propNames.renderValue, null);
+		this.componentProps.set(this.constructor.propNames.multipleSelectWidth, 700);
 
 		this.componentClasses.set(this.constructor.ruleNames.root, null);
 		this.componentClasses.set(this.constructor.ruleNames.paper, null);
