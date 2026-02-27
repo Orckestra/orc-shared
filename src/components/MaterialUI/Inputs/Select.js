@@ -63,6 +63,12 @@ const useStyles = makeStyles(theme => ({
 			whiteSpace: "normal",
 			"&:hover": {
 				backgroundColor: theme.palette.primary.main,
+				"&:not(.Mui-selected) > p": {
+					color: `${theme.palette.primary.contrastText}`,
+				},
+				"&.Mui-selected": {
+					backgroundColor: theme.palette.secondary.light,
+				},
 			},
 			"&:focus, &:active": {
 				borderRadius: 0,
