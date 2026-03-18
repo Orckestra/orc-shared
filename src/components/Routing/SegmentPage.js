@@ -150,20 +150,20 @@ export const SegmentItem = ({ isModified, isError, isActive, segpath, config, ba
 	);
 };
 
-export const Wrapper = ({ children }) => {
+export const Wrapper = ({ className, children }) => {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.wrapper} key="Segments">
+		<div className={classNames(classes.wrapper, className ?? null)} key="Segments">
 			{children}
 		</div>
 	);
 };
 
-export const List = ({ children }) => {
+export const List = ({ className, children }) => {
 	const classes = useStyles();
 
-	return <div className={classes.list}>{children}</div>;
+	return <div className={classNames(classes.list, className ?? null)}>{children}</div>;
 };
 
 export const Item = ({ active, to, children, onClick }) => {
