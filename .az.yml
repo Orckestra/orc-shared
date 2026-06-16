@@ -16,6 +16,7 @@ variables:
 
 steps:
 - task: SonarCloudPrepare@1
+  condition: and(succeeded(), eq(variables['SonarCloudEnabled'], 'true'))
   inputs:
     SonarCloud: 'SonarCloud'
     organization: 'orckestra001'
@@ -121,7 +122,9 @@ steps:
     NPM_TOKEN: $(NpmPublishToken)
 
 - task: SonarCloudAnalyze@1
+  condition: and(succeeded(), eq(variables['SonarCloudEnabled'], 'true'))
 
 - task: SonarCloudPublish@1
+  condition: and(succeeded(), eq(variables['SonarCloudEnabled'], 'true'))
   inputs:
     pollingTimeoutSec: '300'
