@@ -14,6 +14,12 @@
 
 Intended as the outermost visual component of an application, and handles the sidebar with the application selector and main menu, and the top bar with user menu and help popup. Modules will be rendered as links in the sidebar, and as routes to components in the viewport, along with a scope selector. It also includes showing toasts with a queued [ToastList](#toastlist), as well as About and Preference elements.
 
+## ApplicationModuleLoader
+
+- `children`: A single child element, rendered once loading completes.
+
+Waits for the default scope and scope list to be loaded (dispatching `getDefaultScope`/`getScopes` per configured application module) before rendering its child, showing a `Loader` in the meantime. Used by [Provision](#provision)/the app bootstrap sequence, not typically used directly by app developers.
+
 ## Authenticate
 
 A wrapper component that ensures a user is logged in to the service before rendering anything. Used by [Provision](#provision), (q.v.) thus not to be used directly by app developers.
@@ -55,6 +61,10 @@ Here is some sample code on usage:
 > 	<List {...{ name, columnDefs, rows: locations }} />
 > </ColumnWrapper>
 > ```
+
+## Culture
+
+Renders nothing itself, but as a side effect registers a `date-fns` locale (derived from the current `react-intl` locale, with day/month names localized via [`useDaysAndMonthsLocalization`](hooks.md#usedaysandmonthslocalization)) with `react-datepicker`, and sets it as the default locale. Include once near the root of the app (inside the `I18n`/intl provider) so `DatePicker`-based inputs show correctly localized calendars.
 
 ## DevPages
 
@@ -111,6 +121,10 @@ Properties not listed above are passed through to the underlying `Button` compon
 
 A styled input field to be used in place of `<input>`. Takes the same props as this element and should be used as a replacement of it. Avoid using this for checkboxes, instead use the `Checkbox` component.
 
+## InternetExplorerWarningMessage
+
+Renders nothing on any browser except Internet Explorer, where it shows a full-screen modal telling the user to switch to a supported browser (with icons/links for Chrome, Firefox, Edge, Safari, Opera). Detects IE via `window.MSInputMethodContext`/`document.documentMode`.
+
 ## List
 
 - `columnDefs`: An array of objects, each describing one column in the table.
@@ -128,6 +142,18 @@ See also the more [detailed documentation for list components](lists.md).
 ## LookupSelect
 
 A select control which loads its values from a lookup definition.
+
+## MaterialUI components (`src/components/MaterialUI`)
+
+A wrapper layer over `@material-ui/core` (MUI v4), used where a `styled-components` primitive isn't a good fit (data grids, poppers/autocomplete, transfer lists, etc.). Prefer these wrappers to importing `@material-ui/core` directly in areas that already use them, so styling and theming (`muiThemes.js`, derived from the app's `styled-components` theme via `getTheme`) stay consistent. Notable groups:
+
+- **`DataDisplay/`**: `Table` (plus `TableWithInMemoryPaging`, which pairs it with [`useInMemoryPaging`](hooks.md#useinmemorypaging-viewstatename-tableref-records-pagesize-initialsort-initialfilters-sortandfilterfn-), `TableHeaderCell`, `useTableSelection`), `List`/`SelectionList`/`CollapsableList`, `Modal`, `Notification` (snackbar-style toasts, see `Feedback/` below), `Badge`, `Chip`, `Divider`, `Icon`, `Timeline`/`TimelineItem`, `TransferList`, plus a `PredefinedElements/` and `TooltippedElements/` subfolder of ready-made compositions (e.g. `InformationItem`, used by `Registry`/`TaskDetailsModal`).
+- **`Inputs/`**: `Autocomplete`, `Checkbox`/`CheckboxGroup`, `DatePicker`, `TimePicker`, `LookupSelect`, `Radio`/`StandaloneRadio`, `Select`, `Switch`, `InputBase` — MUI-based equivalents of the plain input components, each with a matching `*Props` builder class for constructing props in a discoverable way (see e.g. `ModalProps` used by `TaskDetailsModal`).
+- **`Navigation/`**: `TabBar` (what `components/Navigation` actually renders into — see the Navigation tab system notes), `DropDownMenu`, `TabLabel`, `ExternalLink`.
+- **`ScopeSelector/`**: `ScopeSelector`, `ScopeTreeView`, `TreeItem` — an MUI-based alternative scope tree UI.
+- **`Surfaces/`**: `Paper`, `ExpansionPanel`/`SectionExpansionPanel`.
+- **`Feedback/`**: `NotificationContext`/`useNotification` (the context consumed by [`useNotificationRequestState`](hooks.md#usenotificationrequeststate-keys-operation-successmessageid-successmessagevalues-successaction-errormessageid-errormessagevalues-erroraction-)), `loadingScreen`.
+- **`hocs/`**: `withDeferredPopper`, `withDeferredTooltip` — defer mounting a Popper/Tooltip's content until first shown, for performance.
 
 ## MenuButton
 
@@ -201,6 +227,13 @@ Allows radio buttons to be displayed and be handled for updates.
 
 The radios option is an array of radio buttons to use, with the following options: - `value`: The value of the radio button. Will be used when calling the update function. - `label`: The label for the radio button. - `disabled`: If disabled is not defined by the group, will determing if the radio button is disabled.
 
+## Registry
+
+- `dateCreated` / `createdBy` / `lastModifiedDate` / `lastModifiedBy`: Optional; when present, rendered as a localized-date/plain-text information row (only fields that are `!== undefined` are shown).
+- `additionalContent`: An array of `{ label, content }` objects, each rendered as an extra information row after the built-in ones.
+
+Displays a small "audit trail" panel (created/last modified date and user) for an entity, using MUI's `InformationItem` under the hood.
+
 ## Relogin
 
 Checks the state, and if logged out renders an iframe that will log in the user again via Azure Active Directory. Used by [Provision](#provision) and should not be used independently.
@@ -216,6 +249,10 @@ These components are used to route and display components according to URL paths
 A component that shows a scope bar with slide-out scope selector. Uses Redux view state to control scope selector panel visibility, scope filtering, and the scope tree state. Included in [AppFrame](#appframe), should probably not be called directly.
 
 The scope object supports a property that isActive; the default is 'true'. If isActive is 'false', then it uses theme.palette.secondary.light colour for the label.
+
+## ScopeExtendedConfigurationLoader
+
+Renders nothing; as a side effect, dispatches `getScopeExtendedConfiguration` whenever the currently selected scope changes. Include once near the root of the app (alongside/after `Scope`) so extended per-scope configuration stays loaded as the user switches scopes.
 
 ## Selector
 
@@ -258,6 +295,14 @@ Renders a wizard like component with seperate steps and a Next and Previous butt
 - `offColor`: A string containing a CSS color value. The switch will show this color when off.
 
 Displays a horizontal toggle switch. This is a wrapper around a `<input type="checkbox" />`, so any props that work with that will also work here. Use `value` to set the value, not `checked`. If no `id` is passed, one will be generated and used.
+
+## TaskDetailsModal
+
+- `taskId`: The id of the background task to show details for.
+- `open`: Whether the modal is shown.
+- `closeModal`: Called when the modal is closed.
+
+Shows a modal with a background task's status and log output (loaded/polled via `getTaskInfo`/`getTaskLog` every 10 seconds until the task reaches a terminal status), built on the MUI `Modal`.
 
 ## Text
 
