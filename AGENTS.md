@@ -14,7 +14,7 @@ The overall architecture (state store shape, module/routing config, actions/redu
 - `docs/hocs.md` — higher-order components (many are marked deprecated in favor of hooks — check this before adding new usages)
 - `docs/hooks.md` — the newer hook-based replacements for the above HOCs
 - `docs/components.md` — the component library (AppFrame, Modules, Navigation, Scope, Toolbar, List/CategoryList, Form, etc.)
-- `docs/forms.md` and `docs/lists.md` — the field-definition/column-definition config formats consumed by `Form`, `List` and `CategoryList`
+- `docs/forms.md` — the field-definition config format consumed by `Form`
 
 When making non-trivial changes to any of these systems, read the relevant doc file first, and update it if the change affects documented behavior.
 
@@ -26,8 +26,8 @@ Some subsystems aren't covered in `docs/` at all and are documented only in the 
 - **Redux** as the state container, with **`redux-immutable`**'s `combineReducers` and **Immutable.js** (`Immutable.Map`/`fromJS`) as the state shape throughout — plain-object reducers/selectors are the exception, not the rule.
 - **`redux-api-middleware`** (RSAA actions) for HTTP calls, **`connected-react-router`** (`/immutable` build) + **`history`** for routing/browser history syncing into the store, and a hand-rolled `spawnerMiddleware` (`src/spawnerMiddleware.js`) for reactive "dispatch action B when action A + some state condition occurs" logic.
 - **`react-router` / `react-router-dom`** (`Switch`/`Route`/`Redirect`, `useHistory`/`useLocation`) under the hood of the module/segment/page routing system described below.
-- **`styled-components`** for styling/theming, **`react-intl`** for i18n (message descriptors + `FormattedMessage`/`useIntl`), **`polished`** for color math (`shade`/`tint`), **`lodash`** for general data utilities, **`prop-types`** on some components, **`react-datepicker`** and **`react-number-format`** for specialized inputs.
-- **`@material-ui/core` (MUI v4, not the newer `@mui/*` scope)** underlies the `src/components/MaterialUI` wrapper layer (`makeStyles`, `Menu`/`MenuItem`, `Table`, `Modal`, `Snackbar`, `Chip`, `Badge`, etc.), themed via `muiThemes.js` so it matches the `styled-components` theme; `classnames` is used alongside it for conditional class composition.
+- **`react-intl`** for i18n (message descriptors + `FormattedMessage`/`useIntl`), **`lodash`** for general data utilities, **`prop-types`** on some components, **`react-datepicker`** and **`react-number-format`** for specialized inputs.
+- **`@material-ui/core` (MUI v4, not the newer `@mui/*` scope)** is the styling/theming layer for the whole component library (`makeStyles`, `MuiThemeProvider`, `Menu`/`MenuItem`, `Table`, `Modal`, `Snackbar`, `Chip`, `Badge`, etc.), themed via `muiThemes.js`'s `createTheme()` — see Theme management below; `classnames` is used alongside it for conditional class composition.
 - **`normalizr`** normalizes list-shaped API responses into Immutable-friendly entity maps — see `src/schemas/*.js` and Data normalization below.
 - Build/lint/test tooling (webpack, Babel, Jest, ESLint, Prettier) all comes from the sibling **`orc-scripts`** package — see Commands below.
 
@@ -68,20 +68,21 @@ A handful of API list responses are normalized with **`normalizr`** before being
 - **Auth/provisioning**: `Authenticate.js`, `Provision.js`, `ApplicationModuleLoader.js`, `ScopeExtendedConfigurationLoader.js` — wrap the app tree with auth checks, providers (redux/theme/intl), and scope config loading before rendering real content.
 - **Routing**: `Routing/` (`FullPage`, `Page`, `Segment`, `SubPage`, `withWaypointing`) — see routing section above.
 - **Scope**: `Scope/` — the scope bar/tree/selector UI and its hooks (`useScopeData`, `useScopeSelect`, `useScopeConfirmationModalState`).
-- **Lists/tables**: `List/` (`List`, `Row`, `HeadRow`/`HeadCell`, `DataCell`, `enhanceColumnDefs`) plus the higher-level `CategoryList.js` — see `docs/lists.md` for column-definition config.
+- **Lists/tables**: list/table UI lives under `MaterialUI/DataDisplay` (`Table`, `TableWithInMemoryPaging`, `List`/`SelectionList`/`CollapsableList`).
 - **Forms**: `Form/` (`Form`, `Fieldset`, `Combination`, `Field`, `FieldElements`, `FormElement`, `InputField`, `Inputs/*`) — see `docs/forms.md` for field-definition config.
-- **Generic UI primitives**: `Button.js`, `IconButton.js`, `Checkbox.js`, `Switch.js`, `Input.js`, `Selector.js`, `MultiSelector.js`, `Icon.js`, `Text.js`, `Tooltip.js`, `Placeholder.js`, `Loader.js`/`LoadingIcon.js`, `ErrorPlaceholder.js`, `Sidepanel.js`, `Toolbar.js`, `ToastList.js`, `ColumnWrapper.js`, `Spritesheet.js`.
-- **Menus/dialogs**: `DropMenu/`, `Modal/` (`Dialog`, `Wrapper`, `Background`).
+- **Generic UI primitives**: `Loader.js`/`LoadingIcon.js`, `ErrorPlaceholder.js`, `Sidepanel.js`, `ToastList.js`, `ColumnWrapper.js`, `Spritesheet.js`.
+- **Menus/dialogs**: `DropMenu/` (for modals, see `MaterialUI/DataDisplay/Modal` below).
 - **Structured data display**: `Treeview/` (`Node`, `Branch`, `Leaf`, `Label`).
 - **Material UI wrapper layer**: `MaterialUI/` — an internal wrapper around `@material-ui/core` (v4) components (`DataDisplay`, `Feedback`, `Inputs`, `Navigation`, `ScopeSelector`, `Surfaces`, plus its own `hocs`, `muiThemes.js`, shared prop helpers). `Navigation/TabBar` here is what `components/Navigation` renders into (see Navigation tab system below). Prefer these wrappers over importing `@material-ui/core` directly when working in areas that already use them, for visual consistency.
 - Misc: `Culture.js` (locale/date-picker localization glue), `Registry.js`, `TaskDetailsModal.js`, `InternetExplorerWarningMessage.js`.
 
 ## Theme management
 
-- `getTheme(highlight, overrides)` (`src/getTheme.js`) builds the `styled-components` theme object: a `baseTheme` (colors, icon id map, fonts, tree-view geometry) deep-merged (via lodash `merge`) with caller-supplied `overrides`, then run through `setApplicationColors` to derive `application.primary/highlight/select/dark` from `application.base` using `polished`'s `shade`/`tint` if not explicitly overridden. Importing this file also side-effect-imports the Open Sans / Roboto Condensed webfonts.
-- `getThemeOverrides(appName)` (`src/getThemeOverrides.js`) supplies Orckestra-specific brand colors per application (`pim`, `oms`, `marketing`, `analytics`, plus the shared `orckestraBlue`) to feed into `getTheme`'s `overrides` param; unknown app names get a deliberately garish magenta fallback so misconfiguration is obvious.
-- The theme is consumed from `styled-components` templates via the prop-function helpers in `src/utils/styledPropFuncs.js`: `getThemeProp(path, defaultValue, func?)` (safe nested theme lookup, path/default may themselves be prop functions), `ifFlag(name, thenVal, elseVal)` (boolean prop → value), and `switchEnum(enumField, cases)` (prop value → matching case, falling back to `cases.default`). Use these instead of hardcoding colors/sizes in styled templates.
-- `muiThemes.js` (`src/components/MaterialUI/muiThemes.js`) adapts/derives a MUI theme from the same `styled-components` theme so MUI-based components stay visually consistent with the rest of the app.
+Theming runs entirely through `@material-ui/core` (MUI v4):
+
+- `createThemes(applicationTheme, themeDefinition)` (`src/components/MaterialUI/muiThemes.js`) builds the app's MUI theme(s) via MUI's `createTheme()`: a `commonTheme`/`commonPalette` (spacing, typography, base palette) merged with the caller-supplied `themeDefinition`, plus derived `hover<color>` palette variants computed with `@material-ui/core/styles/colorManipulator`'s `darken`/`alpha`. Importing this file also side-effect-imports the Open Sans / Roboto Condensed webfonts via `@fontsource/open-sans`/`@fontsource/roboto-condensed`.
+- `Provision` wraps the app tree in `MuiThemeProvider` with the resulting `muiTheme`, and sets global styles (`html`/`body`/`#app` sizing, base font family) via MUI's `makeStyles`.
+- Individual components style themselves with MUI's `makeStyles(theme => ({...}))`, reading colors/spacing/typography directly off the MUI theme object passed in.
 
 ## HTTP requests
 
@@ -184,7 +185,7 @@ State in this codebase is **Immutable.js**, not plain JS objects — reducers op
 ## Conventions to follow
 
 - Prefer hooks (`src/hooks`) over the corresponding HOCs (`src/hocs`) for new code — most HOCs are explicitly documented as deprecated in `docs/hocs.md` in favor of a hook equivalent.
-- Styled-components is the styling approach; theme values come from `getTheme.js` and should be accessed via the `getThemeProp`/`ifFlag`/`switchEnum` prop-function helpers in `src/utils/styledPropFuncs.js` rather than hardcoded.
+- MUI (`@material-ui/core` v4) `makeStyles` is the styling approach; theme values come from the MUI theme built in `src/components/MaterialUI/muiThemes.js` and should be read off the `theme` argument passed into `makeStyles(theme => ({...}))` rather than hardcoded.
 - Translatable strings are `react-intl` message descriptors (`{ id, defaultMessage }`), not raw strings, wherever a `label`/`message` prop is documented as accepting one. Translation source files are `src/translations/en-US.json` and `src/translations/fr-CA.json`; run `npm run extract` after adding new `defineMessages`/`FormattedMessage` usages rather than hand-editing the JSON.
 - Redux API calls go through `makeApiAction`/`makeOrcApiAction` (`src/actions/makeApiAction.js`, `makeOrcApiAction.js`), which build RSAA-shaped actions for `redux-api-middleware` and produce `_REQUEST`/`_SUCCESS`/`_FAILURE` action types — don't hand-roll fetch calls in actions.
 - This package is published for external consumption (`main`, `exports`, `files` in `package.json`), so avoid breaking the public shape of `src/` exports without considering downstream consumers.
