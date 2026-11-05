@@ -13,7 +13,7 @@
 # The package is published to npm only when HEAD is exactly on a tag (e.g. the commit created by
 # `npm version`, pushed with its tag), with the dist-tag computed by `orc-scripts getDist`.
 # Pull requests never publish. Pull requests from forks don't get the repository secrets, so their
-# Coveralls step fails.
+# Coveralls step fails (without failing the build).
 
 name: Build
 
@@ -101,6 +101,8 @@ jobs:
           if-no-files-found: error
 
       - name: npm run coveralls
+        # A Coveralls outage or a missing token (pull requests from forks) must not fail the build.
+        continue-on-error: true
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           COVERALLS_SERVICE_NAME: github
