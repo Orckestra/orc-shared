@@ -1,0 +1,160 @@
+# Build, test and publish orc-shared (migrated from the Azure DevOps pipeline .az.yml).
+#
+# Branches version/5.10 and later build here; older version branches still build on Azure DevOps.
+#
+# Required repository secrets:
+#   COVERALLS_REPO_TOKEN  Coveralls token of the orc-shared repository.
+#   NPM_PUBLISH_TOKEN     npm token allowed to publish the orc-shared package.
+#
+# Optional SonarCloud analysis (off unless enabled, like the SonarCloudEnabled ADO variable):
+#   SONARCLOUD_ENABLED    Repository or organization variable, set to 'true' to run the analysis.
+#   SONAR_TOKEN           Repository secret, SonarCloud token of the orckestra001 organization.
+#
+# The package is published to npm only when HEAD is exactly on a tag (e.g. the commit created by
+# `npm version`, pushed with its tag), with the dist-tag computed by `orc-scripts getDist`.
+# Pull requests never publish. Pull requests from forks don't get the repository secrets, so their
+# Coveralls step fails.
+
+name: Build
+
+on:
+  push:
+    branches:
+      - 'feature**'
+      - 'bug**'
+      - 'version/**'
+  pull_request:
+    branches:
+      - 'version/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BUILD_REACT: 'true'
+  NODE_VERSION: '18.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # Full history and tags: publishing checks for a tag on HEAD, SonarCloud needs the history for blame.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Use Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: npm install
+        run: |
+          npm install --verbose
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Publish npm install logs
+        if: failure()
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: NpmInstallLog
+          path: |
+            ~/.npm/eresolve-report.txt
+            ~/.npm/_logs/
+          if-no-files-found: ignore
+
+      - name: npm prune
+        run: |
+          npm prune
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: npm ls --depth=1
+        continue-on-error: true
+        run: |
+          npm ls --depth=1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: npm run lint
+        run: |
+          npm run lint -- --max-warnings 0
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: npm run coverage
+        run: |
+          npm run coverage
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Publish code coverage
+        if: success() || failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: coverage/
+          if-no-files-found: error
+
+      - name: npm run coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          COVERALLS_SERVICE_NAME: github
+          COVERALLS_SERVICE_JOB_ID: ${{ github.run_id }}
+          COVERALLS_SERVICE_NUMBER: ${{ github.run_number }}
+          # On pull requests, report the PR head instead of the temporary merge commit.
+          COVERALLS_GIT_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          COVERALLS_GIT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          CI_PULL_REQUEST: ${{ github.event.pull_request.number }}
+        run: |
+          npm run coveralls
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: SonarCloud analysis
+        if: vars.SONARCLOUD_ENABLED == 'true'
+        uses: SonarSource/sonarqube-scan-action@v8
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Detect npm tag and publication
+        id: detect
+        run: |
+          $npmTag = node node_modules/orc-scripts/src/scripts/getDist.js
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $version = node -p "require('./package.json').version"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          # Publish only when HEAD is exactly on a tag, and never for pull requests (merge commit).
+          $tag = git describe --exact-match --tags HEAD 2>$null
+          $canPublish = ($LASTEXITCODE -eq 0) -and ($env:GITHUB_EVENT_NAME -ne 'pull_request')
+          $global:LASTEXITCODE = 0
+
+          "npm-tag=$npmTag" >> $env:GITHUB_OUTPUT
+          "can-publish=$($canPublish.ToString().ToLower())" >> $env:GITHUB_OUTPUT
+
+          # GitHub displays the annotations in the reverse order they were written: write them last to first.
+          $notices = @(
+            @{ Title = 'Version'; Value = $version }
+            @{ Title = 'npm tag'; Value = $npmTag }
+            @{ Title = 'Publish'; Value = $(if ($canPublish) { "yes (git tag $tag)" } else { 'no' }) }
+          )
+          [array]::Reverse($notices)
+          foreach ($notice in $notices) {
+            Write-Host "::notice title=$($notice.Title)::$($notice.Value)"
+          }
+          "**Version:** ``$version`` (npm tag ``$npmTag``)" >> $env:GITHUB_STEP_SUMMARY
+
+      - name: npm publish
+        if: steps.detect.outputs.can-publish == 'true'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          NPM_TAG: ${{ steps.detect.outputs.npm-tag }}
+        run: |
+          # npm expands ${NPM_TOKEN} from the environment when it reads .npmrc.
+          "`n//registry.npmjs.org/:_authToken=`${NPM_TOKEN}" | Add-Content -Path .npmrc
+          npm publish --tag $env:NPM_TAG
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

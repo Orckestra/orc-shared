@@ -158,6 +158,10 @@ Linting and formatting also run automatically on commit via `lint-staged`/husky 
 
 Build tooling, ESLint/Prettier/Babel/Jest configs are not defined locally — they're all thin wrappers importing from the `orc-scripts` package (`node_modules/orc-scripts/src/config/*`). If a config question comes up, look there rather than in this repo's root config files.
 
+### CI builds
+
+Starting with the `version/5.10` branch, all builds (including later `version/*` branches and `master`) run on **GitHub Actions** (`.github/workflows/build.yml`). Branches for earlier versions (`version/5.9` and older) still build on **Azure DevOps**. When changing CI configuration, edit the pipeline that matches the branch you're working on.
+
 ## Testing conventions
 
 **Coverage must stay at 100% (branches, functions, lines, statements)** — `jest.coverageconfig.js` sets `coverageThreshold.global` to 100 across the board, and `npm run coverage` (what CI runs) fails the build if any file drops below that. Every new branch (including error paths, default parameters, and `||`/`??` fallbacks) needs a covering test; there is no partial-coverage allowance to lean on.
