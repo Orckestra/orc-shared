@@ -57,7 +57,7 @@
 	},
 	"dependencies": {
 		"nwsapi": "2.2.24",
-		"orc-scripts": "5.0.0-dev.12",
+		"orc-scripts": "5.0.0-dev.13",
 		"react-number-format": "^5.3.0"
 	},
 	"sideEffects": false,
